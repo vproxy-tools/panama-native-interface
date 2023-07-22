@@ -1,0 +1,154 @@
+import org.gradle.api.tasks.testing.logging.TestLogEvent
+
+plugins {
+    id 'java'
+    id 'maven-publish'
+    id 'signing'
+}
+
+group = 'org.example'
+version = '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+}
+
+subprojects {
+    apply plugin: 'java'
+
+    group 'io.vproxy'
+    version rootProject.version
+
+    java {
+        withSourcesJar()
+
+        toolchain {
+            languageVersion = JavaLanguageVersion.of(21)
+        }
+    }
+
+    tasks.withType(JavaCompile) {
+        options.encoding = "UTF-8"
+        options.incremental = false
+        options.compilerArgs += '--enable-preview'
+    }
+    tasks.withType(JavaExec) {
+        jvmArgs += '--enable-preview'
+        jvmArgs += '--enable-native-access=ALL-UNNAMED'
+        jvmArgs += '--add-exports=java.base/jdk.internal.misc=ALL-UNNAMED'
+
+        javaLauncher.set(javaToolchains.launcherFor(java.toolchain))
+    }
+    tasks.withType(Test) {
+        jvmArgs += '--enable-preview'
+        jvmArgs += '--enable-native-access=ALL-UNNAMED'
+        jvmArgs += '--add-exports=java.base/jdk.internal.misc=ALL-UNNAMED'
+
+        testLogging {
+            events TestLogEvent.FAILED, TestLogEvent.PASSED, TestLogEvent.SKIPPED, TestLogEvent.STARTED
+            maxGranularity 100
+            exceptionFormat "full"
+            showCauses true
+            showExceptions true
+            showStackTraces true
+        }
+    }
+
+    repositories {
+        mavenLocal()
+        mavenCentral()
+    }
+
+    task javadocJar(type: Jar) {
+        classifier = 'javadoc'
+        from "$buildDir/docs/javadoc"
+    }
+
+    tasks.withType(GenerateModuleMetadata) {
+        enabled = false
+    }
+}
+
+project(":api") {
+    apply plugin: 'maven-publish'
+    apply plugin: 'signing'
+
+    publishing {
+        publications {
+            maven(MavenPublication) {
+                from components.java
+                artifactId 'vproxy-' + project.name
+
+                artifact(javadocJar)
+
+                pom {
+                    name = 'io.vproxy.' + project.name
+                    description = 'vproxy component ' + project.name
+                    url = 'https://vproxy.io'
+                    licenses {
+                        license {
+                            name = 'MIT License'
+                            url = 'https://github.com/wkgcass/vproxy/blob/master/LICENSE'
+                        }
+                    }
+                    developers {
+                        developer {
+                            id = 'wkgcass'
+                            name = 'K.G. Wang'
+                            email = 'wkgcass@hotmail.com'
+                        }
+                    }
+                    scm {
+                        connection = 'scm:git:git://github.com/wkgcass/vproxy.git'
+                        developerConnection = 'scm:git:git://github.com/wkgcass/vproxy.git'
+                        url = 'https://github.com/wkgcass/vproxy'
+                    }
+                }
+                pom.withXml {
+                    def pomNode = asNode()
+                    pomNode.dependencies.'*'.findAll() {
+                        it.groupId.text() == 'org.jetbrains.kotlin' || it.groupId.text() == 'org.jetbrains.kotlinx'
+                    }.each {
+                        it.parent().remove(it)
+                    }
+                }
+            }
+        }
+        repositories {
+            maven {
+                credentials {
+                    username 'wkgcass'
+                    password System.getProperty("MavenPublishPassword")
+                }
+                def releasesRepoUrl = 'https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/'
+                def snapshotsRepoUrl = 'https://s01.oss.sonatype.org/content/repositories/snapshots/'
+                url = version.contains('-DEV') ? snapshotsRepoUrl : releasesRepoUrl
+            }
+        }
+    }
+    if (!System.getProperty("MavenLocalInstall", "false").equals("true")) {
+        signing {
+            sign publishing.publications.maven
+        }
+    }
+}
+
+project(":pni") {
+    dependencies {
+        implementation project(":api")
+        implementation 'org.ow2.asm:asm:9.5'
+        implementation 'org.ow2.asm:asm-tree:9.5'
+    }
+}
+
+project(":sample") {
+    compileJava {
+        options.compilerArgs += '-parameters'
+    }
+    dependencies {
+        implementation project(":api")
+    }
+}

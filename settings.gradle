@@ -1,0 +1,5 @@
+rootProject.name = 'panama-native-interface'
+include 'api'
+include 'sample'
+include 'pni'
+
