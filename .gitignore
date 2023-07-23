@@ -41,3 +41,8 @@ bin/
 
 ### Mac OS ###
 .DS_Store
+
+### native files
+acceptance-testing/src/test/c/libpnitest.so
+acceptance-testing/src/test/c/libpnitest.dylib
+acceptance-testing/src/test/c/pnitest.dll

@@ -2,4 +2,6 @@ rootProject.name = 'panama-native-interface'
 include 'api'
 include 'sample'
 include 'pni'
+include 'acceptance-testing'
+include 'acceptance-testing-template'
 

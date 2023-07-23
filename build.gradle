@@ -144,6 +144,58 @@ project(":pni") {
     }
 }
 
+project(":acceptance-testing-template") {
+    compileJava {
+        options.compilerArgs += '-parameters'
+    }
+    dependencies {
+        implementation project(":api")
+    }
+
+    task cleanAcceptanceTesting(type: Exec) {
+        workingDir project.rootProject.rootDir.getAbsolutePath() + '/acceptance-testing/src/test/'
+        commandLine 'bash', '-c', 'rm -f c/libpnitest.dylib && rm -f c/libpnitest.so && rm -f c/pnitest.dll && rm -rf c-generated/* && rm -rf generated/*'
+    }
+    task generateAcceptanceTesting(type: JavaExec) {
+        classpath = project(":pni").sourceSets.main.runtimeClasspath
+        mainClass = 'io.vproxy.pni.exec.Main'
+        workingDir project.rootProject.rootDir.getAbsolutePath()
+        args '-cp', 'acceptance-testing-template/build/classes/java/main', '-d', 'acceptance-testing/src/test/generated', '-h', 'acceptance-testing/src/test/c-generated'
+
+        dependsOn cleanAcceptanceTesting
+        dependsOn compileTestJava
+    }
+}
+
+project(":acceptance-testing") {
+    sourceSets {
+        test {
+            java {
+                srcDirs = ['src/test/java', 'src/test/generated']
+            }
+        }
+    }
+    dependencies {
+        implementation project(":api")
+        testImplementation 'junit:junit:4.13.2'
+    }
+
+    task compilePNITestLib(type: Exec) {
+        workingDir project.rootProject.rootDir.getAbsolutePath() + '/acceptance-testing/src/test/c'
+        commandLine './make-test.sh'
+
+        dependsOn project(':acceptance-testing-template').tasks.generateAcceptanceTesting
+    }
+    task runTestPrimitiveStruct(type: Test) {
+        jvmArgs += '-Djava.library.path=' +
+                project.rootProject.rootDir.getAbsolutePath() + '/acceptance-testing/src/test/c'
+        include '**/TestPrimitiveStruct.class'
+
+        dependsOn compileTestJava
+        dependsOn compilePNITestLib
+    }
+}
+
 project(":sample") {
     compileJava {
         options.compilerArgs += '-parameters'
