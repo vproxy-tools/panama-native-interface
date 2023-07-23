@@ -189,6 +189,8 @@ project(":acceptance-testing") {
     task runAcceptanceTest(type: Test) {
         jvmArgs += '-Djava.library.path=' +
                 project.rootProject.rootDir.getAbsolutePath() + '/acceptance-testing/src/test/c'
+        jvmArgs += '--add-opens'
+        jvmArgs += 'java.base/java.io=ALL-UNNAMED'
         include '**/Suite.class'
 
         dependsOn compileTestJava

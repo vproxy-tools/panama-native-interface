@@ -7,6 +7,7 @@ import org.junit.runner.RunWith;
     TestPrimitiveStruct.class,
     TestObjectStruct.class,
     TestStructUnion.class,
+    TestFunc.class,
 })
 public class Suite {
 }

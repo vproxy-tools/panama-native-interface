@@ -35,4 +35,5 @@ gcc -std=gnu99 -O2 \
     io_vproxy_pni_test_PrimitiveStruct.c \
     io_vproxy_pni_test_ObjectStruct.c \
     io_vproxy_pni_test_StructA.c \
+    io_vproxy_pni_test_Func.c \
     -o "$target"
