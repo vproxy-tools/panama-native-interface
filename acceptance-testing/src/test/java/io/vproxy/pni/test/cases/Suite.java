@@ -6,6 +6,7 @@ import org.junit.runner.RunWith;
 @org.junit.runners.Suite.SuiteClasses({
     TestPrimitiveStruct.class,
     TestObjectStruct.class,
+    TestStructUnion.class,
 })
 public class Suite {
 }
