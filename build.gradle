@@ -186,10 +186,10 @@ project(":acceptance-testing") {
 
         dependsOn project(':acceptance-testing-template').tasks.generateAcceptanceTesting
     }
-    task runTestPrimitiveStruct(type: Test) {
+    task runAcceptanceTest(type: Test) {
         jvmArgs += '-Djava.library.path=' +
                 project.rootProject.rootDir.getAbsolutePath() + '/acceptance-testing/src/test/c'
-        include '**/TestPrimitiveStruct.class'
+        include '**/Suite.class'
 
         dependsOn compileTestJava
         dependsOn compilePNITestLib

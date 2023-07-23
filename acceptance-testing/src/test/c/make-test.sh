@@ -33,4 +33,5 @@ gcc -std=gnu99 -O2 \
     -I "../c-generated" \
     -shared -Werror -lc -lpthread -fPIC \
     io_vproxy_pni_test_PrimitiveStruct.c \
+    io_vproxy_pni_test_ObjectStruct.c \
     -o "$target"
