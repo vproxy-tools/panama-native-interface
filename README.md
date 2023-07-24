@@ -141,6 +141,25 @@ You can release the memory after accessing the returned object by closing the al
 
 * `@Include`: add `#include ...` when generating the header file. This is useful if some type is defined in another C header file.  
   `@Include("...")` will generate `#include "..."`, while `@Include("<...>")` will generate `#include <...>`.
+* `@Impl`: write C function definition in Java. See the following example:  
+  ```java
+  @Impl(
+        include = {"<unistd.h>"},
+        // language="c"
+        c = """
+            int ret = write(fd, buf + off, len);
+            if (ret < 0) {
+                return PNIThrowException(env, "java.io.Exception", strerror(errno));
+            }
+            env->return_ = ret;
+            return 0;
+            """
+  )
+  int write(int fd, @Raw ByteBuffer buf, int off, int len) throws IOException;
+  ```  
+  When `@Impl` is specified, an extra header file with `.impl.h` suffix will be generated alone with the normal `.h` header.
+  You can include the `.impl.h` header in your C file.  
+  Note that, the comment `// launuage="c"` will let JetBrains IDEA highlight the text block with C syntax.
 
 ## Type correspondence
 
