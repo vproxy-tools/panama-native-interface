@@ -20,6 +20,7 @@ public class TypePool {
 
         record(AnnoAlignTypeInfo.get());
         record(AnnoFunctionTypeInfo.get());
+        record(AnnoImplTypeInfo.get());
         record(AnnoIncludeTypeInfo.get());
         record(AnnoLenTypeInfo.get());
         record(AnnoNameTypeInfo.get());

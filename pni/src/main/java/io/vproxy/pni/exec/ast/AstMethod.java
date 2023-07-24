@@ -1,5 +1,6 @@
 package io.vproxy.pni.exec.ast;
 
+import io.vproxy.pni.annotation.Impl;
 import io.vproxy.pni.annotation.Trivial;
 import io.vproxy.pni.exec.internal.PointerInfo;
 import io.vproxy.pni.exec.internal.Utils;
@@ -9,6 +10,7 @@ import org.objectweb.asm.tree.AnnotationNode;
 import org.objectweb.asm.tree.MethodNode;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 
@@ -155,6 +157,27 @@ public class AstMethod {
     }
 
     public void generateC(StringBuilder sb, int indent, String classUnderlinedName, String classNativeTypeName) {
+        generateC0(sb, indent, classUnderlinedName, classNativeTypeName);
+        sb.append(";\n");
+    }
+
+    public void generateCImpl(StringBuilder sb, int indent, String classUnderlinedName, String classNativeTypeName, String impl) {
+        generateC0(sb, indent, classUnderlinedName, classNativeTypeName);
+        sb.append(" {\n");
+        Arrays.stream(impl.replace("\r", "").split("\n")).map(line -> {
+            if (line.isBlank()) return "";
+            return line;
+        }).forEach(line -> {
+            if (line.isEmpty()) {
+                sb.append("\n");
+            } else {
+                Utils.appendIndent(sb, indent + 4).append(line).append("\n");
+            }
+        });
+        Utils.appendIndent(sb, indent).append("}\n");
+    }
+
+    private void generateC0(StringBuilder sb, int indent, String classUnderlinedName, String classNativeTypeName) {
         Utils.appendIndent(sb, indent)
             .append("JNIEXPORT int JNICALL ").append(nativeName(classUnderlinedName))
             .append("(PNIEnv_");
@@ -195,7 +218,7 @@ public class AstMethod {
         if (returnTypeExtraType != null) {
             sb.append(", ").append(returnTypeExtraType).append(" return_");
         }
-        sb.append(");\n");
+        sb.append(")");
     }
 
     public void generateJava(StringBuilder sb, int indent, String classUnderlinedName, boolean needSelf) {
@@ -305,5 +328,46 @@ public class AstMethod {
 
     private boolean trivial() {
         return annos.stream().anyMatch(a -> a.typeRef != null && a.typeRef.name().equals(Trivial.class.getName()));
+    }
+
+    public String getImplC() {
+        var opt = annos.stream().filter(a -> a.typeRef != null && a.typeRef.name().equals(Impl.class.getName())).findFirst();
+        if (opt.isEmpty()) {
+            return null;
+        }
+        var anno = opt.get();
+        var vOpt = anno.values.stream().filter(v -> v.name.equals("c")).findFirst();
+        if (vOpt.isEmpty()) {
+            return null;
+        }
+        var v = vOpt.get().value;
+        if (!(v instanceof String)) {
+            return null;
+        }
+        return (String) v;
+    }
+
+    public List<String> getImplInclude() {
+        var opt = annos.stream().filter(a -> a.typeRef != null && a.typeRef.name().equals(Impl.class.getName())).findFirst();
+        if (opt.isEmpty()) {
+            return null;
+        }
+        var anno = opt.get();
+        var vOpt = anno.values.stream().filter(v -> v.name.equals("include")).findFirst();
+        if (vOpt.isEmpty()) {
+            return null;
+        }
+        var v = vOpt.get().value;
+        //noinspection rawtypes
+        if (v instanceof List ls) {
+            for (var o : ls) {
+                if (!(o instanceof String)) {
+                    return null;
+                }
+            }
+            //noinspection unchecked
+            return (List<String>) ls;
+        }
+        return null;
     }
 }

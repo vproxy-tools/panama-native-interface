@@ -1,9 +1,6 @@
 package io.vproxy.pni.exec;
 
-import io.vproxy.pni.exec.internal.ASTReader;
-import io.vproxy.pni.exec.internal.CFileWriter;
-import io.vproxy.pni.exec.internal.JavaFileWriter;
-import io.vproxy.pni.exec.internal.JavaReader;
+import io.vproxy.pni.exec.internal.*;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -115,6 +112,7 @@ public class Main {
         for (var cls : classes) {
             new JavaFileWriter(cls).flush(new File(d), verbose);
             new CFileWriter(cls).flush(new File(h), verbose);
+            new CImplFileWriter(cls).flush(new File(h), verbose);
         }
         System.out.println("done");
     }

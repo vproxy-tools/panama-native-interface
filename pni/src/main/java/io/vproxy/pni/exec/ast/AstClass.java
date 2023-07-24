@@ -594,6 +594,61 @@ public class AstClass {
         return sb.toString();
     }
 
+    public String generateCImpl() {
+        boolean doGenerate = false;
+        for (var m : methods) {
+            var s = m.getImplC();
+            if (s != null) {
+                doGenerate = true;
+                break;
+            }
+        }
+        if (!doGenerate) {
+            return null;
+        }
+
+        var sb = new StringBuilder();
+        sb.append("#include \"").append(underlinedName()).append(".h\"\n");
+        var imports = new HashSet<String>();
+        for (var m : methods) {
+            var includeLs = m.getImplInclude();
+            if (includeLs == null) {
+                continue;
+            }
+            imports.addAll(includeLs);
+        }
+        for (var i : imports) {
+            if (i.startsWith("<") && i.endsWith(">")) {
+                sb.append("#include ").append(i).append("\n");
+            } else {
+                sb.append("#include \"").append(i).append("\"\n");
+            }
+        }
+
+        //noinspection TextBlockMigration
+        sb.append("\n" +
+                  "#ifdef __cplusplus\n" +
+                  "extern \"C\" {\n" +
+                  "#endif\n");
+
+        for (var m : methods) {
+            var impl = m.getImplC();
+            if (impl == null) {
+                continue;
+            }
+            sb.append("\n");
+            m.generateCImpl(sb, 0, underlinedName(), nativeTypeName(), impl);
+        }
+
+        //noinspection TextBlockMigration
+        sb.append("\n" +
+                  "#ifdef __cplusplus\n" +
+                  "}\n" +
+                  "#endif\n");
+
+        return sb.toString();
+    }
+
     private void include(StringBuilder sb, AstClass cls) {
         sb.append("#include \"").append(cls.underlinedName()).append(".h\"\n");
     }
