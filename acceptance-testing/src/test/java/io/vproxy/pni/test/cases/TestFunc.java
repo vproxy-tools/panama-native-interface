@@ -97,6 +97,10 @@ public class TestFunc {
         var lastLine = s.get(s.size() - 1);
         assertEquals("// sha256:553cf4d4dc3b3f7badc6e03e8f1d0931ed4c281946ebab924c855bd12e852211", lastLine);
 
+        s = Files.readAllLines(Path.of("src", "test", "c-generated", "io_vproxy_pni_test_Func.impl.h"));
+        lastLine = s.get(s.size() - 1);
+        assertEquals("// sha256:c5be3bf03333b8ae2bdd2a72732ac587edfdaf0fbe6dbf92ec36e0c8990e73fa", lastLine);
+
         s = Files.readAllLines(Path.of("src", "test", "generated", "io", "vproxy", "pni", "test", "Func.java"));
         lastLine = s.get(s.size() - 1);
         assertEquals("// sha256:897e1e1564d6eaae91193536501cd9c26f00e8b1f75544aa874ec8b50845585e", lastLine);
