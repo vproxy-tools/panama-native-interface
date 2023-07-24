@@ -46,3 +46,6 @@ bin/
 acceptance-testing/src/test/c/libpnitest.so
 acceptance-testing/src/test/c/libpnitest.dylib
 acceptance-testing/src/test/c/pnitest.dll
+sample/src/main/c/libpnisample.so
+sample/src/main/c/libpnisample.dylib
+sample/src/main/c/pnisample.dll

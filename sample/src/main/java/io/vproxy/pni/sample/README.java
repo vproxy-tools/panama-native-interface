@@ -7,23 +7,21 @@ import java.lang.foreign.MemorySegment;
 
 @Struct
 @Name("mbuf_t")
-class MBuf {
+class PNIMBuf {
     MemorySegment bufAddr;
     @Unsigned int pktLen;
     @Unsigned int pktOff;
     @Unsigned int bufLen;
-    UserData userdata;
+    PNIUserData userdata;
 }
 
 @Union(embedded = true)
-class UserData {
+class PNIUserData {
     MemorySegment userdata;
     @Unsigned long udata64;
 }
 
 @Function
-interface NativeFunctions {
-    int read(int fd, MBuf buf) throws IOException;
-
-    int write(int fd, MBuf buf) throws IOException;
+interface PNISampleFunctions {
+    int read(int fd, PNIMBuf buf) throws IOException;
 }

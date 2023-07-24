@@ -205,4 +205,28 @@ project(":sample") {
     dependencies {
         implementation project(":api")
     }
+
+    task generateSample(type: JavaExec) {
+        classpath = project(":pni").sourceSets.main.runtimeClasspath
+        mainClass = 'io.vproxy.pni.exec.Main'
+        workingDir project.rootProject.rootDir.getAbsolutePath()
+        args '-cp', 'sample/build/classes/java/main', '-d', 'sample/src/main/java', '-h', 'sample/src/main/c'
+
+        dependsOn compileJava
+    }
+    task compilePNISampleLib(type: Exec) {
+        workingDir project.rootProject.rootDir.getAbsolutePath() + '/sample/src/main/c'
+        commandLine './make-sample.sh'
+
+        dependsOn generateSample
+    }
+    task runSample(type: JavaExec) {
+        classpath = sourceSets.main.runtimeClasspath
+        mainClass = 'io.vproxy.pni.sample.Main'
+        jvmArgs += '-Djava.library.path=' +
+                project.rootProject.rootDir.getAbsolutePath() + '/sample/src/main/c'
+
+        dependsOn compileJava
+        dependsOn compilePNISampleLib
+    }
 }
