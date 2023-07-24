@@ -27,6 +27,7 @@ rm -f "$target"
 
 gcc -std=gnu99 -O2 \
     $GCC_OPTS \
+    -I "./" \
     -I "$JAVA_HOME/include" \
     -I "$JAVA_HOME/include/$include_platform_dir" \
     -I "../../../../api/src/main/c" \
@@ -36,4 +37,5 @@ gcc -std=gnu99 -O2 \
     io_vproxy_pni_test_ObjectStruct.c \
     io_vproxy_pni_test_StructA.c \
     io_vproxy_pni_test_Func.c \
+    io_vproxy_pni_test_StructM.c io_vproxy_pni_test_StructN.c io_vproxy_pni_test_UnionP.c \
     -o "$target"

@@ -8,6 +8,7 @@ import org.junit.runner.RunWith;
     TestObjectStruct.class,
     TestStructUnion.class,
     TestFunc.class,
+    TestStructUnionAnnotation.class,
 })
 public class Suite {
 }
