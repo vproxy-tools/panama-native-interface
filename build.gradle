@@ -230,3 +230,43 @@ project(":sample") {
         dependsOn compilePNISampleLib
     }
 }
+
+project(":playground") {
+    sourceSets {
+        main {
+            java {
+                srcDirs = ['src/main/template', 'src/main/java', 'src/main/generated']
+            }
+        }
+    }
+    compileJava {
+        options.compilerArgs += '-parameters'
+    }
+    dependencies {
+        implementation project(":api")
+    }
+
+    task generatePlayground(type: JavaExec) {
+        classpath = project(":pni").sourceSets.main.runtimeClasspath
+        mainClass = 'io.vproxy.pni.exec.Main'
+        workingDir project.rootProject.rootDir.getAbsolutePath()
+        args '-cp', 'playground/build/classes/java/main', '-d', 'playground/src/main/generated', '-h', 'playground/src/main/c-generated'
+
+        dependsOn compileJava
+    }
+    task compilePNIPlaygroundLib(type: Exec) {
+        workingDir project.rootProject.rootDir.getAbsolutePath() + '/playground/src/main/c'
+        commandLine './make-playground.sh'
+
+        dependsOn generatePlayground
+    }
+    task runPlayground(type: JavaExec) {
+        classpath = sourceSets.main.runtimeClasspath
+        mainClass = 'io.vproxy.pni.playground.Main'
+        jvmArgs += '-Djava.library.path=' +
+                project.rootProject.rootDir.getAbsolutePath() + '/playground/src/main/c'
+
+        dependsOn compileJava
+        dependsOn compilePNIPlaygroundLib
+    }
+}
