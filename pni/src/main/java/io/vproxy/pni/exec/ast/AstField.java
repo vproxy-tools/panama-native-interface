@@ -42,6 +42,8 @@ public class AstField {
                 if (classTypeInfo.getClazz().isInterface) {
                     errors.add(path + ": unable to use interface type: " + type);
                 }
+            } else if (typeRef instanceof CallSiteTypeInfo) {
+                errors.add(path + ": cannot use CallSite as field");
             }
         }
         for (var a : annos) {

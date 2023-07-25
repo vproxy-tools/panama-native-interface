@@ -7,9 +7,7 @@ import io.vproxy.pni.exec.internal.PointerInfo;
 import io.vproxy.pni.exec.internal.ParamOpts;
 import io.vproxy.pni.exec.internal.Utils;
 import io.vproxy.pni.exec.internal.VarOpts;
-import io.vproxy.pni.exec.type.ClassTypeInfo;
-import io.vproxy.pni.exec.type.TypeInfo;
-import io.vproxy.pni.exec.type.TypePool;
+import io.vproxy.pni.exec.type.*;
 import org.objectweb.asm.tree.AnnotationNode;
 
 import java.util.ArrayList;
@@ -19,13 +17,16 @@ public class AstParam {
     public final List<AstAnno> annos = new ArrayList<>();
     public String name;
     public String type;
+    public List<String> genericTypes = new ArrayList<>();
 
     public TypeInfo typeRef;
+    public final List<TypeInfo> genericTypeRefs = new ArrayList<>();
 
-    public AstParam(String type, String name, List<AnnotationNode> visibleParameterAnnotations) {
+    public AstParam(String type, List<String> genericTypes, String name, List<AnnotationNode> visibleParameterAnnotations) {
         Utils.readAnnotations(annos, visibleParameterAnnotations);
         this.name = name;
         this.type = type;
+        this.genericTypes.addAll(genericTypes);
     }
 
     public void ref(TypePool pool) {
@@ -33,6 +34,9 @@ public class AstParam {
             a.ref(pool);
         }
         typeRef = pool.find(type);
+        for (var t : genericTypes) {
+            genericTypeRefs.add(pool.find(t));
+        }
     }
 
     public void validate(String path, List<String> errors) {
@@ -45,12 +49,37 @@ public class AstParam {
                 if (classTypeInfo.getClazz().isInterface) {
                     errors.add(path + ": unable to use interface type: " + type);
                 }
+            } else if (typeRef instanceof CallSiteTypeInfo) {
+                if (genericTypeRefs.size() != 1) {
+                    errors.add(path + ": CallSite should have exactly one generic param: " + genericTypes);
+                } else {
+                    var ref = genericTypeRefs.get(0);
+                    if (ref instanceof ClassTypeInfo classTypeInfo) {
+                        if (classTypeInfo.getClazz().isInterface) {
+                            errors.add(path + "#<0>: unable to use interface type: " + type);
+                        }
+                    }
+                    if (!(ref instanceof ClassTypeInfo) && !(ref instanceof VoidRefTypeInfo)) {
+                        errors.add(path + "#<0>: CallSite can only take Struct/Union or java.lang.Void as its argument");
+                    }
+                }
             }
         }
         var name = Utils.getName(annos);
         if (name != null) {
             if (!Utils.isValidName(name, true)) {
                 errors.add(path + ": invalid @Name(" + name + ")");
+            }
+        }
+        if (genericTypes.size() != genericTypeRefs.size()) {
+            errors.add(path + ": genericTypeRefs mismatch genericTypes");
+        } else {
+            for (int i = 0; i < genericTypeRefs.size(); i++) {
+                var t = genericTypes.get(i);
+                var ref = genericTypeRefs.get(i);
+                if (ref == null) {
+                    errors.add(path + "#<" + t + ">: unable to find genericTypeRef");
+                }
             }
         }
     }
@@ -89,7 +118,7 @@ public class AstParam {
     }
 
     public VarOpts varOpts() {
-        return VarOpts.of(isUnsigned(), isPointer(), -1, isRaw());
+        return VarOpts.of(isUnsigned(), isPointer(), -1, isRaw(), genericTypeRefs);
     }
 
     public ParamOpts paramOpts() {

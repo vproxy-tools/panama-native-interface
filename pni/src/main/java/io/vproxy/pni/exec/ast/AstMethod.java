@@ -29,7 +29,12 @@ public class AstMethod {
         this.name = m.name;
         this.returnType = m.desc.substring(m.desc.indexOf(")") + 1);
         var paramsPart = m.desc.substring(1, m.desc.indexOf(")"));
+        var signature = m.signature;
+        if (signature != null) {
+            paramsPart = signature.substring(1, signature.lastIndexOf(")"));
+        }
         var paramTypes = Utils.extractMethodDescParamsPart(paramsPart);
+
         for (int i = 0; i < paramTypes.size(); i++) {
             var t = paramTypes.get(i);
             String paramName = "arg" + i;
@@ -40,7 +45,7 @@ public class AstMethod {
             if (m.visibleParameterAnnotations != null) {
                 annotationNodes = m.visibleParameterAnnotations[i];
             }
-            params.add(new AstParam(t, paramName, annotationNodes));
+            params.add(new AstParam(t.type(), t.genericParams(), paramName, annotationNodes));
         }
         throwTypes.addAll(m.exceptions);
     }
@@ -68,6 +73,8 @@ public class AstMethod {
                 if (classTypeInfo.getClazz().isInterface) {
                     errors.add(path + ": return type cannot use interface type: " + returnType);
                 }
+            } else if (returnTypeRef instanceof CallSiteTypeInfo) {
+                errors.add(path + ": cannot use CallSite as return value");
             }
         }
         for (var p : params) {

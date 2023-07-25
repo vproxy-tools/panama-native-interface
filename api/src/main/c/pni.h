@@ -67,6 +67,22 @@ static inline int PNIThrowExceptionBasedOnErrno(void* _env, const char* extype) 
 }
 
 typedef struct {
+    int64_t   index;
+    int32_t (*func)(int64_t,void*);
+    void    (*release)(int64_t);
+
+    void* userdata;
+} PNI_PACKED PNIFunc;
+
+static inline int PNIFuncInvoke(PNIFunc* f, void* data) {
+    return f->func(f->index, data);
+}
+
+static inline void PNIFuncRelease(PNIFunc* f) {
+    f->release(f->index);
+}
+
+typedef struct {
     void*    buf;
     uint64_t len;
 } PNI_PACKED PNIBuf;

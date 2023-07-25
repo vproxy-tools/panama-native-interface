@@ -73,6 +73,8 @@ public class PanamaUtils {
             return ValueLayout.ADDRESS; // void*
         } else if (type == PNIBuf.class) {
             return ValueLayout.ADDRESS; // PNIBuf*
+        } else if (type == CallSite.class) {
+            return ValueLayout.ADDRESS; // PNIFunc*
         } else if (MemoryLayout.class.isAssignableFrom(type)) {
             return ValueLayout.ADDRESS; // Type*
         } else {

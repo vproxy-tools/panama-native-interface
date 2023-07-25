@@ -31,11 +31,14 @@ public class TypePool {
         record(AnnoUnionTypeInfo.get());
         record(AnnoUnsignedTypeInfo.get());
 
+        record(CallSiteTypeInfo.get());
+
         record(MemorySegmentTypeInfo.get());
         record(ByteBufferTypeInfo.get());
         record(StringTypeInfo.get());
 
         record(VoidTypeInfo.get());
+        record(VoidRefTypeInfo.get());
     }
 
     private void record(TypeInfo info) {

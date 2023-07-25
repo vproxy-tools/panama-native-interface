@@ -9,6 +9,8 @@ import java.io.File;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 public class Utils {
@@ -49,16 +51,83 @@ public class Utils {
         }
     }
 
-    public static List<String> extractMethodDescParamsPart(String paramsPart) {
-        List<String> result = new ArrayList<>();
+    public record TypeWithGeneric(String type, List<String> genericParams) {
+    }
+
+    private static String extractFirstDesc(String s, int[] offset) {
         var sb = new StringBuilder();
-        var chars = paramsPart.toCharArray();
+        var chars = s.toCharArray();
         int state = 0; // 0: normal, 1: array, 2: object type
-        for (char c : chars) {
+        for (; offset[0] < chars.length; ) {
+            var c = chars[offset[0]++];
             switch (state) {
                 case 0:
                     switch (c) {
-                        case 'B', 'C', 'D', 'F', 'I', 'J', 'S', 'Z' -> result.add(String.valueOf(c));
+                        case 'B', 'C', 'D', 'F', 'I', 'J', 'S', 'Z' -> {
+                            return String.valueOf(c);
+                        }
+                        case '[' -> {
+                            state = 1;
+                            sb.append("[");
+                        }
+                        case 'L' -> {
+                            state = 2;
+                            sb.append("L");
+                        }
+                        default -> throw new RuntimeException("unknown symbol " + c + " in desc");
+                    }
+                    break;
+                case 1:
+                    sb.append(c);
+                    switch (c) {
+                        case 'B', 'C', 'D', 'F', 'I', 'J', 'S', 'Z' -> {
+                            return sb.toString();
+                        }
+                        case '[' -> { // do nothing
+                        }
+                        case 'L' -> state = 2;
+                        default -> throw new RuntimeException("unknown symbol " + c + " in desc");
+                    }
+                    break;
+                case 2:
+                default:
+                    if (c == '<') {
+                        sb.append("<");
+                        do {
+                            var genericType = extractFirstDesc(s, offset);
+                            sb.append(genericType);
+                        } while (offset[0] < chars.length && chars[offset[0]] != '>');
+                        if (offset[0] != '>') {
+                            throw new RuntimeException("expecting '>': " + s.substring(0, offset[0]) + "|" + s.substring(offset[0]));
+                        }
+                        sb.append(">");
+                        ++offset[0];
+                        continue;
+                    }
+                    sb.append(c);
+                    if (c == ';') {
+                        return sb.toString();
+                    }
+            }
+        }
+        throw new RuntimeException("unknown symbol: " + s.substring(0, offset[0]) + "|" + s.substring(offset[0]));
+    }
+
+    public static List<TypeWithGeneric> extractMethodDescParamsPart(String paramsPart) {
+        // Lio/vproxy/pni/CallSite<Lio/vproxy/pni/test/PNIObjectStruct;>;
+        List<TypeWithGeneric> result = new ArrayList<>();
+        var sb = new StringBuilder();
+        var genericSb = new StringBuilder();
+        var genericTypes = new ArrayList<String>();
+        var chars = paramsPart.toCharArray();
+        int state = 0; // 0: normal, 1: array, 2: object type
+        for (int i = 0; i < chars.length; i++) {
+            char c = chars[i];
+            switch (state) {
+                case 0:
+                    switch (c) {
+                        case 'B', 'C', 'D', 'F', 'I', 'J', 'S', 'Z' ->
+                            result.add(new TypeWithGeneric(String.valueOf(c), Collections.emptyList()));
                         case '[' -> {
                             state = 1;
                             sb.append("[");
@@ -75,7 +144,7 @@ public class Utils {
                     switch (c) {
                         case 'B', 'C', 'D', 'F', 'I', 'J', 'S', 'Z' -> {
                             state = 0;
-                            result.add(sb.toString());
+                            result.add(new TypeWithGeneric(sb.toString(), Collections.emptyList()));
                             sb.delete(0, sb.length());
                         }
                         case '[' -> { // do nothing
@@ -86,10 +155,27 @@ public class Utils {
                     break;
                 case 2:
                 default:
+                    if (c == '<') {
+                        while (true) {
+                            var ii = new int[]{i + 1};
+                            var genericType = extractFirstDesc(paramsPart, ii);
+                            if (ii[0] >= chars.length) {
+                                throw new RuntimeException("generic type not finishing with '>': " + paramsPart);
+                            }
+                            if (chars[ii[0]] != '>') {
+                                continue;
+                            }
+                            i = ii[0];
+                            genericTypes.add(genericType);
+                            break;
+                        }
+                        continue;
+                    }
                     sb.append(c);
                     if (c == ';') {
                         state = 0;
-                        result.add(sb.toString());
+                        result.add(new TypeWithGeneric(sb.toString(), new ArrayList<>(genericTypes)));
+                        genericTypes.clear();
                         sb.delete(0, sb.length());
                     }
             }

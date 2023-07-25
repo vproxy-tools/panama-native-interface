@@ -451,19 +451,35 @@ public class AstClass {
             sb.append("            super(buf, ").append(simpleName()).append(".LAYOUT);\n");
             sb.append("        }\n");
             sb.append("\n");
-            sb.append("        @Override\n");
-            sb.append("        protected ").append(simpleName()).append(" construct(MemorySegment seg) {\n");
-            sb.append("            return new ").append(simpleName()).append("(seg);\n");
+            generateConstructAndGetSegment(sb);
+            sb.append("    }\n");
+            sb.append("\n");
+            sb.append("    public static class Func extends PNIFunc<").append(simpleName()).append("> {\n");
+            sb.append("        private Func(io.vproxy.pni.CallSite<").append(simpleName()).append("> func) {\n");
+            sb.append("            super(func);\n");
             sb.append("        }\n");
             sb.append("\n");
-            sb.append("        @Override\n");
-            sb.append("        protected MemorySegment getSegment(").append(simpleName()).append(" value) {\n");
-            sb.append("            return value.MEMORY;\n");
+            sb.append("        public static Func of(io.vproxy.pni.CallSite<").append(simpleName()).append("> func) {\n");
+            sb.append("            return new Func(func);\n");
             sb.append("        }\n");
+            sb.append("\n");
+            generateConstructAndGetSegment(sb);
             sb.append("    }\n");
         }
 
         sb.append("}\n");
+    }
+
+    private void generateConstructAndGetSegment(StringBuilder sb) {
+        sb.append("        @Override\n");
+        sb.append("        protected ").append(simpleName()).append(" construct(MemorySegment seg) {\n");
+        sb.append("            return new ").append(simpleName()).append("(seg);\n");
+        sb.append("        }\n");
+        sb.append("\n");
+        sb.append("        @Override\n");
+        sb.append("        protected MemorySegment getSegment(").append(simpleName()).append(" value) {\n");
+        sb.append("            return value.MEMORY;\n");
+        sb.append("        }\n");
     }
 
     public String fullName() {
@@ -577,6 +593,14 @@ public class AstClass {
                     var cls = classTypeInfo.getClazz();
                     if (includedClasses.add(cls)) {
                         include(sb, cls);
+                    }
+                }
+                for (var g : p.genericTypeRefs) {
+                    if (g instanceof ClassTypeInfo classTypeInfo) {
+                        var cls = classTypeInfo.getClazz();
+                        if (includedClasses.add(cls)) {
+                            include(sb, cls);
+                        }
                     }
                 }
             }
