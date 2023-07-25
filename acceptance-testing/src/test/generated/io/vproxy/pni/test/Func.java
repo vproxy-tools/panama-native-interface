@@ -83,5 +83,21 @@ public class Func {
         }
         return ENV.returnInt();
     }
+
+    private final MethodHandle callJavaFromC = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_Func_callJavaFromC", io.vproxy.pni.CallSite.class /* func */);
+
+    public MemorySegment callJavaFromC(PNIEnv ENV, io.vproxy.pni.CallSite<io.vproxy.pni.test.ObjectStruct> func) {
+        ENV.reset();
+        int ERR;
+        try {
+            ERR = (int) this.callJavaFromC.invokeExact(ENV.MEMORY, io.vproxy.pni.test.ObjectStruct.Func.of(func).MEMORY);
+        } catch (Throwable THROWABLE) {
+            throw PanamaUtils.convertInvokeExactException(THROWABLE);
+        }
+        if (ERR != 0) {
+            ENV.throwLast();
+        }
+        return ENV.returnPointer();
+    }
 }
-// sha256:897e1e1564d6eaae91193536501cd9c26f00e8b1f75544aa874ec8b50845585e
+// sha256:39403ab5f79d0ef9f4ffa5c2c64e8797845720b8e8c85b7a2991619b155fe1c5

@@ -66,5 +66,25 @@ public class UnionC {
             return value.MEMORY;
         }
     }
+
+    public static class Func extends PNIFunc<UnionC> {
+        private Func(io.vproxy.pni.CallSite<UnionC> func) {
+            super(func);
+        }
+
+        public static Func of(io.vproxy.pni.CallSite<UnionC> func) {
+            return new Func(func);
+        }
+
+        @Override
+        protected UnionC construct(MemorySegment seg) {
+            return new UnionC(seg);
+        }
+
+        @Override
+        protected MemorySegment getSegment(UnionC value) {
+            return value.MEMORY;
+        }
+    }
 }
-// sha256:3ce56c9a9269518d070b891889256c40908bc987c1d280364398ca61570d2362
+// sha256:dae48fb3458789dace4494c98d18971a0b132ebb20df481f317f0d5cca5878f3

@@ -1376,5 +1376,25 @@ public class PrimitiveStruct {
             return value.MEMORY;
         }
     }
+
+    public static class Func extends PNIFunc<PrimitiveStruct> {
+        private Func(io.vproxy.pni.CallSite<PrimitiveStruct> func) {
+            super(func);
+        }
+
+        public static Func of(io.vproxy.pni.CallSite<PrimitiveStruct> func) {
+            return new Func(func);
+        }
+
+        @Override
+        protected PrimitiveStruct construct(MemorySegment seg) {
+            return new PrimitiveStruct(seg);
+        }
+
+        @Override
+        protected MemorySegment getSegment(PrimitiveStruct value) {
+            return value.MEMORY;
+        }
+    }
 }
-// sha256:87839317fdc4db573eca08450c29a50b84bd0fda2f76bc22a5e41a9665c4a48c
+// sha256:16b81f5d62c9642094f7b2b973dd70c56d75fdf6c51a4769634cde706db03466

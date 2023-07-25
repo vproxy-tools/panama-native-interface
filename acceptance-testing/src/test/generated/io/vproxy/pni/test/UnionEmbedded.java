@@ -72,5 +72,25 @@ public class UnionEmbedded {
             return value.MEMORY;
         }
     }
+
+    public static class Func extends PNIFunc<UnionEmbedded> {
+        private Func(io.vproxy.pni.CallSite<UnionEmbedded> func) {
+            super(func);
+        }
+
+        public static Func of(io.vproxy.pni.CallSite<UnionEmbedded> func) {
+            return new Func(func);
+        }
+
+        @Override
+        protected UnionEmbedded construct(MemorySegment seg) {
+            return new UnionEmbedded(seg);
+        }
+
+        @Override
+        protected MemorySegment getSegment(UnionEmbedded value) {
+            return value.MEMORY;
+        }
+    }
 }
-// sha256:a107104276e2574774d194edba1f8651e9a5cf46cac24d2eaee6f716becde19b
+// sha256:49ed9405033168151913ef7b99827207f54d036cb2474be4e1ca253947e5e48a

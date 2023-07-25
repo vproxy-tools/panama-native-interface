@@ -76,5 +76,25 @@ public class UnionO {
             return value.MEMORY;
         }
     }
+
+    public static class Func extends PNIFunc<UnionO> {
+        private Func(io.vproxy.pni.CallSite<UnionO> func) {
+            super(func);
+        }
+
+        public static Func of(io.vproxy.pni.CallSite<UnionO> func) {
+            return new Func(func);
+        }
+
+        @Override
+        protected UnionO construct(MemorySegment seg) {
+            return new UnionO(seg);
+        }
+
+        @Override
+        protected MemorySegment getSegment(UnionO value) {
+            return value.MEMORY;
+        }
+    }
 }
-// sha256:0a8d9fa71511cb15260427a2c579157111bcc8631f7e995960a55d20e245e10f
+// sha256:be650304c965516c34866f53d89c702d55193a79079900e14fa9719396b98249

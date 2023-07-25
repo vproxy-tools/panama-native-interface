@@ -14,7 +14,15 @@ JNIEXPORT int JNICALL Java_io_vproxy_pni_test_Func_write(PNIEnv_int * env, int32
     return 0;
 }
 
+JNIEXPORT int JNICALL Java_io_vproxy_pni_test_Func_callJavaFromC(PNIEnv_pointer * env, PNIFunc * func) {
+    ObjectStruct object_struct;
+    PNIFuncInvoke(func, &object_struct);
+    env->return_ = object_struct.seg;
+    PNIFuncRelease(func);
+    return 0;
+}
+
 #ifdef __cplusplus
 }
 #endif
-// sha256:c5be3bf03333b8ae2bdd2a72732ac587edfdaf0fbe6dbf92ec36e0c8990e73fa
+// sha256:dcf9a6599748fe3328f06080b29c0593bd1b64c323a35d041cf78cba89decde8

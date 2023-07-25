@@ -1,10 +1,12 @@
 package io.vproxy.pni.test;
 
+import io.vproxy.pni.CallSite;
 import io.vproxy.pni.annotation.Function;
 import io.vproxy.pni.annotation.Impl;
 import io.vproxy.pni.annotation.Raw;
 
 import java.io.IOException;
+import java.lang.foreign.MemorySegment;
 import java.nio.ByteBuffer;
 
 @Function
@@ -28,4 +30,16 @@ public interface PNIFunc {
             """
     )
     int write(int fd, @Raw ByteBuffer buf, int off, int len) throws IOException;
+
+    @Impl(
+        // language="c"
+        c = """
+            ObjectStruct object_struct;
+            PNIFuncInvoke(func, &object_struct);
+            env->return_ = object_struct.seg;
+            PNIFuncRelease(func);
+            return 0;
+            """
+    )
+    MemorySegment callJavaFromC(CallSite<PNIObjectStruct> func);
 }

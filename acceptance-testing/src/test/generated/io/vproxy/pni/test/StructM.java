@@ -62,5 +62,25 @@ public class StructM {
             return value.MEMORY;
         }
     }
+
+    public static class Func extends PNIFunc<StructM> {
+        private Func(io.vproxy.pni.CallSite<StructM> func) {
+            super(func);
+        }
+
+        public static Func of(io.vproxy.pni.CallSite<StructM> func) {
+            return new Func(func);
+        }
+
+        @Override
+        protected StructM construct(MemorySegment seg) {
+            return new StructM(seg);
+        }
+
+        @Override
+        protected MemorySegment getSegment(StructM value) {
+            return value.MEMORY;
+        }
+    }
 }
-// sha256:7cf3d2c6f2748cb0c2219703607705d25e2aec5ea33a51a78f09b987f93974fa
+// sha256:a07a52c2345f4bebedcd79a3df76c16daf4be29f7d4068c91400c9717ab1bb36
