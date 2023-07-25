@@ -110,6 +110,27 @@ You can release the memory after accessing the returned object by closing the al
 
 `io.vproxy.pni.Allocator` can be constructed with `Arena` or `MemoryAllocator`.
 
+## Call Java from C
+
+Panama provides a way for C to invoke Java methods. `Panama Native Interface` provides a simple encapsulation for this feature
+and makes the coding much easier.
+
+Use `CallSite<T>` as a method parameter in template classes, where `T` must be a `Struct` or `Union` or `java.lang.Void`.
+
+The generated Java method also uses `CallSite<T>` as its parameter.  
+It is a **functional interface**,
+whose function signature is `(T) -> int`, where `T` allows you to share variables between Java and C,
+while the returned `int` provides the execution result.
+
+On the C side, the function pointer is wrapped inside a `PNIFunc * func` variable.  
+To invoke the function, use `int result = PNIFuncInvoke(func, &value);`
+
+You may store the `PNIFunc` object and use it later, you can even invoke it on a new thread.
+As a result, you **MUST** release the object when you finished using it: `PNIFuncRelease(func);`
+
+The `PNIFunc` struct has a field `void * userdata` for you to store you own data in it.
+This is useful for example when you store the `PNIFunc*` in `epoll_event.data.ptr`.
+
 ## Annotations
 
 ### Entrypoint
@@ -205,6 +226,7 @@ You can release the memory after accessing the returned object by closing the al
 | boolean[]     | -           | -          | Yes    | `uint8_t  x[len]` | -                | -                    | -                  | BoolArray           | `sequenceLayout(len, JAVA_BOOLEAN)` |
 | char[]        | -           | -          | Yes    | `uint16_t x[len]` | -                | -                    | -                  | CharArray           | `sequenceLayout(len, JAVA_CHAR)`    |
 | Type[]        | -           | -          | Yes    | `Type     x[len]` | -                | -                    | -                  | RefArray<Type>      | `sequenceLayout(len, Type.LAYOUT)`  |
+| CallSite<T>   | -           | -          | -      | -                 | `PNIFunc *`      | -                    | -                  | T.Func              | -                                   |
 
 `*`: Both `Yes` and `No`.  
 `-`: Cannot mark the annotation.
@@ -242,3 +264,5 @@ Annotate the data type to be converted to its raw form.
   and naming collisions of these variables are not checked during the validation phase.
   This shouldn't be a problem, because normally people won't define
   "all upper case" type names or member fields.
+* The `CallSite<T>` is only allowed in parameters, you cannot use it in struct fields.  
+  However you can store it in a field inside your C code and use it later, even using it on a new thread.
