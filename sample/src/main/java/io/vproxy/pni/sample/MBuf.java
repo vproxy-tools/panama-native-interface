@@ -109,5 +109,25 @@ public class MBuf {
             return value.MEMORY;
         }
     }
+
+    public static class Func extends PNIFunc<MBuf> {
+        private Func(io.vproxy.pni.CallSite<MBuf> func) {
+            super(func);
+        }
+
+        public static Func of(io.vproxy.pni.CallSite<MBuf> func) {
+            return new Func(func);
+        }
+
+        @Override
+        protected MBuf construct(MemorySegment seg) {
+            return new MBuf(seg);
+        }
+
+        @Override
+        protected MemorySegment getSegment(MBuf value) {
+            return value.MEMORY;
+        }
+    }
 }
-// sha256:2f4394afbc272bd00a429de8061832e51d18a3308c75116b1a4fc6e8d72b1b03
+// sha256:b9f9da3dcb4da8e6d707936ed721685a5f9cbb41bf37c71221f4349ff8374788

@@ -72,5 +72,25 @@ public class UserData {
             return value.MEMORY;
         }
     }
+
+    public static class Func extends PNIFunc<UserData> {
+        private Func(io.vproxy.pni.CallSite<UserData> func) {
+            super(func);
+        }
+
+        public static Func of(io.vproxy.pni.CallSite<UserData> func) {
+            return new Func(func);
+        }
+
+        @Override
+        protected UserData construct(MemorySegment seg) {
+            return new UserData(seg);
+        }
+
+        @Override
+        protected MemorySegment getSegment(UserData value) {
+            return value.MEMORY;
+        }
+    }
 }
-// sha256:9f05988aea67d64459922e3f4df597147817f9947566b84f7e63cf27609e6408
+// sha256:eaa4af76be94de0621505909112c55797049b5df8202a5efa6238dd62912eac8
