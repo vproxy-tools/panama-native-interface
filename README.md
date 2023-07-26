@@ -8,7 +8,228 @@ The `jextract` parses C code and generates Java code, while `Panama Native Inter
 
 This approach is similar to how `JNI(Java Native Interface)` works, so this project is named as `PNI(Panama Native Interface)`.
 
+## How to build
+
+<details><summary>Click to reveal</summary>
+
+### 1. Install JDKs
+
+You need JDK `21` **AND** any one of JDK `11-17` to build the project.  
+The JDK `21` is used to compile all projects except `pni`, and another JDK is used to run `Gradle` and compile project `pni`.
+
+### 2. Configure Environment Variables
+
+* Configure `JAVA_HOME` to one of JDK `11-17`.
+* Configure `JAVA_HOME_21` to your JDK 21.
+* Configure `PATH` to make sure `javac` points to one of JDK `11-17`
+
+After configuring the environment variables, you might need to restart your terminal/ide, and stop current Gradle daemons using `./gradlew --stop`
+
+### 3. Install GCC
+
+You will need `GCC` to compile with the generated headers. Any `GCC` that supports `gnu99` or `c11` should be fine.
+
+If you are using `Windows`, it's recommended to use `MinGW` to work with this project.
+
+### 4. Build
+
+```shell
+./gradlew clean shadowJar
+```
+
+You will find an executable jar in `build/libs/pni.jar`
+
+```shell
+java -jar build/libs/pni.jar -version
+java -jar build/libs/pni.jar -help
+```
+
+### 5. Sample
+
+There's a sample program, which is an _http server_ listens on `:80`.
+
+```shell
+./gradlew clean runSample
+
+curl 127.0.0.1:80
+```
+
+### 6. Test
+
+```shell
+./gradlew clean runAcceptanceTest
+```
+
+</details>
+
+## How to bundle into a Gradle project
+
+<details><summary>Click to reveal</summary>
+
+It's recommended to use `Gradle`, otherwise you will have to generate classes using the `pni` command line tool by your self.
+
+Here's the tutorial when using `Gradle`:
+
+1. Add source root
+2. Create folders for generated C headers
+3. Add `pni-api` dependency
+4. Add a Gradle subproject
+5. Add `pni-api` dependency to the subproject
+6. Add a task to generate files
+7. Add `-parameters` compiler argument
+8. Write template classes
+9. Generate
+10. Implement functions in C
+11. Compile
+12. Load library in Java
+
+> This tutorial can run smoothly on Linux or macOS or MinGW.
+
+### 1. Add source root
+
+It's recommended to separate generated files and handwritten files, so you may want to add a new `source root`.
+
+```groovy
+sourceSets {
+    main {
+        java {
+            srcDirs = ['src/main/java', 'src/main/generated']
+        }
+    }
+}
+```
+
+You now have two folders to contain java source files: `java` and `generated`.
+
+### 2. Create folders for generated C headers
+
+Create a directory `src/main/c` to store C files and `src/main/c-generated` to store generated headers.
+
+```shell
+mkdir -p src/main/c
+mkdir -p src/main/c-generated
+```
+
+### 3. Add `pni-api` dependency
+
+Add dependency to your project:
+
+```groovy
+dependencies {
+    implementation "io.vproxy:pni-api:$version"
+}
+```
+
+### 4. Add a Gradle subproject
+
+The subproject is used to hold template classes, you may name it as `pni-template`
+
+If you are using `IDEA`, it's easy to create a subproject by simply adding a new module.
+
+Otherwise, you will have to edit `settings.gradle` manually, you may refer to the script:
+
+```bash
+#!/bin/bash
+set -e
+
+SUBPROJECT="pni-template"
+
+echo "include '$SUBPROJECT'" >> ./settings.gradle
+mkdir -p "./$SUBPROJECT/src/main/java"
+echo 'compileJava {}' >> "./$SUBPROJECT/build.gradle"
+
+echo 'project(":'$SUBPROJECT'") {}' >> "./build.gradle"
+```
+
+### 5. Add `pni-api` dependency to the subproject
+
+Add pni api dependency to the subproject:
+
+```groovy
+dependencies {
+    implementation "io.vproxy:pni-api:$version"
+}
+```
+
+### 6. Add a task to generate files
+
+Add the following task to your subproject.
+
+```groovy
+def PROJECT_DIR = '' // FIXME: Change this variable to your main project directory
+                     // FIXME: If it's the root project, leave it empty.
+                     // FIXME: If it's a subproject, set the value to 'sub-project-dir/'
+def PNI_JAR_PATH = './misc/pni.jar'
+                     // FIXME: Change this variable to the location of pni.jar
+                     // FIXME: the location is relevant to your root project directory.
+
+task pniClean(type: Exec) {
+    workingDir project.rootProject.rootDir.getAbsolutePath() + '/' + PROJECT_DIR + 'src/main/'
+    commandLine 'bash', '-c', 'rm -rf c-generated/* && rm -rf generated/*'
+}
+task pniGenerate(type: Exec) {
+    workingDir project.rootProject.rootDir.getAbsolutePath()
+    commandLine('java', '-jar', PNI_JAR_PATH,
+        '-cp', "pni-template/build/classes/java/main",
+        '-d', "$PROJECT_DIR/src/main/generated",
+        '-h', "$PROJECT_DIR/src/main/c-generated")
+
+    dependsOn pniClean
+    dependsOn compileJava
+}
+```
+
+### 7. Add `-parameters` compiler argument
+
+In order to retrieve parameter names from Java byte code, you will need to explicity add `-parameters` compiler argument.  
+Add the following code snippet to project `pni-template`.
+
+```groovy
+compileJava {
+    options.compilerArgs += '-parameters'
+}
+```
+
+### 8. Write template classes
+
+Write template classes in project `pni-template`. See the below section `How to use`.
+
+### 9. Generate
+
+```shell
+./gradlew clean pniGenerate
+```
+
+Then you will find C headers in `src/main/c-generated` and Java classes in `src/main/generated`
+
+### 10. Implement functions in C
+
+Go to `src/main/c`, write your C implementation there.
+
+### 11. Compile
+
+To compile the C files, you will need `pni.h` and `jni.h` in your include search path (`-I` option).
+
+You can find `pni.h` [here](https://github.com/vproxy-tools/panama-native-interface/tree/master/api/src/main/c).  
+and you can find `jni.h` in `"$JAVA_HOME/include"` and `"$JAVA_HOME/include/$your_platform"`.
+
+You may refer to [make-sample.sh](https://github.com/vproxy-tools/panama-native-interface/blob/master/sample/src/main/c/make-sample.sh) for more info.
+
+### 12. Load library in Java
+
+Finally, you need to load the shared library in Java:
+
+```java
+System.loadLibrary("your-library-name");
+```
+
+You must ensure your library placed in `-Djava.library.path`.
+
+</details>
+
 ## How to use
+
+<details><summary>Click to reveal</summary>
 
 ### 1. Define template classes
 
@@ -110,7 +331,11 @@ You can release the memory after accessing the returned object by closing the al
 
 `io.vproxy.pni.Allocator` can be constructed with `Arena` or `MemoryAllocator`.
 
+</details>
+
 ## Call Java from C
+
+<details><summary>Click to reveal</summary>
 
 Panama provides a way for C to invoke Java methods. `Panama Native Interface` provides a simple encapsulation for this feature
 and makes the coding much easier.
@@ -131,7 +356,11 @@ As a result, you **MUST** release the object when you finished using it: `PNIFun
 The `PNIFunc` struct has a field `void * userdata` for you to store you own data in it.
 This is useful for example when you store the `PNIFunc*` in `epoll_event.data.ptr`.
 
+</details>
+
 ## Annotations
+
+<details><summary>Click to reveal</summary>
 
 ### Entrypoint
 
@@ -182,7 +411,23 @@ This is useful for example when you store the `PNIFunc*` in `epoll_event.data.pt
   You can include the `.impl.h` header in your C file.  
   Note that, the comment `// launuage="c"` will let JetBrains IDEA highlight the text block with C syntax.
 
+</details>
+
+## `@Raw` Annotation
+
+<details><summary>Click to reveal</summary>
+
+Annotate the data type to be converted to its raw form.
+
+* `ByteBuffer`: This annotation currently only applies to `ByteBuffer` parameters, which will be converted to `MemorySegment`.
+  This has the same effect as setting `ByteBuffer.position()` to 0 and `ByteBuffer.limit()` to `ByteBuffer.capacity()`,
+  without actually modifying the buffer.
+
+</details>
+
 ## Type correspondence
+
+<details><summary>Click to reveal</summary>
 
 | Java          | `@Unsigned` | `@Pointer` | `@Len` | C Field           | C Function Param | C Extra Return Param | C `PNIEnv_${type}` | Generated Java Type | Generated Layout                    |
 |---------------|-------------|------------|--------|-------------------|------------------|----------------------|--------------------|---------------------|-------------------------------------|
@@ -235,15 +480,11 @@ This is useful for example when you store the `PNIFunc*` in `epoll_event.data.pt
 
 Any other combination except the above table is disallowed.
 
-## `@Raw` Annotation
-
-Annotate the data type to be converted to its raw form.
-
-* `ByteBuffer`: This annotation currently only applies to `ByteBuffer` parameters, which will be converted to `MemorySegment`.
-  This has the same effect as setting `ByteBuffer.position()` to 0 and `ByteBuffer.limit()` to `ByteBuffer.capacity()`,
-  without actually modifying the buffer.
+</details>
 
 ## Limitations
+
+<details><summary>Click to reveal</summary>
 
 * When defining a template method that returns a String,
   the generated C code will provide `char * cs` as the output,
@@ -266,3 +507,5 @@ Annotate the data type to be converted to its raw form.
   "all upper case" type names or member fields.
 * The `CallSite<T>` is only allowed in parameters, you cannot use it in struct fields.  
   However you can store it in a field inside your C code and use it later, even using it on a new thread.
+
+</details>
