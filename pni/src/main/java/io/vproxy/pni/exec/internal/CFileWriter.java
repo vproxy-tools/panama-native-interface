@@ -1,5 +1,6 @@
 package io.vproxy.pni.exec.internal;
 
+import io.vproxy.pni.exec.CompilerOptions;
 import io.vproxy.pni.exec.ast.AstClass;
 
 import java.io.File;
@@ -14,25 +15,21 @@ public class CFileWriter {
         this.cls = cls;
     }
 
-    public void flush(File dir, boolean verbose) {
+    public void flush(File dir, CompilerOptions opts) {
         var cCode = gen();
         if (cCode == null) {
-            if (verbose) {
-                System.out.println("-----BEGIN C CODE-----");
-                System.out.println("no code generated for " + cls.name + " @ " + this);
-                System.out.println("-----END C CODE-----");
+            if (opts.verbose()) {
+                System.out.println("no native code generated for " + cls.fullName() + " @ " + this.getClass().getSimpleName());
             }
             return;
         }
         var hash = Utils.sha256(cCode);
         cCode += "// sha256:" + hash + "\n";
-        if (verbose) {
-            System.out.println("-----BEGIN C CODE-----");
-            System.out.println(cCode);
-            System.out.println("-----END C CODE-----");
-        }
         String fileName = fileName();
         Path path = Path.of(dir.getAbsolutePath(), fileName);
+        if (opts.verbose()) {
+            System.out.println("writing generated native file for " + cls.fullName() + " to " + path);
+        }
         try {
             Files.writeString(path, cCode);
         } catch (IOException e) {

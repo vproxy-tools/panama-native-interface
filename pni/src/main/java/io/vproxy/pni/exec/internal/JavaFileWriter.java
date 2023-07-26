@@ -1,5 +1,6 @@
 package io.vproxy.pni.exec.internal;
 
+import io.vproxy.pni.exec.CompilerOptions;
 import io.vproxy.pni.exec.ast.AstClass;
 
 import java.io.File;
@@ -13,16 +14,14 @@ public class JavaFileWriter {
         this.cls = cls;
     }
 
-    public void flush(File baseDir, boolean verbose) {
+    public void flush(File baseDir, CompilerOptions opts) {
         var javaCode = cls.generateJava();
         var hash = Utils.sha256(javaCode);
         javaCode += "// sha256:" + hash + "\n";
-        if (verbose) {
-            System.out.println("-----BEGIN JAVA CODE-----");
-            System.out.println(javaCode);
-            System.out.println("-----END JAVA CODE-----");
-        }
         var file = Utils.ensureJavaFile(baseDir, cls.fullName());
+        if (opts.verbose()) {
+            System.out.println("writing generated java file: " + file.getAbsolutePath());
+        }
         try {
             Files.writeString(file.toPath(), javaCode);
         } catch (IOException e) {

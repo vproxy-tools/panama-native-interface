@@ -4,16 +4,39 @@ plugins {
     id 'java'
     id 'maven-publish'
     id 'signing'
+    id 'com.github.johnrengelman.shadow' version '7.1.2'
 }
 
 group = 'org.example'
-version = '1.0-SNAPSHOT'
+version = loadVersion()
 
 repositories {
+    mavenLocal()
     mavenCentral()
 }
 
 dependencies {
+    implementation project(":api")
+    implementation project(":pni")
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
+
+jar {
+    archiveFileName = 'pni.jar'
+    manifest {
+        attributes 'Main-Class': 'io.vproxy.pni.exec.Main'
+    }
+}
+
+shadowJar {
+    archiveBaseName = 'pni'
+    archiveClassifier = ''
+    archiveVersion = ''
 }
 
 subprojects {
@@ -269,4 +292,27 @@ project(":playground") {
         dependsOn compileJava
         dependsOn compilePNIPlaygroundLib
     }
+}
+
+def loadVersion() {
+    def PREFIX = "public static final String VERSION = \""
+    def SUFFIX = "\"; // _THE_VERSION_"
+    def ver = file(projectDir.getAbsolutePath() + "/pni/src/main/java/io/vproxy/pni/exec/Main.java")
+    def lines = ver.getText().split("\n")
+    def isMavenLocalInstall = System.getProperty("MavenLocalInstall", "false").equals("true")
+    for (def line : lines) {
+        line = line.trim()
+        if (line.startsWith(PREFIX) && line.endsWith(SUFFIX)) {
+            def verstr = line.substring(PREFIX.length(), line.length() - SUFFIX.length())
+            if (verstr.endsWith('-DEV')) {
+                if (isMavenLocalInstall) {
+                    return "MAVEN-LOCAL"
+                } else {
+                    verstr = verstr + '-SNAPSHOT'
+                }
+            }
+            return verstr
+        }
+    }
+    return "unknown"
 }

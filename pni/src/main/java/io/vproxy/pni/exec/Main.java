@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Main {
+    public static final String VERSION = "21.0.0.1"; // _THE_VERSION_
+
     private static final String HELP_STR = """
         Usage: java -jar pni.jar <options>
           -cp <path>
@@ -15,6 +17,8 @@ public class Main {
           -h <directory>
                 Specify where to place generated native header files
           --help, -help, -?            Print this help message
+          -verbose                     Output messages about what the compiler is doing
+          --version, -version          Version information
         """.trim();
 
     public static void main(String[] args) {
@@ -63,8 +67,11 @@ public class Main {
                 }
                 ++i;
                 h = next.trim();
-            } else if (a.equals("-v")) {
+            } else if (a.equals("-verbose")) {
                 verbose = true;
+            } else if (a.equals("-version") || a.equals("--version")) {
+                System.out.println("pni " + VERSION);
+                return;
             } else {
                 System.out.println("unexpected argument " + a);
                 System.exit(1);
@@ -107,12 +114,15 @@ public class Main {
             return;
         }
 
-        var classReaders = new JavaReader(cp).read();
-        var classes = new ASTReader(classReaders).read(verbose);
+        var opts = new CompilerOptions(
+            verbose
+        );
+        var classReaders = new JavaReader(cp).read(opts);
+        var classes = new ASTReader(classReaders).read(opts);
         for (var cls : classes) {
-            new JavaFileWriter(cls).flush(new File(d), verbose);
-            new CFileWriter(cls).flush(new File(h), verbose);
-            new CImplFileWriter(cls).flush(new File(h), verbose);
+            new JavaFileWriter(cls).flush(new File(d), opts);
+            new CFileWriter(cls).flush(new File(h), opts);
+            new CImplFileWriter(cls).flush(new File(h), opts);
         }
         System.out.println("done");
     }

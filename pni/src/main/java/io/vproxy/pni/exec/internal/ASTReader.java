@@ -1,5 +1,6 @@
 package io.vproxy.pni.exec.internal;
 
+import io.vproxy.pni.exec.CompilerOptions;
 import io.vproxy.pni.exec.ast.AstClass;
 import io.vproxy.pni.exec.type.TypePool;
 import org.objectweb.asm.ClassReader;
@@ -19,16 +20,19 @@ public class ASTReader {
     }
 
     public List<AstClass> read() {
-        return read(false);
+        return read(CompilerOptions.empty());
     }
 
-    public List<AstClass> read(boolean verbose) {
+    public List<AstClass> read(CompilerOptions opts) {
         // load all classes which requires handling
         for (var r : classReaders) {
             var classNode = new ClassNode();
             r.accept(classNode, ClassReader.SKIP_FRAMES | ClassReader.SKIP_CODE);
             var astClass = new AstClass(classNode);
             if (!requiresHandling(astClass)) {
+                if (opts.verbose()) {
+                    System.out.println("skipping " + astClass.name);
+                }
                 continue;
             }
             classes.add(astClass);
@@ -42,7 +46,7 @@ public class ASTReader {
         }
 
         // verbose
-        if (verbose) {
+        if (opts.verbose()) {
             for (var cls : classes) {
                 System.out.println("-----BEGIN CLASS-----");
                 System.out.println(cls);
