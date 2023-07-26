@@ -64,14 +64,12 @@ subprojects {
             jvmArgs += '--enable-native-access=ALL-UNNAMED'
             javaLauncher.set(javaToolchains.launcherFor(java.toolchain))
         }
-        jvmArgs += '--add-exports=java.base/jdk.internal.misc=ALL-UNNAMED'
     }
     tasks.withType(Test) {
         if (project.name != 'pni') {
             jvmArgs += '--enable-preview'
             jvmArgs += '--enable-native-access=ALL-UNNAMED'
         }
-        jvmArgs += '--add-exports=java.base/jdk.internal.misc=ALL-UNNAMED'
 
         testLogging {
             events TestLogEvent.FAILED, TestLogEvent.PASSED, TestLogEvent.SKIPPED, TestLogEvent.STARTED
