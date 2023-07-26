@@ -1,5 +1,7 @@
 package io.vproxy.pni;
 
+import io.vproxy.pni.unsafe.SunUnsafe;
+
 import java.lang.foreign.*;
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
@@ -46,18 +48,17 @@ public abstract class PNIFunc<T> {
         ValueLayout.ADDRESS_UNALIGNED.withName("release"),
         ValueLayout.ADDRESS_UNALIGNED.withName("userdata")
     );
-    private final Arena arena;
     public final MemorySegment MEMORY;
+    private final long index;
     private final CallSite<T> func;
 
     protected PNIFunc(CallSite<T> func) {
         Objects.requireNonNull(func);
 
-        arena = Arena.ofShared();
-        MEMORY = arena.allocate(LAYOUT.byteSize());
+        MEMORY = SunUnsafe.allocateMemory(LAYOUT.byteSize());
         this.func = func;
 
-        long index = indexCounter.incrementAndGet();
+        index = indexCounter.incrementAndGet();
         indexVH.set(MEMORY, index);
         funcStorage.put(index, this);
 
@@ -102,7 +103,9 @@ public abstract class PNIFunc<T> {
         var func = funcStorage.remove(index);
         if (func == null) {
             System.out.println("[PNI][WARN][PNIFunc#release] PNIFunc not found: index: " + index);
+            return;
         }
+        SunUnsafe.freeMemory(func.MEMORY.address());
     }
 
     public static class VoidFunc extends PNIFunc<Void> {
