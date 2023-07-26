@@ -1,7 +1,5 @@
 package io.vproxy.pni.exec.ast;
 
-import io.vproxy.pni.annotation.Pointer;
-import io.vproxy.pni.annotation.Unsigned;
 import io.vproxy.pni.exec.internal.PointerInfo;
 import io.vproxy.pni.exec.internal.Utils;
 import io.vproxy.pni.exec.internal.VarOpts;
@@ -10,6 +8,8 @@ import org.objectweb.asm.tree.FieldNode;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static io.vproxy.pni.exec.internal.Consts.*;
 
 public class AstField {
     public final List<AstAnno> annos = new ArrayList<>();
@@ -38,7 +38,8 @@ public class AstField {
             errors.add(path + ": unable to find typeRef: " + type);
         } else {
             typeRef.checkType(errors, path, varOpts());
-            if (typeRef instanceof ClassTypeInfo classTypeInfo) {
+            if (typeRef instanceof ClassTypeInfo) {
+                var classTypeInfo = (ClassTypeInfo) typeRef;
                 if (classTypeInfo.getClazz().isInterface) {
                     errors.add(path + ": unable to use interface type: " + type);
                 }
@@ -55,9 +56,10 @@ public class AstField {
                 errors.add(path + ": invalid @Name(" + name + ")");
             }
         }
-        var unsignedOpt = annos.stream().filter(a -> a.typeRef != null && a.typeRef.name().equals(Unsigned.class.getName())).findFirst();
+        var unsignedOpt = annos.stream().filter(a -> a.typeRef != null && a.typeRef.name().equals(UnsignedClassName)).findFirst();
         if (unsignedOpt.isPresent()) {
-            if (typeRef instanceof ArrayTypeInfo arrayTypeInfo) {
+            if (typeRef instanceof ArrayTypeInfo) {
+                var arrayTypeInfo = (ArrayTypeInfo) typeRef;
                 var elementTypeRef = arrayTypeInfo.getElementType();
                 if (!(elementTypeRef instanceof IntTypeInfo) && !(elementTypeRef instanceof LongTypeInfo) && !(elementTypeRef instanceof ShortTypeInfo) && !(elementTypeRef instanceof ByteTypeInfo)) {
                     errors.add(path + ": non-integer type " + elementTypeRef + " in array type " + typeRef + " cannot be annotated with @Unsigned");
@@ -78,12 +80,12 @@ public class AstField {
     }
 
     public PointerInfo pointerInfo() {
-        var has = annos.stream().anyMatch(a -> a.typeRef != null && a.typeRef.name().equals(Pointer.class.getName()));
+        var has = annos.stream().anyMatch(a -> a.typeRef != null && a.typeRef.name().equals(PointerClassName));
         return PointerInfo.ofField(has);
     }
 
     public boolean isUnsigned() {
-        return annos.stream().anyMatch(a -> a.typeRef != null && a.typeRef.name().equals(Unsigned.class.getName()));
+        return annos.stream().anyMatch(a -> a.typeRef != null && a.typeRef.name().equals(UnsignedClassName));
     }
 
     public long getLen() {
@@ -100,7 +102,8 @@ public class AstField {
 
     public boolean isStruct() {
         if (pointerInfo().isPointer()) return false;
-        if (typeRef instanceof ClassTypeInfo classTypeInfo) {
+        if (typeRef instanceof ClassTypeInfo) {
+            var classTypeInfo = (ClassTypeInfo) typeRef;
             return classTypeInfo.getClazz().isStruct();
         }
         return false;
@@ -108,7 +111,8 @@ public class AstField {
 
     public void generateC(StringBuilder sb, int indent) {
         Utils.appendIndent(sb, indent);
-        if (typeRef instanceof ClassTypeInfo clsTypeInfo) {
+        if (typeRef instanceof ClassTypeInfo) {
+            var clsTypeInfo = (ClassTypeInfo) typeRef;
             var cls = clsTypeInfo.getClazz();
             if (cls.isUnionEmbed()) {
                 cls.generateC(sb, indent, false);

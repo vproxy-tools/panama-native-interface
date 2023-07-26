@@ -1,8 +1,5 @@
 package io.vproxy.pni.exec.ast;
 
-import io.vproxy.pni.annotation.Pointer;
-import io.vproxy.pni.annotation.Raw;
-import io.vproxy.pni.annotation.Unsigned;
 import io.vproxy.pni.exec.internal.PointerInfo;
 import io.vproxy.pni.exec.internal.ParamOpts;
 import io.vproxy.pni.exec.internal.Utils;
@@ -12,6 +9,8 @@ import org.objectweb.asm.tree.AnnotationNode;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static io.vproxy.pni.exec.internal.Consts.*;
 
 public class AstParam {
     public final List<AstAnno> annos = new ArrayList<>();
@@ -45,7 +44,8 @@ public class AstParam {
             errors.add(path + ": unable to find typeRef: " + type);
         } else {
             typeRef.checkType(errors, path, varOpts());
-            if (typeRef instanceof ClassTypeInfo classTypeInfo) {
+            if (typeRef instanceof ClassTypeInfo) {
+                var classTypeInfo = (ClassTypeInfo) typeRef;
                 if (classTypeInfo.getClazz().isInterface) {
                     errors.add(path + ": unable to use interface type: " + type);
                 }
@@ -54,7 +54,8 @@ public class AstParam {
                     errors.add(path + ": CallSite should have exactly one generic param: " + genericTypes);
                 } else {
                     var ref = genericTypeRefs.get(0);
-                    if (ref instanceof ClassTypeInfo classTypeInfo) {
+                    if (ref instanceof ClassTypeInfo) {
+                        var classTypeInfo = (ClassTypeInfo) ref;
                         if (classTypeInfo.getClazz().isInterface) {
                             errors.add(path + "#<0>: unable to use interface type: " + type);
                         }
@@ -105,16 +106,16 @@ public class AstParam {
     }
 
     public boolean isUnsigned() {
-        return annos.stream().anyMatch(a -> a.typeRef != null && a.typeRef.name().equals(Unsigned.class.getName()));
+        return annos.stream().anyMatch(a -> a.typeRef != null && a.typeRef.name().equals(UnsignedClassName));
     }
 
     public PointerInfo isPointer() {
-        var has = annos.stream().anyMatch(a -> a.typeRef != null && a.typeRef.name().equals(Pointer.class.getName()));
+        var has = annos.stream().anyMatch(a -> a.typeRef != null && a.typeRef.name().equals(PointerClassName));
         return PointerInfo.ofMethod(has);
     }
 
     public boolean isRaw() {
-        return annos.stream().anyMatch(a -> a.typeRef != null && a.typeRef.name().equals(Raw.class.getName()));
+        return annos.stream().anyMatch(a -> a.typeRef != null && a.typeRef.name().equals(RawClassName));
     }
 
     public VarOpts varOpts() {

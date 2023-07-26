@@ -3,8 +3,6 @@ package io.vproxy.pni.exec.type;
 import io.vproxy.pni.exec.internal.Utils;
 import io.vproxy.pni.exec.internal.VarOpts;
 
-import java.lang.foreign.ValueLayout;
-
 public class MemorySegmentTypeInfo extends BuiltInReferenceTypeInfo {
     private MemorySegmentTypeInfo() {
         super("java.lang.foreign.MemorySegment", "java/lang/foreign/MemorySegment", "Ljava/lang/foreign/MemorySegment;");
@@ -21,7 +19,7 @@ public class MemorySegmentTypeInfo extends BuiltInReferenceTypeInfo {
 
     @Override
     public long nativeMemorySize(VarOpts opts) {
-        return ValueLayout.ADDRESS.byteSize();
+        return 8; // address
     }
 
     @Override

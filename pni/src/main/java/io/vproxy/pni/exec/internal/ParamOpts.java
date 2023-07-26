@@ -11,7 +11,7 @@ public class ParamOpts {
         return dependOnAllocator;
     }
 
-    public static final ParamOpts of(boolean dependOnAllocator) {
+    public static ParamOpts of(boolean dependOnAllocator) {
         return new ParamOpts(dependOnAllocator);
     }
 }

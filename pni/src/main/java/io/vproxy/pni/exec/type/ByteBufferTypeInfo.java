@@ -1,10 +1,7 @@
 package io.vproxy.pni.exec.type;
 
-import io.vproxy.pni.PNIBuf;
 import io.vproxy.pni.exec.internal.Utils;
 import io.vproxy.pni.exec.internal.VarOpts;
-
-import java.lang.foreign.ValueLayout;
 
 public class ByteBufferTypeInfo extends BuiltInReferenceTypeInfo {
     private ByteBufferTypeInfo() {
@@ -42,9 +39,9 @@ public class ByteBufferTypeInfo extends BuiltInReferenceTypeInfo {
     @Override
     public long nativeMemorySize(VarOpts opts) {
         if (opts.isRaw()) {
-            return ValueLayout.ADDRESS.byteSize();
+            return 8; // address
         } else {
-            return PNIBuf.LAYOUT.byteSize();
+            return 16; // PNIBuf.LAYOUT.byteSize();
         }
     }
 

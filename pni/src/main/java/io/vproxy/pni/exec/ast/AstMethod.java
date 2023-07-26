@@ -1,7 +1,5 @@
 package io.vproxy.pni.exec.ast;
 
-import io.vproxy.pni.annotation.Impl;
-import io.vproxy.pni.annotation.Trivial;
 import io.vproxy.pni.exec.internal.PointerInfo;
 import io.vproxy.pni.exec.internal.Utils;
 import io.vproxy.pni.exec.internal.VarOpts;
@@ -13,6 +11,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
+
+import static io.vproxy.pni.exec.internal.Consts.*;
 
 public class AstMethod {
     public final List<AstAnno> annos = new ArrayList<>();
@@ -69,7 +69,8 @@ public class AstMethod {
             errors.add(path + ": unable to find returnTypeRef: " + returnType);
         } else {
             returnTypeRef.checkType(errors, path, varOptsForReturn());
-            if (returnTypeRef instanceof ClassTypeInfo classTypeInfo) {
+            if (returnTypeRef instanceof ClassTypeInfo) {
+                var classTypeInfo = (ClassTypeInfo) returnTypeRef;
                 if (classTypeInfo.getClazz().isInterface) {
                     errors.add(path + ": return type cannot use interface type: " + returnType);
                 }
@@ -334,11 +335,11 @@ public class AstMethod {
     }
 
     private boolean trivial() {
-        return annos.stream().anyMatch(a -> a.typeRef != null && a.typeRef.name().equals(Trivial.class.getName()));
+        return annos.stream().anyMatch(a -> a.typeRef != null && a.typeRef.name().equals(TrivialClassName));
     }
 
     public String getImplC() {
-        var opt = annos.stream().filter(a -> a.typeRef != null && a.typeRef.name().equals(Impl.class.getName())).findFirst();
+        var opt = annos.stream().filter(a -> a.typeRef != null && a.typeRef.name().equals(ImplClassName)).findFirst();
         if (opt.isEmpty()) {
             return null;
         }
@@ -355,7 +356,7 @@ public class AstMethod {
     }
 
     public List<String> getImplInclude() {
-        var opt = annos.stream().filter(a -> a.typeRef != null && a.typeRef.name().equals(Impl.class.getName())).findFirst();
+        var opt = annos.stream().filter(a -> a.typeRef != null && a.typeRef.name().equals(ImplClassName)).findFirst();
         if (opt.isEmpty()) {
             return null;
         }
@@ -365,8 +366,9 @@ public class AstMethod {
             return null;
         }
         var v = vOpt.get().value;
-        //noinspection rawtypes
-        if (v instanceof List ls) {
+        if (v instanceof List) {
+            //noinspection rawtypes
+            var ls = (List) v;
             for (var o : ls) {
                 if (!(o instanceof String)) {
                     return null;

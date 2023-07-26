@@ -5,7 +5,6 @@ import io.vproxy.pni.exec.type.TypeInfo;
 import io.vproxy.pni.exec.type.TypePool;
 import org.objectweb.asm.tree.AnnotationNode;
 
-import java.lang.constant.ConstantDesc;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,7 +27,7 @@ public class AstAnno {
         typeRef = pool.find(type);
     }
 
-    public void validate(ConstantDesc path, List<String> errors) {
+    public void validate(String path, List<String> errors) {
         path = path + "#anno(" + type + ")";
         if (typeRef == null) {
             errors.add(path + ": unable to find typeRef: " + type);

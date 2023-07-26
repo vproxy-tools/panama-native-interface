@@ -1,7 +1,5 @@
 package io.vproxy.pni.exec.internal;
 
-import io.vproxy.pni.annotation.Len;
-import io.vproxy.pni.annotation.Name;
 import io.vproxy.pni.exec.ast.AstAnno;
 import org.objectweb.asm.tree.AnnotationNode;
 
@@ -10,8 +8,9 @@ import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.LinkedHashMap;
 import java.util.List;
+
+import static io.vproxy.pni.exec.internal.Consts.*;
 
 public class Utils {
     private Utils() {
@@ -51,42 +50,74 @@ public class Utils {
         }
     }
 
-    public record TypeWithGeneric(String type, List<String> genericParams) {
+    public static class TypeWithGeneric {
+        private final String type;
+        private final List<String> genericParams;
+
+        public TypeWithGeneric(String type, List<String> genericParams) {
+            this.type = type;
+            this.genericParams = genericParams;
+        }
+
+        public String type() {
+            return type;
+        }
+
+        public List<String> genericParams() {
+            return genericParams;
+        }
     }
 
     private static String extractFirstDesc(String s, int[] offset) {
         var sb = new StringBuilder();
         var chars = s.toCharArray();
         int state = 0; // 0: normal, 1: array, 2: object type
-        for (; offset[0] < chars.length; ) {
+        while (offset[0] < chars.length) {
             var c = chars[offset[0]++];
             switch (state) {
                 case 0:
                     switch (c) {
-                        case 'B', 'C', 'D', 'F', 'I', 'J', 'S', 'Z' -> {
+                        case 'B':
+                        case 'C':
+                        case 'D':
+                        case 'F':
+                        case 'I':
+                        case 'J':
+                        case 'S':
+                        case 'Z':
                             return String.valueOf(c);
-                        }
-                        case '[' -> {
+                        case '[':
                             state = 1;
                             sb.append("[");
-                        }
-                        case 'L' -> {
+                            break;
+                        case 'L':
                             state = 2;
                             sb.append("L");
-                        }
-                        default -> throw new RuntimeException("unknown symbol " + c + " in desc");
+                            break;
+                        default:
+                            throw new RuntimeException("unknown symbol " + c + " in desc");
                     }
                     break;
                 case 1:
                     sb.append(c);
                     switch (c) {
-                        case 'B', 'C', 'D', 'F', 'I', 'J', 'S', 'Z' -> {
+                        case 'B':
+                        case 'C':
+                        case 'D':
+                        case 'F':
+                        case 'I':
+                        case 'J':
+                        case 'S':
+                        case 'Z':
                             return sb.toString();
-                        }
-                        case '[' -> { // do nothing
-                        }
-                        case 'L' -> state = 2;
-                        default -> throw new RuntimeException("unknown symbol " + c + " in desc");
+                        case '[':
+                            // do nothing
+                            break;
+                        case 'L':
+                            state = 2;
+                            break;
+                        default:
+                            throw new RuntimeException("unknown symbol " + c + " in desc");
                     }
                     break;
                 case 2:
@@ -114,10 +145,8 @@ public class Utils {
     }
 
     public static List<TypeWithGeneric> extractMethodDescParamsPart(String paramsPart) {
-        // Lio/vproxy/pni/CallSite<Lio/vproxy/pni/test/PNIObjectStruct;>;
         List<TypeWithGeneric> result = new ArrayList<>();
         var sb = new StringBuilder();
-        var genericSb = new StringBuilder();
         var genericTypes = new ArrayList<String>();
         var chars = paramsPart.toCharArray();
         int state = 0; // 0: normal, 1: array, 2: object type
@@ -126,31 +155,51 @@ public class Utils {
             switch (state) {
                 case 0:
                     switch (c) {
-                        case 'B', 'C', 'D', 'F', 'I', 'J', 'S', 'Z' ->
+                        case 'B':
+                        case 'C':
+                        case 'D':
+                        case 'F':
+                        case 'I':
+                        case 'J':
+                        case 'S':
+                        case 'Z':
                             result.add(new TypeWithGeneric(String.valueOf(c), Collections.emptyList()));
-                        case '[' -> {
+                            break;
+                        case '[':
                             state = 1;
                             sb.append("[");
-                        }
-                        case 'L' -> {
+                            break;
+                        case 'L':
                             state = 2;
                             sb.append("L");
-                        }
-                        default -> throw new RuntimeException("unknown symbol " + c + " in desc");
+                            break;
+                        default:
+                            throw new RuntimeException("unknown symbol " + c + " in desc");
                     }
                     break;
                 case 1:
                     sb.append(c);
                     switch (c) {
-                        case 'B', 'C', 'D', 'F', 'I', 'J', 'S', 'Z' -> {
+                        case 'B':
+                        case 'C':
+                        case 'D':
+                        case 'F':
+                        case 'I':
+                        case 'J':
+                        case 'S':
+                        case 'Z':
                             state = 0;
                             result.add(new TypeWithGeneric(sb.toString(), Collections.emptyList()));
                             sb.delete(0, sb.length());
-                        }
-                        case '[' -> { // do nothing
-                        }
-                        case 'L' -> state = 2;
-                        default -> throw new RuntimeException("unknown symbol " + c + " in desc");
+                            break;
+                        case '[':
+                            // do nothing
+                            break;
+                        case 'L':
+                            state = 2;
+                            break;
+                        default:
+                            throw new RuntimeException("unknown symbol " + c + " in desc");
                     }
                     break;
                 case 2:
@@ -184,7 +233,7 @@ public class Utils {
     }
 
     public static String getName(List<AstAnno> annos) {
-        var nameOpt = annos.stream().filter(a -> a.typeRef != null && a.typeRef.name().equals(Name.class.getName())).findFirst();
+        var nameOpt = annos.stream().filter(a -> a.typeRef != null && a.typeRef.name().equals(NameClassName)).findFirst();
         if (nameOpt.isEmpty()) {
             return null;
         }
@@ -231,15 +280,15 @@ public class Utils {
     }
 
     public static long getLen(List<AstAnno> annos) {
-        var lenOpt = annos.stream().filter(a -> a.typeRef != null && a.typeRef.name().equals(Len.class.getName())).findFirst();
+        var lenOpt = annos.stream().filter(a -> a.typeRef != null && a.typeRef.name().equals(LenClassName)).findFirst();
         long len = -1;
         if (lenOpt.isPresent()) {
             var lenAnno = lenOpt.get();
             var vOpt = lenAnno.values.stream().filter(v -> v.name.equals("value")).findFirst();
             if (vOpt.isPresent()) {
                 var v = vOpt.get();
-                if (v.value instanceof Long l) {
-                    len = l;
+                if (v.value instanceof Long) {
+                    len = (Long) v.value;
                 }
             }
         }

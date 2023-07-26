@@ -1,6 +1,5 @@
 package io.vproxy.pni.exec.type;
 
-import io.vproxy.pni.PNIBuf;
 import io.vproxy.pni.exec.internal.Utils;
 import io.vproxy.pni.exec.internal.VarOpts;
 
@@ -80,7 +79,7 @@ public class ArrayTypeInfo extends TypeInfo {
     @Override
     public long nativeMemorySize(VarOpts opts) {
         if (opts.isPointerGeneral()) {
-            return PNIBuf.LAYOUT.byteSize();
+            return 16; // PNIBuf.LAYOUT.byteSize();
         } else {
             return elementType.nativeMemorySize(opts) * opts.getLen();
         }
@@ -113,7 +112,8 @@ public class ArrayTypeInfo extends TypeInfo {
             return "BoolArray";
         } else if (elementType instanceof CharTypeInfo) {
             return "CharArray";
-        } else if (elementType instanceof ClassTypeInfo classTypeInfo) {
+        } else if (elementType instanceof ClassTypeInfo) {
+            var classTypeInfo = (ClassTypeInfo) elementType;
             return classTypeInfo.getClazz().fullName() + ".Array";
         } else {
             throw new RuntimeException("unable to handle array with element type " + elementType);
@@ -190,7 +190,8 @@ public class ArrayTypeInfo extends TypeInfo {
                     .append("));\n");
                 Utils.appendIndent(sb, indent).append("OFFSET += ").append(opts.getLen()).append(" * ")
                     .append(elementType.memoryLayout(opts)).append(".byteSize();\n");
-            } else if (elementType instanceof ClassTypeInfo classTypeInfo) {
+            } else if (elementType instanceof ClassTypeInfo) {
+                var classTypeInfo = (ClassTypeInfo) elementType;
                 var cls = classTypeInfo.getClazz();
                 Utils.appendIndent(sb, indent)
                     .append("this.").append(fieldName).append(" = new ").append(cls.fullName()).append(".Array(MEMORY.asSlice(OFFSET, ")

@@ -1,6 +1,5 @@
 package io.vproxy.pni.exec.ast;
 
-import io.vproxy.pni.annotation.*;
 import io.vproxy.pni.exec.internal.Utils;
 import io.vproxy.pni.exec.type.ClassTypeInfo;
 import io.vproxy.pni.exec.type.TypePool;
@@ -10,6 +9,8 @@ import org.objectweb.asm.tree.ClassNode;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+
+import static io.vproxy.pni.exec.internal.Consts.*;
 
 public class AstClass {
     public boolean isInterface;
@@ -82,7 +83,7 @@ public class AstClass {
         }
         var hasStruct = isStruct();
         var hasUnion = isUnion();
-        var hasFunction = annos.stream().anyMatch(a -> a.typeRef != null && a.typeRef.name().equals(Function.class.getName()));
+        var hasFunction = annos.stream().anyMatch(a -> a.typeRef != null && a.typeRef.name().equals(FunctionClassName));
         if (hasStruct && hasUnion) {
             errors.add(path + ": is annotated with both @Struct and @Union");
         }
@@ -114,7 +115,8 @@ public class AstClass {
             if (f.pointerInfo().isPointer()) {
                 continue;
             }
-            if (f.typeRef instanceof ClassTypeInfo classTypeInfo) {
+            if (f.typeRef instanceof ClassTypeInfo) {
+                var classTypeInfo = (ClassTypeInfo) f.typeRef;
                 var cls = classTypeInfo.getClazz();
                 validateDependency(cls, errors, name + " -> " + f.name, new HashSet<>());
             }
@@ -133,7 +135,8 @@ public class AstClass {
             if (f.pointerInfo().isPointer()) {
                 continue;
             }
-            if (f.typeRef instanceof ClassTypeInfo classTypeInfo) {
+            if (f.typeRef instanceof ClassTypeInfo) {
+                var classTypeInfo = (ClassTypeInfo) f.typeRef;
                 var c = classTypeInfo.getClazz();
                 validateDependency(c, errors, path + " -> " + f.name, classes);
             }
@@ -141,11 +144,11 @@ public class AstClass {
     }
 
     public boolean isStruct() {
-        return annos.stream().anyMatch(a -> a.typeRef != null && a.typeRef.name().equals(Struct.class.getName()));
+        return annos.stream().anyMatch(a -> a.typeRef != null && a.typeRef.name().equals(StructClassName));
     }
 
     public boolean isUnion() {
-        return annos.stream().anyMatch(a -> a.typeRef != null && a.typeRef.name().equals(Union.class.getName()));
+        return annos.stream().anyMatch(a -> a.typeRef != null && a.typeRef.name().equals(UnionClassName));
     }
 
     public boolean isUnionEmbed() {
@@ -153,21 +156,21 @@ public class AstClass {
             return false;
         }
         //noinspection OptionalGetWithoutIsPresent
-        var anno = annos.stream().filter(a -> a.typeRef != null && a.typeRef.name().equals(Union.class.getName())).findFirst().get();
+        var anno = annos.stream().filter(a -> a.typeRef != null && a.typeRef.name().equals(UnionClassName)).findFirst().get();
         var opt = anno.values.stream().filter(v -> v.name.equals("embedded")).findFirst();
         if (opt.isEmpty()) {
             return false;
         }
         var v = opt.get();
-        if (v.value instanceof Boolean b) {
-            return b;
+        if (v.value instanceof Boolean) {
+            return (Boolean) v.value;
         }
         return false;
     }
 
     public boolean isSkip() {
         var annoOpt = annos.stream().filter(a -> a.typeRef != null &&
-                                                 (a.typeRef.name().equals(Struct.class.getName()) || a.typeRef.name().equals(Union.class.getName())))
+                                                 (a.typeRef.name().equals(StructClassName) || a.typeRef.name().equals(UnionClassName)))
             .findFirst();
         if (annoOpt.isEmpty()) {
             return false;
@@ -178,14 +181,14 @@ public class AstClass {
             return false;
         }
         var v = opt.get();
-        if (v.value instanceof Boolean b) {
-            return b;
+        if (v.value instanceof Boolean) {
+            return (Boolean) v.value;
         }
         return false;
     }
 
     public long getAlign() {
-        var opt = annos.stream().filter(a -> a.typeRef != null && a.typeRef.name().equals(Align.class.getName())).findFirst();
+        var opt = annos.stream().filter(a -> a.typeRef != null && a.typeRef.name().equals(AlignClassName)).findFirst();
         if (opt.isEmpty()) {
             return 8;
         }
@@ -195,14 +198,14 @@ public class AstClass {
             return 8;
         }
         var v = vOpt.get().value;
-        if (v instanceof Long l) {
-            return l;
+        if (v instanceof Long) {
+            return (Long) v;
         }
         return 8;
     }
 
     public List<String> extraInclude() {
-        var opt = annos.stream().filter(a -> a.typeRef != null && a.typeRef.name().equals(Include.class.getName())).findFirst();
+        var opt = annos.stream().filter(a -> a.typeRef != null && a.typeRef.name().equals(IncludeClassName)).findFirst();
         if (opt.isEmpty()) {
             return null;
         }
@@ -212,8 +215,9 @@ public class AstClass {
             return null;
         }
         var v = vOpt.get().value;
-        //noinspection rawtypes
-        if (v instanceof List arr) {
+        if (v instanceof List) {
+            //noinspection rawtypes
+            var arr = (List) v;
             for (var e : arr) {
                 if (!(e instanceof String)) {
                     return null;
@@ -345,7 +349,7 @@ public class AstClass {
     public boolean typedef() {
         var opt = annos.stream()
             .filter(a -> a.typeRef != null &&
-                         (a.typeRef.name().equals(Struct.class.getName()) || a.typeRef.name().equals(Union.class.getName()))
+                         (a.typeRef.name().equals(StructClassName) || a.typeRef.name().equals(UnionClassName))
             ).findFirst();
         if (opt.isEmpty()) {
             return true;
@@ -356,10 +360,10 @@ public class AstClass {
             return true;
         }
         var v = vOpt.get();
-        if (!(v.value instanceof Boolean vv)) {
+        if (!(v.value instanceof Boolean)) {
             return true;
         }
-        return vv;
+        return (Boolean) v.value;
     }
 
     public String generateJava() {
@@ -368,7 +372,6 @@ public class AstClass {
             sb.append("package ").append(packageName()).append(";\n\n");
         }
 
-        //noinspection TextBlockMigration
         sb.append("import io.vproxy.pni.*;\n" +
                   "import io.vproxy.pni.array.*;\n" +
                   "import java.lang.foreign.*;\n" +
@@ -522,7 +525,7 @@ public class AstClass {
         return fullName().replace('.', '_');
     }
 
-    @SuppressWarnings({"TextBlockMigration", "StringConcatenationInsideStringBufferAppend"})
+    @SuppressWarnings("StringConcatenationInsideStringBufferAppend")
     public String generateC() {
         var sb = new StringBuilder();
         sb.append("/* DO NOT EDIT THIS FILE - it is machine generated */\n" +
@@ -574,7 +577,8 @@ public class AstClass {
         }
         var includedClasses = new HashSet<AstClass>();
         for (var f : fields) {
-            if (f.typeRef instanceof ClassTypeInfo classTypeInfo) {
+            if (f.typeRef instanceof ClassTypeInfo) {
+                var classTypeInfo = (ClassTypeInfo) f.typeRef;
                 var cls = classTypeInfo.getClazz();
                 if (includedClasses.add(cls)) {
                     include(sb, cls);
@@ -582,21 +586,24 @@ public class AstClass {
             }
         }
         for (var m : methods) {
-            if (m.returnTypeRef instanceof ClassTypeInfo classTypeInfo) {
+            if (m.returnTypeRef instanceof ClassTypeInfo) {
+                var classTypeInfo = (ClassTypeInfo) m.returnTypeRef;
                 var cls = classTypeInfo.getClazz();
                 if (includedClasses.add(cls)) {
                     include(sb, cls);
                 }
             }
             for (var p : m.params) {
-                if (p.typeRef instanceof ClassTypeInfo classTypeInfo) {
+                if (p.typeRef instanceof ClassTypeInfo) {
+                    var classTypeInfo = (ClassTypeInfo) p.typeRef;
                     var cls = classTypeInfo.getClazz();
                     if (includedClasses.add(cls)) {
                         include(sb, cls);
                     }
                 }
                 for (var g : p.genericTypeRefs) {
-                    if (g instanceof ClassTypeInfo classTypeInfo) {
+                    if (g instanceof ClassTypeInfo) {
+                        var classTypeInfo = (ClassTypeInfo) g;
                         var cls = classTypeInfo.getClazz();
                         if (includedClasses.add(cls)) {
                             include(sb, cls);
@@ -649,7 +656,6 @@ public class AstClass {
             }
         }
 
-        //noinspection TextBlockMigration
         sb.append("\n" +
                   "#ifdef __cplusplus\n" +
                   "extern \"C\" {\n" +
@@ -664,7 +670,6 @@ public class AstClass {
             m.generateCImpl(sb, 0, underlinedName(), nativeTypeName(), impl);
         }
 
-        //noinspection TextBlockMigration
         sb.append("\n" +
                   "#ifdef __cplusplus\n" +
                   "}\n" +

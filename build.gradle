@@ -16,14 +16,12 @@ repositories {
 }
 
 dependencies {
-    implementation project(":api")
     implementation project(":pni")
 }
 
 java {
-    toolchain {
-        languageVersion = JavaLanguageVersion.of(21)
-    }
+    sourceCompatibility = '11'
+    targetCompatibility = '11'
 }
 
 jar {
@@ -45,29 +43,34 @@ subprojects {
     group 'io.vproxy'
     version rootProject.version
 
-    java {
-        withSourcesJar()
-
-        toolchain {
-            languageVersion = JavaLanguageVersion.of(21)
+    if (project.name != 'pni') {
+        java {
+            toolchain {
+                languageVersion = JavaLanguageVersion.of(21)
+            }
         }
     }
 
     tasks.withType(JavaCompile) {
         options.encoding = "UTF-8"
         options.incremental = false
-        options.compilerArgs += '--enable-preview'
+        if (project.name != 'pni') {
+            options.compilerArgs += '--enable-preview'
+        }
     }
     tasks.withType(JavaExec) {
-        jvmArgs += '--enable-preview'
-        jvmArgs += '--enable-native-access=ALL-UNNAMED'
+        if (project.name != 'pni') {
+            jvmArgs += '--enable-preview'
+            jvmArgs += '--enable-native-access=ALL-UNNAMED'
+            javaLauncher.set(javaToolchains.launcherFor(java.toolchain))
+        }
         jvmArgs += '--add-exports=java.base/jdk.internal.misc=ALL-UNNAMED'
-
-        javaLauncher.set(javaToolchains.launcherFor(java.toolchain))
     }
     tasks.withType(Test) {
-        jvmArgs += '--enable-preview'
-        jvmArgs += '--enable-native-access=ALL-UNNAMED'
+        if (project.name != 'pni') {
+            jvmArgs += '--enable-preview'
+            jvmArgs += '--enable-native-access=ALL-UNNAMED'
+        }
         jvmArgs += '--add-exports=java.base/jdk.internal.misc=ALL-UNNAMED'
 
         testLogging {
@@ -98,6 +101,10 @@ subprojects {
 project(":api") {
     apply plugin: 'maven-publish'
     apply plugin: 'signing'
+
+    java {
+        withSourcesJar()
+    }
 
     publishing {
         publications {
@@ -160,8 +167,11 @@ project(":api") {
 }
 
 project(":pni") {
+    java {
+        sourceCompatibility = '11'
+        targetCompatibility = '11'
+    }
     dependencies {
-        implementation project(":api")
         implementation 'org.ow2.asm:asm:9.5'
         implementation 'org.ow2.asm:asm-tree:9.5'
     }

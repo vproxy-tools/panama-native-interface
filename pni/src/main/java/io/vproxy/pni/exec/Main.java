@@ -9,17 +9,17 @@ import java.util.Arrays;
 public class Main {
     public static final String VERSION = "21.0.0.1"; // _THE_VERSION_
 
-    private static final String HELP_STR = """
-        Usage: java -jar pni.jar <options>
-          -cp <path>
-                Specify where to find user class files and annotation processors
-          -d <directory>               Specify where to place generated class files
-          -h <directory>
-                Specify where to place generated native header files
-          --help, -help, -?            Print this help message
-          -verbose                     Output messages about what the compiler is doing
-          --version, -version          Version information
-        """.trim();
+    private static final String HELP_STR = (
+        "Usage: java -jar pni.jar <options>\n" +
+        "  -cp <path>\n" +
+        "        Specify where to find user class files and annotation processors\n" +
+        "  -d <directory>               Specify where to place generated class files\n" +
+        "  -h <directory>\n" +
+        "        Specify where to place generated native header files\n" +
+        "  --help, -help, -?            Print this help message\n" +
+        "  -verbose                     Output messages about what the compiler is doing\n" +
+        "  --version, -version          Version information\n"
+    ).trim();
 
     public static void main(String[] args) {
         if (args.length == 0) {

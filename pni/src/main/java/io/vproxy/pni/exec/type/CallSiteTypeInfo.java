@@ -1,9 +1,6 @@
 package io.vproxy.pni.exec.type;
 
-import io.vproxy.pni.exec.internal.Utils;
 import io.vproxy.pni.exec.internal.VarOpts;
-
-import java.lang.foreign.ValueLayout;
 
 public class CallSiteTypeInfo extends BuiltInReferenceTypeInfo {
     private CallSiteTypeInfo() {
@@ -21,7 +18,7 @@ public class CallSiteTypeInfo extends BuiltInReferenceTypeInfo {
 
     @Override
     public long nativeMemorySize(VarOpts opts) {
-        return ValueLayout.ADDRESS.byteSize();
+        return 8; // address
     }
 
     @Override
