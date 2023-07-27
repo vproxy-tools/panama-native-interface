@@ -4,7 +4,6 @@ import io.vproxy.pni.exception.PNIException;
 
 import java.lang.foreign.*;
 import java.lang.invoke.MethodHandle;
-import java.lang.reflect.InvocationTargetException;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;

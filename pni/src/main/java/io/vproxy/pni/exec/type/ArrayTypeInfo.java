@@ -55,6 +55,14 @@ public class ArrayTypeInfo extends TypeInfo {
     }
 
     @Override
+    protected boolean canMarkWithRaw() {
+        if (elementType instanceof ByteTypeInfo) {
+            return true;
+        }
+        return super.canMarkWithRaw();
+    }
+
+    @Override
     public String nativeType(String fieldName, VarOpts opts) {
         if (opts.isPointerGeneral()) {
             if (fieldName == null) {
@@ -69,7 +77,12 @@ public class ArrayTypeInfo extends TypeInfo {
 
     @Override
     public String nativeParamType(String fieldName, VarOpts opts) {
-        String ret = "PNIBuf *";
+        String ret;
+        if (opts.isRaw()) {
+            ret = "char *";
+        } else {
+            ret = "PNIBuf *";
+        }
         if (fieldName != null) {
             ret += " " + fieldName;
         }
@@ -206,12 +219,20 @@ public class ArrayTypeInfo extends TypeInfo {
 
     @Override
     public String methodHandleType(VarOpts opts) {
-        return "PNIBuf.class";
+        if (opts.isRaw()) {
+            return "MemorySegment.class";
+        } else {
+            return "PNIBuf.class";
+        }
     }
 
     @Override
     public String convertToNativeCallArgument(String name, VarOpts opts) {
-        return "PNIBuf.of(ARENA, " + name + ").MEMORY";
+        if (opts.isRaw()) {
+            return name;
+        } else {
+            return "PNIBuf.of(ARENA, " + name + ").MEMORY";
+        }
     }
 
     @Override
