@@ -417,11 +417,13 @@ This is useful for example when you store the `PNIFunc*` in `epoll_event.data.pt
 
 <details><summary>Click to reveal</summary>
 
-Annotate the data type to be converted to its raw form.
+Annotate the data type to be converted to its raw form. You can only mark method parameters with this annotation.
 
-* `ByteBuffer`: This annotation currently only applies to `ByteBuffer` parameters, which will be converted to `MemorySegment`.
+* `ByteBuffer`: will be converted to `MemorySegment`.
   This has the same effect as setting `ByteBuffer.position()` to 0 and `ByteBuffer.limit()` to `ByteBuffer.capacity()`,
   without actually modifying the buffer.
+* `byte[]`: will be converted to `MemorySegment`.
+  Data will be copied into the segment, and `byteSize()` is the same as `array.length`.
 
 </details>
 
