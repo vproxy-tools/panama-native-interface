@@ -7,6 +7,7 @@ import org.junit.Test;
 
 import java.io.*;
 import java.lang.foreign.Arena;
+import java.lang.foreign.MemorySegment;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -80,10 +81,16 @@ public class TestFunc {
                 int fd = (int) fdField.get(fdObj);
 
                 var buf = ByteBuffer.allocateDirect(30);
-                buf.put("hello world\n".getBytes(StandardCharsets.UTF_8));
+                buf.put("hello ".getBytes(StandardCharsets.UTF_8));
 
                 int n = Func.get().write(env, fd, buf, 0, buf.position());
                 assertEquals(buf.position(), n);
+
+                var bytes = "world\n".getBytes(StandardCharsets.UTF_8);
+                n = Func.get().writeByteArray(env, fd,
+                    arena.allocate(bytes.length).copyFrom(MemorySegment.ofArray(bytes)),
+                    0, bytes.length);
+                assertEquals(bytes.length, n);
             }
 
             var str = Files.readString(file.toPath());
@@ -108,14 +115,14 @@ public class TestFunc {
     public void shaCheck() throws Exception {
         var s = Files.readAllLines(Path.of("src", "test", "c-generated", "io_vproxy_pni_test_Func.h"));
         var lastLine = s.get(s.size() - 1);
-        assertEquals("// sha256:5c83482f4625a851478517dd3ff5ba4d1d77279425b64f9296db338831023085", lastLine);
+        assertEquals("// sha256:6dfaa83d60edde455447264a1097908411e6ca042a78075905eeac784a03927d", lastLine);
 
         s = Files.readAllLines(Path.of("src", "test", "c-generated", "io_vproxy_pni_test_Func.impl.h"));
         lastLine = s.get(s.size() - 1);
-        assertEquals("// sha256:dcf9a6599748fe3328f06080b29c0593bd1b64c323a35d041cf78cba89decde8", lastLine);
+        assertEquals("// sha256:8c8e2b429fca89601abd08c41685584bd9a21992ddf32abf2d1a694823eb2270", lastLine);
 
         s = Files.readAllLines(Path.of("src", "test", "generated", "io", "vproxy", "pni", "test", "Func.java"));
         lastLine = s.get(s.size() - 1);
-        assertEquals("// sha256:39403ab5f79d0ef9f4ffa5c2c64e8797845720b8e8c85b7a2991619b155fe1c5", lastLine);
+        assertEquals("// sha256:85c7823c34a0925c062347decddbbb53ad7a5ffe690abed7dd19feb4016ae7c4", lastLine);
     }
 }

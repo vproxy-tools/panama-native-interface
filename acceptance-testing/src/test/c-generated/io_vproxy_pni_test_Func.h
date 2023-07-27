@@ -22,10 +22,11 @@ JNIEXPORT int JNICALL Java_io_vproxy_pni_test_Func_func1(PNIEnv_int * env);
 JNIEXPORT int JNICALL Java_io_vproxy_pni_test_Func_func2(PNIEnv_void * env);
 JNIEXPORT int JNICALL Java_io_vproxy_pni_test_Func_func3(PNIEnv_void * env, char * ex);
 JNIEXPORT int JNICALL Java_io_vproxy_pni_test_Func_write(PNIEnv_int * env, int32_t fd, void * buf, int32_t off, int32_t len);
+JNIEXPORT int JNICALL Java_io_vproxy_pni_test_Func_writeByteArray(PNIEnv_int * env, int32_t fd, char * buf, int32_t off, int32_t len);
 JNIEXPORT int JNICALL Java_io_vproxy_pni_test_Func_callJavaFromC(PNIEnv_pointer * env, PNIFunc * func);
 
 #ifdef __cplusplus
 }
 #endif
 #endif // _Included_io_vproxy_pni_test_Func
-// sha256:5c83482f4625a851478517dd3ff5ba4d1d77279425b64f9296db338831023085
+// sha256:6dfaa83d60edde455447264a1097908411e6ca042a78075905eeac784a03927d

@@ -32,6 +32,20 @@ public interface PNIFunc {
     int write(int fd, @Raw ByteBuffer buf, int off, int len) throws IOException;
 
     @Impl(
+        include = {"<unistd.h>"},
+        // language="c"
+        c = """
+            int ret = write(fd, buf + off, len);
+            if (ret < 0) {
+                return PNIThrowException(env, "java.io.Exception", strerror(errno));
+            }
+            env->return_ = ret;
+            return 0;
+            """
+    )
+    int writeByteArray(int fd, @Raw byte[] buf, int off, int len) throws IOException;
+
+    @Impl(
         // language="c"
         c = """
             ObjectStruct object_struct;
