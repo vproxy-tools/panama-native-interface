@@ -9,6 +9,7 @@ import org.junit.runner.RunWith;
     TestStructUnion.class,
     TestFunc.class,
     TestStructUnionAnnotation.class,
+    TestGCCCompatibility.class,
 })
 public class Suite {
 }
