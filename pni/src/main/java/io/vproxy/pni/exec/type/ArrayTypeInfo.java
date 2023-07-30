@@ -99,6 +99,15 @@ public class ArrayTypeInfo extends TypeInfo {
     }
 
     @Override
+    public long nativeMemoryAlign(VarOpts opts) {
+        if (opts.isPointerGeneral()) {
+            return 8;
+        } else {
+            return elementType.nativeMemoryAlign(opts);
+        }
+    }
+
+    @Override
     public String memoryLayout(VarOpts opts) {
         if (opts.isPointerGeneral()) {
             return "PNIBuf.LAYOUT";

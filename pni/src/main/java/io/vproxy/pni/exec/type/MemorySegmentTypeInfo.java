@@ -23,6 +23,11 @@ public class MemorySegmentTypeInfo extends BuiltInReferenceTypeInfo {
     }
 
     @Override
+    public long nativeMemoryAlign(VarOpts opts) {
+        return 8;
+    }
+
+    @Override
     public String memoryLayout(VarOpts opts) {
         return "ValueLayout.ADDRESS_UNALIGNED";
     }

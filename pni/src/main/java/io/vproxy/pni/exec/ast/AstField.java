@@ -100,13 +100,30 @@ public class AstField {
         return typeRef.nativeMemorySize(varOpts());
     }
 
-    public boolean isStruct() {
-        if (pointerInfo().isPointer()) return false;
-        if (typeRef instanceof ClassTypeInfo) {
-            var classTypeInfo = (ClassTypeInfo) typeRef;
-            return classTypeInfo.getClazz().isStruct();
+    public long getAlign() {
+        return Utils.getAlign(annos);
+    }
+
+    public boolean isAlignPacked() {
+        return Utils.getAlignPacked(annos);
+    }
+
+    public long getAlignmentBytes(boolean packed) {
+        if (isAlignPacked()) {
+            return 0;
         }
-        return false;
+        var annoAlign = getAlign();
+        if (annoAlign <= 1 && packed) {
+            return 0;
+        }
+        if (packed) {
+            return annoAlign;
+        }
+        long n = typeRef.nativeMemoryAlign(varOpts());
+        if (n < annoAlign) {
+            n = annoAlign;
+        }
+        return n;
     }
 
     public void generateC(StringBuilder sb, int indent) {
@@ -121,10 +138,21 @@ public class AstField {
         }
         sb.append(typeRef.nativeType(nativeName(), varOpts())).append(";");
         if (padding > 0) {
-            sb.append(" int8_t __padding_after_").append(nativeName()).append("[").append(padding).append("];\n");
-        } else {
-            sb.append("\n");
+            long p = padding;
+            sb.append(" /* padding */");
+            while (p > 0) {
+                sb.append(" uint64_t :");
+                if (p >= 8) {
+                    sb.append("64");
+                    p -= 8;
+                } else {
+                    sb.append(p * 8);
+                    p = 0;
+                }
+                sb.append(";");
+            }
         }
+        sb.append("\n");
     }
 
     public void generateJavaLayout(StringBuilder sb, int indent) {

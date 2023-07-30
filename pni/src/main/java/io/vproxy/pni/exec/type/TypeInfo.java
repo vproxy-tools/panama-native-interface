@@ -59,6 +59,8 @@ public abstract class TypeInfo {
 
     abstract public long nativeMemorySize(VarOpts opts);
 
+    abstract public long nativeMemoryAlign(VarOpts opts);
+
     abstract public String memoryLayout(VarOpts opts);
 
     abstract public String javaType(VarOpts opts);

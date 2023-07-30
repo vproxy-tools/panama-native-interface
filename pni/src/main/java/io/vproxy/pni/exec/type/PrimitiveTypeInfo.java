@@ -40,4 +40,9 @@ public abstract class PrimitiveTypeInfo extends TypeInfo {
     public String convertToNativeCallArgument(String name, VarOpts opts) {
         return name;
     }
+
+    @Override
+    public long nativeMemoryAlign(VarOpts opts) {
+        return nativeMemorySize(opts);
+    }
 }

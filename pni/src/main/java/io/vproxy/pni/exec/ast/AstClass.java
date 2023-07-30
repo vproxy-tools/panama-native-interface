@@ -188,20 +188,11 @@ public class AstClass {
     }
 
     public long getAlign() {
-        var opt = annos.stream().filter(a -> a.typeRef != null && a.typeRef.name().equals(AlignClassName)).findFirst();
-        if (opt.isEmpty()) {
-            return 8;
-        }
-        var anno = opt.get();
-        var vOpt = anno.values.stream().filter(v -> v.name.equals("value")).findFirst();
-        if (vOpt.isEmpty()) {
-            return 8;
-        }
-        var v = vOpt.get().value;
-        if (v instanceof Long) {
-            return (Long) v;
-        }
-        return 8;
+        return Utils.getAlign(annos);
+    }
+
+    public boolean isAlignPacked() {
+        return Utils.getAlignPacked(annos);
     }
 
     public List<String> extraInclude() {
@@ -248,51 +239,52 @@ public class AstClass {
             return max;
         }
 
-        var align = getAlign();
-        if (align <= 1) {
-            long total = 0;
-            for (var f : fields) {
-                total += f.getNativeMemorySize();
-            }
-            __calculatedNativeMemorySize = total;
-            return total;
-        }
-
-        long block = 0;
+        var packed = isAlignPacked();
         long total = 0;
         AstField lastField = null;
         for (var f : fields) {
             var size = f.getNativeMemorySize();
-            if (size == 0) {
-                continue;
-            }
-            while (true) {
-                if (block == 0) {
-                    if (size >= align) {
-                        total += size - (size % align);
-                        block = size % align;
-                    } else {
-                        block = size;
-                    }
-                } else {
-                    if (block + size > align) {
-                        lastField.padding = align - block;
-                        total += align;
-                        block = 0;
-                        continue;
-                    }
-                    block += size;
+            var align = f.getAlignmentBytes(packed);
+            if (align > 1) {
+                if (total % align != 0) {
+                    var padding = align - (total % align);
+                    lastField.padding = padding;
+                    total += padding;
                 }
-                break;
             }
+            total += size;
             lastField = f;
         }
-        if (block > 0) {
-            lastField.padding = align - block;
-            total += align;
+        if (lastField != null) {
+            var n = largestAlignmentBytes();
+            var annoAlign = getAlign();
+            if (n < annoAlign) {
+                n = annoAlign;
+            }
+            if (n > 1 && total % n != 0) {
+                var padding = n - (total % n);
+                lastField.padding = padding;
+                total += padding;
+            }
         }
         __calculatedNativeMemorySize = total;
         return total;
+    }
+
+    public long largestAlignmentBytes() {
+        var packed = isAlignPacked();
+        long max = 0;
+        for (var f : fields) {
+            var a = f.getAlignmentBytes(packed);
+            if (max < a) {
+                max = a;
+            }
+        }
+        var align = getAlign();
+        if (!packed && max < align) {
+            max = align;
+        }
+        return max;
     }
 
     @Override

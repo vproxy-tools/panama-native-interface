@@ -40,6 +40,15 @@ public class StringTypeInfo extends BuiltInReferenceTypeInfo {
     }
 
     @Override
+    public long nativeMemoryAlign(VarOpts opts) {
+        if (opts.isPointerGeneral()) {
+            return 8;
+        } else {
+            return 1;
+        }
+    }
+
+    @Override
     public String memoryLayout(VarOpts opts) {
         if (opts.isPointerGeneral()) {
             return "ValueLayout.ADDRESS_UNALIGNED";

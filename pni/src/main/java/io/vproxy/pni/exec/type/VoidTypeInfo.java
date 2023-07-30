@@ -29,6 +29,11 @@ public class VoidTypeInfo extends TypeInfo {
     }
 
     @Override
+    public long nativeMemoryAlign(VarOpts opts) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
     public String memoryLayout(VarOpts opts) {
         throw new UnsupportedOperationException();
     }

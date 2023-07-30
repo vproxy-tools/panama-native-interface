@@ -22,6 +22,11 @@ public class CallSiteTypeInfo extends BuiltInReferenceTypeInfo {
     }
 
     @Override
+    public long nativeMemoryAlign(VarOpts opts) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
     public String memoryLayout(VarOpts opts) {
         return "ValueLayout.ADDRESS_UNALIGNED";
     }

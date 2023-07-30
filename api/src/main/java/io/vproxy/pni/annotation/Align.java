@@ -6,11 +6,12 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Ensures memory alignment.<br>
- * If you want packed memory layout, set the value to 0.
+ * Ensures the minimal memory alignment or makes it packed.
  */
-@Target(ElementType.TYPE)
+@Target({ElementType.TYPE, ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Align {
-    long value() default 8;
+    long value() default 1;
+
+    boolean packed() default false;
 }

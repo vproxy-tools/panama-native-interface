@@ -336,4 +336,38 @@ public class Utils {
             throw new RuntimeException(t);
         }
     }
+
+    public static long getAlign(List<AstAnno> annos) {
+        var opt = annos.stream().filter(a -> a.typeRef != null && a.typeRef.name().equals(AlignClassName)).findFirst();
+        if (opt.isEmpty()) {
+            return 0;
+        }
+        var anno = opt.get();
+        var vOpt = anno.values.stream().filter(v -> v.name.equals("value")).findFirst();
+        if (vOpt.isEmpty()) {
+            return 0;
+        }
+        var v = vOpt.get().value;
+        if (v instanceof Long) {
+            return (Long) v;
+        }
+        return 0;
+    }
+
+    public static boolean getAlignPacked(List<AstAnno> annos) {
+        var opt = annos.stream().filter(a -> a.typeRef != null && a.typeRef.name().equals(AlignClassName)).findFirst();
+        if (opt.isEmpty()) {
+            return false;
+        }
+        var anno = opt.get();
+        var vOpt = anno.values.stream().filter(v -> v.name.equals("packed")).findFirst();
+        if (vOpt.isEmpty()) {
+            return false;
+        }
+        var v = vOpt.get().value;
+        if (v instanceof Boolean) {
+            return (Boolean) v;
+        }
+        return false;
+    }
 }
