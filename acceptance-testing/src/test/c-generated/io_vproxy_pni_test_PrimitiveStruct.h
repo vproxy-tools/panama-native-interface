@@ -23,28 +23,28 @@ extern "C" {
 struct PNI_DUMMY_PrimitiveStruct {
     int8_t aByte;
     uint8_t unsignedByte;
-    uint16_t aChar; int8_t __padding_after_aChar[4];
+    uint16_t aChar; /* padding */ uint64_t :32;
     double aDouble;
     float aFloat;
     int32_t aInt;
-    uint32_t unsignedInt; int8_t __padding_after_unsignedInt[4];
+    uint32_t unsignedInt; /* padding */ uint64_t :32;
     int64_t aLong;
     uint64_t unsignedLong;
     int16_t aShort;
     uint16_t unsignedShort;
-    uint8_t aBoolean; int8_t __padding_after_aBoolean[3];
-    int8_t byteArray[11]; int8_t __padding_after_byteArray[5];
-    uint8_t unsignedByteArray[12]; int8_t __padding_after_unsignedByteArray[4];
-    uint16_t charArray[13]; int8_t __padding_after_charArray[6];
+    uint8_t aBoolean;
+    int8_t byteArray[11];
+    uint8_t unsignedByteArray[12];
+    uint16_t charArray[13]; /* padding */ uint64_t :16;
     double doubleArray[14];
-    float floatArray[15]; int8_t __padding_after_floatArray[4];
+    float floatArray[15];
     int32_t intArray[16];
-    uint32_t unsignedIntArray[17]; int8_t __padding_after_unsignedIntArray[4];
+    uint32_t unsignedIntArray[17];
     int64_t longArray[18];
     uint64_t unsignedLongArray[19];
     int16_t shortArray[20];
-    uint16_t unsignedShortArray[21]; int8_t __padding_after_unsignedShortArray[6];
-    uint8_t booleanArray[22]; int8_t __padding_after_booleanArray[2];
+    uint16_t unsignedShortArray[21];
+    uint8_t booleanArray[22];
     PNIBuf byteArrayPointer;
     PNIBuf unsignedByteArrayPointer;
     PNIBuf charArrayPointer;
@@ -106,4 +106,4 @@ JNIEXPORT int JNICALL Java_io_vproxy_pni_test_PrimitiveStruct_checkPointerSetToN
 }
 #endif
 #endif // _Included_io_vproxy_pni_test_PrimitiveStruct
-// sha256:43a97c3c67ec593cac0f73ab357785ba0a794772d26130d6e8fd47d5c1810352
+// sha256:0f14c15cfcd6032d88f632074a7462587d24dbb6dbee8e4b71361961006960fb

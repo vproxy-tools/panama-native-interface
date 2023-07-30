@@ -25,7 +25,7 @@ struct PNI_DUMMY_mbuf_t {
     void * bufAddr;
     uint32_t pktLen;
     uint32_t pktOff;
-    uint32_t bufLen; int8_t __padding_after_bufLen[4];
+    uint32_t bufLen; /* padding */ uint64_t :32;
     union {
         void * userdata;
         uint64_t udata64;
@@ -36,4 +36,4 @@ struct PNI_DUMMY_mbuf_t {
 }
 #endif
 #endif // _Included_io_vproxy_pni_sample_MBuf
-// sha256:ca9e3c52b9e7e27823165282d9a53edcd1bab0e408bb257b305ee415272ad14d
+// sha256:003783af0025287b606df093ab370f8753e55b32ef105e4a44cbabacfa6d45ed

@@ -9,6 +9,7 @@ import java.nio.ByteBuffer;
 public class StructN {
     public static final MemoryLayout LAYOUT = MemoryLayout.structLayout(
         ValueLayout.JAVA_SHORT_UNALIGNED.withName("s"),
+        MemoryLayout.sequenceLayout(6L, ValueLayout.JAVA_BYTE) /* padding */,
         ValueLayout.JAVA_LONG_UNALIGNED.withName("l")
     );
     public final MemorySegment MEMORY;
@@ -42,6 +43,7 @@ public class StructN {
         this.MEMORY = MEMORY;
         long OFFSET = 0;
         OFFSET += ValueLayout.JAVA_SHORT_UNALIGNED.byteSize();
+        OFFSET += 6; /* padding */
         OFFSET += ValueLayout.JAVA_LONG_UNALIGNED.byteSize();
     }
 
@@ -117,4 +119,4 @@ public class StructN {
         }
     }
 }
-// sha256:945fab537d5e2f87bdecdd491948a36af0b76cf89bb9fd6a551d7f4ab6a35356
+// sha256:0768dbaba38d3b95fdc238b998837478f8b25ac235b3c924cceb3b073f4343ee

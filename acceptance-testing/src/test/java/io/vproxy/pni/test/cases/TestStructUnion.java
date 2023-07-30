@@ -164,11 +164,11 @@ public class TestStructUnion {
 
         s = Files.readAllLines(Path.of("src", "test", "c-generated", "io_vproxy_pni_test_StructB.h"));
         lastLine = s.get(s.size() - 1);
-        assertEquals("// sha256:c8fc711454d178033710be503d062c6a621bd25504c93d17f8cb889fca234337", lastLine);
+        assertEquals("// sha256:d92d86c75df3b78cb71b107ece0db444fbdc4646f913cb7c2a9234258f4e8d67", lastLine);
 
         s = Files.readAllLines(Path.of("src", "test", "c-generated", "io_vproxy_pni_test_StructD.h"));
         lastLine = s.get(s.size() - 1);
-        assertEquals("// sha256:19fe59852fc8909c5dc6eb433db41060cbf0f4070f6e6c7e987a767fab234fc4", lastLine);
+        assertEquals("// sha256:3d37b21c87dcefbe81013afb13b13081ed2963ed66b99b37ad33e67800aa8a6f", lastLine);
 
         s = Files.readAllLines(Path.of("src", "test", "c-generated", "io_vproxy_pni_test_UnionC.h"));
         lastLine = s.get(s.size() - 1);

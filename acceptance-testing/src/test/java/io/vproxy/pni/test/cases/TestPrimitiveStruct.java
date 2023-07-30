@@ -739,10 +739,10 @@ public class TestPrimitiveStruct {
     public void shaCheck() throws Exception {
         var s = Files.readAllLines(Path.of("src", "test", "c-generated", "io_vproxy_pni_test_PrimitiveStruct.h"));
         var lastLine = s.get(s.size() - 1);
-        assertEquals("// sha256:43a97c3c67ec593cac0f73ab357785ba0a794772d26130d6e8fd47d5c1810352", lastLine);
+        assertEquals("// sha256:0f14c15cfcd6032d88f632074a7462587d24dbb6dbee8e4b71361961006960fb", lastLine);
 
         s = Files.readAllLines(Path.of("src", "test", "generated", "io", "vproxy", "pni", "test", "PrimitiveStruct.java"));
         lastLine = s.get(s.size() - 1);
-        assertEquals("// sha256:16b81f5d62c9642094f7b2b973dd70c56d75fdf6c51a4769634cde706db03466", lastLine);
+        assertEquals("// sha256:e43e244e785cf7bf756c1d77f8ea9430f1dfda93fe81763d8dc2ba762c8b071b", lastLine);
     }
 }

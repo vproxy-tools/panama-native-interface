@@ -22,26 +22,19 @@ public class PrimitiveStruct {
         ValueLayout.JAVA_SHORT_UNALIGNED.withName("aShort"),
         ValueLayout.JAVA_SHORT_UNALIGNED.withName("unsignedShort"),
         ValueLayout.JAVA_BOOLEAN.withName("aBoolean"),
-        MemoryLayout.sequenceLayout(3L, ValueLayout.JAVA_BYTE) /* padding */,
         MemoryLayout.sequenceLayout(11L, ValueLayout.JAVA_BYTE).withName("byteArray"),
-        MemoryLayout.sequenceLayout(5L, ValueLayout.JAVA_BYTE) /* padding */,
         MemoryLayout.sequenceLayout(12L, ValueLayout.JAVA_BYTE).withName("unsignedByteArray"),
-        MemoryLayout.sequenceLayout(4L, ValueLayout.JAVA_BYTE) /* padding */,
         MemoryLayout.sequenceLayout(13L, ValueLayout.JAVA_CHAR_UNALIGNED).withName("charArray"),
-        MemoryLayout.sequenceLayout(6L, ValueLayout.JAVA_BYTE) /* padding */,
+        MemoryLayout.sequenceLayout(2L, ValueLayout.JAVA_BYTE) /* padding */,
         MemoryLayout.sequenceLayout(14L, ValueLayout.JAVA_DOUBLE_UNALIGNED).withName("doubleArray"),
         MemoryLayout.sequenceLayout(15L, ValueLayout.JAVA_FLOAT_UNALIGNED).withName("floatArray"),
-        MemoryLayout.sequenceLayout(4L, ValueLayout.JAVA_BYTE) /* padding */,
         MemoryLayout.sequenceLayout(16L, ValueLayout.JAVA_INT_UNALIGNED).withName("intArray"),
         MemoryLayout.sequenceLayout(17L, ValueLayout.JAVA_INT_UNALIGNED).withName("unsignedIntArray"),
-        MemoryLayout.sequenceLayout(4L, ValueLayout.JAVA_BYTE) /* padding */,
         MemoryLayout.sequenceLayout(18L, ValueLayout.JAVA_LONG_UNALIGNED).withName("longArray"),
         MemoryLayout.sequenceLayout(19L, ValueLayout.JAVA_LONG_UNALIGNED).withName("unsignedLongArray"),
         MemoryLayout.sequenceLayout(20L, ValueLayout.JAVA_SHORT_UNALIGNED).withName("shortArray"),
         MemoryLayout.sequenceLayout(21L, ValueLayout.JAVA_SHORT_UNALIGNED).withName("unsignedShortArray"),
-        MemoryLayout.sequenceLayout(6L, ValueLayout.JAVA_BYTE) /* padding */,
         MemoryLayout.sequenceLayout(22L, ValueLayout.JAVA_BOOLEAN).withName("booleanArray"),
-        MemoryLayout.sequenceLayout(2L, ValueLayout.JAVA_BYTE) /* padding */,
         PNIBuf.LAYOUT.withName("byteArrayPointer"),
         PNIBuf.LAYOUT.withName("unsignedByteArrayPointer"),
         PNIBuf.LAYOUT.withName("charArrayPointer"),
@@ -483,26 +476,21 @@ public class PrimitiveStruct {
         OFFSET += ValueLayout.JAVA_SHORT_UNALIGNED.byteSize();
         OFFSET += ValueLayout.JAVA_SHORT_UNALIGNED.byteSize();
         OFFSET += ValueLayout.JAVA_BOOLEAN.byteSize();
-        OFFSET += 3; /* padding */
         this.byteArray = MEMORY.asSlice(OFFSET, 11);
         OFFSET += 11;
-        OFFSET += 5; /* padding */
         this.unsignedByteArray = MEMORY.asSlice(OFFSET, 12);
         OFFSET += 12;
-        OFFSET += 4; /* padding */
         this.charArray = new CharArray(MEMORY.asSlice(OFFSET, 13 * ValueLayout.JAVA_CHAR_UNALIGNED.byteSize()));
         OFFSET += 13 * ValueLayout.JAVA_CHAR_UNALIGNED.byteSize();
-        OFFSET += 6; /* padding */
+        OFFSET += 2; /* padding */
         this.doubleArray = new DoubleArray(MEMORY.asSlice(OFFSET, 14 * ValueLayout.JAVA_DOUBLE_UNALIGNED.byteSize()));
         OFFSET += 14 * ValueLayout.JAVA_DOUBLE_UNALIGNED.byteSize();
         this.floatArray = new FloatArray(MEMORY.asSlice(OFFSET, 15 * ValueLayout.JAVA_FLOAT_UNALIGNED.byteSize()));
         OFFSET += 15 * ValueLayout.JAVA_FLOAT_UNALIGNED.byteSize();
-        OFFSET += 4; /* padding */
         this.intArray = new IntArray(MEMORY.asSlice(OFFSET, 16 * ValueLayout.JAVA_INT_UNALIGNED.byteSize()));
         OFFSET += 16 * ValueLayout.JAVA_INT_UNALIGNED.byteSize();
         this.unsignedIntArray = new IntArray(MEMORY.asSlice(OFFSET, 17 * ValueLayout.JAVA_INT_UNALIGNED.byteSize()));
         OFFSET += 17 * ValueLayout.JAVA_INT_UNALIGNED.byteSize();
-        OFFSET += 4; /* padding */
         this.longArray = new LongArray(MEMORY.asSlice(OFFSET, 18 * ValueLayout.JAVA_LONG_UNALIGNED.byteSize()));
         OFFSET += 18 * ValueLayout.JAVA_LONG_UNALIGNED.byteSize();
         this.unsignedLongArray = new LongArray(MEMORY.asSlice(OFFSET, 19 * ValueLayout.JAVA_LONG_UNALIGNED.byteSize()));
@@ -511,10 +499,8 @@ public class PrimitiveStruct {
         OFFSET += 20 * ValueLayout.JAVA_SHORT_UNALIGNED.byteSize();
         this.unsignedShortArray = new ShortArray(MEMORY.asSlice(OFFSET, 21 * ValueLayout.JAVA_SHORT_UNALIGNED.byteSize()));
         OFFSET += 21 * ValueLayout.JAVA_SHORT_UNALIGNED.byteSize();
-        OFFSET += 6; /* padding */
         this.booleanArray = new BoolArray(MEMORY.asSlice(OFFSET, 22 * ValueLayout.JAVA_BOOLEAN.byteSize()));
         OFFSET += 22 * ValueLayout.JAVA_BOOLEAN.byteSize();
-        OFFSET += 2; /* padding */
         this.byteArrayPointer = new PNIBuf(MEMORY.asSlice(OFFSET, PNIBuf.LAYOUT.byteSize()));
         OFFSET += PNIBuf.LAYOUT.byteSize();
         this.unsignedByteArrayPointer = new PNIBuf(MEMORY.asSlice(OFFSET, PNIBuf.LAYOUT.byteSize()));
@@ -1397,4 +1383,4 @@ public class PrimitiveStruct {
         }
     }
 }
-// sha256:16b81f5d62c9642094f7b2b973dd70c56d75fdf6c51a4769634cde706db03466
+// sha256:e43e244e785cf7bf756c1d77f8ea9430f1dfda93fe81763d8dc2ba762c8b071b

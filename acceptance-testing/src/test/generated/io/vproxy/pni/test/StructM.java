@@ -8,8 +8,7 @@ import java.nio.ByteBuffer;
 
 public class StructM {
     public static final MemoryLayout LAYOUT = MemoryLayout.structLayout(
-        io.vproxy.pni.test.StructN.LAYOUT.withName("n"),
-        MemoryLayout.sequenceLayout(6L, ValueLayout.JAVA_BYTE) /* padding */
+        io.vproxy.pni.test.StructN.LAYOUT.withName("n")
     );
     public final MemorySegment MEMORY;
 
@@ -25,7 +24,6 @@ public class StructM {
         long OFFSET = 0;
         this.n = new io.vproxy.pni.test.StructN(MEMORY.asSlice(OFFSET, io.vproxy.pni.test.StructN.LAYOUT.byteSize()));
         OFFSET += io.vproxy.pni.test.StructN.LAYOUT.byteSize();
-        OFFSET += 6; /* padding */
     }
 
     public StructM(Allocator ALLOCATOR) {
@@ -83,4 +81,4 @@ public class StructM {
         }
     }
 }
-// sha256:a07a52c2345f4bebedcd79a3df76c16daf4be29f7d4068c91400c9717ab1bb36
+// sha256:0c269c5fdc65217924feaacdc9cd8771b88445e9b9a4fb3f99a42bd3e3ea7b6d

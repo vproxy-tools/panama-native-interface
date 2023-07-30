@@ -4,7 +4,7 @@
 #include <inttypes.h>
 
 struct N_st {
-    uint16_t s;
+    uint16_t s; /* padding */ uint64_t :48;
     uint64_t l;
 } __attribute__((packed));
 

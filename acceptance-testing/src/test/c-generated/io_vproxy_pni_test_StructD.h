@@ -21,7 +21,7 @@ extern "C" {
 #endif
 
 struct PNI_DUMMY_StructD {
-    int32_t n; int8_t __padding_after_n[4];
+    int32_t n; /* padding */ uint64_t :32;
     double d;
 } PNI_PACKED;
 
@@ -29,4 +29,4 @@ struct PNI_DUMMY_StructD {
 }
 #endif
 #endif // _Included_io_vproxy_pni_test_StructD
-// sha256:19fe59852fc8909c5dc6eb433db41060cbf0f4070f6e6c7e987a767fab234fc4
+// sha256:3d37b21c87dcefbe81013afb13b13081ed2963ed66b99b37ad33e67800aa8a6f

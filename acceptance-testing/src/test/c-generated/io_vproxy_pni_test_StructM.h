@@ -21,7 +21,7 @@ extern "C" {
 #endif
 
 struct StructM {
-    struct N_st n_st; int8_t __padding_after_n_st[6];
+    struct N_st n_st;
 } PNI_PACKED;
 
 JNIEXPORT int JNICALL Java_io_vproxy_pni_test_StructM_nnn(PNIEnv_void * env, struct StructM * self, struct N_st * n_st);
@@ -30,4 +30,4 @@ JNIEXPORT int JNICALL Java_io_vproxy_pni_test_StructM_nnn(PNIEnv_void * env, str
 }
 #endif
 #endif // _Included_io_vproxy_pni_test_StructM
-// sha256:97402b73dd88ff1a422a365bf66f2cb059c50fb9b5684d954389763ce184d894
+// sha256:62cd4a084c788366d6bb8e6a90d0f8cc60fca73bbe051fda0152ef7de7defdde
