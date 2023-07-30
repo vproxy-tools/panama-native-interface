@@ -252,7 +252,7 @@ abstract class PNIMBuf {     // typedef struct {
     MemorySegment bufAddr;   //     void*    bufAddr;
     @Unsigned int pktLen;    //     uint32_t pktLen;
     @Unsigned int pktOff;    //     uint32_t pktOff;
-    @Unsigned int bufLen;    //     uint32_t bufLen; uint8_t __padding_after_bufLen[4];
+    @Unsigned int bufLen;    //     uint32_t bufLen; /* padding */ uint64_t :32;
     PNIUserData userdata;    //     union {
                              //         void*  userdata;
                              //         uint64 udata64;
@@ -381,7 +381,8 @@ This is useful for example when you store the `PNIFunc*` in `epoll_event.data.pt
 ### Performance Concern
 
 * `@Trivial`: make a MethodHandle `trivial`. See `Linker.Option#isTrivial()` for more info.
-* `@Align`: define the alignment bytes, default is 8. Setting this to a value `<= 1` will disable memory padding.
+* `@Align`: define the minimum alignment bytes. You can set `@Align(packed=true)` to disable padding.
+  This annotation has the same effect as setting `__attribute__((aligned(N)))` or `__attribute__((packed))` in `GCC`.
 
 ### Enhance Java Types
 
