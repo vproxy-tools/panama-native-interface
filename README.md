@@ -248,7 +248,7 @@ You may define all template classes inside one single Java file, they don't have
 ```java
 @Struct
 @Name("mbuf_t")
-abstract class PNIMBuf {     // typedef struct {
+abstract class PNIMBuf {     // typedef PNI_PACK(struct, mbuf_t, {
     MemorySegment bufAddr;   //     void*    bufAddr;
     @Unsigned int pktLen;    //     uint32_t pktLen;
     @Unsigned int pktOff;    //     uint32_t pktOff;
@@ -257,7 +257,7 @@ abstract class PNIMBuf {     // typedef struct {
                              //         void*  userdata;
                              //         uint64 udata64;
                              //     };
-}                            // } __attribute__((packed)) mbuf_t;
+}                            // }) mbuf_t;
 
 @Union(embedded = true)
 abstract class PNIUserData {

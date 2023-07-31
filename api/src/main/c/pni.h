@@ -6,15 +6,19 @@
 #include <string.h>
 #include <errno.h>
 
-#define PNI_PACKED __attribute__((packed))
+#if defined(__GNUC__)
+  #define PNI_PACK( __t__, __n__, __Declaration__ ) __t__ __n__ __Declaration__ __attribute__((__packed__))
+#else
+  #define PNI_PACK( __t__, __n__, __Declaration__ ) __pragma(pack(push, 1)) __t__ __n__ __Declaration__ __pragma(pack(pop))
+#endif
 
-typedef struct {
+typedef PNI_PACK(struct, PNIException, {
     char* type;
 #define PNIExceptionMessageLen (4096)
     char  message[PNIExceptionMessageLen];
-} PNI_PACKED PNIException;
+}) PNIException;
 
-typedef struct {
+typedef PNI_PACK(struct, PNIEnv, {
     PNIException ex;
     union {
         int8_t   return_byte;
@@ -27,16 +31,16 @@ typedef struct {
         int8_t   return_bool;
         void*    return_pointer;
     };
-} PNI_PACKED PNIEnv;
+}) PNIEnv;
 
 #define PNIEnvExpand(EnvType, ValueType) \
-typedef struct { \
+typedef PNI_PACK(struct, PNIEnv_##EnvType, { \
     PNIException ex; \
     union { \
         ValueType return_; \
         void* __placeholder__; \
     }; \
-} PNI_PACKED PNIEnv_##EnvType;
+}) PNIEnv_##EnvType;
 // end #define PNIEnvExpand
 
 PNIEnvExpand(byte, int8_t)
@@ -49,10 +53,10 @@ PNIEnvExpand(short, int16_t)
 PNIEnvExpand(bool, uint8_t)
 PNIEnvExpand(pointer, void*)
 
-typedef struct {
+typedef PNI_PACK(struct, PNIEnv_void, {
     PNIException ex;
     void* __placeholder__;
-} PNI_PACKED PNIEnv_void;
+}) PNIEnv_void;
 
 static inline int PNIThrowException(void* _env, const char* extype, char* message) {
     PNIEnv* env = _env;
@@ -66,13 +70,13 @@ static inline int PNIThrowExceptionBasedOnErrno(void* _env, const char* extype) 
     return PNIThrowException(_env, extype, strerror(errno));
 }
 
-typedef struct {
+typedef PNI_PACK(struct, PNIFunc, {
     int64_t   index;
     int32_t (*func)(int64_t,void*);
     void    (*release)(int64_t);
 
     void* userdata;
-} PNI_PACKED PNIFunc;
+}) PNIFunc;
 
 static inline int PNIFuncInvoke(PNIFunc* f, void* data) {
     return f->func(f->index, data);
@@ -82,10 +86,10 @@ static inline void PNIFuncRelease(PNIFunc* f) {
     f->release(f->index);
 }
 
-typedef struct {
+typedef PNI_PACK(struct, PNIBuf, {
     void*    buf;
     uint64_t len;
-} PNI_PACKED PNIBuf;
+}) PNIBuf;
 
 #define PNIBufExpand(BufType, ValueType, Size) \
 typedef struct { \

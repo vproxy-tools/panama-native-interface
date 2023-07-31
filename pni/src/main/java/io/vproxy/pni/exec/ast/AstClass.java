@@ -529,25 +529,22 @@ public class AstClass {
                   "#endif\n");
         if (needToGenerateTypeDefinition()) {
             sb.append("\n");
-            // union|struct [PNI_DUMMY_]{nativeName};
+            // union|struct {nativeName};
             if (isUnion()) {
                 sb.append("union ");
             } else {
                 sb.append("struct ");
             }
-            if (typedef()) {
-                sb.append("PNI_DUMMY_");
-            }
             sb.append(nativeName()).append(";\n");
             if (typedef()) {
-                // typedef union|struct PNI_DUMMY_{nativeName} {nativeName};
+                // typedef union|struct {nativeName} {nativeName};
                 sb.append("typedef ");
                 if (isUnion()) {
                     sb.append("union ");
                 } else {
                     sb.append("struct ");
                 }
-                sb.append("PNI_DUMMY_").append(nativeName()).append(" ").append(nativeName()).append(";\n");
+                sb.append(nativeName()).append(" ").append(nativeName()).append(";\n");
             }
         }
         sb.append("\n" +
@@ -688,19 +685,21 @@ public class AstClass {
                 sb.append("\n");
             }
             // for complete:
-            // union|struct [PNI_DUMMY_][{nativeName}] { ... } [PNI_PACKED] [nativeName];
+            // PNI_PACK(union|struct, {nativeName}, { ... });
             // for incomplete:
             // union { ... };
+            if (generateCompleteFile) {
+                sb.append("PNI_PACK(");
+            }
             if (isUnion()) {
-                sb.append("union ");
+                sb.append("union");
             } else {
-                sb.append("struct ");
+                sb.append("struct");
             }
             if (generateCompleteFile) {
-                if (typedef()) {
-                    sb.append("PNI_DUMMY_");
-                }
-                sb.append(nativeName()).append(" ");
+                sb.append(", ").append(nativeName()).append(", ");
+            } else {
+                sb.append(" ");
             }
             sb.append("{\n");
             for (var f : fields) {
@@ -708,7 +707,7 @@ public class AstClass {
             }
             Utils.appendIndent(sb, indent).append("}");
             if (generateCompleteFile) {
-                sb.append(" PNI_PACKED");
+                sb.append(")");
             }
             sb.append(";\n");
         }
