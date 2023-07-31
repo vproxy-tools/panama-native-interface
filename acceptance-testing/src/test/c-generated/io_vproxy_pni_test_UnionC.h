@@ -6,8 +6,8 @@
 extern "C" {
 #endif
 
-union PNI_DUMMY_UnionC;
-typedef union PNI_DUMMY_UnionC UnionC;
+union UnionC;
+typedef union UnionC UnionC;
 
 #ifdef __cplusplus
 }
@@ -20,13 +20,13 @@ typedef union PNI_DUMMY_UnionC UnionC;
 extern "C" {
 #endif
 
-union PNI_DUMMY_UnionC {
+PNI_PACK(union, UnionC, {
     int32_t n;
     int64_t l;
-} PNI_PACKED;
+});
 
 #ifdef __cplusplus
 }
 #endif
 #endif // _Included_io_vproxy_pni_test_UnionC
-// sha256:f1c27eafe30ca0d2e16849f8767d4c8014336124325c92098e4ad4ef12a3ca0d
+// sha256:daacd9155cb56d5356447139013a7606aa0c5a64e01e87fb22d3f774e5ce77b9

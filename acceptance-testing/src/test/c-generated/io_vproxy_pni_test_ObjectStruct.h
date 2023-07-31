@@ -6,8 +6,8 @@
 extern "C" {
 #endif
 
-struct PNI_DUMMY_ObjectStruct;
-typedef struct PNI_DUMMY_ObjectStruct ObjectStruct;
+struct ObjectStruct;
+typedef struct ObjectStruct ObjectStruct;
 
 #ifdef __cplusplus
 }
@@ -20,12 +20,12 @@ typedef struct PNI_DUMMY_ObjectStruct ObjectStruct;
 extern "C" {
 #endif
 
-struct PNI_DUMMY_ObjectStruct {
+PNI_PACK(struct, ObjectStruct, {
     char * str;
     char lenStr[16];
     void * seg;
     PNIBuf buf;
-} PNI_PACKED;
+});
 
 JNIEXPORT int JNICALL Java_io_vproxy_pni_test_ObjectStruct_func1(PNIEnv_void * env, ObjectStruct * self, char * str, char * str2, void * seg, PNIBuf * buf);
 JNIEXPORT int JNICALL Java_io_vproxy_pni_test_ObjectStruct_retrieveStr(PNIEnv_pointer * env, ObjectStruct * self);
@@ -39,4 +39,4 @@ JNIEXPORT int JNICALL Java_io_vproxy_pni_test_ObjectStruct_checkPointerSetToNull
 }
 #endif
 #endif // _Included_io_vproxy_pni_test_ObjectStruct
-// sha256:091a141afd755e39188af7848bb4880394a9bed15910bafb9e0d79cdee81a077
+// sha256:372fae39ea30ba2b3df88fdd297dd1256ce62343d56f0cd2a5ed902921df25f2

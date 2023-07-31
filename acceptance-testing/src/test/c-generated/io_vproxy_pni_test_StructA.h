@@ -6,8 +6,8 @@
 extern "C" {
 #endif
 
-struct PNI_DUMMY_StructA;
-typedef struct PNI_DUMMY_StructA StructA;
+struct StructA;
+typedef struct StructA StructA;
 
 #ifdef __cplusplus
 }
@@ -23,12 +23,12 @@ typedef struct PNI_DUMMY_StructA StructA;
 extern "C" {
 #endif
 
-struct PNI_DUMMY_StructA {
+PNI_PACK(struct, StructA, {
     StructB b;
     UnionC c;
     UnionC * cPointer;
     StructD d;
-} PNI_PACKED;
+});
 
 JNIEXPORT int JNICALL Java_io_vproxy_pni_test_StructA_bbb(PNIEnv_void * env, StructA * self, StructB * b);
 JNIEXPORT int JNICALL Java_io_vproxy_pni_test_StructA_ccc(PNIEnv_void * env, StructA * self, UnionC * c);
@@ -41,4 +41,4 @@ JNIEXPORT int JNICALL Java_io_vproxy_pni_test_StructA_retrieveCPointer(PNIEnv_po
 }
 #endif
 #endif // _Included_io_vproxy_pni_test_StructA
-// sha256:7263a1d79d96b2a94da93c92ed77743c8545d0a89fabcfbf68d493f14100f3bc
+// sha256:bd6d0c162105eb55767d13c06be5f44d1995640cb1fa89b9cea332bfcbf94848

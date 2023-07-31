@@ -6,8 +6,8 @@
 extern "C" {
 #endif
 
-struct PNI_DUMMY_StructB;
-typedef struct PNI_DUMMY_StructB StructB;
+struct StructB;
+typedef struct StructB StructB;
 
 #ifdef __cplusplus
 }
@@ -23,7 +23,7 @@ typedef struct PNI_DUMMY_StructB StructB;
 extern "C" {
 #endif
 
-struct PNI_DUMMY_StructB {
+PNI_PACK(struct, StructB, {
     int32_t i; /* padding */ uint64_t :32;
     UnionC c;
     int64_t l;
@@ -32,10 +32,10 @@ struct PNI_DUMMY_StructB {
         int32_t n;
         void * seg;
     };
-} PNI_PACKED;
+});
 
 #ifdef __cplusplus
 }
 #endif
 #endif // _Included_io_vproxy_pni_test_StructB
-// sha256:d92d86c75df3b78cb71b107ece0db444fbdc4646f913cb7c2a9234258f4e8d67
+// sha256:6f3bd10c063a680dc8eb8d90a60d57b4de47c2ac9a1ed17fdb67bc4694b79ad1

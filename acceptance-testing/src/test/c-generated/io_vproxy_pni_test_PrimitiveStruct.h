@@ -6,8 +6,8 @@
 extern "C" {
 #endif
 
-struct PNI_DUMMY_PrimitiveStruct;
-typedef struct PNI_DUMMY_PrimitiveStruct PrimitiveStruct;
+struct PrimitiveStruct;
+typedef struct PrimitiveStruct PrimitiveStruct;
 
 #ifdef __cplusplus
 }
@@ -20,7 +20,7 @@ typedef struct PNI_DUMMY_PrimitiveStruct PrimitiveStruct;
 extern "C" {
 #endif
 
-struct PNI_DUMMY_PrimitiveStruct {
+PNI_PACK(struct, PrimitiveStruct, {
     int8_t aByte;
     uint8_t unsignedByte;
     uint16_t aChar; /* padding */ uint64_t :32;
@@ -57,7 +57,7 @@ struct PNI_DUMMY_PrimitiveStruct {
     PNIBuf shortArrayPointer;
     PNIBuf unsignedShortArrayPointer;
     PNIBuf booleanArrayPointer;
-} PNI_PACKED;
+});
 
 JNIEXPORT int JNICALL Java_io_vproxy_pni_test_PrimitiveStruct_func1(PNIEnv_void * env, PrimitiveStruct * self, int8_t aByte, uint8_t unsignedByte, int32_t aInt, uint32_t unsignedInt, int64_t aLong, uint64_t unsignedLong, int16_t aShort, uint16_t unsignedShort);
 JNIEXPORT int JNICALL Java_io_vproxy_pni_test_PrimitiveStruct_func2(PNIEnv_void * env, PrimitiveStruct * self, uint16_t aChar, double aDouble, float aFloat, uint8_t aBoolean);
@@ -106,4 +106,4 @@ JNIEXPORT int JNICALL Java_io_vproxy_pni_test_PrimitiveStruct_checkPointerSetToN
 }
 #endif
 #endif // _Included_io_vproxy_pni_test_PrimitiveStruct
-// sha256:0f14c15cfcd6032d88f632074a7462587d24dbb6dbee8e4b71361961006960fb
+// sha256:20f74fb58231c326785cb0d92a9251c4b58204daeac65b95987496ef2137df69

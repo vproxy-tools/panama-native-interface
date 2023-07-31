@@ -6,8 +6,8 @@
 extern "C" {
 #endif
 
-struct PNI_DUMMY_StructD;
-typedef struct PNI_DUMMY_StructD StructD;
+struct StructD;
+typedef struct StructD StructD;
 
 #ifdef __cplusplus
 }
@@ -20,13 +20,13 @@ typedef struct PNI_DUMMY_StructD StructD;
 extern "C" {
 #endif
 
-struct PNI_DUMMY_StructD {
+PNI_PACK(struct, StructD, {
     int32_t n; /* padding */ uint64_t :32;
     double d;
-} PNI_PACKED;
+});
 
 #ifdef __cplusplus
 }
 #endif
 #endif // _Included_io_vproxy_pni_test_StructD
-// sha256:3d37b21c87dcefbe81013afb13b13081ed2963ed66b99b37ad33e67800aa8a6f
+// sha256:1ebc7df07907db8196fa56ad5a1824d655a521f99a4dc6c0a53273fdf03d7ec7

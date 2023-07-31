@@ -6,8 +6,8 @@
 extern "C" {
 #endif
 
-struct PNI_DUMMY_mbuf_t;
-typedef struct PNI_DUMMY_mbuf_t mbuf_t;
+struct mbuf_t;
+typedef struct mbuf_t mbuf_t;
 
 #ifdef __cplusplus
 }
@@ -21,7 +21,7 @@ typedef struct PNI_DUMMY_mbuf_t mbuf_t;
 extern "C" {
 #endif
 
-struct PNI_DUMMY_mbuf_t {
+PNI_PACK(struct, mbuf_t, {
     void * bufAddr;
     uint32_t pktLen;
     uint32_t pktOff;
@@ -30,10 +30,10 @@ struct PNI_DUMMY_mbuf_t {
         void * userdata;
         uint64_t udata64;
     };
-} PNI_PACKED;
+});
 
 #ifdef __cplusplus
 }
 #endif
 #endif // _Included_io_vproxy_pni_sample_MBuf
-// sha256:003783af0025287b606df093ab370f8753e55b32ef105e4a44cbabacfa6d45ed
+// sha256:18ab3393201a6eb127251a0e9013e2877b939b538292eb6d197c550113094582
