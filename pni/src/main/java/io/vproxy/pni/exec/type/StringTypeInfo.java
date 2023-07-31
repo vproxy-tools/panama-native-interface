@@ -134,8 +134,10 @@ public class StringTypeInfo extends BuiltInReferenceTypeInfo {
 
     @Override
     public void returnValueFormatting(StringBuilder sb, int indent, VarOpts opts) {
-        Utils.appendIndent(sb, indent)
-            .append("var RESULT = ENV.returnPointer();\n");
+        if (!opts.isCritical()) {
+            Utils.appendIndent(sb, indent)
+                .append("var RESULT = ENV.returnPointer();\n");
+        }
         Utils.appendIndent(sb, indent)
             .append("return RESULT == null ? null : RESULT.reinterpret(Integer.MAX_VALUE).getUtf8String(0);\n");
     }

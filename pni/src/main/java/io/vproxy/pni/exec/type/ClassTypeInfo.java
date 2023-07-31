@@ -145,8 +145,10 @@ public class ClassTypeInfo extends TypeInfo {
 
     @Override
     public void returnValueFormatting(StringBuilder sb, int indent, VarOpts opts) {
-        Utils.appendIndent(sb, indent)
-            .append("var RESULT = ENV.returnPointer();\n");
+        if (!opts.isCritical()) {
+            Utils.appendIndent(sb, indent)
+                .append("var RESULT = ENV.returnPointer();\n");
+        }
         Utils.appendIndent(sb, indent)
             .append("return RESULT == null ? null : new ").append(getClazz().fullName()).append("(RESULT);\n");
     }

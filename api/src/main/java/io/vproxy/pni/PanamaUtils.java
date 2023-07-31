@@ -38,6 +38,30 @@ public class PanamaUtils {
         return h;
     }
 
+    public static MethodHandle lookupPNICriticalFunction(Class returnType, String functionName, Class... parameterTypes) {
+        return lookupPNICriticalFunction(true, returnType, functionName, parameterTypes);
+    }
+
+    public static MethodHandle lookupPNICriticalFunction(boolean isTrivial, Class returnType, String functionName, Class... parameterTypes) {
+        var nativeLinker = Linker.nativeLinker();
+        var loaderLookup = SymbolLookup.loaderLookup();
+        var stdlibLookup = nativeLinker.defaultLookup();
+        var h = loaderLookup.find(functionName)
+            .or(() -> stdlibLookup.find(functionName))
+            .map(m -> {
+                if (isTrivial) {
+                    return nativeLinker.downcallHandle(m, buildCriticalFunctionDescriptor(returnType, parameterTypes), Linker.Option.isTrivial());
+                } else {
+                    return nativeLinker.downcallHandle(m, buildCriticalFunctionDescriptor(returnType, parameterTypes));
+                }
+            })
+            .orElse(null);
+        if (h == null) {
+            throw new UnsatisfiedLinkError(functionName + Arrays.stream(parameterTypes).map(Class::getSimpleName).collect(Collectors.joining(", ", "(", ")")));
+        }
+        return h;
+    }
+
     private static FunctionDescriptor buildFunctionDescriptor(Class[] parameterTypes) {
         MemoryLayout[] layouts = new MemoryLayout[parameterTypes.length + 1];
         layouts[0] = ValueLayout.ADDRESS; // JEnv*
@@ -45,6 +69,18 @@ public class PanamaUtils {
             layouts[i + 1] = buildParameterMemoryLayout(parameterTypes[i]);
         }
         return FunctionDescriptor.of(ValueLayout.JAVA_INT, layouts);
+    }
+
+    private static FunctionDescriptor buildCriticalFunctionDescriptor(Class returnType, Class[] parameterTypes) {
+        MemoryLayout[] layouts = new MemoryLayout[parameterTypes.length];
+        for (int i = 0; i < parameterTypes.length; ++i) {
+            layouts[i] = buildParameterMemoryLayout(parameterTypes[i]);
+        }
+        if (returnType == void.class) {
+            return FunctionDescriptor.ofVoid(layouts);
+        } else {
+            return FunctionDescriptor.of(buildParameterMemoryLayout(returnType), layouts);
+        }
     }
 
     private static MemoryLayout buildParameterMemoryLayout(Class type) {

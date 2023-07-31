@@ -1,6 +1,5 @@
 package io.vproxy.pni.exec.ast;
 
-import io.vproxy.pni.exec.internal.PointerInfo;
 import io.vproxy.pni.exec.internal.Utils;
 import io.vproxy.pni.exec.internal.VarOpts;
 import io.vproxy.pni.exec.type.*;
@@ -80,6 +79,9 @@ public class AstMethod {
         }
         for (var p : params) {
             p.validate(path, errors);
+        }
+        if (critical() && !throwTypes.isEmpty()) {
+            errors.add(path + ": cannot throw exceptions for Critical methods");
         }
         if (throwTypeRefs.size() != throwTypes.size()) {
             errors.add(path + ": throwTypeRefs mismatch throwTypes");
@@ -161,7 +163,7 @@ public class AstMethod {
         var name = Utils.getName(annos);
         if (name != null)
             return name;
-        return "Java_" + classUnderlinedName + "_" + this.name;
+        return (critical() ? "JavaCritical_" : "Java_") + classUnderlinedName + "_" + this.name;
     }
 
     public void generateC(StringBuilder sb, int indent, String classUnderlinedName, String classNativeTypeName) {
@@ -187,54 +189,86 @@ public class AstMethod {
 
     private void generateC0(StringBuilder sb, int indent, String classUnderlinedName, String classNativeTypeName) {
         Utils.appendIndent(sb, indent)
-            .append("JNIEXPORT int JNICALL ").append(nativeName(classUnderlinedName))
-            .append("(PNIEnv_");
-        String returnTypeExtraType = null;
-        if (returnTypeRef instanceof IntTypeInfo) {
-            sb.append("int");
-        } else if (returnTypeRef instanceof LongTypeInfo) {
-            sb.append("long");
-        } else if (returnTypeRef instanceof ShortTypeInfo) {
-            sb.append("short");
-        } else if (returnTypeRef instanceof ByteTypeInfo) {
-            sb.append("byte");
-        } else if (returnTypeRef instanceof FloatTypeInfo) {
-            sb.append("float");
-        } else if (returnTypeRef instanceof DoubleTypeInfo) {
-            sb.append("double");
-        } else if (returnTypeRef instanceof BooleanTypeInfo) {
-            sb.append("bool");
-        } else if (returnTypeRef instanceof CharTypeInfo) {
-            sb.append("char");
-        } else if (returnTypeRef instanceof VoidTypeInfo) {
-            sb.append("void");
+            .append("JNIEXPORT ");
+        if (critical()) {
+            sb.append(returnTypeRef.nativeReturnType(varOptsForReturn()));
         } else {
-            sb.append("pointer");
-            if (returnTypeRef.sizeForUserAllocatorForNativeCallExtraArgument(varOptsForReturn()) != null
-                || returnTypeRef.sizeForConfinedArenaForNativeCallExtraArgument(varOptsForReturn()) != null) {
-                returnTypeExtraType = returnTypeRef.nativeParamType(null, varOptsForReturn());
+            sb.append("int");
+        }
+        sb.append(" JNICALL ").append(nativeName(classUnderlinedName)).append("(");
+        if (!critical()) {
+            sb.append("PNIEnv_");
+            if (returnTypeRef instanceof IntTypeInfo) {
+                sb.append("int");
+            } else if (returnTypeRef instanceof LongTypeInfo) {
+                sb.append("long");
+            } else if (returnTypeRef instanceof ShortTypeInfo) {
+                sb.append("short");
+            } else if (returnTypeRef instanceof ByteTypeInfo) {
+                sb.append("byte");
+            } else if (returnTypeRef instanceof FloatTypeInfo) {
+                sb.append("float");
+            } else if (returnTypeRef instanceof DoubleTypeInfo) {
+                sb.append("double");
+            } else if (returnTypeRef instanceof BooleanTypeInfo) {
+                sb.append("bool");
+            } else if (returnTypeRef instanceof CharTypeInfo) {
+                sb.append("char");
+            } else if (returnTypeRef instanceof VoidTypeInfo) {
+                sb.append("void");
+            } else {
+                sb.append("pointer");
+            }
+            sb.append(" * env");
+            if (classNativeTypeName != null || !params.isEmpty()) {
+                sb.append(", ");
             }
         }
-        sb.append(" * env");
         if (classNativeTypeName != null) {
-            sb.append(", ").append(classNativeTypeName).append(" * self");
+            sb.append(classNativeTypeName).append(" * self");
+            if (!params.isEmpty()) {
+                sb.append(", ");
+            }
         }
+        String returnTypeExtraType = null;
+        if (!(returnTypeRef instanceof PrimitiveTypeInfo) &&
+            (returnTypeRef.sizeForUserAllocatorForNativeCallExtraArgument(varOptsForReturn()) != null
+             || returnTypeRef.sizeForConfinedArenaForNativeCallExtraArgument(varOptsForReturn()) != null)) {
+            returnTypeExtraType = returnTypeRef.nativeParamType(null, varOptsForReturn());
+        }
+        var isFirst = true;
         for (var p : params) {
-            sb.append(", ");
+            if (isFirst) {
+                isFirst = false;
+            } else {
+                sb.append(", ");
+            }
             p.generateC(sb, 0);
         }
         if (returnTypeExtraType != null) {
-            sb.append(", ").append(returnTypeExtraType).append(" return_");
+            if (!critical() || (classNativeTypeName != null || !params.isEmpty())) {
+                sb.append(", ");
+            }
+            sb.append(returnTypeExtraType).append(" return_");
         }
         sb.append(")");
     }
 
     public void generateJava(StringBuilder sb, int indent, String classUnderlinedName, boolean needSelf) {
-        Utils.appendIndent(sb, indent).append("private final MethodHandle ").append(name).append(" = PanamaUtils.lookupPNIFunction(");
+        Utils.appendIndent(sb, indent).append("private final MethodHandle ").append(name).append(" = PanamaUtils.");
+        if (critical()) {
+            sb.append("lookupPNICriticalFunction(");
+        } else {
+            sb.append("lookupPNIFunction(");
+        }
         if (trivial()) {
             sb.append("true, ");
         } else {
             sb.append("false, ");
+        }
+        if (critical()) {
+            sb.append(returnTypeRef.methodHandleType(varOptsForReturn()));
+            sb.append(", ");
         }
         sb.append("\"").append(nativeName(classUnderlinedName)).append("\"");
         if (needSelf) {
@@ -255,10 +289,21 @@ public class AstMethod {
 
         Utils.appendIndent(sb, indent).append("public ")
             .append(returnTypeRef.javaType(varOptsForReturn()))
-            .append(" ").append(name).append("(PNIEnv ENV");
+            .append(" ").append(name).append("(");
+        if (!critical()) {
+            sb.append("PNIEnv ENV");
+            if (!params.isEmpty()) {
+                sb.append(", ");
+            }
+        }
         var paramNeedsAllocator = returnArenaSize != null;
+        var isFirst = true;
         for (var p : params) {
-            sb.append(", ");
+            if (isFirst) {
+                isFirst = false;
+            } else {
+                sb.append(", ");
+            }
             p.generateParam(sb, 0);
             var paramOpts = p.paramOpts();
             if (paramOpts.isDependOnAllocator()) {
@@ -266,12 +311,15 @@ public class AstMethod {
             }
         }
         if (returnAllocatorSize != null) {
-            sb.append(", Allocator ALLOCATOR");
+            if (!critical() || !params.isEmpty()) {
+                sb.append(", ");
+            }
+            sb.append("Allocator ALLOCATOR");
         }
         sb.append(")");
         if (!throwTypeRefs.isEmpty()) {
             sb.append(" throws ");
-            var isFirst = true;
+            isFirst = true;
             for (var t : throwTypeRefs) {
                 if (isFirst) {
                     isFirst = false;
@@ -282,29 +330,75 @@ public class AstMethod {
             }
         }
         sb.append(" {\n");
-        Utils.appendIndent(sb, indent + 4).append("ENV.reset();\n");
+        if (!critical()) {
+            Utils.appendIndent(sb, indent + 4).append("ENV.reset();\n");
+        }
         int invocationIndent = indent + 4;
         if (paramNeedsAllocator) {
             Utils.appendIndent(sb, indent + 4).append("try (var ARENA = Arena.ofConfined()) {\n");
             invocationIndent += 4;
         }
-        Utils.appendIndent(sb, invocationIndent)
-            .append("int ERR;\n");
+        if (critical()) {
+            if (!(returnTypeRef instanceof VoidTypeInfo)) {
+                Utils.appendIndent(sb, invocationIndent);
+                if (returnTypeRef instanceof PrimitiveTypeInfo) {
+                    sb.append(returnTypeRef.javaType(varOptsForReturn()));
+                } else {
+                    sb.append("MemorySegment");
+                }
+                sb.append(" RESULT;\n");
+            }
+        } else {
+            Utils.appendIndent(sb, invocationIndent).append("int ERR;\n");
+        }
         Utils.appendIndent(sb, invocationIndent)
             .append("try {\n");
-        Utils.appendIndent(sb, invocationIndent + 4)
-            .append("ERR = (int) this.").append(name).append(".invokeExact(ENV.MEMORY");
-        if (needSelf) {
-            sb.append(", MEMORY");
+        Utils.appendIndent(sb, invocationIndent + 4);
+        if (critical()) {
+            if (!(returnTypeRef instanceof VoidTypeInfo)) {
+                sb.append("RESULT = (");
+                if (returnTypeRef instanceof PrimitiveTypeInfo) {
+                    sb.append(returnTypeRef.javaType(varOptsForReturn()));
+                } else {
+                    sb.append("MemorySegment");
+                }
+                sb.append(") ");
+            }
+        } else {
+            sb.append("ERR = (int) ");
         }
+        sb.append("this.").append(name).append(".invokeExact(");
+        if (!critical()) {
+            sb.append("ENV.MEMORY");
+            if (!params.isEmpty() || needSelf) {
+                sb.append(", ");
+            }
+        }
+        if (needSelf) {
+            sb.append("MEMORY");
+            if (!params.isEmpty()) {
+                sb.append(", ");
+            }
+        }
+        isFirst = true;
         for (var p : params) {
-            sb.append(", ");
+            if (isFirst) {
+                isFirst = false;
+            } else {
+                sb.append(", ");
+            }
             p.generateConvert(sb, 0);
         }
         if (returnAllocatorSize != null) {
-            sb.append(", ALLOCATOR.allocate(").append(returnAllocatorSize).append(")");
+            if (!critical() || needSelf || !params.isEmpty()) {
+                sb.append(", ");
+            }
+            sb.append("ALLOCATOR.allocate(").append(returnAllocatorSize).append(")");
         } else if (returnArenaSize != null) {
-            sb.append(", ARENA.allocate(").append(returnArenaSize).append(")");
+            if (!critical() || needSelf || !params.isEmpty()) {
+                sb.append(", ");
+            }
+            sb.append("ARENA.allocate(").append(returnArenaSize).append(")");
         }
         sb.append(");\n");
         Utils.appendIndent(sb, invocationIndent)
@@ -313,15 +407,21 @@ public class AstMethod {
             .append("throw PanamaUtils.convertInvokeExactException(THROWABLE);\n");
         Utils.appendIndent(sb, invocationIndent)
             .append("}\n");
-        Utils.appendIndent(sb, invocationIndent)
-            .append("if (ERR != 0) {\n");
-        for (var t : throwTypeRefs) {
-            Utils.appendIndent(sb, invocationIndent + 4)
-                .append("ENV.throwIf(").append(t.name()).append(".class);\n");
+        if (!critical()) {
+            Utils.appendIndent(sb, invocationIndent)
+                .append("if (ERR != 0) {\n");
+            for (var t : throwTypeRefs) {
+                Utils.appendIndent(sb, invocationIndent + 4)
+                    .append("ENV.throwIf(").append(t.name()).append(".class);\n");
+            }
+            Utils.appendIndent(sb, invocationIndent + 4).append("ENV.throwLast();\n");
+            Utils.appendIndent(sb, invocationIndent).append("}\n");
         }
-        Utils.appendIndent(sb, invocationIndent + 4).append("ENV.throwLast();\n");
-        Utils.appendIndent(sb, invocationIndent).append("}\n");
         if (!(returnTypeRef instanceof VoidTypeInfo)) {
+            if (critical() && !(returnTypeRef instanceof PrimitiveTypeInfo)) {
+                Utils.appendIndent(sb, invocationIndent)
+                    .append("if (RESULT.address() == 0) RESULT = null;");
+            }
             returnTypeRef.returnValueFormatting(sb, invocationIndent, varOptsForReturn());
         }
         if (paramNeedsAllocator) {
@@ -331,11 +431,15 @@ public class AstMethod {
     }
 
     private VarOpts varOptsForReturn() {
-        return VarOpts.of(false, PointerInfo.ofMethod(false), -1);
+        return VarOpts.ofReturn(critical());
     }
 
     private boolean trivial() {
         return annos.stream().anyMatch(a -> a.typeRef != null && a.typeRef.name().equals(TrivialClassName));
+    }
+
+    private boolean critical() {
+        return annos.stream().anyMatch(a -> a.typeRef != null && a.typeRef.name().equals(CriticalClassName));
     }
 
     public String getImplC() {

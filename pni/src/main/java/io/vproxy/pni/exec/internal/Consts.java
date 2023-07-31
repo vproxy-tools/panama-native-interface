@@ -7,6 +7,7 @@ public class Consts {
     public static final String pniBasePackage = "io.vproxy.pni";
     public static final String pniAnnoPackage = pniBasePackage + ".annotation";
     public static final String AlignClassName = pniAnnoPackage + ".Align";
+    public static final String CriticalClassName = pniAnnoPackage + ".Critical";
     public static final String FunctionClassName = pniAnnoPackage + ".Function";
     public static final String ImplClassName = pniAnnoPackage + ".Impl";
     public static final String IncludeClassName = pniAnnoPackage + ".Include";

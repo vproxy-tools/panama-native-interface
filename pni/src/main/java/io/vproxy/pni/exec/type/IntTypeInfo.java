@@ -48,6 +48,10 @@ public class IntTypeInfo extends PrimitiveTypeInfo {
 
     @Override
     public void returnValueFormatting(StringBuilder sb, int indent, VarOpts opts) {
+        if (opts.isCritical()) {
+            Utils.appendIndent(sb, indent).append("return RESULT;\n");
+            return;
+        }
         Utils.appendIndent(sb, indent).append("return ENV.returnInt();\n");
     }
 

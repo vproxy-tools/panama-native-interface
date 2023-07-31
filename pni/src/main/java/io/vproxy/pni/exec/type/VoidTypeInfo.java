@@ -20,7 +20,7 @@ public class VoidTypeInfo extends TypeInfo {
 
     @Override
     public String nativeType(String fieldName, VarOpts opts) {
-        throw new UnsupportedOperationException();
+        return "void";
     }
 
     @Override
@@ -55,7 +55,7 @@ public class VoidTypeInfo extends TypeInfo {
 
     @Override
     public String methodHandleType(VarOpts opts) {
-        throw new UnsupportedOperationException();
+        return "void.class";
     }
 
     @Override

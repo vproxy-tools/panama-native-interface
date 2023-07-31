@@ -57,6 +57,10 @@ public abstract class TypeInfo {
         return nativeType(fieldName, opts);
     }
 
+    public String nativeReturnType(VarOpts opts) {
+        return nativeParamType(null, opts);
+    }
+
     abstract public long nativeMemorySize(VarOpts opts);
 
     abstract public long nativeMemoryAlign(VarOpts opts);
