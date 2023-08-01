@@ -23,10 +23,23 @@ public class TestPrimitiveStruct {
 
     @Test
     public void func1() {
+        func1(0);
+    }
+
+    @Test
+    public void func1Critical() {
+        func1(1);
+    }
+
+    private void func1(int round) {
         try (var arena = Arena.ofConfined()) {
             var env = new PNIEnv(arena);
             var s = new PrimitiveStruct(Allocator.of(arena));
-            s.func1(env, (byte) -10, (byte) -10, -20, -20, -30L, -30L, (short) -40, (short) -40);
+            if (round == 0) {
+                s.func1(env, (byte) -10, (byte) -10, -20, -20, -30L, -30L, (short) -40, (short) -40);
+            } else {
+                s.func1Critical((byte) -10, (byte) -10, -20, -20, -30L, -30L, (short) -40, (short) -40);
+            }
 
             assertEquals((byte) -10, s.getAByte());
             assertEquals((byte) -10, s.getUnsignedByte());
@@ -41,10 +54,23 @@ public class TestPrimitiveStruct {
 
     @Test
     public void func2() {
+        func2(0);
+    }
+
+    @Test
+    public void func2Critical() {
+        func2(1);
+    }
+
+    private void func2(int round) {
         try (var arena = Arena.ofConfined()) {
             var env = new PNIEnv(arena);
             var s = new PrimitiveStruct(Allocator.of(arena));
-            s.func2(env, 'a', 1.2, 12.8f, true);
+            if (round == 0) {
+                s.func2(env, 'a', 1.2, 12.8f, true);
+            } else {
+                s.func2Critical('a', 1.2, 12.8f, true);
+            }
 
             assertEquals('a', s.getAChar());
             assertEquals(1.2, s.getADouble(), 0);
@@ -62,6 +88,15 @@ public class TestPrimitiveStruct {
 
     @Test
     public void func3() {
+        func3(0);
+    }
+
+    @Test
+    public void func3Critical() {
+        func3(1);
+    }
+
+    private void func3(int round) {
         try (var arena = Arena.ofConfined()) {
             var allocator = Allocator.of(arena);
             var env = new PNIEnv(arena);
@@ -115,10 +150,17 @@ public class TestPrimitiveStruct {
                 }
             }
 
-            s.func3(env, byteBuf, unsignedByteBuf,
-                intArray, unsignedIntArray,
-                longArray, unsignedLongArray,
-                shortArray, unsignedShortArray);
+            if (round == 0) {
+                s.func3(env, byteBuf, unsignedByteBuf,
+                    intArray, unsignedIntArray,
+                    longArray, unsignedLongArray,
+                    shortArray, unsignedShortArray);
+            } else {
+                s.func3Critical(byteBuf, unsignedByteBuf,
+                    intArray, unsignedIntArray,
+                    longArray, unsignedLongArray,
+                    shortArray, unsignedShortArray);
+            }
 
             for (int i = 0; i < 5; ++i) {
                 var seg = s.getByteArray();
@@ -204,6 +246,15 @@ public class TestPrimitiveStruct {
 
     @Test
     public void func4() {
+        func4(0);
+    }
+
+    @Test
+    public void func4Critical() {
+        func4(1);
+    }
+
+    private void func4(int round) {
         try (var arena = Arena.ofConfined()) {
             var allocator = Allocator.of(arena);
             var env = new PNIEnv(arena);
@@ -234,7 +285,11 @@ public class TestPrimitiveStruct {
                 }
             }
 
-            s.func4(env, charArray, doubleArray, floatArray, boolArray);
+            if (round == 0) {
+                s.func4(env, charArray, doubleArray, floatArray, boolArray);
+            } else {
+                s.func4Critical(charArray, doubleArray, floatArray, boolArray);
+            }
 
             for (int i = 0; i < 5; ++i) {
                 var array = s.getCharArray();
@@ -287,60 +342,82 @@ public class TestPrimitiveStruct {
 
             s.setAByte((byte) 10);
             assertEquals((byte) 10, s.retrieveByte(env));
+            assertEquals((byte) 10, s.retrieveByteCritical());
             assertEquals((byte) 10, s.getAByte());
 
             s.setUnsignedByte((byte) 20);
             assertEquals((byte) 20, s.retrieveUnsignedByte(env));
+            assertEquals((byte) 20, s.retrieveUnsignedByteCritical());
             assertEquals((byte) 20, s.getUnsignedByte());
 
             s.setAChar('a');
             assertEquals('a', s.retrieveChar(env));
+            assertEquals('a', s.retrieveCharCritical());
             assertEquals('a', s.getAChar());
 
             s.setADouble(30.0);
             assertEquals(30.0, s.retrieveDouble(env), 0);
+            assertEquals(30.0, s.retrieveDoubleCritical(), 0);
             assertEquals(30.0, s.getADouble(), 0);
 
             s.setAFloat(40.0f);
             assertEquals(40.0f, s.retrieveFloat(env), 0);
+            assertEquals(40.0f, s.retrieveFloatCritical(), 0);
             assertEquals(40.0f, s.getAFloat(), 0);
 
             s.setAInt(50);
             assertEquals(50, s.retrieveInt(env));
+            assertEquals(50, s.retrieveIntCritical());
             assertEquals(50, s.getAInt());
 
             s.setUnsignedInt(60);
             assertEquals(60, s.retrieveUnsignedInt(env));
+            assertEquals(60, s.retrieveUnsignedIntCritical());
             assertEquals(60, s.getUnsignedInt());
 
             s.setALong(70);
             assertEquals(70, s.retrieveLong(env));
+            assertEquals(70, s.retrieveLongCritical());
             assertEquals(70, s.getALong());
 
             s.setUnsignedLong(80);
             assertEquals(80, s.retrieveUnsignedLong(env));
+            assertEquals(80, s.retrieveUnsignedLongCritical());
             assertEquals(80, s.getUnsignedLong());
 
             s.setAShort((short) 90);
             assertEquals((short) 90, s.retrieveShort(env));
+            assertEquals((short) 90, s.retrieveShortCritical());
             assertEquals((short) 90, s.getAShort());
 
             s.setUnsignedShort((short) 100);
             assertEquals((short) 100, s.retrieveUnsignedShort(env));
+            assertEquals((short) 100, s.retrieveUnsignedShortCritical());
             assertEquals((short) 100, s.getUnsignedShort());
 
             s.setABoolean(true);
             assertTrue(s.retrieveBoolean(env));
+            assertTrue(s.retrieveBooleanCritical());
             assertTrue(s.getABoolean());
 
             s.setABoolean(false);
             assertFalse(s.retrieveBoolean(env));
+            assertFalse(s.retrieveBooleanCritical());
             assertFalse(s.getABoolean());
         }
     }
 
     @Test
     public void arrays() {
+        arrays(0);
+    }
+
+    @Test
+    public void arraysCritical() {
+        arrays(1);
+    }
+
+    private void arrays(int round) {
         try (var arena = Arena.ofConfined()) {
             var allocator = Allocator.of(arena);
             var env = new PNIEnv(arena);
@@ -349,7 +426,7 @@ public class TestPrimitiveStruct {
             for (int i = 0; i < 5; ++i) {
                 s.getByteArray().set(ValueLayout.JAVA_BYTE, i, (byte) (10 + i));
             }
-            var byteArray = s.retrieveByteArray(env);
+            var byteArray = round == 0 ? s.retrieveByteArray(env) : s.retrieveByteArrayCritical();
             assertEquals(5, byteArray.byteSize());
             for (int i = 0; i < 5; ++i) {
                 assertEquals((byte) (10 + i), byteArray.get(ValueLayout.JAVA_BYTE, i));
@@ -358,7 +435,7 @@ public class TestPrimitiveStruct {
             for (int i = 0; i < 6; ++i) {
                 s.getUnsignedByteArray().set(ValueLayout.JAVA_BYTE, i, (byte) (20 + i));
             }
-            var unsignedByteArray = s.retrieveUnsignedByteArray(env);
+            var unsignedByteArray = round == 0 ? s.retrieveUnsignedByteArray(env) : s.retrieveUnsignedByteArrayCritical();
             assertEquals(6, unsignedByteArray.byteSize());
             for (int i = 0; i < 6; ++i) {
                 assertEquals((byte) (20 + i), unsignedByteArray.get(ValueLayout.JAVA_BYTE, i));
@@ -367,7 +444,7 @@ public class TestPrimitiveStruct {
             for (int i = 0; i < 7; ++i) {
                 s.getCharArray().set(i, (char) ('a' + i));
             }
-            var charArray = s.retrieveCharArray(env);
+            var charArray = round == 0 ? s.retrieveCharArray(env) : s.retrieveCharArrayCritical();
             assertEquals(7, charArray.length());
             for (int i = 0; i < 7; ++i) {
                 assertEquals((char) ('a' + i), charArray.get(i));
@@ -376,7 +453,7 @@ public class TestPrimitiveStruct {
             for (int i = 0; i < 8; ++i) {
                 s.getDoubleArray().set(i, 30.0 + i);
             }
-            var doubleArray = s.retrieveDoubleArray(env);
+            var doubleArray = round == 0 ? s.retrieveDoubleArray(env) : s.retrieveDoubleArrayCritical();
             assertEquals(8, doubleArray.length());
             for (int i = 0; i < 8; ++i) {
                 assertEquals(30.0 + i, doubleArray.get(i), 0);
@@ -385,7 +462,7 @@ public class TestPrimitiveStruct {
             for (int i = 0; i < 9; ++i) {
                 s.getFloatArray().set(i, 40.0f + i);
             }
-            var floatArray = s.retrieveFloatArray(env);
+            var floatArray = round == 0 ? s.retrieveFloatArray(env) : s.retrieveFloatArrayCritical();
             assertEquals(9, floatArray.length());
             for (int i = 0; i < 9; ++i) {
                 assertEquals(40.0 + i, floatArray.get(i), 0);
@@ -394,7 +471,7 @@ public class TestPrimitiveStruct {
             for (int i = 0; i < 10; ++i) {
                 s.getIntArray().set(i, 50 + i);
             }
-            var intArray = s.retrieveIntArray(env);
+            var intArray = round == 0 ? s.retrieveIntArray(env) : s.retrieveIntArrayCritical();
             assertEquals(10, intArray.length());
             for (int i = 0; i < 10; ++i) {
                 assertEquals(50 + i, intArray.get(i));
@@ -403,7 +480,7 @@ public class TestPrimitiveStruct {
             for (int i = 0; i < 11; ++i) {
                 s.getUnsignedIntArray().set(i, 60 + i);
             }
-            var unsignedIntArray = s.retrieveUnsignedIntArray(env);
+            var unsignedIntArray = round == 0 ? s.retrieveUnsignedIntArray(env) : s.retrieveUnsignedIntArrayCritical();
             assertEquals(11, unsignedIntArray.length());
             for (int i = 0; i < 11; ++i) {
                 assertEquals(60 + i, unsignedIntArray.get(i));
@@ -412,7 +489,7 @@ public class TestPrimitiveStruct {
             for (int i = 0; i < 12; ++i) {
                 s.getLongArray().set(i, 70L + i);
             }
-            var longArray = s.retrieveLongArray(env);
+            var longArray = round == 0 ? s.retrieveLongArray(env) : s.retrieveLongArrayCritical();
             assertEquals(12, longArray.length());
             for (int i = 0; i < 12; ++i) {
                 assertEquals(70 + i, longArray.get(i));
@@ -421,7 +498,7 @@ public class TestPrimitiveStruct {
             for (int i = 0; i < 13; ++i) {
                 s.getUnsignedLongArray().set(i, 80L + i);
             }
-            var unsignedLongArray = s.retrieveUnsignedLongArray(env);
+            var unsignedLongArray = round == 0 ? s.retrieveUnsignedLongArray(env) : s.retrieveUnsignedLongArrayCritical();
             assertEquals(13, unsignedLongArray.length());
             for (int i = 0; i < 13; ++i) {
                 assertEquals(80 + i, unsignedLongArray.get(i));
@@ -430,7 +507,7 @@ public class TestPrimitiveStruct {
             for (int i = 0; i < 14; ++i) {
                 s.getShortArray().set(i, (short) (90 + i));
             }
-            var shortArray = s.retrieveShortArray(env);
+            var shortArray = round == 0 ? s.retrieveShortArray(env) : s.retrieveShortArrayCritical();
             assertEquals(14, shortArray.length());
             for (int i = 0; i < 14; ++i) {
                 assertEquals((short) (90 + i), shortArray.get(i));
@@ -439,7 +516,7 @@ public class TestPrimitiveStruct {
             for (int i = 0; i < 15; ++i) {
                 s.getUnsignedShortArray().set(i, (short) (100 + i));
             }
-            var unsignedShortArray = s.retrieveUnsignedShortArray(env);
+            var unsignedShortArray = round == 0 ? s.retrieveUnsignedShortArray(env) : s.retrieveUnsignedShortArrayCritical();
             assertEquals(15, unsignedShortArray.length());
             for (int i = 0; i < 15; ++i) {
                 assertEquals((short) (100 + i), unsignedShortArray.get(i));
@@ -448,7 +525,7 @@ public class TestPrimitiveStruct {
             for (int i = 0; i < 16; ++i) {
                 s.getBooleanArray().set(i, i % 2 == 0);
             }
-            var booleanArray = s.retrieveBooleanArray(env);
+            var booleanArray = round == 0 ? s.retrieveBooleanArray(env) : s.retrieveBooleanArrayCritical();
             assertEquals(16, booleanArray.length());
             for (int i = 0; i < 16; ++i) {
                 assertEquals(i % 2 == 0, booleanArray.get(i));
@@ -458,6 +535,15 @@ public class TestPrimitiveStruct {
 
     @Test
     public void arrayPointer() {
+        arrayPointer(0);
+    }
+
+    @Test
+    public void arrayPointerCritical() {
+        arrayPointer(1);
+    }
+
+    private void arrayPointer(int round) {
         try (var arena = Arena.ofConfined()) {
             var allocator = Allocator.of(arena);
             var env = new PNIEnv(arena);
@@ -471,7 +557,7 @@ public class TestPrimitiveStruct {
                     array.set(ValueLayout.JAVA_BYTE, i, (byte) (10 + i));
                 }
                 s.setByteArrayPointer(array);
-                MemorySegment retArray = s.retrieveByteArrayPointer(env);
+                MemorySegment retArray = round == 0 ? s.retrieveByteArrayPointer(env) : s.retrieveByteArrayPointerCritical();
                 assertEquals(5, retArray.byteSize());
                 for (int i = 0; i < 5; ++i) {
                     assertEquals((byte) (10 + i), retArray.get(ValueLayout.JAVA_BYTE, i));
@@ -485,7 +571,7 @@ public class TestPrimitiveStruct {
                     array.set(ValueLayout.JAVA_BYTE, i, (byte) (20 + i));
                 }
                 s.setUnsignedByteArrayPointer(array);
-                MemorySegment retArray = s.retrieveUnsignedByteArrayPointer(env);
+                MemorySegment retArray = round == 0 ? s.retrieveUnsignedByteArrayPointer(env) : s.retrieveUnsignedByteArrayPointerCritical();
                 assertEquals(6, retArray.byteSize());
                 for (int i = 0; i < 6; ++i) {
                     assertEquals((byte) (20 + i), retArray.get(ValueLayout.JAVA_BYTE, i));
@@ -499,7 +585,7 @@ public class TestPrimitiveStruct {
                     array.set(i, (char) ('a' + i));
                 }
                 s.setCharArrayPointer(array);
-                CharArray retArray = s.retrieveCharArrayPointer(env);
+                CharArray retArray = round == 0 ? s.retrieveCharArrayPointer(env) : s.retrieveCharArrayPointerCritical();
                 assertEquals(7, retArray.length());
                 for (int i = 0; i < 7; ++i) {
                     assertEquals((char) ('a' + i), retArray.get(i));
@@ -513,7 +599,7 @@ public class TestPrimitiveStruct {
                     array.set(i, 30.0 + i);
                 }
                 s.setDoubleArrayPointer(array);
-                DoubleArray retArray = s.retrieveDoubleArrayPointer(env);
+                DoubleArray retArray = round == 0 ? s.retrieveDoubleArrayPointer(env) : s.retrieveDoubleArrayPointerCritical();
                 assertEquals(8, retArray.length());
                 for (int i = 0; i < 8; ++i) {
                     assertEquals(30.0 + i, retArray.get(i), 0);
@@ -527,7 +613,7 @@ public class TestPrimitiveStruct {
                     array.set(i, 40.0f + i);
                 }
                 s.setFloatArrayPointer(array);
-                FloatArray retArray = s.retrieveFloatArrayPointer(env);
+                FloatArray retArray = round == 0 ? s.retrieveFloatArrayPointer(env) : s.retrieveFloatArrayPointerCritical();
                 assertEquals(9, retArray.length());
                 for (int i = 0; i < 9; ++i) {
                     assertEquals(40.0f + i, retArray.get(i), 0);
@@ -541,7 +627,7 @@ public class TestPrimitiveStruct {
                     array.set(i, 50 + i);
                 }
                 s.setIntArrayPointer(array);
-                IntArray retArray = s.retrieveIntArrayPointer(env);
+                IntArray retArray = round == 0 ? s.retrieveIntArrayPointer(env) : s.retrieveIntArrayPointerCritical();
                 assertEquals(10, retArray.length());
                 for (int i = 0; i < 10; ++i) {
                     assertEquals(50 + i, retArray.get(i));
@@ -555,7 +641,7 @@ public class TestPrimitiveStruct {
                     array.set(i, 60 + i);
                 }
                 s.setUnsignedIntArrayPointer(array);
-                IntArray retArray = s.retrieveUnsignedIntArrayPointer(env);
+                IntArray retArray = round == 0 ? s.retrieveUnsignedIntArrayPointer(env) : s.retrieveUnsignedIntArrayPointerCritical();
                 assertEquals(11, retArray.length());
                 for (int i = 0; i < 11; ++i) {
                     assertEquals(60 + i, retArray.get(i));
@@ -569,7 +655,7 @@ public class TestPrimitiveStruct {
                     array.set(i, 70L + i);
                 }
                 s.setLongArrayPointer(array);
-                LongArray retArray = s.retrieveLongArrayPointer(env);
+                LongArray retArray = round == 0 ? s.retrieveLongArrayPointer(env) : s.retrieveLongArrayPointerCritical();
                 assertEquals(12, retArray.length());
                 for (int i = 0; i < 12; ++i) {
                     assertEquals(70 + i, retArray.get(i));
@@ -583,7 +669,7 @@ public class TestPrimitiveStruct {
                     array.set(i, 80L + i);
                 }
                 s.setUnsignedLongArrayPointer(array);
-                LongArray retArray = s.retrieveUnsignedLongArrayPointer(env);
+                LongArray retArray = round == 0 ? s.retrieveUnsignedLongArrayPointer(env) : s.retrieveUnsignedLongArrayPointerCritical();
                 assertEquals(13, retArray.length());
                 for (int i = 0; i < 13; ++i) {
                     assertEquals(80L + i, retArray.get(i));
@@ -597,7 +683,7 @@ public class TestPrimitiveStruct {
                     array.set(i, (short) (90 + i));
                 }
                 s.setShortArrayPointer(array);
-                ShortArray retArray = s.retrieveShortArrayPointer(env);
+                ShortArray retArray = round == 0 ? s.retrieveShortArrayPointer(env) : s.retrieveShortArrayPointerCritical();
                 assertEquals(14, retArray.length());
                 for (int i = 0; i < 14; ++i) {
                     assertEquals((short) (90 + i), retArray.get(i));
@@ -611,7 +697,7 @@ public class TestPrimitiveStruct {
                     array.set(i, (short) (100 + i));
                 }
                 s.setUnsignedShortArrayPointer(array);
-                ShortArray retArray = s.retrieveUnsignedShortArrayPointer(env);
+                ShortArray retArray = round == 0 ? s.retrieveUnsignedShortArrayPointer(env) : s.retrieveUnsignedShortArrayPointerCritical();
                 assertEquals(15, retArray.length());
                 for (int i = 0; i < 15; ++i) {
                     assertEquals((short) (100 + i), retArray.get(i));
@@ -625,7 +711,7 @@ public class TestPrimitiveStruct {
                     array.set(i, i % 2 == 0);
                 }
                 s.setBooleanArrayPointer(array);
-                BoolArray retArray = s.retrieveBooleanArrayPointer(env);
+                BoolArray retArray = round == 0 ? s.retrieveBooleanArrayPointer(env) : s.retrieveBooleanArrayPointerCritical();
                 assertEquals(16, retArray.length());
                 for (int i = 0; i < 16; ++i) {
                     assertEquals(i % 2 == 0, retArray.get(i));
@@ -633,7 +719,11 @@ public class TestPrimitiveStruct {
                 assertEquals(array.MEMORY.address(), retArray.MEMORY.address());
             }
 
-            assertTrue(s.checkPointerSetToNonNull(env));
+            if (round == 0) {
+                assertTrue(s.checkPointerSetToNonNull(env));
+            } else {
+                assertTrue(s.checkPointerSetToNonNullCritical());
+            }
 
             s.setByteArrayPointer(null);
             s.setUnsignedByteArrayPointer(null);
@@ -648,7 +738,11 @@ public class TestPrimitiveStruct {
             s.setUnsignedShortArrayPointer(null);
             s.setBooleanArrayPointer(null);
 
-            assertTrue(s.checkPointerSetToNull(env));
+            if (round == 0) {
+                assertTrue(s.checkPointerSetToNull(env));
+            } else {
+                assertTrue(s.checkPointerSetToNullCritical());
+            }
         }
     }
 
@@ -739,10 +833,10 @@ public class TestPrimitiveStruct {
     public void shaCheck() throws Exception {
         var s = Files.readAllLines(Path.of("src", "test", "c-generated", "io_vproxy_pni_test_PrimitiveStruct.h"));
         var lastLine = s.get(s.size() - 1);
-        assertEquals("// sha256:20f74fb58231c326785cb0d92a9251c4b58204daeac65b95987496ef2137df69", lastLine);
+        assertEquals("// sha256:3952f24b916b94236c8007b1803ff6b97492443a86253b2771a1deb6ff7094ec", lastLine);
 
         s = Files.readAllLines(Path.of("src", "test", "generated", "io", "vproxy", "pni", "test", "PrimitiveStruct.java"));
         lastLine = s.get(s.size() - 1);
-        assertEquals("// sha256:e43e244e785cf7bf756c1d77f8ea9430f1dfda93fe81763d8dc2ba762c8b071b", lastLine);
+        assertEquals("// sha256:e10d269ac7bd3d03b9abc70ab810afe3374660a0bea0410ea93dc1af080e68e6", lastLine);
     }
 }
