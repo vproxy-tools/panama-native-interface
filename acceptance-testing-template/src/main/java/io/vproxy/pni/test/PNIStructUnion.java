@@ -1,5 +1,6 @@
 package io.vproxy.pni.test;
 
+import io.vproxy.pni.annotation.Critical;
 import io.vproxy.pni.annotation.Pointer;
 import io.vproxy.pni.annotation.Struct;
 import io.vproxy.pni.annotation.Union;
@@ -15,15 +16,33 @@ abstract class PNIStructA {
 
     abstract void bbb(PNIStructB b);
 
+    @Critical
+    abstract void bbbCritical(PNIStructB b);
+
     abstract void ccc(PNIUnionC c);
+
+    @Critical
+    abstract void cccCritical(PNIUnionC c);
 
     abstract void cccPointer(PNIUnionC c);
 
+    @Critical
+    abstract void cccPointerCritical(PNIUnionC c);
+
     abstract PNIStructB retrieveB();
+
+    @Critical
+    abstract PNIStructB retrieveBCritical();
 
     abstract PNIUnionC retrieveC();
 
+    @Critical
+    abstract PNIUnionC retrieveCCritical();
+
     abstract PNIUnionC retrieveCPointer();
+
+    @Critical
+    abstract PNIUnionC retrieveCPointerCritical();
 }
 
 @Struct

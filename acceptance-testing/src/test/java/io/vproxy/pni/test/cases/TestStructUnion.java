@@ -160,7 +160,7 @@ public class TestStructUnion {
     public void shaCheck() throws Exception {
         var s = Files.readAllLines(Path.of("src", "test", "c-generated", "io_vproxy_pni_test_StructA.h"));
         var lastLine = s.get(s.size() - 1);
-        assertEquals("// sha256:bd6d0c162105eb55767d13c06be5f44d1995640cb1fa89b9cea332bfcbf94848", lastLine);
+        assertEquals("// sha256:c6ce017bad555eadbc6f0d7788087f7054d0539399bf963d83a97ff1041ae929", lastLine);
 
         s = Files.readAllLines(Path.of("src", "test", "c-generated", "io_vproxy_pni_test_StructB.h"));
         lastLine = s.get(s.size() - 1);
@@ -180,7 +180,7 @@ public class TestStructUnion {
 
         s = Files.readAllLines(Path.of("src", "test", "generated", "io", "vproxy", "pni", "test", "StructA.java"));
         lastLine = s.get(s.size() - 1);
-        assertEquals("// sha256:2c1b7dddbe25cead5aaa267896086ca0c59f3191793a3103e9177819b7728fe6", lastLine);
+        assertEquals("// sha256:7330b9c331003b944be0923cb340bdb2416892b3fd21e04d5c77c63c5e11dbdd", lastLine);
 
         s = Files.readAllLines(Path.of("src", "test", "generated", "io", "vproxy", "pni", "test", "StructB.java"));
         lastLine = s.get(s.size() - 1);
