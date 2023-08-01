@@ -95,10 +95,10 @@ public class TestObjectStruct {
     public void shaCheck() throws Exception {
         var s = Files.readAllLines(Path.of("src", "test", "c-generated", "io_vproxy_pni_test_ObjectStruct.h"));
         var lastLine = s.get(s.size() - 1);
-        assertEquals("// sha256:372fae39ea30ba2b3df88fdd297dd1256ce62343d56f0cd2a5ed902921df25f2", lastLine);
+        assertEquals("// sha256:2cb32861a8d45a7aa4cc927dbfb371e6f451764d7f0892f3c9afa2be143c71e6", lastLine);
 
         s = Files.readAllLines(Path.of("src", "test", "generated", "io", "vproxy", "pni", "test", "ObjectStruct.java"));
         lastLine = s.get(s.size() - 1);
-        assertEquals("// sha256:830f9e32457fb40e641ba69f2362c59ce2ed146b9a9fab1791386557cf1a28d2", lastLine);
+        assertEquals("// sha256:65cb144ddd8077763c4ae8101edc82422e6e62b8387cd8c84ff0690241c7b3c2", lastLine);
     }
 }
