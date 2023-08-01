@@ -42,6 +42,15 @@ public class TestStructUnion {
 
     @Test
     public void bbb() {
+        bbb(0);
+    }
+
+    @Test
+    public void bbbCritical() {
+        bbb(1);
+    }
+
+    private void bbb(int round) {
         try (var arena = Arena.ofConfined()) {
             var allocator = Allocator.of(arena);
             var env = new PNIEnv(arena);
@@ -52,7 +61,11 @@ public class TestStructUnion {
             b.getC().setN(2);
             b.setL(3);
 
-            s.bbb(env, b);
+            if (round == 0) {
+                s.bbb(env, b);
+            } else {
+                s.bbbCritical(b);
+            }
             assertEquals(1, s.getB().getI());
             assertEquals(2, s.getB().getC().getN());
             assertEquals(3, s.getB().getL());
@@ -61,6 +74,15 @@ public class TestStructUnion {
 
     @Test
     public void ccc() {
+        ccc(0);
+    }
+
+    @Test
+    public void cccCritical() {
+        ccc(1);
+    }
+
+    private void ccc(int round) {
         try (var arena = Arena.ofConfined()) {
             var allocator = Allocator.of(arena);
             var env = new PNIEnv(arena);
@@ -69,13 +91,26 @@ public class TestStructUnion {
             var c = new UnionC(allocator);
             c.setN(1);
 
-            s.ccc(env, c);
+            if (round == 0) {
+                s.ccc(env, c);
+            } else {
+                s.cccCritical(c);
+            }
             assertEquals(1, s.getC().getN());
         }
     }
 
     @Test
     public void cccPointer() {
+        cccPointer(0);
+    }
+
+    @Test
+    public void cccPointerCritical() {
+        cccPointer(1);
+    }
+
+    private void cccPointer(int round) {
         try (var arena = Arena.ofConfined()) {
             var allocator = Allocator.of(arena);
             var env = new PNIEnv(arena);
@@ -84,7 +119,11 @@ public class TestStructUnion {
             var c = new UnionC(allocator);
             c.setN(1);
 
-            s.cccPointer(env, c);
+            if (round == 0) {
+                s.cccPointer(env, c);
+            } else {
+                s.cccPointerCritical(c);
+            }
             assertEquals(c.MEMORY.address(), s.getCPointer().MEMORY.address());
             assertEquals(1, s.getCPointer().getN());
         }
@@ -92,6 +131,15 @@ public class TestStructUnion {
 
     @Test
     public void retrieveB() {
+        retrieveB(0);
+    }
+
+    @Test
+    public void retrieveBCritical() {
+        retrieveB(1);
+    }
+
+    private void retrieveB(int round) {
         try (var arena = Arena.ofConfined()) {
             var allocator = Allocator.of(arena);
             var env = new PNIEnv(arena);
@@ -100,7 +148,7 @@ public class TestStructUnion {
             s.getB().setI(1);
             s.getB().setL(2);
 
-            var b = s.retrieveB(env, allocator);
+            var b = round == 0 ? s.retrieveB(env, allocator) : s.retrieveBCritical(allocator);
             assertEquals(1, b.getI());
             assertEquals(2, b.getL());
         }
@@ -108,6 +156,15 @@ public class TestStructUnion {
 
     @Test
     public void retrieveC() {
+        retrieveC(0);
+    }
+
+    @Test
+    public void retrieveCCritical() {
+        retrieveC(1);
+    }
+
+    private void retrieveC(int round) {
         try (var arena = Arena.ofConfined()) {
             var allocator = Allocator.of(arena);
             var env = new PNIEnv(arena);
@@ -115,25 +172,38 @@ public class TestStructUnion {
 
             s.getC().setN(1);
 
-            var c = s.retrieveC(env, allocator);
+            var c = round == 0 ? s.retrieveC(env, allocator) : s.retrieveCCritical(allocator);
             assertEquals(1, c.getN());
         }
     }
 
     @Test
     public void retrieveCPointer() {
+        retrieveCPointer(0);
+    }
+
+    @Test
+    public void retrieveCPointerCritical() {
+        retrieveCPointer(1);
+    }
+
+    private void retrieveCPointer(int round) {
         try (var arena = Arena.ofConfined()) {
             var allocator = Allocator.of(arena);
             var env = new PNIEnv(arena);
             var s = new StructA(allocator);
 
-            assertNull(s.retrieveCPointer(env, allocator));
+            if (round == 0) {
+                assertNull(s.retrieveCPointer(env, allocator));
+            } else {
+                assertNull(s.retrieveCPointerCritical(allocator));
+            }
 
             var c = new UnionC(allocator);
             c.setN(1);
 
             s.setCPointer(c);
-            var cc = s.retrieveCPointer(env, allocator);
+            var cc = round == 0 ? s.retrieveCPointer(env, allocator) : s.retrieveCPointerCritical(allocator);
             assertEquals(1, cc.getN());
         }
     }
