@@ -298,7 +298,7 @@ the generated C headers will have almost the same format as JNI output, see the 
 
 ### 4. Write native implementation
 
-All native functions are in the same pattern:
+All native functions are in the same pattern **if `@Critical` is NOT annotated**:
 
 1. take an argument `PNIEnv* env` as the first argument, but with different type variations based on the result type;
 2. return `int` where `0` means OK and any other value (usually `-1`) means an exception is thrown;
@@ -318,10 +318,33 @@ JNIEXPORT int JNICALL Java_io_vproxy_vfd_posix_GeneralPosix_createIPv4TcpFD
 }
 ```
 
+You should set `env->return_ = the_extra_variable` if you need to return the value, or `env->return_ = NULL` if you want to return `NULL`.  
+If you need to pass `errno` to Java, you can call `PNIStoreErrno(env)`. You can retrieve it from `env.ex().errno()` in Java.
+
+**If `@Critical` is annotated**:
+
+1. There will be no `PNIEnv` argument.
+2. Directly return values.
+3. Since the `PNIEnv` is absent, you will NOT be able to use any functionality associated with it, e.g. throwing exceptions from the native function.
+
+For example:
+
+```c
+JNIEXPORT int32_t JNICALL JavaCritical_io_vproxy_pni_test_Func_writeCritical
+  (int32_t fd, void * buf, int32_t off, int32_t len) {
+    int n = write(fd, buf + off, len);
+    if (n < 0) {
+        return -errno;
+    }
+    return n;
+}
+```
+
+---
+
 If the Java method is defined inside a class, then the generated C function will have an extra parameter right after `PNIEnv`, providing the `this` pointer.
 
-If the method's return type requires memory allocation, the generated C function accepts one more argument, as the memory address of that object.  
-You should set `env->return_ = the_extra_variable` if you need to return the value, or `env->return_ = NULL` if you want to return `NULL`.
+If the method's return type requires memory allocation, the generated C function accepts one more argument, as the memory address of that object.
 
 ### 5. Use generated Java types
 
@@ -383,6 +406,7 @@ This is useful for example when you store the `PNIFunc*` in `epoll_event.data.pt
 * `@Trivial`: make a MethodHandle `trivial`. See `Linker.Option#isTrivial()` for more info.
 * `@Align`: define the minimum alignment bytes. You can set `@Align(packed=true)` to disable padding.
   This annotation has the same effect as setting `__attribute__((aligned(N)))` or `__attribute__((packed))` in `GCC`.
+* `@Critical`: generate native functions without `PNIEnv`. You can directly use `return` to return values to Java. However, since the `PNIEnv` is absent, you will not be able to use any functionality associated with it, for example, throwing exceptions from the C code.
 
 ### Enhance Java Types
 
