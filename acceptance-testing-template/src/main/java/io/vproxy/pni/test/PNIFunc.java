@@ -55,6 +55,20 @@ public interface PNIFunc {
         c = """
             int ret = write(fd, buf + off, len);
             if (ret < 0) {
+                PNIStoreErrno(env);
+            }
+            env->return_ = ret;
+            return 0;
+            """
+    )
+    int writeWithErrno(int fd, @Raw ByteBuffer buf, int off, int len);
+
+    @Impl(
+        include = {"<unistd.h>"},
+        // language="c"
+        c = """
+            int ret = write(fd, buf + off, len);
+            if (ret < 0) {
                 return PNIThrowException(env, "java.io.Exception", strerror(errno));
             }
             env->return_ = ret;

@@ -108,6 +108,22 @@ public class Func {
         return RESULT;
     }
 
+    private final MethodHandle writeWithErrno = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_Func_writeWithErrno", int.class /* fd */, ByteBuffer.class /* buf */, int.class /* off */, int.class /* len */);
+
+    public int writeWithErrno(PNIEnv ENV, int fd, ByteBuffer buf, int off, int len) {
+        ENV.reset();
+        int ERR;
+        try {
+            ERR = (int) this.writeWithErrno.invokeExact(ENV.MEMORY, fd, PanamaUtils.format(buf), off, len);
+        } catch (Throwable THROWABLE) {
+            throw PanamaUtils.convertInvokeExactException(THROWABLE);
+        }
+        if (ERR != 0) {
+            ENV.throwLast();
+        }
+        return ENV.returnInt();
+    }
+
     private final MethodHandle writeByteArray = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_Func_writeByteArray", int.class /* fd */, MemorySegment.class /* buf */, int.class /* off */, int.class /* len */);
 
     public int writeByteArray(PNIEnv ENV, int fd, MemorySegment buf, int off, int len) throws java.io.IOException {
@@ -153,4 +169,4 @@ public class Func {
         if (RESULT.address() == 0) RESULT = null;        return RESULT;
     }
 }
-// sha256:e556c3b1c066d1d21ff9c7c2eeec9e1716e77829fea89453215806cdee9a445d
+// sha256:96a5ac13ebe7a62d026d560d7cb73a6fbc4cbd081e3cf0deccabdb4c3c33562e

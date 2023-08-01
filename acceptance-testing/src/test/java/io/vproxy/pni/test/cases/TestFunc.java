@@ -143,17 +143,31 @@ public class TestFunc {
     }
 
     @Test
+    public void errno() {
+        try (var arena = Arena.ofConfined()) {
+            var env = new PNIEnv(arena);
+
+            var buf = ByteBuffer.allocateDirect(30);
+            buf.put("hello ".getBytes(StandardCharsets.UTF_8));
+
+            int n = Func.get().writeWithErrno(env, -1, buf, 0, buf.position());
+            assertEquals(-1, n);
+            assertEquals(9 /* EBADF */, env.ex().errno());
+        }
+    }
+
+    @Test
     public void shaCheck() throws Exception {
         var s = Files.readAllLines(Path.of("src", "test", "c-generated", "io_vproxy_pni_test_Func.h"));
         var lastLine = s.get(s.size() - 1);
-        assertEquals("// sha256:bb1423f4914a9ad31bcf3a400c4fc433a1b7ab4fa453bf13a170975ff134df62", lastLine);
+        assertEquals("// sha256:fdd1e6efe40c5dab7fe400b94fed1a8b13ed1c33a8d6ad3489b72e33437d5b81", lastLine);
 
         s = Files.readAllLines(Path.of("src", "test", "c-generated", "io_vproxy_pni_test_Func.impl.h"));
         lastLine = s.get(s.size() - 1);
-        assertEquals("// sha256:58a9e5ff553a722e9b62baaa991cd76e6e1e9fd4538a2b70d09d08a2ef2a06cd", lastLine);
+        assertEquals("// sha256:b830d3a4e2c8ea90663517a23930941c4a7cde072b1e88179df978090fbbdfe8", lastLine);
 
         s = Files.readAllLines(Path.of("src", "test", "generated", "io", "vproxy", "pni", "test", "Func.java"));
         lastLine = s.get(s.size() - 1);
-        assertEquals("// sha256:e556c3b1c066d1d21ff9c7c2eeec9e1716e77829fea89453215806cdee9a445d", lastLine);
+        assertEquals("// sha256:96a5ac13ebe7a62d026d560d7cb73a6fbc4cbd081e3cf0deccabdb4c3c33562e", lastLine);
     }
 }
