@@ -24,10 +24,19 @@ public class TestFunc {
 
     @Test
     public void func1() {
+        func1(0);
+    }
+
+    @Test
+    public void func1Critical() {
+        func1(1);
+    }
+
+    private void func1(int round) {
         try (var arena = Arena.ofConfined()) {
             var env = new PNIEnv(arena);
 
-            int n = Func.get().func1(env);
+            int n = round == 0 ? Func.get().func1(env) : Func.get().func1Critical();
             assertEquals(10, n);
         }
     }
@@ -86,7 +95,12 @@ public class TestFunc {
                 int n = Func.get().write(env, fd, buf, 0, buf.position());
                 assertEquals(buf.position(), n);
 
-                var bytes = "world\n".getBytes(StandardCharsets.UTF_8);
+                buf.position(0).limit(buf.capacity());
+                buf.put("panama ".getBytes(StandardCharsets.UTF_8));
+                n = Func.get().writeCritical(fd, buf, 0, buf.position());
+                assertEquals(buf.position(), n);
+
+                var bytes = "native\n".getBytes(StandardCharsets.UTF_8);
                 n = Func.get().writeByteArray(env, fd,
                     arena.allocate(bytes.length).copyFrom(MemorySegment.ofArray(bytes)),
                     0, bytes.length);
@@ -94,19 +108,36 @@ public class TestFunc {
             }
 
             var str = Files.readString(file.toPath());
-            assertEquals("hello world\n", str);
+            assertEquals("hello panama native\n", str);
         }
     }
 
     @Test
     public void callJavaFromC() {
+        callJavaFromC(0);
+    }
+
+    @Test
+    public void callJavaFromCCritical() {
+        callJavaFromC(1);
+    }
+
+    private void callJavaFromC(int round) {
         try (var arena = Arena.ofConfined()) {
             var env = new PNIEnv(arena);
             var seg = arena.allocate(16);
-            var ret = Func.get().callJavaFromC(env, o -> {
-                o.setSeg(seg);
-                return 0;
-            });
+            MemorySegment ret;
+            if (round == 0) {
+                ret = Func.get().callJavaFromC(env, o -> {
+                    o.setSeg(seg);
+                    return 0;
+                });
+            } else {
+                ret = Func.get().callJavaFromCCritical(o -> {
+                    o.setSeg(seg);
+                    return 0;
+                });
+            }
             assertEquals(seg.address(), ret.address());
         }
     }
