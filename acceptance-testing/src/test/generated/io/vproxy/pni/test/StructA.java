@@ -83,6 +83,16 @@ public class StructA {
         }
     }
 
+    private final MethodHandle bbbCritical = PanamaUtils.lookupPNICriticalFunction(false, void.class, "JavaCritical_io_vproxy_pni_test_StructA_bbbCritical", MemorySegment.class /* self */, io.vproxy.pni.test.StructB.LAYOUT.getClass() /* b */);
+
+    public void bbbCritical(io.vproxy.pni.test.StructB b) {
+        try {
+            this.bbbCritical.invokeExact(MEMORY, b.MEMORY);
+        } catch (Throwable THROWABLE) {
+            throw PanamaUtils.convertInvokeExactException(THROWABLE);
+        }
+    }
+
     private final MethodHandle ccc = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_StructA_ccc", MemorySegment.class /* self */, io.vproxy.pni.test.UnionC.LAYOUT.getClass() /* c */);
 
     public void ccc(PNIEnv ENV, io.vproxy.pni.test.UnionC c) {
@@ -98,6 +108,16 @@ public class StructA {
         }
     }
 
+    private final MethodHandle cccCritical = PanamaUtils.lookupPNICriticalFunction(false, void.class, "JavaCritical_io_vproxy_pni_test_StructA_cccCritical", MemorySegment.class /* self */, io.vproxy.pni.test.UnionC.LAYOUT.getClass() /* c */);
+
+    public void cccCritical(io.vproxy.pni.test.UnionC c) {
+        try {
+            this.cccCritical.invokeExact(MEMORY, c.MEMORY);
+        } catch (Throwable THROWABLE) {
+            throw PanamaUtils.convertInvokeExactException(THROWABLE);
+        }
+    }
+
     private final MethodHandle cccPointer = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_StructA_cccPointer", MemorySegment.class /* self */, io.vproxy.pni.test.UnionC.LAYOUT.getClass() /* c */);
 
     public void cccPointer(PNIEnv ENV, io.vproxy.pni.test.UnionC c) {
@@ -110,6 +130,16 @@ public class StructA {
         }
         if (ERR != 0) {
             ENV.throwLast();
+        }
+    }
+
+    private final MethodHandle cccPointerCritical = PanamaUtils.lookupPNICriticalFunction(false, void.class, "JavaCritical_io_vproxy_pni_test_StructA_cccPointerCritical", MemorySegment.class /* self */, io.vproxy.pni.test.UnionC.LAYOUT.getClass() /* c */);
+
+    public void cccPointerCritical(io.vproxy.pni.test.UnionC c) {
+        try {
+            this.cccPointerCritical.invokeExact(MEMORY, c.MEMORY);
+        } catch (Throwable THROWABLE) {
+            throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
     }
 
@@ -130,6 +160,18 @@ public class StructA {
         return RESULT == null ? null : new io.vproxy.pni.test.StructB(RESULT);
     }
 
+    private final MethodHandle retrieveBCritical = PanamaUtils.lookupPNICriticalFunction(false, io.vproxy.pni.test.StructB.LAYOUT.getClass(), "JavaCritical_io_vproxy_pni_test_StructA_retrieveBCritical", MemorySegment.class /* self */, MemorySegment.class /* return */);
+
+    public io.vproxy.pni.test.StructB retrieveBCritical(Allocator ALLOCATOR) {
+        MemorySegment RESULT;
+        try {
+            RESULT = (MemorySegment) this.retrieveBCritical.invokeExact(MEMORY, ALLOCATOR.allocate(io.vproxy.pni.test.StructB.LAYOUT.byteSize()));
+        } catch (Throwable THROWABLE) {
+            throw PanamaUtils.convertInvokeExactException(THROWABLE);
+        }
+        if (RESULT.address() == 0) RESULT = null;        return RESULT == null ? null : new io.vproxy.pni.test.StructB(RESULT);
+    }
+
     private final MethodHandle retrieveC = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_StructA_retrieveC", MemorySegment.class /* self */, MemorySegment.class /* return */);
 
     public io.vproxy.pni.test.UnionC retrieveC(PNIEnv ENV, Allocator ALLOCATOR) {
@@ -147,6 +189,18 @@ public class StructA {
         return RESULT == null ? null : new io.vproxy.pni.test.UnionC(RESULT);
     }
 
+    private final MethodHandle retrieveCCritical = PanamaUtils.lookupPNICriticalFunction(false, io.vproxy.pni.test.UnionC.LAYOUT.getClass(), "JavaCritical_io_vproxy_pni_test_StructA_retrieveCCritical", MemorySegment.class /* self */, MemorySegment.class /* return */);
+
+    public io.vproxy.pni.test.UnionC retrieveCCritical(Allocator ALLOCATOR) {
+        MemorySegment RESULT;
+        try {
+            RESULT = (MemorySegment) this.retrieveCCritical.invokeExact(MEMORY, ALLOCATOR.allocate(io.vproxy.pni.test.UnionC.LAYOUT.byteSize()));
+        } catch (Throwable THROWABLE) {
+            throw PanamaUtils.convertInvokeExactException(THROWABLE);
+        }
+        if (RESULT.address() == 0) RESULT = null;        return RESULT == null ? null : new io.vproxy.pni.test.UnionC(RESULT);
+    }
+
     private final MethodHandle retrieveCPointer = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_StructA_retrieveCPointer", MemorySegment.class /* self */, MemorySegment.class /* return */);
 
     public io.vproxy.pni.test.UnionC retrieveCPointer(PNIEnv ENV, Allocator ALLOCATOR) {
@@ -162,6 +216,18 @@ public class StructA {
         }
         var RESULT = ENV.returnPointer();
         return RESULT == null ? null : new io.vproxy.pni.test.UnionC(RESULT);
+    }
+
+    private final MethodHandle retrieveCPointerCritical = PanamaUtils.lookupPNICriticalFunction(false, io.vproxy.pni.test.UnionC.LAYOUT.getClass(), "JavaCritical_io_vproxy_pni_test_StructA_retrieveCPointerCritical", MemorySegment.class /* self */, MemorySegment.class /* return */);
+
+    public io.vproxy.pni.test.UnionC retrieveCPointerCritical(Allocator ALLOCATOR) {
+        MemorySegment RESULT;
+        try {
+            RESULT = (MemorySegment) this.retrieveCPointerCritical.invokeExact(MEMORY, ALLOCATOR.allocate(io.vproxy.pni.test.UnionC.LAYOUT.byteSize()));
+        } catch (Throwable THROWABLE) {
+            throw PanamaUtils.convertInvokeExactException(THROWABLE);
+        }
+        if (RESULT.address() == 0) RESULT = null;        return RESULT == null ? null : new io.vproxy.pni.test.UnionC(RESULT);
     }
 
     public static class Array extends RefArray<StructA> {
@@ -200,4 +266,4 @@ public class StructA {
         }
     }
 }
-// sha256:2c1b7dddbe25cead5aaa267896086ca0c59f3191793a3103e9177819b7728fe6
+// sha256:7330b9c331003b944be0923cb340bdb2416892b3fd21e04d5c77c63c5e11dbdd
