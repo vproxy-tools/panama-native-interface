@@ -115,14 +115,14 @@ public class TestFunc {
     public void shaCheck() throws Exception {
         var s = Files.readAllLines(Path.of("src", "test", "c-generated", "io_vproxy_pni_test_Func.h"));
         var lastLine = s.get(s.size() - 1);
-        assertEquals("// sha256:6dfaa83d60edde455447264a1097908411e6ca042a78075905eeac784a03927d", lastLine);
+        assertEquals("// sha256:bb1423f4914a9ad31bcf3a400c4fc433a1b7ab4fa453bf13a170975ff134df62", lastLine);
 
         s = Files.readAllLines(Path.of("src", "test", "c-generated", "io_vproxy_pni_test_Func.impl.h"));
         lastLine = s.get(s.size() - 1);
-        assertEquals("// sha256:8c8e2b429fca89601abd08c41685584bd9a21992ddf32abf2d1a694823eb2270", lastLine);
+        assertEquals("// sha256:58a9e5ff553a722e9b62baaa991cd76e6e1e9fd4538a2b70d09d08a2ef2a06cd", lastLine);
 
         s = Files.readAllLines(Path.of("src", "test", "generated", "io", "vproxy", "pni", "test", "Func.java"));
         lastLine = s.get(s.size() - 1);
-        assertEquals("// sha256:85c7823c34a0925c062347decddbbb53ad7a5ffe690abed7dd19feb4016ae7c4", lastLine);
+        assertEquals("// sha256:c3091bdcf3b435ffe55af82f4102a7fe4d459a6d479fc8e848a3a99fd250061c", lastLine);
     }
 }

@@ -1,6 +1,7 @@
 package io.vproxy.pni.test;
 
 import io.vproxy.pni.CallSite;
+import io.vproxy.pni.annotation.Critical;
 import io.vproxy.pni.annotation.Function;
 import io.vproxy.pni.annotation.Impl;
 import io.vproxy.pni.annotation.Raw;
@@ -12,6 +13,9 @@ import java.nio.ByteBuffer;
 @Function
 public interface PNIFunc {
     int func1();
+
+    @Critical
+    int func1Critical();
 
     void func2() throws IOException;
 
@@ -30,6 +34,20 @@ public interface PNIFunc {
             """
     )
     int write(int fd, @Raw ByteBuffer buf, int off, int len) throws IOException;
+
+    @Impl(
+        include = {"<unistd.h>"},
+        // language="c"
+        c = """
+            int n = write(fd, buf + off, len);
+            if (n < 0) {
+                return -errno;
+            }
+            return n;
+            """
+    )
+    @Critical
+    int writeCritical(int fd, @Raw ByteBuffer buf, int off, int len);
 
     @Impl(
         include = {"<unistd.h>"},
@@ -56,4 +74,17 @@ public interface PNIFunc {
             """
     )
     MemorySegment callJavaFromC(CallSite<PNIObjectStruct> func);
+
+    @Impl(
+        // language="c"
+        c = """
+            ObjectStruct object_struct;
+            PNIFuncInvoke(func, &object_struct);
+            void* ptr = object_struct.seg;
+            PNIFuncRelease(func);
+            return ptr;
+            """
+    )
+    @Critical
+    MemorySegment callJavaFromCCritical(CallSite<PNIObjectStruct> func);
 }
