@@ -8,17 +8,19 @@ import java.lang.foreign.ValueLayout;
 import java.lang.invoke.VarHandle;
 
 public class PNIExceptionNativeRepresentation {
-    public static final MemoryLayout layout = MemoryLayout.structLayout(
+    public static final MemoryLayout LAYOUT = MemoryLayout.structLayout(
         ValueLayout.ADDRESS_UNALIGNED.withName("type"),
-        MemoryLayout.sequenceLayout(4096, ValueLayout.JAVA_BYTE).withName("message")
+        MemoryLayout.sequenceLayout(4096, ValueLayout.JAVA_BYTE).withName("message"),
+        ValueLayout.JAVA_INT_UNALIGNED.withName("errno_"),
+        MemoryLayout.sequenceLayout(4L, ValueLayout.JAVA_BYTE) /* padding */
     );
-    private final MemorySegment seg;
+    public final MemorySegment MEMORY;
 
-    public PNIExceptionNativeRepresentation(MemorySegment seg) {
-        this.seg = seg;
+    public PNIExceptionNativeRepresentation(MemorySegment MEMORY) {
+        this.MEMORY = MEMORY;
     }
 
-    private static final VarHandle typeVH = layout.varHandle(
+    private static final VarHandle typeVH = LAYOUT.varHandle(
         MemoryLayout.PathElement.groupElement("type")
     );
 
@@ -29,7 +31,7 @@ public class PNIExceptionNativeRepresentation {
         if (_type != null) {
             return _type;
         }
-        var type = (MemorySegment) typeVH.get(seg);
+        var type = (MemorySegment) typeVH.get(MEMORY);
         if (type.address() == 0) {
             return null;
         }
@@ -62,12 +64,21 @@ public class PNIExceptionNativeRepresentation {
     }
 
     public String message() {
-        return seg.getUtf8String(ValueLayout.ADDRESS.byteSize());
+        return MEMORY.getUtf8String(ValueLayout.ADDRESS.byteSize());
+    }
+
+    private static final VarHandle errnoVH = LAYOUT.varHandle(
+        MemoryLayout.PathElement.groupElement("errno_")
+    );
+
+    public int errno() {
+        return (int) errnoVH.get(this.MEMORY);
     }
 
     public void reset() {
         _type = null;
         _typeClass = null;
-        typeVH.set(seg, MemorySegment.NULL);
+        typeVH.set(MEMORY, MemorySegment.NULL);
+        errnoVH.set(MEMORY, 0);
     }
 }

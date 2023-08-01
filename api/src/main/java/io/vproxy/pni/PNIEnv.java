@@ -8,7 +8,7 @@ import java.lang.reflect.InvocationTargetException;
 
 public class PNIEnv {
     public static final MemoryLayout LAYOUT = MemoryLayout.structLayout(
-        PNIExceptionNativeRepresentation.layout.withName("ex"),
+        PNIExceptionNativeRepresentation.LAYOUT.withName("ex"),
         MemoryLayout.unionLayout(
             ValueLayout.JAVA_BYTE.withName("return_byte"),
             ValueLayout.JAVA_CHAR_UNALIGNED.withName("return_char"),
@@ -33,19 +33,19 @@ public class PNIEnv {
     public PNIEnv(boolean useShared) {
         this.arena = useShared ? Arena.ofShared() : Arena.ofConfined();
         this.MEMORY = arena.allocate(LAYOUT.byteSize());
-        this.ex = new PNIExceptionNativeRepresentation(MEMORY.asSlice(0, PNIExceptionNativeRepresentation.layout.byteSize()));
+        this.ex = new PNIExceptionNativeRepresentation(MEMORY.asSlice(0, PNIExceptionNativeRepresentation.LAYOUT.byteSize()));
     }
 
     public PNIEnv(Arena arena) {
         this.arena = null;
         this.MEMORY = arena.allocate(LAYOUT.byteSize());
-        this.ex = new PNIExceptionNativeRepresentation(MEMORY.asSlice(0, PNIExceptionNativeRepresentation.layout.byteSize()));
+        this.ex = new PNIExceptionNativeRepresentation(MEMORY.asSlice(0, PNIExceptionNativeRepresentation.LAYOUT.byteSize()));
     }
 
     public PNIEnv(Allocator allocator) {
         this.arena = null;
         this.MEMORY = allocator.allocate(LAYOUT.byteSize());
-        this.ex = new PNIExceptionNativeRepresentation(MEMORY.asSlice(0, PNIExceptionNativeRepresentation.layout.byteSize()));
+        this.ex = new PNIExceptionNativeRepresentation(MEMORY.asSlice(0, PNIExceptionNativeRepresentation.LAYOUT.byteSize()));
     }
 
     public PNIExceptionNativeRepresentation ex() {

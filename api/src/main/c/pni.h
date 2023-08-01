@@ -16,6 +16,7 @@ typedef PNI_PACK(struct, PNIException, {
     char* type;
 #define PNIExceptionMessageLen (4096)
     char  message[PNIExceptionMessageLen];
+    int32_t errno_; /* padding */ uint64_t :32;
 }) PNIException;
 
 typedef PNI_PACK(struct, PNIEnv, {
@@ -68,6 +69,11 @@ static inline int PNIThrowException(void* _env, const char* extype, char* messag
 
 static inline int PNIThrowExceptionBasedOnErrno(void* _env, const char* extype) {
     return PNIThrowException(_env, extype, strerror(errno));
+}
+
+static inline void PNIStoreErrno(void* _env) {
+    PNIEnv* env = _env;
+    env->ex.errno_ = errno;
 }
 
 typedef PNI_PACK(struct, PNIFunc, {
