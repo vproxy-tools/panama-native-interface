@@ -22,13 +22,26 @@ public class TestObjectStruct {
 
     @Test
     public void func1() {
+        func1(0);
+    }
+
+    @Test
+    public void func1Critical() {
+        func1(1);
+    }
+
+    private void func1(int round) {
         try (var arena = Arena.ofConfined()) {
             var env = new PNIEnv(arena);
             var s = new ObjectStruct(Allocator.of(arena));
 
             var seg = arena.allocate(16);
             var buf = ByteBuffer.allocateDirect(16);
-            s.func1(env, "abc", "def", seg, buf);
+            if (round == 0) {
+                s.func1(env, "abc", "def", seg, buf);
+            } else {
+                s.func1Critical("abc", "def", seg, buf);
+            }
 
             assertEquals("abc", s.getStr());
             assertEquals("def", s.getLenStr());
@@ -52,42 +65,79 @@ public class TestObjectStruct {
 
     @Test
     public void retrieve() {
+        retrieve(0);
+    }
+
+    @Test
+    public void retrieveCritical() {
+        retrieve(1);
+    }
+
+    private void retrieve(int round) {
         try (var arena = Arena.ofConfined()) {
             var env = new PNIEnv(arena);
             var allocator = Allocator.of(arena);
             var s = new ObjectStruct(allocator);
 
-            assertFalse(s.checkPointerSetToNonNull(env));
+            if (round == 0) {
+                assertFalse(s.checkPointerSetToNonNull(env));
+            } else {
+                assertFalse(s.checkPointerSetToNonNullCritical());
+            }
 
             s.setStr("abc", allocator);
-            assertEquals("abc", s.retrieveStr(env));
+            if (round == 0) {
+                assertEquals("abc", s.retrieveStr(env));
+            } else {
+                assertEquals("abc", s.retrieveStrCritical());
+            }
 
             var strMem = allocator.allocate(16);
             strMem.setUtf8String(0, "aaabbb");
             s.setStr(strMem);
-            assertEquals("aaabbb", s.retrieveStr(env));
+            if (round == 0) {
+                assertEquals("aaabbb", s.retrieveStr(env));
+            } else {
+                assertEquals("aaabbb", s.retrieveStrCritical());
+            }
 
             s.setLenStr("def");
-            assertEquals("def", s.retrieveLenStr(env));
+            if (round == 0) {
+                assertEquals("def", s.retrieveLenStr(env));
+            } else {
+                assertEquals("def", s.retrieveLenStrCritical());
+            }
 
             var seg = allocator.allocate(16);
             s.setSeg(seg);
-            assertEquals(seg, s.retrieveSeg(env));
+            if (round == 0) {
+                assertEquals(seg, s.retrieveSeg(env));
+            } else {
+                assertEquals(seg, s.retrieveSegCritical());
+            }
 
             var buf = ByteBuffer.allocateDirect(16);
             s.setBuf(buf);
-            var retrievedBuf = s.retrieveBuf(env);
+            var retrievedBuf = round == 0 ? s.retrieveBuf(env) : s.retrieveBufCritical();
             assertEquals(buf.capacity(), retrievedBuf.capacity());
             assertEquals(MemorySegment.ofBuffer(buf).address(),
                 MemorySegment.ofBuffer(retrievedBuf).address());
 
-            assertTrue(s.checkPointerSetToNonNull(env));
+            if (round == 0) {
+                assertTrue(s.checkPointerSetToNonNull(env));
+            } else {
+                assertTrue(s.checkPointerSetToNonNullCritical());
+            }
 
             s.setStr(null);
             s.setSeg(null);
             s.setBuf(null);
 
-            assertTrue(s.checkPointerSetToNull(env));
+            if (round == 0) {
+                assertTrue(s.checkPointerSetToNull(env));
+            } else {
+                assertTrue(s.checkPointerSetToNullCritical());
+            }
         }
     }
 
