@@ -28,15 +28,22 @@ PNI_PACK(struct, ObjectStruct, {
 });
 
 JNIEXPORT int JNICALL Java_io_vproxy_pni_test_ObjectStruct_func1(PNIEnv_void * env, ObjectStruct * self, char * str, char * str2, void * seg, PNIBuf * buf);
+JNIEXPORT void JNICALL JavaCritical_io_vproxy_pni_test_ObjectStruct_func1Critical(ObjectStruct * self, char * str, char * str2, void * seg, PNIBuf * buf);
 JNIEXPORT int JNICALL Java_io_vproxy_pni_test_ObjectStruct_retrieveStr(PNIEnv_pointer * env, ObjectStruct * self);
+JNIEXPORT char * JNICALL JavaCritical_io_vproxy_pni_test_ObjectStruct_retrieveStrCritical(ObjectStruct * self);
 JNIEXPORT int JNICALL Java_io_vproxy_pni_test_ObjectStruct_retrieveLenStr(PNIEnv_pointer * env, ObjectStruct * self);
+JNIEXPORT char * JNICALL JavaCritical_io_vproxy_pni_test_ObjectStruct_retrieveLenStrCritical(ObjectStruct * self);
 JNIEXPORT int JNICALL Java_io_vproxy_pni_test_ObjectStruct_retrieveSeg(PNIEnv_pointer * env, ObjectStruct * self);
+JNIEXPORT void * JNICALL JavaCritical_io_vproxy_pni_test_ObjectStruct_retrieveSegCritical(ObjectStruct * self);
 JNIEXPORT int JNICALL Java_io_vproxy_pni_test_ObjectStruct_retrieveBuf(PNIEnv_pointer * env, ObjectStruct * self, PNIBuf * return_);
+JNIEXPORT PNIBuf * JNICALL JavaCritical_io_vproxy_pni_test_ObjectStruct_retrieveBufCritical(ObjectStruct * self, PNIBuf * return_);
 JNIEXPORT int JNICALL Java_io_vproxy_pni_test_ObjectStruct_checkPointerSetToNonNull(PNIEnv_bool * env, ObjectStruct * self);
+JNIEXPORT uint8_t JNICALL JavaCritical_io_vproxy_pni_test_ObjectStruct_checkPointerSetToNonNullCritical(ObjectStruct * self);
 JNIEXPORT int JNICALL Java_io_vproxy_pni_test_ObjectStruct_checkPointerSetToNull(PNIEnv_bool * env, ObjectStruct * self);
+JNIEXPORT uint8_t JNICALL JavaCritical_io_vproxy_pni_test_ObjectStruct_checkPointerSetToNullCritical(ObjectStruct * self);
 
 #ifdef __cplusplus
 }
 #endif
 #endif // _Included_io_vproxy_pni_test_ObjectStruct
-// sha256:372fae39ea30ba2b3df88fdd297dd1256ce62343d56f0cd2a5ed902921df25f2
+// sha256:2cb32861a8d45a7aa4cc927dbfb371e6f451764d7f0892f3c9afa2be143c71e6
