@@ -32,6 +32,18 @@ public class Func {
         return ENV.returnInt();
     }
 
+    private final MethodHandle func1Critical = PanamaUtils.lookupPNICriticalFunction(false, int.class, "JavaCritical_io_vproxy_pni_test_Func_func1Critical");
+
+    public int func1Critical() {
+        int RESULT;
+        try {
+            RESULT = (int) this.func1Critical.invokeExact();
+        } catch (Throwable THROWABLE) {
+            throw PanamaUtils.convertInvokeExactException(THROWABLE);
+        }
+        return RESULT;
+    }
+
     private final MethodHandle func2 = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_Func_func2");
 
     public void func2(PNIEnv ENV) throws java.io.IOException {
@@ -84,6 +96,18 @@ public class Func {
         return ENV.returnInt();
     }
 
+    private final MethodHandle writeCritical = PanamaUtils.lookupPNICriticalFunction(false, int.class, "JavaCritical_io_vproxy_pni_test_Func_writeCritical", int.class /* fd */, ByteBuffer.class /* buf */, int.class /* off */, int.class /* len */);
+
+    public int writeCritical(int fd, ByteBuffer buf, int off, int len) {
+        int RESULT;
+        try {
+            RESULT = (int) this.writeCritical.invokeExact(fd, PanamaUtils.format(buf), off, len);
+        } catch (Throwable THROWABLE) {
+            throw PanamaUtils.convertInvokeExactException(THROWABLE);
+        }
+        return RESULT;
+    }
+
     private final MethodHandle writeByteArray = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_Func_writeByteArray", int.class /* fd */, MemorySegment.class /* buf */, int.class /* off */, int.class /* len */);
 
     public int writeByteArray(PNIEnv ENV, int fd, MemorySegment buf, int off, int len) throws java.io.IOException {
@@ -118,5 +142,17 @@ public class Func {
         }
         return ENV.returnPointer();
     }
+
+    private final MethodHandle callJavaFromCCritical = PanamaUtils.lookupPNICriticalFunction(false, MemorySegment.class, "JavaCritical_io_vproxy_pni_test_Func_callJavaFromCCritical", io.vproxy.pni.CallSite.class /* func */);
+
+    public MemorySegment callJavaFromCCritical(io.vproxy.pni.CallSite<io.vproxy.pni.test.ObjectStruct> func) {
+        MemorySegment RESULT;
+        try {
+            RESULT = (MemorySegment) this.callJavaFromCCritical.invokeExact(io.vproxy.pni.test.ObjectStruct.Func.of(func).MEMORY);
+        } catch (Throwable THROWABLE) {
+            throw PanamaUtils.convertInvokeExactException(THROWABLE);
+        }
+        if (RESULT.address() == 0) RESULT = null;        return RESULT;
+    }
 }
-// sha256:85c7823c34a0925c062347decddbbb53ad7a5ffe690abed7dd19feb4016ae7c4
+// sha256:c3091bdcf3b435ffe55af82f4102a7fe4d459a6d479fc8e848a3a99fd250061c
