@@ -112,19 +112,17 @@ public class Func {
 
     public int writeByteArray(PNIEnv ENV, int fd, MemorySegment buf, int off, int len) throws java.io.IOException {
         ENV.reset();
-        try (var ARENA = Arena.ofConfined()) {
-            int ERR;
-            try {
-                ERR = (int) this.writeByteArray.invokeExact(ENV.MEMORY, fd, buf, off, len);
-            } catch (Throwable THROWABLE) {
-                throw PanamaUtils.convertInvokeExactException(THROWABLE);
-            }
-            if (ERR != 0) {
-                ENV.throwIf(java.io.IOException.class);
-                ENV.throwLast();
-            }
-            return ENV.returnInt();
+        int ERR;
+        try {
+            ERR = (int) this.writeByteArray.invokeExact(ENV.MEMORY, fd, buf, off, len);
+        } catch (Throwable THROWABLE) {
+            throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
+        if (ERR != 0) {
+            ENV.throwIf(java.io.IOException.class);
+            ENV.throwLast();
+        }
+        return ENV.returnInt();
     }
 
     private final MethodHandle callJavaFromC = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_Func_callJavaFromC", io.vproxy.pni.CallSite.class /* func */);
@@ -155,4 +153,4 @@ public class Func {
         if (RESULT.address() == 0) RESULT = null;        return RESULT;
     }
 }
-// sha256:c3091bdcf3b435ffe55af82f4102a7fe4d459a6d479fc8e848a3a99fd250061c
+// sha256:e556c3b1c066d1d21ff9c7c2eeec9e1716e77829fea89453215806cdee9a445d

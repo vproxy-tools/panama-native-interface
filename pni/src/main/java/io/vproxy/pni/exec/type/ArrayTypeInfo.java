@@ -274,6 +274,11 @@ public class ArrayTypeInfo extends TypeInfo {
 
     @Override
     public boolean paramDependOnConfinedArena(VarOpts opts) {
+        if (elementType instanceof ByteTypeInfo) {
+            if (opts.isRaw()) {
+                return false;
+            }
+        }
         return opts.isPointerGeneral();
     }
 }
