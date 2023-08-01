@@ -2,6 +2,11 @@
 #include <stdio.h>
 
 JNIEXPORT int JNICALL Java_io_vproxy_pni_test_PrimitiveStruct_func1(PNIEnv_void * env, PrimitiveStruct * p, int8_t aByte, uint8_t unsignedByte, int32_t aInt, uint32_t unsignedInt, int64_t aLong, uint64_t unsignedLong, int16_t aShort, uint16_t unsignedShort) {
+    JavaCritical_io_vproxy_pni_test_PrimitiveStruct_func1Critical(p, aByte, unsignedByte, aInt, unsignedInt, aLong, unsignedLong, aShort, unsignedShort);
+    return 0;
+}
+
+JNIEXPORT void JNICALL JavaCritical_io_vproxy_pni_test_PrimitiveStruct_func1Critical(PrimitiveStruct * p, int8_t aByte, uint8_t unsignedByte, int32_t aInt, uint32_t unsignedInt, int64_t aLong, uint64_t unsignedLong, int16_t aShort, uint16_t unsignedShort) {
     printf("aByte         = %"PRIi8"\n", aByte);
     printf("unsignedByte  = %"PRIu8"\n", unsignedByte);
     printf("aInt          = %"PRIi32"\n", aInt);
@@ -20,11 +25,14 @@ JNIEXPORT int JNICALL Java_io_vproxy_pni_test_PrimitiveStruct_func1(PNIEnv_void 
     p->unsignedLong = unsignedLong;
     p->aShort = aShort;
     p->unsignedShort = unsignedShort;
-
-    return 0;
 }
 
 JNIEXPORT int JNICALL Java_io_vproxy_pni_test_PrimitiveStruct_func2(PNIEnv_void * env, PrimitiveStruct * p, uint16_t aChar, double aDouble, float aFloat, uint8_t aBoolean) {
+    JavaCritical_io_vproxy_pni_test_PrimitiveStruct_func2Critical(p, aChar, aDouble, aFloat, aBoolean);
+    return 0;
+}
+
+JNIEXPORT void JNICALL JavaCritical_io_vproxy_pni_test_PrimitiveStruct_func2Critical(PrimitiveStruct * p, uint16_t aChar, double aDouble, float aFloat, uint8_t aBoolean) {
     printf("aChar    = %c\n", aChar);
     printf("aDouble  = %f\n", aDouble);
     printf("aFloat   = %f\n", aFloat);
@@ -35,11 +43,14 @@ JNIEXPORT int JNICALL Java_io_vproxy_pni_test_PrimitiveStruct_func2(PNIEnv_void 
     p->aDouble = aDouble;
     p->aFloat = aFloat;
     p->aBoolean = aBoolean;
-
-    return 0;
 }
 
 JNIEXPORT int JNICALL Java_io_vproxy_pni_test_PrimitiveStruct_func3(PNIEnv_void * env, PrimitiveStruct * p, PNIBuf * byteArray, PNIBuf * unsignedByteArray, PNIBuf * intArray, PNIBuf * unsignedIntArray, PNIBuf * longArray, PNIBuf * unsignedLongArray, PNIBuf * shortArray, PNIBuf * unsignedShortArray) {
+    JavaCritical_io_vproxy_pni_test_PrimitiveStruct_func3Critical(p, byteArray, unsignedByteArray, intArray, unsignedIntArray, longArray, unsignedLongArray, shortArray, unsignedShortArray);
+    return 0;
+}
+
+JNIEXPORT void JNICALL JavaCritical_io_vproxy_pni_test_PrimitiveStruct_func3Critical(PrimitiveStruct * p, PNIBuf * byteArray, PNIBuf * unsignedByteArray, PNIBuf * intArray, PNIBuf * unsignedIntArray, PNIBuf * longArray, PNIBuf * unsignedLongArray, PNIBuf * shortArray, PNIBuf * unsignedShortArray) {
     PNIByteBufHandle* byteBufHandle = GetPNIByteBufHandle();
     printf("byteArray = [");
     for (int i = 0; i < byteBufHandle->len(byteArray); ++i) {
@@ -133,10 +144,14 @@ JNIEXPORT int JNICALL Java_io_vproxy_pni_test_PrimitiveStruct_func3(PNIEnv_void 
     shortBufHandle->setIntoBuf(&p->unsignedShortArrayPointer, unsignedShortArray->buf, shortBufHandle->len(unsignedShortArray));
 
     fflush(stdout);
-    return 0;
 }
 
 JNIEXPORT int JNICALL Java_io_vproxy_pni_test_PrimitiveStruct_func4(PNIEnv_void * env, PrimitiveStruct * p, PNIBuf * charArray, PNIBuf * doubleArray, PNIBuf * floatArray, PNIBuf * booleanArray) {
+    JavaCritical_io_vproxy_pni_test_PrimitiveStruct_func4Critical(p, charArray, doubleArray, floatArray, booleanArray);
+    return 0;
+}
+
+JNIEXPORT void JNICALL JavaCritical_io_vproxy_pni_test_PrimitiveStruct_func4Critical(PrimitiveStruct * p, PNIBuf * charArray, PNIBuf * doubleArray, PNIBuf * floatArray, PNIBuf * booleanArray) {
     PNICharBufHandle* charBufHandle = GetPNICharBufHandle();
     printf("charArray = [");
     for (int i = 0; i < charBufHandle->len(charArray); ++i) {
@@ -186,239 +201,387 @@ JNIEXPORT int JNICALL Java_io_vproxy_pni_test_PrimitiveStruct_func4(PNIEnv_void 
     boolBufHandle->setIntoBuf(&p->booleanArrayPointer, booleanArray->buf, boolBufHandle->len(booleanArray));
 
     fflush(stdout);
-    return 0;
 }
 
 JNIEXPORT int JNICALL Java_io_vproxy_pni_test_PrimitiveStruct_retrieveByte(PNIEnv_byte * env, PrimitiveStruct * self) {
-    env->return_ = self->aByte;
+    env->return_ = JavaCritical_io_vproxy_pni_test_PrimitiveStruct_retrieveByteCritical(self);
     return 0;
+}
+
+JNIEXPORT int8_t JNICALL JavaCritical_io_vproxy_pni_test_PrimitiveStruct_retrieveByteCritical(PrimitiveStruct * self) {
+    return self->aByte;
 }
 
 JNIEXPORT int JNICALL Java_io_vproxy_pni_test_PrimitiveStruct_retrieveUnsignedByte(PNIEnv_byte * env, PrimitiveStruct * self) {
-    env->return_ = self->unsignedByte;
+    env->return_ = JavaCritical_io_vproxy_pni_test_PrimitiveStruct_retrieveUnsignedByteCritical(self);
     return 0;
+}
+
+JNIEXPORT int8_t JNICALL JavaCritical_io_vproxy_pni_test_PrimitiveStruct_retrieveUnsignedByteCritical(PrimitiveStruct * self) {
+    return self->unsignedByte;
 }
 
 JNIEXPORT int JNICALL Java_io_vproxy_pni_test_PrimitiveStruct_retrieveChar(PNIEnv_char * env, PrimitiveStruct * self) {
-    env->return_ = self->aChar;
+    env->return_ = JavaCritical_io_vproxy_pni_test_PrimitiveStruct_retrieveCharCritical(self);
     return 0;
+}
+
+JNIEXPORT uint16_t JNICALL JavaCritical_io_vproxy_pni_test_PrimitiveStruct_retrieveCharCritical(PrimitiveStruct * self) {
+    return self->aChar;
 }
 
 JNIEXPORT int JNICALL Java_io_vproxy_pni_test_PrimitiveStruct_retrieveDouble(PNIEnv_double * env, PrimitiveStruct * self) {
-    env->return_ = self->aDouble;
+    env->return_ = JavaCritical_io_vproxy_pni_test_PrimitiveStruct_retrieveDoubleCritical(self);
     return 0;
+}
+
+JNIEXPORT double JNICALL JavaCritical_io_vproxy_pni_test_PrimitiveStruct_retrieveDoubleCritical(PrimitiveStruct * self) {
+    return self->aDouble;
 }
 
 JNIEXPORT int JNICALL Java_io_vproxy_pni_test_PrimitiveStruct_retrieveFloat(PNIEnv_float * env, PrimitiveStruct * self) {
-    env->return_ = self->aFloat;
+    env->return_ = JavaCritical_io_vproxy_pni_test_PrimitiveStruct_retrieveFloatCritical(self);
     return 0;
+}
+
+JNIEXPORT float JNICALL JavaCritical_io_vproxy_pni_test_PrimitiveStruct_retrieveFloatCritical(PrimitiveStruct * self) {
+    return self->aFloat;
 }
 
 JNIEXPORT int JNICALL Java_io_vproxy_pni_test_PrimitiveStruct_retrieveInt(PNIEnv_int * env, PrimitiveStruct * self) {
-    env->return_ = self->aInt;
+    env->return_ = JavaCritical_io_vproxy_pni_test_PrimitiveStruct_retrieveIntCritical(self);
     return 0;
+}
+
+JNIEXPORT int32_t JNICALL JavaCritical_io_vproxy_pni_test_PrimitiveStruct_retrieveIntCritical(PrimitiveStruct * self) {
+    return self->aInt;
 }
 
 JNIEXPORT int JNICALL Java_io_vproxy_pni_test_PrimitiveStruct_retrieveUnsignedInt(PNIEnv_int * env, PrimitiveStruct * self) {
-    env->return_ = self->unsignedInt;
+    env->return_ = JavaCritical_io_vproxy_pni_test_PrimitiveStruct_retrieveUnsignedIntCritical(self);
     return 0;
+}
+
+JNIEXPORT int32_t JNICALL JavaCritical_io_vproxy_pni_test_PrimitiveStruct_retrieveUnsignedIntCritical(PrimitiveStruct * self) {
+    return self->unsignedInt;
 }
 
 JNIEXPORT int JNICALL Java_io_vproxy_pni_test_PrimitiveStruct_retrieveLong(PNIEnv_long * env, PrimitiveStruct * self) {
-    env->return_ = self->aLong;
+    env->return_ = JavaCritical_io_vproxy_pni_test_PrimitiveStruct_retrieveLongCritical(self);
     return 0;
+}
+
+JNIEXPORT int64_t JNICALL JavaCritical_io_vproxy_pni_test_PrimitiveStruct_retrieveLongCritical(PrimitiveStruct * self) {
+    return self->aLong;
 }
 
 JNIEXPORT int JNICALL Java_io_vproxy_pni_test_PrimitiveStruct_retrieveUnsignedLong(PNIEnv_long * env, PrimitiveStruct * self) {
-    env->return_ = self->unsignedLong;
+    env->return_ = JavaCritical_io_vproxy_pni_test_PrimitiveStruct_retrieveUnsignedLongCritical(self);
     return 0;
+}
+
+JNIEXPORT int64_t JNICALL JavaCritical_io_vproxy_pni_test_PrimitiveStruct_retrieveUnsignedLongCritical(PrimitiveStruct * self) {
+    return self->unsignedLong;
 }
 
 JNIEXPORT int JNICALL Java_io_vproxy_pni_test_PrimitiveStruct_retrieveShort(PNIEnv_short * env, PrimitiveStruct * self) {
-    env->return_ = self->aShort;
+    env->return_ = JavaCritical_io_vproxy_pni_test_PrimitiveStruct_retrieveShortCritical(self);
     return 0;
+}
+
+JNIEXPORT int16_t JNICALL JavaCritical_io_vproxy_pni_test_PrimitiveStruct_retrieveShortCritical(PrimitiveStruct * self) {
+    return self->aShort;
 }
 
 JNIEXPORT int JNICALL Java_io_vproxy_pni_test_PrimitiveStruct_retrieveUnsignedShort(PNIEnv_short * env, PrimitiveStruct * self) {
-    env->return_ = self->unsignedShort;
+    env->return_ = JavaCritical_io_vproxy_pni_test_PrimitiveStruct_retrieveUnsignedShortCritical(self);
     return 0;
+}
+
+JNIEXPORT int16_t JNICALL JavaCritical_io_vproxy_pni_test_PrimitiveStruct_retrieveUnsignedShortCritical(PrimitiveStruct * self) {
+    return self->unsignedShort;
 }
 
 JNIEXPORT int JNICALL Java_io_vproxy_pni_test_PrimitiveStruct_retrieveBoolean(PNIEnv_bool * env, PrimitiveStruct * self) {
-    env->return_ = self->aBoolean;
+    env->return_ = JavaCritical_io_vproxy_pni_test_PrimitiveStruct_retrieveBooleanCritical(self);
     return 0;
+}
+
+JNIEXPORT uint8_t JNICALL JavaCritical_io_vproxy_pni_test_PrimitiveStruct_retrieveBooleanCritical(PrimitiveStruct * self) {
+    return self->aBoolean;
 }
 
 JNIEXPORT int JNICALL Java_io_vproxy_pni_test_PrimitiveStruct_retrieveByteArray(PNIEnv_pointer * env, PrimitiveStruct * p, PNIBuf * return_) {
+    env->return_ = JavaCritical_io_vproxy_pni_test_PrimitiveStruct_retrieveByteArrayCritical(p, return_);
+    return 0;
+}
+
+JNIEXPORT PNIBuf * JNICALL JavaCritical_io_vproxy_pni_test_PrimitiveStruct_retrieveByteArrayCritical(PrimitiveStruct * p, PNIBuf * return_) {
     PNIByteBufHandle* handle = GetPNIByteBufHandle();
     return_->buf = &p->byteArray;
     return_->len = handle->byteSize(5);
-    env->return_ = return_;
-    return 0;
+    return return_;
 }
 
 JNIEXPORT int JNICALL Java_io_vproxy_pni_test_PrimitiveStruct_retrieveUnsignedByteArray(PNIEnv_pointer * env, PrimitiveStruct * p, PNIBuf * return_) {
+    env->return_ = JavaCritical_io_vproxy_pni_test_PrimitiveStruct_retrieveUnsignedByteArrayCritical(p, return_);
+    return 0;
+}
+
+JNIEXPORT PNIBuf * JNICALL JavaCritical_io_vproxy_pni_test_PrimitiveStruct_retrieveUnsignedByteArrayCritical(PrimitiveStruct * p, PNIBuf * return_) {
     PNIByteBufHandle* handle = GetPNIByteBufHandle();
     return_->buf = &p->unsignedByteArray;
     return_->len = handle->byteSize(6);
-    env->return_ = return_;
-    return 0;
+    return return_;
 }
 
 JNIEXPORT int JNICALL Java_io_vproxy_pni_test_PrimitiveStruct_retrieveCharArray(PNIEnv_pointer * env, PrimitiveStruct * p, PNIBuf * return_) {
+    env->return_ = JavaCritical_io_vproxy_pni_test_PrimitiveStruct_retrieveCharArrayCritical(p, return_);
+    return 0;
+}
+
+JNIEXPORT PNIBuf * JNICALL JavaCritical_io_vproxy_pni_test_PrimitiveStruct_retrieveCharArrayCritical(PrimitiveStruct * p, PNIBuf * return_) {
     PNICharBufHandle* handle = GetPNICharBufHandle();
     return_->buf = &p->charArray;
     return_->len = handle->byteSize(7);
-    env->return_ = return_;
-    return 0;
+    return return_;
 }
 
 JNIEXPORT int JNICALL Java_io_vproxy_pni_test_PrimitiveStruct_retrieveDoubleArray(PNIEnv_pointer * env, PrimitiveStruct * p, PNIBuf * return_) {
+    env->return_ = JavaCritical_io_vproxy_pni_test_PrimitiveStruct_retrieveDoubleArrayCritical(p, return_);
+    return 0;
+}
+
+JNIEXPORT PNIBuf * JNICALL JavaCritical_io_vproxy_pni_test_PrimitiveStruct_retrieveDoubleArrayCritical(PrimitiveStruct * p, PNIBuf * return_) {
     PNIDoubleBufHandle* handle = GetPNIDoubleBufHandle();
     return_->buf = &p->doubleArray;
     return_->len = handle->byteSize(8);
-    env->return_ = return_;
-    return 0;
+    return return_;
 }
 
 JNIEXPORT int JNICALL Java_io_vproxy_pni_test_PrimitiveStruct_retrieveFloatArray(PNIEnv_pointer * env, PrimitiveStruct * p, PNIBuf * return_) {
+    env->return_ = JavaCritical_io_vproxy_pni_test_PrimitiveStruct_retrieveFloatArrayCritical(p, return_);
+    return 0;
+}
+
+JNIEXPORT PNIBuf * JNICALL JavaCritical_io_vproxy_pni_test_PrimitiveStruct_retrieveFloatArrayCritical(PrimitiveStruct * p, PNIBuf * return_) {
     PNIFloatBufHandle* handle = GetPNIFloatBufHandle();
     return_->buf = &p->floatArray;
     return_->len = handle->byteSize(9);
-    env->return_ = return_;
-    return 0;
+    return return_;
 }
 
 JNIEXPORT int JNICALL Java_io_vproxy_pni_test_PrimitiveStruct_retrieveIntArray(PNIEnv_pointer * env, PrimitiveStruct * p, PNIBuf * return_) {
+    env->return_ = JavaCritical_io_vproxy_pni_test_PrimitiveStruct_retrieveIntArrayCritical(p, return_);
+    return 0;
+}
+
+JNIEXPORT PNIBuf * JNICALL JavaCritical_io_vproxy_pni_test_PrimitiveStruct_retrieveIntArrayCritical(PrimitiveStruct * p, PNIBuf * return_) {
     PNIIntBufHandle* handle = GetPNIIntBufHandle();
     return_->buf = &p->intArray;
     return_->len = handle->byteSize(10);
-    env->return_ = return_;
-    return 0;
+    return return_;
 }
 
 JNIEXPORT int JNICALL Java_io_vproxy_pni_test_PrimitiveStruct_retrieveUnsignedIntArray(PNIEnv_pointer * env, PrimitiveStruct * p, PNIBuf * return_) {
+    env->return_ = JavaCritical_io_vproxy_pni_test_PrimitiveStruct_retrieveUnsignedIntArrayCritical(p, return_);
+    return 0;
+}
+
+JNIEXPORT PNIBuf * JNICALL JavaCritical_io_vproxy_pni_test_PrimitiveStruct_retrieveUnsignedIntArrayCritical(PrimitiveStruct * p, PNIBuf * return_) {
     PNIIntBufHandle* handle = GetPNIIntBufHandle();
     return_->buf = &p->unsignedIntArray;
     return_->len = handle->byteSize(11);
-    env->return_ = return_;
-    return 0;
+    return return_;
 }
 
 JNIEXPORT int JNICALL Java_io_vproxy_pni_test_PrimitiveStruct_retrieveLongArray(PNIEnv_pointer * env, PrimitiveStruct * p, PNIBuf * return_) {
+    env->return_ = JavaCritical_io_vproxy_pni_test_PrimitiveStruct_retrieveLongArrayCritical(p, return_);
+    return 0;
+}
+
+JNIEXPORT PNIBuf * JNICALL JavaCritical_io_vproxy_pni_test_PrimitiveStruct_retrieveLongArrayCritical(PrimitiveStruct * p, PNIBuf * return_) {
     PNILongBufHandle* handle = GetPNILongBufHandle();
     return_->buf = &p->longArray;
     return_->len = handle->byteSize(12);
-    env->return_ = return_;
-    return 0;
+    return return_;
 }
 
 JNIEXPORT int JNICALL Java_io_vproxy_pni_test_PrimitiveStruct_retrieveUnsignedLongArray(PNIEnv_pointer * env, PrimitiveStruct * p, PNIBuf * return_) {
+    env->return_ = JavaCritical_io_vproxy_pni_test_PrimitiveStruct_retrieveUnsignedLongArrayCritical(p, return_);
+    return 0;
+}
+
+JNIEXPORT PNIBuf * JNICALL JavaCritical_io_vproxy_pni_test_PrimitiveStruct_retrieveUnsignedLongArrayCritical(PrimitiveStruct * p, PNIBuf * return_) {
     PNILongBufHandle* handle = GetPNILongBufHandle();
     return_->buf = &p->unsignedLongArray;
     return_->len = handle->byteSize(13);
-    env->return_ = return_;
-    return 0;
+    return return_;
 }
 
 JNIEXPORT int JNICALL Java_io_vproxy_pni_test_PrimitiveStruct_retrieveShortArray(PNIEnv_pointer * env, PrimitiveStruct * p, PNIBuf * return_) {
+    env->return_ = JavaCritical_io_vproxy_pni_test_PrimitiveStruct_retrieveShortArrayCritical(p, return_);
+    return 0;
+}
+
+JNIEXPORT PNIBuf * JNICALL JavaCritical_io_vproxy_pni_test_PrimitiveStruct_retrieveShortArrayCritical(PrimitiveStruct * p, PNIBuf * return_) {
     PNIShortBufHandle* handle = GetPNIShortBufHandle();
     return_->buf = &p->shortArray;
     return_->len = handle->byteSize(14);
-    env->return_ = return_;
-    return 0;
+    return return_;
 }
 
 JNIEXPORT int JNICALL Java_io_vproxy_pni_test_PrimitiveStruct_retrieveUnsignedShortArray(PNIEnv_pointer * env, PrimitiveStruct * p, PNIBuf * return_) {
+    env->return_ = JavaCritical_io_vproxy_pni_test_PrimitiveStruct_retrieveUnsignedShortArrayCritical(p, return_);
+    return 0;
+}
+
+JNIEXPORT PNIBuf * JNICALL JavaCritical_io_vproxy_pni_test_PrimitiveStruct_retrieveUnsignedShortArrayCritical(PrimitiveStruct * p, PNIBuf * return_) {
     PNIShortBufHandle* handle = GetPNIShortBufHandle();
     return_->buf = &p->unsignedShortArray;
     return_->len = handle->byteSize(15);
-    env->return_ = return_;
-    return 0;
+    return return_;
 }
 
 JNIEXPORT int JNICALL Java_io_vproxy_pni_test_PrimitiveStruct_retrieveBooleanArray(PNIEnv_pointer * env, PrimitiveStruct * p, PNIBuf * return_) {
+    env->return_ = JavaCritical_io_vproxy_pni_test_PrimitiveStruct_retrieveBooleanArrayCritical(p, return_);
+    return 0;
+}
+
+JNIEXPORT PNIBuf * JNICALL JavaCritical_io_vproxy_pni_test_PrimitiveStruct_retrieveBooleanArrayCritical(PrimitiveStruct * p, PNIBuf * return_) {
     PNIBoolBufHandle* handle = GetPNIBoolBufHandle();
     return_->buf = &p->booleanArray;
     return_->len = handle->byteSize(16);
-    env->return_ = return_;
-    return 0;
+    return return_;
 }
 
 JNIEXPORT int JNICALL Java_io_vproxy_pni_test_PrimitiveStruct_retrieveByteArrayPointer(PNIEnv_pointer * env, PrimitiveStruct * p, PNIBuf * return_) {
-    *return_ = p->byteArrayPointer;
-    env->return_ = return_;
+    env->return_ = JavaCritical_io_vproxy_pni_test_PrimitiveStruct_retrieveByteArrayPointerCritical(p, return_);
     return 0;
+}
+
+JNIEXPORT PNIBuf * JNICALL JavaCritical_io_vproxy_pni_test_PrimitiveStruct_retrieveByteArrayPointerCritical(PrimitiveStruct * p, PNIBuf * return_) {
+    *return_ = p->byteArrayPointer;
+    return return_;
 }
 
 JNIEXPORT int JNICALL Java_io_vproxy_pni_test_PrimitiveStruct_retrieveUnsignedByteArrayPointer(PNIEnv_pointer * env, PrimitiveStruct * p, PNIBuf * return_) {
-    *return_ = p->unsignedByteArrayPointer;
-    env->return_ = return_;
+    env->return_ = JavaCritical_io_vproxy_pni_test_PrimitiveStruct_retrieveUnsignedByteArrayPointerCritical(p, return_);
     return 0;
+}
+
+JNIEXPORT PNIBuf * JNICALL JavaCritical_io_vproxy_pni_test_PrimitiveStruct_retrieveUnsignedByteArrayPointerCritical(PrimitiveStruct * p, PNIBuf * return_) {
+    *return_ = p->unsignedByteArrayPointer;
+    return return_;
 }
 
 JNIEXPORT int JNICALL Java_io_vproxy_pni_test_PrimitiveStruct_retrieveCharArrayPointer(PNIEnv_pointer * env, PrimitiveStruct * p, PNIBuf * return_) {
-    *return_ = p->charArrayPointer;
-    env->return_ = return_;
+    env->return_ = JavaCritical_io_vproxy_pni_test_PrimitiveStruct_retrieveCharArrayPointerCritical(p, return_);
     return 0;
+}
+
+JNIEXPORT PNIBuf * JNICALL JavaCritical_io_vproxy_pni_test_PrimitiveStruct_retrieveCharArrayPointerCritical(PrimitiveStruct * p, PNIBuf * return_) {
+    *return_ = p->charArrayPointer;
+    return return_;
 }
 
 JNIEXPORT int JNICALL Java_io_vproxy_pni_test_PrimitiveStruct_retrieveDoubleArrayPointer(PNIEnv_pointer * env, PrimitiveStruct * p, PNIBuf * return_) {
-    *return_ = p->doubleArrayPointer;
-    env->return_ = return_;
+    env->return_ = JavaCritical_io_vproxy_pni_test_PrimitiveStruct_retrieveDoubleArrayPointerCritical(p, return_);
     return 0;
+}
+
+JNIEXPORT PNIBuf * JNICALL JavaCritical_io_vproxy_pni_test_PrimitiveStruct_retrieveDoubleArrayPointerCritical(PrimitiveStruct * p, PNIBuf * return_) {
+    *return_ = p->doubleArrayPointer;
+    return return_;
 }
 
 JNIEXPORT int JNICALL Java_io_vproxy_pni_test_PrimitiveStruct_retrieveFloatArrayPointer(PNIEnv_pointer * env, PrimitiveStruct * p, PNIBuf * return_) {
-    *return_ = p->floatArrayPointer;
-    env->return_ = return_;
+    env->return_ = JavaCritical_io_vproxy_pni_test_PrimitiveStruct_retrieveFloatArrayPointerCritical(p, return_);
     return 0;
+}
+
+JNIEXPORT PNIBuf * JNICALL JavaCritical_io_vproxy_pni_test_PrimitiveStruct_retrieveFloatArrayPointerCritical(PrimitiveStruct * p, PNIBuf * return_) {
+    *return_ = p->floatArrayPointer;
+    return return_;
 }
 
 JNIEXPORT int JNICALL Java_io_vproxy_pni_test_PrimitiveStruct_retrieveIntArrayPointer(PNIEnv_pointer * env, PrimitiveStruct * p, PNIBuf * return_) {
-    *return_ = p->intArrayPointer;
-    env->return_ = return_;
+    env->return_ = JavaCritical_io_vproxy_pni_test_PrimitiveStruct_retrieveIntArrayPointerCritical(p, return_);
     return 0;
+}
+
+JNIEXPORT PNIBuf * JNICALL JavaCritical_io_vproxy_pni_test_PrimitiveStruct_retrieveIntArrayPointerCritical(PrimitiveStruct * p, PNIBuf * return_) {
+    *return_ = p->intArrayPointer;
+    return return_;
 }
 
 JNIEXPORT int JNICALL Java_io_vproxy_pni_test_PrimitiveStruct_retrieveUnsignedIntArrayPointer(PNIEnv_pointer * env, PrimitiveStruct * p, PNIBuf * return_) {
-    *return_ = p->unsignedIntArrayPointer;
-    env->return_ = return_;
+    env->return_ = JavaCritical_io_vproxy_pni_test_PrimitiveStruct_retrieveUnsignedIntArrayPointerCritical(p, return_);
     return 0;
+}
+
+JNIEXPORT PNIBuf * JNICALL JavaCritical_io_vproxy_pni_test_PrimitiveStruct_retrieveUnsignedIntArrayPointerCritical(PrimitiveStruct * p, PNIBuf * return_) {
+    *return_ = p->unsignedIntArrayPointer;
+    return return_;
 }
 
 JNIEXPORT int JNICALL Java_io_vproxy_pni_test_PrimitiveStruct_retrieveLongArrayPointer(PNIEnv_pointer * env, PrimitiveStruct * p, PNIBuf * return_) {
-    *return_ = p->longArrayPointer;
-    env->return_ = return_;
+    env->return_ = JavaCritical_io_vproxy_pni_test_PrimitiveStruct_retrieveLongArrayPointerCritical(p, return_);
     return 0;
+}
+
+JNIEXPORT PNIBuf * JNICALL JavaCritical_io_vproxy_pni_test_PrimitiveStruct_retrieveLongArrayPointerCritical(PrimitiveStruct * p, PNIBuf * return_) {
+    *return_ = p->longArrayPointer;
+    return return_;
 }
 
 JNIEXPORT int JNICALL Java_io_vproxy_pni_test_PrimitiveStruct_retrieveUnsignedLongArrayPointer(PNIEnv_pointer * env, PrimitiveStruct * p, PNIBuf * return_) {
-    *return_ = p->unsignedLongArrayPointer;
-    env->return_ = return_;
+    env->return_ = JavaCritical_io_vproxy_pni_test_PrimitiveStruct_retrieveUnsignedLongArrayPointerCritical(p, return_);
     return 0;
+}
+
+JNIEXPORT PNIBuf * JNICALL JavaCritical_io_vproxy_pni_test_PrimitiveStruct_retrieveUnsignedLongArrayPointerCritical(PrimitiveStruct * p, PNIBuf * return_) {
+    *return_ = p->unsignedLongArrayPointer;
+    return return_;
 }
 
 JNIEXPORT int JNICALL Java_io_vproxy_pni_test_PrimitiveStruct_retrieveShortArrayPointer(PNIEnv_pointer * env, PrimitiveStruct * p, PNIBuf * return_) {
-    *return_ = p->shortArrayPointer;
-    env->return_ = return_;
+    env->return_ = JavaCritical_io_vproxy_pni_test_PrimitiveStruct_retrieveShortArrayPointerCritical(p, return_);
     return 0;
+}
+
+JNIEXPORT PNIBuf * JNICALL JavaCritical_io_vproxy_pni_test_PrimitiveStruct_retrieveShortArrayPointerCritical(PrimitiveStruct * p, PNIBuf * return_) {
+    *return_ = p->shortArrayPointer;
+    return return_;
 }
 
 JNIEXPORT int JNICALL Java_io_vproxy_pni_test_PrimitiveStruct_retrieveUnsignedShortArrayPointer(PNIEnv_pointer * env, PrimitiveStruct * p, PNIBuf * return_) {
-    *return_ = p->unsignedShortArrayPointer;
-    env->return_ = return_;
+    env->return_ = JavaCritical_io_vproxy_pni_test_PrimitiveStruct_retrieveUnsignedShortArrayPointerCritical(p, return_);
     return 0;
+}
+
+JNIEXPORT PNIBuf * JNICALL JavaCritical_io_vproxy_pni_test_PrimitiveStruct_retrieveUnsignedShortArrayPointerCritical(PrimitiveStruct * p, PNIBuf * return_) {
+    *return_ = p->unsignedShortArrayPointer;
+    return return_;
 }
 
 JNIEXPORT int JNICALL Java_io_vproxy_pni_test_PrimitiveStruct_retrieveBooleanArrayPointer(PNIEnv_pointer * env, PrimitiveStruct * p, PNIBuf * return_) {
-    *return_ = p->booleanArrayPointer;
-    env->return_ = return_;
+    env->return_ = JavaCritical_io_vproxy_pni_test_PrimitiveStruct_retrieveBooleanArrayPointerCritical(p, return_);
     return 0;
 }
 
+JNIEXPORT PNIBuf * JNICALL JavaCritical_io_vproxy_pni_test_PrimitiveStruct_retrieveBooleanArrayPointerCritical(PrimitiveStruct * p, PNIBuf * return_) {
+    *return_ = p->booleanArrayPointer;
+    return return_;
+}
+
 JNIEXPORT int JNICALL Java_io_vproxy_pni_test_PrimitiveStruct_checkPointerSetToNonNull(PNIEnv_bool * env, PrimitiveStruct * p) {
-    env->return_ = p->byteArrayPointer.buf != NULL
+    env->return_ = JavaCritical_io_vproxy_pni_test_PrimitiveStruct_checkPointerSetToNonNullCritical(p);
+    return 0;
+}
+
+JNIEXPORT uint8_t JNICALL JavaCritical_io_vproxy_pni_test_PrimitiveStruct_checkPointerSetToNonNullCritical(PrimitiveStruct * p) {
+    return         p->byteArrayPointer.buf != NULL
                 && p->unsignedByteArrayPointer.buf != NULL
                 && p->charArrayPointer.buf != NULL
                 && p->doubleArrayPointer.buf != NULL
@@ -430,11 +593,15 @@ JNIEXPORT int JNICALL Java_io_vproxy_pni_test_PrimitiveStruct_checkPointerSetToN
                 && p->shortArrayPointer.buf != NULL
                 && p->unsignedShortArrayPointer.buf != NULL
                 && p->booleanArrayPointer.buf != NULL;
-    return 0;
 }
 
 JNIEXPORT int JNICALL Java_io_vproxy_pni_test_PrimitiveStruct_checkPointerSetToNull(PNIEnv_bool * env, PrimitiveStruct * p) {
-    env->return_ = p->byteArrayPointer.buf == NULL
+    env->return_ = JavaCritical_io_vproxy_pni_test_PrimitiveStruct_checkPointerSetToNullCritical(p);
+    return 0;
+}
+
+JNIEXPORT uint8_t JNICALL JavaCritical_io_vproxy_pni_test_PrimitiveStruct_checkPointerSetToNullCritical(PrimitiveStruct * p) {
+    return         p->byteArrayPointer.buf == NULL
                 && p->unsignedByteArrayPointer.buf == NULL
                 && p->charArrayPointer.buf == NULL
                 && p->doubleArrayPointer.buf == NULL
@@ -446,5 +613,4 @@ JNIEXPORT int JNICALL Java_io_vproxy_pni_test_PrimitiveStruct_checkPointerSetToN
                 && p->shortArrayPointer.buf == NULL
                 && p->unsignedShortArrayPointer.buf == NULL
                 && p->booleanArrayPointer.buf == NULL;
-    return 0;
 }
