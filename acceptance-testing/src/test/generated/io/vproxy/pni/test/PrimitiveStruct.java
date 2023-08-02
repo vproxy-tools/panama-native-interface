@@ -975,26 +975,24 @@ public class PrimitiveStruct {
         return RESULT;
     }
 
-    private final MethodHandle retrieveByteArray = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_PrimitiveStruct_retrieveByteArray", MemorySegment.class /* self */, MemorySegment.class /* return */);
+    private final MethodHandle retrieveByteArray = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_PrimitiveStruct_retrieveByteArray", MemorySegment.class /* self */);
 
     public MemorySegment retrieveByteArray(PNIEnv ENV) {
         ENV.reset();
-        try (var ARENA = Arena.ofConfined()) {
-            int ERR;
-            try {
-                ERR = (int) this.retrieveByteArray.invokeExact(ENV.MEMORY, MEMORY, ARENA.allocate(PNIBuf.LAYOUT.byteSize()));
-            } catch (Throwable THROWABLE) {
-                throw PanamaUtils.convertInvokeExactException(THROWABLE);
-            }
-            if (ERR != 0) {
-                ENV.throwLast();
-            }
-            var RESULT = ENV.returnPointer();
-            if (RESULT == null) return null;
-            var RES_SEG = new PNIBuf(RESULT);
-            if (RES_SEG.isNull()) return null;
-            return RES_SEG.get();
+        int ERR;
+        try {
+            ERR = (int) this.retrieveByteArray.invokeExact(ENV.MEMORY, MEMORY);
+        } catch (Throwable THROWABLE) {
+            throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
+        if (ERR != 0) {
+            ENV.throwLast();
+        }
+        var RESULT = ENV.returnPointer();
+        if (RESULT == null) return null;
+        var RES_SEG = new PNIBuf(RESULT);
+        if (RES_SEG.isNull()) return null;
+        return RES_SEG.get();
     }
 
     private final MethodHandle retrieveByteArrayCritical = PanamaUtils.lookupPNICriticalFunction(false, PNIBuf.class, "JavaCritical_io_vproxy_pni_test_PrimitiveStruct_retrieveByteArrayCritical", MemorySegment.class /* self */, MemorySegment.class /* return */);
@@ -1014,26 +1012,24 @@ public class PrimitiveStruct {
         }
     }
 
-    private final MethodHandle retrieveUnsignedByteArray = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_PrimitiveStruct_retrieveUnsignedByteArray", MemorySegment.class /* self */, MemorySegment.class /* return */);
+    private final MethodHandle retrieveUnsignedByteArray = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_PrimitiveStruct_retrieveUnsignedByteArray", MemorySegment.class /* self */);
 
     public MemorySegment retrieveUnsignedByteArray(PNIEnv ENV) {
         ENV.reset();
-        try (var ARENA = Arena.ofConfined()) {
-            int ERR;
-            try {
-                ERR = (int) this.retrieveUnsignedByteArray.invokeExact(ENV.MEMORY, MEMORY, ARENA.allocate(PNIBuf.LAYOUT.byteSize()));
-            } catch (Throwable THROWABLE) {
-                throw PanamaUtils.convertInvokeExactException(THROWABLE);
-            }
-            if (ERR != 0) {
-                ENV.throwLast();
-            }
-            var RESULT = ENV.returnPointer();
-            if (RESULT == null) return null;
-            var RES_SEG = new PNIBuf(RESULT);
-            if (RES_SEG.isNull()) return null;
-            return RES_SEG.get();
+        int ERR;
+        try {
+            ERR = (int) this.retrieveUnsignedByteArray.invokeExact(ENV.MEMORY, MEMORY);
+        } catch (Throwable THROWABLE) {
+            throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
+        if (ERR != 0) {
+            ENV.throwLast();
+        }
+        var RESULT = ENV.returnPointer();
+        if (RESULT == null) return null;
+        var RES_SEG = new PNIBuf(RESULT);
+        if (RES_SEG.isNull()) return null;
+        return RES_SEG.get();
     }
 
     private final MethodHandle retrieveUnsignedByteArrayCritical = PanamaUtils.lookupPNICriticalFunction(false, PNIBuf.class, "JavaCritical_io_vproxy_pni_test_PrimitiveStruct_retrieveUnsignedByteArrayCritical", MemorySegment.class /* self */, MemorySegment.class /* return */);
@@ -1053,26 +1049,24 @@ public class PrimitiveStruct {
         }
     }
 
-    private final MethodHandle retrieveCharArray = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_PrimitiveStruct_retrieveCharArray", MemorySegment.class /* self */, MemorySegment.class /* return */);
+    private final MethodHandle retrieveCharArray = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_PrimitiveStruct_retrieveCharArray", MemorySegment.class /* self */);
 
     public CharArray retrieveCharArray(PNIEnv ENV) {
         ENV.reset();
-        try (var ARENA = Arena.ofConfined()) {
-            int ERR;
-            try {
-                ERR = (int) this.retrieveCharArray.invokeExact(ENV.MEMORY, MEMORY, ARENA.allocate(PNIBuf.LAYOUT.byteSize()));
-            } catch (Throwable THROWABLE) {
-                throw PanamaUtils.convertInvokeExactException(THROWABLE);
-            }
-            if (ERR != 0) {
-                ENV.throwLast();
-            }
-            var RESULT = ENV.returnPointer();
-            if (RESULT == null) return null;
-            var RES_SEG = new PNIBuf(RESULT);
-            if (RES_SEG.isNull()) return null;
-            return new CharArray(RES_SEG);
+        int ERR;
+        try {
+            ERR = (int) this.retrieveCharArray.invokeExact(ENV.MEMORY, MEMORY);
+        } catch (Throwable THROWABLE) {
+            throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
+        if (ERR != 0) {
+            ENV.throwLast();
+        }
+        var RESULT = ENV.returnPointer();
+        if (RESULT == null) return null;
+        var RES_SEG = new PNIBuf(RESULT);
+        if (RES_SEG.isNull()) return null;
+        return new CharArray(RES_SEG);
     }
 
     private final MethodHandle retrieveCharArrayCritical = PanamaUtils.lookupPNICriticalFunction(false, PNIBuf.class, "JavaCritical_io_vproxy_pni_test_PrimitiveStruct_retrieveCharArrayCritical", MemorySegment.class /* self */, MemorySegment.class /* return */);
@@ -1092,26 +1086,24 @@ public class PrimitiveStruct {
         }
     }
 
-    private final MethodHandle retrieveDoubleArray = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_PrimitiveStruct_retrieveDoubleArray", MemorySegment.class /* self */, MemorySegment.class /* return */);
+    private final MethodHandle retrieveDoubleArray = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_PrimitiveStruct_retrieveDoubleArray", MemorySegment.class /* self */);
 
     public DoubleArray retrieveDoubleArray(PNIEnv ENV) {
         ENV.reset();
-        try (var ARENA = Arena.ofConfined()) {
-            int ERR;
-            try {
-                ERR = (int) this.retrieveDoubleArray.invokeExact(ENV.MEMORY, MEMORY, ARENA.allocate(PNIBuf.LAYOUT.byteSize()));
-            } catch (Throwable THROWABLE) {
-                throw PanamaUtils.convertInvokeExactException(THROWABLE);
-            }
-            if (ERR != 0) {
-                ENV.throwLast();
-            }
-            var RESULT = ENV.returnPointer();
-            if (RESULT == null) return null;
-            var RES_SEG = new PNIBuf(RESULT);
-            if (RES_SEG.isNull()) return null;
-            return new DoubleArray(RES_SEG);
+        int ERR;
+        try {
+            ERR = (int) this.retrieveDoubleArray.invokeExact(ENV.MEMORY, MEMORY);
+        } catch (Throwable THROWABLE) {
+            throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
+        if (ERR != 0) {
+            ENV.throwLast();
+        }
+        var RESULT = ENV.returnPointer();
+        if (RESULT == null) return null;
+        var RES_SEG = new PNIBuf(RESULT);
+        if (RES_SEG.isNull()) return null;
+        return new DoubleArray(RES_SEG);
     }
 
     private final MethodHandle retrieveDoubleArrayCritical = PanamaUtils.lookupPNICriticalFunction(false, PNIBuf.class, "JavaCritical_io_vproxy_pni_test_PrimitiveStruct_retrieveDoubleArrayCritical", MemorySegment.class /* self */, MemorySegment.class /* return */);
@@ -1131,26 +1123,24 @@ public class PrimitiveStruct {
         }
     }
 
-    private final MethodHandle retrieveFloatArray = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_PrimitiveStruct_retrieveFloatArray", MemorySegment.class /* self */, MemorySegment.class /* return */);
+    private final MethodHandle retrieveFloatArray = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_PrimitiveStruct_retrieveFloatArray", MemorySegment.class /* self */);
 
     public FloatArray retrieveFloatArray(PNIEnv ENV) {
         ENV.reset();
-        try (var ARENA = Arena.ofConfined()) {
-            int ERR;
-            try {
-                ERR = (int) this.retrieveFloatArray.invokeExact(ENV.MEMORY, MEMORY, ARENA.allocate(PNIBuf.LAYOUT.byteSize()));
-            } catch (Throwable THROWABLE) {
-                throw PanamaUtils.convertInvokeExactException(THROWABLE);
-            }
-            if (ERR != 0) {
-                ENV.throwLast();
-            }
-            var RESULT = ENV.returnPointer();
-            if (RESULT == null) return null;
-            var RES_SEG = new PNIBuf(RESULT);
-            if (RES_SEG.isNull()) return null;
-            return new FloatArray(RES_SEG);
+        int ERR;
+        try {
+            ERR = (int) this.retrieveFloatArray.invokeExact(ENV.MEMORY, MEMORY);
+        } catch (Throwable THROWABLE) {
+            throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
+        if (ERR != 0) {
+            ENV.throwLast();
+        }
+        var RESULT = ENV.returnPointer();
+        if (RESULT == null) return null;
+        var RES_SEG = new PNIBuf(RESULT);
+        if (RES_SEG.isNull()) return null;
+        return new FloatArray(RES_SEG);
     }
 
     private final MethodHandle retrieveFloatArrayCritical = PanamaUtils.lookupPNICriticalFunction(false, PNIBuf.class, "JavaCritical_io_vproxy_pni_test_PrimitiveStruct_retrieveFloatArrayCritical", MemorySegment.class /* self */, MemorySegment.class /* return */);
@@ -1170,26 +1160,24 @@ public class PrimitiveStruct {
         }
     }
 
-    private final MethodHandle retrieveIntArray = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_PrimitiveStruct_retrieveIntArray", MemorySegment.class /* self */, MemorySegment.class /* return */);
+    private final MethodHandle retrieveIntArray = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_PrimitiveStruct_retrieveIntArray", MemorySegment.class /* self */);
 
     public IntArray retrieveIntArray(PNIEnv ENV) {
         ENV.reset();
-        try (var ARENA = Arena.ofConfined()) {
-            int ERR;
-            try {
-                ERR = (int) this.retrieveIntArray.invokeExact(ENV.MEMORY, MEMORY, ARENA.allocate(PNIBuf.LAYOUT.byteSize()));
-            } catch (Throwable THROWABLE) {
-                throw PanamaUtils.convertInvokeExactException(THROWABLE);
-            }
-            if (ERR != 0) {
-                ENV.throwLast();
-            }
-            var RESULT = ENV.returnPointer();
-            if (RESULT == null) return null;
-            var RES_SEG = new PNIBuf(RESULT);
-            if (RES_SEG.isNull()) return null;
-            return new IntArray(RES_SEG);
+        int ERR;
+        try {
+            ERR = (int) this.retrieveIntArray.invokeExact(ENV.MEMORY, MEMORY);
+        } catch (Throwable THROWABLE) {
+            throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
+        if (ERR != 0) {
+            ENV.throwLast();
+        }
+        var RESULT = ENV.returnPointer();
+        if (RESULT == null) return null;
+        var RES_SEG = new PNIBuf(RESULT);
+        if (RES_SEG.isNull()) return null;
+        return new IntArray(RES_SEG);
     }
 
     private final MethodHandle retrieveIntArrayCritical = PanamaUtils.lookupPNICriticalFunction(false, PNIBuf.class, "JavaCritical_io_vproxy_pni_test_PrimitiveStruct_retrieveIntArrayCritical", MemorySegment.class /* self */, MemorySegment.class /* return */);
@@ -1209,26 +1197,24 @@ public class PrimitiveStruct {
         }
     }
 
-    private final MethodHandle retrieveUnsignedIntArray = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_PrimitiveStruct_retrieveUnsignedIntArray", MemorySegment.class /* self */, MemorySegment.class /* return */);
+    private final MethodHandle retrieveUnsignedIntArray = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_PrimitiveStruct_retrieveUnsignedIntArray", MemorySegment.class /* self */);
 
     public IntArray retrieveUnsignedIntArray(PNIEnv ENV) {
         ENV.reset();
-        try (var ARENA = Arena.ofConfined()) {
-            int ERR;
-            try {
-                ERR = (int) this.retrieveUnsignedIntArray.invokeExact(ENV.MEMORY, MEMORY, ARENA.allocate(PNIBuf.LAYOUT.byteSize()));
-            } catch (Throwable THROWABLE) {
-                throw PanamaUtils.convertInvokeExactException(THROWABLE);
-            }
-            if (ERR != 0) {
-                ENV.throwLast();
-            }
-            var RESULT = ENV.returnPointer();
-            if (RESULT == null) return null;
-            var RES_SEG = new PNIBuf(RESULT);
-            if (RES_SEG.isNull()) return null;
-            return new IntArray(RES_SEG);
+        int ERR;
+        try {
+            ERR = (int) this.retrieveUnsignedIntArray.invokeExact(ENV.MEMORY, MEMORY);
+        } catch (Throwable THROWABLE) {
+            throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
+        if (ERR != 0) {
+            ENV.throwLast();
+        }
+        var RESULT = ENV.returnPointer();
+        if (RESULT == null) return null;
+        var RES_SEG = new PNIBuf(RESULT);
+        if (RES_SEG.isNull()) return null;
+        return new IntArray(RES_SEG);
     }
 
     private final MethodHandle retrieveUnsignedIntArrayCritical = PanamaUtils.lookupPNICriticalFunction(false, PNIBuf.class, "JavaCritical_io_vproxy_pni_test_PrimitiveStruct_retrieveUnsignedIntArrayCritical", MemorySegment.class /* self */, MemorySegment.class /* return */);
@@ -1248,26 +1234,24 @@ public class PrimitiveStruct {
         }
     }
 
-    private final MethodHandle retrieveLongArray = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_PrimitiveStruct_retrieveLongArray", MemorySegment.class /* self */, MemorySegment.class /* return */);
+    private final MethodHandle retrieveLongArray = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_PrimitiveStruct_retrieveLongArray", MemorySegment.class /* self */);
 
     public LongArray retrieveLongArray(PNIEnv ENV) {
         ENV.reset();
-        try (var ARENA = Arena.ofConfined()) {
-            int ERR;
-            try {
-                ERR = (int) this.retrieveLongArray.invokeExact(ENV.MEMORY, MEMORY, ARENA.allocate(PNIBuf.LAYOUT.byteSize()));
-            } catch (Throwable THROWABLE) {
-                throw PanamaUtils.convertInvokeExactException(THROWABLE);
-            }
-            if (ERR != 0) {
-                ENV.throwLast();
-            }
-            var RESULT = ENV.returnPointer();
-            if (RESULT == null) return null;
-            var RES_SEG = new PNIBuf(RESULT);
-            if (RES_SEG.isNull()) return null;
-            return new LongArray(RES_SEG);
+        int ERR;
+        try {
+            ERR = (int) this.retrieveLongArray.invokeExact(ENV.MEMORY, MEMORY);
+        } catch (Throwable THROWABLE) {
+            throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
+        if (ERR != 0) {
+            ENV.throwLast();
+        }
+        var RESULT = ENV.returnPointer();
+        if (RESULT == null) return null;
+        var RES_SEG = new PNIBuf(RESULT);
+        if (RES_SEG.isNull()) return null;
+        return new LongArray(RES_SEG);
     }
 
     private final MethodHandle retrieveLongArrayCritical = PanamaUtils.lookupPNICriticalFunction(false, PNIBuf.class, "JavaCritical_io_vproxy_pni_test_PrimitiveStruct_retrieveLongArrayCritical", MemorySegment.class /* self */, MemorySegment.class /* return */);
@@ -1287,26 +1271,24 @@ public class PrimitiveStruct {
         }
     }
 
-    private final MethodHandle retrieveUnsignedLongArray = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_PrimitiveStruct_retrieveUnsignedLongArray", MemorySegment.class /* self */, MemorySegment.class /* return */);
+    private final MethodHandle retrieveUnsignedLongArray = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_PrimitiveStruct_retrieveUnsignedLongArray", MemorySegment.class /* self */);
 
     public LongArray retrieveUnsignedLongArray(PNIEnv ENV) {
         ENV.reset();
-        try (var ARENA = Arena.ofConfined()) {
-            int ERR;
-            try {
-                ERR = (int) this.retrieveUnsignedLongArray.invokeExact(ENV.MEMORY, MEMORY, ARENA.allocate(PNIBuf.LAYOUT.byteSize()));
-            } catch (Throwable THROWABLE) {
-                throw PanamaUtils.convertInvokeExactException(THROWABLE);
-            }
-            if (ERR != 0) {
-                ENV.throwLast();
-            }
-            var RESULT = ENV.returnPointer();
-            if (RESULT == null) return null;
-            var RES_SEG = new PNIBuf(RESULT);
-            if (RES_SEG.isNull()) return null;
-            return new LongArray(RES_SEG);
+        int ERR;
+        try {
+            ERR = (int) this.retrieveUnsignedLongArray.invokeExact(ENV.MEMORY, MEMORY);
+        } catch (Throwable THROWABLE) {
+            throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
+        if (ERR != 0) {
+            ENV.throwLast();
+        }
+        var RESULT = ENV.returnPointer();
+        if (RESULT == null) return null;
+        var RES_SEG = new PNIBuf(RESULT);
+        if (RES_SEG.isNull()) return null;
+        return new LongArray(RES_SEG);
     }
 
     private final MethodHandle retrieveUnsignedLongArrayCritical = PanamaUtils.lookupPNICriticalFunction(false, PNIBuf.class, "JavaCritical_io_vproxy_pni_test_PrimitiveStruct_retrieveUnsignedLongArrayCritical", MemorySegment.class /* self */, MemorySegment.class /* return */);
@@ -1326,26 +1308,24 @@ public class PrimitiveStruct {
         }
     }
 
-    private final MethodHandle retrieveShortArray = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_PrimitiveStruct_retrieveShortArray", MemorySegment.class /* self */, MemorySegment.class /* return */);
+    private final MethodHandle retrieveShortArray = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_PrimitiveStruct_retrieveShortArray", MemorySegment.class /* self */);
 
     public ShortArray retrieveShortArray(PNIEnv ENV) {
         ENV.reset();
-        try (var ARENA = Arena.ofConfined()) {
-            int ERR;
-            try {
-                ERR = (int) this.retrieveShortArray.invokeExact(ENV.MEMORY, MEMORY, ARENA.allocate(PNIBuf.LAYOUT.byteSize()));
-            } catch (Throwable THROWABLE) {
-                throw PanamaUtils.convertInvokeExactException(THROWABLE);
-            }
-            if (ERR != 0) {
-                ENV.throwLast();
-            }
-            var RESULT = ENV.returnPointer();
-            if (RESULT == null) return null;
-            var RES_SEG = new PNIBuf(RESULT);
-            if (RES_SEG.isNull()) return null;
-            return new ShortArray(RES_SEG);
+        int ERR;
+        try {
+            ERR = (int) this.retrieveShortArray.invokeExact(ENV.MEMORY, MEMORY);
+        } catch (Throwable THROWABLE) {
+            throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
+        if (ERR != 0) {
+            ENV.throwLast();
+        }
+        var RESULT = ENV.returnPointer();
+        if (RESULT == null) return null;
+        var RES_SEG = new PNIBuf(RESULT);
+        if (RES_SEG.isNull()) return null;
+        return new ShortArray(RES_SEG);
     }
 
     private final MethodHandle retrieveShortArrayCritical = PanamaUtils.lookupPNICriticalFunction(false, PNIBuf.class, "JavaCritical_io_vproxy_pni_test_PrimitiveStruct_retrieveShortArrayCritical", MemorySegment.class /* self */, MemorySegment.class /* return */);
@@ -1365,26 +1345,24 @@ public class PrimitiveStruct {
         }
     }
 
-    private final MethodHandle retrieveUnsignedShortArray = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_PrimitiveStruct_retrieveUnsignedShortArray", MemorySegment.class /* self */, MemorySegment.class /* return */);
+    private final MethodHandle retrieveUnsignedShortArray = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_PrimitiveStruct_retrieveUnsignedShortArray", MemorySegment.class /* self */);
 
     public ShortArray retrieveUnsignedShortArray(PNIEnv ENV) {
         ENV.reset();
-        try (var ARENA = Arena.ofConfined()) {
-            int ERR;
-            try {
-                ERR = (int) this.retrieveUnsignedShortArray.invokeExact(ENV.MEMORY, MEMORY, ARENA.allocate(PNIBuf.LAYOUT.byteSize()));
-            } catch (Throwable THROWABLE) {
-                throw PanamaUtils.convertInvokeExactException(THROWABLE);
-            }
-            if (ERR != 0) {
-                ENV.throwLast();
-            }
-            var RESULT = ENV.returnPointer();
-            if (RESULT == null) return null;
-            var RES_SEG = new PNIBuf(RESULT);
-            if (RES_SEG.isNull()) return null;
-            return new ShortArray(RES_SEG);
+        int ERR;
+        try {
+            ERR = (int) this.retrieveUnsignedShortArray.invokeExact(ENV.MEMORY, MEMORY);
+        } catch (Throwable THROWABLE) {
+            throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
+        if (ERR != 0) {
+            ENV.throwLast();
+        }
+        var RESULT = ENV.returnPointer();
+        if (RESULT == null) return null;
+        var RES_SEG = new PNIBuf(RESULT);
+        if (RES_SEG.isNull()) return null;
+        return new ShortArray(RES_SEG);
     }
 
     private final MethodHandle retrieveUnsignedShortArrayCritical = PanamaUtils.lookupPNICriticalFunction(false, PNIBuf.class, "JavaCritical_io_vproxy_pni_test_PrimitiveStruct_retrieveUnsignedShortArrayCritical", MemorySegment.class /* self */, MemorySegment.class /* return */);
@@ -1404,26 +1382,24 @@ public class PrimitiveStruct {
         }
     }
 
-    private final MethodHandle retrieveBooleanArray = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_PrimitiveStruct_retrieveBooleanArray", MemorySegment.class /* self */, MemorySegment.class /* return */);
+    private final MethodHandle retrieveBooleanArray = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_PrimitiveStruct_retrieveBooleanArray", MemorySegment.class /* self */);
 
     public BoolArray retrieveBooleanArray(PNIEnv ENV) {
         ENV.reset();
-        try (var ARENA = Arena.ofConfined()) {
-            int ERR;
-            try {
-                ERR = (int) this.retrieveBooleanArray.invokeExact(ENV.MEMORY, MEMORY, ARENA.allocate(PNIBuf.LAYOUT.byteSize()));
-            } catch (Throwable THROWABLE) {
-                throw PanamaUtils.convertInvokeExactException(THROWABLE);
-            }
-            if (ERR != 0) {
-                ENV.throwLast();
-            }
-            var RESULT = ENV.returnPointer();
-            if (RESULT == null) return null;
-            var RES_SEG = new PNIBuf(RESULT);
-            if (RES_SEG.isNull()) return null;
-            return new BoolArray(RES_SEG);
+        int ERR;
+        try {
+            ERR = (int) this.retrieveBooleanArray.invokeExact(ENV.MEMORY, MEMORY);
+        } catch (Throwable THROWABLE) {
+            throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
+        if (ERR != 0) {
+            ENV.throwLast();
+        }
+        var RESULT = ENV.returnPointer();
+        if (RESULT == null) return null;
+        var RES_SEG = new PNIBuf(RESULT);
+        if (RES_SEG.isNull()) return null;
+        return new BoolArray(RES_SEG);
     }
 
     private final MethodHandle retrieveBooleanArrayCritical = PanamaUtils.lookupPNICriticalFunction(false, PNIBuf.class, "JavaCritical_io_vproxy_pni_test_PrimitiveStruct_retrieveBooleanArrayCritical", MemorySegment.class /* self */, MemorySegment.class /* return */);
@@ -1443,26 +1419,24 @@ public class PrimitiveStruct {
         }
     }
 
-    private final MethodHandle retrieveByteArrayPointer = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_PrimitiveStruct_retrieveByteArrayPointer", MemorySegment.class /* self */, MemorySegment.class /* return */);
+    private final MethodHandle retrieveByteArrayPointer = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_PrimitiveStruct_retrieveByteArrayPointer", MemorySegment.class /* self */);
 
     public MemorySegment retrieveByteArrayPointer(PNIEnv ENV) {
         ENV.reset();
-        try (var ARENA = Arena.ofConfined()) {
-            int ERR;
-            try {
-                ERR = (int) this.retrieveByteArrayPointer.invokeExact(ENV.MEMORY, MEMORY, ARENA.allocate(PNIBuf.LAYOUT.byteSize()));
-            } catch (Throwable THROWABLE) {
-                throw PanamaUtils.convertInvokeExactException(THROWABLE);
-            }
-            if (ERR != 0) {
-                ENV.throwLast();
-            }
-            var RESULT = ENV.returnPointer();
-            if (RESULT == null) return null;
-            var RES_SEG = new PNIBuf(RESULT);
-            if (RES_SEG.isNull()) return null;
-            return RES_SEG.get();
+        int ERR;
+        try {
+            ERR = (int) this.retrieveByteArrayPointer.invokeExact(ENV.MEMORY, MEMORY);
+        } catch (Throwable THROWABLE) {
+            throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
+        if (ERR != 0) {
+            ENV.throwLast();
+        }
+        var RESULT = ENV.returnPointer();
+        if (RESULT == null) return null;
+        var RES_SEG = new PNIBuf(RESULT);
+        if (RES_SEG.isNull()) return null;
+        return RES_SEG.get();
     }
 
     private final MethodHandle retrieveByteArrayPointerCritical = PanamaUtils.lookupPNICriticalFunction(false, PNIBuf.class, "JavaCritical_io_vproxy_pni_test_PrimitiveStruct_retrieveByteArrayPointerCritical", MemorySegment.class /* self */, MemorySegment.class /* return */);
@@ -1482,26 +1456,24 @@ public class PrimitiveStruct {
         }
     }
 
-    private final MethodHandle retrieveUnsignedByteArrayPointer = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_PrimitiveStruct_retrieveUnsignedByteArrayPointer", MemorySegment.class /* self */, MemorySegment.class /* return */);
+    private final MethodHandle retrieveUnsignedByteArrayPointer = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_PrimitiveStruct_retrieveUnsignedByteArrayPointer", MemorySegment.class /* self */);
 
     public MemorySegment retrieveUnsignedByteArrayPointer(PNIEnv ENV) {
         ENV.reset();
-        try (var ARENA = Arena.ofConfined()) {
-            int ERR;
-            try {
-                ERR = (int) this.retrieveUnsignedByteArrayPointer.invokeExact(ENV.MEMORY, MEMORY, ARENA.allocate(PNIBuf.LAYOUT.byteSize()));
-            } catch (Throwable THROWABLE) {
-                throw PanamaUtils.convertInvokeExactException(THROWABLE);
-            }
-            if (ERR != 0) {
-                ENV.throwLast();
-            }
-            var RESULT = ENV.returnPointer();
-            if (RESULT == null) return null;
-            var RES_SEG = new PNIBuf(RESULT);
-            if (RES_SEG.isNull()) return null;
-            return RES_SEG.get();
+        int ERR;
+        try {
+            ERR = (int) this.retrieveUnsignedByteArrayPointer.invokeExact(ENV.MEMORY, MEMORY);
+        } catch (Throwable THROWABLE) {
+            throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
+        if (ERR != 0) {
+            ENV.throwLast();
+        }
+        var RESULT = ENV.returnPointer();
+        if (RESULT == null) return null;
+        var RES_SEG = new PNIBuf(RESULT);
+        if (RES_SEG.isNull()) return null;
+        return RES_SEG.get();
     }
 
     private final MethodHandle retrieveUnsignedByteArrayPointerCritical = PanamaUtils.lookupPNICriticalFunction(false, PNIBuf.class, "JavaCritical_io_vproxy_pni_test_PrimitiveStruct_retrieveUnsignedByteArrayPointerCritical", MemorySegment.class /* self */, MemorySegment.class /* return */);
@@ -1521,26 +1493,24 @@ public class PrimitiveStruct {
         }
     }
 
-    private final MethodHandle retrieveCharArrayPointer = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_PrimitiveStruct_retrieveCharArrayPointer", MemorySegment.class /* self */, MemorySegment.class /* return */);
+    private final MethodHandle retrieveCharArrayPointer = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_PrimitiveStruct_retrieveCharArrayPointer", MemorySegment.class /* self */);
 
     public CharArray retrieveCharArrayPointer(PNIEnv ENV) {
         ENV.reset();
-        try (var ARENA = Arena.ofConfined()) {
-            int ERR;
-            try {
-                ERR = (int) this.retrieveCharArrayPointer.invokeExact(ENV.MEMORY, MEMORY, ARENA.allocate(PNIBuf.LAYOUT.byteSize()));
-            } catch (Throwable THROWABLE) {
-                throw PanamaUtils.convertInvokeExactException(THROWABLE);
-            }
-            if (ERR != 0) {
-                ENV.throwLast();
-            }
-            var RESULT = ENV.returnPointer();
-            if (RESULT == null) return null;
-            var RES_SEG = new PNIBuf(RESULT);
-            if (RES_SEG.isNull()) return null;
-            return new CharArray(RES_SEG);
+        int ERR;
+        try {
+            ERR = (int) this.retrieveCharArrayPointer.invokeExact(ENV.MEMORY, MEMORY);
+        } catch (Throwable THROWABLE) {
+            throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
+        if (ERR != 0) {
+            ENV.throwLast();
+        }
+        var RESULT = ENV.returnPointer();
+        if (RESULT == null) return null;
+        var RES_SEG = new PNIBuf(RESULT);
+        if (RES_SEG.isNull()) return null;
+        return new CharArray(RES_SEG);
     }
 
     private final MethodHandle retrieveCharArrayPointerCritical = PanamaUtils.lookupPNICriticalFunction(false, PNIBuf.class, "JavaCritical_io_vproxy_pni_test_PrimitiveStruct_retrieveCharArrayPointerCritical", MemorySegment.class /* self */, MemorySegment.class /* return */);
@@ -1560,26 +1530,24 @@ public class PrimitiveStruct {
         }
     }
 
-    private final MethodHandle retrieveDoubleArrayPointer = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_PrimitiveStruct_retrieveDoubleArrayPointer", MemorySegment.class /* self */, MemorySegment.class /* return */);
+    private final MethodHandle retrieveDoubleArrayPointer = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_PrimitiveStruct_retrieveDoubleArrayPointer", MemorySegment.class /* self */);
 
     public DoubleArray retrieveDoubleArrayPointer(PNIEnv ENV) {
         ENV.reset();
-        try (var ARENA = Arena.ofConfined()) {
-            int ERR;
-            try {
-                ERR = (int) this.retrieveDoubleArrayPointer.invokeExact(ENV.MEMORY, MEMORY, ARENA.allocate(PNIBuf.LAYOUT.byteSize()));
-            } catch (Throwable THROWABLE) {
-                throw PanamaUtils.convertInvokeExactException(THROWABLE);
-            }
-            if (ERR != 0) {
-                ENV.throwLast();
-            }
-            var RESULT = ENV.returnPointer();
-            if (RESULT == null) return null;
-            var RES_SEG = new PNIBuf(RESULT);
-            if (RES_SEG.isNull()) return null;
-            return new DoubleArray(RES_SEG);
+        int ERR;
+        try {
+            ERR = (int) this.retrieveDoubleArrayPointer.invokeExact(ENV.MEMORY, MEMORY);
+        } catch (Throwable THROWABLE) {
+            throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
+        if (ERR != 0) {
+            ENV.throwLast();
+        }
+        var RESULT = ENV.returnPointer();
+        if (RESULT == null) return null;
+        var RES_SEG = new PNIBuf(RESULT);
+        if (RES_SEG.isNull()) return null;
+        return new DoubleArray(RES_SEG);
     }
 
     private final MethodHandle retrieveDoubleArrayPointerCritical = PanamaUtils.lookupPNICriticalFunction(false, PNIBuf.class, "JavaCritical_io_vproxy_pni_test_PrimitiveStruct_retrieveDoubleArrayPointerCritical", MemorySegment.class /* self */, MemorySegment.class /* return */);
@@ -1599,26 +1567,24 @@ public class PrimitiveStruct {
         }
     }
 
-    private final MethodHandle retrieveFloatArrayPointer = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_PrimitiveStruct_retrieveFloatArrayPointer", MemorySegment.class /* self */, MemorySegment.class /* return */);
+    private final MethodHandle retrieveFloatArrayPointer = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_PrimitiveStruct_retrieveFloatArrayPointer", MemorySegment.class /* self */);
 
     public FloatArray retrieveFloatArrayPointer(PNIEnv ENV) {
         ENV.reset();
-        try (var ARENA = Arena.ofConfined()) {
-            int ERR;
-            try {
-                ERR = (int) this.retrieveFloatArrayPointer.invokeExact(ENV.MEMORY, MEMORY, ARENA.allocate(PNIBuf.LAYOUT.byteSize()));
-            } catch (Throwable THROWABLE) {
-                throw PanamaUtils.convertInvokeExactException(THROWABLE);
-            }
-            if (ERR != 0) {
-                ENV.throwLast();
-            }
-            var RESULT = ENV.returnPointer();
-            if (RESULT == null) return null;
-            var RES_SEG = new PNIBuf(RESULT);
-            if (RES_SEG.isNull()) return null;
-            return new FloatArray(RES_SEG);
+        int ERR;
+        try {
+            ERR = (int) this.retrieveFloatArrayPointer.invokeExact(ENV.MEMORY, MEMORY);
+        } catch (Throwable THROWABLE) {
+            throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
+        if (ERR != 0) {
+            ENV.throwLast();
+        }
+        var RESULT = ENV.returnPointer();
+        if (RESULT == null) return null;
+        var RES_SEG = new PNIBuf(RESULT);
+        if (RES_SEG.isNull()) return null;
+        return new FloatArray(RES_SEG);
     }
 
     private final MethodHandle retrieveFloatArrayPointerCritical = PanamaUtils.lookupPNICriticalFunction(false, PNIBuf.class, "JavaCritical_io_vproxy_pni_test_PrimitiveStruct_retrieveFloatArrayPointerCritical", MemorySegment.class /* self */, MemorySegment.class /* return */);
@@ -1638,26 +1604,24 @@ public class PrimitiveStruct {
         }
     }
 
-    private final MethodHandle retrieveIntArrayPointer = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_PrimitiveStruct_retrieveIntArrayPointer", MemorySegment.class /* self */, MemorySegment.class /* return */);
+    private final MethodHandle retrieveIntArrayPointer = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_PrimitiveStruct_retrieveIntArrayPointer", MemorySegment.class /* self */);
 
     public IntArray retrieveIntArrayPointer(PNIEnv ENV) {
         ENV.reset();
-        try (var ARENA = Arena.ofConfined()) {
-            int ERR;
-            try {
-                ERR = (int) this.retrieveIntArrayPointer.invokeExact(ENV.MEMORY, MEMORY, ARENA.allocate(PNIBuf.LAYOUT.byteSize()));
-            } catch (Throwable THROWABLE) {
-                throw PanamaUtils.convertInvokeExactException(THROWABLE);
-            }
-            if (ERR != 0) {
-                ENV.throwLast();
-            }
-            var RESULT = ENV.returnPointer();
-            if (RESULT == null) return null;
-            var RES_SEG = new PNIBuf(RESULT);
-            if (RES_SEG.isNull()) return null;
-            return new IntArray(RES_SEG);
+        int ERR;
+        try {
+            ERR = (int) this.retrieveIntArrayPointer.invokeExact(ENV.MEMORY, MEMORY);
+        } catch (Throwable THROWABLE) {
+            throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
+        if (ERR != 0) {
+            ENV.throwLast();
+        }
+        var RESULT = ENV.returnPointer();
+        if (RESULT == null) return null;
+        var RES_SEG = new PNIBuf(RESULT);
+        if (RES_SEG.isNull()) return null;
+        return new IntArray(RES_SEG);
     }
 
     private final MethodHandle retrieveIntArrayPointerCritical = PanamaUtils.lookupPNICriticalFunction(false, PNIBuf.class, "JavaCritical_io_vproxy_pni_test_PrimitiveStruct_retrieveIntArrayPointerCritical", MemorySegment.class /* self */, MemorySegment.class /* return */);
@@ -1677,26 +1641,24 @@ public class PrimitiveStruct {
         }
     }
 
-    private final MethodHandle retrieveUnsignedIntArrayPointer = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_PrimitiveStruct_retrieveUnsignedIntArrayPointer", MemorySegment.class /* self */, MemorySegment.class /* return */);
+    private final MethodHandle retrieveUnsignedIntArrayPointer = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_PrimitiveStruct_retrieveUnsignedIntArrayPointer", MemorySegment.class /* self */);
 
     public IntArray retrieveUnsignedIntArrayPointer(PNIEnv ENV) {
         ENV.reset();
-        try (var ARENA = Arena.ofConfined()) {
-            int ERR;
-            try {
-                ERR = (int) this.retrieveUnsignedIntArrayPointer.invokeExact(ENV.MEMORY, MEMORY, ARENA.allocate(PNIBuf.LAYOUT.byteSize()));
-            } catch (Throwable THROWABLE) {
-                throw PanamaUtils.convertInvokeExactException(THROWABLE);
-            }
-            if (ERR != 0) {
-                ENV.throwLast();
-            }
-            var RESULT = ENV.returnPointer();
-            if (RESULT == null) return null;
-            var RES_SEG = new PNIBuf(RESULT);
-            if (RES_SEG.isNull()) return null;
-            return new IntArray(RES_SEG);
+        int ERR;
+        try {
+            ERR = (int) this.retrieveUnsignedIntArrayPointer.invokeExact(ENV.MEMORY, MEMORY);
+        } catch (Throwable THROWABLE) {
+            throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
+        if (ERR != 0) {
+            ENV.throwLast();
+        }
+        var RESULT = ENV.returnPointer();
+        if (RESULT == null) return null;
+        var RES_SEG = new PNIBuf(RESULT);
+        if (RES_SEG.isNull()) return null;
+        return new IntArray(RES_SEG);
     }
 
     private final MethodHandle retrieveUnsignedIntArrayPointerCritical = PanamaUtils.lookupPNICriticalFunction(false, PNIBuf.class, "JavaCritical_io_vproxy_pni_test_PrimitiveStruct_retrieveUnsignedIntArrayPointerCritical", MemorySegment.class /* self */, MemorySegment.class /* return */);
@@ -1716,26 +1678,24 @@ public class PrimitiveStruct {
         }
     }
 
-    private final MethodHandle retrieveLongArrayPointer = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_PrimitiveStruct_retrieveLongArrayPointer", MemorySegment.class /* self */, MemorySegment.class /* return */);
+    private final MethodHandle retrieveLongArrayPointer = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_PrimitiveStruct_retrieveLongArrayPointer", MemorySegment.class /* self */);
 
     public LongArray retrieveLongArrayPointer(PNIEnv ENV) {
         ENV.reset();
-        try (var ARENA = Arena.ofConfined()) {
-            int ERR;
-            try {
-                ERR = (int) this.retrieveLongArrayPointer.invokeExact(ENV.MEMORY, MEMORY, ARENA.allocate(PNIBuf.LAYOUT.byteSize()));
-            } catch (Throwable THROWABLE) {
-                throw PanamaUtils.convertInvokeExactException(THROWABLE);
-            }
-            if (ERR != 0) {
-                ENV.throwLast();
-            }
-            var RESULT = ENV.returnPointer();
-            if (RESULT == null) return null;
-            var RES_SEG = new PNIBuf(RESULT);
-            if (RES_SEG.isNull()) return null;
-            return new LongArray(RES_SEG);
+        int ERR;
+        try {
+            ERR = (int) this.retrieveLongArrayPointer.invokeExact(ENV.MEMORY, MEMORY);
+        } catch (Throwable THROWABLE) {
+            throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
+        if (ERR != 0) {
+            ENV.throwLast();
+        }
+        var RESULT = ENV.returnPointer();
+        if (RESULT == null) return null;
+        var RES_SEG = new PNIBuf(RESULT);
+        if (RES_SEG.isNull()) return null;
+        return new LongArray(RES_SEG);
     }
 
     private final MethodHandle retrieveLongArrayPointerCritical = PanamaUtils.lookupPNICriticalFunction(false, PNIBuf.class, "JavaCritical_io_vproxy_pni_test_PrimitiveStruct_retrieveLongArrayPointerCritical", MemorySegment.class /* self */, MemorySegment.class /* return */);
@@ -1755,26 +1715,24 @@ public class PrimitiveStruct {
         }
     }
 
-    private final MethodHandle retrieveUnsignedLongArrayPointer = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_PrimitiveStruct_retrieveUnsignedLongArrayPointer", MemorySegment.class /* self */, MemorySegment.class /* return */);
+    private final MethodHandle retrieveUnsignedLongArrayPointer = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_PrimitiveStruct_retrieveUnsignedLongArrayPointer", MemorySegment.class /* self */);
 
     public LongArray retrieveUnsignedLongArrayPointer(PNIEnv ENV) {
         ENV.reset();
-        try (var ARENA = Arena.ofConfined()) {
-            int ERR;
-            try {
-                ERR = (int) this.retrieveUnsignedLongArrayPointer.invokeExact(ENV.MEMORY, MEMORY, ARENA.allocate(PNIBuf.LAYOUT.byteSize()));
-            } catch (Throwable THROWABLE) {
-                throw PanamaUtils.convertInvokeExactException(THROWABLE);
-            }
-            if (ERR != 0) {
-                ENV.throwLast();
-            }
-            var RESULT = ENV.returnPointer();
-            if (RESULT == null) return null;
-            var RES_SEG = new PNIBuf(RESULT);
-            if (RES_SEG.isNull()) return null;
-            return new LongArray(RES_SEG);
+        int ERR;
+        try {
+            ERR = (int) this.retrieveUnsignedLongArrayPointer.invokeExact(ENV.MEMORY, MEMORY);
+        } catch (Throwable THROWABLE) {
+            throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
+        if (ERR != 0) {
+            ENV.throwLast();
+        }
+        var RESULT = ENV.returnPointer();
+        if (RESULT == null) return null;
+        var RES_SEG = new PNIBuf(RESULT);
+        if (RES_SEG.isNull()) return null;
+        return new LongArray(RES_SEG);
     }
 
     private final MethodHandle retrieveUnsignedLongArrayPointerCritical = PanamaUtils.lookupPNICriticalFunction(false, PNIBuf.class, "JavaCritical_io_vproxy_pni_test_PrimitiveStruct_retrieveUnsignedLongArrayPointerCritical", MemorySegment.class /* self */, MemorySegment.class /* return */);
@@ -1794,26 +1752,24 @@ public class PrimitiveStruct {
         }
     }
 
-    private final MethodHandle retrieveShortArrayPointer = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_PrimitiveStruct_retrieveShortArrayPointer", MemorySegment.class /* self */, MemorySegment.class /* return */);
+    private final MethodHandle retrieveShortArrayPointer = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_PrimitiveStruct_retrieveShortArrayPointer", MemorySegment.class /* self */);
 
     public ShortArray retrieveShortArrayPointer(PNIEnv ENV) {
         ENV.reset();
-        try (var ARENA = Arena.ofConfined()) {
-            int ERR;
-            try {
-                ERR = (int) this.retrieveShortArrayPointer.invokeExact(ENV.MEMORY, MEMORY, ARENA.allocate(PNIBuf.LAYOUT.byteSize()));
-            } catch (Throwable THROWABLE) {
-                throw PanamaUtils.convertInvokeExactException(THROWABLE);
-            }
-            if (ERR != 0) {
-                ENV.throwLast();
-            }
-            var RESULT = ENV.returnPointer();
-            if (RESULT == null) return null;
-            var RES_SEG = new PNIBuf(RESULT);
-            if (RES_SEG.isNull()) return null;
-            return new ShortArray(RES_SEG);
+        int ERR;
+        try {
+            ERR = (int) this.retrieveShortArrayPointer.invokeExact(ENV.MEMORY, MEMORY);
+        } catch (Throwable THROWABLE) {
+            throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
+        if (ERR != 0) {
+            ENV.throwLast();
+        }
+        var RESULT = ENV.returnPointer();
+        if (RESULT == null) return null;
+        var RES_SEG = new PNIBuf(RESULT);
+        if (RES_SEG.isNull()) return null;
+        return new ShortArray(RES_SEG);
     }
 
     private final MethodHandle retrieveShortArrayPointerCritical = PanamaUtils.lookupPNICriticalFunction(false, PNIBuf.class, "JavaCritical_io_vproxy_pni_test_PrimitiveStruct_retrieveShortArrayPointerCritical", MemorySegment.class /* self */, MemorySegment.class /* return */);
@@ -1833,26 +1789,24 @@ public class PrimitiveStruct {
         }
     }
 
-    private final MethodHandle retrieveUnsignedShortArrayPointer = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_PrimitiveStruct_retrieveUnsignedShortArrayPointer", MemorySegment.class /* self */, MemorySegment.class /* return */);
+    private final MethodHandle retrieveUnsignedShortArrayPointer = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_PrimitiveStruct_retrieveUnsignedShortArrayPointer", MemorySegment.class /* self */);
 
     public ShortArray retrieveUnsignedShortArrayPointer(PNIEnv ENV) {
         ENV.reset();
-        try (var ARENA = Arena.ofConfined()) {
-            int ERR;
-            try {
-                ERR = (int) this.retrieveUnsignedShortArrayPointer.invokeExact(ENV.MEMORY, MEMORY, ARENA.allocate(PNIBuf.LAYOUT.byteSize()));
-            } catch (Throwable THROWABLE) {
-                throw PanamaUtils.convertInvokeExactException(THROWABLE);
-            }
-            if (ERR != 0) {
-                ENV.throwLast();
-            }
-            var RESULT = ENV.returnPointer();
-            if (RESULT == null) return null;
-            var RES_SEG = new PNIBuf(RESULT);
-            if (RES_SEG.isNull()) return null;
-            return new ShortArray(RES_SEG);
+        int ERR;
+        try {
+            ERR = (int) this.retrieveUnsignedShortArrayPointer.invokeExact(ENV.MEMORY, MEMORY);
+        } catch (Throwable THROWABLE) {
+            throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
+        if (ERR != 0) {
+            ENV.throwLast();
+        }
+        var RESULT = ENV.returnPointer();
+        if (RESULT == null) return null;
+        var RES_SEG = new PNIBuf(RESULT);
+        if (RES_SEG.isNull()) return null;
+        return new ShortArray(RES_SEG);
     }
 
     private final MethodHandle retrieveUnsignedShortArrayPointerCritical = PanamaUtils.lookupPNICriticalFunction(false, PNIBuf.class, "JavaCritical_io_vproxy_pni_test_PrimitiveStruct_retrieveUnsignedShortArrayPointerCritical", MemorySegment.class /* self */, MemorySegment.class /* return */);
@@ -1872,26 +1826,24 @@ public class PrimitiveStruct {
         }
     }
 
-    private final MethodHandle retrieveBooleanArrayPointer = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_PrimitiveStruct_retrieveBooleanArrayPointer", MemorySegment.class /* self */, MemorySegment.class /* return */);
+    private final MethodHandle retrieveBooleanArrayPointer = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_PrimitiveStruct_retrieveBooleanArrayPointer", MemorySegment.class /* self */);
 
     public BoolArray retrieveBooleanArrayPointer(PNIEnv ENV) {
         ENV.reset();
-        try (var ARENA = Arena.ofConfined()) {
-            int ERR;
-            try {
-                ERR = (int) this.retrieveBooleanArrayPointer.invokeExact(ENV.MEMORY, MEMORY, ARENA.allocate(PNIBuf.LAYOUT.byteSize()));
-            } catch (Throwable THROWABLE) {
-                throw PanamaUtils.convertInvokeExactException(THROWABLE);
-            }
-            if (ERR != 0) {
-                ENV.throwLast();
-            }
-            var RESULT = ENV.returnPointer();
-            if (RESULT == null) return null;
-            var RES_SEG = new PNIBuf(RESULT);
-            if (RES_SEG.isNull()) return null;
-            return new BoolArray(RES_SEG);
+        int ERR;
+        try {
+            ERR = (int) this.retrieveBooleanArrayPointer.invokeExact(ENV.MEMORY, MEMORY);
+        } catch (Throwable THROWABLE) {
+            throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
+        if (ERR != 0) {
+            ENV.throwLast();
+        }
+        var RESULT = ENV.returnPointer();
+        if (RESULT == null) return null;
+        var RES_SEG = new PNIBuf(RESULT);
+        if (RES_SEG.isNull()) return null;
+        return new BoolArray(RES_SEG);
     }
 
     private final MethodHandle retrieveBooleanArrayPointerCritical = PanamaUtils.lookupPNICriticalFunction(false, PNIBuf.class, "JavaCritical_io_vproxy_pni_test_PrimitiveStruct_retrieveBooleanArrayPointerCritical", MemorySegment.class /* self */, MemorySegment.class /* return */);
@@ -2003,4 +1955,4 @@ public class PrimitiveStruct {
         }
     }
 }
-// sha256:e10d269ac7bd3d03b9abc70ab810afe3374660a0bea0410ea93dc1af080e68e6
+// sha256:50b91afb8737156f2d853e8c071f16cc4b7facb408598cb67523af08fb189d35

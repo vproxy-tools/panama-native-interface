@@ -212,23 +212,21 @@ public class ObjectStruct {
         if (RESULT.address() == 0) RESULT = null;        return RESULT;
     }
 
-    private final MethodHandle retrieveBuf = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_ObjectStruct_retrieveBuf", MemorySegment.class /* self */, MemorySegment.class /* return */);
+    private final MethodHandle retrieveBuf = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_ObjectStruct_retrieveBuf", MemorySegment.class /* self */);
 
     public ByteBuffer retrieveBuf(PNIEnv ENV) {
         ENV.reset();
-        try (var ARENA = Arena.ofConfined()) {
-            int ERR;
-            try {
-                ERR = (int) this.retrieveBuf.invokeExact(ENV.MEMORY, MEMORY, ARENA.allocate(PNIBuf.LAYOUT.byteSize()));
-            } catch (Throwable THROWABLE) {
-                throw PanamaUtils.convertInvokeExactException(THROWABLE);
-            }
-            if (ERR != 0) {
-                ENV.throwLast();
-            }
-            var RESULT = ENV.returnPointer();
-            return PNIBuf.getByteBuffer(RESULT);
+        int ERR;
+        try {
+            ERR = (int) this.retrieveBuf.invokeExact(ENV.MEMORY, MEMORY);
+        } catch (Throwable THROWABLE) {
+            throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
+        if (ERR != 0) {
+            ENV.throwLast();
+        }
+        var RESULT = ENV.returnPointer();
+        return PNIBuf.getByteBuffer(RESULT);
     }
 
     private final MethodHandle retrieveBufCritical = PanamaUtils.lookupPNICriticalFunction(false, PNIBuf.class, "JavaCritical_io_vproxy_pni_test_ObjectStruct_retrieveBufCritical", MemorySegment.class /* self */, MemorySegment.class /* return */);
@@ -337,4 +335,4 @@ public class ObjectStruct {
         }
     }
 }
-// sha256:65cb144ddd8077763c4ae8101edc82422e6e62b8387cd8c84ff0690241c7b3c2
+// sha256:74abe719f2be9161a7bfb2bca2d8496ff2a38981fccefb4dd28c4fa8efc875ad
