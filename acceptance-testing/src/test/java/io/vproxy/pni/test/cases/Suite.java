@@ -10,6 +10,7 @@ import org.junit.runner.RunWith;
     TestFunc.class,
     TestStructUnionAnnotation.class,
     TestGCCCompatibility.class,
+    TestRawArrays.class,
 })
 public class Suite {
 }
