@@ -56,10 +56,7 @@ public class ArrayTypeInfo extends TypeInfo {
 
     @Override
     protected boolean canMarkWithRaw() {
-        if (elementType instanceof ByteTypeInfo) {
-            return true;
-        }
-        return super.canMarkWithRaw();
+        return true;
     }
 
     @Override
@@ -79,7 +76,35 @@ public class ArrayTypeInfo extends TypeInfo {
     public String nativeParamType(String fieldName, VarOpts opts) {
         String ret;
         if (opts.isRaw()) {
-            ret = "char *";
+            if (elementType instanceof ByteTypeInfo) {
+                if (opts.isUnsigned()) {
+                    ret = "int8_t *"; // u prefix will be added later
+                } else {
+                    ret = "char *";
+                }
+            } else if (elementType instanceof BooleanTypeInfo) {
+                ret = "uint8_t *";
+            } else if (elementType instanceof CharTypeInfo) {
+                ret = "uint16_t *";
+            } else if (elementType instanceof DoubleTypeInfo) {
+                ret = "double *";
+            } else if (elementType instanceof FloatTypeInfo) {
+                ret = "float *";
+            } else if (elementType instanceof IntTypeInfo) {
+                ret = "int32_t *";
+            } else if (elementType instanceof LongTypeInfo) {
+                ret = "int64_t *";
+            } else if (elementType instanceof ShortTypeInfo) {
+                ret = "int16_t *";
+            } else {
+                assert elementType instanceof ClassTypeInfo;
+                var classTypeInfo = (ClassTypeInfo) elementType;
+                var clazz = classTypeInfo.getClazz();
+                ret = clazz.nativeTypeName() + " *";
+            }
+            if (opts.isUnsigned()) {
+                ret = "u" + ret;
+            }
         } else {
             ret = "PNIBuf *";
         }
@@ -238,7 +263,11 @@ public class ArrayTypeInfo extends TypeInfo {
     @Override
     public String convertToNativeCallArgument(String name, VarOpts opts) {
         if (opts.isRaw()) {
-            return name;
+            if (elementType instanceof ByteTypeInfo) {
+                return name;
+            } else {
+                return name + ".MEMORY";
+            }
         } else {
             return "PNIBuf.of(ARENA, " + name + ").MEMORY";
         }
@@ -277,10 +306,8 @@ public class ArrayTypeInfo extends TypeInfo {
 
     @Override
     public boolean paramDependOnConfinedArena(VarOpts opts) {
-        if (elementType instanceof ByteTypeInfo) {
-            if (opts.isRaw()) {
-                return false;
-            }
+        if (opts.isRaw()) {
+            return false;
         }
         return opts.isPointerGeneral();
     }

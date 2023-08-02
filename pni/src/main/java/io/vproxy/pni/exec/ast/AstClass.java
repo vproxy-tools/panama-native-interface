@@ -1,7 +1,9 @@
 package io.vproxy.pni.exec.ast;
 
 import io.vproxy.pni.exec.internal.Utils;
+import io.vproxy.pni.exec.type.ArrayTypeInfo;
 import io.vproxy.pni.exec.type.ClassTypeInfo;
+import io.vproxy.pni.exec.type.TypeInfo;
 import io.vproxy.pni.exec.type.TypePool;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.tree.ClassNode;
@@ -583,8 +585,12 @@ public class AstClass {
                 }
             }
             for (var p : m.params) {
-                if (p.typeRef instanceof ClassTypeInfo) {
-                    var classTypeInfo = (ClassTypeInfo) p.typeRef;
+                TypeInfo typeInfo = p.typeRef;
+                if (typeInfo instanceof ArrayTypeInfo) {
+                    typeInfo = ((ArrayTypeInfo) typeInfo).getElementType();
+                }
+                if (typeInfo instanceof ClassTypeInfo) {
+                    var classTypeInfo = (ClassTypeInfo) typeInfo;
                     var cls = classTypeInfo.getClazz();
                     if (includedClasses.add(cls)) {
                         include(sb, cls);
