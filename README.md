@@ -455,8 +455,7 @@ Annotate the data type to be converted to its raw form. You can only mark method
   This has the same effect as calling `MemorySegment.ofBuffer(...)`
   after setting `ByteBuffer.position()` to 0 and `ByteBuffer.limit()` to `ByteBuffer.capacity()`,
   without actually modifying these properties.
-* `byte[]`: will be converted to `MemorySegment`.
-  Data will be copied into the segment, and `byteSize()` is the same as `array.length`.
+* `T[]`: arrays will be converted to their raw form without the `PNIBuf` wrapper. There will be no length info, so you might need to pass in their length manually.
 
 </details>
 
