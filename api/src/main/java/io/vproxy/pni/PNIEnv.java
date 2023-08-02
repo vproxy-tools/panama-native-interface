@@ -19,7 +19,12 @@ public class PNIEnv {
             ValueLayout.JAVA_SHORT_UNALIGNED.withName("return_short"),
             ValueLayout.JAVA_BOOLEAN.withName("return_bool"),
             ValueLayout.ADDRESS_UNALIGNED.withName("return_pointer")
-        ).withName("union0")
+        ).withName("union0"),
+        MemoryLayout.unionLayout(
+            ValueLayout.JAVA_LONG_UNALIGNED.withName("udata64"),
+            ValueLayout.ADDRESS_UNALIGNED.withName("userdata"),
+            PNIBuf.LAYOUT.withName("buf")
+        ).withName("union1")
     );
 
     private final Arena arena;

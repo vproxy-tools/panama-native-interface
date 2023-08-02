@@ -115,7 +115,10 @@ public class ByteBufferTypeInfo extends BuiltInReferenceTypeInfo {
 
     @Override
     public String sizeForConfinedArenaForNativeCallExtraArgument(VarOpts opts) {
-        return "PNIBuf.LAYOUT.byteSize()";
+        if (opts.isCritical()) {
+            return "PNIBuf.LAYOUT.byteSize()";
+        }
+        return null;
     }
 
     @Override
