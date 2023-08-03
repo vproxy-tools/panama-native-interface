@@ -5,7 +5,6 @@ import io.vproxy.pni.exception.PNIException;
 import java.lang.foreign.*;
 import java.lang.invoke.MethodHandle;
 import java.nio.ByteBuffer;
-import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.stream.Collectors;
 
@@ -115,16 +114,6 @@ public class PanamaUtils {
         } else {
             throw new IllegalArgumentException("unsupported type, unable to convert to MemoryLayout: " + type);
         }
-    }
-
-    public static MemorySegment format(String arg, Allocator allocator) {
-        if (arg == null) {
-            return MemorySegment.NULL;
-        }
-        var bytes = arg.getBytes(StandardCharsets.UTF_8);
-        var seg = allocator.allocate(bytes.length + 1);
-        seg.setUtf8String(0, arg);
-        return seg;
     }
 
     public static MemorySegment format(ByteBuffer arg, Allocator allocator) {

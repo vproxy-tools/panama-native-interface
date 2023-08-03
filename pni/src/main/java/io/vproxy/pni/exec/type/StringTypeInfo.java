@@ -59,7 +59,7 @@ public class StringTypeInfo extends BuiltInReferenceTypeInfo {
 
     @Override
     public String javaType(VarOpts opts) {
-        return "String";
+        return "PNIString";
     }
 
     @Override
@@ -68,30 +68,30 @@ public class StringTypeInfo extends BuiltInReferenceTypeInfo {
             Utils.varHandleField(sb, indent, fieldName);
             sb.append("\n");
             Utils.appendIndent(sb, indent)
-                .append("public String ").append(Utils.getterName(fieldName)).append("() {\n");
+                .append("public PNIString ").append(Utils.getterName(fieldName)).append("() {\n");
             Utils.appendIndent(sb, indent + 4)
                 .append("var SEG = (MemorySegment) ").append(fieldName).append("VH.get(MEMORY);\n");
             Utils.appendIndent(sb, indent + 4)
                 .append("if (SEG.address() == 0) return null;\n");
             Utils.appendIndent(sb, indent + 4)
-                .append("return SEG.reinterpret(Integer.MAX_VALUE).getUtf8String(0);\n");
+                .append("return new PNIString(SEG);\n");
             Utils.appendIndent(sb, indent).append("}\n");
             sb.append("\n");
             Utils.appendIndent(sb, indent)
                 .append("public void ").append(Utils.setterName(fieldName)).append("(String ").append(fieldName).append(", Allocator ALLOCATOR) {\n");
             Utils.appendIndent(sb, indent + 4)
-                .append(fieldName).append("VH.set(MEMORY, PanamaUtils.format(").append(fieldName).append(", ALLOCATOR));\n");
+                .append("this.").append(Utils.setterName(fieldName)).append("(new PNIString(ALLOCATOR, ").append(fieldName).append("));\n");
             Utils.appendIndent(sb, indent).append("}\n");
             sb.append("\n");
             Utils.appendIndent(sb, indent)
-                .append("public void ").append(Utils.setterName(fieldName)).append("(MemorySegment ").append(fieldName).append(") {\n");
+                .append("public void ").append(Utils.setterName(fieldName)).append("(PNIString ").append(fieldName).append(") {\n");
             Utils.appendIndent(sb, indent + 4)
                 .append("if (").append(fieldName).append(" == null) {\n");
             Utils.appendIndent(sb, indent + 8)
                 .append(fieldName).append("VH.set(MEMORY, MemorySegment.NULL);\n");
             Utils.appendIndent(sb, indent + 4).append("} else {\n");
             Utils.appendIndent(sb, indent + 8)
-                .append(fieldName).append("VH.set(MEMORY, ").append(fieldName).append(");\n");
+                .append(fieldName).append("VH.set(MEMORY, ").append(fieldName).append(".MEMORY);\n");
             Utils.appendIndent(sb, indent + 4).append("}\n");
             Utils.appendIndent(sb, indent).append("}\n");
         } else {
@@ -129,7 +129,7 @@ public class StringTypeInfo extends BuiltInReferenceTypeInfo {
 
     @Override
     public String convertToNativeCallArgument(String name, VarOpts opts) {
-        return "PanamaUtils.format(" + name + ", POOLED)";
+        return "(MemorySegment) (" + name + " == null ? MemorySegment.NULL : " + name + ".MEMORY)";
     }
 
     @Override
@@ -139,7 +139,7 @@ public class StringTypeInfo extends BuiltInReferenceTypeInfo {
                 .append("var RESULT = ENV.returnPointer();\n");
         }
         Utils.appendIndent(sb, indent)
-            .append("return RESULT == null ? null : RESULT.reinterpret(Integer.MAX_VALUE).getUtf8String(0);\n");
+            .append("return RESULT == null ? null : new PNIString(RESULT);\n");
     }
 
     @Override
