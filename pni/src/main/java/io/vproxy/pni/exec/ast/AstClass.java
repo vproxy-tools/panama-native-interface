@@ -448,6 +448,14 @@ public class AstClass {
             sb.append("            super(buf, ").append(simpleName()).append(".LAYOUT);\n");
             sb.append("        }\n");
             sb.append("\n");
+            sb.append("        public Array(Allocator allocator, long len) {\n");
+            sb.append("            this(allocator.allocate(").append(simpleName()).append(".LAYOUT.byteSize() * len));\n");
+            sb.append("        }\n");
+            sb.append("\n");
+            sb.append("        public Array(PNIBuf buf) {\n");
+            sb.append("            this(buf.get());\n");
+            sb.append("        }\n");
+            sb.append("\n");
             generateConstructAndGetSegment(sb);
             sb.append("    }\n");
             sb.append("\n");
