@@ -114,12 +114,12 @@ public class ByteBufferTypeInfo extends BuiltInReferenceTypeInfo {
         if (opts.isRaw()) {
             return "PanamaUtils.format(" + name + ")";
         } else {
-            return "PanamaUtils.format(" + name + ", ARENA)";
+            return "PanamaUtils.format(" + name + ", POOLED)";
         }
     }
 
     @Override
-    public String sizeForConfinedArenaForNativeCallExtraArgument(VarOpts opts) {
+    public String sizeForPooledAllocatorForNativeCallExtraArgument(VarOpts opts) {
         if (opts.isCritical()) {
             return "PNIBuf.LAYOUT.byteSize()";
         }
@@ -142,7 +142,7 @@ public class ByteBufferTypeInfo extends BuiltInReferenceTypeInfo {
     }
 
     @Override
-    public boolean paramDependOnConfinedArena(VarOpts opts) {
+    public boolean paramDependOnPooledAllocator(VarOpts opts) {
         return opts.isPointerGeneral() && !opts.isRaw();
     }
 

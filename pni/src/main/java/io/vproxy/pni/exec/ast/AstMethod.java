@@ -212,7 +212,7 @@ public class AstMethod {
         String returnTypeExtraType = null;
         if (!(returnTypeRef instanceof PrimitiveTypeInfo) &&
             (returnTypeRef.sizeForUserAllocatorForNativeCallExtraArgument(varOptsForReturn()) != null
-             || returnTypeRef.sizeForConfinedArenaForNativeCallExtraArgument(varOptsForReturn()) != null)) {
+             || returnTypeRef.sizeForPooledAllocatorForNativeCallExtraArgument(varOptsForReturn()) != null)) {
             returnTypeExtraType = returnTypeRef.nativeParamType(null, varOptsForReturn());
         }
         var isFirst = true;
@@ -259,8 +259,8 @@ public class AstMethod {
             sb.append(" /* ").append(p.name).append(" */");
         }
         var returnAllocatorSize = returnTypeRef.sizeForUserAllocatorForNativeCallExtraArgument(varOptsForReturn());
-        var returnArenaSize = returnTypeRef.sizeForConfinedArenaForNativeCallExtraArgument(varOptsForReturn());
-        if (returnAllocatorSize != null || returnArenaSize != null) {
+        var returnPooledSize = returnTypeRef.sizeForPooledAllocatorForNativeCallExtraArgument(varOptsForReturn());
+        if (returnAllocatorSize != null || returnPooledSize != null) {
             sb.append(", MemorySegment.class /* return */");
         }
         sb.append(");\n");
@@ -275,7 +275,7 @@ public class AstMethod {
                 sb.append(", ");
             }
         }
-        var paramNeedsAllocator = returnArenaSize != null;
+        var paramNeedsAllocator = returnPooledSize != null;
         var isFirst = true;
         for (var p : params) {
             if (isFirst) {
@@ -314,7 +314,7 @@ public class AstMethod {
         }
         int invocationIndent = indent + 4;
         if (paramNeedsAllocator) {
-            Utils.appendIndent(sb, indent + 4).append("try (var ARENA = Arena.ofConfined()) {\n");
+            Utils.appendIndent(sb, indent + 4).append("try (var POOLED = Allocator.ofPooled()) {\n");
             invocationIndent += 4;
         }
         if (critical()) {
@@ -373,11 +373,11 @@ public class AstMethod {
                 sb.append(", ");
             }
             sb.append("ALLOCATOR.allocate(").append(returnAllocatorSize).append(")");
-        } else if (returnArenaSize != null) {
+        } else if (returnPooledSize != null) {
             if (!critical() || needSelf || !params.isEmpty()) {
                 sb.append(", ");
             }
-            sb.append("ARENA.allocate(").append(returnArenaSize).append(")");
+            sb.append("POOLED.allocate(").append(returnPooledSize).append(")");
         }
         sb.append(");\n");
         Utils.appendIndent(sb, invocationIndent)

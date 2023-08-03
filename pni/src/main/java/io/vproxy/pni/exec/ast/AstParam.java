@@ -123,7 +123,7 @@ public class AstParam {
     }
 
     public ParamOpts paramOpts() {
-        return ParamOpts.of(typeRef.paramDependOnConfinedArena(varOpts()));
+        return ParamOpts.of(typeRef.paramDependOnPooledAllocator(varOpts()));
     }
 
     public void generateC(StringBuilder sb, int indent) {

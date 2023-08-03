@@ -23,31 +23,11 @@ public class PNIEnv {
         ).withName("union0")
     );
 
-    private final Arena arena;
     public final MemorySegment MEMORY;
     private final PNIExceptionNativeRepresentation ex;
     private final PNIBuf buf;
 
-    public PNIEnv() {
-        this(false);
-    }
-
-    public PNIEnv(boolean useShared) {
-        this.arena = useShared ? Arena.ofShared() : Arena.ofConfined();
-        this.MEMORY = arena.allocate(LAYOUT.byteSize());
-        this.ex = new PNIExceptionNativeRepresentation(MEMORY.asSlice(0, PNIExceptionNativeRepresentation.LAYOUT.byteSize()));
-        this.buf = new PNIBuf(MEMORY.asSlice(PNIExceptionNativeRepresentation.LAYOUT.byteSize()));
-    }
-
-    public PNIEnv(Arena arena) {
-        this.arena = null;
-        this.MEMORY = arena.allocate(LAYOUT.byteSize());
-        this.ex = new PNIExceptionNativeRepresentation(MEMORY.asSlice(0, PNIExceptionNativeRepresentation.LAYOUT.byteSize()));
-        this.buf = new PNIBuf(MEMORY.asSlice(PNIExceptionNativeRepresentation.LAYOUT.byteSize()));
-    }
-
     public PNIEnv(Allocator allocator) {
-        this.arena = null;
         this.MEMORY = allocator.allocate(LAYOUT.byteSize());
         this.ex = new PNIExceptionNativeRepresentation(MEMORY.asSlice(0, PNIExceptionNativeRepresentation.LAYOUT.byteSize()));
         this.buf = new PNIBuf(MEMORY.asSlice(PNIExceptionNativeRepresentation.LAYOUT.byteSize()));
@@ -149,12 +129,6 @@ public class PNIEnv {
     public void reset() {
         buf.setToNull(); // the union will be cleared
         ex.reset();
-    }
-
-    public void close() {
-        if (arena != null) {
-            arena.close();
-        }
     }
 
     public <EX extends Throwable> void throwIf(Class<EX> exClass) throws EX {

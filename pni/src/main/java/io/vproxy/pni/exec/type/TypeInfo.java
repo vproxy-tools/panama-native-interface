@@ -88,13 +88,13 @@ public abstract class TypeInfo {
         return null;
     }
 
-    public String sizeForConfinedArenaForNativeCallExtraArgument(@SuppressWarnings("unused") VarOpts opts) {
+    public String sizeForPooledAllocatorForNativeCallExtraArgument(@SuppressWarnings("unused") VarOpts opts) {
         return null;
     }
 
     public abstract void returnValueFormatting(StringBuilder sb, int indent, VarOpts opts);
 
-    public boolean paramDependOnConfinedArena(@SuppressWarnings("unused") VarOpts opts) {
+    public boolean paramDependOnPooledAllocator(@SuppressWarnings("unused") VarOpts opts) {
         return false;
     }
 }

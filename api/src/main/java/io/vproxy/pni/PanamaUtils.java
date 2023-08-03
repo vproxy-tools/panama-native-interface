@@ -117,16 +117,6 @@ public class PanamaUtils {
         }
     }
 
-    public static MemorySegment format(String arg, Arena arena) {
-        if (arg == null) {
-            return MemorySegment.NULL;
-        }
-        var bytes = arg.getBytes(StandardCharsets.UTF_8);
-        var seg = arena.allocate(bytes.length + 1);
-        seg.setUtf8String(0, arg);
-        return seg;
-    }
-
     public static MemorySegment format(String arg, Allocator allocator) {
         if (arg == null) {
             return MemorySegment.NULL;
@@ -137,11 +127,11 @@ public class PanamaUtils {
         return seg;
     }
 
-    public static MemorySegment format(ByteBuffer arg, Arena arena) {
+    public static MemorySegment format(ByteBuffer arg, Allocator allocator) {
         if (arg == null) {
             return MemorySegment.NULL;
         }
-        var buf = new PNIBuf(arena);
+        var buf = new PNIBuf(allocator);
         buf.set(arg);
         return buf.MEMORY;
     }

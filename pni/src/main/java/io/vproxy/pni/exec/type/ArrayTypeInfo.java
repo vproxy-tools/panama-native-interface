@@ -274,12 +274,12 @@ public class ArrayTypeInfo extends TypeInfo {
                 return name + ".MEMORY";
             }
         } else {
-            return "PNIBuf.of(ARENA, " + name + ").MEMORY";
+            return "PNIBuf.of(POOLED, " + name + ").MEMORY";
         }
     }
 
     @Override
-    public String sizeForConfinedArenaForNativeCallExtraArgument(VarOpts opts) {
+    public String sizeForPooledAllocatorForNativeCallExtraArgument(VarOpts opts) {
         if (opts.isCritical()) {
             return "PNIBuf.LAYOUT.byteSize()";
         }
@@ -311,7 +311,7 @@ public class ArrayTypeInfo extends TypeInfo {
     }
 
     @Override
-    public boolean paramDependOnConfinedArena(VarOpts opts) {
+    public boolean paramDependOnPooledAllocator(VarOpts opts) {
         if (opts.isRaw()) {
             return false;
         }

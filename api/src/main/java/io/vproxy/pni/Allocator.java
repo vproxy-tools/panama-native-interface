@@ -22,6 +22,30 @@ public interface Allocator extends AutoCloseable {
         return new SegmentAllocatorAllocator(allocator);
     }
 
+    static Allocator ofPooled() {
+        var provider = AllocatorUtils.provider;
+        if (provider == null) {
+            return ofConfined();
+        } else {
+            return provider.create();
+        }
+    }
+
     @Override
     void close();
+
+    static PooledAllocatorProvider getPooledAllocatorProvider() {
+        return AllocatorUtils.provider;
+    }
+
+    static void setPooledAllocatorProvider(PooledAllocatorProvider allocatorProvider) {
+        AllocatorUtils.provider = allocatorProvider;
+    }
+}
+
+class AllocatorUtils {
+    static PooledAllocatorProvider provider;
+
+    private AllocatorUtils() {
+    }
 }

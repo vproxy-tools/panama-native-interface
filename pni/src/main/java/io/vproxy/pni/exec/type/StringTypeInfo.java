@@ -129,7 +129,7 @@ public class StringTypeInfo extends BuiltInReferenceTypeInfo {
 
     @Override
     public String convertToNativeCallArgument(String name, VarOpts opts) {
-        return "PanamaUtils.format(" + name + ", ARENA)";
+        return "PanamaUtils.format(" + name + ", POOLED)";
     }
 
     @Override
@@ -143,7 +143,7 @@ public class StringTypeInfo extends BuiltInReferenceTypeInfo {
     }
 
     @Override
-    public boolean paramDependOnConfinedArena(VarOpts opts) {
+    public boolean paramDependOnPooledAllocator(VarOpts opts) {
         return opts.isPointerGeneral();
     }
 

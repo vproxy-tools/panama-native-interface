@@ -2,7 +2,6 @@ package io.vproxy.pni;
 
 import io.vproxy.pni.array.*;
 
-import java.lang.foreign.Arena;
 import java.lang.foreign.MemoryLayout;
 import java.lang.foreign.MemorySegment;
 import java.lang.foreign.ValueLayout;
@@ -25,58 +24,54 @@ public class PNIBuf {
         this(allocator.allocate(LAYOUT.byteSize()));
     }
 
-    public PNIBuf(Arena arena) {
-        this(arena.allocate(LAYOUT.byteSize()));
-    }
-
-    private PNIBuf(Arena arena, MemorySegment buf) {
-        this(arena.allocate(LAYOUT.byteSize()));
+    private PNIBuf(Allocator allocator, MemorySegment buf) {
+        this(allocator);
         set(buf);
     }
 
-    public static PNIBuf of(Arena arena, MemorySegment v) {
+    public static PNIBuf of(Allocator allocator, MemorySegment v) {
         if (v == null) return null;
-        return new PNIBuf(arena, v);
+        return new PNIBuf(allocator, v);
     }
 
-    public static PNIBuf of(Arena arena, BoolArray v) {
+    public static PNIBuf of(Allocator allocator, BoolArray v) {
         if (v == null) return null;
-        return new PNIBuf(arena, v.MEMORY);
+        return new PNIBuf(allocator, v.MEMORY);
     }
 
-    public static PNIBuf of(Arena arena, CharArray v) {
+    public static PNIBuf of(Allocator allocator, CharArray v) {
         if (v == null) return null;
-        return new PNIBuf(arena, v.MEMORY);
+        return new PNIBuf(allocator, v.MEMORY);
     }
 
-    public static PNIBuf of(Arena arena, DoubleArray v) {
+    public static PNIBuf of(Allocator allocator, DoubleArray v) {
         if (v == null) return null;
-        return new PNIBuf(arena, v.MEMORY);
+        return new PNIBuf(allocator, v.MEMORY);
     }
 
-    public static PNIBuf of(Arena arena, FloatArray v) {
+    public static PNIBuf of(Allocator allocator, FloatArray v) {
         if (v == null) return null;
-        return new PNIBuf(arena, v.MEMORY);
+        return new PNIBuf(allocator, v.MEMORY);
     }
 
-    public static PNIBuf of(Arena arena, IntArray v) {
+    public static PNIBuf of(Allocator allocator, IntArray v) {
         if (v == null) return null;
-        return new PNIBuf(arena, v.MEMORY);
+        return new PNIBuf(allocator, v.MEMORY);
     }
 
-    public static PNIBuf of(Arena arena, LongArray v) {
+    public static PNIBuf of(Allocator allocator, LongArray v) {
         if (v == null) return null;
-        return new PNIBuf(arena, v.MEMORY);
+        return new PNIBuf(allocator, v.MEMORY);
     }
 
-    public static PNIBuf of(Arena arena, ShortArray v) {
+    public static PNIBuf of(Allocator allocator, ShortArray v) {
         if (v == null) return null;
-        return new PNIBuf(arena, v.MEMORY);
+        return new PNIBuf(allocator, v.MEMORY);
     }
 
-    public static PNIBuf of(Arena arena, RefArray<?> v) {
+    public static PNIBuf of(Allocator allocator, RefArray<?> v) {
         if (v == null) return null;
-        return new PNIBuf(arena, v.MEMORY);
+        return new PNIBuf(allocator, v.MEMORY);
     }
 
     private static final VarHandle bufVH = LAYOUT.varHandle(
