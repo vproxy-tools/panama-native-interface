@@ -477,23 +477,23 @@ Annotate the data type to be converted to its raw form. You can only mark method
 | double              | -           | -          | -      | `double`          | `double`         | -                    | `double`           | double              | `JAVA_DOUBLE`                       |
 | boolean             | -           | -          | -      | `uint8_t`         | `uint8_t`        | -                    | `bool`             | boolean             | `JAVA_BOOLEAN`                      |
 | char                | -           | -          | -      | `uint16_t`        | `uint16_t`       | -                    | `char`             | char                | `JAVA_CHAR`                         |
-| String              | -           | -          | No     | `char *`          | `char *`         | -                    | `pointer`          | String              | `ADDRESS`                           |
+| String              | -           | -          | No     | `char *`          | `char *`         | -                    | `pointer`          | PNIString           | `ADDRESS`                           |
 | String              | -           | -          | Yes    | `char x[len]`     | -                | -                    | -                  | String              | `sequenceLayout(len, JAVA_BYTE)`    |
 | MemorySegment       | -           | -          | -      | `void *`          | `void *`         | -                    | `pointer`          | MemorySegment       | `ADDRESS`                           |
-| ByteBuffer          | -           | -          | -      | `PNIBuf`          | `PNIBuf *`       | `PNIBuf *`           | `pointer`          | ByteBuffer          | `PNIBuf.LAYOUT`                     |
+| ByteBuffer          | -           | -          | -      | `PNIBuf`          | `PNIBuf *`       | `PNIBuf *`           | `buf`              | ByteBuffer          | `PNIBuf.LAYOUT`                     |
 | ByteBuffer (`@Raw`) | -           | -          | -      | -                 | `char *`         | -                    | -                  | ByteBuffer          | -                                   |
 | Struct/Union        | -           | No         | -      | `Type`            | -                | -                    | -                  | Type                | `Type.LAYOUT`                       |
 | Struct/Union        | -           | Yes        | -      | `Type *`          | `Type *`         | `Type *`             | `pointer`          | Type                | `ADDRESS`                           |
-| int[]               | `*`         | `*`        | No     | `PNIBuf`          | `PNIBuf *`       | `PNIBuf *`           | `pointer`          | IntArray            | `PNIBuf.LAYOUT`                     |
-| long[]              | `*`         | `*`        | No     | `PNIBuf`          | `PNIBuf *`       | `PNIBuf *`           | `pointer`          | LongArray           | `PNIBuf.LAYOUT`                     |
-| short[]             | `*`         | `*`        | No     | `PNIBuf`          | `PNIBuf *`       | `PNIBuf *`           | `pointer`          | ShortArray          | `PNIBuf.LAYOUT`                     |
-| byte[]              | `*`         | `*`        | No     | `PNIBuf`          | `PNIBuf *`       | `PNIBuf *`           | `pointer`          | MemorySegment       | `PNIBuf.LAYOUT`                     |
+| int[]               | `*`         | `*`        | No     | `PNIBuf`          | `PNIBuf *`       | `PNIBuf *`           | `buf`              | IntArray            | `PNIBuf.LAYOUT`                     |
+| long[]              | `*`         | `*`        | No     | `PNIBuf`          | `PNIBuf *`       | `PNIBuf *`           | `buf`              | LongArray           | `PNIBuf.LAYOUT`                     |
+| short[]             | `*`         | `*`        | No     | `PNIBuf`          | `PNIBuf *`       | `PNIBuf *`           | `buf`              | ShortArray          | `PNIBuf.LAYOUT`                     |
+| byte[]              | `*`         | `*`        | No     | `PNIBuf`          | `PNIBuf *`       | `PNIBuf *`           | `buf`              | MemorySegment       | `PNIBuf.LAYOUT`                     |
 | byte[] (`@Raw`)     | `*`         | `*`        | No     | -                 | `char *`         | -                    | -                  | MemorySegment       | -                                   |
-| float[]             | -           | `*`        | No     | `PNIBuf`          | `PNIBuf *`       | `PNIBuf *`           | `pointer`          | FloatArray          | `PNIBuf.LAYOUT`                     |
-| double[]            | -           | `*`        | No     | `PNIBuf`          | `PNIBuf *`       | `PNIBuf *`           | `pointer`          | DoubleArray         | `PNIBuf.LAYOUT`                     |
-| boolean[]           | -           | `*`        | No     | `PNIBuf`          | `PNIBuf *`       | `PNIBuf *`           | `pointer`          | BoolArray           | `PNIBuf.LAYOUT`                     |
-| char[]              | -           | `*`        | No     | `PNIBuf`          | `PNIBuf *`       | `PNIBuf *`           | `pointer`          | CharArray           | `PNIBuf.LAYOUT`                     |
-| Type[]              | -           | `*`        | No     | `PNIBuf`          | `PNIBuf *`       | `PNIBuf *`           | `pointer`          | Type.Array          | `PNIBuf.LAYOUT`                     |
+| float[]             | -           | `*`        | No     | `PNIBuf`          | `PNIBuf *`       | `PNIBuf *`           | `buf`              | FloatArray          | `PNIBuf.LAYOUT`                     |
+| double[]            | -           | `*`        | No     | `PNIBuf`          | `PNIBuf *`       | `PNIBuf *`           | `buf`              | DoubleArray         | `PNIBuf.LAYOUT`                     |
+| boolean[]           | -           | `*`        | No     | `PNIBuf`          | `PNIBuf *`       | `PNIBuf *`           | `buf`              | BoolArray           | `PNIBuf.LAYOUT`                     |
+| char[]              | -           | `*`        | No     | `PNIBuf`          | `PNIBuf *`       | `PNIBuf *`           | `buf`              | CharArray           | `PNIBuf.LAYOUT`                     |
+| Type[]              | -           | `*`        | No     | `PNIBuf`          | `PNIBuf *`       | `PNIBuf *`           | `buf`              | Type.Array          | `PNIBuf.LAYOUT`                     |
 | int[]               | No          | -          | Yes    | `int32_t  x[len]` | -                | -                    | -                  | IntArray            | `sequenceLayout(len, JAVA_INT)`     |
 | int[]               | Yes         | -          | Yes    | `uint32_t x[len]` | -                | -                    | -                  | IntArray            | `sequenceLayout(len, JAVA_INT)`     |
 | long[]              | No          | -          | Yes    | `int64_t  x[len]` | -                | -                    | -                  | LongArray           | `sequenceLayout(len, JAVA_LONG)`    |
@@ -525,15 +525,7 @@ Any other combination except the above table is disallowed.
 * This project has a pre assumption: `sizeof(void*)` is 8 bytes.
   In other words, you can only use this project on a 64bit processor.
   This shouldn't be a problem because there's very rare chance that you would run Java on a 32bit platform.
-* When defining a template method which returns a String,
-  the generated C code will provide `char * cs` as the output,
-  while the generated Java code will extract the UTF-8 `String s` from it.
-  Because `cs` is neither returned from the method nor allocated by user code,
-  there will be no opportunity for you to release its memory.
-  Therefore, you should only use template methods that return String
-  if the strings returned from C do not require releasing,
-  such as those returned by `strerror(errno)`.  
-  Similarly, when you throw an exception from native code, you should ensure that the
+* When you throw an exception from native code, you should ensure that the
   exception type name char array does not require releasing.
 * Only primitive types or custom types can be used to generate arrays,
   and the arrays can only be 1 dimension. To use 2 or more dimension arrays,
