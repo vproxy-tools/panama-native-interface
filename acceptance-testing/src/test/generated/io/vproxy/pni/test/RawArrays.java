@@ -229,10 +229,10 @@ public class RawArrays {
 
     public io.vproxy.pni.test.ObjectStruct structArrayNotRaw(PNIEnv ENV, io.vproxy.pni.test.ObjectStruct.Array array, int off, Allocator ALLOCATOR) {
         ENV.reset();
-        try (var ARENA = Arena.ofConfined()) {
+        try (var POOLED = Allocator.ofPooled()) {
             int ERR;
             try {
-                ERR = (int) this.structArrayNotRaw.invokeExact(ENV.MEMORY, PNIBuf.of(ARENA, array).MEMORY, off, ALLOCATOR.allocate(io.vproxy.pni.test.ObjectStruct.LAYOUT.byteSize()));
+                ERR = (int) this.structArrayNotRaw.invokeExact(ENV.MEMORY, PNIBuf.of(POOLED, array).MEMORY, off, ALLOCATOR.allocate(io.vproxy.pni.test.ObjectStruct.LAYOUT.byteSize()));
             } catch (Throwable THROWABLE) {
                 throw PanamaUtils.convertInvokeExactException(THROWABLE);
             }
@@ -244,4 +244,4 @@ public class RawArrays {
         }
     }
 }
-// sha256:0b7b6d594f9fa79e4e6120393debe1d0688ef9945285b03c2babeb3f1323b348
+// sha256:c271390654b3c7cd50eb01eab1d22cb9dc3ac4db80a0cecf7b1357489f80a6b5

@@ -64,10 +64,10 @@ public class Func {
 
     public void func3(PNIEnv ENV, String ex) throws java.io.IOException, java.lang.UnsupportedOperationException {
         ENV.reset();
-        try (var ARENA = Arena.ofConfined()) {
+        try (var POOLED = Allocator.ofPooled()) {
             int ERR;
             try {
-                ERR = (int) this.func3.invokeExact(ENV.MEMORY, PanamaUtils.format(ex, ARENA));
+                ERR = (int) this.func3.invokeExact(ENV.MEMORY, PanamaUtils.format(ex, POOLED));
             } catch (Throwable THROWABLE) {
                 throw PanamaUtils.convertInvokeExactException(THROWABLE);
             }
@@ -170,4 +170,4 @@ public class Func {
         return RESULT;
     }
 }
-// sha256:c115da78ae1f1cde4ef681a410a9e774505edf4c33c548ea63a937e782395f8a
+// sha256:823c1362cdf7838cacead3cd743350f1901c64db05e1cc37696ed03aa2018c7b

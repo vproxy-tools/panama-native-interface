@@ -8,7 +8,6 @@ import io.vproxy.pni.test.UnionO;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import java.lang.foreign.Arena;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
@@ -22,9 +21,8 @@ public class TestStructUnionAnnotation {
 
     @Test
     public void structMnnn() {
-        try (var arena = Arena.ofConfined()) {
-            var allocator = Allocator.of(arena);
-            var env = new PNIEnv(arena);
+        try (var allocator = Allocator.ofConfined()) {
+            var env = new PNIEnv(allocator);
 
             var m = new StructM(allocator);
             var n = new StructN(allocator);
@@ -39,9 +37,8 @@ public class TestStructUnionAnnotation {
 
     @Test
     public void structN() {
-        try (var arena = Arena.ofConfined()) {
-            var allocator = Allocator.of(arena);
-            var env = new PNIEnv(arena);
+        try (var allocator = Allocator.ofConfined()) {
+            var env = new PNIEnv(allocator);
 
             var n = new StructN(allocator);
             n.setL(99L);
@@ -56,9 +53,8 @@ public class TestStructUnionAnnotation {
 
     @Test
     public void unionOAndP() {
-        try (var arena = Arena.ofConfined()) {
-            var allocator = Allocator.of(arena);
-            var env = new PNIEnv(arena);
+        try (var allocator = Allocator.ofConfined()) {
+            var env = new PNIEnv(allocator);
 
             var o = new UnionO(allocator);
             o.setS((short) 0xab);

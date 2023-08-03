@@ -585,10 +585,10 @@ public class PrimitiveStruct {
 
     public void func3(PNIEnv ENV, MemorySegment byteArray, MemorySegment unsignedByteArray, IntArray intArray, IntArray unsignedIntArray, LongArray longArray, LongArray unsignedLongArray, ShortArray shortArray, ShortArray unsignedShortArray) {
         ENV.reset();
-        try (var ARENA = Arena.ofConfined()) {
+        try (var POOLED = Allocator.ofPooled()) {
             int ERR;
             try {
-                ERR = (int) this.func3.invokeExact(ENV.MEMORY, MEMORY, PNIBuf.of(ARENA, byteArray).MEMORY, PNIBuf.of(ARENA, unsignedByteArray).MEMORY, PNIBuf.of(ARENA, intArray).MEMORY, PNIBuf.of(ARENA, unsignedIntArray).MEMORY, PNIBuf.of(ARENA, longArray).MEMORY, PNIBuf.of(ARENA, unsignedLongArray).MEMORY, PNIBuf.of(ARENA, shortArray).MEMORY, PNIBuf.of(ARENA, unsignedShortArray).MEMORY);
+                ERR = (int) this.func3.invokeExact(ENV.MEMORY, MEMORY, PNIBuf.of(POOLED, byteArray).MEMORY, PNIBuf.of(POOLED, unsignedByteArray).MEMORY, PNIBuf.of(POOLED, intArray).MEMORY, PNIBuf.of(POOLED, unsignedIntArray).MEMORY, PNIBuf.of(POOLED, longArray).MEMORY, PNIBuf.of(POOLED, unsignedLongArray).MEMORY, PNIBuf.of(POOLED, shortArray).MEMORY, PNIBuf.of(POOLED, unsignedShortArray).MEMORY);
             } catch (Throwable THROWABLE) {
                 throw PanamaUtils.convertInvokeExactException(THROWABLE);
             }
@@ -601,9 +601,9 @@ public class PrimitiveStruct {
     private final MethodHandle func3Critical = PanamaUtils.lookupPNICriticalFunction(false, void.class, "JavaCritical_io_vproxy_pni_test_PrimitiveStruct_func3Critical", MemorySegment.class /* self */, PNIBuf.class /* byteArray */, PNIBuf.class /* unsignedByteArray */, PNIBuf.class /* intArray */, PNIBuf.class /* unsignedIntArray */, PNIBuf.class /* longArray */, PNIBuf.class /* unsignedLongArray */, PNIBuf.class /* shortArray */, PNIBuf.class /* unsignedShortArray */);
 
     public void func3Critical(MemorySegment byteArray, MemorySegment unsignedByteArray, IntArray intArray, IntArray unsignedIntArray, LongArray longArray, LongArray unsignedLongArray, ShortArray shortArray, ShortArray unsignedShortArray) {
-        try (var ARENA = Arena.ofConfined()) {
+        try (var POOLED = Allocator.ofPooled()) {
             try {
-                this.func3Critical.invokeExact(MEMORY, PNIBuf.of(ARENA, byteArray).MEMORY, PNIBuf.of(ARENA, unsignedByteArray).MEMORY, PNIBuf.of(ARENA, intArray).MEMORY, PNIBuf.of(ARENA, unsignedIntArray).MEMORY, PNIBuf.of(ARENA, longArray).MEMORY, PNIBuf.of(ARENA, unsignedLongArray).MEMORY, PNIBuf.of(ARENA, shortArray).MEMORY, PNIBuf.of(ARENA, unsignedShortArray).MEMORY);
+                this.func3Critical.invokeExact(MEMORY, PNIBuf.of(POOLED, byteArray).MEMORY, PNIBuf.of(POOLED, unsignedByteArray).MEMORY, PNIBuf.of(POOLED, intArray).MEMORY, PNIBuf.of(POOLED, unsignedIntArray).MEMORY, PNIBuf.of(POOLED, longArray).MEMORY, PNIBuf.of(POOLED, unsignedLongArray).MEMORY, PNIBuf.of(POOLED, shortArray).MEMORY, PNIBuf.of(POOLED, unsignedShortArray).MEMORY);
             } catch (Throwable THROWABLE) {
                 throw PanamaUtils.convertInvokeExactException(THROWABLE);
             }
@@ -614,10 +614,10 @@ public class PrimitiveStruct {
 
     public void func4(PNIEnv ENV, CharArray charArray, DoubleArray doubleArray, FloatArray floatArray, BoolArray booleanArray) {
         ENV.reset();
-        try (var ARENA = Arena.ofConfined()) {
+        try (var POOLED = Allocator.ofPooled()) {
             int ERR;
             try {
-                ERR = (int) this.func4.invokeExact(ENV.MEMORY, MEMORY, PNIBuf.of(ARENA, charArray).MEMORY, PNIBuf.of(ARENA, doubleArray).MEMORY, PNIBuf.of(ARENA, floatArray).MEMORY, PNIBuf.of(ARENA, booleanArray).MEMORY);
+                ERR = (int) this.func4.invokeExact(ENV.MEMORY, MEMORY, PNIBuf.of(POOLED, charArray).MEMORY, PNIBuf.of(POOLED, doubleArray).MEMORY, PNIBuf.of(POOLED, floatArray).MEMORY, PNIBuf.of(POOLED, booleanArray).MEMORY);
             } catch (Throwable THROWABLE) {
                 throw PanamaUtils.convertInvokeExactException(THROWABLE);
             }
@@ -630,9 +630,9 @@ public class PrimitiveStruct {
     private final MethodHandle func4Critical = PanamaUtils.lookupPNICriticalFunction(false, void.class, "JavaCritical_io_vproxy_pni_test_PrimitiveStruct_func4Critical", MemorySegment.class /* self */, PNIBuf.class /* charArray */, PNIBuf.class /* doubleArray */, PNIBuf.class /* floatArray */, PNIBuf.class /* booleanArray */);
 
     public void func4Critical(CharArray charArray, DoubleArray doubleArray, FloatArray floatArray, BoolArray booleanArray) {
-        try (var ARENA = Arena.ofConfined()) {
+        try (var POOLED = Allocator.ofPooled()) {
             try {
-                this.func4Critical.invokeExact(MEMORY, PNIBuf.of(ARENA, charArray).MEMORY, PNIBuf.of(ARENA, doubleArray).MEMORY, PNIBuf.of(ARENA, floatArray).MEMORY, PNIBuf.of(ARENA, booleanArray).MEMORY);
+                this.func4Critical.invokeExact(MEMORY, PNIBuf.of(POOLED, charArray).MEMORY, PNIBuf.of(POOLED, doubleArray).MEMORY, PNIBuf.of(POOLED, floatArray).MEMORY, PNIBuf.of(POOLED, booleanArray).MEMORY);
             } catch (Throwable THROWABLE) {
                 throw PanamaUtils.convertInvokeExactException(THROWABLE);
             }
@@ -996,10 +996,10 @@ public class PrimitiveStruct {
     private final MethodHandle retrieveByteArrayCritical = PanamaUtils.lookupPNICriticalFunction(false, PNIBuf.class, "JavaCritical_io_vproxy_pni_test_PrimitiveStruct_retrieveByteArrayCritical", MemorySegment.class /* self */, MemorySegment.class /* return */);
 
     public MemorySegment retrieveByteArrayCritical() {
-        try (var ARENA = Arena.ofConfined()) {
+        try (var POOLED = Allocator.ofPooled()) {
             MemorySegment RESULT;
             try {
-                RESULT = (MemorySegment) this.retrieveByteArrayCritical.invokeExact(MEMORY, ARENA.allocate(PNIBuf.LAYOUT.byteSize()));
+                RESULT = (MemorySegment) this.retrieveByteArrayCritical.invokeExact(MEMORY, POOLED.allocate(PNIBuf.LAYOUT.byteSize()));
             } catch (Throwable THROWABLE) {
                 throw PanamaUtils.convertInvokeExactException(THROWABLE);
             }
@@ -1031,10 +1031,10 @@ public class PrimitiveStruct {
     private final MethodHandle retrieveUnsignedByteArrayCritical = PanamaUtils.lookupPNICriticalFunction(false, PNIBuf.class, "JavaCritical_io_vproxy_pni_test_PrimitiveStruct_retrieveUnsignedByteArrayCritical", MemorySegment.class /* self */, MemorySegment.class /* return */);
 
     public MemorySegment retrieveUnsignedByteArrayCritical() {
-        try (var ARENA = Arena.ofConfined()) {
+        try (var POOLED = Allocator.ofPooled()) {
             MemorySegment RESULT;
             try {
-                RESULT = (MemorySegment) this.retrieveUnsignedByteArrayCritical.invokeExact(MEMORY, ARENA.allocate(PNIBuf.LAYOUT.byteSize()));
+                RESULT = (MemorySegment) this.retrieveUnsignedByteArrayCritical.invokeExact(MEMORY, POOLED.allocate(PNIBuf.LAYOUT.byteSize()));
             } catch (Throwable THROWABLE) {
                 throw PanamaUtils.convertInvokeExactException(THROWABLE);
             }
@@ -1066,10 +1066,10 @@ public class PrimitiveStruct {
     private final MethodHandle retrieveCharArrayCritical = PanamaUtils.lookupPNICriticalFunction(false, PNIBuf.class, "JavaCritical_io_vproxy_pni_test_PrimitiveStruct_retrieveCharArrayCritical", MemorySegment.class /* self */, MemorySegment.class /* return */);
 
     public CharArray retrieveCharArrayCritical() {
-        try (var ARENA = Arena.ofConfined()) {
+        try (var POOLED = Allocator.ofPooled()) {
             MemorySegment RESULT;
             try {
-                RESULT = (MemorySegment) this.retrieveCharArrayCritical.invokeExact(MEMORY, ARENA.allocate(PNIBuf.LAYOUT.byteSize()));
+                RESULT = (MemorySegment) this.retrieveCharArrayCritical.invokeExact(MEMORY, POOLED.allocate(PNIBuf.LAYOUT.byteSize()));
             } catch (Throwable THROWABLE) {
                 throw PanamaUtils.convertInvokeExactException(THROWABLE);
             }
@@ -1101,10 +1101,10 @@ public class PrimitiveStruct {
     private final MethodHandle retrieveDoubleArrayCritical = PanamaUtils.lookupPNICriticalFunction(false, PNIBuf.class, "JavaCritical_io_vproxy_pni_test_PrimitiveStruct_retrieveDoubleArrayCritical", MemorySegment.class /* self */, MemorySegment.class /* return */);
 
     public DoubleArray retrieveDoubleArrayCritical() {
-        try (var ARENA = Arena.ofConfined()) {
+        try (var POOLED = Allocator.ofPooled()) {
             MemorySegment RESULT;
             try {
-                RESULT = (MemorySegment) this.retrieveDoubleArrayCritical.invokeExact(MEMORY, ARENA.allocate(PNIBuf.LAYOUT.byteSize()));
+                RESULT = (MemorySegment) this.retrieveDoubleArrayCritical.invokeExact(MEMORY, POOLED.allocate(PNIBuf.LAYOUT.byteSize()));
             } catch (Throwable THROWABLE) {
                 throw PanamaUtils.convertInvokeExactException(THROWABLE);
             }
@@ -1136,10 +1136,10 @@ public class PrimitiveStruct {
     private final MethodHandle retrieveFloatArrayCritical = PanamaUtils.lookupPNICriticalFunction(false, PNIBuf.class, "JavaCritical_io_vproxy_pni_test_PrimitiveStruct_retrieveFloatArrayCritical", MemorySegment.class /* self */, MemorySegment.class /* return */);
 
     public FloatArray retrieveFloatArrayCritical() {
-        try (var ARENA = Arena.ofConfined()) {
+        try (var POOLED = Allocator.ofPooled()) {
             MemorySegment RESULT;
             try {
-                RESULT = (MemorySegment) this.retrieveFloatArrayCritical.invokeExact(MEMORY, ARENA.allocate(PNIBuf.LAYOUT.byteSize()));
+                RESULT = (MemorySegment) this.retrieveFloatArrayCritical.invokeExact(MEMORY, POOLED.allocate(PNIBuf.LAYOUT.byteSize()));
             } catch (Throwable THROWABLE) {
                 throw PanamaUtils.convertInvokeExactException(THROWABLE);
             }
@@ -1171,10 +1171,10 @@ public class PrimitiveStruct {
     private final MethodHandle retrieveIntArrayCritical = PanamaUtils.lookupPNICriticalFunction(false, PNIBuf.class, "JavaCritical_io_vproxy_pni_test_PrimitiveStruct_retrieveIntArrayCritical", MemorySegment.class /* self */, MemorySegment.class /* return */);
 
     public IntArray retrieveIntArrayCritical() {
-        try (var ARENA = Arena.ofConfined()) {
+        try (var POOLED = Allocator.ofPooled()) {
             MemorySegment RESULT;
             try {
-                RESULT = (MemorySegment) this.retrieveIntArrayCritical.invokeExact(MEMORY, ARENA.allocate(PNIBuf.LAYOUT.byteSize()));
+                RESULT = (MemorySegment) this.retrieveIntArrayCritical.invokeExact(MEMORY, POOLED.allocate(PNIBuf.LAYOUT.byteSize()));
             } catch (Throwable THROWABLE) {
                 throw PanamaUtils.convertInvokeExactException(THROWABLE);
             }
@@ -1206,10 +1206,10 @@ public class PrimitiveStruct {
     private final MethodHandle retrieveUnsignedIntArrayCritical = PanamaUtils.lookupPNICriticalFunction(false, PNIBuf.class, "JavaCritical_io_vproxy_pni_test_PrimitiveStruct_retrieveUnsignedIntArrayCritical", MemorySegment.class /* self */, MemorySegment.class /* return */);
 
     public IntArray retrieveUnsignedIntArrayCritical() {
-        try (var ARENA = Arena.ofConfined()) {
+        try (var POOLED = Allocator.ofPooled()) {
             MemorySegment RESULT;
             try {
-                RESULT = (MemorySegment) this.retrieveUnsignedIntArrayCritical.invokeExact(MEMORY, ARENA.allocate(PNIBuf.LAYOUT.byteSize()));
+                RESULT = (MemorySegment) this.retrieveUnsignedIntArrayCritical.invokeExact(MEMORY, POOLED.allocate(PNIBuf.LAYOUT.byteSize()));
             } catch (Throwable THROWABLE) {
                 throw PanamaUtils.convertInvokeExactException(THROWABLE);
             }
@@ -1241,10 +1241,10 @@ public class PrimitiveStruct {
     private final MethodHandle retrieveLongArrayCritical = PanamaUtils.lookupPNICriticalFunction(false, PNIBuf.class, "JavaCritical_io_vproxy_pni_test_PrimitiveStruct_retrieveLongArrayCritical", MemorySegment.class /* self */, MemorySegment.class /* return */);
 
     public LongArray retrieveLongArrayCritical() {
-        try (var ARENA = Arena.ofConfined()) {
+        try (var POOLED = Allocator.ofPooled()) {
             MemorySegment RESULT;
             try {
-                RESULT = (MemorySegment) this.retrieveLongArrayCritical.invokeExact(MEMORY, ARENA.allocate(PNIBuf.LAYOUT.byteSize()));
+                RESULT = (MemorySegment) this.retrieveLongArrayCritical.invokeExact(MEMORY, POOLED.allocate(PNIBuf.LAYOUT.byteSize()));
             } catch (Throwable THROWABLE) {
                 throw PanamaUtils.convertInvokeExactException(THROWABLE);
             }
@@ -1276,10 +1276,10 @@ public class PrimitiveStruct {
     private final MethodHandle retrieveUnsignedLongArrayCritical = PanamaUtils.lookupPNICriticalFunction(false, PNIBuf.class, "JavaCritical_io_vproxy_pni_test_PrimitiveStruct_retrieveUnsignedLongArrayCritical", MemorySegment.class /* self */, MemorySegment.class /* return */);
 
     public LongArray retrieveUnsignedLongArrayCritical() {
-        try (var ARENA = Arena.ofConfined()) {
+        try (var POOLED = Allocator.ofPooled()) {
             MemorySegment RESULT;
             try {
-                RESULT = (MemorySegment) this.retrieveUnsignedLongArrayCritical.invokeExact(MEMORY, ARENA.allocate(PNIBuf.LAYOUT.byteSize()));
+                RESULT = (MemorySegment) this.retrieveUnsignedLongArrayCritical.invokeExact(MEMORY, POOLED.allocate(PNIBuf.LAYOUT.byteSize()));
             } catch (Throwable THROWABLE) {
                 throw PanamaUtils.convertInvokeExactException(THROWABLE);
             }
@@ -1311,10 +1311,10 @@ public class PrimitiveStruct {
     private final MethodHandle retrieveShortArrayCritical = PanamaUtils.lookupPNICriticalFunction(false, PNIBuf.class, "JavaCritical_io_vproxy_pni_test_PrimitiveStruct_retrieveShortArrayCritical", MemorySegment.class /* self */, MemorySegment.class /* return */);
 
     public ShortArray retrieveShortArrayCritical() {
-        try (var ARENA = Arena.ofConfined()) {
+        try (var POOLED = Allocator.ofPooled()) {
             MemorySegment RESULT;
             try {
-                RESULT = (MemorySegment) this.retrieveShortArrayCritical.invokeExact(MEMORY, ARENA.allocate(PNIBuf.LAYOUT.byteSize()));
+                RESULT = (MemorySegment) this.retrieveShortArrayCritical.invokeExact(MEMORY, POOLED.allocate(PNIBuf.LAYOUT.byteSize()));
             } catch (Throwable THROWABLE) {
                 throw PanamaUtils.convertInvokeExactException(THROWABLE);
             }
@@ -1346,10 +1346,10 @@ public class PrimitiveStruct {
     private final MethodHandle retrieveUnsignedShortArrayCritical = PanamaUtils.lookupPNICriticalFunction(false, PNIBuf.class, "JavaCritical_io_vproxy_pni_test_PrimitiveStruct_retrieveUnsignedShortArrayCritical", MemorySegment.class /* self */, MemorySegment.class /* return */);
 
     public ShortArray retrieveUnsignedShortArrayCritical() {
-        try (var ARENA = Arena.ofConfined()) {
+        try (var POOLED = Allocator.ofPooled()) {
             MemorySegment RESULT;
             try {
-                RESULT = (MemorySegment) this.retrieveUnsignedShortArrayCritical.invokeExact(MEMORY, ARENA.allocate(PNIBuf.LAYOUT.byteSize()));
+                RESULT = (MemorySegment) this.retrieveUnsignedShortArrayCritical.invokeExact(MEMORY, POOLED.allocate(PNIBuf.LAYOUT.byteSize()));
             } catch (Throwable THROWABLE) {
                 throw PanamaUtils.convertInvokeExactException(THROWABLE);
             }
@@ -1381,10 +1381,10 @@ public class PrimitiveStruct {
     private final MethodHandle retrieveBooleanArrayCritical = PanamaUtils.lookupPNICriticalFunction(false, PNIBuf.class, "JavaCritical_io_vproxy_pni_test_PrimitiveStruct_retrieveBooleanArrayCritical", MemorySegment.class /* self */, MemorySegment.class /* return */);
 
     public BoolArray retrieveBooleanArrayCritical() {
-        try (var ARENA = Arena.ofConfined()) {
+        try (var POOLED = Allocator.ofPooled()) {
             MemorySegment RESULT;
             try {
-                RESULT = (MemorySegment) this.retrieveBooleanArrayCritical.invokeExact(MEMORY, ARENA.allocate(PNIBuf.LAYOUT.byteSize()));
+                RESULT = (MemorySegment) this.retrieveBooleanArrayCritical.invokeExact(MEMORY, POOLED.allocate(PNIBuf.LAYOUT.byteSize()));
             } catch (Throwable THROWABLE) {
                 throw PanamaUtils.convertInvokeExactException(THROWABLE);
             }
@@ -1416,10 +1416,10 @@ public class PrimitiveStruct {
     private final MethodHandle retrieveByteArrayPointerCritical = PanamaUtils.lookupPNICriticalFunction(false, PNIBuf.class, "JavaCritical_io_vproxy_pni_test_PrimitiveStruct_retrieveByteArrayPointerCritical", MemorySegment.class /* self */, MemorySegment.class /* return */);
 
     public MemorySegment retrieveByteArrayPointerCritical() {
-        try (var ARENA = Arena.ofConfined()) {
+        try (var POOLED = Allocator.ofPooled()) {
             MemorySegment RESULT;
             try {
-                RESULT = (MemorySegment) this.retrieveByteArrayPointerCritical.invokeExact(MEMORY, ARENA.allocate(PNIBuf.LAYOUT.byteSize()));
+                RESULT = (MemorySegment) this.retrieveByteArrayPointerCritical.invokeExact(MEMORY, POOLED.allocate(PNIBuf.LAYOUT.byteSize()));
             } catch (Throwable THROWABLE) {
                 throw PanamaUtils.convertInvokeExactException(THROWABLE);
             }
@@ -1451,10 +1451,10 @@ public class PrimitiveStruct {
     private final MethodHandle retrieveUnsignedByteArrayPointerCritical = PanamaUtils.lookupPNICriticalFunction(false, PNIBuf.class, "JavaCritical_io_vproxy_pni_test_PrimitiveStruct_retrieveUnsignedByteArrayPointerCritical", MemorySegment.class /* self */, MemorySegment.class /* return */);
 
     public MemorySegment retrieveUnsignedByteArrayPointerCritical() {
-        try (var ARENA = Arena.ofConfined()) {
+        try (var POOLED = Allocator.ofPooled()) {
             MemorySegment RESULT;
             try {
-                RESULT = (MemorySegment) this.retrieveUnsignedByteArrayPointerCritical.invokeExact(MEMORY, ARENA.allocate(PNIBuf.LAYOUT.byteSize()));
+                RESULT = (MemorySegment) this.retrieveUnsignedByteArrayPointerCritical.invokeExact(MEMORY, POOLED.allocate(PNIBuf.LAYOUT.byteSize()));
             } catch (Throwable THROWABLE) {
                 throw PanamaUtils.convertInvokeExactException(THROWABLE);
             }
@@ -1486,10 +1486,10 @@ public class PrimitiveStruct {
     private final MethodHandle retrieveCharArrayPointerCritical = PanamaUtils.lookupPNICriticalFunction(false, PNIBuf.class, "JavaCritical_io_vproxy_pni_test_PrimitiveStruct_retrieveCharArrayPointerCritical", MemorySegment.class /* self */, MemorySegment.class /* return */);
 
     public CharArray retrieveCharArrayPointerCritical() {
-        try (var ARENA = Arena.ofConfined()) {
+        try (var POOLED = Allocator.ofPooled()) {
             MemorySegment RESULT;
             try {
-                RESULT = (MemorySegment) this.retrieveCharArrayPointerCritical.invokeExact(MEMORY, ARENA.allocate(PNIBuf.LAYOUT.byteSize()));
+                RESULT = (MemorySegment) this.retrieveCharArrayPointerCritical.invokeExact(MEMORY, POOLED.allocate(PNIBuf.LAYOUT.byteSize()));
             } catch (Throwable THROWABLE) {
                 throw PanamaUtils.convertInvokeExactException(THROWABLE);
             }
@@ -1521,10 +1521,10 @@ public class PrimitiveStruct {
     private final MethodHandle retrieveDoubleArrayPointerCritical = PanamaUtils.lookupPNICriticalFunction(false, PNIBuf.class, "JavaCritical_io_vproxy_pni_test_PrimitiveStruct_retrieveDoubleArrayPointerCritical", MemorySegment.class /* self */, MemorySegment.class /* return */);
 
     public DoubleArray retrieveDoubleArrayPointerCritical() {
-        try (var ARENA = Arena.ofConfined()) {
+        try (var POOLED = Allocator.ofPooled()) {
             MemorySegment RESULT;
             try {
-                RESULT = (MemorySegment) this.retrieveDoubleArrayPointerCritical.invokeExact(MEMORY, ARENA.allocate(PNIBuf.LAYOUT.byteSize()));
+                RESULT = (MemorySegment) this.retrieveDoubleArrayPointerCritical.invokeExact(MEMORY, POOLED.allocate(PNIBuf.LAYOUT.byteSize()));
             } catch (Throwable THROWABLE) {
                 throw PanamaUtils.convertInvokeExactException(THROWABLE);
             }
@@ -1556,10 +1556,10 @@ public class PrimitiveStruct {
     private final MethodHandle retrieveFloatArrayPointerCritical = PanamaUtils.lookupPNICriticalFunction(false, PNIBuf.class, "JavaCritical_io_vproxy_pni_test_PrimitiveStruct_retrieveFloatArrayPointerCritical", MemorySegment.class /* self */, MemorySegment.class /* return */);
 
     public FloatArray retrieveFloatArrayPointerCritical() {
-        try (var ARENA = Arena.ofConfined()) {
+        try (var POOLED = Allocator.ofPooled()) {
             MemorySegment RESULT;
             try {
-                RESULT = (MemorySegment) this.retrieveFloatArrayPointerCritical.invokeExact(MEMORY, ARENA.allocate(PNIBuf.LAYOUT.byteSize()));
+                RESULT = (MemorySegment) this.retrieveFloatArrayPointerCritical.invokeExact(MEMORY, POOLED.allocate(PNIBuf.LAYOUT.byteSize()));
             } catch (Throwable THROWABLE) {
                 throw PanamaUtils.convertInvokeExactException(THROWABLE);
             }
@@ -1591,10 +1591,10 @@ public class PrimitiveStruct {
     private final MethodHandle retrieveIntArrayPointerCritical = PanamaUtils.lookupPNICriticalFunction(false, PNIBuf.class, "JavaCritical_io_vproxy_pni_test_PrimitiveStruct_retrieveIntArrayPointerCritical", MemorySegment.class /* self */, MemorySegment.class /* return */);
 
     public IntArray retrieveIntArrayPointerCritical() {
-        try (var ARENA = Arena.ofConfined()) {
+        try (var POOLED = Allocator.ofPooled()) {
             MemorySegment RESULT;
             try {
-                RESULT = (MemorySegment) this.retrieveIntArrayPointerCritical.invokeExact(MEMORY, ARENA.allocate(PNIBuf.LAYOUT.byteSize()));
+                RESULT = (MemorySegment) this.retrieveIntArrayPointerCritical.invokeExact(MEMORY, POOLED.allocate(PNIBuf.LAYOUT.byteSize()));
             } catch (Throwable THROWABLE) {
                 throw PanamaUtils.convertInvokeExactException(THROWABLE);
             }
@@ -1626,10 +1626,10 @@ public class PrimitiveStruct {
     private final MethodHandle retrieveUnsignedIntArrayPointerCritical = PanamaUtils.lookupPNICriticalFunction(false, PNIBuf.class, "JavaCritical_io_vproxy_pni_test_PrimitiveStruct_retrieveUnsignedIntArrayPointerCritical", MemorySegment.class /* self */, MemorySegment.class /* return */);
 
     public IntArray retrieveUnsignedIntArrayPointerCritical() {
-        try (var ARENA = Arena.ofConfined()) {
+        try (var POOLED = Allocator.ofPooled()) {
             MemorySegment RESULT;
             try {
-                RESULT = (MemorySegment) this.retrieveUnsignedIntArrayPointerCritical.invokeExact(MEMORY, ARENA.allocate(PNIBuf.LAYOUT.byteSize()));
+                RESULT = (MemorySegment) this.retrieveUnsignedIntArrayPointerCritical.invokeExact(MEMORY, POOLED.allocate(PNIBuf.LAYOUT.byteSize()));
             } catch (Throwable THROWABLE) {
                 throw PanamaUtils.convertInvokeExactException(THROWABLE);
             }
@@ -1661,10 +1661,10 @@ public class PrimitiveStruct {
     private final MethodHandle retrieveLongArrayPointerCritical = PanamaUtils.lookupPNICriticalFunction(false, PNIBuf.class, "JavaCritical_io_vproxy_pni_test_PrimitiveStruct_retrieveLongArrayPointerCritical", MemorySegment.class /* self */, MemorySegment.class /* return */);
 
     public LongArray retrieveLongArrayPointerCritical() {
-        try (var ARENA = Arena.ofConfined()) {
+        try (var POOLED = Allocator.ofPooled()) {
             MemorySegment RESULT;
             try {
-                RESULT = (MemorySegment) this.retrieveLongArrayPointerCritical.invokeExact(MEMORY, ARENA.allocate(PNIBuf.LAYOUT.byteSize()));
+                RESULT = (MemorySegment) this.retrieveLongArrayPointerCritical.invokeExact(MEMORY, POOLED.allocate(PNIBuf.LAYOUT.byteSize()));
             } catch (Throwable THROWABLE) {
                 throw PanamaUtils.convertInvokeExactException(THROWABLE);
             }
@@ -1696,10 +1696,10 @@ public class PrimitiveStruct {
     private final MethodHandle retrieveUnsignedLongArrayPointerCritical = PanamaUtils.lookupPNICriticalFunction(false, PNIBuf.class, "JavaCritical_io_vproxy_pni_test_PrimitiveStruct_retrieveUnsignedLongArrayPointerCritical", MemorySegment.class /* self */, MemorySegment.class /* return */);
 
     public LongArray retrieveUnsignedLongArrayPointerCritical() {
-        try (var ARENA = Arena.ofConfined()) {
+        try (var POOLED = Allocator.ofPooled()) {
             MemorySegment RESULT;
             try {
-                RESULT = (MemorySegment) this.retrieveUnsignedLongArrayPointerCritical.invokeExact(MEMORY, ARENA.allocate(PNIBuf.LAYOUT.byteSize()));
+                RESULT = (MemorySegment) this.retrieveUnsignedLongArrayPointerCritical.invokeExact(MEMORY, POOLED.allocate(PNIBuf.LAYOUT.byteSize()));
             } catch (Throwable THROWABLE) {
                 throw PanamaUtils.convertInvokeExactException(THROWABLE);
             }
@@ -1731,10 +1731,10 @@ public class PrimitiveStruct {
     private final MethodHandle retrieveShortArrayPointerCritical = PanamaUtils.lookupPNICriticalFunction(false, PNIBuf.class, "JavaCritical_io_vproxy_pni_test_PrimitiveStruct_retrieveShortArrayPointerCritical", MemorySegment.class /* self */, MemorySegment.class /* return */);
 
     public ShortArray retrieveShortArrayPointerCritical() {
-        try (var ARENA = Arena.ofConfined()) {
+        try (var POOLED = Allocator.ofPooled()) {
             MemorySegment RESULT;
             try {
-                RESULT = (MemorySegment) this.retrieveShortArrayPointerCritical.invokeExact(MEMORY, ARENA.allocate(PNIBuf.LAYOUT.byteSize()));
+                RESULT = (MemorySegment) this.retrieveShortArrayPointerCritical.invokeExact(MEMORY, POOLED.allocate(PNIBuf.LAYOUT.byteSize()));
             } catch (Throwable THROWABLE) {
                 throw PanamaUtils.convertInvokeExactException(THROWABLE);
             }
@@ -1766,10 +1766,10 @@ public class PrimitiveStruct {
     private final MethodHandle retrieveUnsignedShortArrayPointerCritical = PanamaUtils.lookupPNICriticalFunction(false, PNIBuf.class, "JavaCritical_io_vproxy_pni_test_PrimitiveStruct_retrieveUnsignedShortArrayPointerCritical", MemorySegment.class /* self */, MemorySegment.class /* return */);
 
     public ShortArray retrieveUnsignedShortArrayPointerCritical() {
-        try (var ARENA = Arena.ofConfined()) {
+        try (var POOLED = Allocator.ofPooled()) {
             MemorySegment RESULT;
             try {
-                RESULT = (MemorySegment) this.retrieveUnsignedShortArrayPointerCritical.invokeExact(MEMORY, ARENA.allocate(PNIBuf.LAYOUT.byteSize()));
+                RESULT = (MemorySegment) this.retrieveUnsignedShortArrayPointerCritical.invokeExact(MEMORY, POOLED.allocate(PNIBuf.LAYOUT.byteSize()));
             } catch (Throwable THROWABLE) {
                 throw PanamaUtils.convertInvokeExactException(THROWABLE);
             }
@@ -1801,10 +1801,10 @@ public class PrimitiveStruct {
     private final MethodHandle retrieveBooleanArrayPointerCritical = PanamaUtils.lookupPNICriticalFunction(false, PNIBuf.class, "JavaCritical_io_vproxy_pni_test_PrimitiveStruct_retrieveBooleanArrayPointerCritical", MemorySegment.class /* self */, MemorySegment.class /* return */);
 
     public BoolArray retrieveBooleanArrayPointerCritical() {
-        try (var ARENA = Arena.ofConfined()) {
+        try (var POOLED = Allocator.ofPooled()) {
             MemorySegment RESULT;
             try {
-                RESULT = (MemorySegment) this.retrieveBooleanArrayPointerCritical.invokeExact(MEMORY, ARENA.allocate(PNIBuf.LAYOUT.byteSize()));
+                RESULT = (MemorySegment) this.retrieveBooleanArrayPointerCritical.invokeExact(MEMORY, POOLED.allocate(PNIBuf.LAYOUT.byteSize()));
             } catch (Throwable THROWABLE) {
                 throw PanamaUtils.convertInvokeExactException(THROWABLE);
             }
@@ -1915,4 +1915,4 @@ public class PrimitiveStruct {
         }
     }
 }
-// sha256:235167a357e2175b81a77251d32d4861c5b2fa0f3eb337b7def677167db8a674
+// sha256:2af4e6231a8abd0b4a4cfcda57c1c9110d5284180132563107321a52e1289404

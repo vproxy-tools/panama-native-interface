@@ -7,7 +7,6 @@ import io.vproxy.pni.test.PrimitiveStruct;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import java.lang.foreign.Arena;
 import java.lang.foreign.MemorySegment;
 import java.lang.foreign.ValueLayout;
 import java.nio.file.Files;
@@ -32,9 +31,9 @@ public class TestPrimitiveStruct {
     }
 
     private void func1(int round) {
-        try (var arena = Arena.ofConfined()) {
-            var env = new PNIEnv(arena);
-            var s = new PrimitiveStruct(Allocator.of(arena));
+        try (var allocator = Allocator.ofConfined()) {
+            var env = new PNIEnv(allocator);
+            var s = new PrimitiveStruct(allocator);
             if (round == 0) {
                 s.func1(env, (byte) -10, (byte) -10, -20, -20, -30L, -30L, (short) -40, (short) -40);
             } else {
@@ -63,9 +62,9 @@ public class TestPrimitiveStruct {
     }
 
     private void func2(int round) {
-        try (var arena = Arena.ofConfined()) {
-            var env = new PNIEnv(arena);
-            var s = new PrimitiveStruct(Allocator.of(arena));
+        try (var allocator = Allocator.ofConfined()) {
+            var env = new PNIEnv(allocator);
+            var s = new PrimitiveStruct(allocator);
             if (round == 0) {
                 s.func2(env, 'a', 1.2, 12.8f, true);
             } else {
@@ -97,17 +96,16 @@ public class TestPrimitiveStruct {
     }
 
     private void func3(int round) {
-        try (var arena = Arena.ofConfined()) {
-            var allocator = Allocator.of(arena);
-            var env = new PNIEnv(arena);
+        try (var allocator = Allocator.ofConfined()) {
+            var env = new PNIEnv(allocator);
             var s = new PrimitiveStruct(allocator);
-            var byteBuf = arena.allocate(5);
+            var byteBuf = allocator.allocate(5);
             {
                 for (int i = 0; i < 5; ++i) {
                     byteBuf.set(ValueLayout.JAVA_BYTE, i, (byte) (-i - 10));
                 }
             }
-            var unsignedByteBuf = arena.allocate(6);
+            var unsignedByteBuf = allocator.allocate(6);
             {
                 for (int i = 0; i < 6; ++i) {
                     unsignedByteBuf.set(ValueLayout.JAVA_BYTE, i, (byte) (-i - 20));
@@ -255,9 +253,8 @@ public class TestPrimitiveStruct {
     }
 
     private void func4(int round) {
-        try (var arena = Arena.ofConfined()) {
-            var allocator = Allocator.of(arena);
-            var env = new PNIEnv(arena);
+        try (var allocator = Allocator.ofConfined()) {
+            var env = new PNIEnv(allocator);
             var s = new PrimitiveStruct(allocator);
 
             var charArray = new CharArray(allocator, 5);
@@ -335,9 +332,8 @@ public class TestPrimitiveStruct {
 
     @Test
     public void primitiveRetrieve() {
-        try (var arena = Arena.ofConfined()) {
-            var allocator = Allocator.of(arena);
-            var env = new PNIEnv(arena);
+        try (var allocator = Allocator.ofConfined()) {
+            var env = new PNIEnv(allocator);
             var s = new PrimitiveStruct(allocator);
 
             s.setAByte((byte) 10);
@@ -418,9 +414,8 @@ public class TestPrimitiveStruct {
     }
 
     private void arrays(int round) {
-        try (var arena = Arena.ofConfined()) {
-            var allocator = Allocator.of(arena);
-            var env = new PNIEnv(arena);
+        try (var allocator = Allocator.ofConfined()) {
+            var env = new PNIEnv(allocator);
             var s = new PrimitiveStruct(allocator);
 
             for (int i = 0; i < 5; ++i) {
@@ -544,9 +539,8 @@ public class TestPrimitiveStruct {
     }
 
     private void arrayPointer(int round) {
-        try (var arena = Arena.ofConfined()) {
-            var allocator = Allocator.of(arena);
-            var env = new PNIEnv(arena);
+        try (var allocator = Allocator.ofConfined()) {
+            var env = new PNIEnv(allocator);
             var s = new PrimitiveStruct(allocator);
 
             assertTrue(s.checkPointerSetToNull(env));
@@ -748,8 +742,7 @@ public class TestPrimitiveStruct {
 
     @Test
     public void checkNull() {
-        try (var arena = Arena.ofConfined()) {
-            var allocator = Allocator.of(arena);
+        try (var allocator = Allocator.ofConfined()) {
             var s = new PrimitiveStruct(allocator);
 
             assertEquals((byte) 0, s.getAByte());
@@ -837,6 +830,6 @@ public class TestPrimitiveStruct {
 
         s = Files.readAllLines(Path.of("src", "test", "generated", "io", "vproxy", "pni", "test", "PrimitiveStruct.java"));
         lastLine = s.get(s.size() - 1);
-        assertEquals("// sha256:235167a357e2175b81a77251d32d4861c5b2fa0f3eb337b7def677167db8a674", lastLine);
+        assertEquals("// sha256:2af4e6231a8abd0b4a4cfcda57c1c9110d5284180132563107321a52e1289404", lastLine);
     }
 }

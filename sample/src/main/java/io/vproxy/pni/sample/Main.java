@@ -1,9 +1,9 @@
 package io.vproxy.pni.sample;
 
+import io.vproxy.pni.Allocator;
 import io.vproxy.pni.PNIEnv;
 
 import java.io.IOException;
-import java.lang.foreign.Arena;
 import java.lang.foreign.ValueLayout;
 import java.nio.charset.StandardCharsets;
 
@@ -14,8 +14,8 @@ public class Main {
 
         int port = 80;
 
-        try (var arena = Arena.ofConfined()) {
-            var env = new PNIEnv(arena);
+        try (var allocator = Allocator.ofConfined()) {
+            var env = new PNIEnv(allocator);
 
             int serverFD = NativeFunctions.get().openIPv4TcpSocket(env);
             System.out.println("open ipv4 tcp socket fd: " + serverFD);
@@ -38,10 +38,10 @@ public class Main {
 
     private static void handleClientConnection(int fd) {
         System.out.println("begin to handle connection " + fd + " on thread " + Thread.currentThread().getName());
-        try (var arena = Arena.ofConfined()) {
-            var env = new PNIEnv(arena);
+        try (var allocator = Allocator.ofConfined()) {
+            var env = new PNIEnv(allocator);
             int LEN = 4096;
-            var buf = arena.allocate(LEN);
+            var buf = allocator.allocate(LEN);
 
             while (true) {
                 int n;

@@ -359,7 +359,7 @@ If the template type name starts with `PNI`, then the generated type will remove
 If the method's return type requires memory allocation, an extra parameter `Allocator ALLOCATOR` will be added to the last of the arguments list.  
 You can release the memory after accessing the returned object by closing the allocator.
 
-`io.vproxy.pni.Allocator` can be constructed with `Arena` or `MemoryAllocator`.
+`io.vproxy.pni.Allocator` can be constructed with `Arena` or `SegmentAllocator`.
 
 </details>
 

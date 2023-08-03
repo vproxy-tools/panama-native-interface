@@ -8,7 +8,6 @@ import io.vproxy.pni.test.UnionC;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import java.lang.foreign.Arena;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
@@ -23,8 +22,7 @@ public class TestStructUnion {
 
     @Test
     public void checkNull() {
-        try (var arena = Arena.ofConfined()) {
-            var allocator = Allocator.of(arena);
+        try (var allocator = Allocator.ofConfined()) {
             var s = new StructA(allocator);
 
             assertEquals(0, s.getB().getI());
@@ -51,9 +49,8 @@ public class TestStructUnion {
     }
 
     private void bbb(int round) {
-        try (var arena = Arena.ofConfined()) {
-            var allocator = Allocator.of(arena);
-            var env = new PNIEnv(arena);
+        try (var allocator = Allocator.ofConfined()) {
+            var env = new PNIEnv(allocator);
             var s = new StructA(allocator);
 
             var b = new StructB(allocator);
@@ -83,9 +80,8 @@ public class TestStructUnion {
     }
 
     private void ccc(int round) {
-        try (var arena = Arena.ofConfined()) {
-            var allocator = Allocator.of(arena);
-            var env = new PNIEnv(arena);
+        try (var allocator = Allocator.ofConfined()) {
+            var env = new PNIEnv(allocator);
             var s = new StructA(allocator);
 
             var c = new UnionC(allocator);
@@ -111,9 +107,8 @@ public class TestStructUnion {
     }
 
     private void cccPointer(int round) {
-        try (var arena = Arena.ofConfined()) {
-            var allocator = Allocator.of(arena);
-            var env = new PNIEnv(arena);
+        try (var allocator = Allocator.ofConfined()) {
+            var env = new PNIEnv(allocator);
             var s = new StructA(allocator);
 
             var c = new UnionC(allocator);
@@ -202,9 +197,8 @@ public class TestStructUnion {
     }
 
     private void retrieveB(int round) {
-        try (var arena = Arena.ofConfined()) {
-            var allocator = Allocator.of(arena);
-            var env = new PNIEnv(arena);
+        try (var allocator = Allocator.ofConfined()) {
+            var env = new PNIEnv(allocator);
             var s = new StructA(allocator);
 
             s.getB().setI(1);
@@ -227,9 +221,8 @@ public class TestStructUnion {
     }
 
     private void retrieveC(int round) {
-        try (var arena = Arena.ofConfined()) {
-            var allocator = Allocator.of(arena);
-            var env = new PNIEnv(arena);
+        try (var allocator = Allocator.ofConfined()) {
+            var env = new PNIEnv(allocator);
             var s = new StructA(allocator);
 
             s.getC().setN(1);
@@ -250,9 +243,8 @@ public class TestStructUnion {
     }
 
     private void retrieveCPointer(int round) {
-        try (var arena = Arena.ofConfined()) {
-            var allocator = Allocator.of(arena);
-            var env = new PNIEnv(arena);
+        try (var allocator = Allocator.ofConfined()) {
+            var env = new PNIEnv(allocator);
             var s = new StructA(allocator);
 
             if (round == 0) {
@@ -272,9 +264,7 @@ public class TestStructUnion {
 
     @Test
     public void union() {
-        try (var arena = Arena.ofConfined()) {
-            var allocator = Allocator.of(arena);
-
+        try (var allocator = Allocator.ofConfined()) {
             var c = new UnionC(allocator);
             c.setN(7);
 
@@ -396,7 +386,7 @@ public class TestStructUnion {
 
         s = Files.readAllLines(Path.of("src", "test", "generated", "io", "vproxy", "pni", "test", "StructA.java"));
         lastLine = s.get(s.size() - 1);
-        assertEquals("// sha256:cfc0b3b91c029647e85957753593e377d8cfd3896a975347db689efddb837827", lastLine);
+        assertEquals("// sha256:1714b64a5c7fd01cbdd69222c9cfa74242bd75f0d911e403a9237e87267bead1", lastLine);
 
         s = Files.readAllLines(Path.of("src", "test", "generated", "io", "vproxy", "pni", "test", "StructB.java"));
         lastLine = s.get(s.size() - 1);

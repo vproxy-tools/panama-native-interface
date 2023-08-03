@@ -6,7 +6,6 @@ import io.vproxy.pni.test.ObjectStruct;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import java.lang.foreign.Arena;
 import java.lang.foreign.MemorySegment;
 import java.nio.ByteBuffer;
 import java.nio.file.Files;
@@ -31,11 +30,11 @@ public class TestObjectStruct {
     }
 
     private void func1(int round) {
-        try (var arena = Arena.ofConfined()) {
-            var env = new PNIEnv(arena);
-            var s = new ObjectStruct(Allocator.of(arena));
+        try (var allocator = Allocator.ofConfined()) {
+            var env = new PNIEnv(allocator);
+            var s = new ObjectStruct(allocator);
 
-            var seg = arena.allocate(16);
+            var seg = allocator.allocate(16);
             var buf = ByteBuffer.allocateDirect(16);
             if (round == 0) {
                 s.func1(env, "abc", "def", seg, buf);
@@ -53,8 +52,8 @@ public class TestObjectStruct {
 
     @Test
     public void checkNull() {
-        try (var arena = Arena.ofConfined()) {
-            var s = new ObjectStruct(Allocator.of(arena));
+        try (var allocator = Allocator.ofConfined()) {
+            var s = new ObjectStruct(allocator);
 
             assertNull(s.getStr());
             assertEquals("", s.getLenStr());
@@ -74,9 +73,8 @@ public class TestObjectStruct {
     }
 
     private void retrieve(int round) {
-        try (var arena = Arena.ofConfined()) {
-            var env = new PNIEnv(arena);
-            var allocator = Allocator.of(arena);
+        try (var allocator = Allocator.ofConfined()) {
+            var env = new PNIEnv(allocator);
             var s = new ObjectStruct(allocator);
 
             if (round == 0) {
@@ -149,6 +147,6 @@ public class TestObjectStruct {
 
         s = Files.readAllLines(Path.of("src", "test", "generated", "io", "vproxy", "pni", "test", "ObjectStruct.java"));
         lastLine = s.get(s.size() - 1);
-        assertEquals("// sha256:800a6fa669c90f42281fb57f4d95c758eb68d3428eebc3e1cc9d824b9028cd91", lastLine);
+        assertEquals("// sha256:c34693e83058fca4a92c417d75d35a81ab59832e18b6c5e00228d1895ec3fabe", lastLine);
     }
 }

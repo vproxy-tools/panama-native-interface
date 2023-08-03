@@ -1,12 +1,12 @@
 package io.vproxy.pni.test.cases;
 
+import io.vproxy.pni.Allocator;
 import io.vproxy.pni.PNIEnv;
 import io.vproxy.pni.test.Func;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.io.*;
-import java.lang.foreign.Arena;
 import java.lang.foreign.MemorySegment;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
@@ -33,8 +33,8 @@ public class TestFunc {
     }
 
     private void func1(int round) {
-        try (var arena = Arena.ofConfined()) {
-            var env = new PNIEnv(arena);
+        try (var allocator = Allocator.ofConfined()) {
+            var env = new PNIEnv(allocator);
 
             int n = round == 0 ? Func.get().func1(env) : Func.get().func1Critical();
             assertEquals(10, n);
@@ -43,8 +43,8 @@ public class TestFunc {
 
     @Test
     public void func2() {
-        try (var arena = Arena.ofConfined()) {
-            var env = new PNIEnv(arena);
+        try (var allocator = Allocator.ofConfined()) {
+            var env = new PNIEnv(allocator);
 
             Func.get().func2(env);
             fail();
@@ -55,30 +55,30 @@ public class TestFunc {
 
     @Test
     public void func3() throws Throwable {
-        try (var arena = Arena.ofConfined()) {
-            var env = new PNIEnv(arena);
+        try (var allocator = Allocator.ofConfined()) {
+            var env = new PNIEnv(allocator);
             Func.get().func3(env, IOException.class.getName());
             fail();
         } catch (IOException e) {
             assertEquals("aaa", e.getMessage());
         }
-        try (var arena = Arena.ofConfined()) {
-            var env = new PNIEnv(arena);
+        try (var allocator = Allocator.ofConfined()) {
+            var env = new PNIEnv(allocator);
             Func.get().func3(env, UnsupportedOperationException.class.getName());
             fail();
         } catch (UnsupportedOperationException e) {
             assertEquals("aaa", e.getMessage());
         }
-        try (var arena = Arena.ofConfined()) {
-            var env = new PNIEnv(arena);
+        try (var allocator = Allocator.ofConfined()) {
+            var env = new PNIEnv(allocator);
             Func.get().func3(env, null);
         }
     }
 
     @Test
     public void write() throws Exception {
-        try (var arena = Arena.ofConfined()) {
-            var env = new PNIEnv(arena);
+        try (var allocator = Allocator.ofConfined()) {
+            var env = new PNIEnv(allocator);
 
             var file = File.createTempFile("pni-test-write", ".log");
             file.deleteOnExit();
@@ -102,7 +102,7 @@ public class TestFunc {
 
                 var bytes = "native\n".getBytes(StandardCharsets.UTF_8);
                 n = Func.get().writeByteArray(env, fd,
-                    arena.allocate(bytes.length).copyFrom(MemorySegment.ofArray(bytes)),
+                    allocator.allocate(bytes.length).copyFrom(MemorySegment.ofArray(bytes)),
                     0, bytes.length);
                 assertEquals(bytes.length, n);
             }
@@ -123,9 +123,9 @@ public class TestFunc {
     }
 
     private void callJavaFromC(int round) {
-        try (var arena = Arena.ofConfined()) {
-            var env = new PNIEnv(arena);
-            var seg = arena.allocate(16);
+        try (var allocator = Allocator.ofConfined()) {
+            var env = new PNIEnv(allocator);
+            var seg = allocator.allocate(16);
             MemorySegment ret;
             if (round == 0) {
                 ret = Func.get().callJavaFromC(env, o -> {
@@ -144,8 +144,8 @@ public class TestFunc {
 
     @Test
     public void errno() {
-        try (var arena = Arena.ofConfined()) {
-            var env = new PNIEnv(arena);
+        try (var allocator = Allocator.ofConfined()) {
+            var env = new PNIEnv(allocator);
 
             var buf = ByteBuffer.allocateDirect(30);
             buf.put("hello ".getBytes(StandardCharsets.UTF_8));
@@ -168,6 +168,6 @@ public class TestFunc {
 
         s = Files.readAllLines(Path.of("src", "test", "generated", "io", "vproxy", "pni", "test", "Func.java"));
         lastLine = s.get(s.size() - 1);
-        assertEquals("// sha256:c115da78ae1f1cde4ef681a410a9e774505edf4c33c548ea63a937e782395f8a", lastLine);
+        assertEquals("// sha256:823c1362cdf7838cacead3cd743350f1901c64db05e1cc37696ed03aa2018c7b", lastLine);
     }
 }

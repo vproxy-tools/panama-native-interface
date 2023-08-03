@@ -175,10 +175,10 @@ public class StructA {
 
     public void bbbArray(PNIEnv ENV, io.vproxy.pni.test.StructB.Array bArray) {
         ENV.reset();
-        try (var ARENA = Arena.ofConfined()) {
+        try (var POOLED = Allocator.ofPooled()) {
             int ERR;
             try {
-                ERR = (int) this.bbbArray.invokeExact(ENV.MEMORY, MEMORY, PNIBuf.of(ARENA, bArray).MEMORY);
+                ERR = (int) this.bbbArray.invokeExact(ENV.MEMORY, MEMORY, PNIBuf.of(POOLED, bArray).MEMORY);
             } catch (Throwable THROWABLE) {
                 throw PanamaUtils.convertInvokeExactException(THROWABLE);
             }
@@ -191,9 +191,9 @@ public class StructA {
     private final MethodHandle bbbArrayCritical = PanamaUtils.lookupPNICriticalFunction(false, void.class, "JavaCritical_io_vproxy_pni_test_StructA_bbbArrayCritical", MemorySegment.class /* self */, PNIBuf.class /* bArray */);
 
     public void bbbArrayCritical(io.vproxy.pni.test.StructB.Array bArray) {
-        try (var ARENA = Arena.ofConfined()) {
+        try (var POOLED = Allocator.ofPooled()) {
             try {
-                this.bbbArrayCritical.invokeExact(MEMORY, PNIBuf.of(ARENA, bArray).MEMORY);
+                this.bbbArrayCritical.invokeExact(MEMORY, PNIBuf.of(POOLED, bArray).MEMORY);
             } catch (Throwable THROWABLE) {
                 throw PanamaUtils.convertInvokeExactException(THROWABLE);
             }
@@ -204,10 +204,10 @@ public class StructA {
 
     public void bbbArray2(PNIEnv ENV, io.vproxy.pni.test.StructB.Array bArray) {
         ENV.reset();
-        try (var ARENA = Arena.ofConfined()) {
+        try (var POOLED = Allocator.ofPooled()) {
             int ERR;
             try {
-                ERR = (int) this.bbbArray2.invokeExact(ENV.MEMORY, MEMORY, PNIBuf.of(ARENA, bArray).MEMORY);
+                ERR = (int) this.bbbArray2.invokeExact(ENV.MEMORY, MEMORY, PNIBuf.of(POOLED, bArray).MEMORY);
             } catch (Throwable THROWABLE) {
                 throw PanamaUtils.convertInvokeExactException(THROWABLE);
             }
@@ -220,9 +220,9 @@ public class StructA {
     private final MethodHandle bbbArray2Critical = PanamaUtils.lookupPNICriticalFunction(false, void.class, "JavaCritical_io_vproxy_pni_test_StructA_bbbArray2Critical", MemorySegment.class /* self */, PNIBuf.class /* bArray */);
 
     public void bbbArray2Critical(io.vproxy.pni.test.StructB.Array bArray) {
-        try (var ARENA = Arena.ofConfined()) {
+        try (var POOLED = Allocator.ofPooled()) {
             try {
-                this.bbbArray2Critical.invokeExact(MEMORY, PNIBuf.of(ARENA, bArray).MEMORY);
+                this.bbbArray2Critical.invokeExact(MEMORY, PNIBuf.of(POOLED, bArray).MEMORY);
             } catch (Throwable THROWABLE) {
                 throw PanamaUtils.convertInvokeExactException(THROWABLE);
             }
@@ -340,10 +340,10 @@ public class StructA {
     private final MethodHandle retrieveBArrayCritical = PanamaUtils.lookupPNICriticalFunction(false, PNIBuf.class, "JavaCritical_io_vproxy_pni_test_StructA_retrieveBArrayCritical", MemorySegment.class /* self */, MemorySegment.class /* return */);
 
     public io.vproxy.pni.test.StructB.Array retrieveBArrayCritical() {
-        try (var ARENA = Arena.ofConfined()) {
+        try (var POOLED = Allocator.ofPooled()) {
             MemorySegment RESULT;
             try {
-                RESULT = (MemorySegment) this.retrieveBArrayCritical.invokeExact(MEMORY, ARENA.allocate(PNIBuf.LAYOUT.byteSize()));
+                RESULT = (MemorySegment) this.retrieveBArrayCritical.invokeExact(MEMORY, POOLED.allocate(PNIBuf.LAYOUT.byteSize()));
             } catch (Throwable THROWABLE) {
                 throw PanamaUtils.convertInvokeExactException(THROWABLE);
             }
@@ -375,10 +375,10 @@ public class StructA {
     private final MethodHandle retrieveBArray2Critical = PanamaUtils.lookupPNICriticalFunction(false, PNIBuf.class, "JavaCritical_io_vproxy_pni_test_StructA_retrieveBArray2Critical", MemorySegment.class /* self */, MemorySegment.class /* return */);
 
     public io.vproxy.pni.test.StructB.Array retrieveBArray2Critical() {
-        try (var ARENA = Arena.ofConfined()) {
+        try (var POOLED = Allocator.ofPooled()) {
             MemorySegment RESULT;
             try {
-                RESULT = (MemorySegment) this.retrieveBArray2Critical.invokeExact(MEMORY, ARENA.allocate(PNIBuf.LAYOUT.byteSize()));
+                RESULT = (MemorySegment) this.retrieveBArray2Critical.invokeExact(MEMORY, POOLED.allocate(PNIBuf.LAYOUT.byteSize()));
             } catch (Throwable THROWABLE) {
                 throw PanamaUtils.convertInvokeExactException(THROWABLE);
             }
@@ -433,4 +433,4 @@ public class StructA {
         }
     }
 }
-// sha256:cfc0b3b91c029647e85957753593e377d8cfd3896a975347db689efddb837827
+// sha256:1714b64a5c7fd01cbdd69222c9cfa74242bd75f0d911e403a9237e87267bead1

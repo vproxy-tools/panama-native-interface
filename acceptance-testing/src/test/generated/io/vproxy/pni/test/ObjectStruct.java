@@ -101,10 +101,10 @@ public class ObjectStruct {
 
     public void func1(PNIEnv ENV, String str, String str2, MemorySegment seg, ByteBuffer buf) {
         ENV.reset();
-        try (var ARENA = Arena.ofConfined()) {
+        try (var POOLED = Allocator.ofPooled()) {
             int ERR;
             try {
-                ERR = (int) this.func1.invokeExact(ENV.MEMORY, MEMORY, PanamaUtils.format(str, ARENA), PanamaUtils.format(str2, ARENA), seg, PanamaUtils.format(buf, ARENA));
+                ERR = (int) this.func1.invokeExact(ENV.MEMORY, MEMORY, PanamaUtils.format(str, POOLED), PanamaUtils.format(str2, POOLED), seg, PanamaUtils.format(buf, POOLED));
             } catch (Throwable THROWABLE) {
                 throw PanamaUtils.convertInvokeExactException(THROWABLE);
             }
@@ -117,9 +117,9 @@ public class ObjectStruct {
     private final MethodHandle func1Critical = PanamaUtils.lookupPNICriticalFunction(false, void.class, "JavaCritical_io_vproxy_pni_test_ObjectStruct_func1Critical", MemorySegment.class /* self */, String.class /* str */, String.class /* str2 */, MemorySegment.class /* seg */, PNIBuf.class /* buf */);
 
     public void func1Critical(String str, String str2, MemorySegment seg, ByteBuffer buf) {
-        try (var ARENA = Arena.ofConfined()) {
+        try (var POOLED = Allocator.ofPooled()) {
             try {
-                this.func1Critical.invokeExact(MEMORY, PanamaUtils.format(str, ARENA), PanamaUtils.format(str2, ARENA), seg, PanamaUtils.format(buf, ARENA));
+                this.func1Critical.invokeExact(MEMORY, PanamaUtils.format(str, POOLED), PanamaUtils.format(str2, POOLED), seg, PanamaUtils.format(buf, POOLED));
             } catch (Throwable THROWABLE) {
                 throw PanamaUtils.convertInvokeExactException(THROWABLE);
             }
@@ -233,10 +233,10 @@ public class ObjectStruct {
     private final MethodHandle retrieveBufCritical = PanamaUtils.lookupPNICriticalFunction(false, PNIBuf.class, "JavaCritical_io_vproxy_pni_test_ObjectStruct_retrieveBufCritical", MemorySegment.class /* self */, MemorySegment.class /* return */);
 
     public ByteBuffer retrieveBufCritical() {
-        try (var ARENA = Arena.ofConfined()) {
+        try (var POOLED = Allocator.ofPooled()) {
             MemorySegment RESULT;
             try {
-                RESULT = (MemorySegment) this.retrieveBufCritical.invokeExact(MEMORY, ARENA.allocate(PNIBuf.LAYOUT.byteSize()));
+                RESULT = (MemorySegment) this.retrieveBufCritical.invokeExact(MEMORY, POOLED.allocate(PNIBuf.LAYOUT.byteSize()));
             } catch (Throwable THROWABLE) {
                 throw PanamaUtils.convertInvokeExactException(THROWABLE);
             }
@@ -346,4 +346,4 @@ public class ObjectStruct {
         }
     }
 }
-// sha256:800a6fa669c90f42281fb57f4d95c758eb68d3428eebc3e1cc9d824b9028cd91
+// sha256:c34693e83058fca4a92c417d75d35a81ab59832e18b6c5e00228d1895ec3fabe
