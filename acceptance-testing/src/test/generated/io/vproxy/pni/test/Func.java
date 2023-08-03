@@ -62,12 +62,12 @@ public class Func {
 
     private final MethodHandle func3 = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_Func_func3", String.class /* ex */);
 
-    public void func3(PNIEnv ENV, String ex) throws java.io.IOException, java.lang.UnsupportedOperationException {
+    public void func3(PNIEnv ENV, PNIString ex) throws java.io.IOException, java.lang.UnsupportedOperationException {
         ENV.reset();
         try (var POOLED = Allocator.ofPooled()) {
             int ERR;
             try {
-                ERR = (int) this.func3.invokeExact(ENV.MEMORY, PanamaUtils.format(ex, POOLED));
+                ERR = (int) this.func3.invokeExact(ENV.MEMORY, (MemorySegment) (ex == null ? MemorySegment.NULL : ex.MEMORY));
             } catch (Throwable THROWABLE) {
                 throw PanamaUtils.convertInvokeExactException(THROWABLE);
             }
@@ -170,4 +170,4 @@ public class Func {
         return RESULT;
     }
 }
-// sha256:823c1362cdf7838cacead3cd743350f1901c64db05e1cc37696ed03aa2018c7b
+// sha256:29e74b3ba3f0b335b5fc2c718ff4f278d870c3b88935b8dd3e4bd88c7dbdfada

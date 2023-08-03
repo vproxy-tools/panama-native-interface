@@ -19,21 +19,21 @@ public class ObjectStruct {
         MemoryLayout.PathElement.groupElement("str")
     );
 
-    public String getStr() {
+    public PNIString getStr() {
         var SEG = (MemorySegment) strVH.get(MEMORY);
         if (SEG.address() == 0) return null;
-        return SEG.reinterpret(Integer.MAX_VALUE).getUtf8String(0);
+        return new PNIString(SEG);
     }
 
     public void setStr(String str, Allocator ALLOCATOR) {
-        strVH.set(MEMORY, PanamaUtils.format(str, ALLOCATOR));
+        this.setStr(new PNIString(ALLOCATOR, str));
     }
 
-    public void setStr(MemorySegment str) {
+    public void setStr(PNIString str) {
         if (str == null) {
             strVH.set(MEMORY, MemorySegment.NULL);
         } else {
-            strVH.set(MEMORY, str);
+            strVH.set(MEMORY, str.MEMORY);
         }
     }
 
@@ -99,12 +99,12 @@ public class ObjectStruct {
 
     private final MethodHandle func1 = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_ObjectStruct_func1", MemorySegment.class /* self */, String.class /* str */, String.class /* str2 */, MemorySegment.class /* seg */, PNIBuf.class /* buf */);
 
-    public void func1(PNIEnv ENV, String str, String str2, MemorySegment seg, ByteBuffer buf) {
+    public void func1(PNIEnv ENV, PNIString str, PNIString str2, MemorySegment seg, ByteBuffer buf) {
         ENV.reset();
         try (var POOLED = Allocator.ofPooled()) {
             int ERR;
             try {
-                ERR = (int) this.func1.invokeExact(ENV.MEMORY, MEMORY, PanamaUtils.format(str, POOLED), PanamaUtils.format(str2, POOLED), seg, PanamaUtils.format(buf, POOLED));
+                ERR = (int) this.func1.invokeExact(ENV.MEMORY, MEMORY, (MemorySegment) (str == null ? MemorySegment.NULL : str.MEMORY), (MemorySegment) (str2 == null ? MemorySegment.NULL : str2.MEMORY), seg, PanamaUtils.format(buf, POOLED));
             } catch (Throwable THROWABLE) {
                 throw PanamaUtils.convertInvokeExactException(THROWABLE);
             }
@@ -116,10 +116,10 @@ public class ObjectStruct {
 
     private final MethodHandle func1Critical = PanamaUtils.lookupPNICriticalFunction(false, void.class, "JavaCritical_io_vproxy_pni_test_ObjectStruct_func1Critical", MemorySegment.class /* self */, String.class /* str */, String.class /* str2 */, MemorySegment.class /* seg */, PNIBuf.class /* buf */);
 
-    public void func1Critical(String str, String str2, MemorySegment seg, ByteBuffer buf) {
+    public void func1Critical(PNIString str, PNIString str2, MemorySegment seg, ByteBuffer buf) {
         try (var POOLED = Allocator.ofPooled()) {
             try {
-                this.func1Critical.invokeExact(MEMORY, PanamaUtils.format(str, POOLED), PanamaUtils.format(str2, POOLED), seg, PanamaUtils.format(buf, POOLED));
+                this.func1Critical.invokeExact(MEMORY, (MemorySegment) (str == null ? MemorySegment.NULL : str.MEMORY), (MemorySegment) (str2 == null ? MemorySegment.NULL : str2.MEMORY), seg, PanamaUtils.format(buf, POOLED));
             } catch (Throwable THROWABLE) {
                 throw PanamaUtils.convertInvokeExactException(THROWABLE);
             }
@@ -128,7 +128,7 @@ public class ObjectStruct {
 
     private final MethodHandle retrieveStr = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_ObjectStruct_retrieveStr", MemorySegment.class /* self */);
 
-    public String retrieveStr(PNIEnv ENV) {
+    public PNIString retrieveStr(PNIEnv ENV) {
         ENV.reset();
         int ERR;
         try {
@@ -140,24 +140,24 @@ public class ObjectStruct {
             ENV.throwLast();
         }
         var RESULT = ENV.returnPointer();
-        return RESULT == null ? null : RESULT.reinterpret(Integer.MAX_VALUE).getUtf8String(0);
+        return RESULT == null ? null : new PNIString(RESULT);
     }
 
     private final MethodHandle retrieveStrCritical = PanamaUtils.lookupPNICriticalFunction(false, String.class, "JavaCritical_io_vproxy_pni_test_ObjectStruct_retrieveStrCritical", MemorySegment.class /* self */);
 
-    public String retrieveStrCritical() {
+    public PNIString retrieveStrCritical() {
         MemorySegment RESULT;
         try {
             RESULT = (MemorySegment) this.retrieveStrCritical.invokeExact(MEMORY);
         } catch (Throwable THROWABLE) {
             throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
-        return RESULT == null ? null : RESULT.reinterpret(Integer.MAX_VALUE).getUtf8String(0);
+        return RESULT == null ? null : new PNIString(RESULT);
     }
 
     private final MethodHandle retrieveLenStr = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_ObjectStruct_retrieveLenStr", MemorySegment.class /* self */);
 
-    public String retrieveLenStr(PNIEnv ENV) {
+    public PNIString retrieveLenStr(PNIEnv ENV) {
         ENV.reset();
         int ERR;
         try {
@@ -169,19 +169,19 @@ public class ObjectStruct {
             ENV.throwLast();
         }
         var RESULT = ENV.returnPointer();
-        return RESULT == null ? null : RESULT.reinterpret(Integer.MAX_VALUE).getUtf8String(0);
+        return RESULT == null ? null : new PNIString(RESULT);
     }
 
     private final MethodHandle retrieveLenStrCritical = PanamaUtils.lookupPNICriticalFunction(false, String.class, "JavaCritical_io_vproxy_pni_test_ObjectStruct_retrieveLenStrCritical", MemorySegment.class /* self */);
 
-    public String retrieveLenStrCritical() {
+    public PNIString retrieveLenStrCritical() {
         MemorySegment RESULT;
         try {
             RESULT = (MemorySegment) this.retrieveLenStrCritical.invokeExact(MEMORY);
         } catch (Throwable THROWABLE) {
             throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
-        return RESULT == null ? null : RESULT.reinterpret(Integer.MAX_VALUE).getUtf8String(0);
+        return RESULT == null ? null : new PNIString(RESULT);
     }
 
     private final MethodHandle retrieveSeg = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_ObjectStruct_retrieveSeg", MemorySegment.class /* self */);
@@ -346,4 +346,4 @@ public class ObjectStruct {
         }
     }
 }
-// sha256:c34693e83058fca4a92c417d75d35a81ab59832e18b6c5e00228d1895ec3fabe
+// sha256:6b19175ca0eb8c467d7019ec4f9bd4cf76edbba01ad4f58db18c0ae269813f4b

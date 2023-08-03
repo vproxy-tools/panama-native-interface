@@ -2,6 +2,7 @@ package io.vproxy.pni.test.cases;
 
 import io.vproxy.pni.Allocator;
 import io.vproxy.pni.PNIEnv;
+import io.vproxy.pni.PNIString;
 import io.vproxy.pni.test.ObjectStruct;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -37,12 +38,12 @@ public class TestObjectStruct {
             var seg = allocator.allocate(16);
             var buf = ByteBuffer.allocateDirect(16);
             if (round == 0) {
-                s.func1(env, "abc", "def", seg, buf);
+                s.func1(env, new PNIString(allocator, "abc"), new PNIString(allocator, "def"), seg, buf);
             } else {
-                s.func1Critical("abc", "def", seg, buf);
+                s.func1Critical(new PNIString(allocator, "abc"), new PNIString(allocator, "def"), seg, buf);
             }
 
-            assertEquals("abc", s.getStr());
+            assertEquals("abc", s.getStr().toString());
             assertEquals("def", s.getLenStr());
             assertEquals(seg.address(), s.getSeg().address());
             assertEquals(buf.capacity(), s.getBuf().capacity());
@@ -85,25 +86,25 @@ public class TestObjectStruct {
 
             s.setStr("abc", allocator);
             if (round == 0) {
-                assertEquals("abc", s.retrieveStr(env));
+                assertEquals("abc", s.retrieveStr(env).toString());
             } else {
-                assertEquals("abc", s.retrieveStrCritical());
+                assertEquals("abc", s.retrieveStrCritical().toString());
             }
 
             var strMem = allocator.allocate(16);
             strMem.setUtf8String(0, "aaabbb");
-            s.setStr(strMem);
+            s.setStr(new PNIString(strMem));
             if (round == 0) {
-                assertEquals("aaabbb", s.retrieveStr(env));
+                assertEquals("aaabbb", s.retrieveStr(env).toString());
             } else {
-                assertEquals("aaabbb", s.retrieveStrCritical());
+                assertEquals("aaabbb", s.retrieveStrCritical().toString());
             }
 
             s.setLenStr("def");
             if (round == 0) {
-                assertEquals("def", s.retrieveLenStr(env));
+                assertEquals("def", s.retrieveLenStr(env).toString());
             } else {
-                assertEquals("def", s.retrieveLenStrCritical());
+                assertEquals("def", s.retrieveLenStrCritical().toString());
             }
 
             var seg = allocator.allocate(16);
@@ -147,6 +148,6 @@ public class TestObjectStruct {
 
         s = Files.readAllLines(Path.of("src", "test", "generated", "io", "vproxy", "pni", "test", "ObjectStruct.java"));
         lastLine = s.get(s.size() - 1);
-        assertEquals("// sha256:c34693e83058fca4a92c417d75d35a81ab59832e18b6c5e00228d1895ec3fabe", lastLine);
+        assertEquals("// sha256:6b19175ca0eb8c467d7019ec4f9bd4cf76edbba01ad4f58db18c0ae269813f4b", lastLine);
     }
 }

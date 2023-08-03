@@ -2,6 +2,7 @@ package io.vproxy.pni.test.cases;
 
 import io.vproxy.pni.Allocator;
 import io.vproxy.pni.PNIEnv;
+import io.vproxy.pni.PNIString;
 import io.vproxy.pni.test.Func;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -57,14 +58,14 @@ public class TestFunc {
     public void func3() throws Throwable {
         try (var allocator = Allocator.ofConfined()) {
             var env = new PNIEnv(allocator);
-            Func.get().func3(env, IOException.class.getName());
+            Func.get().func3(env, new PNIString(allocator, IOException.class.getName()));
             fail();
         } catch (IOException e) {
             assertEquals("aaa", e.getMessage());
         }
         try (var allocator = Allocator.ofConfined()) {
             var env = new PNIEnv(allocator);
-            Func.get().func3(env, UnsupportedOperationException.class.getName());
+            Func.get().func3(env, new PNIString(allocator, UnsupportedOperationException.class.getName()));
             fail();
         } catch (UnsupportedOperationException e) {
             assertEquals("aaa", e.getMessage());
@@ -168,6 +169,6 @@ public class TestFunc {
 
         s = Files.readAllLines(Path.of("src", "test", "generated", "io", "vproxy", "pni", "test", "Func.java"));
         lastLine = s.get(s.size() - 1);
-        assertEquals("// sha256:823c1362cdf7838cacead3cd743350f1901c64db05e1cc37696ed03aa2018c7b", lastLine);
+        assertEquals("// sha256:29e74b3ba3f0b335b5fc2c718ff4f278d870c3b88935b8dd3e4bd88c7dbdfada", lastLine);
     }
 }
