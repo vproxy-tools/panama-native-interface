@@ -103,6 +103,14 @@ public class GCCCompatibilityAlignField {
             super(buf, GCCCompatibilityAlignField.LAYOUT);
         }
 
+        public Array(Allocator allocator, long len) {
+            this(allocator.allocate(GCCCompatibilityAlignField.LAYOUT.byteSize() * len));
+        }
+
+        public Array(PNIBuf buf) {
+            this(buf.get());
+        }
+
         @Override
         protected GCCCompatibilityAlignField construct(MemorySegment seg) {
             return new GCCCompatibilityAlignField(seg);
@@ -134,4 +142,4 @@ public class GCCCompatibilityAlignField {
         }
     }
 }
-// sha256:e1607362693558c6b4f31fb3d98a766a4aa157bbaed38e8bb6f6f011f0c4660b
+// sha256:1e1f6ca05f9b55b39e3296106305f190e8a2bb1ad25acb714749b951e7fc2843

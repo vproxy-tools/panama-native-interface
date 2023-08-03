@@ -233,6 +233,9 @@ public class TestRawArrays {
             for (int i = 0; i < 17; ++i) {
                 ObjectStruct o = RawArrays.get().structArray(env, array, i, allocator);
                 assertEquals(String.valueOf('A' + i), o.getLenStr());
+
+                o = RawArrays.get().structArrayNotRaw(env, array, i, allocator);
+                assertEquals(String.valueOf('A' + i), o.getLenStr());
             }
         }
     }

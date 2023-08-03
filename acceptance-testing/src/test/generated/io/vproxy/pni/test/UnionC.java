@@ -56,6 +56,14 @@ public class UnionC {
             super(buf, UnionC.LAYOUT);
         }
 
+        public Array(Allocator allocator, long len) {
+            this(allocator.allocate(UnionC.LAYOUT.byteSize() * len));
+        }
+
+        public Array(PNIBuf buf) {
+            this(buf.get());
+        }
+
         @Override
         protected UnionC construct(MemorySegment seg) {
             return new UnionC(seg);
@@ -87,4 +95,4 @@ public class UnionC {
         }
     }
 }
-// sha256:dae48fb3458789dace4494c98d18971a0b132ebb20df481f317f0d5cca5878f3
+// sha256:87d0bc138f452dbded7b533b4bc776ebe8e26d9a7f1947003d5ce6227ed7d3a2

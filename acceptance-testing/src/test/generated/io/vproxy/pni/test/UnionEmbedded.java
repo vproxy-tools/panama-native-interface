@@ -62,6 +62,14 @@ public class UnionEmbedded {
             super(buf, UnionEmbedded.LAYOUT);
         }
 
+        public Array(Allocator allocator, long len) {
+            this(allocator.allocate(UnionEmbedded.LAYOUT.byteSize() * len));
+        }
+
+        public Array(PNIBuf buf) {
+            this(buf.get());
+        }
+
         @Override
         protected UnionEmbedded construct(MemorySegment seg) {
             return new UnionEmbedded(seg);
@@ -93,4 +101,4 @@ public class UnionEmbedded {
         }
     }
 }
-// sha256:49ed9405033168151913ef7b99827207f54d036cb2474be4e1ca253947e5e48a
+// sha256:30f55f76eeb439ec3139025710a9b1deda2830b3ee39baa5e256d5cedd416d59

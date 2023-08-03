@@ -1,9 +1,6 @@
 package io.vproxy.pni.test;
 
-import io.vproxy.pni.annotation.Critical;
-import io.vproxy.pni.annotation.Pointer;
-import io.vproxy.pni.annotation.Struct;
-import io.vproxy.pni.annotation.Union;
+import io.vproxy.pni.annotation.*;
 
 import java.lang.foreign.MemorySegment;
 
@@ -13,6 +10,8 @@ abstract class PNIStructA {
     PNIUnionC c;
     @Pointer PNIUnionC cPointer;
     PNIStructD d;
+    PNIStructB[] bArray;
+    @Len(5) PNIStructB[] bArray2;
 
     abstract void bbb(PNIStructB b);
 
@@ -29,6 +28,16 @@ abstract class PNIStructA {
     @Critical
     abstract void cccPointerCritical(PNIUnionC c);
 
+    abstract void bbbArray(PNIStructB[] bArray);
+
+    @Critical
+    abstract void bbbArrayCritical(PNIStructB[] bArray);
+
+    abstract void bbbArray2(PNIStructB[] bArray);
+
+    @Critical
+    abstract void bbbArray2Critical(PNIStructB[] bArray);
+
     abstract PNIStructB retrieveB();
 
     @Critical
@@ -43,6 +52,16 @@ abstract class PNIStructA {
 
     @Critical
     abstract PNIUnionC retrieveCPointerCritical();
+
+    abstract PNIStructB[] retrieveBArray();
+
+    @Critical
+    abstract PNIStructB[] retrieveBArrayCritical();
+
+    abstract PNIStructB[] retrieveBArray2();
+
+    @Critical
+    abstract PNIStructB[] retrieveBArray2Critical();
 }
 
 @Struct

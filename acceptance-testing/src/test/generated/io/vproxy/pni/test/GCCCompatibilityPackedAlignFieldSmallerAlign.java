@@ -101,6 +101,14 @@ public class GCCCompatibilityPackedAlignFieldSmallerAlign {
             super(buf, GCCCompatibilityPackedAlignFieldSmallerAlign.LAYOUT);
         }
 
+        public Array(Allocator allocator, long len) {
+            this(allocator.allocate(GCCCompatibilityPackedAlignFieldSmallerAlign.LAYOUT.byteSize() * len));
+        }
+
+        public Array(PNIBuf buf) {
+            this(buf.get());
+        }
+
         @Override
         protected GCCCompatibilityPackedAlignFieldSmallerAlign construct(MemorySegment seg) {
             return new GCCCompatibilityPackedAlignFieldSmallerAlign(seg);
@@ -132,4 +140,4 @@ public class GCCCompatibilityPackedAlignFieldSmallerAlign {
         }
     }
 }
-// sha256:f61a30b357b25cf8517b37c6149b5a779265e0724b7c88ef7ccd3b1fd622eea9
+// sha256:77cfad4bc918b53dd1e32942bdff543e98aa0e9d4df9d44398dc51a798e7d1eb

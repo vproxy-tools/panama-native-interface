@@ -99,6 +99,14 @@ public class MBuf {
             super(buf, MBuf.LAYOUT);
         }
 
+        public Array(Allocator allocator, long len) {
+            this(allocator.allocate(MBuf.LAYOUT.byteSize() * len));
+        }
+
+        public Array(PNIBuf buf) {
+            this(buf.get());
+        }
+
         @Override
         protected MBuf construct(MemorySegment seg) {
             return new MBuf(seg);
@@ -130,4 +138,4 @@ public class MBuf {
         }
     }
 }
-// sha256:b9f9da3dcb4da8e6d707936ed721685a5f9cbb41bf37c71221f4349ff8374788
+// sha256:15640ba6f676e35866210173933293e173856c9adbec9ea7343160bf035ef7e2

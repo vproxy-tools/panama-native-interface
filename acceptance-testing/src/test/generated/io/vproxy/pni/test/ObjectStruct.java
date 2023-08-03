@@ -307,6 +307,14 @@ public class ObjectStruct {
             super(buf, ObjectStruct.LAYOUT);
         }
 
+        public Array(Allocator allocator, long len) {
+            this(allocator.allocate(ObjectStruct.LAYOUT.byteSize() * len));
+        }
+
+        public Array(PNIBuf buf) {
+            this(buf.get());
+        }
+
         @Override
         protected ObjectStruct construct(MemorySegment seg) {
             return new ObjectStruct(seg);
@@ -338,4 +346,4 @@ public class ObjectStruct {
         }
     }
 }
-// sha256:890aacbe9fe39c0ca4f37b706f13c510ef0c178ef530a3ea7a4e1b496c68d9c2
+// sha256:800a6fa669c90f42281fb57f4d95c758eb68d3428eebc3e1cc9d824b9028cd91

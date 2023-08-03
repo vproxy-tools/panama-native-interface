@@ -106,18 +106,18 @@ public class TestStructUnionAnnotation {
 
         s = Files.readAllLines(Path.of("src", "test", "generated", "io", "vproxy", "pni", "test", "StructM.java"));
         lastLine = s.get(s.size() - 1);
-        assertEquals("// sha256:0c269c5fdc65217924feaacdc9cd8771b88445e9b9a4fb3f99a42bd3e3ea7b6d", lastLine);
+        assertEquals("// sha256:acd75f5020c68c12793390be054c4d1c2ec7d77882bd62cca2dcf890066b7440", lastLine);
 
         s = Files.readAllLines(Path.of("src", "test", "generated", "io", "vproxy", "pni", "test", "StructN.java"));
         lastLine = s.get(s.size() - 1);
-        assertEquals("// sha256:0768dbaba38d3b95fdc238b998837478f8b25ac235b3c924cceb3b073f4343ee", lastLine);
+        assertEquals("// sha256:084a6420d5081b75b3d83dabe07be7850742fe188a574e66ec9a0f30926e1fde", lastLine);
 
         s = Files.readAllLines(Path.of("src", "test", "generated", "io", "vproxy", "pni", "test", "UnionO.java"));
         lastLine = s.get(s.size() - 1);
-        assertEquals("// sha256:be650304c965516c34866f53d89c702d55193a79079900e14fa9719396b98249", lastLine);
+        assertEquals("// sha256:976e7f3079c08b53685a831fb48b12caf0c667c1dd47a5ae064e223f6b02e562", lastLine);
 
         s = Files.readAllLines(Path.of("src", "test", "generated", "io", "vproxy", "pni", "test", "UnionP.java"));
         lastLine = s.get(s.size() - 1);
-        assertEquals("// sha256:b5cd8705b94934ab155ee60013f624509a41a8ac0c2308d9a31b94b14b389785", lastLine);
+        assertEquals("// sha256:09e1fc0b95c2d1c125210f2b8191fc63f5d5742da458fb28f8eeb2c705898b2a", lastLine);
     }
 }

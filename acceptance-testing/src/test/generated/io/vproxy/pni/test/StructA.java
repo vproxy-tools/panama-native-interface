@@ -11,7 +11,9 @@ public class StructA {
         io.vproxy.pni.test.StructB.LAYOUT.withName("b"),
         io.vproxy.pni.test.UnionC.LAYOUT.withName("c"),
         ValueLayout.ADDRESS_UNALIGNED.withName("cPointer"),
-        io.vproxy.pni.test.StructD.LAYOUT.withName("d")
+        io.vproxy.pni.test.StructD.LAYOUT.withName("d"),
+        PNIBuf.LAYOUT.withName("bArray"),
+        MemoryLayout.sequenceLayout(5L, io.vproxy.pni.test.StructB.LAYOUT).withName("bArray2")
     );
     public final MemorySegment MEMORY;
 
@@ -51,6 +53,28 @@ public class StructA {
         return this.d;
     }
 
+    private final PNIBuf bArray;
+
+    public io.vproxy.pni.test.StructB.Array getBArray() {
+        var SEG = this.bArray.get();
+        if (SEG == null) return null;
+        return new io.vproxy.pni.test.StructB.Array(SEG);
+    }
+
+    public void setBArray(io.vproxy.pni.test.StructB.Array bArray) {
+        if (bArray == null) {
+            this.bArray.setToNull();
+        } else {
+            this.bArray.set(bArray.MEMORY);
+        }
+    }
+
+    private final io.vproxy.pni.test.StructB.Array bArray2;
+
+    public io.vproxy.pni.test.StructB.Array getBArray2() {
+        return this.bArray2;
+    }
+
     public StructA(MemorySegment MEMORY) {
         MEMORY = MEMORY.reinterpret(LAYOUT.byteSize());
         this.MEMORY = MEMORY;
@@ -62,6 +86,10 @@ public class StructA {
         OFFSET += 8;
         this.d = new io.vproxy.pni.test.StructD(MEMORY.asSlice(OFFSET, io.vproxy.pni.test.StructD.LAYOUT.byteSize()));
         OFFSET += io.vproxy.pni.test.StructD.LAYOUT.byteSize();
+        this.bArray = new PNIBuf(MEMORY.asSlice(OFFSET, PNIBuf.LAYOUT.byteSize()));
+        OFFSET += PNIBuf.LAYOUT.byteSize();
+        this.bArray2 = new io.vproxy.pni.test.StructB.Array(MEMORY.asSlice(OFFSET, 5 * io.vproxy.pni.test.StructB.LAYOUT.byteSize()));
+        OFFSET += 5 * io.vproxy.pni.test.StructB.LAYOUT.byteSize();
     }
 
     public StructA(Allocator ALLOCATOR) {
@@ -140,6 +168,64 @@ public class StructA {
             this.cccPointerCritical.invokeExact(MEMORY, c.MEMORY);
         } catch (Throwable THROWABLE) {
             throw PanamaUtils.convertInvokeExactException(THROWABLE);
+        }
+    }
+
+    private final MethodHandle bbbArray = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_StructA_bbbArray", MemorySegment.class /* self */, PNIBuf.class /* bArray */);
+
+    public void bbbArray(PNIEnv ENV, io.vproxy.pni.test.StructB.Array bArray) {
+        ENV.reset();
+        try (var ARENA = Arena.ofConfined()) {
+            int ERR;
+            try {
+                ERR = (int) this.bbbArray.invokeExact(ENV.MEMORY, MEMORY, PNIBuf.of(ARENA, bArray).MEMORY);
+            } catch (Throwable THROWABLE) {
+                throw PanamaUtils.convertInvokeExactException(THROWABLE);
+            }
+            if (ERR != 0) {
+                ENV.throwLast();
+            }
+        }
+    }
+
+    private final MethodHandle bbbArrayCritical = PanamaUtils.lookupPNICriticalFunction(false, void.class, "JavaCritical_io_vproxy_pni_test_StructA_bbbArrayCritical", MemorySegment.class /* self */, PNIBuf.class /* bArray */);
+
+    public void bbbArrayCritical(io.vproxy.pni.test.StructB.Array bArray) {
+        try (var ARENA = Arena.ofConfined()) {
+            try {
+                this.bbbArrayCritical.invokeExact(MEMORY, PNIBuf.of(ARENA, bArray).MEMORY);
+            } catch (Throwable THROWABLE) {
+                throw PanamaUtils.convertInvokeExactException(THROWABLE);
+            }
+        }
+    }
+
+    private final MethodHandle bbbArray2 = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_StructA_bbbArray2", MemorySegment.class /* self */, PNIBuf.class /* bArray */);
+
+    public void bbbArray2(PNIEnv ENV, io.vproxy.pni.test.StructB.Array bArray) {
+        ENV.reset();
+        try (var ARENA = Arena.ofConfined()) {
+            int ERR;
+            try {
+                ERR = (int) this.bbbArray2.invokeExact(ENV.MEMORY, MEMORY, PNIBuf.of(ARENA, bArray).MEMORY);
+            } catch (Throwable THROWABLE) {
+                throw PanamaUtils.convertInvokeExactException(THROWABLE);
+            }
+            if (ERR != 0) {
+                ENV.throwLast();
+            }
+        }
+    }
+
+    private final MethodHandle bbbArray2Critical = PanamaUtils.lookupPNICriticalFunction(false, void.class, "JavaCritical_io_vproxy_pni_test_StructA_bbbArray2Critical", MemorySegment.class /* self */, PNIBuf.class /* bArray */);
+
+    public void bbbArray2Critical(io.vproxy.pni.test.StructB.Array bArray) {
+        try (var ARENA = Arena.ofConfined()) {
+            try {
+                this.bbbArray2Critical.invokeExact(MEMORY, PNIBuf.of(ARENA, bArray).MEMORY);
+            } catch (Throwable THROWABLE) {
+                throw PanamaUtils.convertInvokeExactException(THROWABLE);
+            }
         }
     }
 
@@ -233,9 +319,87 @@ public class StructA {
         return RESULT == null ? null : new io.vproxy.pni.test.UnionC(RESULT);
     }
 
+    private final MethodHandle retrieveBArray = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_StructA_retrieveBArray", MemorySegment.class /* self */);
+
+    public io.vproxy.pni.test.StructB.Array retrieveBArray(PNIEnv ENV) {
+        ENV.reset();
+        int ERR;
+        try {
+            ERR = (int) this.retrieveBArray.invokeExact(ENV.MEMORY, MEMORY);
+        } catch (Throwable THROWABLE) {
+            throw PanamaUtils.convertInvokeExactException(THROWABLE);
+        }
+        if (ERR != 0) {
+            ENV.throwLast();
+        }
+        var RES_SEG = ENV.returnBuf();
+        if (RES_SEG.isNull()) return null;
+        return new io.vproxy.pni.test.StructB.Array(RES_SEG);
+    }
+
+    private final MethodHandle retrieveBArrayCritical = PanamaUtils.lookupPNICriticalFunction(false, PNIBuf.class, "JavaCritical_io_vproxy_pni_test_StructA_retrieveBArrayCritical", MemorySegment.class /* self */, MemorySegment.class /* return */);
+
+    public io.vproxy.pni.test.StructB.Array retrieveBArrayCritical() {
+        try (var ARENA = Arena.ofConfined()) {
+            MemorySegment RESULT;
+            try {
+                RESULT = (MemorySegment) this.retrieveBArrayCritical.invokeExact(MEMORY, ARENA.allocate(PNIBuf.LAYOUT.byteSize()));
+            } catch (Throwable THROWABLE) {
+                throw PanamaUtils.convertInvokeExactException(THROWABLE);
+            }
+            if (RESULT.address() == 0) return null;
+            var RES_SEG = new PNIBuf(RESULT);
+            if (RES_SEG.isNull()) return null;
+            return new io.vproxy.pni.test.StructB.Array(RES_SEG);
+        }
+    }
+
+    private final MethodHandle retrieveBArray2 = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_StructA_retrieveBArray2", MemorySegment.class /* self */);
+
+    public io.vproxy.pni.test.StructB.Array retrieveBArray2(PNIEnv ENV) {
+        ENV.reset();
+        int ERR;
+        try {
+            ERR = (int) this.retrieveBArray2.invokeExact(ENV.MEMORY, MEMORY);
+        } catch (Throwable THROWABLE) {
+            throw PanamaUtils.convertInvokeExactException(THROWABLE);
+        }
+        if (ERR != 0) {
+            ENV.throwLast();
+        }
+        var RES_SEG = ENV.returnBuf();
+        if (RES_SEG.isNull()) return null;
+        return new io.vproxy.pni.test.StructB.Array(RES_SEG);
+    }
+
+    private final MethodHandle retrieveBArray2Critical = PanamaUtils.lookupPNICriticalFunction(false, PNIBuf.class, "JavaCritical_io_vproxy_pni_test_StructA_retrieveBArray2Critical", MemorySegment.class /* self */, MemorySegment.class /* return */);
+
+    public io.vproxy.pni.test.StructB.Array retrieveBArray2Critical() {
+        try (var ARENA = Arena.ofConfined()) {
+            MemorySegment RESULT;
+            try {
+                RESULT = (MemorySegment) this.retrieveBArray2Critical.invokeExact(MEMORY, ARENA.allocate(PNIBuf.LAYOUT.byteSize()));
+            } catch (Throwable THROWABLE) {
+                throw PanamaUtils.convertInvokeExactException(THROWABLE);
+            }
+            if (RESULT.address() == 0) return null;
+            var RES_SEG = new PNIBuf(RESULT);
+            if (RES_SEG.isNull()) return null;
+            return new io.vproxy.pni.test.StructB.Array(RES_SEG);
+        }
+    }
+
     public static class Array extends RefArray<StructA> {
         public Array(MemorySegment buf) {
             super(buf, StructA.LAYOUT);
+        }
+
+        public Array(Allocator allocator, long len) {
+            this(allocator.allocate(StructA.LAYOUT.byteSize() * len));
+        }
+
+        public Array(PNIBuf buf) {
+            this(buf.get());
         }
 
         @Override
@@ -269,4 +433,4 @@ public class StructA {
         }
     }
 }
-// sha256:e8e05ca81b3a3d9dc4b235f52d21820614fba55d616198b2658f784a19a8f58e
+// sha256:cfc0b3b91c029647e85957753593e377d8cfd3896a975347db689efddb837827

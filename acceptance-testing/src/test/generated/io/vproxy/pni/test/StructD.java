@@ -56,6 +56,14 @@ public class StructD {
             super(buf, StructD.LAYOUT);
         }
 
+        public Array(Allocator allocator, long len) {
+            this(allocator.allocate(StructD.LAYOUT.byteSize() * len));
+        }
+
+        public Array(PNIBuf buf) {
+            this(buf.get());
+        }
+
         @Override
         protected StructD construct(MemorySegment seg) {
             return new StructD(seg);
@@ -87,4 +95,4 @@ public class StructD {
         }
     }
 }
-// sha256:95bc9941606c7d1ef5e545d9b9e4a80ba1097396c9e1b5bb0755537db0d074f8
+// sha256:7904035ca157b7ce920be830d91254db9b267705f45bcb402fcede60fd9df3ac

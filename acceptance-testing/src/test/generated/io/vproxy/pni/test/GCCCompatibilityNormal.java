@@ -145,6 +145,14 @@ public class GCCCompatibilityNormal {
             super(buf, GCCCompatibilityNormal.LAYOUT);
         }
 
+        public Array(Allocator allocator, long len) {
+            this(allocator.allocate(GCCCompatibilityNormal.LAYOUT.byteSize() * len));
+        }
+
+        public Array(PNIBuf buf) {
+            this(buf.get());
+        }
+
         @Override
         protected GCCCompatibilityNormal construct(MemorySegment seg) {
             return new GCCCompatibilityNormal(seg);
@@ -176,4 +184,4 @@ public class GCCCompatibilityNormal {
         }
     }
 }
-// sha256:9f2290a9d8b10621867381a5c9760ff27ee6dcac9b97fe8d52d8c0f1812e8042
+// sha256:e5e8f8cfc141ac7910903ca907c7a790edeea6598b939f97957bfe71bf1cb524

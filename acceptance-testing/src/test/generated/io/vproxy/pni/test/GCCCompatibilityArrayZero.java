@@ -98,6 +98,14 @@ public class GCCCompatibilityArrayZero {
             super(buf, GCCCompatibilityArrayZero.LAYOUT);
         }
 
+        public Array(Allocator allocator, long len) {
+            this(allocator.allocate(GCCCompatibilityArrayZero.LAYOUT.byteSize() * len));
+        }
+
+        public Array(PNIBuf buf) {
+            this(buf.get());
+        }
+
         @Override
         protected GCCCompatibilityArrayZero construct(MemorySegment seg) {
             return new GCCCompatibilityArrayZero(seg);
@@ -129,4 +137,4 @@ public class GCCCompatibilityArrayZero {
         }
     }
 }
-// sha256:b33e0c206a646ea6377ec1e8088110c790f62539b2e0c6211641c2abd497f490
+// sha256:a425213208405acd795efd3adfc7765200a9312432c362e545caf5662daa85b5

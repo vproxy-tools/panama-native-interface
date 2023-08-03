@@ -98,6 +98,14 @@ public class GCCCompatibilityNonPackedArray {
             super(buf, GCCCompatibilityNonPackedArray.LAYOUT);
         }
 
+        public Array(Allocator allocator, long len) {
+            this(allocator.allocate(GCCCompatibilityNonPackedArray.LAYOUT.byteSize() * len));
+        }
+
+        public Array(PNIBuf buf) {
+            this(buf.get());
+        }
+
         @Override
         protected GCCCompatibilityNonPackedArray construct(MemorySegment seg) {
             return new GCCCompatibilityNonPackedArray(seg);
@@ -129,4 +137,4 @@ public class GCCCompatibilityNonPackedArray {
         }
     }
 }
-// sha256:c882ce737cb1764cbbd4d68de815c249d612853f3394843ccf7c9cd1f734975e
+// sha256:08d229c09518db1e73fd609cd0a1c87fead157dbffe42ce93025886b24d48740

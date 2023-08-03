@@ -66,6 +66,14 @@ public class UnionO {
             super(buf, UnionO.LAYOUT);
         }
 
+        public Array(Allocator allocator, long len) {
+            this(allocator.allocate(UnionO.LAYOUT.byteSize() * len));
+        }
+
+        public Array(PNIBuf buf) {
+            this(buf.get());
+        }
+
         @Override
         protected UnionO construct(MemorySegment seg) {
             return new UnionO(seg);
@@ -97,4 +105,4 @@ public class UnionO {
         }
     }
 }
-// sha256:be650304c965516c34866f53d89c702d55193a79079900e14fa9719396b98249
+// sha256:976e7f3079c08b53685a831fb48b12caf0c667c1dd47a5ae064e223f6b02e562

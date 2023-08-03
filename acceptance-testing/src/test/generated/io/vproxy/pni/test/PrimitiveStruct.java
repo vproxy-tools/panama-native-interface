@@ -1876,6 +1876,14 @@ public class PrimitiveStruct {
             super(buf, PrimitiveStruct.LAYOUT);
         }
 
+        public Array(Allocator allocator, long len) {
+            this(allocator.allocate(PrimitiveStruct.LAYOUT.byteSize() * len));
+        }
+
+        public Array(PNIBuf buf) {
+            this(buf.get());
+        }
+
         @Override
         protected PrimitiveStruct construct(MemorySegment seg) {
             return new PrimitiveStruct(seg);
@@ -1907,4 +1915,4 @@ public class PrimitiveStruct {
         }
     }
 }
-// sha256:b266898d4e2bbfc5b0ca639e298a1ea8e64c4e603f839553f570e1105bfae19d
+// sha256:235167a357e2175b81a77251d32d4861c5b2fa0f3eb337b7def677167db8a674

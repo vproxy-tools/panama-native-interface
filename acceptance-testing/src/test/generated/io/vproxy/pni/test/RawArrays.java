@@ -224,5 +224,24 @@ public class RawArrays {
         var RESULT = ENV.returnPointer();
         return RESULT == null ? null : new io.vproxy.pni.test.ObjectStruct(RESULT);
     }
+
+    private final MethodHandle structArrayNotRaw = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_RawArrays_structArrayNotRaw", PNIBuf.class /* array */, int.class /* off */, MemorySegment.class /* return */);
+
+    public io.vproxy.pni.test.ObjectStruct structArrayNotRaw(PNIEnv ENV, io.vproxy.pni.test.ObjectStruct.Array array, int off, Allocator ALLOCATOR) {
+        ENV.reset();
+        try (var ARENA = Arena.ofConfined()) {
+            int ERR;
+            try {
+                ERR = (int) this.structArrayNotRaw.invokeExact(ENV.MEMORY, PNIBuf.of(ARENA, array).MEMORY, off, ALLOCATOR.allocate(io.vproxy.pni.test.ObjectStruct.LAYOUT.byteSize()));
+            } catch (Throwable THROWABLE) {
+                throw PanamaUtils.convertInvokeExactException(THROWABLE);
+            }
+            if (ERR != 0) {
+                ENV.throwLast();
+            }
+            var RESULT = ENV.returnPointer();
+            return RESULT == null ? null : new io.vproxy.pni.test.ObjectStruct(RESULT);
+        }
+    }
 }
-// sha256:8c0a34a7309422cafaeac14299a7784202ff4ad81a43572a9d835085e1a1cf51
+// sha256:0b7b6d594f9fa79e4e6120393debe1d0688ef9945285b03c2babeb3f1323b348

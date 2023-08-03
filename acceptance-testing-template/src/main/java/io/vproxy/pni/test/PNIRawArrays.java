@@ -123,4 +123,14 @@ public interface PNIRawArrays {
             """
     )
     PNIObjectStruct structArray(@Raw PNIObjectStruct[] array, int off);
+
+    @Impl(
+        // language="c"
+        c = """
+            ObjectStruct* arr = array->buf;
+            env->return_ = &arr[off];
+            return 0;
+            """
+    )
+    PNIObjectStruct structArrayNotRaw(PNIObjectStruct[] array, int off);
 }

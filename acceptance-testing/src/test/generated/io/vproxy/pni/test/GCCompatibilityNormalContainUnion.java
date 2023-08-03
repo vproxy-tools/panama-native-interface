@@ -173,6 +173,14 @@ public class GCCompatibilityNormalContainUnion {
             super(buf, GCCompatibilityNormalContainUnion.LAYOUT);
         }
 
+        public Array(Allocator allocator, long len) {
+            this(allocator.allocate(GCCompatibilityNormalContainUnion.LAYOUT.byteSize() * len));
+        }
+
+        public Array(PNIBuf buf) {
+            this(buf.get());
+        }
+
         @Override
         protected GCCompatibilityNormalContainUnion construct(MemorySegment seg) {
             return new GCCompatibilityNormalContainUnion(seg);
@@ -204,4 +212,4 @@ public class GCCompatibilityNormalContainUnion {
         }
     }
 }
-// sha256:82443437e6bc4007df817fa11d0bf8f078c960a341efc23cec1b6bc0312cf7df
+// sha256:6c691773d25aed48dc4f10b4d299d3ef075ab7686661ad7506ab9b07297bc3e2

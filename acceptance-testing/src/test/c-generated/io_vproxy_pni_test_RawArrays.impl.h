@@ -69,7 +69,13 @@ JNIEXPORT int JNICALL Java_io_vproxy_pni_test_RawArrays_structArray(PNIEnv_point
     return 0;
 }
 
+JNIEXPORT int JNICALL Java_io_vproxy_pni_test_RawArrays_structArrayNotRaw(PNIEnv_pointer * env, PNIBuf * array, int32_t off, ObjectStruct * return_) {
+    ObjectStruct* arr = array->buf;
+    env->return_ = &arr[off];
+    return 0;
+}
+
 #ifdef __cplusplus
 }
 #endif
-// sha256:d7e32bd49de194a4c4331c7870bbc6f502d0449e0da34b574a6f9e9c60229023
+// sha256:d71cc7c002ba86cd4399012552251da166db5a1f6e13e7517dc0a167b0c290f8

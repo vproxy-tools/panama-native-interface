@@ -94,6 +94,14 @@ public class StructB {
             super(buf, StructB.LAYOUT);
         }
 
+        public Array(Allocator allocator, long len) {
+            this(allocator.allocate(StructB.LAYOUT.byteSize() * len));
+        }
+
+        public Array(PNIBuf buf) {
+            this(buf.get());
+        }
+
         @Override
         protected StructB construct(MemorySegment seg) {
             return new StructB(seg);
@@ -125,4 +133,4 @@ public class StructB {
         }
     }
 }
-// sha256:9f16564f39d21a7e75429b98c5881a22a5ca1a0b978f790001460d4702afc24a
+// sha256:4c99e489f5cb96706b8640e7aad0d578cdf7153f1df352637e67035eb1ab2b38

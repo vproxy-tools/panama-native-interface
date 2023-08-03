@@ -89,6 +89,14 @@ public class GCCompatibilityStructAlign {
             super(buf, GCCompatibilityStructAlign.LAYOUT);
         }
 
+        public Array(Allocator allocator, long len) {
+            this(allocator.allocate(GCCompatibilityStructAlign.LAYOUT.byteSize() * len));
+        }
+
+        public Array(PNIBuf buf) {
+            this(buf.get());
+        }
+
         @Override
         protected GCCompatibilityStructAlign construct(MemorySegment seg) {
             return new GCCompatibilityStructAlign(seg);
@@ -120,4 +128,4 @@ public class GCCompatibilityStructAlign {
         }
     }
 }
-// sha256:f8bd6feff4257fa37fafc6a3cd295cba38ec2cbe6e92a9d3429d575169dc937a
+// sha256:ef861ff88cead7d831fa551060cb4e4272a97e7ad4cd58f9546c73554f0c38d7

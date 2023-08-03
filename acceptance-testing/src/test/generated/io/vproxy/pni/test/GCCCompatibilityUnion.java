@@ -116,6 +116,14 @@ public class GCCCompatibilityUnion {
             super(buf, GCCCompatibilityUnion.LAYOUT);
         }
 
+        public Array(Allocator allocator, long len) {
+            this(allocator.allocate(GCCCompatibilityUnion.LAYOUT.byteSize() * len));
+        }
+
+        public Array(PNIBuf buf) {
+            this(buf.get());
+        }
+
         @Override
         protected GCCCompatibilityUnion construct(MemorySegment seg) {
             return new GCCCompatibilityUnion(seg);
@@ -147,4 +155,4 @@ public class GCCCompatibilityUnion {
         }
     }
 }
-// sha256:c0c78e45b8c84e7488713e4aaa74e47282f3941bad293824f4914e7e7594c04c
+// sha256:dd7bed1b3b6cfac8dacfef6b14b5aaf5aa3329408cfaab6a78bdd3e598cc233c

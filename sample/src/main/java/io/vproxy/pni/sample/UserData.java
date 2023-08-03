@@ -62,6 +62,14 @@ public class UserData {
             super(buf, UserData.LAYOUT);
         }
 
+        public Array(Allocator allocator, long len) {
+            this(allocator.allocate(UserData.LAYOUT.byteSize() * len));
+        }
+
+        public Array(PNIBuf buf) {
+            this(buf.get());
+        }
+
         @Override
         protected UserData construct(MemorySegment seg) {
             return new UserData(seg);
@@ -93,4 +101,4 @@ public class UserData {
         }
     }
 }
-// sha256:eaa4af76be94de0621505909112c55797049b5df8202a5efa6238dd62912eac8
+// sha256:41a0d92251ba52da265253262792a317fe4b4465e25ea6ef5e1fa1a335200526

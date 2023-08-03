@@ -130,6 +130,68 @@ public class TestStructUnion {
     }
 
     @Test
+    public void bArray() {
+        bArray(0);
+    }
+
+    @Test
+    public void bArrayCritical() {
+        bArray(1);
+    }
+
+    private void bArray(int round) {
+        try (var allocator = Allocator.ofConfined()) {
+            var env = new PNIEnv(allocator);
+            var s = new StructA(allocator);
+
+            var bArray = new StructB.Array(allocator, 3);
+            for (int i = 0; i < bArray.length(); ++i) {
+                bArray.get(i).setI(10 + i);
+            }
+
+            if (round == 0) {
+                s.bbbArray(env, bArray);
+            } else {
+                s.bbbArrayCritical(bArray);
+            }
+            for (int i = 0; i < 3; ++i) {
+                assertEquals(10 + i, s.getBArray().get(i).getI());
+            }
+        }
+    }
+
+    @Test
+    public void bArray2() {
+        bArray2(0);
+    }
+
+    @Test
+    public void bArray2Critical() {
+        bArray2(1);
+    }
+
+    private void bArray2(int round) {
+        try (var allocator = Allocator.ofConfined()) {
+            var env = new PNIEnv(allocator);
+            var s = new StructA(allocator);
+
+            var bArray = new StructB.Array(allocator, 3);
+            for (int i = 0; i < bArray.length(); ++i) {
+                bArray.get(i).setI(10 + i);
+            }
+
+            if (round == 0) {
+                s.bbbArray2(env, bArray);
+            } else {
+                s.bbbArray2Critical(bArray);
+            }
+            for (int i = 0; i < 3; ++i) {
+                assertEquals(10 + i, s.getBArray2().get(i).getI());
+            }
+        }
+    }
+
+    @Test
     public void retrieveB() {
         retrieveB(0);
     }
@@ -227,10 +289,94 @@ public class TestStructUnion {
     }
 
     @Test
+    public void retrieveBArray() {
+        retrieveBArray(0);
+    }
+
+    @Test
+    public void retrieveBArrayCritical() {
+        retrieveBArray(1);
+    }
+
+    private void retrieveBArray(int round) {
+        try (var allocator = Allocator.ofConfined()) {
+            var env = new PNIEnv(allocator);
+            var s = new StructA(allocator);
+
+            var bArray = new StructB.Array(allocator, 4);
+            for (int i = 0; i < bArray.length(); ++i) {
+                bArray.get(i).setI(20 + i);
+            }
+
+            if (round == 0) {
+                assertNull(s.retrieveBArray(env));
+            } else {
+                assertNull(s.retrieveBArrayCritical());
+            }
+
+            s.setBArray(bArray);
+
+            StructB.Array res;
+            if (round == 0) {
+                res = s.retrieveBArray(env);
+            } else {
+                res = s.retrieveBArrayCritical();
+            }
+            assertEquals(4, res.length());
+            for (int i = 0; i < 4; ++i) {
+                assertEquals(20 + i, res.get(i).getI());
+            }
+        }
+    }
+
+    @Test
+    public void retrieveBArray2() {
+        retrieveBArray2(0);
+    }
+
+    @Test
+    public void retrieveBArray2Critical() {
+        retrieveBArray2(1);
+    }
+
+    private void retrieveBArray2(int round) {
+        try (var allocator = Allocator.ofConfined()) {
+            var env = new PNIEnv(allocator);
+            var s = new StructA(allocator);
+
+            var bArray = new StructB.Array(allocator, 5);
+            for (int i = 0; i < bArray.length(); ++i) {
+                bArray.get(i).setI(40 + i);
+            }
+
+            if (round == 0) {
+                assertEquals(5, s.retrieveBArray2(env).length());
+            } else {
+                assertEquals(5, s.retrieveBArray2Critical().length());
+            }
+
+            for (int i = 0; i < 5; ++i) {
+                s.getBArray2().get(i).setI(40 + i);
+            }
+
+            StructB.Array res;
+            if (round == 0) {
+                res = s.retrieveBArray2(env);
+            } else {
+                res = s.retrieveBArray2Critical();
+            }
+            assertEquals(5, res.length());
+            for (int i = 0; i < 5; ++i) {
+                assertEquals(40 + i, res.get(i).getI());
+            }
+        }
+    }
+
+    @Test
     public void shaCheck() throws Exception {
         var s = Files.readAllLines(Path.of("src", "test", "c-generated", "io_vproxy_pni_test_StructA.h"));
         var lastLine = s.get(s.size() - 1);
-        assertEquals("// sha256:c6ce017bad555eadbc6f0d7788087f7054d0539399bf963d83a97ff1041ae929", lastLine);
+        assertEquals("// sha256:62e06de82b2cd2b03fa6388e55a871976a4e27f183b1eaa2e37b707ba0bc1a24", lastLine);
 
         s = Files.readAllLines(Path.of("src", "test", "c-generated", "io_vproxy_pni_test_StructB.h"));
         lastLine = s.get(s.size() - 1);
@@ -250,22 +396,22 @@ public class TestStructUnion {
 
         s = Files.readAllLines(Path.of("src", "test", "generated", "io", "vproxy", "pni", "test", "StructA.java"));
         lastLine = s.get(s.size() - 1);
-        assertEquals("// sha256:e8e05ca81b3a3d9dc4b235f52d21820614fba55d616198b2658f784a19a8f58e", lastLine);
+        assertEquals("// sha256:cfc0b3b91c029647e85957753593e377d8cfd3896a975347db689efddb837827", lastLine);
 
         s = Files.readAllLines(Path.of("src", "test", "generated", "io", "vproxy", "pni", "test", "StructB.java"));
         lastLine = s.get(s.size() - 1);
-        assertEquals("// sha256:9f16564f39d21a7e75429b98c5881a22a5ca1a0b978f790001460d4702afc24a", lastLine);
+        assertEquals("// sha256:4c99e489f5cb96706b8640e7aad0d578cdf7153f1df352637e67035eb1ab2b38", lastLine);
 
         s = Files.readAllLines(Path.of("src", "test", "generated", "io", "vproxy", "pni", "test", "StructD.java"));
         lastLine = s.get(s.size() - 1);
-        assertEquals("// sha256:95bc9941606c7d1ef5e545d9b9e4a80ba1097396c9e1b5bb0755537db0d074f8", lastLine);
+        assertEquals("// sha256:7904035ca157b7ce920be830d91254db9b267705f45bcb402fcede60fd9df3ac", lastLine);
 
         s = Files.readAllLines(Path.of("src", "test", "generated", "io", "vproxy", "pni", "test", "UnionC.java"));
         lastLine = s.get(s.size() - 1);
-        assertEquals("// sha256:dae48fb3458789dace4494c98d18971a0b132ebb20df481f317f0d5cca5878f3", lastLine);
+        assertEquals("// sha256:87d0bc138f452dbded7b533b4bc776ebe8e26d9a7f1947003d5ce6227ed7d3a2", lastLine);
 
         s = Files.readAllLines(Path.of("src", "test", "generated", "io", "vproxy", "pni", "test", "UnionEmbedded.java"));
         lastLine = s.get(s.size() - 1);
-        assertEquals("// sha256:49ed9405033168151913ef7b99827207f54d036cb2474be4e1ca253947e5e48a", lastLine);
+        assertEquals("// sha256:30f55f76eeb439ec3139025710a9b1deda2830b3ee39baa5e256d5cedd416d59", lastLine);
     }
 }
