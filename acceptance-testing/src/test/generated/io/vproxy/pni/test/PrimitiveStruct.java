@@ -988,9 +988,7 @@ public class PrimitiveStruct {
         if (ERR != 0) {
             ENV.throwLast();
         }
-        var RESULT = ENV.returnPointer();
-        if (RESULT == null) return null;
-        var RES_SEG = new PNIBuf(RESULT);
+        var RES_SEG = ENV.returnBuf();
         if (RES_SEG.isNull()) return null;
         return RES_SEG.get();
     }
@@ -1005,7 +1003,7 @@ public class PrimitiveStruct {
             } catch (Throwable THROWABLE) {
                 throw PanamaUtils.convertInvokeExactException(THROWABLE);
             }
-            if (RESULT.address() == 0) RESULT = null;            if (RESULT == null) return null;
+            if (RESULT.address() == 0) return null;
             var RES_SEG = new PNIBuf(RESULT);
             if (RES_SEG.isNull()) return null;
             return RES_SEG.get();
@@ -1025,9 +1023,7 @@ public class PrimitiveStruct {
         if (ERR != 0) {
             ENV.throwLast();
         }
-        var RESULT = ENV.returnPointer();
-        if (RESULT == null) return null;
-        var RES_SEG = new PNIBuf(RESULT);
+        var RES_SEG = ENV.returnBuf();
         if (RES_SEG.isNull()) return null;
         return RES_SEG.get();
     }
@@ -1042,7 +1038,7 @@ public class PrimitiveStruct {
             } catch (Throwable THROWABLE) {
                 throw PanamaUtils.convertInvokeExactException(THROWABLE);
             }
-            if (RESULT.address() == 0) RESULT = null;            if (RESULT == null) return null;
+            if (RESULT.address() == 0) return null;
             var RES_SEG = new PNIBuf(RESULT);
             if (RES_SEG.isNull()) return null;
             return RES_SEG.get();
@@ -1062,9 +1058,7 @@ public class PrimitiveStruct {
         if (ERR != 0) {
             ENV.throwLast();
         }
-        var RESULT = ENV.returnPointer();
-        if (RESULT == null) return null;
-        var RES_SEG = new PNIBuf(RESULT);
+        var RES_SEG = ENV.returnBuf();
         if (RES_SEG.isNull()) return null;
         return new CharArray(RES_SEG);
     }
@@ -1079,7 +1073,7 @@ public class PrimitiveStruct {
             } catch (Throwable THROWABLE) {
                 throw PanamaUtils.convertInvokeExactException(THROWABLE);
             }
-            if (RESULT.address() == 0) RESULT = null;            if (RESULT == null) return null;
+            if (RESULT.address() == 0) return null;
             var RES_SEG = new PNIBuf(RESULT);
             if (RES_SEG.isNull()) return null;
             return new CharArray(RES_SEG);
@@ -1099,9 +1093,7 @@ public class PrimitiveStruct {
         if (ERR != 0) {
             ENV.throwLast();
         }
-        var RESULT = ENV.returnPointer();
-        if (RESULT == null) return null;
-        var RES_SEG = new PNIBuf(RESULT);
+        var RES_SEG = ENV.returnBuf();
         if (RES_SEG.isNull()) return null;
         return new DoubleArray(RES_SEG);
     }
@@ -1116,7 +1108,7 @@ public class PrimitiveStruct {
             } catch (Throwable THROWABLE) {
                 throw PanamaUtils.convertInvokeExactException(THROWABLE);
             }
-            if (RESULT.address() == 0) RESULT = null;            if (RESULT == null) return null;
+            if (RESULT.address() == 0) return null;
             var RES_SEG = new PNIBuf(RESULT);
             if (RES_SEG.isNull()) return null;
             return new DoubleArray(RES_SEG);
@@ -1136,9 +1128,7 @@ public class PrimitiveStruct {
         if (ERR != 0) {
             ENV.throwLast();
         }
-        var RESULT = ENV.returnPointer();
-        if (RESULT == null) return null;
-        var RES_SEG = new PNIBuf(RESULT);
+        var RES_SEG = ENV.returnBuf();
         if (RES_SEG.isNull()) return null;
         return new FloatArray(RES_SEG);
     }
@@ -1153,7 +1143,7 @@ public class PrimitiveStruct {
             } catch (Throwable THROWABLE) {
                 throw PanamaUtils.convertInvokeExactException(THROWABLE);
             }
-            if (RESULT.address() == 0) RESULT = null;            if (RESULT == null) return null;
+            if (RESULT.address() == 0) return null;
             var RES_SEG = new PNIBuf(RESULT);
             if (RES_SEG.isNull()) return null;
             return new FloatArray(RES_SEG);
@@ -1173,9 +1163,7 @@ public class PrimitiveStruct {
         if (ERR != 0) {
             ENV.throwLast();
         }
-        var RESULT = ENV.returnPointer();
-        if (RESULT == null) return null;
-        var RES_SEG = new PNIBuf(RESULT);
+        var RES_SEG = ENV.returnBuf();
         if (RES_SEG.isNull()) return null;
         return new IntArray(RES_SEG);
     }
@@ -1190,7 +1178,7 @@ public class PrimitiveStruct {
             } catch (Throwable THROWABLE) {
                 throw PanamaUtils.convertInvokeExactException(THROWABLE);
             }
-            if (RESULT.address() == 0) RESULT = null;            if (RESULT == null) return null;
+            if (RESULT.address() == 0) return null;
             var RES_SEG = new PNIBuf(RESULT);
             if (RES_SEG.isNull()) return null;
             return new IntArray(RES_SEG);
@@ -1210,9 +1198,7 @@ public class PrimitiveStruct {
         if (ERR != 0) {
             ENV.throwLast();
         }
-        var RESULT = ENV.returnPointer();
-        if (RESULT == null) return null;
-        var RES_SEG = new PNIBuf(RESULT);
+        var RES_SEG = ENV.returnBuf();
         if (RES_SEG.isNull()) return null;
         return new IntArray(RES_SEG);
     }
@@ -1227,7 +1213,7 @@ public class PrimitiveStruct {
             } catch (Throwable THROWABLE) {
                 throw PanamaUtils.convertInvokeExactException(THROWABLE);
             }
-            if (RESULT.address() == 0) RESULT = null;            if (RESULT == null) return null;
+            if (RESULT.address() == 0) return null;
             var RES_SEG = new PNIBuf(RESULT);
             if (RES_SEG.isNull()) return null;
             return new IntArray(RES_SEG);
@@ -1247,9 +1233,7 @@ public class PrimitiveStruct {
         if (ERR != 0) {
             ENV.throwLast();
         }
-        var RESULT = ENV.returnPointer();
-        if (RESULT == null) return null;
-        var RES_SEG = new PNIBuf(RESULT);
+        var RES_SEG = ENV.returnBuf();
         if (RES_SEG.isNull()) return null;
         return new LongArray(RES_SEG);
     }
@@ -1264,7 +1248,7 @@ public class PrimitiveStruct {
             } catch (Throwable THROWABLE) {
                 throw PanamaUtils.convertInvokeExactException(THROWABLE);
             }
-            if (RESULT.address() == 0) RESULT = null;            if (RESULT == null) return null;
+            if (RESULT.address() == 0) return null;
             var RES_SEG = new PNIBuf(RESULT);
             if (RES_SEG.isNull()) return null;
             return new LongArray(RES_SEG);
@@ -1284,9 +1268,7 @@ public class PrimitiveStruct {
         if (ERR != 0) {
             ENV.throwLast();
         }
-        var RESULT = ENV.returnPointer();
-        if (RESULT == null) return null;
-        var RES_SEG = new PNIBuf(RESULT);
+        var RES_SEG = ENV.returnBuf();
         if (RES_SEG.isNull()) return null;
         return new LongArray(RES_SEG);
     }
@@ -1301,7 +1283,7 @@ public class PrimitiveStruct {
             } catch (Throwable THROWABLE) {
                 throw PanamaUtils.convertInvokeExactException(THROWABLE);
             }
-            if (RESULT.address() == 0) RESULT = null;            if (RESULT == null) return null;
+            if (RESULT.address() == 0) return null;
             var RES_SEG = new PNIBuf(RESULT);
             if (RES_SEG.isNull()) return null;
             return new LongArray(RES_SEG);
@@ -1321,9 +1303,7 @@ public class PrimitiveStruct {
         if (ERR != 0) {
             ENV.throwLast();
         }
-        var RESULT = ENV.returnPointer();
-        if (RESULT == null) return null;
-        var RES_SEG = new PNIBuf(RESULT);
+        var RES_SEG = ENV.returnBuf();
         if (RES_SEG.isNull()) return null;
         return new ShortArray(RES_SEG);
     }
@@ -1338,7 +1318,7 @@ public class PrimitiveStruct {
             } catch (Throwable THROWABLE) {
                 throw PanamaUtils.convertInvokeExactException(THROWABLE);
             }
-            if (RESULT.address() == 0) RESULT = null;            if (RESULT == null) return null;
+            if (RESULT.address() == 0) return null;
             var RES_SEG = new PNIBuf(RESULT);
             if (RES_SEG.isNull()) return null;
             return new ShortArray(RES_SEG);
@@ -1358,9 +1338,7 @@ public class PrimitiveStruct {
         if (ERR != 0) {
             ENV.throwLast();
         }
-        var RESULT = ENV.returnPointer();
-        if (RESULT == null) return null;
-        var RES_SEG = new PNIBuf(RESULT);
+        var RES_SEG = ENV.returnBuf();
         if (RES_SEG.isNull()) return null;
         return new ShortArray(RES_SEG);
     }
@@ -1375,7 +1353,7 @@ public class PrimitiveStruct {
             } catch (Throwable THROWABLE) {
                 throw PanamaUtils.convertInvokeExactException(THROWABLE);
             }
-            if (RESULT.address() == 0) RESULT = null;            if (RESULT == null) return null;
+            if (RESULT.address() == 0) return null;
             var RES_SEG = new PNIBuf(RESULT);
             if (RES_SEG.isNull()) return null;
             return new ShortArray(RES_SEG);
@@ -1395,9 +1373,7 @@ public class PrimitiveStruct {
         if (ERR != 0) {
             ENV.throwLast();
         }
-        var RESULT = ENV.returnPointer();
-        if (RESULT == null) return null;
-        var RES_SEG = new PNIBuf(RESULT);
+        var RES_SEG = ENV.returnBuf();
         if (RES_SEG.isNull()) return null;
         return new BoolArray(RES_SEG);
     }
@@ -1412,7 +1388,7 @@ public class PrimitiveStruct {
             } catch (Throwable THROWABLE) {
                 throw PanamaUtils.convertInvokeExactException(THROWABLE);
             }
-            if (RESULT.address() == 0) RESULT = null;            if (RESULT == null) return null;
+            if (RESULT.address() == 0) return null;
             var RES_SEG = new PNIBuf(RESULT);
             if (RES_SEG.isNull()) return null;
             return new BoolArray(RES_SEG);
@@ -1432,9 +1408,7 @@ public class PrimitiveStruct {
         if (ERR != 0) {
             ENV.throwLast();
         }
-        var RESULT = ENV.returnPointer();
-        if (RESULT == null) return null;
-        var RES_SEG = new PNIBuf(RESULT);
+        var RES_SEG = ENV.returnBuf();
         if (RES_SEG.isNull()) return null;
         return RES_SEG.get();
     }
@@ -1449,7 +1423,7 @@ public class PrimitiveStruct {
             } catch (Throwable THROWABLE) {
                 throw PanamaUtils.convertInvokeExactException(THROWABLE);
             }
-            if (RESULT.address() == 0) RESULT = null;            if (RESULT == null) return null;
+            if (RESULT.address() == 0) return null;
             var RES_SEG = new PNIBuf(RESULT);
             if (RES_SEG.isNull()) return null;
             return RES_SEG.get();
@@ -1469,9 +1443,7 @@ public class PrimitiveStruct {
         if (ERR != 0) {
             ENV.throwLast();
         }
-        var RESULT = ENV.returnPointer();
-        if (RESULT == null) return null;
-        var RES_SEG = new PNIBuf(RESULT);
+        var RES_SEG = ENV.returnBuf();
         if (RES_SEG.isNull()) return null;
         return RES_SEG.get();
     }
@@ -1486,7 +1458,7 @@ public class PrimitiveStruct {
             } catch (Throwable THROWABLE) {
                 throw PanamaUtils.convertInvokeExactException(THROWABLE);
             }
-            if (RESULT.address() == 0) RESULT = null;            if (RESULT == null) return null;
+            if (RESULT.address() == 0) return null;
             var RES_SEG = new PNIBuf(RESULT);
             if (RES_SEG.isNull()) return null;
             return RES_SEG.get();
@@ -1506,9 +1478,7 @@ public class PrimitiveStruct {
         if (ERR != 0) {
             ENV.throwLast();
         }
-        var RESULT = ENV.returnPointer();
-        if (RESULT == null) return null;
-        var RES_SEG = new PNIBuf(RESULT);
+        var RES_SEG = ENV.returnBuf();
         if (RES_SEG.isNull()) return null;
         return new CharArray(RES_SEG);
     }
@@ -1523,7 +1493,7 @@ public class PrimitiveStruct {
             } catch (Throwable THROWABLE) {
                 throw PanamaUtils.convertInvokeExactException(THROWABLE);
             }
-            if (RESULT.address() == 0) RESULT = null;            if (RESULT == null) return null;
+            if (RESULT.address() == 0) return null;
             var RES_SEG = new PNIBuf(RESULT);
             if (RES_SEG.isNull()) return null;
             return new CharArray(RES_SEG);
@@ -1543,9 +1513,7 @@ public class PrimitiveStruct {
         if (ERR != 0) {
             ENV.throwLast();
         }
-        var RESULT = ENV.returnPointer();
-        if (RESULT == null) return null;
-        var RES_SEG = new PNIBuf(RESULT);
+        var RES_SEG = ENV.returnBuf();
         if (RES_SEG.isNull()) return null;
         return new DoubleArray(RES_SEG);
     }
@@ -1560,7 +1528,7 @@ public class PrimitiveStruct {
             } catch (Throwable THROWABLE) {
                 throw PanamaUtils.convertInvokeExactException(THROWABLE);
             }
-            if (RESULT.address() == 0) RESULT = null;            if (RESULT == null) return null;
+            if (RESULT.address() == 0) return null;
             var RES_SEG = new PNIBuf(RESULT);
             if (RES_SEG.isNull()) return null;
             return new DoubleArray(RES_SEG);
@@ -1580,9 +1548,7 @@ public class PrimitiveStruct {
         if (ERR != 0) {
             ENV.throwLast();
         }
-        var RESULT = ENV.returnPointer();
-        if (RESULT == null) return null;
-        var RES_SEG = new PNIBuf(RESULT);
+        var RES_SEG = ENV.returnBuf();
         if (RES_SEG.isNull()) return null;
         return new FloatArray(RES_SEG);
     }
@@ -1597,7 +1563,7 @@ public class PrimitiveStruct {
             } catch (Throwable THROWABLE) {
                 throw PanamaUtils.convertInvokeExactException(THROWABLE);
             }
-            if (RESULT.address() == 0) RESULT = null;            if (RESULT == null) return null;
+            if (RESULT.address() == 0) return null;
             var RES_SEG = new PNIBuf(RESULT);
             if (RES_SEG.isNull()) return null;
             return new FloatArray(RES_SEG);
@@ -1617,9 +1583,7 @@ public class PrimitiveStruct {
         if (ERR != 0) {
             ENV.throwLast();
         }
-        var RESULT = ENV.returnPointer();
-        if (RESULT == null) return null;
-        var RES_SEG = new PNIBuf(RESULT);
+        var RES_SEG = ENV.returnBuf();
         if (RES_SEG.isNull()) return null;
         return new IntArray(RES_SEG);
     }
@@ -1634,7 +1598,7 @@ public class PrimitiveStruct {
             } catch (Throwable THROWABLE) {
                 throw PanamaUtils.convertInvokeExactException(THROWABLE);
             }
-            if (RESULT.address() == 0) RESULT = null;            if (RESULT == null) return null;
+            if (RESULT.address() == 0) return null;
             var RES_SEG = new PNIBuf(RESULT);
             if (RES_SEG.isNull()) return null;
             return new IntArray(RES_SEG);
@@ -1654,9 +1618,7 @@ public class PrimitiveStruct {
         if (ERR != 0) {
             ENV.throwLast();
         }
-        var RESULT = ENV.returnPointer();
-        if (RESULT == null) return null;
-        var RES_SEG = new PNIBuf(RESULT);
+        var RES_SEG = ENV.returnBuf();
         if (RES_SEG.isNull()) return null;
         return new IntArray(RES_SEG);
     }
@@ -1671,7 +1633,7 @@ public class PrimitiveStruct {
             } catch (Throwable THROWABLE) {
                 throw PanamaUtils.convertInvokeExactException(THROWABLE);
             }
-            if (RESULT.address() == 0) RESULT = null;            if (RESULT == null) return null;
+            if (RESULT.address() == 0) return null;
             var RES_SEG = new PNIBuf(RESULT);
             if (RES_SEG.isNull()) return null;
             return new IntArray(RES_SEG);
@@ -1691,9 +1653,7 @@ public class PrimitiveStruct {
         if (ERR != 0) {
             ENV.throwLast();
         }
-        var RESULT = ENV.returnPointer();
-        if (RESULT == null) return null;
-        var RES_SEG = new PNIBuf(RESULT);
+        var RES_SEG = ENV.returnBuf();
         if (RES_SEG.isNull()) return null;
         return new LongArray(RES_SEG);
     }
@@ -1708,7 +1668,7 @@ public class PrimitiveStruct {
             } catch (Throwable THROWABLE) {
                 throw PanamaUtils.convertInvokeExactException(THROWABLE);
             }
-            if (RESULT.address() == 0) RESULT = null;            if (RESULT == null) return null;
+            if (RESULT.address() == 0) return null;
             var RES_SEG = new PNIBuf(RESULT);
             if (RES_SEG.isNull()) return null;
             return new LongArray(RES_SEG);
@@ -1728,9 +1688,7 @@ public class PrimitiveStruct {
         if (ERR != 0) {
             ENV.throwLast();
         }
-        var RESULT = ENV.returnPointer();
-        if (RESULT == null) return null;
-        var RES_SEG = new PNIBuf(RESULT);
+        var RES_SEG = ENV.returnBuf();
         if (RES_SEG.isNull()) return null;
         return new LongArray(RES_SEG);
     }
@@ -1745,7 +1703,7 @@ public class PrimitiveStruct {
             } catch (Throwable THROWABLE) {
                 throw PanamaUtils.convertInvokeExactException(THROWABLE);
             }
-            if (RESULT.address() == 0) RESULT = null;            if (RESULT == null) return null;
+            if (RESULT.address() == 0) return null;
             var RES_SEG = new PNIBuf(RESULT);
             if (RES_SEG.isNull()) return null;
             return new LongArray(RES_SEG);
@@ -1765,9 +1723,7 @@ public class PrimitiveStruct {
         if (ERR != 0) {
             ENV.throwLast();
         }
-        var RESULT = ENV.returnPointer();
-        if (RESULT == null) return null;
-        var RES_SEG = new PNIBuf(RESULT);
+        var RES_SEG = ENV.returnBuf();
         if (RES_SEG.isNull()) return null;
         return new ShortArray(RES_SEG);
     }
@@ -1782,7 +1738,7 @@ public class PrimitiveStruct {
             } catch (Throwable THROWABLE) {
                 throw PanamaUtils.convertInvokeExactException(THROWABLE);
             }
-            if (RESULT.address() == 0) RESULT = null;            if (RESULT == null) return null;
+            if (RESULT.address() == 0) return null;
             var RES_SEG = new PNIBuf(RESULT);
             if (RES_SEG.isNull()) return null;
             return new ShortArray(RES_SEG);
@@ -1802,9 +1758,7 @@ public class PrimitiveStruct {
         if (ERR != 0) {
             ENV.throwLast();
         }
-        var RESULT = ENV.returnPointer();
-        if (RESULT == null) return null;
-        var RES_SEG = new PNIBuf(RESULT);
+        var RES_SEG = ENV.returnBuf();
         if (RES_SEG.isNull()) return null;
         return new ShortArray(RES_SEG);
     }
@@ -1819,7 +1773,7 @@ public class PrimitiveStruct {
             } catch (Throwable THROWABLE) {
                 throw PanamaUtils.convertInvokeExactException(THROWABLE);
             }
-            if (RESULT.address() == 0) RESULT = null;            if (RESULT == null) return null;
+            if (RESULT.address() == 0) return null;
             var RES_SEG = new PNIBuf(RESULT);
             if (RES_SEG.isNull()) return null;
             return new ShortArray(RES_SEG);
@@ -1839,9 +1793,7 @@ public class PrimitiveStruct {
         if (ERR != 0) {
             ENV.throwLast();
         }
-        var RESULT = ENV.returnPointer();
-        if (RESULT == null) return null;
-        var RES_SEG = new PNIBuf(RESULT);
+        var RES_SEG = ENV.returnBuf();
         if (RES_SEG.isNull()) return null;
         return new BoolArray(RES_SEG);
     }
@@ -1856,7 +1808,7 @@ public class PrimitiveStruct {
             } catch (Throwable THROWABLE) {
                 throw PanamaUtils.convertInvokeExactException(THROWABLE);
             }
-            if (RESULT.address() == 0) RESULT = null;            if (RESULT == null) return null;
+            if (RESULT.address() == 0) return null;
             var RES_SEG = new PNIBuf(RESULT);
             if (RES_SEG.isNull()) return null;
             return new BoolArray(RES_SEG);
@@ -1955,4 +1907,4 @@ public class PrimitiveStruct {
         }
     }
 }
-// sha256:50b91afb8737156f2d853e8c071f16cc4b7facb408598cb67523af08fb189d35
+// sha256:b266898d4e2bbfc5b0ca639e298a1ea8e64c4e603f839553f570e1105bfae19d

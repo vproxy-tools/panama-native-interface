@@ -166,7 +166,8 @@ public class Func {
         } catch (Throwable THROWABLE) {
             throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
-        if (RESULT.address() == 0) RESULT = null;        return RESULT;
+        if (RESULT.address() == 0) return null;
+        return RESULT;
     }
 }
-// sha256:96a5ac13ebe7a62d026d560d7cb73a6fbc4cbd081e3cf0deccabdb4c3c33562e
+// sha256:c115da78ae1f1cde4ef681a410a9e774505edf4c33c548ea63a937e782395f8a

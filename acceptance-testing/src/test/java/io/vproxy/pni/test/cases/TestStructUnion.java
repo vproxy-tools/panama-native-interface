@@ -250,7 +250,7 @@ public class TestStructUnion {
 
         s = Files.readAllLines(Path.of("src", "test", "generated", "io", "vproxy", "pni", "test", "StructA.java"));
         lastLine = s.get(s.size() - 1);
-        assertEquals("// sha256:7330b9c331003b944be0923cb340bdb2416892b3fd21e04d5c77c63c5e11dbdd", lastLine);
+        assertEquals("// sha256:e8e05ca81b3a3d9dc4b235f52d21820614fba55d616198b2658f784a19a8f58e", lastLine);
 
         s = Files.readAllLines(Path.of("src", "test", "generated", "io", "vproxy", "pni", "test", "StructB.java"));
         lastLine = s.get(s.size() - 1);

@@ -169,7 +169,8 @@ public class StructA {
         } catch (Throwable THROWABLE) {
             throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
-        if (RESULT.address() == 0) RESULT = null;        return RESULT == null ? null : new io.vproxy.pni.test.StructB(RESULT);
+        if (RESULT.address() == 0) return null;
+        return RESULT == null ? null : new io.vproxy.pni.test.StructB(RESULT);
     }
 
     private final MethodHandle retrieveC = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_StructA_retrieveC", MemorySegment.class /* self */, MemorySegment.class /* return */);
@@ -198,7 +199,8 @@ public class StructA {
         } catch (Throwable THROWABLE) {
             throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
-        if (RESULT.address() == 0) RESULT = null;        return RESULT == null ? null : new io.vproxy.pni.test.UnionC(RESULT);
+        if (RESULT.address() == 0) return null;
+        return RESULT == null ? null : new io.vproxy.pni.test.UnionC(RESULT);
     }
 
     private final MethodHandle retrieveCPointer = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_StructA_retrieveCPointer", MemorySegment.class /* self */, MemorySegment.class /* return */);
@@ -227,7 +229,8 @@ public class StructA {
         } catch (Throwable THROWABLE) {
             throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
-        if (RESULT.address() == 0) RESULT = null;        return RESULT == null ? null : new io.vproxy.pni.test.UnionC(RESULT);
+        if (RESULT.address() == 0) return null;
+        return RESULT == null ? null : new io.vproxy.pni.test.UnionC(RESULT);
     }
 
     public static class Array extends RefArray<StructA> {
@@ -266,4 +269,4 @@ public class StructA {
         }
     }
 }
-// sha256:7330b9c331003b944be0923cb340bdb2416892b3fd21e04d5c77c63c5e11dbdd
+// sha256:e8e05ca81b3a3d9dc4b235f52d21820614fba55d616198b2658f784a19a8f58e

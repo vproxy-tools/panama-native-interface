@@ -49,8 +49,8 @@ JNIEXPORT void * JNICALL JavaCritical_io_vproxy_pni_test_ObjectStruct_retrieveSe
     return self->seg;
 }
 
-JNIEXPORT int JNICALL Java_io_vproxy_pni_test_ObjectStruct_retrieveBuf(PNIEnv_pointer * env, ObjectStruct * self) {
-    env->return_ = JavaCritical_io_vproxy_pni_test_ObjectStruct_retrieveBufCritical(self, &env->buf);
+JNIEXPORT int JNICALL Java_io_vproxy_pni_test_ObjectStruct_retrieveBuf(PNIEnv_buf * env, ObjectStruct * self) {
+    JavaCritical_io_vproxy_pni_test_ObjectStruct_retrieveBufCritical(self, &env->return_);
     return 0;
 }
 

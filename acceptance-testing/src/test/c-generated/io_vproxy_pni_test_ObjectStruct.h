@@ -35,7 +35,7 @@ JNIEXPORT int JNICALL Java_io_vproxy_pni_test_ObjectStruct_retrieveLenStr(PNIEnv
 JNIEXPORT char * JNICALL JavaCritical_io_vproxy_pni_test_ObjectStruct_retrieveLenStrCritical(ObjectStruct * self);
 JNIEXPORT int JNICALL Java_io_vproxy_pni_test_ObjectStruct_retrieveSeg(PNIEnv_pointer * env, ObjectStruct * self);
 JNIEXPORT void * JNICALL JavaCritical_io_vproxy_pni_test_ObjectStruct_retrieveSegCritical(ObjectStruct * self);
-JNIEXPORT int JNICALL Java_io_vproxy_pni_test_ObjectStruct_retrieveBuf(PNIEnv_pointer * env, ObjectStruct * self);
+JNIEXPORT int JNICALL Java_io_vproxy_pni_test_ObjectStruct_retrieveBuf(PNIEnv_buf * env, ObjectStruct * self);
 JNIEXPORT PNIBuf * JNICALL JavaCritical_io_vproxy_pni_test_ObjectStruct_retrieveBufCritical(ObjectStruct * self, PNIBuf * return_);
 JNIEXPORT int JNICALL Java_io_vproxy_pni_test_ObjectStruct_checkPointerSetToNonNull(PNIEnv_bool * env, ObjectStruct * self);
 JNIEXPORT uint8_t JNICALL JavaCritical_io_vproxy_pni_test_ObjectStruct_checkPointerSetToNonNullCritical(ObjectStruct * self);
@@ -46,4 +46,4 @@ JNIEXPORT uint8_t JNICALL JavaCritical_io_vproxy_pni_test_ObjectStruct_checkPoin
 }
 #endif
 #endif // _Included_io_vproxy_pni_test_ObjectStruct
-// sha256:8859c23194a0818f845f43cafa4a7718f2bb84f8ff19a8854acf9285a9cb634a
+// sha256:db82c32d12dc12c3aea16cc659b7d012aa99d94414c6144c7a1dfc7150714499
