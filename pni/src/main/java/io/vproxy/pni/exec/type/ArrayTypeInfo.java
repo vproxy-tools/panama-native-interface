@@ -60,6 +60,11 @@ public class ArrayTypeInfo extends TypeInfo {
     }
 
     @Override
+    public String nativeEnvType(VarOpts opts) {
+        return "buf";
+    }
+
+    @Override
     public String nativeType(String fieldName, VarOpts opts) {
         if (opts.isPointerGeneral()) {
             if (fieldName == null) {
@@ -283,14 +288,15 @@ public class ArrayTypeInfo extends TypeInfo {
 
     @Override
     public void returnValueFormatting(StringBuilder sb, int indent, VarOpts opts) {
-        if (!opts.isCritical()) {
+        if (opts.isCritical()) {
             Utils.appendIndent(sb, indent)
-                .append("var RESULT = ENV.returnPointer();\n");
+                .append("if (RESULT.address() == 0) return null;\n");
+            Utils.appendIndent(sb, indent)
+                .append("var RES_SEG = new PNIBuf(RESULT);\n");
+        } else {
+            Utils.appendIndent(sb, indent)
+                .append("var RES_SEG = ENV.returnBuf();\n");
         }
-        Utils.appendIndent(sb, indent)
-            .append("if (RESULT == null) return null;\n");
-        Utils.appendIndent(sb, indent)
-            .append("var RES_SEG = new PNIBuf(RESULT);\n");
         Utils.appendIndent(sb, indent)
             .append("if (RES_SEG.isNull()) return null;\n");
         Utils.appendIndent(sb, indent)

@@ -14,6 +14,11 @@ public class ByteBufferTypeInfo extends BuiltInReferenceTypeInfo {
     }
 
     @Override
+    public String nativeEnvType(VarOpts opts) {
+        return "buf";
+    }
+
+    @Override
     public String nativeType(String fieldName, VarOpts opts) {
         var ret = "PNIBuf";
         if (fieldName != null) {
@@ -123,12 +128,17 @@ public class ByteBufferTypeInfo extends BuiltInReferenceTypeInfo {
 
     @Override
     public void returnValueFormatting(StringBuilder sb, int indent, VarOpts opts) {
-        if (!opts.isCritical()) {
+        if (opts.isCritical()) {
             Utils.appendIndent(sb, indent)
-                .append("var RESULT = ENV.returnPointer();\n");
+                .append("if (RESULT == null) return null;\n");
+            Utils.appendIndent(sb, indent)
+                .append("var RES_SEG = new PNIBuf(RESULT);\n");
+        } else {
+            Utils.appendIndent(sb, indent)
+                .append("var RES_SEG = ENV.returnBuf();\n");
         }
         Utils.appendIndent(sb, indent)
-            .append("return PNIBuf.getByteBuffer(RESULT);\n");
+            .append("return RES_SEG.toByteBuffer();\n");
     }
 
     @Override

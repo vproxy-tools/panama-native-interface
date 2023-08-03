@@ -40,6 +40,11 @@ public class ClassTypeInfo extends TypeInfo {
     }
 
     @Override
+    public String nativeEnvType(VarOpts opts) {
+        return "pointer";
+    }
+
+    @Override
     public String nativeType(String fieldName, VarOpts opts) {
         var ret = cls.nativeTypeName();
         if (opts.isPointer()) {
@@ -145,7 +150,10 @@ public class ClassTypeInfo extends TypeInfo {
 
     @Override
     public void returnValueFormatting(StringBuilder sb, int indent, VarOpts opts) {
-        if (!opts.isCritical()) {
+        if (opts.isCritical()) {
+            Utils.appendIndent(sb, indent)
+                .append("if (RESULT.address() == 0) return null;\n");
+        } else {
             Utils.appendIndent(sb, indent)
                 .append("var RESULT = ENV.returnPointer();\n");
         }

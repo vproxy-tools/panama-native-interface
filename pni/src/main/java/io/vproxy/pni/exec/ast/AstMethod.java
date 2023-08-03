@@ -197,28 +197,7 @@ public class AstMethod {
         }
         sb.append(" JNICALL ").append(nativeName(classUnderlinedName)).append("(");
         if (!critical()) {
-            sb.append("PNIEnv_");
-            if (returnTypeRef instanceof IntTypeInfo) {
-                sb.append("int");
-            } else if (returnTypeRef instanceof LongTypeInfo) {
-                sb.append("long");
-            } else if (returnTypeRef instanceof ShortTypeInfo) {
-                sb.append("short");
-            } else if (returnTypeRef instanceof ByteTypeInfo) {
-                sb.append("byte");
-            } else if (returnTypeRef instanceof FloatTypeInfo) {
-                sb.append("float");
-            } else if (returnTypeRef instanceof DoubleTypeInfo) {
-                sb.append("double");
-            } else if (returnTypeRef instanceof BooleanTypeInfo) {
-                sb.append("bool");
-            } else if (returnTypeRef instanceof CharTypeInfo) {
-                sb.append("char");
-            } else if (returnTypeRef instanceof VoidTypeInfo) {
-                sb.append("void");
-            } else {
-                sb.append("pointer");
-            }
+            sb.append("PNIEnv_").append(returnTypeRef.nativeEnvType(varOptsForReturn()));
             sb.append(" * env");
             if (classNativeTypeName != null || !params.isEmpty()) {
                 sb.append(", ");
@@ -417,13 +396,7 @@ public class AstMethod {
             Utils.appendIndent(sb, invocationIndent + 4).append("ENV.throwLast();\n");
             Utils.appendIndent(sb, invocationIndent).append("}\n");
         }
-        if (!(returnTypeRef instanceof VoidTypeInfo)) {
-            if (critical() && !(returnTypeRef instanceof PrimitiveTypeInfo)) {
-                Utils.appendIndent(sb, invocationIndent)
-                    .append("if (RESULT.address() == 0) RESULT = null;");
-            }
-            returnTypeRef.returnValueFormatting(sb, invocationIndent, varOptsForReturn());
-        }
+        returnTypeRef.returnValueFormatting(sb, invocationIndent, varOptsForReturn());
         if (paramNeedsAllocator) {
             Utils.appendIndent(sb, indent + 4).append("}\n");
         }

@@ -10,6 +10,11 @@ public abstract class PrimitiveTypeInfo extends TypeInfo {
     }
 
     @Override
+    public String nativeEnvType(VarOpts opts) {
+        return name();
+    }
+
+    @Override
     public void generateGetterSetter(StringBuilder sb, int indent, String fieldName, VarOpts opts) {
         Utils.varHandleField(sb, indent, fieldName);
         sb.append("\n");

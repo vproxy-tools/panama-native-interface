@@ -82,6 +82,7 @@ public class MemorySegmentTypeInfo extends BuiltInReferenceTypeInfo {
     @Override
     public void returnValueFormatting(StringBuilder sb, int indent, VarOpts opts) {
         if (opts.isCritical()) {
+            Utils.appendIndent(sb,indent).append("if (RESULT.address() == 0) return null;\n");
             Utils.appendIndent(sb, indent).append("return RESULT;\n");
             return;
         }

@@ -36,11 +36,7 @@ typedef PNI_PACK(struct, PNIEnv, {
         int16_t  return_short;
         int8_t   return_bool;
         void*    return_pointer;
-    };
-    union {
-        uint64_t udata64;
-        void*    userdata;
-        PNIBuf   buf;
+        PNIBuf   return_buf;
     };
 }) PNIEnv;
 
@@ -49,12 +45,7 @@ typedef PNI_PACK(struct, PNIEnv_##EnvType, { \
     PNIException ex; \
     union { \
         ValueType return_; \
-        void* __placeholder__; \
-    }; \
-    union { \
-        uint64_t udata64; \
-        void* userdata; \
-        PNIBuf buf; \
+        PNIBuf __placeholder__; \
     }; \
 }) PNIEnv_##EnvType;
 // end #define PNIEnvExpand
@@ -68,6 +59,7 @@ PNIEnvExpand(long, int64_t)
 PNIEnvExpand(short, int16_t)
 PNIEnvExpand(bool, uint8_t)
 PNIEnvExpand(pointer, void*)
+PNIEnvExpand(buf, PNIBuf)
 
 typedef PNI_PACK(struct, PNIEnv_void, {
     PNIException ex;

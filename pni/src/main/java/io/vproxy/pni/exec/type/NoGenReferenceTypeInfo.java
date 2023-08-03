@@ -8,6 +8,11 @@ public abstract class NoGenReferenceTypeInfo extends BuiltInReferenceTypeInfo {
     }
 
     @Override
+    public String nativeEnvType(VarOpts opts) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
     public String nativeType(String fieldName, VarOpts opts) {
         throw new UnsupportedOperationException();
     }

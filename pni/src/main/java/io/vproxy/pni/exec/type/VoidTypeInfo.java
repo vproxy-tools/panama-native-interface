@@ -19,6 +19,11 @@ public class VoidTypeInfo extends TypeInfo {
     }
 
     @Override
+    public String nativeEnvType(VarOpts opts) {
+        return "void";
+    }
+
+    @Override
     public String nativeType(String fieldName, VarOpts opts) {
         return "void";
     }
@@ -65,7 +70,7 @@ public class VoidTypeInfo extends TypeInfo {
 
     @Override
     public void returnValueFormatting(StringBuilder sb, int indent, VarOpts opts) {
-        throw new UnsupportedOperationException();
+        // do nothing
     }
 
     private VoidTypeInfo() {

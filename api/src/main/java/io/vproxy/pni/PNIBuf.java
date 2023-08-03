@@ -157,17 +157,4 @@ public class PNIBuf {
         }
         return seg.asByteBuffer();
     }
-
-    public static ByteBuffer getByteBuffer(MemorySegment mem) {
-        if (mem == null) {
-            return null;
-        }
-        mem = mem.reinterpret(LAYOUT.byteSize());
-        var seg = (MemorySegment) bufVH.get(mem);
-        if (seg.address() == 0) {
-            return null;
-        }
-        long len = (long) lenVH.get(mem);
-        return seg.reinterpret(len).asByteBuffer();
-    }
 }

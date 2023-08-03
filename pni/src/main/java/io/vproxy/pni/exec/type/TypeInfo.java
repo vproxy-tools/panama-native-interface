@@ -51,6 +51,8 @@ public abstract class TypeInfo {
         return false;
     }
 
+    abstract public String nativeEnvType(VarOpts opts);
+
     abstract public String nativeType(String fieldName, VarOpts opts);
 
     public String nativeParamType(String fieldName, VarOpts opts) {

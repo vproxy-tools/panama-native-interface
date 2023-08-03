@@ -15,6 +15,11 @@ public class BooleanTypeInfo extends PrimitiveTypeInfo {
     }
 
     @Override
+    public String nativeEnvType(VarOpts opts) {
+        return "bool";
+    }
+
+    @Override
     public String nativeType(String fieldName, VarOpts opts) {
         var ret = "uint8_t";
         if (fieldName != null) {
