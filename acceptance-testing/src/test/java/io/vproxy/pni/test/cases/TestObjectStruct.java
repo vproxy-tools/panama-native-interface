@@ -144,7 +144,7 @@ public class TestObjectStruct {
     public void shaCheck() throws Exception {
         var s = Files.readAllLines(Path.of("src", "test", "c-generated", "io_vproxy_pni_test_ObjectStruct.h"));
         var lastLine = s.get(s.size() - 1);
-        assertEquals("// sha256:db82c32d12dc12c3aea16cc659b7d012aa99d94414c6144c7a1dfc7150714499", lastLine);
+        assertEquals("// sha256:04faee6437cf29c2eb3944159730115266e3215e2745679cf8e2e649ab6d0722", lastLine);
 
         s = Files.readAllLines(Path.of("src", "test", "generated", "io", "vproxy", "pni", "test", "ObjectStruct.java"));
         lastLine = s.get(s.size() - 1);

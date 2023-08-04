@@ -18,6 +18,8 @@ extern "C" {
 extern "C" {
 #endif
 
+PNIEnvExpand(UnionP, UnionP *)
+
 JNIEXPORT int JNICALL UnionP_retrieve_i(PNIEnv_int * env, UnionP * self);
 JNIEXPORT int JNICALL UnionP_retrieve_l(PNIEnv_long * env, UnionP * self);
 
@@ -25,4 +27,4 @@ JNIEXPORT int JNICALL UnionP_retrieve_l(PNIEnv_long * env, UnionP * self);
 }
 #endif
 #endif // _Included_io_vproxy_pni_test_UnionP
-// sha256:d7396983e53a8b753c984b98743a8bfc99a5ed62001f7fafca7867e242133a73
+// sha256:1811337a7a2090f5a3e957f3d637b8f34b3d3cbbf97da65474477d64ba045e46

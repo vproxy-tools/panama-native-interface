@@ -20,6 +20,8 @@ typedef struct PrimitiveStruct PrimitiveStruct;
 extern "C" {
 #endif
 
+PNIEnvExpand(PrimitiveStruct, PrimitiveStruct *)
+
 PNI_PACK(struct, PrimitiveStruct, {
     int8_t aByte;
     uint8_t unsignedByte;
@@ -148,4 +150,4 @@ JNIEXPORT uint8_t JNICALL JavaCritical_io_vproxy_pni_test_PrimitiveStruct_checkP
 }
 #endif
 #endif // _Included_io_vproxy_pni_test_PrimitiveStruct
-// sha256:8b6fd10533393a3229ca87ad90ad8936dc5d0d6c552df015c33188da89b8cc7a
+// sha256:392b784fee13fc28f1643e44e61e3f139885d4cd3872617f44d75cba37a4330a

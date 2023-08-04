@@ -18,6 +18,8 @@ extern "C" {
 extern "C" {
 #endif
 
+PNIEnvExpand(N_st, struct N_st *)
+
 JNIEXPORT int JNICALL Java_io_vproxy_pni_test_StructN_retrieveS(PNIEnv_short * env, struct N_st * self);
 JNIEXPORT int JNICALL Java_io_vproxy_pni_test_StructN_retrieveL(PNIEnv_long * env, struct N_st * self);
 
@@ -25,4 +27,4 @@ JNIEXPORT int JNICALL Java_io_vproxy_pni_test_StructN_retrieveL(PNIEnv_long * en
 }
 #endif
 #endif // _Included_io_vproxy_pni_test_StructN
-// sha256:ea5b1adfba3c09acd816652a641d522349fa04ee149ae6cbe5e9294199b2763d
+// sha256:bbaad5de0420bd4d169cacd53c9dc1708740e70698ec795de4d2af04f3d5b869

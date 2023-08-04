@@ -23,6 +23,8 @@ typedef struct StructA StructA;
 extern "C" {
 #endif
 
+PNIEnvExpand(StructA, StructA *)
+
 PNI_PACK(struct, StructA, {
     StructB b;
     UnionC c;
@@ -42,11 +44,11 @@ JNIEXPORT int JNICALL Java_io_vproxy_pni_test_StructA_bbbArray(PNIEnv_void * env
 JNIEXPORT void JNICALL JavaCritical_io_vproxy_pni_test_StructA_bbbArrayCritical(StructA * self, PNIBuf * bArray);
 JNIEXPORT int JNICALL Java_io_vproxy_pni_test_StructA_bbbArray2(PNIEnv_void * env, StructA * self, PNIBuf * bArray);
 JNIEXPORT void JNICALL JavaCritical_io_vproxy_pni_test_StructA_bbbArray2Critical(StructA * self, PNIBuf * bArray);
-JNIEXPORT int JNICALL Java_io_vproxy_pni_test_StructA_retrieveB(PNIEnv_pointer * env, StructA * self, StructB * return_);
+JNIEXPORT int JNICALL Java_io_vproxy_pni_test_StructA_retrieveB(PNIEnv_StructB * env, StructA * self, StructB * return_);
 JNIEXPORT StructB * JNICALL JavaCritical_io_vproxy_pni_test_StructA_retrieveBCritical(StructA * self, StructB * return_);
-JNIEXPORT int JNICALL Java_io_vproxy_pni_test_StructA_retrieveC(PNIEnv_pointer * env, StructA * self, UnionC * return_);
+JNIEXPORT int JNICALL Java_io_vproxy_pni_test_StructA_retrieveC(PNIEnv_UnionC * env, StructA * self, UnionC * return_);
 JNIEXPORT UnionC * JNICALL JavaCritical_io_vproxy_pni_test_StructA_retrieveCCritical(StructA * self, UnionC * return_);
-JNIEXPORT int JNICALL Java_io_vproxy_pni_test_StructA_retrieveCPointer(PNIEnv_pointer * env, StructA * self, UnionC * return_);
+JNIEXPORT int JNICALL Java_io_vproxy_pni_test_StructA_retrieveCPointer(PNIEnv_UnionC * env, StructA * self, UnionC * return_);
 JNIEXPORT UnionC * JNICALL JavaCritical_io_vproxy_pni_test_StructA_retrieveCPointerCritical(StructA * self, UnionC * return_);
 JNIEXPORT int JNICALL Java_io_vproxy_pni_test_StructA_retrieveBArray(PNIEnv_buf * env, StructA * self);
 JNIEXPORT PNIBuf * JNICALL JavaCritical_io_vproxy_pni_test_StructA_retrieveBArrayCritical(StructA * self, PNIBuf * return_);
@@ -57,4 +59,4 @@ JNIEXPORT PNIBuf * JNICALL JavaCritical_io_vproxy_pni_test_StructA_retrieveBArra
 }
 #endif
 #endif // _Included_io_vproxy_pni_test_StructA
-// sha256:62e06de82b2cd2b03fa6388e55a871976a4e27f183b1eaa2e37b707ba0bc1a24
+// sha256:004ff87b3f3fdc1772514c44ab1d3df56f6b442538743b7e2599202160f761e7

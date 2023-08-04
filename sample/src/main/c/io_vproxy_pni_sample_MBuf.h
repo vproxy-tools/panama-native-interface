@@ -21,6 +21,8 @@ typedef struct mbuf_t mbuf_t;
 extern "C" {
 #endif
 
+PNIEnvExpand(mbuf_t, mbuf_t *)
+
 PNI_PACK(struct, mbuf_t, {
     void * bufAddr;
     uint32_t pktLen;
@@ -36,4 +38,4 @@ PNI_PACK(struct, mbuf_t, {
 }
 #endif
 #endif // _Included_io_vproxy_pni_sample_MBuf
-// sha256:18ab3393201a6eb127251a0e9013e2877b939b538292eb6d197c550113094582
+// sha256:166110e8de11fbb3ba3818b3090e55053cb1ef3951bc5c1c83a3623a85e5940c

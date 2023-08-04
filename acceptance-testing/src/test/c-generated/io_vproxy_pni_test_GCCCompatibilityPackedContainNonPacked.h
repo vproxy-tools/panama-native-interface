@@ -19,6 +19,8 @@ extern "C" {
 extern "C" {
 #endif
 
+PNIEnvExpand(GCCCompatibilityPackedContainNonPacked, GCCCompatibilityPackedContainNonPacked *)
+
 JNIEXPORT int JNICALL Java_io_vproxy_pni_test_GCCCompatibilityPackedContainNonPacked_init(PNIEnv_void * env, GCCCompatibilityPackedContainNonPacked * self);
 JNIEXPORT int JNICALL Java_io_vproxy_pni_test_GCCCompatibilityPackedContainNonPacked_size(PNIEnv_long * env, GCCCompatibilityPackedContainNonPacked * self);
 
@@ -26,4 +28,4 @@ JNIEXPORT int JNICALL Java_io_vproxy_pni_test_GCCCompatibilityPackedContainNonPa
 }
 #endif
 #endif // _Included_io_vproxy_pni_test_GCCCompatibilityPackedContainNonPacked
-// sha256:99ffaba46f022f24c2ef135ccea724afd83f2c70ac9be90de73b37f97688c2d8
+// sha256:1bd3cae083b2c472acb60f9399a4ee82edf90254cbb6e4170014e9831a9fcccf

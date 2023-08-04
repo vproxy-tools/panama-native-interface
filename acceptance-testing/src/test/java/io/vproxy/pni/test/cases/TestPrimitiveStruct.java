@@ -826,7 +826,7 @@ public class TestPrimitiveStruct {
     public void shaCheck() throws Exception {
         var s = Files.readAllLines(Path.of("src", "test", "c-generated", "io_vproxy_pni_test_PrimitiveStruct.h"));
         var lastLine = s.get(s.size() - 1);
-        assertEquals("// sha256:8b6fd10533393a3229ca87ad90ad8936dc5d0d6c552df015c33188da89b8cc7a", lastLine);
+        assertEquals("// sha256:392b784fee13fc28f1643e44e61e3f139885d4cd3872617f44d75cba37a4330a", lastLine);
 
         s = Files.readAllLines(Path.of("src", "test", "generated", "io", "vproxy", "pni", "test", "PrimitiveStruct.java"));
         lastLine = s.get(s.size() - 1);

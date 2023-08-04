@@ -20,6 +20,8 @@ typedef union UnionC UnionC;
 extern "C" {
 #endif
 
+PNIEnvExpand(UnionC, UnionC *)
+
 PNI_PACK(union, UnionC, {
     int32_t n;
     int64_t l;
@@ -29,4 +31,4 @@ PNI_PACK(union, UnionC, {
 }
 #endif
 #endif // _Included_io_vproxy_pni_test_UnionC
-// sha256:daacd9155cb56d5356447139013a7606aa0c5a64e01e87fb22d3f774e5ce77b9
+// sha256:385283da704d91e782cb57ccdd43e63b6e88936f3229e08e02c14d9e630f05d0

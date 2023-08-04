@@ -20,6 +20,8 @@ typedef struct ObjectStruct ObjectStruct;
 extern "C" {
 #endif
 
+PNIEnvExpand(ObjectStruct, ObjectStruct *)
+
 PNI_PACK(struct, ObjectStruct, {
     char * str;
     char lenStr[16];
@@ -29,9 +31,9 @@ PNI_PACK(struct, ObjectStruct, {
 
 JNIEXPORT int JNICALL Java_io_vproxy_pni_test_ObjectStruct_func1(PNIEnv_void * env, ObjectStruct * self, char * str, char * str2, void * seg, PNIBuf * buf);
 JNIEXPORT void JNICALL JavaCritical_io_vproxy_pni_test_ObjectStruct_func1Critical(ObjectStruct * self, char * str, char * str2, void * seg, PNIBuf * buf);
-JNIEXPORT int JNICALL Java_io_vproxy_pni_test_ObjectStruct_retrieveStr(PNIEnv_pointer * env, ObjectStruct * self);
+JNIEXPORT int JNICALL Java_io_vproxy_pni_test_ObjectStruct_retrieveStr(PNIEnv_string * env, ObjectStruct * self);
 JNIEXPORT char * JNICALL JavaCritical_io_vproxy_pni_test_ObjectStruct_retrieveStrCritical(ObjectStruct * self);
-JNIEXPORT int JNICALL Java_io_vproxy_pni_test_ObjectStruct_retrieveLenStr(PNIEnv_pointer * env, ObjectStruct * self);
+JNIEXPORT int JNICALL Java_io_vproxy_pni_test_ObjectStruct_retrieveLenStr(PNIEnv_string * env, ObjectStruct * self);
 JNIEXPORT char * JNICALL JavaCritical_io_vproxy_pni_test_ObjectStruct_retrieveLenStrCritical(ObjectStruct * self);
 JNIEXPORT int JNICALL Java_io_vproxy_pni_test_ObjectStruct_retrieveSeg(PNIEnv_pointer * env, ObjectStruct * self);
 JNIEXPORT void * JNICALL JavaCritical_io_vproxy_pni_test_ObjectStruct_retrieveSegCritical(ObjectStruct * self);
@@ -46,4 +48,4 @@ JNIEXPORT uint8_t JNICALL JavaCritical_io_vproxy_pni_test_ObjectStruct_checkPoin
 }
 #endif
 #endif // _Included_io_vproxy_pni_test_ObjectStruct
-// sha256:db82c32d12dc12c3aea16cc659b7d012aa99d94414c6144c7a1dfc7150714499
+// sha256:04faee6437cf29c2eb3944159730115266e3215e2745679cf8e2e649ab6d0722

@@ -18,6 +18,8 @@ extern "C" {
 extern "C" {
 #endif
 
+PNIEnvExpand(GCCCompatibilityPackedAlignFieldSmallerAlign, GCCCompatibilityPackedAlignFieldSmallerAlign *)
+
 JNIEXPORT int JNICALL Java_io_vproxy_pni_test_GCCCompatibilityPackedAlignFieldSmallerAlign_init(PNIEnv_void * env, GCCCompatibilityPackedAlignFieldSmallerAlign * self);
 JNIEXPORT int JNICALL Java_io_vproxy_pni_test_GCCCompatibilityPackedAlignFieldSmallerAlign_size(PNIEnv_long * env, GCCCompatibilityPackedAlignFieldSmallerAlign * self);
 
@@ -25,4 +27,4 @@ JNIEXPORT int JNICALL Java_io_vproxy_pni_test_GCCCompatibilityPackedAlignFieldSm
 }
 #endif
 #endif // _Included_io_vproxy_pni_test_GCCCompatibilityPackedAlignFieldSmallerAlign
-// sha256:df56d5affd843eb7ee77d5db6ddfb48216de3ad9540baa11f08a3c4fc259f6c7
+// sha256:3dfa3bfd295c01aa13082f9f382f8d2b4702a606f73684dec6507cdda793aa10

@@ -20,6 +20,8 @@ union UnionO;
 extern "C" {
 #endif
 
+PNIEnvExpand(UnionO, union UnionO *)
+
 PNI_PACK(union, UnionO, {
     int16_t s;
     int32_t i;
@@ -30,4 +32,4 @@ PNI_PACK(union, UnionO, {
 }
 #endif
 #endif // _Included_io_vproxy_pni_test_UnionO
-// sha256:db4869c374b9facddd47dadb26c2c4bf6db5797d2aaff8d375039b9cd9f7f4b3
+// sha256:1ecf3a9c38997ca3f45bdfef86f15b4fcc0771d25cfcd32e725ef3fb0849b20c

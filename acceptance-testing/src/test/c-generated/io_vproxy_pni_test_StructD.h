@@ -20,6 +20,8 @@ typedef struct StructD StructD;
 extern "C" {
 #endif
 
+PNIEnvExpand(StructD, StructD *)
+
 PNI_PACK(struct, StructD, {
     int32_t n; /* padding */ uint64_t :32;
     double d;
@@ -29,4 +31,4 @@ PNI_PACK(struct, StructD, {
 }
 #endif
 #endif // _Included_io_vproxy_pni_test_StructD
-// sha256:1ebc7df07907db8196fa56ad5a1824d655a521f99a4dc6c0a53273fdf03d7ec7
+// sha256:54fb82c5d06174ec40ecb77eb916af80acfe01e7c50fb19d6566db99b09014cd

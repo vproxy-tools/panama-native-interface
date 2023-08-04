@@ -22,7 +22,7 @@ JNIEXPORT void JNICALL JavaCritical_io_vproxy_pni_test_ObjectStruct_func1Critica
     o->buf = *buf;
 }
 
-JNIEXPORT int JNICALL Java_io_vproxy_pni_test_ObjectStruct_retrieveStr(PNIEnv_pointer * env, ObjectStruct * self) {
+JNIEXPORT int JNICALL Java_io_vproxy_pni_test_ObjectStruct_retrieveStr(PNIEnv_string * env, ObjectStruct * self) {
     env->return_ = JavaCritical_io_vproxy_pni_test_ObjectStruct_retrieveStrCritical(self);
     return 0;
 }
@@ -31,7 +31,7 @@ JNIEXPORT char * JNICALL JavaCritical_io_vproxy_pni_test_ObjectStruct_retrieveSt
     return self->str;
 }
 
-JNIEXPORT int JNICALL Java_io_vproxy_pni_test_ObjectStruct_retrieveLenStr(PNIEnv_pointer * env, ObjectStruct * self) {
+JNIEXPORT int JNICALL Java_io_vproxy_pni_test_ObjectStruct_retrieveLenStr(PNIEnv_string * env, ObjectStruct * self) {
     env->return_ = JavaCritical_io_vproxy_pni_test_ObjectStruct_retrieveLenStrCritical(self);
     return 0;
 }
