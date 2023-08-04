@@ -64,18 +64,16 @@ public class Func {
 
     public void func3(PNIEnv ENV, PNIString ex) throws java.io.IOException, java.lang.UnsupportedOperationException {
         ENV.reset();
-        try (var POOLED = Allocator.ofPooled()) {
-            int ERR;
-            try {
-                ERR = (int) this.func3.invokeExact(ENV.MEMORY, (MemorySegment) (ex == null ? MemorySegment.NULL : ex.MEMORY));
-            } catch (Throwable THROWABLE) {
-                throw PanamaUtils.convertInvokeExactException(THROWABLE);
-            }
-            if (ERR != 0) {
-                ENV.throwIf(java.io.IOException.class);
-                ENV.throwIf(java.lang.UnsupportedOperationException.class);
-                ENV.throwLast();
-            }
+        int ERR;
+        try {
+            ERR = (int) this.func3.invokeExact(ENV.MEMORY, (MemorySegment) (ex == null ? MemorySegment.NULL : ex.MEMORY));
+        } catch (Throwable THROWABLE) {
+            throw PanamaUtils.convertInvokeExactException(THROWABLE);
+        }
+        if (ERR != 0) {
+            ENV.throwIf(java.io.IOException.class);
+            ENV.throwIf(java.lang.UnsupportedOperationException.class);
+            ENV.throwLast();
         }
     }
 
@@ -170,4 +168,4 @@ public class Func {
         return RESULT;
     }
 }
-// sha256:945c1450e6c72c20df00da8524e094993e2e305461e4960cd8a599372137edd6
+// sha256:e90c48cb8333394dcb3f15c404936b2d30df7e5c845607dd59e3db2d82b7cde6
