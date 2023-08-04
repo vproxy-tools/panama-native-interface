@@ -1,5 +1,7 @@
 package io.vproxy.pni.exec.type;
 
+import io.vproxy.pni.exec.internal.AllocationForParam;
+import io.vproxy.pni.exec.internal.AllocationForReturnedValue;
 import io.vproxy.pni.exec.internal.Utils;
 import io.vproxy.pni.exec.internal.VarOpts;
 
@@ -56,12 +58,12 @@ public class ByteBufferTypeInfo extends BuiltInReferenceTypeInfo {
     }
 
     @Override
-    public String memoryLayout(VarOpts opts) {
+    public String memoryLayoutForField(VarOpts opts) {
         return "PNIBuf.LAYOUT";
     }
 
     @Override
-    public String javaType(VarOpts opts) {
+    public String javaTypeForField(VarOpts opts) {
         return "ByteBuffer";
     }
 
@@ -110,7 +112,7 @@ public class ByteBufferTypeInfo extends BuiltInReferenceTypeInfo {
     }
 
     @Override
-    public String convertToNativeCallArgument(String name, VarOpts opts) {
+    public String convertParamToInvokeExactArgument(String name, VarOpts opts) {
         if (opts.isRaw()) {
             return "PanamaUtils.format(" + name + ")";
         } else {
@@ -119,15 +121,15 @@ public class ByteBufferTypeInfo extends BuiltInReferenceTypeInfo {
     }
 
     @Override
-    public String sizeForPooledAllocatorForNativeCallExtraArgument(VarOpts opts) {
+    public AllocationForReturnedValue allocationInfoForReturnValue(VarOpts opts) {
         if (opts.isCritical()) {
-            return "PNIBuf.LAYOUT.byteSize()";
+            return AllocationForReturnedValue.ofPooledAllocator("PNIBuf.LAYOUT.byteSize()");
         }
-        return null;
+        return super.allocationInfoForReturnValue(opts);
     }
 
     @Override
-    public void returnValueFormatting(StringBuilder sb, int indent, VarOpts opts) {
+    public void convertInvokeExactReturnValueToJava(StringBuilder sb, int indent, VarOpts opts) {
         if (opts.isCritical()) {
             Utils.appendIndent(sb, indent)
                 .append("if (RESULT.address() == 0) return null;\n");
@@ -142,8 +144,11 @@ public class ByteBufferTypeInfo extends BuiltInReferenceTypeInfo {
     }
 
     @Override
-    public boolean paramDependOnPooledAllocator(VarOpts opts) {
-        return opts.isPointerGeneral() && !opts.isRaw();
+    public AllocationForParam allocationInfoForParam(VarOpts opts) {
+        if (opts.isPointerGeneral() && !opts.isRaw()) {
+            return AllocationForParam.ofPooledAllocator();
+        }
+        return AllocationForParam.noAllocationRequired();
     }
 
     private static final ByteBufferTypeInfo INSTANCE = new ByteBufferTypeInfo();

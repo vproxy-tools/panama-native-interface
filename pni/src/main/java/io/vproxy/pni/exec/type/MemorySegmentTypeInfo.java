@@ -33,12 +33,12 @@ public class MemorySegmentTypeInfo extends BuiltInReferenceTypeInfo {
     }
 
     @Override
-    public String memoryLayout(VarOpts opts) {
+    public String memoryLayoutForField(VarOpts opts) {
         return "ValueLayout.ADDRESS_UNALIGNED";
     }
 
     @Override
-    public String javaType(VarOpts opts) {
+    public String javaTypeForField(VarOpts opts) {
         return "MemorySegment";
     }
 
@@ -80,12 +80,12 @@ public class MemorySegmentTypeInfo extends BuiltInReferenceTypeInfo {
     }
 
     @Override
-    public String convertToNativeCallArgument(String name, VarOpts opts) {
+    public String convertParamToInvokeExactArgument(String name, VarOpts opts) {
         return "(MemorySegment) (" + name + " == null ? MemorySegment.NULL : " + name + ")";
     }
 
     @Override
-    public void returnValueFormatting(StringBuilder sb, int indent, VarOpts opts) {
+    public void convertInvokeExactReturnValueToJava(StringBuilder sb, int indent, VarOpts opts) {
         if (opts.isCritical()) {
             Utils.appendIndent(sb,indent).append("if (RESULT.address() == 0) return null;\n");
             Utils.appendIndent(sb, indent).append("return RESULT;\n");

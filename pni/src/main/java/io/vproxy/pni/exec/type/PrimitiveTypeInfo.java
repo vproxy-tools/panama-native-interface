@@ -33,7 +33,7 @@ public abstract class PrimitiveTypeInfo extends TypeInfo {
 
     @Override
     public void generateConstructor(StringBuilder sb, int indent, String fieldName, VarOpts opts) {
-        Utils.appendIndent(sb, indent).append("OFFSET += ").append(memoryLayout(opts)).append(".byteSize();\n");
+        Utils.appendIndent(sb, indent).append("OFFSET += ").append(memoryLayoutForField(opts)).append(".byteSize();\n");
     }
 
     @Override
@@ -42,7 +42,7 @@ public abstract class PrimitiveTypeInfo extends TypeInfo {
     }
 
     @Override
-    public String convertToNativeCallArgument(String name, VarOpts opts) {
+    public String convertParamToInvokeExactArgument(String name, VarOpts opts) {
         return name;
     }
 

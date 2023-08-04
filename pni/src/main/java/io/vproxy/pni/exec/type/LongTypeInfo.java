@@ -37,17 +37,17 @@ public class LongTypeInfo extends PrimitiveTypeInfo {
     }
 
     @Override
-    public String memoryLayout(VarOpts opts) {
+    public String memoryLayoutForField(VarOpts opts) {
         return "ValueLayout.JAVA_LONG_UNALIGNED";
     }
 
     @Override
-    public String javaType(VarOpts opts) {
+    public String javaTypeForField(VarOpts opts) {
         return "long";
     }
 
     @Override
-    public void returnValueFormatting(StringBuilder sb, int indent, VarOpts opts) {
+    public void convertInvokeExactReturnValueToJava(StringBuilder sb, int indent, VarOpts opts) {
         if (opts.isCritical()) {
             Utils.appendIndent(sb, indent).append("return RESULT;\n");
             return;

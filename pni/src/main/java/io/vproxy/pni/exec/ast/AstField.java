@@ -157,7 +157,7 @@ public class AstField {
 
     public void generateJavaLayout(StringBuilder sb, int indent) {
         Utils.appendIndent(sb, indent);
-        sb.append(typeRef.memoryLayout(varOpts()))
+        sb.append(typeRef.memoryLayoutForField(varOpts()))
             .append(".withName(\"").append(name).append("\")");
         if (padding > 0) {
             sb.append(",\n");

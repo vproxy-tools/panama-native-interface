@@ -1,6 +1,7 @@
 package io.vproxy.pni.exec.type;
 
 import io.vproxy.pni.exec.ast.AstClass;
+import io.vproxy.pni.exec.internal.AllocationForReturnedValue;
 import io.vproxy.pni.exec.internal.Utils;
 import io.vproxy.pni.exec.internal.VarOpts;
 
@@ -70,7 +71,7 @@ public class ClassTypeInfo extends TypeInfo {
     }
 
     @Override
-    public String memoryLayout(VarOpts opts) {
+    public String memoryLayoutForField(VarOpts opts) {
         if (opts.isPointer()) {
             return "ValueLayout.ADDRESS_UNALIGNED";
         } else {
@@ -79,7 +80,7 @@ public class ClassTypeInfo extends TypeInfo {
     }
 
     @Override
-    public String javaType(VarOpts opts) {
+    public String javaTypeForField(VarOpts opts) {
         return cls.fullName();
     }
 
@@ -139,17 +140,17 @@ public class ClassTypeInfo extends TypeInfo {
     }
 
     @Override
-    public String convertToNativeCallArgument(String name, VarOpts opts) {
+    public String convertParamToInvokeExactArgument(String name, VarOpts opts) {
         return "(MemorySegment) (" + name + " == null ? MemorySegment.NULL : " + name + ".MEMORY)";
     }
 
     @Override
-    public String sizeForUserAllocatorForNativeCallExtraArgument(VarOpts opts) {
-        return cls.fullName() + ".LAYOUT.byteSize()";
+    public AllocationForReturnedValue allocationInfoForReturnValue(VarOpts opts) {
+        return AllocationForReturnedValue.ofExtraAllocator(cls.fullName() + ".LAYOUT.byteSize()");
     }
 
     @Override
-    public void returnValueFormatting(StringBuilder sb, int indent, VarOpts opts) {
+    public void convertInvokeExactReturnValueToJava(StringBuilder sb, int indent, VarOpts opts) {
         if (opts.isCritical()) {
             Utils.appendIndent(sb, indent)
                 .append("if (RESULT.address() == 0) return null;\n");

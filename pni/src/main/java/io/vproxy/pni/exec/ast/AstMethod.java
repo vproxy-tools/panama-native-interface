@@ -209,10 +209,9 @@ public class AstMethod {
                 sb.append(", ");
             }
         }
+        var returnAllocation = returnTypeRef.allocationInfoForReturnValue(varOptsForReturn());
         String returnTypeExtraType = null;
-        if (!(returnTypeRef instanceof PrimitiveTypeInfo) &&
-            (returnTypeRef.sizeForUserAllocatorForNativeCallExtraArgument(varOptsForReturn()) != null
-             || returnTypeRef.sizeForPooledAllocatorForNativeCallExtraArgument(varOptsForReturn()) != null)) {
+        if (returnAllocation.requireAllocator()) {
             returnTypeExtraType = returnTypeRef.nativeParamType(null, varOptsForReturn());
         }
         var isFirst = true;
@@ -258,16 +257,15 @@ public class AstMethod {
             p.generateMethodHandle(sb, 0);
             sb.append(" /* ").append(p.name).append(" */");
         }
-        var returnAllocatorSize = returnTypeRef.sizeForUserAllocatorForNativeCallExtraArgument(varOptsForReturn());
-        var returnPooledSize = returnTypeRef.sizeForPooledAllocatorForNativeCallExtraArgument(varOptsForReturn());
-        if (returnAllocatorSize != null || returnPooledSize != null) {
+        var returnAllocation = returnTypeRef.allocationInfoForReturnValue(varOptsForReturn());
+        if (returnAllocation.requireAllocator()) {
             sb.append(", MemorySegment.class /* return */");
         }
         sb.append(");\n");
         sb.append("\n");
 
         Utils.appendIndent(sb, indent).append("public ")
-            .append(returnTypeRef.javaType(varOptsForReturn()))
+            .append(returnTypeRef.javaTypeForReturn(varOptsForReturn()))
             .append(" ").append(name).append("(");
         if (!critical()) {
             sb.append("PNIEnv ENV");
@@ -275,7 +273,7 @@ public class AstMethod {
                 sb.append(", ");
             }
         }
-        var paramNeedsAllocator = returnPooledSize != null;
+        var paramNeedsAllocator = returnAllocation.requirePooledAllocator();
         var isFirst = true;
         for (var p : params) {
             if (isFirst) {
@@ -289,7 +287,7 @@ public class AstMethod {
                 paramNeedsAllocator = true;
             }
         }
-        if (returnAllocatorSize != null) {
+        if (returnAllocation.requireExtraParameter()) {
             if (!critical() || !params.isEmpty()) {
                 sb.append(", ");
             }
@@ -321,7 +319,7 @@ public class AstMethod {
             if (!(returnTypeRef instanceof VoidTypeInfo)) {
                 Utils.appendIndent(sb, invocationIndent);
                 if (returnTypeRef instanceof PrimitiveTypeInfo) {
-                    sb.append(returnTypeRef.javaType(varOptsForReturn()));
+                    sb.append(returnTypeRef.javaTypeForReturn(varOptsForReturn()));
                 } else {
                     sb.append("MemorySegment");
                 }
@@ -337,7 +335,7 @@ public class AstMethod {
             if (!(returnTypeRef instanceof VoidTypeInfo)) {
                 sb.append("RESULT = (");
                 if (returnTypeRef instanceof PrimitiveTypeInfo) {
-                    sb.append(returnTypeRef.javaType(varOptsForReturn()));
+                    sb.append(returnTypeRef.javaTypeForReturn(varOptsForReturn()));
                 } else {
                     sb.append("MemorySegment");
                 }
@@ -368,16 +366,16 @@ public class AstMethod {
             }
             p.generateConvert(sb, 0);
         }
-        if (returnAllocatorSize != null) {
+        if (returnAllocation.requireExtraParameter()) {
             if (!critical() || needSelf || !params.isEmpty()) {
                 sb.append(", ");
             }
-            sb.append("ALLOCATOR.allocate(").append(returnAllocatorSize).append(")");
-        } else if (returnPooledSize != null) {
+            sb.append("ALLOCATOR.allocate(").append(returnAllocation.byteSize()).append(")");
+        } else if (returnAllocation.requirePooledAllocator()) {
             if (!critical() || needSelf || !params.isEmpty()) {
                 sb.append(", ");
             }
-            sb.append("POOLED.allocate(").append(returnPooledSize).append(")");
+            sb.append("POOLED.allocate(").append(returnAllocation.byteSize()).append(")");
         }
         sb.append(");\n");
         Utils.appendIndent(sb, invocationIndent)
@@ -396,7 +394,7 @@ public class AstMethod {
             Utils.appendIndent(sb, invocationIndent + 4).append("ENV.throwLast();\n");
             Utils.appendIndent(sb, invocationIndent).append("}\n");
         }
-        returnTypeRef.returnValueFormatting(sb, invocationIndent, varOptsForReturn());
+        returnTypeRef.convertInvokeExactReturnValueToJava(sb, invocationIndent, varOptsForReturn());
         if (paramNeedsAllocator) {
             Utils.appendIndent(sb, indent + 4).append("}\n");
         }

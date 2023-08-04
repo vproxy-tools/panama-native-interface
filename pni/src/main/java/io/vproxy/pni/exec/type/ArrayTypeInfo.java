@@ -1,5 +1,7 @@
 package io.vproxy.pni.exec.type;
 
+import io.vproxy.pni.exec.internal.AllocationForParam;
+import io.vproxy.pni.exec.internal.AllocationForReturnedValue;
 import io.vproxy.pni.exec.internal.Utils;
 import io.vproxy.pni.exec.internal.VarOpts;
 
@@ -138,16 +140,16 @@ public class ArrayTypeInfo extends TypeInfo {
     }
 
     @Override
-    public String memoryLayout(VarOpts opts) {
+    public String memoryLayoutForField(VarOpts opts) {
         if (opts.isPointerGeneral()) {
             return "PNIBuf.LAYOUT";
         } else {
-            return "MemoryLayout.sequenceLayout(" + opts.getLen() + "L, " + elementType.memoryLayout(opts) + ")";
+            return "MemoryLayout.sequenceLayout(" + opts.getLen() + "L, " + elementType.memoryLayoutForField(opts) + ")";
         }
     }
 
     @Override
-    public String javaType(VarOpts opts) {
+    public String javaTypeForField(VarOpts opts) {
         if (elementType instanceof IntTypeInfo) {
             return "IntArray";
         } else if (elementType instanceof LongTypeInfo) {
@@ -179,7 +181,7 @@ public class ArrayTypeInfo extends TypeInfo {
                 .append("private final PNIBuf ").append(fieldName).append(";\n");
             sb.append("\n");
 
-            var typeName = javaType(opts);
+            var typeName = javaTypeForField(opts);
 
             Utils.appendIndent(sb, indent)
                 .append("public ").append(typeName).append(" ").append(Utils.getterName(fieldName)).append("() {\n");
@@ -211,7 +213,7 @@ public class ArrayTypeInfo extends TypeInfo {
             Utils.appendIndent(sb, indent + 4).append("}\n");
             Utils.appendIndent(sb, indent).append("}\n");
         } else {
-            var typeName = javaType(opts);
+            var typeName = javaTypeForField(opts);
             Utils.appendIndent(sb, indent)
                 .append("private final ").append(typeName).append(" ").append(fieldName).append(";\n");
             sb.append("\n");
@@ -237,11 +239,11 @@ public class ArrayTypeInfo extends TypeInfo {
                 Utils.appendIndent(sb, indent).append("OFFSET += ").append(opts.getLen()).append(";\n");
             } else if (elementType instanceof PrimitiveTypeInfo) {
                 Utils.appendIndent(sb, indent)
-                    .append("this.").append(fieldName).append(" = new ").append(javaType(opts)).append("(MEMORY.asSlice(OFFSET, ")
-                    .append(opts.getLen()).append(" * ").append(elementType.memoryLayout(opts)).append(".byteSize()")
+                    .append("this.").append(fieldName).append(" = new ").append(javaTypeForField(opts)).append("(MEMORY.asSlice(OFFSET, ")
+                    .append(opts.getLen()).append(" * ").append(elementType.memoryLayoutForField(opts)).append(".byteSize()")
                     .append("));\n");
                 Utils.appendIndent(sb, indent).append("OFFSET += ").append(opts.getLen()).append(" * ")
-                    .append(elementType.memoryLayout(opts)).append(".byteSize();\n");
+                    .append(elementType.memoryLayoutForField(opts)).append(".byteSize();\n");
             } else if (elementType instanceof ClassTypeInfo) {
                 var classTypeInfo = (ClassTypeInfo) elementType;
                 var cls = classTypeInfo.getClazz();
@@ -266,7 +268,7 @@ public class ArrayTypeInfo extends TypeInfo {
     }
 
     @Override
-    public String convertToNativeCallArgument(String name, VarOpts opts) {
+    public String convertParamToInvokeExactArgument(String name, VarOpts opts) {
         if (opts.isRaw()) {
             if (elementType instanceof ByteTypeInfo) {
                 return "(MemorySegment) (" + name + " == null ? MemorySegment.NULL : " + name + ")";
@@ -279,15 +281,15 @@ public class ArrayTypeInfo extends TypeInfo {
     }
 
     @Override
-    public String sizeForPooledAllocatorForNativeCallExtraArgument(VarOpts opts) {
+    public AllocationForReturnedValue allocationInfoForReturnValue(VarOpts opts) {
         if (opts.isCritical()) {
-            return "PNIBuf.LAYOUT.byteSize()";
+            return AllocationForReturnedValue.ofPooledAllocator("PNIBuf.LAYOUT.byteSize()");
         }
-        return null;
+        return super.allocationInfoForReturnValue(opts);
     }
 
     @Override
-    public void returnValueFormatting(StringBuilder sb, int indent, VarOpts opts) {
+    public void convertInvokeExactReturnValueToJava(StringBuilder sb, int indent, VarOpts opts) {
         if (opts.isCritical()) {
             Utils.appendIndent(sb, indent)
                 .append("if (RESULT.address() == 0) return null;\n");
@@ -301,7 +303,7 @@ public class ArrayTypeInfo extends TypeInfo {
             .append("if (RES_SEG.isNull()) return null;\n");
         Utils.appendIndent(sb, indent)
             .append("return ");
-        var typeName = javaType(opts);
+        var typeName = javaTypeForField(opts);
         if (elementType instanceof ByteTypeInfo) {
             sb.append("RES_SEG.get()");
         } else {
@@ -311,10 +313,13 @@ public class ArrayTypeInfo extends TypeInfo {
     }
 
     @Override
-    public boolean paramDependOnPooledAllocator(VarOpts opts) {
+    public AllocationForParam allocationInfoForParam(VarOpts opts) {
         if (opts.isRaw()) {
-            return false;
+            return AllocationForParam.noAllocationRequired();
         }
-        return opts.isPointerGeneral();
+        if (opts.isPointerGeneral()) {
+            return AllocationForParam.ofPooledAllocator();
+        }
+        return AllocationForParam.noAllocationRequired();
     }
 }

@@ -28,12 +28,12 @@ public abstract class NoGenReferenceTypeInfo extends BuiltInReferenceTypeInfo {
     }
 
     @Override
-    public String memoryLayout(VarOpts opts) {
+    public String memoryLayoutForField(VarOpts opts) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public String javaType(VarOpts opts) {
+    public String javaTypeForField(VarOpts opts) {
         throw new UnsupportedOperationException();
     }
 
@@ -53,12 +53,12 @@ public abstract class NoGenReferenceTypeInfo extends BuiltInReferenceTypeInfo {
     }
 
     @Override
-    public String convertToNativeCallArgument(String name, VarOpts opts) {
+    public String convertParamToInvokeExactArgument(String name, VarOpts opts) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public void returnValueFormatting(StringBuilder sb, int indent, VarOpts opts) {
+    public void convertInvokeExactReturnValueToJava(StringBuilder sb, int indent, VarOpts opts) {
         throw new UnsupportedOperationException();
     }
 }

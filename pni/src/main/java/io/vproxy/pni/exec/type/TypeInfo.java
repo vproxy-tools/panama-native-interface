@@ -1,5 +1,7 @@
 package io.vproxy.pni.exec.type;
 
+import io.vproxy.pni.exec.internal.AllocationForParam;
+import io.vproxy.pni.exec.internal.AllocationForReturnedValue;
 import io.vproxy.pni.exec.internal.VarOpts;
 
 import java.util.List;
@@ -67,9 +69,17 @@ public abstract class TypeInfo {
 
     abstract public long nativeMemoryAlign(VarOpts opts);
 
-    abstract public String memoryLayout(VarOpts opts);
+    abstract public String memoryLayoutForField(VarOpts opts);
 
-    abstract public String javaType(VarOpts opts);
+    abstract public String javaTypeForField(VarOpts opts);
+
+    public String javaTypeForParam(VarOpts opts) {
+        return javaTypeForField(opts);
+    }
+
+    public String javaTypeForReturn(VarOpts opts) {
+        return javaTypeForParam(opts);
+    }
 
     abstract public void generateGetterSetter(StringBuilder sb, int indent, String fieldName, VarOpts opts);
 
@@ -82,19 +92,15 @@ public abstract class TypeInfo {
         return name();
     }
 
-    public abstract String convertToNativeCallArgument(String name, VarOpts opts);
+    public abstract String convertParamToInvokeExactArgument(String name, VarOpts opts);
 
-    public String sizeForUserAllocatorForNativeCallExtraArgument(@SuppressWarnings("unused") VarOpts opts) {
-        return null;
+    public AllocationForReturnedValue allocationInfoForReturnValue(VarOpts opts) {
+        return AllocationForReturnedValue.noAllocationRequired();
     }
 
-    public String sizeForPooledAllocatorForNativeCallExtraArgument(@SuppressWarnings("unused") VarOpts opts) {
-        return null;
-    }
+    public abstract void convertInvokeExactReturnValueToJava(StringBuilder sb, int indent, VarOpts opts);
 
-    public abstract void returnValueFormatting(StringBuilder sb, int indent, VarOpts opts);
-
-    public boolean paramDependOnPooledAllocator(@SuppressWarnings("unused") VarOpts opts) {
-        return false;
+    public AllocationForParam allocationInfoForParam(VarOpts opts) {
+        return AllocationForParam.noAllocationRequired();
     }
 }

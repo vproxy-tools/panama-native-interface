@@ -123,7 +123,7 @@ public class AstParam {
     }
 
     public ParamOpts paramOpts() {
-        return ParamOpts.of(typeRef.paramDependOnPooledAllocator(varOpts()));
+        return ParamOpts.of(typeRef.allocationInfoForParam(varOpts()).requireAllocator());
     }
 
     public void generateC(StringBuilder sb, int indent) {
@@ -133,7 +133,7 @@ public class AstParam {
 
     public void generateParam(StringBuilder sb, int indent) {
         Utils.appendIndent(sb, indent);
-        sb.append(typeRef.javaType(varOpts())).append(" ").append(name);
+        sb.append(typeRef.javaTypeForParam(varOpts())).append(" ").append(name);
     }
 
     public void generateMethodHandle(StringBuilder sb, int indent) {
@@ -143,6 +143,6 @@ public class AstParam {
 
     public void generateConvert(StringBuilder sb, int indent) {
         Utils.appendIndent(sb, indent);
-        sb.append(typeRef.convertToNativeCallArgument(name, varOpts()));
+        sb.append(typeRef.convertParamToInvokeExactArgument(name, varOpts()));
     }
 }

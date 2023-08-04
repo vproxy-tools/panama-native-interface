@@ -32,12 +32,12 @@ public class CallSiteTypeInfo extends BuiltInReferenceTypeInfo {
     }
 
     @Override
-    public String memoryLayout(VarOpts opts) {
+    public String memoryLayoutForField(VarOpts opts) {
         return "ValueLayout.ADDRESS_UNALIGNED";
     }
 
     @Override
-    public String javaType(VarOpts opts) {
+    public String javaTypeForField(VarOpts opts) {
         if (opts.getGenericParams().get(0) instanceof VoidRefTypeInfo) {
             return "io.vproxy.pni.CallSite<Void>";
         }
@@ -60,7 +60,7 @@ public class CallSiteTypeInfo extends BuiltInReferenceTypeInfo {
     }
 
     @Override
-    public String convertToNativeCallArgument(String name, VarOpts opts) {
+    public String convertParamToInvokeExactArgument(String name, VarOpts opts) {
         if (opts.getGenericParams().get(0) instanceof VoidRefTypeInfo) {
             return "PNIFunc.VoidFunc.of(" + name + ").MEMORY";
         }
@@ -68,7 +68,7 @@ public class CallSiteTypeInfo extends BuiltInReferenceTypeInfo {
     }
 
     @Override
-    public void returnValueFormatting(StringBuilder sb, int indent, VarOpts opts) {
+    public void convertInvokeExactReturnValueToJava(StringBuilder sb, int indent, VarOpts opts) {
         throw new UnsupportedOperationException();
     }
 
