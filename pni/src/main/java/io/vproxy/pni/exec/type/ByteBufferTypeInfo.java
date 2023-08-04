@@ -130,7 +130,7 @@ public class ByteBufferTypeInfo extends BuiltInReferenceTypeInfo {
     public void returnValueFormatting(StringBuilder sb, int indent, VarOpts opts) {
         if (opts.isCritical()) {
             Utils.appendIndent(sb, indent)
-                .append("if (RESULT == null) return null;\n");
+                .append("if (RESULT.address() == 0) return null;\n");
             Utils.appendIndent(sb, indent)
                 .append("var RES_SEG = new PNIBuf(RESULT);\n");
         } else {

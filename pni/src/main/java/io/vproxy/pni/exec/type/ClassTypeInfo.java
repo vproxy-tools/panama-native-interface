@@ -140,7 +140,7 @@ public class ClassTypeInfo extends TypeInfo {
 
     @Override
     public String convertToNativeCallArgument(String name, VarOpts opts) {
-        return name + ".MEMORY";
+        return "(MemorySegment) (" + name + " == null ? MemorySegment.NULL : " + name + ".MEMORY)";
     }
 
     @Override

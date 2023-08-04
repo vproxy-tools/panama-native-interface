@@ -139,12 +139,15 @@ public class StringTypeInfo extends BuiltInReferenceTypeInfo {
 
     @Override
     public void returnValueFormatting(StringBuilder sb, int indent, VarOpts opts) {
-        if (!opts.isCritical()) {
+        if (opts.isCritical()) {
+            Utils.appendIndent(sb, indent)
+                .append("return RESULT.address() == 0 ? null : new PNIString(RESULT);\n");
+        } else {
             Utils.appendIndent(sb, indent)
                 .append("var RESULT = ENV.returnPointer();\n");
+            Utils.appendIndent(sb, indent)
+                .append("return RESULT == null ? null : new PNIString(RESULT);\n");
         }
-        Utils.appendIndent(sb, indent)
-            .append("return RESULT == null ? null : new PNIString(RESULT);\n");
     }
 
     @Override

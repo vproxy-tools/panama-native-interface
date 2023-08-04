@@ -269,12 +269,12 @@ public class ArrayTypeInfo extends TypeInfo {
     public String convertToNativeCallArgument(String name, VarOpts opts) {
         if (opts.isRaw()) {
             if (elementType instanceof ByteTypeInfo) {
-                return name;
+                return "(MemorySegment) (" + name + " == null ? MemorySegment.NULL : " + name + ")";
             } else {
-                return name + ".MEMORY";
+                return "(MemorySegment) (" + name + " == null ? MemorySegment.NULL : " + name + ".MEMORY)";
             }
         } else {
-            return "PNIBuf.of(POOLED, " + name + ").MEMORY";
+            return "PNIBuf.memoryOf(POOLED, " + name + ")";
         }
     }
 

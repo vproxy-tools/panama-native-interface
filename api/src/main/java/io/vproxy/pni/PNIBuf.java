@@ -34,9 +34,19 @@ public class PNIBuf {
         return new PNIBuf(allocator, v);
     }
 
+    public static MemorySegment memoryOf(Allocator allocator, MemorySegment v) {
+        if (v == null) return MemorySegment.NULL;
+        return of(allocator, v).MEMORY;
+    }
+
     public static PNIBuf of(Allocator allocator, BoolArray v) {
         if (v == null) return null;
         return new PNIBuf(allocator, v.MEMORY);
+    }
+
+    public static MemorySegment memoryOf(Allocator allocator, BoolArray v) {
+        if (v == null) return MemorySegment.NULL;
+        return of(allocator, v).MEMORY;
     }
 
     public static PNIBuf of(Allocator allocator, CharArray v) {
@@ -44,9 +54,19 @@ public class PNIBuf {
         return new PNIBuf(allocator, v.MEMORY);
     }
 
+    public static MemorySegment memoryOf(Allocator allocator, CharArray v) {
+        if (v == null) return MemorySegment.NULL;
+        return of(allocator, v).MEMORY;
+    }
+
     public static PNIBuf of(Allocator allocator, DoubleArray v) {
         if (v == null) return null;
         return new PNIBuf(allocator, v.MEMORY);
+    }
+
+    public static MemorySegment memoryOf(Allocator allocator, DoubleArray v) {
+        if (v == null) return MemorySegment.NULL;
+        return of(allocator, v).MEMORY;
     }
 
     public static PNIBuf of(Allocator allocator, FloatArray v) {
@@ -54,9 +74,19 @@ public class PNIBuf {
         return new PNIBuf(allocator, v.MEMORY);
     }
 
+    public static MemorySegment memoryOf(Allocator allocator, FloatArray v) {
+        if (v == null) return MemorySegment.NULL;
+        return of(allocator, v).MEMORY;
+    }
+
     public static PNIBuf of(Allocator allocator, IntArray v) {
         if (v == null) return null;
         return new PNIBuf(allocator, v.MEMORY);
+    }
+
+    public static MemorySegment memoryOf(Allocator allocator, IntArray v) {
+        if (v == null) return MemorySegment.NULL;
+        return of(allocator, v).MEMORY;
     }
 
     public static PNIBuf of(Allocator allocator, LongArray v) {
@@ -64,14 +94,29 @@ public class PNIBuf {
         return new PNIBuf(allocator, v.MEMORY);
     }
 
+    public static MemorySegment memoryOf(Allocator allocator, LongArray v) {
+        if (v == null) return MemorySegment.NULL;
+        return of(allocator, v).MEMORY;
+    }
+
     public static PNIBuf of(Allocator allocator, ShortArray v) {
         if (v == null) return null;
         return new PNIBuf(allocator, v.MEMORY);
     }
 
+    public static MemorySegment memoryOf(Allocator allocator, ShortArray v) {
+        if (v == null) return MemorySegment.NULL;
+        return of(allocator, v).MEMORY;
+    }
+
     public static PNIBuf of(Allocator allocator, RefArray<?> v) {
         if (v == null) return null;
         return new PNIBuf(allocator, v.MEMORY);
+    }
+
+    public static MemorySegment memoryOf(Allocator allocator, RefArray<?> v) {
+        if (v == null) return MemorySegment.NULL;
+        return of(allocator, v).MEMORY;
     }
 
     private static final VarHandle bufVH = LAYOUT.varHandle(

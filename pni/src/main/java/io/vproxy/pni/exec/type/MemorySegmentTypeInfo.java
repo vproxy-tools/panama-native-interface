@@ -81,7 +81,7 @@ public class MemorySegmentTypeInfo extends BuiltInReferenceTypeInfo {
 
     @Override
     public String convertToNativeCallArgument(String name, VarOpts opts) {
-        return name;
+        return "(MemorySegment) (" + name + " == null ? MemorySegment.NULL : " + name + ")";
     }
 
     @Override
