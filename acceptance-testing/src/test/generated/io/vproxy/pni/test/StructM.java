@@ -36,7 +36,7 @@ public class StructM {
         ENV.reset();
         int ERR;
         try {
-            ERR = (int) this.nnn.invokeExact(ENV.MEMORY, MEMORY, n.MEMORY);
+            ERR = (int) this.nnn.invokeExact(ENV.MEMORY, MEMORY, (MemorySegment) (n == null ? MemorySegment.NULL : n.MEMORY));
         } catch (Throwable THROWABLE) {
             throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
@@ -89,4 +89,4 @@ public class StructM {
         }
     }
 }
-// sha256:acd75f5020c68c12793390be054c4d1c2ec7d77882bd62cca2dcf890066b7440
+// sha256:8ac30306da613c04bc0cd734b4fccdaef0c17d9f8aa149ea2de991430afc4ce8

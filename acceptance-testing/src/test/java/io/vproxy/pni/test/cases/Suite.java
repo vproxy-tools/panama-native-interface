@@ -11,6 +11,7 @@ import org.junit.runner.RunWith;
     TestStructUnionAnnotation.class,
     TestGCCCompatibility.class,
     TestRawArrays.class,
+    TestNull.class,
 })
 public class Suite {
 }

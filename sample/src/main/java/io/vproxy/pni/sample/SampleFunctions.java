@@ -22,7 +22,7 @@ public class SampleFunctions {
         ENV.reset();
         int ERR;
         try {
-            ERR = (int) this.read.invokeExact(ENV.MEMORY, fd, buf.MEMORY);
+            ERR = (int) this.read.invokeExact(ENV.MEMORY, fd, (MemorySegment) (buf == null ? MemorySegment.NULL : buf.MEMORY));
         } catch (Throwable THROWABLE) {
             throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
@@ -33,4 +33,4 @@ public class SampleFunctions {
         return ENV.returnInt();
     }
 }
-// sha256:5385289665fbb7c18f474e68259a4e855e95d044e71d0b30ebf7ee54b48bc15c
+// sha256:1c0d09e47bc7921d25be1fce7648971b0271271f82b203213e1471e4965291b3

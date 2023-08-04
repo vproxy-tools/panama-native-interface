@@ -169,6 +169,6 @@ public class TestFunc {
 
         s = Files.readAllLines(Path.of("src", "test", "generated", "io", "vproxy", "pni", "test", "Func.java"));
         lastLine = s.get(s.size() - 1);
-        assertEquals("// sha256:29e74b3ba3f0b335b5fc2c718ff4f278d870c3b88935b8dd3e4bd88c7dbdfada", lastLine);
+        assertEquals("// sha256:945c1450e6c72c20df00da8524e094993e2e305461e4960cd8a599372137edd6", lastLine);
     }
 }

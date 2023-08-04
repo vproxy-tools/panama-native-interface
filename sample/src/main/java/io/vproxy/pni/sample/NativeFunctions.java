@@ -103,7 +103,7 @@ public class NativeFunctions {
         ENV.reset();
         int ERR;
         try {
-            ERR = (int) this.write.invokeExact(ENV.MEMORY, fd, mem, off, len);
+            ERR = (int) this.write.invokeExact(ENV.MEMORY, fd, (MemorySegment) (mem == null ? MemorySegment.NULL : mem), off, len);
         } catch (Throwable THROWABLE) {
             throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
@@ -120,7 +120,7 @@ public class NativeFunctions {
         ENV.reset();
         int ERR;
         try {
-            ERR = (int) this.read.invokeExact(ENV.MEMORY, fd, mem, off, len);
+            ERR = (int) this.read.invokeExact(ENV.MEMORY, fd, (MemorySegment) (mem == null ? MemorySegment.NULL : mem), off, len);
         } catch (Throwable THROWABLE) {
             throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
@@ -131,4 +131,4 @@ public class NativeFunctions {
         return ENV.returnInt();
     }
 }
-// sha256:9bde619e8db36c0984b30fa29da1769c6013838cef47048aca71086163b0a213
+// sha256:009b33794df067e261e0abd0b2ab2ab2e9fc695cb7689fded8dfb4a8c88055b5

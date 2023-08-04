@@ -588,7 +588,7 @@ public class PrimitiveStruct {
         try (var POOLED = Allocator.ofPooled()) {
             int ERR;
             try {
-                ERR = (int) this.func3.invokeExact(ENV.MEMORY, MEMORY, PNIBuf.of(POOLED, byteArray).MEMORY, PNIBuf.of(POOLED, unsignedByteArray).MEMORY, PNIBuf.of(POOLED, intArray).MEMORY, PNIBuf.of(POOLED, unsignedIntArray).MEMORY, PNIBuf.of(POOLED, longArray).MEMORY, PNIBuf.of(POOLED, unsignedLongArray).MEMORY, PNIBuf.of(POOLED, shortArray).MEMORY, PNIBuf.of(POOLED, unsignedShortArray).MEMORY);
+                ERR = (int) this.func3.invokeExact(ENV.MEMORY, MEMORY, PNIBuf.memoryOf(POOLED, byteArray), PNIBuf.memoryOf(POOLED, unsignedByteArray), PNIBuf.memoryOf(POOLED, intArray), PNIBuf.memoryOf(POOLED, unsignedIntArray), PNIBuf.memoryOf(POOLED, longArray), PNIBuf.memoryOf(POOLED, unsignedLongArray), PNIBuf.memoryOf(POOLED, shortArray), PNIBuf.memoryOf(POOLED, unsignedShortArray));
             } catch (Throwable THROWABLE) {
                 throw PanamaUtils.convertInvokeExactException(THROWABLE);
             }
@@ -603,7 +603,7 @@ public class PrimitiveStruct {
     public void func3Critical(MemorySegment byteArray, MemorySegment unsignedByteArray, IntArray intArray, IntArray unsignedIntArray, LongArray longArray, LongArray unsignedLongArray, ShortArray shortArray, ShortArray unsignedShortArray) {
         try (var POOLED = Allocator.ofPooled()) {
             try {
-                this.func3Critical.invokeExact(MEMORY, PNIBuf.of(POOLED, byteArray).MEMORY, PNIBuf.of(POOLED, unsignedByteArray).MEMORY, PNIBuf.of(POOLED, intArray).MEMORY, PNIBuf.of(POOLED, unsignedIntArray).MEMORY, PNIBuf.of(POOLED, longArray).MEMORY, PNIBuf.of(POOLED, unsignedLongArray).MEMORY, PNIBuf.of(POOLED, shortArray).MEMORY, PNIBuf.of(POOLED, unsignedShortArray).MEMORY);
+                this.func3Critical.invokeExact(MEMORY, PNIBuf.memoryOf(POOLED, byteArray), PNIBuf.memoryOf(POOLED, unsignedByteArray), PNIBuf.memoryOf(POOLED, intArray), PNIBuf.memoryOf(POOLED, unsignedIntArray), PNIBuf.memoryOf(POOLED, longArray), PNIBuf.memoryOf(POOLED, unsignedLongArray), PNIBuf.memoryOf(POOLED, shortArray), PNIBuf.memoryOf(POOLED, unsignedShortArray));
             } catch (Throwable THROWABLE) {
                 throw PanamaUtils.convertInvokeExactException(THROWABLE);
             }
@@ -617,7 +617,7 @@ public class PrimitiveStruct {
         try (var POOLED = Allocator.ofPooled()) {
             int ERR;
             try {
-                ERR = (int) this.func4.invokeExact(ENV.MEMORY, MEMORY, PNIBuf.of(POOLED, charArray).MEMORY, PNIBuf.of(POOLED, doubleArray).MEMORY, PNIBuf.of(POOLED, floatArray).MEMORY, PNIBuf.of(POOLED, booleanArray).MEMORY);
+                ERR = (int) this.func4.invokeExact(ENV.MEMORY, MEMORY, PNIBuf.memoryOf(POOLED, charArray), PNIBuf.memoryOf(POOLED, doubleArray), PNIBuf.memoryOf(POOLED, floatArray), PNIBuf.memoryOf(POOLED, booleanArray));
             } catch (Throwable THROWABLE) {
                 throw PanamaUtils.convertInvokeExactException(THROWABLE);
             }
@@ -632,7 +632,7 @@ public class PrimitiveStruct {
     public void func4Critical(CharArray charArray, DoubleArray doubleArray, FloatArray floatArray, BoolArray booleanArray) {
         try (var POOLED = Allocator.ofPooled()) {
             try {
-                this.func4Critical.invokeExact(MEMORY, PNIBuf.of(POOLED, charArray).MEMORY, PNIBuf.of(POOLED, doubleArray).MEMORY, PNIBuf.of(POOLED, floatArray).MEMORY, PNIBuf.of(POOLED, booleanArray).MEMORY);
+                this.func4Critical.invokeExact(MEMORY, PNIBuf.memoryOf(POOLED, charArray), PNIBuf.memoryOf(POOLED, doubleArray), PNIBuf.memoryOf(POOLED, floatArray), PNIBuf.memoryOf(POOLED, booleanArray));
             } catch (Throwable THROWABLE) {
                 throw PanamaUtils.convertInvokeExactException(THROWABLE);
             }
@@ -1915,4 +1915,4 @@ public class PrimitiveStruct {
         }
     }
 }
-// sha256:2af4e6231a8abd0b4a4cfcda57c1c9110d5284180132563107321a52e1289404
+// sha256:4f59859f39c3b84210001368064d5089a1281e77788f813df9ce5b4dc64a7821

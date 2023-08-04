@@ -22,7 +22,7 @@ public class RawArrays {
         ENV.reset();
         int ERR;
         try {
-            ERR = (int) this.byteArray.invokeExact(ENV.MEMORY, array, off);
+            ERR = (int) this.byteArray.invokeExact(ENV.MEMORY, (MemorySegment) (array == null ? MemorySegment.NULL : array), off);
         } catch (Throwable THROWABLE) {
             throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
@@ -38,7 +38,7 @@ public class RawArrays {
         ENV.reset();
         int ERR;
         try {
-            ERR = (int) this.unsignedByteArray.invokeExact(ENV.MEMORY, array, off);
+            ERR = (int) this.unsignedByteArray.invokeExact(ENV.MEMORY, (MemorySegment) (array == null ? MemorySegment.NULL : array), off);
         } catch (Throwable THROWABLE) {
             throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
@@ -54,7 +54,7 @@ public class RawArrays {
         ENV.reset();
         int ERR;
         try {
-            ERR = (int) this.boolArray.invokeExact(ENV.MEMORY, array.MEMORY, off);
+            ERR = (int) this.boolArray.invokeExact(ENV.MEMORY, (MemorySegment) (array == null ? MemorySegment.NULL : array.MEMORY), off);
         } catch (Throwable THROWABLE) {
             throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
@@ -70,7 +70,7 @@ public class RawArrays {
         ENV.reset();
         int ERR;
         try {
-            ERR = (int) this.charArray.invokeExact(ENV.MEMORY, array.MEMORY, off);
+            ERR = (int) this.charArray.invokeExact(ENV.MEMORY, (MemorySegment) (array == null ? MemorySegment.NULL : array.MEMORY), off);
         } catch (Throwable THROWABLE) {
             throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
@@ -86,7 +86,7 @@ public class RawArrays {
         ENV.reset();
         int ERR;
         try {
-            ERR = (int) this.doubleArray.invokeExact(ENV.MEMORY, array.MEMORY, off);
+            ERR = (int) this.doubleArray.invokeExact(ENV.MEMORY, (MemorySegment) (array == null ? MemorySegment.NULL : array.MEMORY), off);
         } catch (Throwable THROWABLE) {
             throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
@@ -102,7 +102,7 @@ public class RawArrays {
         ENV.reset();
         int ERR;
         try {
-            ERR = (int) this.floatArray.invokeExact(ENV.MEMORY, array.MEMORY, off);
+            ERR = (int) this.floatArray.invokeExact(ENV.MEMORY, (MemorySegment) (array == null ? MemorySegment.NULL : array.MEMORY), off);
         } catch (Throwable THROWABLE) {
             throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
@@ -118,7 +118,7 @@ public class RawArrays {
         ENV.reset();
         int ERR;
         try {
-            ERR = (int) this.intArray.invokeExact(ENV.MEMORY, array.MEMORY, off);
+            ERR = (int) this.intArray.invokeExact(ENV.MEMORY, (MemorySegment) (array == null ? MemorySegment.NULL : array.MEMORY), off);
         } catch (Throwable THROWABLE) {
             throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
@@ -134,7 +134,7 @@ public class RawArrays {
         ENV.reset();
         int ERR;
         try {
-            ERR = (int) this.unsignedIntArray.invokeExact(ENV.MEMORY, array.MEMORY, off);
+            ERR = (int) this.unsignedIntArray.invokeExact(ENV.MEMORY, (MemorySegment) (array == null ? MemorySegment.NULL : array.MEMORY), off);
         } catch (Throwable THROWABLE) {
             throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
@@ -150,7 +150,7 @@ public class RawArrays {
         ENV.reset();
         int ERR;
         try {
-            ERR = (int) this.longArray.invokeExact(ENV.MEMORY, array.MEMORY, off);
+            ERR = (int) this.longArray.invokeExact(ENV.MEMORY, (MemorySegment) (array == null ? MemorySegment.NULL : array.MEMORY), off);
         } catch (Throwable THROWABLE) {
             throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
@@ -166,7 +166,7 @@ public class RawArrays {
         ENV.reset();
         int ERR;
         try {
-            ERR = (int) this.unsignedLongArray.invokeExact(ENV.MEMORY, array.MEMORY, off);
+            ERR = (int) this.unsignedLongArray.invokeExact(ENV.MEMORY, (MemorySegment) (array == null ? MemorySegment.NULL : array.MEMORY), off);
         } catch (Throwable THROWABLE) {
             throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
@@ -182,7 +182,7 @@ public class RawArrays {
         ENV.reset();
         int ERR;
         try {
-            ERR = (int) this.shortArray.invokeExact(ENV.MEMORY, array.MEMORY, off);
+            ERR = (int) this.shortArray.invokeExact(ENV.MEMORY, (MemorySegment) (array == null ? MemorySegment.NULL : array.MEMORY), off);
         } catch (Throwable THROWABLE) {
             throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
@@ -198,7 +198,7 @@ public class RawArrays {
         ENV.reset();
         int ERR;
         try {
-            ERR = (int) this.unsignedShortArray.invokeExact(ENV.MEMORY, array.MEMORY, off);
+            ERR = (int) this.unsignedShortArray.invokeExact(ENV.MEMORY, (MemorySegment) (array == null ? MemorySegment.NULL : array.MEMORY), off);
         } catch (Throwable THROWABLE) {
             throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
@@ -214,7 +214,7 @@ public class RawArrays {
         ENV.reset();
         int ERR;
         try {
-            ERR = (int) this.structArray.invokeExact(ENV.MEMORY, array.MEMORY, off, ALLOCATOR.allocate(io.vproxy.pni.test.ObjectStruct.LAYOUT.byteSize()));
+            ERR = (int) this.structArray.invokeExact(ENV.MEMORY, (MemorySegment) (array == null ? MemorySegment.NULL : array.MEMORY), off, ALLOCATOR.allocate(io.vproxy.pni.test.ObjectStruct.LAYOUT.byteSize()));
         } catch (Throwable THROWABLE) {
             throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
@@ -232,7 +232,7 @@ public class RawArrays {
         try (var POOLED = Allocator.ofPooled()) {
             int ERR;
             try {
-                ERR = (int) this.structArrayNotRaw.invokeExact(ENV.MEMORY, PNIBuf.of(POOLED, array).MEMORY, off, ALLOCATOR.allocate(io.vproxy.pni.test.ObjectStruct.LAYOUT.byteSize()));
+                ERR = (int) this.structArrayNotRaw.invokeExact(ENV.MEMORY, PNIBuf.memoryOf(POOLED, array), off, ALLOCATOR.allocate(io.vproxy.pni.test.ObjectStruct.LAYOUT.byteSize()));
             } catch (Throwable THROWABLE) {
                 throw PanamaUtils.convertInvokeExactException(THROWABLE);
             }
@@ -244,4 +244,4 @@ public class RawArrays {
         }
     }
 }
-// sha256:c271390654b3c7cd50eb01eab1d22cb9dc3ac4db80a0cecf7b1357489f80a6b5
+// sha256:dfaba3b8075316f7deec0cdbd880b1755ab18d98f641c815e81b67ff71a08bb9

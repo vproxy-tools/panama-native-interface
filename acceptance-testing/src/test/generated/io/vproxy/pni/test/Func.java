@@ -130,7 +130,7 @@ public class Func {
         ENV.reset();
         int ERR;
         try {
-            ERR = (int) this.writeByteArray.invokeExact(ENV.MEMORY, fd, buf, off, len);
+            ERR = (int) this.writeByteArray.invokeExact(ENV.MEMORY, fd, (MemorySegment) (buf == null ? MemorySegment.NULL : buf), off, len);
         } catch (Throwable THROWABLE) {
             throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
@@ -170,4 +170,4 @@ public class Func {
         return RESULT;
     }
 }
-// sha256:29e74b3ba3f0b335b5fc2c718ff4f278d870c3b88935b8dd3e4bd88c7dbdfada
+// sha256:945c1450e6c72c20df00da8524e094993e2e305461e4960cd8a599372137edd6
