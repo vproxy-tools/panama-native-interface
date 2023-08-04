@@ -40,12 +40,17 @@ typedef PNI_PACK(struct, PNIEnv, {
     };
 }) PNIEnv;
 
+typedef PNI_PACK(struct, PNIEnvUnionPlaceHolder, {
+    uint64_t : 64;
+    uint64_t : 64;
+}) PNIEnvUnionPlaceHolder;
+
 #define PNIEnvExpand(EnvType, ValueType) \
 typedef PNI_PACK(struct, PNIEnv_##EnvType, { \
     PNIException ex; \
     union { \
         ValueType return_; \
-        PNIBuf __placeholder__; \
+        PNIEnvUnionPlaceHolder __placeholder__; \
     }; \
 }) PNIEnv_##EnvType;
 // end #define PNIEnvExpand
@@ -59,11 +64,12 @@ PNIEnvExpand(long, int64_t)
 PNIEnvExpand(short, int16_t)
 PNIEnvExpand(bool, uint8_t)
 PNIEnvExpand(pointer, void*)
+PNIEnvExpand(string, char*)
 PNIEnvExpand(buf, PNIBuf)
 
 typedef PNI_PACK(struct, PNIEnv_void, {
     PNIException ex;
-    void* __placeholder__;
+    PNIEnvUnionPlaceHolder __placeholder__;
 }) PNIEnv_void;
 
 static inline int PNIThrowException(void* _env, const char* extype, char* message) {

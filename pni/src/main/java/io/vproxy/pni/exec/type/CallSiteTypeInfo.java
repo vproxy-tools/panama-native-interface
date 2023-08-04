@@ -8,6 +8,11 @@ public class CallSiteTypeInfo extends BuiltInReferenceTypeInfo {
     }
 
     @Override
+    public String nativeEnvType(VarOpts opts) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
     public String nativeType(String fieldName, VarOpts opts) {
         var ret = "PNIFunc *";
         if (fieldName != null) {

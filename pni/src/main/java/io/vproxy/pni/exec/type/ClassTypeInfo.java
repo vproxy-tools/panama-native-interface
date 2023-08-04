@@ -41,7 +41,7 @@ public class ClassTypeInfo extends TypeInfo {
 
     @Override
     public String nativeEnvType(VarOpts opts) {
-        return "pointer";
+        return cls.nativeName();
     }
 
     @Override

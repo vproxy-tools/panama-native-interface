@@ -9,6 +9,11 @@ public class MemorySegmentTypeInfo extends BuiltInReferenceTypeInfo {
     }
 
     @Override
+    public String nativeEnvType(VarOpts opts) {
+        return "pointer";
+    }
+
+    @Override
     public String nativeType(String fieldName, VarOpts opts) {
         var ret = "void *";
         if (fieldName != null) {

@@ -694,6 +694,10 @@ public class AstClass {
     }
 
     public void generateC(StringBuilder sb, int indent, boolean generateCompleteFile) {
+        if (generateCompleteFile && (needToGenerateTypeDefinition() || isSkip())) {
+            sb.append("\n");
+            sb.append("PNIEnvExpand(").append(nativeName()).append(", ").append(nativeTypeName()).append(" *)\n");
+        }
         if (needToGenerateTypeDefinition() || !generateCompleteFile) {
             if (generateCompleteFile) {
                 sb.append("\n");

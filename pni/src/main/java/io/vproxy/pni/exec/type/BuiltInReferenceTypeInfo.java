@@ -1,7 +1,5 @@
 package io.vproxy.pni.exec.type;
 
-import io.vproxy.pni.exec.internal.VarOpts;
-
 public abstract class BuiltInReferenceTypeInfo extends TypeInfo {
     private final String name;
     private final String internalName;
@@ -26,10 +24,5 @@ public abstract class BuiltInReferenceTypeInfo extends TypeInfo {
     @Override
     public String desc() {
         return desc;
-    }
-
-    @Override
-    public String nativeEnvType(VarOpts opts) {
-        return "pointer";
     }
 }

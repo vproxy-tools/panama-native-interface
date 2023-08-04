@@ -14,6 +14,11 @@ public class StringTypeInfo extends BuiltInReferenceTypeInfo {
     }
 
     @Override
+    public String nativeEnvType(VarOpts opts) {
+        return "string";
+    }
+
+    @Override
     public String nativeType(String fieldName, VarOpts opts) {
         String ret;
         if (opts.isPointerGeneral()) {
