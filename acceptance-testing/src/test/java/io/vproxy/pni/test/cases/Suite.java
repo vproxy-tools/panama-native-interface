@@ -12,6 +12,7 @@ import org.junit.runner.RunWith;
     TestGCCCompatibility.class,
     TestRawArrays.class,
     TestNull.class,
+    TestGeneratedFileFormat.class,
 })
 public class Suite {
 }
