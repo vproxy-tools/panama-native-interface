@@ -108,18 +108,18 @@ project(":api") {
         publications {
             maven(MavenPublication) {
                 from components.java
-                artifactId 'vproxy-' + project.name
+                artifactId 'pni-' + project.name
 
                 artifact(javadocJar)
 
                 pom {
-                    name = 'io.vproxy.' + project.name
-                    description = 'vproxy component ' + project.name
+                    name = 'io.vproxy.pni-' + project.name
+                    description = 'panama native interface ' + project.name
                     url = 'https://vproxy.io'
                     licenses {
                         license {
                             name = 'MIT License'
-                            url = 'https://github.com/wkgcass/vproxy/blob/master/LICENSE'
+                            url = 'https://github.com/vproxy-tools/panama-native-interface/blob/master/LICENSE'
                         }
                     }
                     developers {
@@ -130,9 +130,9 @@ project(":api") {
                         }
                     }
                     scm {
-                        connection = 'scm:git:git://github.com/wkgcass/vproxy.git'
-                        developerConnection = 'scm:git:git://github.com/wkgcass/vproxy.git'
-                        url = 'https://github.com/wkgcass/vproxy'
+                        connection = 'scm:git:git://github.com/vproxy-tools/panama-native-interface.git'
+                        developerConnection = 'scm:git:git://github.com/vproxy-tools/panama-native-interface.git'
+                        url = 'https://github.com/vproxy-tools/panama-native-interface'
                     }
                 }
                 pom.withXml {
