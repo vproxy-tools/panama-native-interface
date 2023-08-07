@@ -175,6 +175,17 @@ project(":pni") {
     }
 }
 
+project(":unittest") {
+    dependencies {
+        implementation project(":api")
+        implementation project(":pni")
+        testImplementation 'junit:junit:4.13.2'
+    }
+    task runUnitTest(type: Test) {
+        include '**/Suite.class'
+    }
+}
+
 project(":acceptance-testing-template") {
     compileJava {
         options.compilerArgs += '-parameters'

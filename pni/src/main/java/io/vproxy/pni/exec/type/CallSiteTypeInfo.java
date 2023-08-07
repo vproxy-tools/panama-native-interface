@@ -33,7 +33,7 @@ public class CallSiteTypeInfo extends BuiltInReferenceTypeInfo {
 
     @Override
     public String memoryLayoutForField(VarOpts opts) {
-        return "ValueLayout.ADDRESS_UNALIGNED";
+        throw new UnsupportedOperationException();
     }
 
     @Override

@@ -25,6 +25,10 @@ public class AstField {
         this.type = f.desc;
     }
 
+    public AstField() {
+        // for unit testing only
+    }
+
     public void ref(TypePool pool) {
         typeRef = pool.find(type);
         for (var a : annos) {

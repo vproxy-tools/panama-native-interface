@@ -49,6 +49,10 @@ public class AstMethod {
         throwTypes.addAll(m.exceptions);
     }
 
+    public AstMethod() {
+        // for unit testing only
+    }
+
     public void ref(TypePool pool) {
         returnTypeRef = pool.find(returnType);
         for (var p : params) {

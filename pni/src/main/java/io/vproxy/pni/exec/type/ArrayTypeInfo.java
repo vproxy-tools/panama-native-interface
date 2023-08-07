@@ -87,7 +87,7 @@ public class ArrayTypeInfo extends TypeInfo {
                 if (opts.isUnsigned()) {
                     ret = "int8_t *"; // u prefix will be added later
                 } else {
-                    ret = "char *";
+                    ret = "void *";
                 }
             } else if (elementType instanceof BooleanTypeInfo) {
                 ret = "uint8_t *";

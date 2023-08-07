@@ -1,5 +1,7 @@
 package io.vproxy.pni.exec.internal;
 
+import java.util.Objects;
+
 public class AllocationForReturnedValue {
     private final String extra;
     private final String pooled;
@@ -40,5 +42,23 @@ public class AllocationForReturnedValue {
 
     public String byteSize() {
         return extra != null ? extra : pooled;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        AllocationForReturnedValue that = (AllocationForReturnedValue) o;
+
+        if (!Objects.equals(extra, that.extra)) return false;
+        return Objects.equals(pooled, that.pooled);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = extra != null ? extra.hashCode() : 0;
+        result = 31 * result + (pooled != null ? pooled.hashCode() : 0);
+        return result;
     }
 }

@@ -23,6 +23,10 @@ public class AstAnno {
         }
     }
 
+    public AstAnno() {
+        // for unit testing only
+    }
+
     public void ref(TypePool pool) {
         typeRef = pool.find(type);
     }

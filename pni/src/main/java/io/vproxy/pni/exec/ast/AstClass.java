@@ -36,6 +36,10 @@ public class AstClass {
         }
     }
 
+    public AstClass() {
+        // for unit testing only
+    }
+
     public void ref(TypePool pool) {
         for (var a : annos) {
             a.ref(pool);

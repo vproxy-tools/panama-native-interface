@@ -24,4 +24,19 @@ public class AllocationForParam {
     public boolean requirePooledAllocator() {
         return pooled;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        AllocationForParam that = (AllocationForParam) o;
+
+        return pooled == that.pooled;
+    }
+
+    @Override
+    public int hashCode() {
+        return (pooled ? 1 : 0);
+    }
 }

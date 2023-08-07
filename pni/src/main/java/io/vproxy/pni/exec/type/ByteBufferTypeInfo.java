@@ -45,11 +45,7 @@ public class ByteBufferTypeInfo extends BuiltInReferenceTypeInfo {
 
     @Override
     public long nativeMemorySize(VarOpts opts) {
-        if (opts.isRaw()) {
-            return 8; // address
-        } else {
-            return 16; // PNIBuf.LAYOUT.byteSize();
-        }
+        return 16; // PNIBuf.LAYOUT.byteSize();
     }
 
     @Override
