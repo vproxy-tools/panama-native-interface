@@ -10,7 +10,7 @@ public interface PNIRawArrays {
     @Impl(
         // language="c"
         c = """
-            env->return_ = array[off];
+            env->return_ = ((int8_t*) array)[off];
             return 0;
             """
     )

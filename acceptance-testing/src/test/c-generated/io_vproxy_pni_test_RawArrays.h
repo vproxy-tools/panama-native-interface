@@ -18,7 +18,7 @@ extern "C" {
 extern "C" {
 #endif
 
-JNIEXPORT int JNICALL Java_io_vproxy_pni_test_RawArrays_byteArray(PNIEnv_byte * env, char * array, int32_t off);
+JNIEXPORT int JNICALL Java_io_vproxy_pni_test_RawArrays_byteArray(PNIEnv_byte * env, void * array, int32_t off);
 JNIEXPORT int JNICALL Java_io_vproxy_pni_test_RawArrays_unsignedByteArray(PNIEnv_byte * env, uint8_t * array, int32_t off);
 JNIEXPORT int JNICALL Java_io_vproxy_pni_test_RawArrays_boolArray(PNIEnv_bool * env, uint8_t * array, int32_t off);
 JNIEXPORT int JNICALL Java_io_vproxy_pni_test_RawArrays_charArray(PNIEnv_char * env, uint16_t * array, int32_t off);
@@ -37,4 +37,4 @@ JNIEXPORT int JNICALL Java_io_vproxy_pni_test_RawArrays_structArrayNotRaw(PNIEnv
 }
 #endif
 #endif // _Included_io_vproxy_pni_test_RawArrays
-// sha256:0ed57629f334c35fa2ba734d6c996385c97279063532eeb95c1a5cfb1c57df7b
+// sha256:1ba1993f3839819d042bd17e2d9c48f6f06d042a76fbac68eb256e027271b0a8

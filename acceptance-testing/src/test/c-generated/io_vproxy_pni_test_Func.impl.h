@@ -31,7 +31,7 @@ JNIEXPORT int JNICALL Java_io_vproxy_pni_test_Func_writeWithErrno(PNIEnv_int * e
     return 0;
 }
 
-JNIEXPORT int JNICALL Java_io_vproxy_pni_test_Func_writeByteArray(PNIEnv_int * env, int32_t fd, char * buf, int32_t off, int32_t len) {
+JNIEXPORT int JNICALL Java_io_vproxy_pni_test_Func_writeByteArray(PNIEnv_int * env, int32_t fd, void * buf, int32_t off, int32_t len) {
     int ret = write(fd, buf + off, len);
     if (ret < 0) {
         return PNIThrowException(env, "java.io.Exception", strerror(errno));
@@ -59,4 +59,4 @@ JNIEXPORT void * JNICALL JavaCritical_io_vproxy_pni_test_Func_callJavaFromCCriti
 #ifdef __cplusplus
 }
 #endif
-// sha256:b830d3a4e2c8ea90663517a23930941c4a7cde072b1e88179df978090fbbdfe8
+// sha256:5dbf609163d3f0e62dd1e04fa351071596ff89a8f807498963cd70cdad2e3b0c

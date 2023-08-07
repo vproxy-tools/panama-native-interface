@@ -4,8 +4,8 @@
 extern "C" {
 #endif
 
-JNIEXPORT int JNICALL Java_io_vproxy_pni_test_RawArrays_byteArray(PNIEnv_byte * env, char * array, int32_t off) {
-    env->return_ = array[off];
+JNIEXPORT int JNICALL Java_io_vproxy_pni_test_RawArrays_byteArray(PNIEnv_byte * env, void * array, int32_t off) {
+    env->return_ = ((int8_t*) array)[off];
     return 0;
 }
 
@@ -78,4 +78,4 @@ JNIEXPORT int JNICALL Java_io_vproxy_pni_test_RawArrays_structArrayNotRaw(PNIEnv
 #ifdef __cplusplus
 }
 #endif
-// sha256:bb1e55be45ae1a5e0959664fc81fdaf204d62ae62d4f57e291d1ede207a5b1ba
+// sha256:6945483310369212c0d564823ddf85f58b36a27f1e00d0ef3edf8670c50132f7

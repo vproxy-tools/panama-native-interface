@@ -161,11 +161,11 @@ public class TestFunc {
     public void shaCheck() throws Exception {
         var s = Files.readAllLines(Path.of("src", "test", "c-generated", "io_vproxy_pni_test_Func.h"));
         var lastLine = s.get(s.size() - 1);
-        assertEquals("// sha256:fdd1e6efe40c5dab7fe400b94fed1a8b13ed1c33a8d6ad3489b72e33437d5b81", lastLine);
+        assertEquals("// sha256:68cb36d6797717757b40f66cefeba2ef7bd9873ab3d0b96b94b7a20783d7822e", lastLine);
 
         s = Files.readAllLines(Path.of("src", "test", "c-generated", "io_vproxy_pni_test_Func.impl.h"));
         lastLine = s.get(s.size() - 1);
-        assertEquals("// sha256:b830d3a4e2c8ea90663517a23930941c4a7cde072b1e88179df978090fbbdfe8", lastLine);
+        assertEquals("// sha256:5dbf609163d3f0e62dd1e04fa351071596ff89a8f807498963cd70cdad2e3b0c", lastLine);
 
         s = Files.readAllLines(Path.of("src", "test", "generated", "io", "vproxy", "pni", "test", "Func.java"));
         lastLine = s.get(s.size() - 1);

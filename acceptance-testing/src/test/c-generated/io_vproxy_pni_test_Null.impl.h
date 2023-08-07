@@ -19,7 +19,7 @@ JNIEXPORT uint8_t JNICALL JavaCritical_io_vproxy_pni_test_Null_testParamCritical
            longArr == NULL && shortArr == NULL && oArr == NULL;
 }
 
-JNIEXPORT int JNICALL Java_io_vproxy_pni_test_Null_testParamRaw(PNIEnv_bool * env, Null * self, void * buf, char * byteArr, uint8_t * boolArr, uint16_t * charArr, float * floatArr, double * doubleArr, int32_t * intArr, int64_t * longArr, int16_t * shortArr, ObjectStruct * oArr) {
+JNIEXPORT int JNICALL Java_io_vproxy_pni_test_Null_testParamRaw(PNIEnv_bool * env, Null * self, void * buf, void * byteArr, uint8_t * boolArr, uint16_t * charArr, float * floatArr, double * doubleArr, int32_t * intArr, int64_t * longArr, int16_t * shortArr, ObjectStruct * oArr) {
     env->return_= buf == NULL &&
                   byteArr == NULL && boolArr == NULL && charArr == NULL &&
                   floatArr == NULL && doubleArr == NULL && intArr == NULL &&
@@ -27,7 +27,7 @@ JNIEXPORT int JNICALL Java_io_vproxy_pni_test_Null_testParamRaw(PNIEnv_bool * en
     return 0;
 }
 
-JNIEXPORT uint8_t JNICALL JavaCritical_io_vproxy_pni_test_Null_testParamRawCritical(Null * self, void * buf, char * byteArr, uint8_t * boolArr, uint16_t * charArr, float * floatArr, double * doubleArr, int32_t * intArr, int64_t * longArr, int16_t * shortArr, ObjectStruct * oArr) {
+JNIEXPORT uint8_t JNICALL JavaCritical_io_vproxy_pni_test_Null_testParamRawCritical(Null * self, void * buf, void * byteArr, uint8_t * boolArr, uint16_t * charArr, float * floatArr, double * doubleArr, int32_t * intArr, int64_t * longArr, int16_t * shortArr, ObjectStruct * oArr) {
     return buf == NULL &&
            byteArr == NULL && boolArr == NULL && charArr == NULL &&
            floatArr == NULL && doubleArr == NULL && intArr == NULL &&
@@ -204,4 +204,4 @@ JNIEXPORT PNIBuf * JNICALL JavaCritical_io_vproxy_pni_test_Null_returnOArrCritic
 #ifdef __cplusplus
 }
 #endif
-// sha256:2398c6ce935412b5aaf9cac2bd5fe443cd48dd5df961a7b481f54a822459f722
+// sha256:ffa602e323a62b89fcfe7501d76dfa4f49f23fe845c15299b4fea55ec7969d93
