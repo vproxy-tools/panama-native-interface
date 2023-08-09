@@ -1,6 +1,7 @@
 package io.vproxy.pni.exec.internal;
 
 import io.vproxy.pni.exec.CompilerOptions;
+import io.vproxy.pni.exec.Main;
 import io.vproxy.pni.exec.ast.AstClass;
 
 import java.io.File;
@@ -24,6 +25,7 @@ public class CFileWriter {
             return;
         }
         var hash = Utils.sha256(cCode);
+        cCode += Utils.metadata(opts);
         cCode += "// sha256:" + hash + "\n";
         String fileName = fileName();
         Path path = Path.of(dir.getAbsolutePath(), fileName);

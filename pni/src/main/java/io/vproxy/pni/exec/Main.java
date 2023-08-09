@@ -5,10 +5,21 @@ import io.vproxy.pni.exec.internal.*;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedHashMap;
 import java.util.regex.Pattern;
 
 public class Main {
-    public static final String VERSION = "21.0.0.1"; // _THE_VERSION_
+    public static final String VERSION;
+
+    static {
+        final String _VERSION = "21.0.0.1"; // _THE_VERSION_
+        var testing = System.getProperty("io.vproxy.pni.Testing", "false");
+        if (testing.equals("true")) {
+            VERSION = "test";
+        } else {
+            VERSION = _VERSION;
+        }
+    }
 
     private static final String HELP_STR = (
         "Usage: java -jar pni.jar <options>\n" +
@@ -18,12 +29,13 @@ public class Main {
         "  -h <directory>\n" +
         "        Specify where to place generated native header files\n" +
         "  -f <regexp>                  Only generate for selected classes (default .*)\n" +
+        "  -M <key>=<value>             Add metadata on generated files\n" +
         "  --help, -help, -?            Print this help message\n" +
         "  -verbose                     Output messages about what the compiler is doing\n" +
         "  --version, -version          Version information\n" +
         "\n" +
         "Note:\n" +
-        "  -cp,-f can appear multiple times\n"
+        "  -cp,-f,-M can appear multiple times\n"
     ).trim();
 
     public static void main(String[] args) {
@@ -35,6 +47,7 @@ public class Main {
         var filter = new ArrayList<Pattern>();
         String d = null;
         String h = null;
+        LinkedHashMap<String, String> metadata = new LinkedHashMap<>();
         boolean verbose = false;
         for (int i = 0; i < args.length; i++) {
             var a = args[i];
@@ -81,6 +94,27 @@ public class Main {
                 }
                 ++i;
                 filter.add(Pattern.compile(next));
+            } else if (a.equals("-M")) {
+                if (next == null) {
+                    System.out.println("missing k=v after -M");
+                    System.exit(1);
+                    return;
+                }
+                ++i;
+                if (!next.contains("=")) {
+                    System.out.println("missing '=' after -M");
+                    System.exit(1);
+                    return;
+                }
+                int index = next.indexOf("=");
+                var key = next.substring(index).trim();
+                var value = next.substring(index + 1).trim();
+                if (key.isEmpty()) {
+                    System.out.println("cannot use empty key for metadata");
+                    System.exit(1);
+                    return;
+                }
+                metadata.put(key, value);
             } else if (a.equals("-verbose")) {
                 verbose = true;
             } else if (a.equals("-version") || a.equals("--version")) {
@@ -129,7 +163,7 @@ public class Main {
         }
 
         var opts = new CompilerOptions(
-            verbose
+            verbose, metadata
         );
         var classReaders = new JavaReader(cp).read(opts);
         var classes = new ASTReader(classReaders).read(opts);

@@ -1,5 +1,7 @@
 package io.vproxy.pni.exec.internal;
 
+import io.vproxy.pni.exec.CompilerOptions;
+import io.vproxy.pni.exec.Main;
 import io.vproxy.pni.exec.ast.AstAnno;
 import org.objectweb.asm.tree.AnnotationNode;
 
@@ -369,5 +371,16 @@ public class Utils {
             return (Boolean) v;
         }
         return false;
+    }
+
+    public static String metadata(CompilerOptions opts) {
+        var sb = new StringBuilder();
+        sb.append("// metadata.generator-version: pni ").append(Main.VERSION).append("\n");
+        for (var entry : opts.metadata().entrySet()) {
+            var k = entry.getKey();
+            var v = entry.getValue();
+            sb.append("// metadata.").append(k).append(": ").append(v).append("\n");
+        }
+        return sb.toString();
     }
 }

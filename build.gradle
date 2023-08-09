@@ -201,6 +201,7 @@ project(":acceptance-testing-template") {
     task generateAcceptanceTesting(type: JavaExec) {
         classpath = project(":pni").sourceSets.main.runtimeClasspath
         mainClass = 'io.vproxy.pni.exec.Main'
+        systemProperty("io.vproxy.pni.Testing", "true")
         workingDir project.rootProject.rootDir.getAbsolutePath()
         args '-cp', 'acceptance-testing-template/build/classes/java/main', '-d', 'acceptance-testing/src/test/generated', '-h', 'acceptance-testing/src/test/c-generated'
 
@@ -251,6 +252,7 @@ project(":sample") {
     task generateSample(type: JavaExec) {
         classpath = project(":pni").sourceSets.main.runtimeClasspath
         mainClass = 'io.vproxy.pni.exec.Main'
+        systemProperty("io.vproxy.pni.Testing", "true")
         workingDir project.rootProject.rootDir.getAbsolutePath()
         args '-cp', 'sample/build/classes/java/main', '-d', 'sample/src/main/java', '-h', 'sample/src/main/c'
 
@@ -314,7 +316,7 @@ project(":playground") {
 }
 
 def loadVersion() {
-    def PREFIX = "public static final String VERSION = \""
+    def PREFIX = "final String _VERSION = \""
     def SUFFIX = "\"; // _THE_VERSION_"
     def ver = file(projectDir.getAbsolutePath() + "/pni/src/main/java/io/vproxy/pni/exec/Main.java")
     def lines = ver.getText().split("\n")

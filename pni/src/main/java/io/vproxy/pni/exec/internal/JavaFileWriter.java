@@ -1,6 +1,7 @@
 package io.vproxy.pni.exec.internal;
 
 import io.vproxy.pni.exec.CompilerOptions;
+import io.vproxy.pni.exec.Main;
 import io.vproxy.pni.exec.ast.AstClass;
 
 import java.io.File;
@@ -17,6 +18,7 @@ public class JavaFileWriter {
     public void flush(File baseDir, CompilerOptions opts) {
         var javaCode = cls.generateJava();
         var hash = Utils.sha256(javaCode);
+        javaCode += Utils.metadata(opts);
         javaCode += "// sha256:" + hash + "\n";
         var file = Utils.ensureJavaFile(baseDir, cls.fullName());
         if (opts.verbose()) {
