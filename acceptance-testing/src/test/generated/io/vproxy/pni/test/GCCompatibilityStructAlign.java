@@ -128,4 +128,5 @@ public class GCCompatibilityStructAlign {
         }
     }
 }
+// metadata.generator-version: pni test
 // sha256:ef861ff88cead7d831fa551060cb4e4272a97e7ad4cd58f9546c73554f0c38d7

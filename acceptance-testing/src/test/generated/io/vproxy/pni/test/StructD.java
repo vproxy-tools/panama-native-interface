@@ -95,4 +95,5 @@ public class StructD {
         }
     }
 }
+// metadata.generator-version: pni test
 // sha256:7904035ca157b7ce920be830d91254db9b267705f45bcb402fcede60fd9df3ac

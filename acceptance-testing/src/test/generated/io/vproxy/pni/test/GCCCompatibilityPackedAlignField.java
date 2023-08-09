@@ -142,4 +142,5 @@ public class GCCCompatibilityPackedAlignField {
         }
     }
 }
+// metadata.generator-version: pni test
 // sha256:4ce31ccf04d16134c64f06b3b600a160ecd8d31fd0c95502443267e492fb01b9

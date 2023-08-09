@@ -33,4 +33,5 @@ JNIEXPORT void * JNICALL JavaCritical_io_vproxy_pni_test_Func_callJavaFromCCriti
 }
 #endif
 #endif // _Included_io_vproxy_pni_test_Func
+// metadata.generator-version: pni test
 // sha256:68cb36d6797717757b40f66cefeba2ef7bd9873ab3d0b96b94b7a20783d7822e

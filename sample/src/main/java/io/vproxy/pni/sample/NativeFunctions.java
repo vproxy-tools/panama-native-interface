@@ -131,4 +131,5 @@ public class NativeFunctions {
         return ENV.returnInt();
     }
 }
+// metadata.generator-version: pni test
 // sha256:009b33794df067e261e0abd0b2ab2ab2e9fc695cb7689fded8dfb4a8c88055b5

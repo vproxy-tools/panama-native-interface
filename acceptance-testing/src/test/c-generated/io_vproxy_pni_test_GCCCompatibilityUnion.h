@@ -23,4 +23,5 @@ PNIEnvExpand(GCCCompatibilityUnion, GCCCompatibilityUnion *)
 }
 #endif
 #endif // _Included_io_vproxy_pni_test_GCCCompatibilityUnion
+// metadata.generator-version: pni test
 // sha256:42c30a0c667153f023e406772d108e9ba08ab8c2441916baab17002c4aaa360e

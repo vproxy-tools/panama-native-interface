@@ -105,4 +105,5 @@ public class UnionO {
         }
     }
 }
+// metadata.generator-version: pni test
 // sha256:976e7f3079c08b53685a831fb48b12caf0c667c1dd47a5ae064e223f6b02e562

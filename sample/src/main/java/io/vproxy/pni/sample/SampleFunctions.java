@@ -33,4 +33,5 @@ public class SampleFunctions {
         return ENV.returnInt();
     }
 }
+// metadata.generator-version: pni test
 // sha256:1c0d09e47bc7921d25be1fce7648971b0271271f82b203213e1471e4965291b3

@@ -31,4 +31,5 @@ PNI_PACK(union, UnionC, {
 }
 #endif
 #endif // _Included_io_vproxy_pni_test_UnionC
+// metadata.generator-version: pni test
 // sha256:385283da704d91e782cb57ccdd43e63b6e88936f3229e08e02c14d9e630f05d0

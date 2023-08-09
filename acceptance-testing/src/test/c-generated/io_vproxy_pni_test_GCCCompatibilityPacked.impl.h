@@ -17,4 +17,5 @@ JNIEXPORT int JNICALL Java_io_vproxy_pni_test_GCCCompatibilityPacked_size(PNIEnv
 #ifdef __cplusplus
 }
 #endif
+// metadata.generator-version: pni test
 // sha256:98076d0530de448618c9df89f26e668c62c13cc8675de0d9048d949490c272b1

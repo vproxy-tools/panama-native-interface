@@ -133,4 +133,5 @@ public class GCCCompatibilityNonPackedContainPacked {
         }
     }
 }
+// metadata.generator-version: pni test
 // sha256:a0b1c2b5b87b1e8537529c0c9687bb9a9e2a0754d5db4a4e3777a32febb82400

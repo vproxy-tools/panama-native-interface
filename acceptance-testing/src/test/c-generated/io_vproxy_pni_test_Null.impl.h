@@ -204,4 +204,5 @@ JNIEXPORT PNIBuf * JNICALL JavaCritical_io_vproxy_pni_test_Null_returnOArrCritic
 #ifdef __cplusplus
 }
 #endif
+// metadata.generator-version: pni test
 // sha256:ffa602e323a62b89fcfe7501d76dfa4f49f23fe845c15299b4fea55ec7969d93

@@ -33,4 +33,5 @@ JNIEXPORT int JNICALL Java_io_vproxy_pni_test_GCCompatibilityNormalContainUnion_
 }
 #endif
 #endif // _Included_io_vproxy_pni_test_GCCompatibilityNormalContainUnion
+// metadata.generator-version: pni test
 // sha256:c5d95ac3af62cb852051aeffe0571d8ccffa2781bd144604ed5a141ec0d1c64a

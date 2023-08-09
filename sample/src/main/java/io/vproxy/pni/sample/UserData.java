@@ -101,4 +101,5 @@ public class UserData {
         }
     }
 }
+// metadata.generator-version: pni test
 // sha256:41a0d92251ba52da265253262792a317fe4b4465e25ea6ef5e1fa1a335200526

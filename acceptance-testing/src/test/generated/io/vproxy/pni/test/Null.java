@@ -984,4 +984,5 @@ public class Null {
         }
     }
 }
+// metadata.generator-version: pni test
 // sha256:cbe0f5936787c3ee59a09707acd14de3c2d332a81c480f022be94794ee79b7a4

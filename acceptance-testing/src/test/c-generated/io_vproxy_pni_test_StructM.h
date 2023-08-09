@@ -32,4 +32,5 @@ JNIEXPORT int JNICALL Java_io_vproxy_pni_test_StructM_nnn(PNIEnv_void * env, str
 }
 #endif
 #endif // _Included_io_vproxy_pni_test_StructM
+// metadata.generator-version: pni test
 // sha256:dcd1313a2eea604d3ac338770d30a9b6f840fa5a218f9bfdfaed69035b9a49e2

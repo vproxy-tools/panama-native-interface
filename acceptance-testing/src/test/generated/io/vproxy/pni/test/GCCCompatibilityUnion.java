@@ -155,4 +155,5 @@ public class GCCCompatibilityUnion {
         }
     }
 }
+// metadata.generator-version: pni test
 // sha256:dd7bed1b3b6cfac8dacfef6b14b5aaf5aa3329408cfaab6a78bdd3e598cc233c

@@ -28,4 +28,5 @@ JNIEXPORT int JNICALL Java_io_vproxy_pni_test_GCCCompatibilityAlignFieldPacked_s
 }
 #endif
 #endif // _Included_io_vproxy_pni_test_GCCCompatibilityAlignFieldPacked
+// metadata.generator-version: pni test
 // sha256:e4506557ace47888142e1b287759e74c02a9b72061dba6e23e459f86eb568766

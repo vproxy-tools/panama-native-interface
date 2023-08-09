@@ -75,4 +75,5 @@ JNIEXPORT int JNICALL Java_io_vproxy_pni_sample_NativeFunctions_read(PNIEnv_int 
 #ifdef __cplusplus
 }
 #endif
+// metadata.generator-version: pni test
 // sha256:435d54adc20f443176cd69bf514f46f500fe9aed9c4efd35ebaaf3ec711b6bb8

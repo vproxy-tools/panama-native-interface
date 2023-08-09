@@ -1915,4 +1915,5 @@ public class PrimitiveStruct {
         }
     }
 }
+// metadata.generator-version: pni test
 // sha256:4f59859f39c3b84210001368064d5089a1281e77788f813df9ce5b4dc64a7821

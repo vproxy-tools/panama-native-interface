@@ -127,4 +127,5 @@ public class UnionP {
         }
     }
 }
+// metadata.generator-version: pni test
 // sha256:09e1fc0b95c2d1c125210f2b8191fc63f5d5742da458fb28f8eeb2c705898b2a

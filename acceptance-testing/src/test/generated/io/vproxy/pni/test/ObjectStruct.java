@@ -346,4 +346,5 @@ public class ObjectStruct {
         }
     }
 }
+// metadata.generator-version: pni test
 // sha256:71ec809ca2e8c3862294c53a2cca0b3ca39d8320f220bd8d1aabf632dddd3c99

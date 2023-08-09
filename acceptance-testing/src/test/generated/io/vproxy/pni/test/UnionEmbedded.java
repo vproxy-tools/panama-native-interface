@@ -101,4 +101,5 @@ public class UnionEmbedded {
         }
     }
 }
+// metadata.generator-version: pni test
 // sha256:30f55f76eeb439ec3139025710a9b1deda2830b3ee39baa5e256d5cedd416d59

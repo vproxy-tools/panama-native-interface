@@ -48,4 +48,5 @@ JNIEXPORT uint8_t JNICALL JavaCritical_io_vproxy_pni_test_ObjectStruct_checkPoin
 }
 #endif
 #endif // _Included_io_vproxy_pni_test_ObjectStruct
+// metadata.generator-version: pni test
 // sha256:04faee6437cf29c2eb3944159730115266e3215e2745679cf8e2e649ab6d0722

@@ -19,4 +19,5 @@ JNIEXPORT int JNICALL Java_io_vproxy_pni_test_GCCCompatibilityAlignField_size(PN
 #ifdef __cplusplus
 }
 #endif
+// metadata.generator-version: pni test
 // sha256:877c576b31c7da67d854d4fe233a893fbd1e9aa52ccf95435ab8fc2f0734516a

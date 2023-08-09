@@ -37,4 +37,5 @@ JNIEXPORT int JNICALL Java_io_vproxy_pni_test_RawArrays_structArrayNotRaw(PNIEnv
 }
 #endif
 #endif // _Included_io_vproxy_pni_test_RawArrays
+// metadata.generator-version: pni test
 // sha256:1ba1993f3839819d042bd17e2d9c48f6f06d042a76fbac68eb256e027271b0a8

@@ -89,4 +89,5 @@ public class StructM {
         }
     }
 }
+// metadata.generator-version: pni test
 // sha256:8ac30306da613c04bc0cd734b4fccdaef0c17d9f8aa149ea2de991430afc4ce8

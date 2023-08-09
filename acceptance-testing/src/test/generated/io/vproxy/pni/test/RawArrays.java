@@ -244,4 +244,5 @@ public class RawArrays {
         }
     }
 }
+// metadata.generator-version: pni test
 // sha256:dfaba3b8075316f7deec0cdbd880b1755ab18d98f641c815e81b67ff71a08bb9

@@ -138,4 +138,5 @@ public class MBuf {
         }
     }
 }
+// metadata.generator-version: pni test
 // sha256:15640ba6f676e35866210173933293e173856c9adbec9ea7343160bf035ef7e2

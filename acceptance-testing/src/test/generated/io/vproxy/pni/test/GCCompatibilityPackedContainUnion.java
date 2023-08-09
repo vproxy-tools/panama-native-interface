@@ -208,4 +208,5 @@ public class GCCompatibilityPackedContainUnion {
         }
     }
 }
+// metadata.generator-version: pni test
 // sha256:6e14e626ac8ffaa740a84935a1dd2ee13910c51dc1b588cea6967e2ccb971df8

@@ -433,4 +433,5 @@ public class StructA {
         }
     }
 }
+// metadata.generator-version: pni test
 // sha256:a5aed648737727eace418a81c725106c24d73c2e2660baf1255b277d8ec2501c

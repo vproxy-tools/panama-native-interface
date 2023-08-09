@@ -168,4 +168,5 @@ public class Func {
         return RESULT;
     }
 }
+// metadata.generator-version: pni test
 // sha256:e90c48cb8333394dcb3f15c404936b2d30df7e5c845607dd59e3db2d82b7cde6

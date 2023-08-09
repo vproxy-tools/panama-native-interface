@@ -38,4 +38,5 @@ PNI_PACK(struct, mbuf_t, {
 }
 #endif
 #endif // _Included_io_vproxy_pni_sample_MBuf
+// metadata.generator-version: pni test
 // sha256:166110e8de11fbb3ba3818b3090e55053cb1ef3951bc5c1c83a3623a85e5940c

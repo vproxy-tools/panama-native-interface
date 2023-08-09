@@ -95,4 +95,5 @@ public class UnionC {
         }
     }
 }
+// metadata.generator-version: pni test
 // sha256:87d0bc138f452dbded7b533b4bc776ebe8e26d9a7f1947003d5ce6227ed7d3a2

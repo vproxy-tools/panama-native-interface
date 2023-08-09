@@ -19,4 +19,5 @@ JNIEXPORT int JNICALL Java_io_vproxy_pni_test_GCCCompatibilityPackedContainNonPa
 #ifdef __cplusplus
 }
 #endif
+// metadata.generator-version: pni test
 // sha256:94a957ab38fad65b7e815001eb52d45514eb710a68c82ab0f913442a90a2393d

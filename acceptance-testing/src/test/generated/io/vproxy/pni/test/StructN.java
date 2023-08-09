@@ -127,4 +127,5 @@ public class StructN {
         }
     }
 }
+// metadata.generator-version: pni test
 // sha256:084a6420d5081b75b3d83dabe07be7850742fe188a574e66ec9a0f30926e1fde

@@ -21,4 +21,5 @@ extern "C" {
 }
 #endif
 #endif // _Included_io_vproxy_pni_test_UnionEmbedded
+// metadata.generator-version: pni test
 // sha256:f775a97a09212a249e2877d2867b916518f1073766f15a7ff9458b3588c1eeaf
