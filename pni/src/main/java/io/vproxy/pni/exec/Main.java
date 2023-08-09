@@ -5,6 +5,7 @@ import io.vproxy.pni.exec.internal.*;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.regex.Pattern;
 
 public class Main {
     public static final String VERSION = "21.0.0.1"; // _THE_VERSION_
@@ -16,9 +17,13 @@ public class Main {
         "  -d <directory>               Specify where to place generated class files\n" +
         "  -h <directory>\n" +
         "        Specify where to place generated native header files\n" +
+        "  -f <regexp>                  Only generate for selected classes (default .*)\n" +
         "  --help, -help, -?            Print this help message\n" +
         "  -verbose                     Output messages about what the compiler is doing\n" +
-        "  --version, -version          Version information\n"
+        "  --version, -version          Version information\n" +
+        "\n" +
+        "Note:\n" +
+        "  -cp,-f can appear multiple times\n"
     ).trim();
 
     public static void main(String[] args) {
@@ -27,6 +32,7 @@ public class Main {
             return;
         }
         var cp = new ArrayList<String>();
+        var filter = new ArrayList<Pattern>();
         String d = null;
         String h = null;
         boolean verbose = false;
@@ -67,6 +73,14 @@ public class Main {
                 }
                 ++i;
                 h = next.trim();
+            } else if (a.equals("-f")) {
+                if (next == null) {
+                    System.out.println("missing regexp after -f");
+                    System.exit(1);
+                    return;
+                }
+                ++i;
+                filter.add(Pattern.compile(next));
             } else if (a.equals("-verbose")) {
                 verbose = true;
             } else if (a.equals("-version") || a.equals("--version")) {
@@ -120,6 +134,20 @@ public class Main {
         var classReaders = new JavaReader(cp).read(opts);
         var classes = new ASTReader(classReaders).read(opts);
         for (var cls : classes) {
+            var generate = filter.isEmpty();
+            for (var f : filter) {
+                if (f.matcher(cls.fullName()).find()) {
+                    if (opts.verbose()) {
+                        System.out.println(cls.fullName() + " matches filtering rule " + f);
+                    }
+                    generate = true;
+                    break;
+                }
+            }
+            if (!generate) {
+                continue;
+            }
+
             new JavaFileWriter(cls).flush(new File(d), opts);
             new CFileWriter(cls).flush(new File(h), opts);
             new CImplFileWriter(cls).flush(new File(h), opts);
