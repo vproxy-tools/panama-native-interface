@@ -10,6 +10,8 @@ import java.lang.invoke.VarHandle;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
+import java.util.concurrent.locks.ReadWriteLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 public abstract class PNIFunc<T> {
     private static final Arena UPCALL_STUB_ARENA = Arena.ofShared(); // should not be released
@@ -58,9 +60,20 @@ public abstract class PNIFunc<T> {
         MEMORY = SunUnsafe.allocateMemory(LAYOUT.byteSize());
         this.func = func;
 
-        index = indexCounter.incrementAndGet();
+        var index = indexCounter.incrementAndGet();
+        while (index == 0) {
+            index = indexCounter.incrementAndGet();
+        }
+        this.index = index;
         indexVH.set(MEMORY, index);
         funcStorage.put(index, this);
+        if (funcFastStorage.length != 0) {
+            var arrIdx = (int) (index % funcFastStorage.length);
+            var wlock = funcFastStorageLock.writeLock();
+            wlock.lock();
+            funcFastStorage[arrIdx] = this;
+            wlock.unlock();
+        }
 
         funcVH.set(MEMORY, UPCALL_STUB_CALL);
         releaseVH.set(MEMORY, UPCALL_STUB_RELEASE);
@@ -68,6 +81,24 @@ public abstract class PNIFunc<T> {
 
     private static final AtomicLong indexCounter = new AtomicLong();
     private static final ConcurrentHashMap<Long, PNIFunc<?>> funcStorage = new ConcurrentHashMap<>();
+    private static final PNIFunc<?>[] funcFastStorage;
+    private static final ReadWriteLock funcFastStorageLock = new ReentrantReadWriteLock();
+
+    static {
+        int len = 4096;
+        final String KEY = "io.vproxy.pni.PNIFunc.funcFastStorage.length";
+        var strLen = System.getProperty(KEY, "4096");
+        try {
+            len = Integer.parseInt(strLen);
+        } catch (NumberFormatException e) {
+            System.out.println("[pni] invalid " + KEY + ": not a number " + strLen);
+        }
+        if (len < 0) {
+            System.out.println("[pni] invalid " + KEY + ": value should >= 0: " + len + ", the value is modified to 0");
+            len = 0;
+        }
+        funcFastStorage = new PNIFunc[len];
+    }
 
     private static final VarHandle indexVH = LAYOUT.varHandle(
         MemoryLayout.PathElement.groupElement("index")
@@ -83,8 +114,30 @@ public abstract class PNIFunc<T> {
 
     abstract protected MemorySegment getSegment(T t);
 
+    private static PNIFunc<?> tryToFindFuncFast(long index) {
+        if (funcFastStorage.length == 0) {
+            return null;
+        }
+        int arrIdx = (int) (index % funcFastStorage.length);
+        var rlock = funcFastStorageLock.readLock();
+        rlock.lock();
+        var func = funcFastStorage[arrIdx];
+        if (func == null) {
+            rlock.unlock();
+            return null;
+        }
+        if (func.index != index) {
+            func = null;
+        }
+        rlock.unlock();
+        return func;
+    }
+
     private static int call(long index, MemorySegment data) {
-        var func = funcStorage.get(index);
+        PNIFunc<?> func = tryToFindFuncFast(index);
+        if (func == null) {
+            func = funcStorage.get(index);
+        }
         if (func == null) {
             System.out.println("[PNI][WARN][PNIFunc#call] PNIFunc not found: index: " + index + ", data: " + data.address());
             return -1_000_000;
@@ -100,6 +153,16 @@ public abstract class PNIFunc<T> {
     }
 
     private static void release(long index) {
+        if (funcFastStorage.length != 0) {
+            int arrIdx = (int) (index % funcFastStorage.length);
+            var wlock = funcFastStorageLock.writeLock();
+            wlock.lock();
+            var func = funcFastStorage[arrIdx];
+            if (func != null && func.index == index) {
+                funcFastStorage[arrIdx] = null;
+            }
+            wlock.unlock();
+        }
         var func = funcStorage.remove(index);
         if (func == null) {
             System.out.println("[PNI][WARN][PNIFunc#release] PNIFunc not found: index: " + index);
