@@ -296,6 +296,11 @@ The pni program will scan all classes in classpath then generate Java and C code
 The generated Java types will share the same package as the template ones,  
 the generated C headers will have almost the same format as JNI output, see the following section for more details.
 
+If you have multiple projects, let's say project `A` and project `B`, where template files of `B` depends on
+template files of `A`, you can add both projects' classpath to `-cp`, and specify `-f <regexp>` to filter which
+class needs to be generated.  
+The regexp matches the full name of the class, for example `io\.vproxy\.luajn\.n\..*`.
+
 ### 4. Write native implementation
 
 All native functions are in the same pattern **if `@Critical` is NOT annotated**:
@@ -549,6 +554,8 @@ Any other combination except the above table is disallowed.
   This shouldn't be a problem, because normally people won't define
   "all upper case" type names or member fields.
 * The `CallSite<T>` is only allowed in parameters, you cannot use it in struct fields.  
-  However you can store it in a field inside your C code and use it later, even using it on a new thread.
+  However you can store it in a field inside your C code and use it later, even using it on a new thread.  
+  Also, in Java, you can construct `PNIFunc` objects using `PNIFunc.VoidFunc.of(...)` or `T.Func.of(...)` to
+  build a pointer to PNIFunc and retrieve memory of it using `func.MEMORY` then assign it to wherever you want.
 
 </details>
