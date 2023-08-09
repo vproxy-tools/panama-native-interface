@@ -91,10 +91,10 @@ public abstract class PNIFunc<T> {
         try {
             len = Integer.parseInt(strLen);
         } catch (NumberFormatException e) {
-            System.out.println("[pni] invalid " + KEY + ": not a number " + strLen);
+            System.out.println("[PNI][WARN][PNIFunc#cinit] invalid " + KEY + ": not a number " + strLen);
         }
         if (len < 0) {
-            System.out.println("[pni] invalid " + KEY + ": value should >= 0: " + len + ", the value is modified to 0");
+            System.out.println("[PNI][WARN][PNIFunc#cinit] invalid " + KEY + ": value should >= 0: " + len + ", the value is modified to 0");
             len = 0;
         }
         funcFastStorage = new PNIFunc[len];
@@ -109,6 +109,17 @@ public abstract class PNIFunc<T> {
     private static final VarHandle releaseVH = LAYOUT.varHandle(
         MemoryLayout.PathElement.groupElement("release")
     );
+    private static final VarHandle userdataVH = LAYOUT.varHandle(
+        MemoryLayout.PathElement.groupElement("userdata")
+    );
+
+    public MemorySegment getUserdata() {
+        return (MemorySegment) userdataVH.get(MEMORY);
+    }
+
+    public void setUserdata(MemorySegment userdata) {
+        userdataVH.set(MEMORY, userdata);
+    }
 
     abstract protected T construct(MemorySegment seg);
 
