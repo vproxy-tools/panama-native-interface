@@ -12,7 +12,7 @@ public class Main {
     public static final String VERSION;
 
     static {
-        final String _VERSION = "21.0.0.2"; // _THE_VERSION_
+        final String _VERSION = "21.0.0.3"; // _THE_VERSION_
         var testing = System.getProperty("io.vproxy.pni.Testing", "false");
         if (testing.equals("true")) {
             VERSION = "test";
