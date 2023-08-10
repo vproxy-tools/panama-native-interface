@@ -78,6 +78,7 @@ subprojects {
             showCauses true
             showExceptions true
             showStackTraces true
+            showStandardStreams true
         }
     }
 

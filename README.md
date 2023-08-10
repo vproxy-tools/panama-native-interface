@@ -372,8 +372,19 @@ You can release the memory after accessing the returned object by closing the al
 
 <details><summary>Click to reveal</summary>
 
-Panama provides a way for C to invoke Java methods. `Panama Native Interface` provides a simple encapsulation for this feature
-and makes the coding much easier.
+Panama provides a way for C to invoke Java methods. You can use `PanamaUtils.defineCFunction` or `PanamaUtils.defineCFunctionByName` to define C functions easily.
+
+1. Store an `Arena` globally, which is used to allocate memory for the defined function.
+2. Define a `static` Java method, and make it public.
+3. Call `PanamaUtils.defineCFunctionByName(arena, YouClassName.class, "yourMethodName")`
+
+Done!
+
+Note: only `primitive types` and `MemorySegment` are allowed to be used as the method parameter types to define C functions.
+
+---
+
+`Panama Native Interface` also provides another encapsulation, which allows you to pass lambda expressions to C.
 
 Use `CallSite<T>` as a method parameter in template classes, where `T` must be a `Struct` or `Union` or `java.lang.Void`.
 

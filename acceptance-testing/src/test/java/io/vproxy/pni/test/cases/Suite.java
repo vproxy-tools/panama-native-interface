@@ -13,6 +13,7 @@ import org.junit.runner.RunWith;
     TestRawArrays.class,
     TestNull.class,
     TestGeneratedFileFormat.class,
+    TestDefiningCFunction.class,
 })
 public class Suite {
 }

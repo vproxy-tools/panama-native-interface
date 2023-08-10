@@ -41,4 +41,5 @@ gcc -std=gnu99 -O2 \
     gcc_compatibility.c \
     io_vproxy_pni_test_RawArrays.c \
     io_vproxy_pni_test_Null.c \
+    io_vproxy_pni_test_DefiningCFunction.c \
     -o "$target"
