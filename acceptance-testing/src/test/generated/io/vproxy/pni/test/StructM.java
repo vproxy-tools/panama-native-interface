@@ -30,13 +30,13 @@ public class StructM {
         this(ALLOCATOR.allocate(LAYOUT.byteSize()));
     }
 
-    private final MethodHandle nnn = PanamaUtils.lookupPNIFunction(true, "Java_io_vproxy_pni_test_StructM_nnn", MemorySegment.class /* self */, io.vproxy.pni.test.StructN.LAYOUT.getClass() /* n */);
+    private static final MethodHandle nnnMH = PanamaUtils.lookupPNIFunction(true, "Java_io_vproxy_pni_test_StructM_nnn", MemorySegment.class /* self */, io.vproxy.pni.test.StructN.LAYOUT.getClass() /* n */);
 
     public void nnn(PNIEnv ENV, io.vproxy.pni.test.StructN n) {
         ENV.reset();
         int ERR;
         try {
-            ERR = (int) this.nnn.invokeExact(ENV.MEMORY, MEMORY, (MemorySegment) (n == null ? MemorySegment.NULL : n.MEMORY));
+            ERR = (int) this.nnnMH.invokeExact(ENV.MEMORY, MEMORY, (MemorySegment) (n == null ? MemorySegment.NULL : n.MEMORY));
         } catch (Throwable THROWABLE) {
             throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
@@ -90,4 +90,4 @@ public class StructM {
     }
 }
 // metadata.generator-version: pni test
-// sha256:8ac30306da613c04bc0cd734b4fccdaef0c17d9f8aa149ea2de991430afc4ce8
+// sha256:8fcc70818fd485d4e4ace28a625b0617a82153c4896bd6915643e36db86781dd

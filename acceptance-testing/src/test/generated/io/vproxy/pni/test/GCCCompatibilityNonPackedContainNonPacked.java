@@ -62,13 +62,13 @@ public class GCCCompatibilityNonPackedContainNonPacked {
         this(ALLOCATOR.allocate(LAYOUT.byteSize()));
     }
 
-    private final MethodHandle init = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_GCCCompatibilityNonPackedContainNonPacked_init", MemorySegment.class /* self */);
+    private static final MethodHandle initMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_GCCCompatibilityNonPackedContainNonPacked_init", MemorySegment.class /* self */);
 
     public void init(PNIEnv ENV) {
         ENV.reset();
         int ERR;
         try {
-            ERR = (int) this.init.invokeExact(ENV.MEMORY, MEMORY);
+            ERR = (int) this.initMH.invokeExact(ENV.MEMORY, MEMORY);
         } catch (Throwable THROWABLE) {
             throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
@@ -77,13 +77,13 @@ public class GCCCompatibilityNonPackedContainNonPacked {
         }
     }
 
-    private final MethodHandle size = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_GCCCompatibilityNonPackedContainNonPacked_size", MemorySegment.class /* self */);
+    private static final MethodHandle sizeMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_GCCCompatibilityNonPackedContainNonPacked_size", MemorySegment.class /* self */);
 
     public long size(PNIEnv ENV) {
         ENV.reset();
         int ERR;
         try {
-            ERR = (int) this.size.invokeExact(ENV.MEMORY, MEMORY);
+            ERR = (int) this.sizeMH.invokeExact(ENV.MEMORY, MEMORY);
         } catch (Throwable THROWABLE) {
             throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
@@ -138,4 +138,4 @@ public class GCCCompatibilityNonPackedContainNonPacked {
     }
 }
 // metadata.generator-version: pni test
-// sha256:583c4eb2e286fc95f13504ddb6a1a87606b98d0448dda32145bb5e38732587ab
+// sha256:bf9fd1420d0eb669e652b92c9bb11a70614a1d0ee10725ff55fd34ae378d73ae

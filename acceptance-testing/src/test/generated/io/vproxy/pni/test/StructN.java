@@ -51,13 +51,13 @@ public class StructN {
         this(ALLOCATOR.allocate(LAYOUT.byteSize()));
     }
 
-    private final MethodHandle retrieveS = PanamaUtils.lookupPNIFunction(true, "Java_io_vproxy_pni_test_StructN_retrieveS", MemorySegment.class /* self */);
+    private static final MethodHandle retrieveSMH = PanamaUtils.lookupPNIFunction(true, "Java_io_vproxy_pni_test_StructN_retrieveS", MemorySegment.class /* self */);
 
     public short retrieveS(PNIEnv ENV) {
         ENV.reset();
         int ERR;
         try {
-            ERR = (int) this.retrieveS.invokeExact(ENV.MEMORY, MEMORY);
+            ERR = (int) this.retrieveSMH.invokeExact(ENV.MEMORY, MEMORY);
         } catch (Throwable THROWABLE) {
             throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
@@ -67,13 +67,13 @@ public class StructN {
         return ENV.returnShort();
     }
 
-    private final MethodHandle retrieveL = PanamaUtils.lookupPNIFunction(true, "Java_io_vproxy_pni_test_StructN_retrieveL", MemorySegment.class /* self */);
+    private static final MethodHandle retrieveLMH = PanamaUtils.lookupPNIFunction(true, "Java_io_vproxy_pni_test_StructN_retrieveL", MemorySegment.class /* self */);
 
     public long retrieveL(PNIEnv ENV) {
         ENV.reset();
         int ERR;
         try {
-            ERR = (int) this.retrieveL.invokeExact(ENV.MEMORY, MEMORY);
+            ERR = (int) this.retrieveLMH.invokeExact(ENV.MEMORY, MEMORY);
         } catch (Throwable THROWABLE) {
             throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
@@ -128,4 +128,4 @@ public class StructN {
     }
 }
 // metadata.generator-version: pni test
-// sha256:084a6420d5081b75b3d83dabe07be7850742fe188a574e66ec9a0f30926e1fde
+// sha256:5624d5fd6f6b7568b713daf3f2cc04324105daf4bc159c3779fbdce52353270e

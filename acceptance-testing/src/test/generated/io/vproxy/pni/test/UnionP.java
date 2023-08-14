@@ -51,13 +51,13 @@ public class UnionP {
         this(ALLOCATOR.allocate(LAYOUT.byteSize()));
     }
 
-    private final MethodHandle retrieveI = PanamaUtils.lookupPNIFunction(true, "UnionP_retrieve_i", MemorySegment.class /* self */);
+    private static final MethodHandle retrieveIMH = PanamaUtils.lookupPNIFunction(true, "UnionP_retrieve_i", MemorySegment.class /* self */);
 
     public int retrieveI(PNIEnv ENV) {
         ENV.reset();
         int ERR;
         try {
-            ERR = (int) this.retrieveI.invokeExact(ENV.MEMORY, MEMORY);
+            ERR = (int) this.retrieveIMH.invokeExact(ENV.MEMORY, MEMORY);
         } catch (Throwable THROWABLE) {
             throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
@@ -67,13 +67,13 @@ public class UnionP {
         return ENV.returnInt();
     }
 
-    private final MethodHandle retrieveL = PanamaUtils.lookupPNIFunction(true, "UnionP_retrieve_l", MemorySegment.class /* self */);
+    private static final MethodHandle retrieveLMH = PanamaUtils.lookupPNIFunction(true, "UnionP_retrieve_l", MemorySegment.class /* self */);
 
     public long retrieveL(PNIEnv ENV) {
         ENV.reset();
         int ERR;
         try {
-            ERR = (int) this.retrieveL.invokeExact(ENV.MEMORY, MEMORY);
+            ERR = (int) this.retrieveLMH.invokeExact(ENV.MEMORY, MEMORY);
         } catch (Throwable THROWABLE) {
             throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
@@ -128,4 +128,4 @@ public class UnionP {
     }
 }
 // metadata.generator-version: pni test
-// sha256:09e1fc0b95c2d1c125210f2b8191fc63f5d5742da458fb28f8eeb2c705898b2a
+// sha256:063c4150369c39c859e26233b33776027c365dfd0a1db8ea7cea0dc4919182fb

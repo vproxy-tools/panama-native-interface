@@ -16,13 +16,13 @@ public class NativeFunctions {
         return INSTANCE;
     }
 
-    private final MethodHandle openIPv4TcpSocket = PanamaUtils.lookupPNIFunction(true, "Java_io_vproxy_pni_sample_NativeFunctions_openIPv4TcpSocket");
+    private static final MethodHandle openIPv4TcpSocketMH = PanamaUtils.lookupPNIFunction(true, "Java_io_vproxy_pni_sample_NativeFunctions_openIPv4TcpSocket");
 
     public int openIPv4TcpSocket(PNIEnv ENV) throws java.io.IOException {
         ENV.reset();
         int ERR;
         try {
-            ERR = (int) this.openIPv4TcpSocket.invokeExact(ENV.MEMORY);
+            ERR = (int) this.openIPv4TcpSocketMH.invokeExact(ENV.MEMORY);
         } catch (Throwable THROWABLE) {
             throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
@@ -33,13 +33,13 @@ public class NativeFunctions {
         return ENV.returnInt();
     }
 
-    private final MethodHandle bindIPv4 = PanamaUtils.lookupPNIFunction(true, "Java_io_vproxy_pni_sample_NativeFunctions_bindIPv4", int.class /* fd */, int.class /* ipv4HostOrder */, int.class /* port */);
+    private static final MethodHandle bindIPv4MH = PanamaUtils.lookupPNIFunction(true, "Java_io_vproxy_pni_sample_NativeFunctions_bindIPv4", int.class /* fd */, int.class /* ipv4HostOrder */, int.class /* port */);
 
     public void bindIPv4(PNIEnv ENV, int fd, int ipv4HostOrder, int port) throws java.io.IOException {
         ENV.reset();
         int ERR;
         try {
-            ERR = (int) this.bindIPv4.invokeExact(ENV.MEMORY, fd, ipv4HostOrder, port);
+            ERR = (int) this.bindIPv4MH.invokeExact(ENV.MEMORY, fd, ipv4HostOrder, port);
         } catch (Throwable THROWABLE) {
             throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
@@ -49,13 +49,13 @@ public class NativeFunctions {
         }
     }
 
-    private final MethodHandle listen = PanamaUtils.lookupPNIFunction(true, "Java_io_vproxy_pni_sample_NativeFunctions_listen", int.class /* fd */, int.class /* n */);
+    private static final MethodHandle listenMH = PanamaUtils.lookupPNIFunction(true, "Java_io_vproxy_pni_sample_NativeFunctions_listen", int.class /* fd */, int.class /* n */);
 
     public void listen(PNIEnv ENV, int fd, int n) throws java.io.IOException {
         ENV.reset();
         int ERR;
         try {
-            ERR = (int) this.listen.invokeExact(ENV.MEMORY, fd, n);
+            ERR = (int) this.listenMH.invokeExact(ENV.MEMORY, fd, n);
         } catch (Throwable THROWABLE) {
             throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
@@ -65,13 +65,13 @@ public class NativeFunctions {
         }
     }
 
-    private final MethodHandle accept = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_sample_NativeFunctions_accept", int.class /* fd */);
+    private static final MethodHandle acceptMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_sample_NativeFunctions_accept", int.class /* fd */);
 
     public int accept(PNIEnv ENV, int fd) throws java.io.IOException {
         ENV.reset();
         int ERR;
         try {
-            ERR = (int) this.accept.invokeExact(ENV.MEMORY, fd);
+            ERR = (int) this.acceptMH.invokeExact(ENV.MEMORY, fd);
         } catch (Throwable THROWABLE) {
             throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
@@ -82,13 +82,13 @@ public class NativeFunctions {
         return ENV.returnInt();
     }
 
-    private final MethodHandle close = PanamaUtils.lookupPNIFunction(true, "Java_io_vproxy_pni_sample_NativeFunctions_close", int.class /* fd */);
+    private static final MethodHandle closeMH = PanamaUtils.lookupPNIFunction(true, "Java_io_vproxy_pni_sample_NativeFunctions_close", int.class /* fd */);
 
     public void close(PNIEnv ENV, int fd) {
         ENV.reset();
         int ERR;
         try {
-            ERR = (int) this.close.invokeExact(ENV.MEMORY, fd);
+            ERR = (int) this.closeMH.invokeExact(ENV.MEMORY, fd);
         } catch (Throwable THROWABLE) {
             throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
@@ -97,13 +97,13 @@ public class NativeFunctions {
         }
     }
 
-    private final MethodHandle write = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_sample_NativeFunctions_write", int.class /* fd */, MemorySegment.class /* mem */, int.class /* off */, int.class /* len */);
+    private static final MethodHandle writeMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_sample_NativeFunctions_write", int.class /* fd */, MemorySegment.class /* mem */, int.class /* off */, int.class /* len */);
 
     public int write(PNIEnv ENV, int fd, MemorySegment mem, int off, int len) throws java.io.IOException {
         ENV.reset();
         int ERR;
         try {
-            ERR = (int) this.write.invokeExact(ENV.MEMORY, fd, (MemorySegment) (mem == null ? MemorySegment.NULL : mem), off, len);
+            ERR = (int) this.writeMH.invokeExact(ENV.MEMORY, fd, (MemorySegment) (mem == null ? MemorySegment.NULL : mem), off, len);
         } catch (Throwable THROWABLE) {
             throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
@@ -114,13 +114,13 @@ public class NativeFunctions {
         return ENV.returnInt();
     }
 
-    private final MethodHandle read = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_sample_NativeFunctions_read", int.class /* fd */, MemorySegment.class /* mem */, int.class /* off */, int.class /* len */);
+    private static final MethodHandle readMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_sample_NativeFunctions_read", int.class /* fd */, MemorySegment.class /* mem */, int.class /* off */, int.class /* len */);
 
     public int read(PNIEnv ENV, int fd, MemorySegment mem, int off, int len) throws java.io.IOException {
         ENV.reset();
         int ERR;
         try {
-            ERR = (int) this.read.invokeExact(ENV.MEMORY, fd, (MemorySegment) (mem == null ? MemorySegment.NULL : mem), off, len);
+            ERR = (int) this.readMH.invokeExact(ENV.MEMORY, fd, (MemorySegment) (mem == null ? MemorySegment.NULL : mem), off, len);
         } catch (Throwable THROWABLE) {
             throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
@@ -132,4 +132,4 @@ public class NativeFunctions {
     }
 }
 // metadata.generator-version: pni test
-// sha256:009b33794df067e261e0abd0b2ab2ab2e9fc695cb7689fded8dfb4a8c88055b5
+// sha256:5b086ae5a7cfffb6a3fc8c45552d5d9cae74ea38e93e91c27a88ed4e13da6d45

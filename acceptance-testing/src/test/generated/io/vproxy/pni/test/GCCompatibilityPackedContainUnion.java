@@ -58,13 +58,13 @@ public class GCCompatibilityPackedContainUnion {
         this(ALLOCATOR.allocate(LAYOUT.byteSize()));
     }
 
-    private final MethodHandle initB = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_GCCompatibilityPackedContainUnion_initB", MemorySegment.class /* self */);
+    private static final MethodHandle initBMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_GCCompatibilityPackedContainUnion_initB", MemorySegment.class /* self */);
 
     public void initB(PNIEnv ENV) {
         ENV.reset();
         int ERR;
         try {
-            ERR = (int) this.initB.invokeExact(ENV.MEMORY, MEMORY);
+            ERR = (int) this.initBMH.invokeExact(ENV.MEMORY, MEMORY);
         } catch (Throwable THROWABLE) {
             throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
@@ -73,13 +73,13 @@ public class GCCompatibilityPackedContainUnion {
         }
     }
 
-    private final MethodHandle initS = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_GCCompatibilityPackedContainUnion_initS", MemorySegment.class /* self */);
+    private static final MethodHandle initSMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_GCCompatibilityPackedContainUnion_initS", MemorySegment.class /* self */);
 
     public void initS(PNIEnv ENV) {
         ENV.reset();
         int ERR;
         try {
-            ERR = (int) this.initS.invokeExact(ENV.MEMORY, MEMORY);
+            ERR = (int) this.initSMH.invokeExact(ENV.MEMORY, MEMORY);
         } catch (Throwable THROWABLE) {
             throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
@@ -88,13 +88,13 @@ public class GCCompatibilityPackedContainUnion {
         }
     }
 
-    private final MethodHandle initN = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_GCCompatibilityPackedContainUnion_initN", MemorySegment.class /* self */);
+    private static final MethodHandle initNMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_GCCompatibilityPackedContainUnion_initN", MemorySegment.class /* self */);
 
     public void initN(PNIEnv ENV) {
         ENV.reset();
         int ERR;
         try {
-            ERR = (int) this.initN.invokeExact(ENV.MEMORY, MEMORY);
+            ERR = (int) this.initNMH.invokeExact(ENV.MEMORY, MEMORY);
         } catch (Throwable THROWABLE) {
             throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
@@ -103,13 +103,13 @@ public class GCCompatibilityPackedContainUnion {
         }
     }
 
-    private final MethodHandle initF = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_GCCompatibilityPackedContainUnion_initF", MemorySegment.class /* self */);
+    private static final MethodHandle initFMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_GCCompatibilityPackedContainUnion_initF", MemorySegment.class /* self */);
 
     public void initF(PNIEnv ENV) {
         ENV.reset();
         int ERR;
         try {
-            ERR = (int) this.initF.invokeExact(ENV.MEMORY, MEMORY);
+            ERR = (int) this.initFMH.invokeExact(ENV.MEMORY, MEMORY);
         } catch (Throwable THROWABLE) {
             throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
@@ -118,13 +118,13 @@ public class GCCompatibilityPackedContainUnion {
         }
     }
 
-    private final MethodHandle initD = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_GCCompatibilityPackedContainUnion_initD", MemorySegment.class /* self */);
+    private static final MethodHandle initDMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_GCCompatibilityPackedContainUnion_initD", MemorySegment.class /* self */);
 
     public void initD(PNIEnv ENV) {
         ENV.reset();
         int ERR;
         try {
-            ERR = (int) this.initD.invokeExact(ENV.MEMORY, MEMORY);
+            ERR = (int) this.initDMH.invokeExact(ENV.MEMORY, MEMORY);
         } catch (Throwable THROWABLE) {
             throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
@@ -133,13 +133,13 @@ public class GCCompatibilityPackedContainUnion {
         }
     }
 
-    private final MethodHandle initL = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_GCCompatibilityPackedContainUnion_initL", MemorySegment.class /* self */);
+    private static final MethodHandle initLMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_GCCompatibilityPackedContainUnion_initL", MemorySegment.class /* self */);
 
     public void initL(PNIEnv ENV) {
         ENV.reset();
         int ERR;
         try {
-            ERR = (int) this.initL.invokeExact(ENV.MEMORY, MEMORY);
+            ERR = (int) this.initLMH.invokeExact(ENV.MEMORY, MEMORY);
         } catch (Throwable THROWABLE) {
             throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
@@ -148,13 +148,13 @@ public class GCCompatibilityPackedContainUnion {
         }
     }
 
-    private final MethodHandle size = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_GCCompatibilityPackedContainUnion_size", MemorySegment.class /* self */);
+    private static final MethodHandle sizeMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_GCCompatibilityPackedContainUnion_size", MemorySegment.class /* self */);
 
     public long size(PNIEnv ENV) {
         ENV.reset();
         int ERR;
         try {
-            ERR = (int) this.size.invokeExact(ENV.MEMORY, MEMORY);
+            ERR = (int) this.sizeMH.invokeExact(ENV.MEMORY, MEMORY);
         } catch (Throwable THROWABLE) {
             throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
@@ -209,4 +209,4 @@ public class GCCompatibilityPackedContainUnion {
     }
 }
 // metadata.generator-version: pni test
-// sha256:6e14e626ac8ffaa740a84935a1dd2ee13910c51dc1b588cea6967e2ccb971df8
+// sha256:0bff4f39ec78a7a663aea5a47d621311ae5a4bdf1de195bb858b0de280ca62ed

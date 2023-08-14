@@ -16,13 +16,13 @@ public class RawArrays {
         return INSTANCE;
     }
 
-    private final MethodHandle byteArray = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_RawArrays_byteArray", MemorySegment.class /* array */, int.class /* off */);
+    private static final MethodHandle byteArrayMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_RawArrays_byteArray", MemorySegment.class /* array */, int.class /* off */);
 
     public byte byteArray(PNIEnv ENV, MemorySegment array, int off) {
         ENV.reset();
         int ERR;
         try {
-            ERR = (int) this.byteArray.invokeExact(ENV.MEMORY, (MemorySegment) (array == null ? MemorySegment.NULL : array), off);
+            ERR = (int) this.byteArrayMH.invokeExact(ENV.MEMORY, (MemorySegment) (array == null ? MemorySegment.NULL : array), off);
         } catch (Throwable THROWABLE) {
             throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
@@ -32,13 +32,13 @@ public class RawArrays {
         return ENV.returnByte();
     }
 
-    private final MethodHandle unsignedByteArray = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_RawArrays_unsignedByteArray", MemorySegment.class /* array */, int.class /* off */);
+    private static final MethodHandle unsignedByteArrayMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_RawArrays_unsignedByteArray", MemorySegment.class /* array */, int.class /* off */);
 
     public byte unsignedByteArray(PNIEnv ENV, MemorySegment array, int off) {
         ENV.reset();
         int ERR;
         try {
-            ERR = (int) this.unsignedByteArray.invokeExact(ENV.MEMORY, (MemorySegment) (array == null ? MemorySegment.NULL : array), off);
+            ERR = (int) this.unsignedByteArrayMH.invokeExact(ENV.MEMORY, (MemorySegment) (array == null ? MemorySegment.NULL : array), off);
         } catch (Throwable THROWABLE) {
             throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
@@ -48,13 +48,13 @@ public class RawArrays {
         return ENV.returnByte();
     }
 
-    private final MethodHandle boolArray = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_RawArrays_boolArray", MemorySegment.class /* array */, int.class /* off */);
+    private static final MethodHandle boolArrayMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_RawArrays_boolArray", MemorySegment.class /* array */, int.class /* off */);
 
     public boolean boolArray(PNIEnv ENV, BoolArray array, int off) {
         ENV.reset();
         int ERR;
         try {
-            ERR = (int) this.boolArray.invokeExact(ENV.MEMORY, (MemorySegment) (array == null ? MemorySegment.NULL : array.MEMORY), off);
+            ERR = (int) this.boolArrayMH.invokeExact(ENV.MEMORY, (MemorySegment) (array == null ? MemorySegment.NULL : array.MEMORY), off);
         } catch (Throwable THROWABLE) {
             throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
@@ -64,13 +64,13 @@ public class RawArrays {
         return ENV.returnBool();
     }
 
-    private final MethodHandle charArray = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_RawArrays_charArray", MemorySegment.class /* array */, int.class /* off */);
+    private static final MethodHandle charArrayMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_RawArrays_charArray", MemorySegment.class /* array */, int.class /* off */);
 
     public char charArray(PNIEnv ENV, CharArray array, int off) {
         ENV.reset();
         int ERR;
         try {
-            ERR = (int) this.charArray.invokeExact(ENV.MEMORY, (MemorySegment) (array == null ? MemorySegment.NULL : array.MEMORY), off);
+            ERR = (int) this.charArrayMH.invokeExact(ENV.MEMORY, (MemorySegment) (array == null ? MemorySegment.NULL : array.MEMORY), off);
         } catch (Throwable THROWABLE) {
             throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
@@ -80,13 +80,13 @@ public class RawArrays {
         return ENV.returnChar();
     }
 
-    private final MethodHandle doubleArray = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_RawArrays_doubleArray", MemorySegment.class /* array */, int.class /* off */);
+    private static final MethodHandle doubleArrayMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_RawArrays_doubleArray", MemorySegment.class /* array */, int.class /* off */);
 
     public double doubleArray(PNIEnv ENV, DoubleArray array, int off) {
         ENV.reset();
         int ERR;
         try {
-            ERR = (int) this.doubleArray.invokeExact(ENV.MEMORY, (MemorySegment) (array == null ? MemorySegment.NULL : array.MEMORY), off);
+            ERR = (int) this.doubleArrayMH.invokeExact(ENV.MEMORY, (MemorySegment) (array == null ? MemorySegment.NULL : array.MEMORY), off);
         } catch (Throwable THROWABLE) {
             throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
@@ -96,13 +96,13 @@ public class RawArrays {
         return ENV.returnDouble();
     }
 
-    private final MethodHandle floatArray = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_RawArrays_floatArray", MemorySegment.class /* array */, int.class /* off */);
+    private static final MethodHandle floatArrayMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_RawArrays_floatArray", MemorySegment.class /* array */, int.class /* off */);
 
     public float floatArray(PNIEnv ENV, FloatArray array, int off) {
         ENV.reset();
         int ERR;
         try {
-            ERR = (int) this.floatArray.invokeExact(ENV.MEMORY, (MemorySegment) (array == null ? MemorySegment.NULL : array.MEMORY), off);
+            ERR = (int) this.floatArrayMH.invokeExact(ENV.MEMORY, (MemorySegment) (array == null ? MemorySegment.NULL : array.MEMORY), off);
         } catch (Throwable THROWABLE) {
             throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
@@ -112,13 +112,13 @@ public class RawArrays {
         return ENV.returnFloat();
     }
 
-    private final MethodHandle intArray = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_RawArrays_intArray", MemorySegment.class /* array */, int.class /* off */);
+    private static final MethodHandle intArrayMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_RawArrays_intArray", MemorySegment.class /* array */, int.class /* off */);
 
     public int intArray(PNIEnv ENV, IntArray array, int off) {
         ENV.reset();
         int ERR;
         try {
-            ERR = (int) this.intArray.invokeExact(ENV.MEMORY, (MemorySegment) (array == null ? MemorySegment.NULL : array.MEMORY), off);
+            ERR = (int) this.intArrayMH.invokeExact(ENV.MEMORY, (MemorySegment) (array == null ? MemorySegment.NULL : array.MEMORY), off);
         } catch (Throwable THROWABLE) {
             throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
@@ -128,13 +128,13 @@ public class RawArrays {
         return ENV.returnInt();
     }
 
-    private final MethodHandle unsignedIntArray = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_RawArrays_unsignedIntArray", MemorySegment.class /* array */, int.class /* off */);
+    private static final MethodHandle unsignedIntArrayMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_RawArrays_unsignedIntArray", MemorySegment.class /* array */, int.class /* off */);
 
     public int unsignedIntArray(PNIEnv ENV, IntArray array, int off) {
         ENV.reset();
         int ERR;
         try {
-            ERR = (int) this.unsignedIntArray.invokeExact(ENV.MEMORY, (MemorySegment) (array == null ? MemorySegment.NULL : array.MEMORY), off);
+            ERR = (int) this.unsignedIntArrayMH.invokeExact(ENV.MEMORY, (MemorySegment) (array == null ? MemorySegment.NULL : array.MEMORY), off);
         } catch (Throwable THROWABLE) {
             throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
@@ -144,13 +144,13 @@ public class RawArrays {
         return ENV.returnInt();
     }
 
-    private final MethodHandle longArray = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_RawArrays_longArray", MemorySegment.class /* array */, int.class /* off */);
+    private static final MethodHandle longArrayMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_RawArrays_longArray", MemorySegment.class /* array */, int.class /* off */);
 
     public long longArray(PNIEnv ENV, LongArray array, int off) {
         ENV.reset();
         int ERR;
         try {
-            ERR = (int) this.longArray.invokeExact(ENV.MEMORY, (MemorySegment) (array == null ? MemorySegment.NULL : array.MEMORY), off);
+            ERR = (int) this.longArrayMH.invokeExact(ENV.MEMORY, (MemorySegment) (array == null ? MemorySegment.NULL : array.MEMORY), off);
         } catch (Throwable THROWABLE) {
             throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
@@ -160,13 +160,13 @@ public class RawArrays {
         return ENV.returnLong();
     }
 
-    private final MethodHandle unsignedLongArray = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_RawArrays_unsignedLongArray", MemorySegment.class /* array */, int.class /* off */);
+    private static final MethodHandle unsignedLongArrayMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_RawArrays_unsignedLongArray", MemorySegment.class /* array */, int.class /* off */);
 
     public long unsignedLongArray(PNIEnv ENV, LongArray array, int off) {
         ENV.reset();
         int ERR;
         try {
-            ERR = (int) this.unsignedLongArray.invokeExact(ENV.MEMORY, (MemorySegment) (array == null ? MemorySegment.NULL : array.MEMORY), off);
+            ERR = (int) this.unsignedLongArrayMH.invokeExact(ENV.MEMORY, (MemorySegment) (array == null ? MemorySegment.NULL : array.MEMORY), off);
         } catch (Throwable THROWABLE) {
             throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
@@ -176,13 +176,13 @@ public class RawArrays {
         return ENV.returnLong();
     }
 
-    private final MethodHandle shortArray = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_RawArrays_shortArray", MemorySegment.class /* array */, int.class /* off */);
+    private static final MethodHandle shortArrayMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_RawArrays_shortArray", MemorySegment.class /* array */, int.class /* off */);
 
     public short shortArray(PNIEnv ENV, ShortArray array, int off) {
         ENV.reset();
         int ERR;
         try {
-            ERR = (int) this.shortArray.invokeExact(ENV.MEMORY, (MemorySegment) (array == null ? MemorySegment.NULL : array.MEMORY), off);
+            ERR = (int) this.shortArrayMH.invokeExact(ENV.MEMORY, (MemorySegment) (array == null ? MemorySegment.NULL : array.MEMORY), off);
         } catch (Throwable THROWABLE) {
             throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
@@ -192,13 +192,13 @@ public class RawArrays {
         return ENV.returnShort();
     }
 
-    private final MethodHandle unsignedShortArray = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_RawArrays_unsignedShortArray", MemorySegment.class /* array */, int.class /* off */);
+    private static final MethodHandle unsignedShortArrayMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_RawArrays_unsignedShortArray", MemorySegment.class /* array */, int.class /* off */);
 
     public short unsignedShortArray(PNIEnv ENV, ShortArray array, int off) {
         ENV.reset();
         int ERR;
         try {
-            ERR = (int) this.unsignedShortArray.invokeExact(ENV.MEMORY, (MemorySegment) (array == null ? MemorySegment.NULL : array.MEMORY), off);
+            ERR = (int) this.unsignedShortArrayMH.invokeExact(ENV.MEMORY, (MemorySegment) (array == null ? MemorySegment.NULL : array.MEMORY), off);
         } catch (Throwable THROWABLE) {
             throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
@@ -208,13 +208,13 @@ public class RawArrays {
         return ENV.returnShort();
     }
 
-    private final MethodHandle structArray = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_RawArrays_structArray", MemorySegment.class /* array */, int.class /* off */, MemorySegment.class /* return */);
+    private static final MethodHandle structArrayMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_RawArrays_structArray", MemorySegment.class /* array */, int.class /* off */, MemorySegment.class /* return */);
 
     public io.vproxy.pni.test.ObjectStruct structArray(PNIEnv ENV, io.vproxy.pni.test.ObjectStruct.Array array, int off, Allocator ALLOCATOR) {
         ENV.reset();
         int ERR;
         try {
-            ERR = (int) this.structArray.invokeExact(ENV.MEMORY, (MemorySegment) (array == null ? MemorySegment.NULL : array.MEMORY), off, ALLOCATOR.allocate(io.vproxy.pni.test.ObjectStruct.LAYOUT.byteSize()));
+            ERR = (int) this.structArrayMH.invokeExact(ENV.MEMORY, (MemorySegment) (array == null ? MemorySegment.NULL : array.MEMORY), off, ALLOCATOR.allocate(io.vproxy.pni.test.ObjectStruct.LAYOUT.byteSize()));
         } catch (Throwable THROWABLE) {
             throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
@@ -225,14 +225,14 @@ public class RawArrays {
         return RESULT == null ? null : new io.vproxy.pni.test.ObjectStruct(RESULT);
     }
 
-    private final MethodHandle structArrayNotRaw = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_RawArrays_structArrayNotRaw", PNIBuf.class /* array */, int.class /* off */, MemorySegment.class /* return */);
+    private static final MethodHandle structArrayNotRawMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_RawArrays_structArrayNotRaw", PNIBuf.class /* array */, int.class /* off */, MemorySegment.class /* return */);
 
     public io.vproxy.pni.test.ObjectStruct structArrayNotRaw(PNIEnv ENV, io.vproxy.pni.test.ObjectStruct.Array array, int off, Allocator ALLOCATOR) {
         ENV.reset();
         try (var POOLED = Allocator.ofPooled()) {
             int ERR;
             try {
-                ERR = (int) this.structArrayNotRaw.invokeExact(ENV.MEMORY, PNIBuf.memoryOf(POOLED, array), off, ALLOCATOR.allocate(io.vproxy.pni.test.ObjectStruct.LAYOUT.byteSize()));
+                ERR = (int) this.structArrayNotRawMH.invokeExact(ENV.MEMORY, PNIBuf.memoryOf(POOLED, array), off, ALLOCATOR.allocate(io.vproxy.pni.test.ObjectStruct.LAYOUT.byteSize()));
             } catch (Throwable THROWABLE) {
                 throw PanamaUtils.convertInvokeExactException(THROWABLE);
             }
@@ -245,4 +245,4 @@ public class RawArrays {
     }
 }
 // metadata.generator-version: pni test
-// sha256:dfaba3b8075316f7deec0cdbd880b1755ab18d98f641c815e81b67ff71a08bb9
+// sha256:50e4c3cdc3f746f9f0c0740bb111038e51da4cdd4390763658afcc64bac1b1b7

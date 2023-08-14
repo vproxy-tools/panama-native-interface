@@ -16,13 +16,13 @@ public class DefiningCFunction {
         return INSTANCE;
     }
 
-    private final MethodHandle upcallVoidNoParam = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_DefiningCFunction_upcallVoidNoParam", MemorySegment.class /* func */);
+    private static final MethodHandle upcallVoidNoParamMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_DefiningCFunction_upcallVoidNoParam", MemorySegment.class /* func */);
 
     public void upcallVoidNoParam(PNIEnv ENV, MemorySegment func) {
         ENV.reset();
         int ERR;
         try {
-            ERR = (int) this.upcallVoidNoParam.invokeExact(ENV.MEMORY, (MemorySegment) (func == null ? MemorySegment.NULL : func));
+            ERR = (int) this.upcallVoidNoParamMH.invokeExact(ENV.MEMORY, (MemorySegment) (func == null ? MemorySegment.NULL : func));
         } catch (Throwable THROWABLE) {
             throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
@@ -31,13 +31,13 @@ public class DefiningCFunction {
         }
     }
 
-    private final MethodHandle upcallVoid1Param = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_DefiningCFunction_upcallVoid1Param", MemorySegment.class /* func */, MemorySegment.class /* data */);
+    private static final MethodHandle upcallVoid1ParamMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_DefiningCFunction_upcallVoid1Param", MemorySegment.class /* func */, MemorySegment.class /* data */);
 
     public void upcallVoid1Param(PNIEnv ENV, MemorySegment func, MemorySegment data) {
         ENV.reset();
         int ERR;
         try {
-            ERR = (int) this.upcallVoid1Param.invokeExact(ENV.MEMORY, (MemorySegment) (func == null ? MemorySegment.NULL : func), (MemorySegment) (data == null ? MemorySegment.NULL : data));
+            ERR = (int) this.upcallVoid1ParamMH.invokeExact(ENV.MEMORY, (MemorySegment) (func == null ? MemorySegment.NULL : func), (MemorySegment) (data == null ? MemorySegment.NULL : data));
         } catch (Throwable THROWABLE) {
             throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
@@ -46,13 +46,13 @@ public class DefiningCFunction {
         }
     }
 
-    private final MethodHandle upcallVoid2Param = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_DefiningCFunction_upcallVoid2Param", MemorySegment.class /* func */, MemorySegment.class /* data */, byte.class /* b */);
+    private static final MethodHandle upcallVoid2ParamMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_DefiningCFunction_upcallVoid2Param", MemorySegment.class /* func */, MemorySegment.class /* data */, byte.class /* b */);
 
     public void upcallVoid2Param(PNIEnv ENV, MemorySegment func, MemorySegment data, byte b) {
         ENV.reset();
         int ERR;
         try {
-            ERR = (int) this.upcallVoid2Param.invokeExact(ENV.MEMORY, (MemorySegment) (func == null ? MemorySegment.NULL : func), (MemorySegment) (data == null ? MemorySegment.NULL : data), b);
+            ERR = (int) this.upcallVoid2ParamMH.invokeExact(ENV.MEMORY, (MemorySegment) (func == null ? MemorySegment.NULL : func), (MemorySegment) (data == null ? MemorySegment.NULL : data), b);
         } catch (Throwable THROWABLE) {
             throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
@@ -61,13 +61,13 @@ public class DefiningCFunction {
         }
     }
 
-    private final MethodHandle upcallVoid3Param = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_DefiningCFunction_upcallVoid3Param", MemorySegment.class /* func */, MemorySegment.class /* data */, boolean.class /* z */, char.class /* c */);
+    private static final MethodHandle upcallVoid3ParamMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_DefiningCFunction_upcallVoid3Param", MemorySegment.class /* func */, MemorySegment.class /* data */, boolean.class /* z */, char.class /* c */);
 
     public void upcallVoid3Param(PNIEnv ENV, MemorySegment func, MemorySegment data, boolean z, char c) {
         ENV.reset();
         int ERR;
         try {
-            ERR = (int) this.upcallVoid3Param.invokeExact(ENV.MEMORY, (MemorySegment) (func == null ? MemorySegment.NULL : func), (MemorySegment) (data == null ? MemorySegment.NULL : data), z, c);
+            ERR = (int) this.upcallVoid3ParamMH.invokeExact(ENV.MEMORY, (MemorySegment) (func == null ? MemorySegment.NULL : func), (MemorySegment) (data == null ? MemorySegment.NULL : data), z, c);
         } catch (Throwable THROWABLE) {
             throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
@@ -76,13 +76,13 @@ public class DefiningCFunction {
         }
     }
 
-    private final MethodHandle upcallVoid4Param = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_DefiningCFunction_upcallVoid4Param", MemorySegment.class /* func */, MemorySegment.class /* data */, double.class /* d */, float.class /* f */, int.class /* i */);
+    private static final MethodHandle upcallVoid4ParamMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_DefiningCFunction_upcallVoid4Param", MemorySegment.class /* func */, MemorySegment.class /* data */, double.class /* d */, float.class /* f */, int.class /* i */);
 
     public void upcallVoid4Param(PNIEnv ENV, MemorySegment func, MemorySegment data, double d, float f, int i) {
         ENV.reset();
         int ERR;
         try {
-            ERR = (int) this.upcallVoid4Param.invokeExact(ENV.MEMORY, (MemorySegment) (func == null ? MemorySegment.NULL : func), (MemorySegment) (data == null ? MemorySegment.NULL : data), d, f, i);
+            ERR = (int) this.upcallVoid4ParamMH.invokeExact(ENV.MEMORY, (MemorySegment) (func == null ? MemorySegment.NULL : func), (MemorySegment) (data == null ? MemorySegment.NULL : data), d, f, i);
         } catch (Throwable THROWABLE) {
             throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
@@ -91,13 +91,13 @@ public class DefiningCFunction {
         }
     }
 
-    private final MethodHandle upcallVoid3Param2 = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_DefiningCFunction_upcallVoid3Param2", MemorySegment.class /* func */, MemorySegment.class /* data */, long.class /* l */, short.class /* s */);
+    private static final MethodHandle upcallVoid3Param2MH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_DefiningCFunction_upcallVoid3Param2", MemorySegment.class /* func */, MemorySegment.class /* data */, long.class /* l */, short.class /* s */);
 
     public void upcallVoid3Param2(PNIEnv ENV, MemorySegment func, MemorySegment data, long l, short s) {
         ENV.reset();
         int ERR;
         try {
-            ERR = (int) this.upcallVoid3Param2.invokeExact(ENV.MEMORY, (MemorySegment) (func == null ? MemorySegment.NULL : func), (MemorySegment) (data == null ? MemorySegment.NULL : data), l, s);
+            ERR = (int) this.upcallVoid3Param2MH.invokeExact(ENV.MEMORY, (MemorySegment) (func == null ? MemorySegment.NULL : func), (MemorySegment) (data == null ? MemorySegment.NULL : data), l, s);
         } catch (Throwable THROWABLE) {
             throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
@@ -106,13 +106,13 @@ public class DefiningCFunction {
         }
     }
 
-    private final MethodHandle upcallReturnByteNoParam = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_DefiningCFunction_upcallReturnByteNoParam", MemorySegment.class /* func */);
+    private static final MethodHandle upcallReturnByteNoParamMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_DefiningCFunction_upcallReturnByteNoParam", MemorySegment.class /* func */);
 
     public byte upcallReturnByteNoParam(PNIEnv ENV, MemorySegment func) {
         ENV.reset();
         int ERR;
         try {
-            ERR = (int) this.upcallReturnByteNoParam.invokeExact(ENV.MEMORY, (MemorySegment) (func == null ? MemorySegment.NULL : func));
+            ERR = (int) this.upcallReturnByteNoParamMH.invokeExact(ENV.MEMORY, (MemorySegment) (func == null ? MemorySegment.NULL : func));
         } catch (Throwable THROWABLE) {
             throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
@@ -122,13 +122,13 @@ public class DefiningCFunction {
         return ENV.returnByte();
     }
 
-    private final MethodHandle upcallReturnBoolNoParam = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_DefiningCFunction_upcallReturnBoolNoParam", MemorySegment.class /* func */);
+    private static final MethodHandle upcallReturnBoolNoParamMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_DefiningCFunction_upcallReturnBoolNoParam", MemorySegment.class /* func */);
 
     public boolean upcallReturnBoolNoParam(PNIEnv ENV, MemorySegment func) {
         ENV.reset();
         int ERR;
         try {
-            ERR = (int) this.upcallReturnBoolNoParam.invokeExact(ENV.MEMORY, (MemorySegment) (func == null ? MemorySegment.NULL : func));
+            ERR = (int) this.upcallReturnBoolNoParamMH.invokeExact(ENV.MEMORY, (MemorySegment) (func == null ? MemorySegment.NULL : func));
         } catch (Throwable THROWABLE) {
             throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
@@ -138,13 +138,13 @@ public class DefiningCFunction {
         return ENV.returnBool();
     }
 
-    private final MethodHandle upcallReturnCharNoParam = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_DefiningCFunction_upcallReturnCharNoParam", MemorySegment.class /* func */);
+    private static final MethodHandle upcallReturnCharNoParamMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_DefiningCFunction_upcallReturnCharNoParam", MemorySegment.class /* func */);
 
     public char upcallReturnCharNoParam(PNIEnv ENV, MemorySegment func) {
         ENV.reset();
         int ERR;
         try {
-            ERR = (int) this.upcallReturnCharNoParam.invokeExact(ENV.MEMORY, (MemorySegment) (func == null ? MemorySegment.NULL : func));
+            ERR = (int) this.upcallReturnCharNoParamMH.invokeExact(ENV.MEMORY, (MemorySegment) (func == null ? MemorySegment.NULL : func));
         } catch (Throwable THROWABLE) {
             throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
@@ -154,13 +154,13 @@ public class DefiningCFunction {
         return ENV.returnChar();
     }
 
-    private final MethodHandle upcallReturnDoubleNoParam = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_DefiningCFunction_upcallReturnDoubleNoParam", MemorySegment.class /* func */);
+    private static final MethodHandle upcallReturnDoubleNoParamMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_DefiningCFunction_upcallReturnDoubleNoParam", MemorySegment.class /* func */);
 
     public double upcallReturnDoubleNoParam(PNIEnv ENV, MemorySegment func) {
         ENV.reset();
         int ERR;
         try {
-            ERR = (int) this.upcallReturnDoubleNoParam.invokeExact(ENV.MEMORY, (MemorySegment) (func == null ? MemorySegment.NULL : func));
+            ERR = (int) this.upcallReturnDoubleNoParamMH.invokeExact(ENV.MEMORY, (MemorySegment) (func == null ? MemorySegment.NULL : func));
         } catch (Throwable THROWABLE) {
             throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
@@ -170,13 +170,13 @@ public class DefiningCFunction {
         return ENV.returnDouble();
     }
 
-    private final MethodHandle upcallReturnFloatNoParam = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_DefiningCFunction_upcallReturnFloatNoParam", MemorySegment.class /* func */);
+    private static final MethodHandle upcallReturnFloatNoParamMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_DefiningCFunction_upcallReturnFloatNoParam", MemorySegment.class /* func */);
 
     public float upcallReturnFloatNoParam(PNIEnv ENV, MemorySegment func) {
         ENV.reset();
         int ERR;
         try {
-            ERR = (int) this.upcallReturnFloatNoParam.invokeExact(ENV.MEMORY, (MemorySegment) (func == null ? MemorySegment.NULL : func));
+            ERR = (int) this.upcallReturnFloatNoParamMH.invokeExact(ENV.MEMORY, (MemorySegment) (func == null ? MemorySegment.NULL : func));
         } catch (Throwable THROWABLE) {
             throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
@@ -186,13 +186,13 @@ public class DefiningCFunction {
         return ENV.returnFloat();
     }
 
-    private final MethodHandle upcallReturnIntNoParam = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_DefiningCFunction_upcallReturnIntNoParam", MemorySegment.class /* func */);
+    private static final MethodHandle upcallReturnIntNoParamMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_DefiningCFunction_upcallReturnIntNoParam", MemorySegment.class /* func */);
 
     public int upcallReturnIntNoParam(PNIEnv ENV, MemorySegment func) {
         ENV.reset();
         int ERR;
         try {
-            ERR = (int) this.upcallReturnIntNoParam.invokeExact(ENV.MEMORY, (MemorySegment) (func == null ? MemorySegment.NULL : func));
+            ERR = (int) this.upcallReturnIntNoParamMH.invokeExact(ENV.MEMORY, (MemorySegment) (func == null ? MemorySegment.NULL : func));
         } catch (Throwable THROWABLE) {
             throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
@@ -202,13 +202,13 @@ public class DefiningCFunction {
         return ENV.returnInt();
     }
 
-    private final MethodHandle upcallReturnLongNoParam = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_DefiningCFunction_upcallReturnLongNoParam", MemorySegment.class /* func */);
+    private static final MethodHandle upcallReturnLongNoParamMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_DefiningCFunction_upcallReturnLongNoParam", MemorySegment.class /* func */);
 
     public long upcallReturnLongNoParam(PNIEnv ENV, MemorySegment func) {
         ENV.reset();
         int ERR;
         try {
-            ERR = (int) this.upcallReturnLongNoParam.invokeExact(ENV.MEMORY, (MemorySegment) (func == null ? MemorySegment.NULL : func));
+            ERR = (int) this.upcallReturnLongNoParamMH.invokeExact(ENV.MEMORY, (MemorySegment) (func == null ? MemorySegment.NULL : func));
         } catch (Throwable THROWABLE) {
             throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
@@ -218,13 +218,13 @@ public class DefiningCFunction {
         return ENV.returnLong();
     }
 
-    private final MethodHandle upcallReturnShortNoParam = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_DefiningCFunction_upcallReturnShortNoParam", MemorySegment.class /* func */);
+    private static final MethodHandle upcallReturnShortNoParamMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_DefiningCFunction_upcallReturnShortNoParam", MemorySegment.class /* func */);
 
     public short upcallReturnShortNoParam(PNIEnv ENV, MemorySegment func) {
         ENV.reset();
         int ERR;
         try {
-            ERR = (int) this.upcallReturnShortNoParam.invokeExact(ENV.MEMORY, (MemorySegment) (func == null ? MemorySegment.NULL : func));
+            ERR = (int) this.upcallReturnShortNoParamMH.invokeExact(ENV.MEMORY, (MemorySegment) (func == null ? MemorySegment.NULL : func));
         } catch (Throwable THROWABLE) {
             throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
@@ -234,13 +234,13 @@ public class DefiningCFunction {
         return ENV.returnShort();
     }
 
-    private final MethodHandle upcallReturnPointerNoParam = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_DefiningCFunction_upcallReturnPointerNoParam", MemorySegment.class /* func */);
+    private static final MethodHandle upcallReturnPointerNoParamMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_DefiningCFunction_upcallReturnPointerNoParam", MemorySegment.class /* func */);
 
     public MemorySegment upcallReturnPointerNoParam(PNIEnv ENV, MemorySegment func) {
         ENV.reset();
         int ERR;
         try {
-            ERR = (int) this.upcallReturnPointerNoParam.invokeExact(ENV.MEMORY, (MemorySegment) (func == null ? MemorySegment.NULL : func));
+            ERR = (int) this.upcallReturnPointerNoParamMH.invokeExact(ENV.MEMORY, (MemorySegment) (func == null ? MemorySegment.NULL : func));
         } catch (Throwable THROWABLE) {
             throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
@@ -250,13 +250,13 @@ public class DefiningCFunction {
         return ENV.returnPointer();
     }
 
-    private final MethodHandle upcallReturnByte1Param = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_DefiningCFunction_upcallReturnByte1Param", MemorySegment.class /* func */, byte.class /* b */);
+    private static final MethodHandle upcallReturnByte1ParamMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_DefiningCFunction_upcallReturnByte1Param", MemorySegment.class /* func */, byte.class /* b */);
 
     public byte upcallReturnByte1Param(PNIEnv ENV, MemorySegment func, byte b) {
         ENV.reset();
         int ERR;
         try {
-            ERR = (int) this.upcallReturnByte1Param.invokeExact(ENV.MEMORY, (MemorySegment) (func == null ? MemorySegment.NULL : func), b);
+            ERR = (int) this.upcallReturnByte1ParamMH.invokeExact(ENV.MEMORY, (MemorySegment) (func == null ? MemorySegment.NULL : func), b);
         } catch (Throwable THROWABLE) {
             throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
@@ -266,13 +266,13 @@ public class DefiningCFunction {
         return ENV.returnByte();
     }
 
-    private final MethodHandle upcallReturnBool1Param = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_DefiningCFunction_upcallReturnBool1Param", MemorySegment.class /* func */, boolean.class /* z */);
+    private static final MethodHandle upcallReturnBool1ParamMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_DefiningCFunction_upcallReturnBool1Param", MemorySegment.class /* func */, boolean.class /* z */);
 
     public boolean upcallReturnBool1Param(PNIEnv ENV, MemorySegment func, boolean z) {
         ENV.reset();
         int ERR;
         try {
-            ERR = (int) this.upcallReturnBool1Param.invokeExact(ENV.MEMORY, (MemorySegment) (func == null ? MemorySegment.NULL : func), z);
+            ERR = (int) this.upcallReturnBool1ParamMH.invokeExact(ENV.MEMORY, (MemorySegment) (func == null ? MemorySegment.NULL : func), z);
         } catch (Throwable THROWABLE) {
             throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
@@ -282,13 +282,13 @@ public class DefiningCFunction {
         return ENV.returnBool();
     }
 
-    private final MethodHandle upcallReturnChar1Param = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_DefiningCFunction_upcallReturnChar1Param", MemorySegment.class /* func */, char.class /* c */);
+    private static final MethodHandle upcallReturnChar1ParamMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_DefiningCFunction_upcallReturnChar1Param", MemorySegment.class /* func */, char.class /* c */);
 
     public char upcallReturnChar1Param(PNIEnv ENV, MemorySegment func, char c) {
         ENV.reset();
         int ERR;
         try {
-            ERR = (int) this.upcallReturnChar1Param.invokeExact(ENV.MEMORY, (MemorySegment) (func == null ? MemorySegment.NULL : func), c);
+            ERR = (int) this.upcallReturnChar1ParamMH.invokeExact(ENV.MEMORY, (MemorySegment) (func == null ? MemorySegment.NULL : func), c);
         } catch (Throwable THROWABLE) {
             throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
@@ -298,13 +298,13 @@ public class DefiningCFunction {
         return ENV.returnChar();
     }
 
-    private final MethodHandle upcallReturnDouble1Param = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_DefiningCFunction_upcallReturnDouble1Param", MemorySegment.class /* func */, double.class /* d */);
+    private static final MethodHandle upcallReturnDouble1ParamMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_DefiningCFunction_upcallReturnDouble1Param", MemorySegment.class /* func */, double.class /* d */);
 
     public double upcallReturnDouble1Param(PNIEnv ENV, MemorySegment func, double d) {
         ENV.reset();
         int ERR;
         try {
-            ERR = (int) this.upcallReturnDouble1Param.invokeExact(ENV.MEMORY, (MemorySegment) (func == null ? MemorySegment.NULL : func), d);
+            ERR = (int) this.upcallReturnDouble1ParamMH.invokeExact(ENV.MEMORY, (MemorySegment) (func == null ? MemorySegment.NULL : func), d);
         } catch (Throwable THROWABLE) {
             throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
@@ -314,13 +314,13 @@ public class DefiningCFunction {
         return ENV.returnDouble();
     }
 
-    private final MethodHandle upcallReturnFloat1Param = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_DefiningCFunction_upcallReturnFloat1Param", MemorySegment.class /* func */, float.class /* f */);
+    private static final MethodHandle upcallReturnFloat1ParamMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_DefiningCFunction_upcallReturnFloat1Param", MemorySegment.class /* func */, float.class /* f */);
 
     public float upcallReturnFloat1Param(PNIEnv ENV, MemorySegment func, float f) {
         ENV.reset();
         int ERR;
         try {
-            ERR = (int) this.upcallReturnFloat1Param.invokeExact(ENV.MEMORY, (MemorySegment) (func == null ? MemorySegment.NULL : func), f);
+            ERR = (int) this.upcallReturnFloat1ParamMH.invokeExact(ENV.MEMORY, (MemorySegment) (func == null ? MemorySegment.NULL : func), f);
         } catch (Throwable THROWABLE) {
             throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
@@ -330,13 +330,13 @@ public class DefiningCFunction {
         return ENV.returnFloat();
     }
 
-    private final MethodHandle upcallReturnInt1Param = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_DefiningCFunction_upcallReturnInt1Param", MemorySegment.class /* func */, int.class /* i */);
+    private static final MethodHandle upcallReturnInt1ParamMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_DefiningCFunction_upcallReturnInt1Param", MemorySegment.class /* func */, int.class /* i */);
 
     public int upcallReturnInt1Param(PNIEnv ENV, MemorySegment func, int i) {
         ENV.reset();
         int ERR;
         try {
-            ERR = (int) this.upcallReturnInt1Param.invokeExact(ENV.MEMORY, (MemorySegment) (func == null ? MemorySegment.NULL : func), i);
+            ERR = (int) this.upcallReturnInt1ParamMH.invokeExact(ENV.MEMORY, (MemorySegment) (func == null ? MemorySegment.NULL : func), i);
         } catch (Throwable THROWABLE) {
             throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
@@ -346,13 +346,13 @@ public class DefiningCFunction {
         return ENV.returnInt();
     }
 
-    private final MethodHandle upcallReturnLong1Param = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_DefiningCFunction_upcallReturnLong1Param", MemorySegment.class /* func */, long.class /* j */);
+    private static final MethodHandle upcallReturnLong1ParamMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_DefiningCFunction_upcallReturnLong1Param", MemorySegment.class /* func */, long.class /* j */);
 
     public long upcallReturnLong1Param(PNIEnv ENV, MemorySegment func, long j) {
         ENV.reset();
         int ERR;
         try {
-            ERR = (int) this.upcallReturnLong1Param.invokeExact(ENV.MEMORY, (MemorySegment) (func == null ? MemorySegment.NULL : func), j);
+            ERR = (int) this.upcallReturnLong1ParamMH.invokeExact(ENV.MEMORY, (MemorySegment) (func == null ? MemorySegment.NULL : func), j);
         } catch (Throwable THROWABLE) {
             throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
@@ -362,13 +362,13 @@ public class DefiningCFunction {
         return ENV.returnLong();
     }
 
-    private final MethodHandle upcallReturnShort1Param = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_DefiningCFunction_upcallReturnShort1Param", MemorySegment.class /* func */, short.class /* s */);
+    private static final MethodHandle upcallReturnShort1ParamMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_DefiningCFunction_upcallReturnShort1Param", MemorySegment.class /* func */, short.class /* s */);
 
     public short upcallReturnShort1Param(PNIEnv ENV, MemorySegment func, short s) {
         ENV.reset();
         int ERR;
         try {
-            ERR = (int) this.upcallReturnShort1Param.invokeExact(ENV.MEMORY, (MemorySegment) (func == null ? MemorySegment.NULL : func), s);
+            ERR = (int) this.upcallReturnShort1ParamMH.invokeExact(ENV.MEMORY, (MemorySegment) (func == null ? MemorySegment.NULL : func), s);
         } catch (Throwable THROWABLE) {
             throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
@@ -378,13 +378,13 @@ public class DefiningCFunction {
         return ENV.returnShort();
     }
 
-    private final MethodHandle upcallReturnPointer1Param = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_DefiningCFunction_upcallReturnPointer1Param", MemorySegment.class /* func */, MemorySegment.class /* p */);
+    private static final MethodHandle upcallReturnPointer1ParamMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_DefiningCFunction_upcallReturnPointer1Param", MemorySegment.class /* func */, MemorySegment.class /* p */);
 
     public MemorySegment upcallReturnPointer1Param(PNIEnv ENV, MemorySegment func, MemorySegment p) {
         ENV.reset();
         int ERR;
         try {
-            ERR = (int) this.upcallReturnPointer1Param.invokeExact(ENV.MEMORY, (MemorySegment) (func == null ? MemorySegment.NULL : func), (MemorySegment) (p == null ? MemorySegment.NULL : p));
+            ERR = (int) this.upcallReturnPointer1ParamMH.invokeExact(ENV.MEMORY, (MemorySegment) (func == null ? MemorySegment.NULL : func), (MemorySegment) (p == null ? MemorySegment.NULL : p));
         } catch (Throwable THROWABLE) {
             throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
@@ -395,4 +395,4 @@ public class DefiningCFunction {
     }
 }
 // metadata.generator-version: pni test
-// sha256:39c3f623c3502ae6b1b7aa5c62dbf3321ad3c0ebc22178c843ba7a18420c3226
+// sha256:1226b9f34dcc229cf3cdfc9883ff80d1b84e0f2a50b004a0cc0dc3fdfd7334cc

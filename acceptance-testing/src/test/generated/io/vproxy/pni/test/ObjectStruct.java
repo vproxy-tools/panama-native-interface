@@ -97,14 +97,14 @@ public class ObjectStruct {
         this(ALLOCATOR.allocate(LAYOUT.byteSize()));
     }
 
-    private final MethodHandle func1 = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_ObjectStruct_func1", MemorySegment.class /* self */, String.class /* str */, String.class /* str2 */, MemorySegment.class /* seg */, PNIBuf.class /* buf */);
+    private static final MethodHandle func1MH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_ObjectStruct_func1", MemorySegment.class /* self */, String.class /* str */, String.class /* str2 */, MemorySegment.class /* seg */, PNIBuf.class /* buf */);
 
     public void func1(PNIEnv ENV, PNIString str, PNIString str2, MemorySegment seg, ByteBuffer buf) {
         ENV.reset();
         try (var POOLED = Allocator.ofPooled()) {
             int ERR;
             try {
-                ERR = (int) this.func1.invokeExact(ENV.MEMORY, MEMORY, (MemorySegment) (str == null ? MemorySegment.NULL : str.MEMORY), (MemorySegment) (str2 == null ? MemorySegment.NULL : str2.MEMORY), (MemorySegment) (seg == null ? MemorySegment.NULL : seg), PanamaUtils.format(buf, POOLED));
+                ERR = (int) this.func1MH.invokeExact(ENV.MEMORY, MEMORY, (MemorySegment) (str == null ? MemorySegment.NULL : str.MEMORY), (MemorySegment) (str2 == null ? MemorySegment.NULL : str2.MEMORY), (MemorySegment) (seg == null ? MemorySegment.NULL : seg), PanamaUtils.format(buf, POOLED));
             } catch (Throwable THROWABLE) {
                 throw PanamaUtils.convertInvokeExactException(THROWABLE);
             }
@@ -114,25 +114,25 @@ public class ObjectStruct {
         }
     }
 
-    private final MethodHandle func1Critical = PanamaUtils.lookupPNICriticalFunction(false, void.class, "JavaCritical_io_vproxy_pni_test_ObjectStruct_func1Critical", MemorySegment.class /* self */, String.class /* str */, String.class /* str2 */, MemorySegment.class /* seg */, PNIBuf.class /* buf */);
+    private static final MethodHandle func1CriticalMH = PanamaUtils.lookupPNICriticalFunction(false, void.class, "JavaCritical_io_vproxy_pni_test_ObjectStruct_func1Critical", MemorySegment.class /* self */, String.class /* str */, String.class /* str2 */, MemorySegment.class /* seg */, PNIBuf.class /* buf */);
 
     public void func1Critical(PNIString str, PNIString str2, MemorySegment seg, ByteBuffer buf) {
         try (var POOLED = Allocator.ofPooled()) {
             try {
-                this.func1Critical.invokeExact(MEMORY, (MemorySegment) (str == null ? MemorySegment.NULL : str.MEMORY), (MemorySegment) (str2 == null ? MemorySegment.NULL : str2.MEMORY), (MemorySegment) (seg == null ? MemorySegment.NULL : seg), PanamaUtils.format(buf, POOLED));
+                this.func1CriticalMH.invokeExact(MEMORY, (MemorySegment) (str == null ? MemorySegment.NULL : str.MEMORY), (MemorySegment) (str2 == null ? MemorySegment.NULL : str2.MEMORY), (MemorySegment) (seg == null ? MemorySegment.NULL : seg), PanamaUtils.format(buf, POOLED));
             } catch (Throwable THROWABLE) {
                 throw PanamaUtils.convertInvokeExactException(THROWABLE);
             }
         }
     }
 
-    private final MethodHandle retrieveStr = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_ObjectStruct_retrieveStr", MemorySegment.class /* self */);
+    private static final MethodHandle retrieveStrMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_ObjectStruct_retrieveStr", MemorySegment.class /* self */);
 
     public PNIString retrieveStr(PNIEnv ENV) {
         ENV.reset();
         int ERR;
         try {
-            ERR = (int) this.retrieveStr.invokeExact(ENV.MEMORY, MEMORY);
+            ERR = (int) this.retrieveStrMH.invokeExact(ENV.MEMORY, MEMORY);
         } catch (Throwable THROWABLE) {
             throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
@@ -143,25 +143,25 @@ public class ObjectStruct {
         return RESULT == null ? null : new PNIString(RESULT);
     }
 
-    private final MethodHandle retrieveStrCritical = PanamaUtils.lookupPNICriticalFunction(false, String.class, "JavaCritical_io_vproxy_pni_test_ObjectStruct_retrieveStrCritical", MemorySegment.class /* self */);
+    private static final MethodHandle retrieveStrCriticalMH = PanamaUtils.lookupPNICriticalFunction(false, String.class, "JavaCritical_io_vproxy_pni_test_ObjectStruct_retrieveStrCritical", MemorySegment.class /* self */);
 
     public PNIString retrieveStrCritical() {
         MemorySegment RESULT;
         try {
-            RESULT = (MemorySegment) this.retrieveStrCritical.invokeExact(MEMORY);
+            RESULT = (MemorySegment) this.retrieveStrCriticalMH.invokeExact(MEMORY);
         } catch (Throwable THROWABLE) {
             throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
         return RESULT.address() == 0 ? null : new PNIString(RESULT);
     }
 
-    private final MethodHandle retrieveLenStr = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_ObjectStruct_retrieveLenStr", MemorySegment.class /* self */);
+    private static final MethodHandle retrieveLenStrMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_ObjectStruct_retrieveLenStr", MemorySegment.class /* self */);
 
     public PNIString retrieveLenStr(PNIEnv ENV) {
         ENV.reset();
         int ERR;
         try {
-            ERR = (int) this.retrieveLenStr.invokeExact(ENV.MEMORY, MEMORY);
+            ERR = (int) this.retrieveLenStrMH.invokeExact(ENV.MEMORY, MEMORY);
         } catch (Throwable THROWABLE) {
             throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
@@ -172,25 +172,25 @@ public class ObjectStruct {
         return RESULT == null ? null : new PNIString(RESULT);
     }
 
-    private final MethodHandle retrieveLenStrCritical = PanamaUtils.lookupPNICriticalFunction(false, String.class, "JavaCritical_io_vproxy_pni_test_ObjectStruct_retrieveLenStrCritical", MemorySegment.class /* self */);
+    private static final MethodHandle retrieveLenStrCriticalMH = PanamaUtils.lookupPNICriticalFunction(false, String.class, "JavaCritical_io_vproxy_pni_test_ObjectStruct_retrieveLenStrCritical", MemorySegment.class /* self */);
 
     public PNIString retrieveLenStrCritical() {
         MemorySegment RESULT;
         try {
-            RESULT = (MemorySegment) this.retrieveLenStrCritical.invokeExact(MEMORY);
+            RESULT = (MemorySegment) this.retrieveLenStrCriticalMH.invokeExact(MEMORY);
         } catch (Throwable THROWABLE) {
             throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
         return RESULT.address() == 0 ? null : new PNIString(RESULT);
     }
 
-    private final MethodHandle retrieveSeg = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_ObjectStruct_retrieveSeg", MemorySegment.class /* self */);
+    private static final MethodHandle retrieveSegMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_ObjectStruct_retrieveSeg", MemorySegment.class /* self */);
 
     public MemorySegment retrieveSeg(PNIEnv ENV) {
         ENV.reset();
         int ERR;
         try {
-            ERR = (int) this.retrieveSeg.invokeExact(ENV.MEMORY, MEMORY);
+            ERR = (int) this.retrieveSegMH.invokeExact(ENV.MEMORY, MEMORY);
         } catch (Throwable THROWABLE) {
             throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
@@ -200,12 +200,12 @@ public class ObjectStruct {
         return ENV.returnPointer();
     }
 
-    private final MethodHandle retrieveSegCritical = PanamaUtils.lookupPNICriticalFunction(false, MemorySegment.class, "JavaCritical_io_vproxy_pni_test_ObjectStruct_retrieveSegCritical", MemorySegment.class /* self */);
+    private static final MethodHandle retrieveSegCriticalMH = PanamaUtils.lookupPNICriticalFunction(false, MemorySegment.class, "JavaCritical_io_vproxy_pni_test_ObjectStruct_retrieveSegCritical", MemorySegment.class /* self */);
 
     public MemorySegment retrieveSegCritical() {
         MemorySegment RESULT;
         try {
-            RESULT = (MemorySegment) this.retrieveSegCritical.invokeExact(MEMORY);
+            RESULT = (MemorySegment) this.retrieveSegCriticalMH.invokeExact(MEMORY);
         } catch (Throwable THROWABLE) {
             throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
@@ -213,13 +213,13 @@ public class ObjectStruct {
         return RESULT;
     }
 
-    private final MethodHandle retrieveBuf = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_ObjectStruct_retrieveBuf", MemorySegment.class /* self */);
+    private static final MethodHandle retrieveBufMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_ObjectStruct_retrieveBuf", MemorySegment.class /* self */);
 
     public ByteBuffer retrieveBuf(PNIEnv ENV) {
         ENV.reset();
         int ERR;
         try {
-            ERR = (int) this.retrieveBuf.invokeExact(ENV.MEMORY, MEMORY);
+            ERR = (int) this.retrieveBufMH.invokeExact(ENV.MEMORY, MEMORY);
         } catch (Throwable THROWABLE) {
             throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
@@ -230,13 +230,13 @@ public class ObjectStruct {
         return RES_SEG.toByteBuffer();
     }
 
-    private final MethodHandle retrieveBufCritical = PanamaUtils.lookupPNICriticalFunction(false, PNIBuf.class, "JavaCritical_io_vproxy_pni_test_ObjectStruct_retrieveBufCritical", MemorySegment.class /* self */, MemorySegment.class /* return */);
+    private static final MethodHandle retrieveBufCriticalMH = PanamaUtils.lookupPNICriticalFunction(false, PNIBuf.class, "JavaCritical_io_vproxy_pni_test_ObjectStruct_retrieveBufCritical", MemorySegment.class /* self */, MemorySegment.class /* return */);
 
     public ByteBuffer retrieveBufCritical() {
         try (var POOLED = Allocator.ofPooled()) {
             MemorySegment RESULT;
             try {
-                RESULT = (MemorySegment) this.retrieveBufCritical.invokeExact(MEMORY, POOLED.allocate(PNIBuf.LAYOUT.byteSize()));
+                RESULT = (MemorySegment) this.retrieveBufCriticalMH.invokeExact(MEMORY, POOLED.allocate(PNIBuf.LAYOUT.byteSize()));
             } catch (Throwable THROWABLE) {
                 throw PanamaUtils.convertInvokeExactException(THROWABLE);
             }
@@ -246,13 +246,13 @@ public class ObjectStruct {
         }
     }
 
-    private final MethodHandle checkPointerSetToNonNull = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_ObjectStruct_checkPointerSetToNonNull", MemorySegment.class /* self */);
+    private static final MethodHandle checkPointerSetToNonNullMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_ObjectStruct_checkPointerSetToNonNull", MemorySegment.class /* self */);
 
     public boolean checkPointerSetToNonNull(PNIEnv ENV) {
         ENV.reset();
         int ERR;
         try {
-            ERR = (int) this.checkPointerSetToNonNull.invokeExact(ENV.MEMORY, MEMORY);
+            ERR = (int) this.checkPointerSetToNonNullMH.invokeExact(ENV.MEMORY, MEMORY);
         } catch (Throwable THROWABLE) {
             throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
@@ -262,25 +262,25 @@ public class ObjectStruct {
         return ENV.returnBool();
     }
 
-    private final MethodHandle checkPointerSetToNonNullCritical = PanamaUtils.lookupPNICriticalFunction(false, boolean.class, "JavaCritical_io_vproxy_pni_test_ObjectStruct_checkPointerSetToNonNullCritical", MemorySegment.class /* self */);
+    private static final MethodHandle checkPointerSetToNonNullCriticalMH = PanamaUtils.lookupPNICriticalFunction(false, boolean.class, "JavaCritical_io_vproxy_pni_test_ObjectStruct_checkPointerSetToNonNullCritical", MemorySegment.class /* self */);
 
     public boolean checkPointerSetToNonNullCritical() {
         boolean RESULT;
         try {
-            RESULT = (boolean) this.checkPointerSetToNonNullCritical.invokeExact(MEMORY);
+            RESULT = (boolean) this.checkPointerSetToNonNullCriticalMH.invokeExact(MEMORY);
         } catch (Throwable THROWABLE) {
             throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
         return RESULT;
     }
 
-    private final MethodHandle checkPointerSetToNull = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_ObjectStruct_checkPointerSetToNull", MemorySegment.class /* self */);
+    private static final MethodHandle checkPointerSetToNullMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_ObjectStruct_checkPointerSetToNull", MemorySegment.class /* self */);
 
     public boolean checkPointerSetToNull(PNIEnv ENV) {
         ENV.reset();
         int ERR;
         try {
-            ERR = (int) this.checkPointerSetToNull.invokeExact(ENV.MEMORY, MEMORY);
+            ERR = (int) this.checkPointerSetToNullMH.invokeExact(ENV.MEMORY, MEMORY);
         } catch (Throwable THROWABLE) {
             throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
@@ -290,12 +290,12 @@ public class ObjectStruct {
         return ENV.returnBool();
     }
 
-    private final MethodHandle checkPointerSetToNullCritical = PanamaUtils.lookupPNICriticalFunction(false, boolean.class, "JavaCritical_io_vproxy_pni_test_ObjectStruct_checkPointerSetToNullCritical", MemorySegment.class /* self */);
+    private static final MethodHandle checkPointerSetToNullCriticalMH = PanamaUtils.lookupPNICriticalFunction(false, boolean.class, "JavaCritical_io_vproxy_pni_test_ObjectStruct_checkPointerSetToNullCritical", MemorySegment.class /* self */);
 
     public boolean checkPointerSetToNullCritical() {
         boolean RESULT;
         try {
-            RESULT = (boolean) this.checkPointerSetToNullCritical.invokeExact(MEMORY);
+            RESULT = (boolean) this.checkPointerSetToNullCriticalMH.invokeExact(MEMORY);
         } catch (Throwable THROWABLE) {
             throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
@@ -347,4 +347,4 @@ public class ObjectStruct {
     }
 }
 // metadata.generator-version: pni test
-// sha256:71ec809ca2e8c3862294c53a2cca0b3ca39d8320f220bd8d1aabf632dddd3c99
+// sha256:683d71e169c28249aeea0bf5ace99d78c81d72eb5e311c0fb50a33d69b88a2bf
