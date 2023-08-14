@@ -123,7 +123,7 @@ Add dependency to your project:
 
 ```groovy
 dependencies {
-    implementation "io.vproxy:pni-api:$version"
+    implementation "io.vproxy:pni-api:21.0.0.5"
 }
 ```
 
