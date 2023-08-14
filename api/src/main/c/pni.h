@@ -97,6 +97,8 @@ typedef PNI_PACK(struct, PNIFunc, {
     void* userdata;
 }) PNIFunc;
 
+#define PNIFuncInvokeExceptionCaught ((int32_t) 0x800000f1)
+
 static inline int PNIFuncInvoke(PNIFunc* f, void* data) {
     return f->func(f->index, data);
 }

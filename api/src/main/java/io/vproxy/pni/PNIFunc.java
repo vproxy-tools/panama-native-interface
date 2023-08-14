@@ -159,8 +159,17 @@ public abstract class PNIFunc<T> {
         } else {
             o = func.construct(data);
         }
-        //noinspection unchecked,rawtypes
-        return ((CallSite) func.func).call(o);
+        //noinspection rawtypes
+        var callsite = ((CallSite) func.func);
+        try {
+            //noinspection unchecked
+            return callsite.call(o);
+        } catch (Throwable t) {
+            System.out.println("[PNI][ERR ][PNIFunc#call] call raised an exception, which would crash the VM. " +
+                               "Now the exception is caught and the call returns 0x800000f1 (signed, so it's negative).");
+            t.printStackTrace(System.out);
+            return 0x800000f1;
+        }
     }
 
     private static void release(long index) {
