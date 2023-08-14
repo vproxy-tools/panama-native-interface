@@ -402,6 +402,9 @@ As a result, you **MUST** release the object when you finished using it: `PNIFun
 The `PNIFunc` struct has a field `void * userdata` for you to store you own data in it.
 This is useful for example when you store the `PNIFunc*` in `epoll_event.data.ptr`.
 
+If any error thrown from the CallSite, the PNIFunc will catch it and print the exception,
+then return `PNIFuncInvokeExceptionCaught` to C.
+
 </details>
 
 ## Annotations
