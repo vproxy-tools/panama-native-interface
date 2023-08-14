@@ -69,3 +69,5 @@ playground/src/main/generated/**/*.java
 
 !playground/src/main/template
 playground/src/main/template/**/*.java
+
+*.log
