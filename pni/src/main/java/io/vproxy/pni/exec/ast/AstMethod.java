@@ -237,7 +237,7 @@ public class AstMethod {
     }
 
     public void generateJava(StringBuilder sb, int indent, String classUnderlinedName, boolean needSelf) {
-        Utils.appendIndent(sb, indent).append("private final MethodHandle ").append(name).append(" = PanamaUtils.");
+        Utils.appendIndent(sb, indent).append("private static final MethodHandle ").append(name).append("MH").append(" = PanamaUtils.");
         if (critical()) {
             sb.append("lookupPNICriticalFunction(");
         } else {
@@ -348,7 +348,7 @@ public class AstMethod {
         } else {
             sb.append("ERR = (int) ");
         }
-        sb.append("this.").append(name).append(".invokeExact(");
+        sb.append("this.").append(name).append("MH").append(".invokeExact(");
         if (!critical()) {
             sb.append("ENV.MEMORY");
             if (!params.isEmpty() || needSelf) {
