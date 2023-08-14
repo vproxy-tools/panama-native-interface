@@ -94,7 +94,10 @@ typedef PNI_PACK(struct, PNIFunc, {
     int32_t (*func)(int64_t,void*);
     void    (*release)(int64_t);
 
-    void* userdata;
+    union {
+        void*    userdata;
+        uint64_t udata64;
+    };
 }) PNIFunc;
 
 #define PNIFuncInvokeExceptionCaught ((int32_t) 0x800000f1)

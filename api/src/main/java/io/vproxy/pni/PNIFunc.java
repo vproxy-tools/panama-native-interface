@@ -44,11 +44,14 @@ public abstract class PNIFunc<T> {
             UPCALL_STUB_ARENA);
     }
 
-    private static final MemoryLayout LAYOUT = MemoryLayout.structLayout(
+    public static final MemoryLayout LAYOUT = MemoryLayout.structLayout(
         ValueLayout.JAVA_LONG_UNALIGNED.withName("index"),
         ValueLayout.ADDRESS_UNALIGNED.withName("func"),
         ValueLayout.ADDRESS_UNALIGNED.withName("release"),
-        ValueLayout.ADDRESS_UNALIGNED.withName("userdata")
+        MemoryLayout.unionLayout(
+            ValueLayout.ADDRESS_UNALIGNED.withName("userdata"),
+            ValueLayout.JAVA_LONG_UNALIGNED.withName("udata64")
+        ).withName("union0")
     );
     public final MemorySegment MEMORY;
     private final long index;
@@ -110,7 +113,12 @@ public abstract class PNIFunc<T> {
         MemoryLayout.PathElement.groupElement("release")
     );
     private static final VarHandle userdataVH = LAYOUT.varHandle(
+        MemoryLayout.PathElement.groupElement("union0"),
         MemoryLayout.PathElement.groupElement("userdata")
+    );
+    private static final VarHandle udata64VH = LAYOUT.varHandle(
+        MemoryLayout.PathElement.groupElement("union0"),
+        MemoryLayout.PathElement.groupElement("udata64")
     );
 
     public MemorySegment getUserdata() {
@@ -119,6 +127,14 @@ public abstract class PNIFunc<T> {
 
     public void setUserdata(MemorySegment userdata) {
         userdataVH.set(MEMORY, userdata);
+    }
+
+    public long getUData64() {
+        return (long) udata64VH.get(MEMORY);
+    }
+
+    public void setUData64(long udata64) {
+        udata64VH.set(MEMORY, udata64);
     }
 
     abstract protected T construct(MemorySegment seg);
