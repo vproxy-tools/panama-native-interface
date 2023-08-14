@@ -573,3 +573,12 @@ Any other combination except the above table is disallowed.
   build a pointer to PNIFunc and retrieve memory of it using `func.MEMORY` then assign it to wherever you want.
 
 </details>
+
+## Real World Examples
+
+<details><summary>Click to reveal</summary>
+
+* [vproxy](http://github.com/wkgcass/vproxy): LoadBalancer and virtual networking on Java, migrated from the old `JNI` to `PNI`, using the `JNI` style C functions.
+* [luajn](https://github.com/vproxy-tools/luajn): A Lua/C/Java binding, built upon `PNI`, using the `Critical` style C functions.
+
+</details>
