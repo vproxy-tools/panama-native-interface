@@ -103,6 +103,10 @@ public abstract class PNIFunc<T> {
         funcFastStorage = new PNIFunc[len];
     }
 
+    public static long currentFuncStorageSize() {
+        return funcStorage.size();
+    }
+
     private static final VarHandle indexVH = LAYOUT.varHandle(
         MemoryLayout.PathElement.groupElement("index")
     );
