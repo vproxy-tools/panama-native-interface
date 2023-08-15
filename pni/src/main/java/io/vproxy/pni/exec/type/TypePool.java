@@ -1,12 +1,16 @@
 package io.vproxy.pni.exec.type;
 
 import io.vproxy.pni.exec.ast.AstClass;
+import io.vproxy.pni.exec.ast.AstTypeDesc;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class TypePool {
-    private final Map<String, TypeInfo> types = new HashMap<>();
+    private final Map<String, TypeInfo> internalNameTypes = new HashMap<>();
+    private final Map<String, TypeInfo> descTypes = new HashMap<>();
 
     public TypePool() {
         record(ByteTypeInfo.get());
@@ -33,6 +37,8 @@ public class TypePool {
         record(AnnoUnsignedTypeInfo.get());
 
         record(CallSiteTypeInfo.get());
+        record(PNIFuncTypeInfo.get());
+        record(PNIRefTypeInfo.get());
 
         record(MemorySegmentTypeInfo.get());
         record(ByteBufferTypeInfo.get());
@@ -43,8 +49,8 @@ public class TypePool {
     }
 
     private void record(TypeInfo info) {
-        types.put(info.internalName(), info);
-        types.put(info.desc(), info);
+        internalNameTypes.put(info.internalName(), info);
+        descTypes.put(info.desc(), info);
     }
 
     public void record(AstClass cls) {
@@ -52,8 +58,17 @@ public class TypePool {
         record(info);
     }
 
+    private TypeInfo findInMaps(String internalNameOrDesc) {
+        if (internalNameOrDesc.contains("<")) {
+            internalNameOrDesc = internalNameOrDesc.substring(0, internalNameOrDesc.indexOf("<")) + ";";
+        }
+        var typeInfo = internalNameTypes.get(internalNameOrDesc);
+        if (typeInfo != null) return typeInfo;
+        return descTypes.get(internalNameOrDesc);
+    }
+
     public TypeInfo find(String internalNameOrDesc) {
-        var typeInfo = types.get(internalNameOrDesc);
+        var typeInfo = findInMaps(internalNameOrDesc);
         if (typeInfo != null) {
             return typeInfo;
         }
@@ -67,6 +82,29 @@ public class TypePool {
             return arrType;
         }
         return tryToFindException(internalNameOrDesc);
+    }
+
+    public TypeInfo find(AstTypeDesc desc) {
+        var typeInfo = find(desc.desc);
+        // typeInfo might be null
+        if (typeInfo instanceof PNIRefTypeInfo) {
+            typeInfo = new PNIRefGenericTypeInfo(desc.genericTypes);
+        } else if (typeInfo instanceof PNIFuncTypeInfo) {
+            typeInfo = new PNIFuncGenericTypeInfo(desc.genericTypes, findAll(desc.genericTypes));
+        } else if (typeInfo instanceof CallSiteTypeInfo) {
+            typeInfo = new CallSiteGenericTypeInfo(desc.genericTypes, findAll(desc.genericTypes));
+        }
+        desc.typeRef = typeInfo;
+        findAll(desc.genericTypes);
+        return typeInfo;
+    }
+
+    private List<TypeInfo> findAll(List<AstTypeDesc> types) {
+        var ret = new ArrayList<TypeInfo>();
+        for (var t : types) {
+            ret.add(find(t));
+        }
+        return ret;
     }
 
     private TypeInfo tryToFindException(String name) {

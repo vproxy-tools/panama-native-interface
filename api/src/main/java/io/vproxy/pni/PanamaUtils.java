@@ -17,10 +17,6 @@ public class PanamaUtils {
     private PanamaUtils() {
     }
 
-    public static MethodHandle lookupPNIFunction(String functionName, Class... parameterTypes) {
-        return lookupPNIFunction(true, functionName, parameterTypes);
-    }
-
     public static MethodHandle lookupPNIFunction(boolean isTrivial, String functionName, Class... parameterTypes) {
         var nativeLinker = Linker.nativeLinker();
         var loaderLookup = SymbolLookup.loaderLookup();
@@ -39,10 +35,6 @@ public class PanamaUtils {
             throw new UnsatisfiedLinkError(functionName + Arrays.stream(parameterTypes).map(Class::getSimpleName).collect(Collectors.joining(", ", "(", ")")));
         }
         return h;
-    }
-
-    public static MethodHandle lookupPNICriticalFunction(Class returnType, String functionName, Class... parameterTypes) {
-        return lookupPNICriticalFunction(true, returnType, functionName, parameterTypes);
     }
 
     public static MethodHandle lookupPNICriticalFunction(boolean isTrivial, Class returnType, String functionName, Class... parameterTypes) {
@@ -111,6 +103,10 @@ public class PanamaUtils {
             return ValueLayout.ADDRESS; // void*
         } else if (type == PNIBuf.class) {
             return ValueLayout.ADDRESS; // PNIBuf*
+        } else if (type == PNIFunc.class) {
+            return ValueLayout.ADDRESS; // PNIFunc*
+        } else if (type == PNIRef.class) {
+            return ValueLayout.ADDRESS; // PNIRef*
         } else if (type == CallSite.class) {
             return ValueLayout.ADDRESS; // PNIFunc*
         } else if (MemoryLayout.class.isAssignableFrom(type)) {

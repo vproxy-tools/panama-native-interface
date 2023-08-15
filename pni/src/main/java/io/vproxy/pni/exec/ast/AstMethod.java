@@ -16,7 +16,8 @@ import static io.vproxy.pni.exec.internal.Consts.*;
 public class AstMethod {
     public final List<AstAnno> annos = new ArrayList<>();
     public String name;
-    public String returnType;
+    public List<AstGenericDef> genericDefs = new ArrayList<>();
+    public AstTypeDesc returnType;
     public List<AstParam> params = new ArrayList<>();
     public List<String> throwTypes = new ArrayList<>(); // internal name
 
@@ -26,13 +27,20 @@ public class AstMethod {
     public AstMethod(MethodNode m) {
         Utils.readAnnotations(annos, m.visibleAnnotations);
         this.name = m.name;
-        this.returnType = m.desc.substring(m.desc.indexOf(")") + 1);
-        var paramsPart = m.desc.substring(1, m.desc.indexOf(")"));
-        var signature = m.signature;
-        if (signature != null) {
-            paramsPart = signature.substring(1, signature.lastIndexOf(")"));
+        String returnType;
+        String paramsPart;
+        if (m.signature == null) {
+            returnType = m.desc.substring(m.desc.indexOf(")") + 1);
+            paramsPart = m.desc.substring(1, m.desc.indexOf(")"));
+        } else {
+            returnType = m.signature.substring(m.signature.indexOf(")") + 1);
+            paramsPart = m.signature.substring(m.signature.indexOf("(") + 1, m.signature.indexOf(")"));
         }
-        var paramTypes = Utils.extractMethodDescParamsPart(paramsPart);
+        if (m.signature != null) {
+            this.genericDefs.addAll(Utils.extractGenericDefinition(m.signature));
+        }
+        this.returnType = Utils.extractDesc(returnType).get(0);
+        var paramTypes = Utils.extractDesc(paramsPart);
 
         for (int i = 0; i < paramTypes.size(); i++) {
             var t = paramTypes.get(i);
@@ -44,7 +52,7 @@ public class AstMethod {
             if (m.visibleParameterAnnotations != null) {
                 annotationNodes = m.visibleParameterAnnotations[i];
             }
-            params.add(new AstParam(t.type(), t.genericParams(), paramName, annotationNodes));
+            params.add(new AstParam(t, paramName, annotationNodes));
         }
         throwTypes.addAll(m.exceptions);
     }
@@ -72,12 +80,7 @@ public class AstMethod {
             errors.add(path + ": unable to find returnTypeRef: " + returnType);
         } else {
             returnTypeRef.checkType(errors, path, varOptsForReturn());
-            if (returnTypeRef instanceof ClassTypeInfo) {
-                var classTypeInfo = (ClassTypeInfo) returnTypeRef;
-                if (classTypeInfo.getClazz().isInterface) {
-                    errors.add(path + ": return type cannot use interface type: " + returnType);
-                }
-            } else if (returnTypeRef instanceof CallSiteTypeInfo) {
+            if (returnTypeRef instanceof CallSiteTypeInfo) {
                 errors.add(path + ": cannot use CallSite as return value");
             }
         }
@@ -268,8 +271,21 @@ public class AstMethod {
         sb.append(");\n");
         sb.append("\n");
 
-        Utils.appendIndent(sb, indent).append("public ")
-            .append(returnTypeRef.javaTypeForReturn(varOptsForReturn()))
+        Utils.appendIndent(sb, indent).append("public ");
+        if (!genericDefs.isEmpty()) {
+            sb.append("<");
+            var isFirst = true;
+            for (var g : genericDefs) {
+                if (isFirst) {
+                    isFirst = false;
+                } else {
+                    sb.append(", ");
+                }
+                sb.append(g);
+            }
+            sb.append("> ");
+        }
+        sb.append(returnTypeRef.javaTypeForReturn(varOptsForReturn()))
             .append(" ").append(name).append("(");
         if (!critical()) {
             sb.append("PNIEnv ENV");

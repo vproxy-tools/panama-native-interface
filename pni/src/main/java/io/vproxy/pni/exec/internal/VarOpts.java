@@ -1,36 +1,42 @@
 package io.vproxy.pni.exec.internal;
 
-import io.vproxy.pni.exec.type.TypeInfo;
-
-import java.util.List;
-
 public class VarOpts {
     private final boolean unsigned;
     private final PointerInfo pointerInfo;
     private final long len;
     private final boolean raw;
-    private final List<TypeInfo> genericParams;
     private final boolean critical;
 
-    private VarOpts(boolean unsigned, PointerInfo pointerInfo, long len, boolean raw, List<TypeInfo> genericParams, boolean critical) {
+    private VarOpts(boolean unsigned, PointerInfo pointerInfo, long len, boolean raw, boolean critical) {
         this.unsigned = unsigned;
         this.pointerInfo = pointerInfo;
         this.len = len;
         this.raw = raw;
-        this.genericParams = genericParams;
         this.critical = critical;
     }
 
     public static VarOpts of(boolean unsigned, PointerInfo hasPointerAnno, long len) {
-        return new VarOpts(unsigned, hasPointerAnno, len, false, null, false);
+        return new VarOpts(unsigned, hasPointerAnno, len, false, false);
     }
 
     public static VarOpts ofReturn(boolean critical) {
-        return new VarOpts(false, PointerInfo.ofMethod(false), -1, false, null, critical);
+        return new VarOpts(false, PointerInfo.ofMethod(false), -1, false, critical);
     }
 
-    public static VarOpts of(boolean unsigned, PointerInfo hasPointerAnno, long len, boolean raw, List<TypeInfo> genericParams) {
-        return new VarOpts(unsigned, hasPointerAnno, len, raw, genericParams, false);
+    public static VarOpts of(boolean unsigned, PointerInfo hasPointerAnno, long len, boolean raw) {
+        return new VarOpts(unsigned, hasPointerAnno, len, raw, false);
+    }
+
+    public static VarOpts fieldDefault() {
+        return new VarOpts(false, PointerInfo.ofField(false), -1, false, false);
+    }
+
+    public static VarOpts paramDefault() {
+        return new VarOpts(false, PointerInfo.ofMethod(false), -1, false, false);
+    }
+
+    public static VarOpts returnDefault() {
+        return new VarOpts(false, PointerInfo.ofMethod(false), -1, false, false);
     }
 
     public boolean isUnsigned() {
@@ -51,10 +57,6 @@ public class VarOpts {
 
     public boolean isRaw() {
         return raw;
-    }
-
-    public List<TypeInfo> getGenericParams() {
-        return genericParams;
     }
 
     public boolean isCritical() {

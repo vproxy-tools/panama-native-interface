@@ -460,7 +460,7 @@ public class AstClass {
             sb.append("            this(buf.get());\n");
             sb.append("        }\n");
             sb.append("\n");
-            generateConstructAndGetSegment(sb);
+            generateOverrideConstructAndGetSegment(sb);
             sb.append("    }\n");
             sb.append("\n");
             sb.append("    public static class Func extends PNIFunc<").append(simpleName()).append("> {\n");
@@ -468,18 +468,26 @@ public class AstClass {
             sb.append("            super(func);\n");
             sb.append("        }\n");
             sb.append("\n");
+            sb.append("        private Func(MemorySegment MEMORY) {\n");
+            sb.append("            super(MEMORY);\n");
+            sb.append("        }\n");
+            sb.append("\n");
             sb.append("        public static Func of(io.vproxy.pni.CallSite<").append(simpleName()).append("> func) {\n");
             sb.append("            return new Func(func);\n");
             sb.append("        }\n");
             sb.append("\n");
-            generateConstructAndGetSegment(sb);
+            sb.append("        public static Func of(MemorySegment MEMORY) {\n");
+            sb.append("            return new Func(MEMORY);\n");
+            sb.append("        }\n");
+            sb.append("\n");
+            generateOverrideConstruct(sb);
             sb.append("    }\n");
         }
 
         sb.append("}\n");
     }
 
-    private void generateConstructAndGetSegment(StringBuilder sb) {
+    private void generateOverrideConstructAndGetSegment(StringBuilder sb) {
         sb.append("        @Override\n");
         sb.append("        protected ").append(simpleName()).append(" construct(MemorySegment seg) {\n");
         sb.append("            return new ").append(simpleName()).append("(seg);\n");
@@ -488,6 +496,13 @@ public class AstClass {
         sb.append("        @Override\n");
         sb.append("        protected MemorySegment getSegment(").append(simpleName()).append(" value) {\n");
         sb.append("            return value.MEMORY;\n");
+        sb.append("        }\n");
+    }
+
+    private void generateOverrideConstruct(StringBuilder sb) {
+        sb.append("        @Override\n");
+        sb.append("        protected ").append(simpleName()).append(" construct(MemorySegment seg) {\n");
+        sb.append("            return new ").append(simpleName()).append("(seg);\n");
         sb.append("        }\n");
     }
 
@@ -609,6 +624,7 @@ public class AstClass {
                     }
                 }
                 for (var g : p.genericTypeRefs) {
+                    // note: g might be null
                     if (g instanceof ClassTypeInfo) {
                         var classTypeInfo = (ClassTypeInfo) g;
                         var cls = classTypeInfo.getClazz();

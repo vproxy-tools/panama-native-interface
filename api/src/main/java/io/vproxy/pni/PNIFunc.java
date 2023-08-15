@@ -8,10 +8,6 @@ import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodType;
 import java.lang.invoke.VarHandle;
 import java.util.Objects;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.atomic.AtomicLong;
-import java.util.concurrent.locks.ReadWriteLock;
-import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 public abstract class PNIFunc<T> {
     private static final Arena UPCALL_STUB_ARENA = Arena.ofShared(); // should not be released
@@ -63,33 +59,25 @@ public abstract class PNIFunc<T> {
         MEMORY = SunUnsafe.allocateMemory(LAYOUT.byteSize());
         this.func = func;
 
-        var index = indexCounter.incrementAndGet();
-        while (index == 0) {
-            index = indexCounter.incrementAndGet();
-        }
+        var index = holder.store(this);
         this.index = index;
         indexVH.set(MEMORY, index);
-        funcStorage.put(index, this);
-        if (funcFastStorage.length != 0) {
-            var arrIdx = (int) (index % funcFastStorage.length);
-            var wlock = funcFastStorageLock.writeLock();
-            wlock.lock();
-            funcFastStorage[arrIdx] = this;
-            wlock.unlock();
-        }
 
         funcVH.set(MEMORY, UPCALL_STUB_CALL);
         releaseVH.set(MEMORY, UPCALL_STUB_RELEASE);
     }
 
-    private static final AtomicLong indexCounter = new AtomicLong();
-    private static final ConcurrentHashMap<Long, PNIFunc<?>> funcStorage = new ConcurrentHashMap<>();
-    private static final PNIFunc<?>[] funcFastStorage;
-    private static final ReadWriteLock funcFastStorageLock = new ReentrantReadWriteLock();
+    protected PNIFunc(MemorySegment MEMORY) {
+        this.MEMORY = MEMORY.reinterpret(LAYOUT.byteSize());
+        this.index = 0;
+        this.func = null;
+    }
+
+    private static final ObjectHolder<PNIFunc<?>> holder;
 
     static {
         int len = 4096;
-        final String KEY = "io.vproxy.pni.PNIFunc.funcFastStorage.length";
+        final String KEY = "io.vproxy.pni.PNIFunc.holder.fastStorage.length";
         var strLen = System.getProperty(KEY, "4096");
         try {
             len = Integer.parseInt(strLen);
@@ -100,11 +88,16 @@ public abstract class PNIFunc<T> {
             System.out.println("[PNI][WARN][PNIFunc#cinit] invalid " + KEY + ": value should >= 0: " + len + ", the value is modified to 0");
             len = 0;
         }
-        funcFastStorage = new PNIFunc[len];
+        holder = new ObjectHolder<>(len) {
+            @Override
+            protected long getObjectIndex(PNIFunc<?> obj) {
+                return obj.index;
+            }
+        };
     }
 
     public static long currentFuncStorageSize() {
-        return funcStorage.size();
+        return holder.size();
     }
 
     private static final VarHandle indexVH = LAYOUT.varHandle(
@@ -125,6 +118,10 @@ public abstract class PNIFunc<T> {
         MemoryLayout.PathElement.groupElement("udata64")
     );
 
+    public long getIndex() {
+        return (long) indexVH.get(MEMORY);
+    }
+
     public MemorySegment getUserdata() {
         return (MemorySegment) userdataVH.get(MEMORY);
     }
@@ -143,41 +140,38 @@ public abstract class PNIFunc<T> {
 
     abstract protected T construct(MemorySegment seg);
 
-    abstract protected MemorySegment getSegment(T t);
+    public CallSite<T> getCallSite() {
+        if (this.func != null) {
+            return this.func;
+        }
 
-    private static PNIFunc<?> tryToFindFuncFast(long index) {
-        if (funcFastStorage.length == 0) {
-            return null;
-        }
-        int arrIdx = (int) (index % funcFastStorage.length);
-        var rlock = funcFastStorageLock.readLock();
-        rlock.lock();
-        var func = funcFastStorage[arrIdx];
+        var index = getIndex();
+        PNIFunc<?> func = holder.get(index);
         if (func == null) {
-            rlock.unlock();
-            return null;
+            throw new NullPointerException("index = " + index);
         }
-        if (func.index != index) {
-            func = null;
-        }
-        rlock.unlock();
-        return func;
+        //noinspection unchecked
+        return (CallSite<T>) func.func;
     }
 
     private static int call(long index, MemorySegment data) {
-        PNIFunc<?> func = tryToFindFuncFast(index);
-        if (func == null) {
-            func = funcStorage.get(index);
-        }
+        PNIFunc<?> func = holder.get(index);
         if (func == null) {
             System.out.println("[PNI][WARN][PNIFunc#call] PNIFunc not found: index: " + index + ", data: " + data.address());
-            return -1_000_000;
+            return 0x800000f2;
         }
         Object o;
         if (data.address() == 0) {
             o = null;
         } else {
-            o = func.construct(data);
+            try {
+                o = func.construct(data);
+            } catch (Throwable t) {
+                System.out.println("[PNI][ERR ][PNIFunc#call] construct raised an exception, which would crash the VM. " +
+                                   "Now the exception is caught and the call returns 0x800000f1 (signed, so it's negative).");
+                t.printStackTrace(System.out);
+                return 0x800000f1;
+            }
         }
         //noinspection rawtypes
         var callsite = ((CallSite) func.func);
@@ -193,17 +187,7 @@ public abstract class PNIFunc<T> {
     }
 
     private static void release(long index) {
-        if (funcFastStorage.length != 0) {
-            int arrIdx = (int) (index % funcFastStorage.length);
-            var wlock = funcFastStorageLock.writeLock();
-            wlock.lock();
-            var func = funcFastStorage[arrIdx];
-            if (func != null && func.index == index) {
-                funcFastStorage[arrIdx] = null;
-            }
-            wlock.unlock();
-        }
-        var func = funcStorage.remove(index);
+        var func = holder.remove(index);
         if (func == null) {
             System.out.println("[PNI][WARN][PNIFunc#release] PNIFunc not found: index: " + index);
             return;
@@ -211,23 +195,30 @@ public abstract class PNIFunc<T> {
         SunUnsafe.freeMemory(func.MEMORY.address());
     }
 
+    public void close() {
+        release(getIndex());
+    }
+
     public static class VoidFunc extends PNIFunc<Void> {
         private VoidFunc(CallSite<Void> func) {
             super(func);
+        }
+
+        private VoidFunc(MemorySegment MEMORY) {
+            super(MEMORY);
         }
 
         public static VoidFunc of(CallSite<Void> func) {
             return new VoidFunc(func);
         }
 
-        @Override
-        protected Void construct(MemorySegment seg) {
-            return null;
+        public static VoidFunc of(MemorySegment MEMORY) {
+            return new VoidFunc(MEMORY);
         }
 
         @Override
-        protected MemorySegment getSegment(Void v) {
-            return MemorySegment.NULL;
+        protected Void construct(MemorySegment seg) {
+            return null;
         }
     }
 }

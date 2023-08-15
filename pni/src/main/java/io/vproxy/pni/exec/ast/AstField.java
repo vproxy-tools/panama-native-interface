@@ -14,7 +14,7 @@ import static io.vproxy.pni.exec.internal.Consts.*;
 public class AstField {
     public final List<AstAnno> annos = new ArrayList<>();
     public String name;
-    public String type;
+    public AstTypeDesc type;
 
     public TypeInfo typeRef;
     public long padding = 0;
@@ -22,7 +22,7 @@ public class AstField {
     public AstField(FieldNode f) {
         Utils.readAnnotations(annos, f.visibleAnnotations);
         this.name = f.name;
-        this.type = f.desc;
+        this.type = Utils.extractDesc(f.signature == null ? f.desc : f.signature).get(0);
     }
 
     public AstField() {
@@ -42,12 +42,7 @@ public class AstField {
             errors.add(path + ": unable to find typeRef: " + type);
         } else {
             typeRef.checkType(errors, path, varOpts());
-            if (typeRef instanceof ClassTypeInfo) {
-                var classTypeInfo = (ClassTypeInfo) typeRef;
-                if (classTypeInfo.getClazz().isInterface) {
-                    errors.add(path + ": unable to use interface type: " + type);
-                }
-            } else if (typeRef instanceof CallSiteTypeInfo) {
+            if (typeRef instanceof CallSiteTypeInfo) {
                 errors.add(path + ": cannot use CallSite as field");
             }
         }
@@ -58,20 +53,6 @@ public class AstField {
         if (name != null) {
             if (!Utils.isValidName(name, false)) {
                 errors.add(path + ": invalid @Name(" + name + ")");
-            }
-        }
-        var unsignedOpt = annos.stream().filter(a -> a.typeRef != null && a.typeRef.name().equals(UnsignedClassName)).findFirst();
-        if (unsignedOpt.isPresent()) {
-            if (typeRef instanceof ArrayTypeInfo) {
-                var arrayTypeInfo = (ArrayTypeInfo) typeRef;
-                var elementTypeRef = arrayTypeInfo.getElementType();
-                if (!(elementTypeRef instanceof IntTypeInfo) && !(elementTypeRef instanceof LongTypeInfo) && !(elementTypeRef instanceof ShortTypeInfo) && !(elementTypeRef instanceof ByteTypeInfo)) {
-                    errors.add(path + ": non-integer type " + elementTypeRef + " in array type " + typeRef + " cannot be annotated with @Unsigned");
-                }
-            } else {
-                if (!(typeRef instanceof IntTypeInfo) && !(typeRef instanceof LongTypeInfo) && !(typeRef instanceof ShortTypeInfo) && !(typeRef instanceof ByteTypeInfo)) {
-                    errors.add(path + ": non-integer type " + typeRef + " cannot be annotated with @Unsigned");
-                }
             }
         }
     }

@@ -100,7 +100,10 @@ typedef PNI_PACK(struct, PNIFunc, {
     };
 }) PNIFunc;
 
+PNIEnvExpand(func, PNIFunc*)
+
 #define PNIFuncInvokeExceptionCaught ((int32_t) 0x800000f1)
+#define PNIFuncInvokeNoSuchFunction  ((int32_t) 0x800000f2)
 
 static inline int PNIFuncInvoke(PNIFunc* f, void* data) {
     return f->func(f->index, data);
@@ -108,6 +111,22 @@ static inline int PNIFuncInvoke(PNIFunc* f, void* data) {
 
 static inline void PNIFuncRelease(PNIFunc* f) {
     f->release(f->index);
+}
+
+typedef PNI_PACK(struct, PNIRef, {
+    int64_t index;
+    void  (*release)(int64_t);
+
+    union {
+        void*    userdata;
+        uint64_t udata64;
+    };
+}) PNIRef;
+
+PNIEnvExpand(ref, PNIRef*)
+
+static inline void PNIRefRelease(PNIRef* ref) {
+    ref->release(ref->index);
 }
 
 #define PNIBufExpand(BufType, ValueType, Size) \

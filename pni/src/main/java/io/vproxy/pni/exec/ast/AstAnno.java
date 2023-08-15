@@ -9,13 +9,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AstAnno {
-    public String type;
+    public AstTypeDesc type;
     public List<AstAnnoValue> values = new ArrayList<>();
 
     public TypeInfo typeRef;
 
     public AstAnno(AnnotationNode a) {
-        type = a.desc;
+        type = Utils.extractDesc(a.desc).get(0);
         if (a.values != null) {
             for (int i = 0; i < a.values.size(); i += 2) {
                 values.add(new AstAnnoValue((String) a.values.get(i), a.values.get(i + 1)));

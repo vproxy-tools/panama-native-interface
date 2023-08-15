@@ -3,14 +3,14 @@ package io.vproxy.pni.exec.internal;
 import io.vproxy.pni.exec.CompilerOptions;
 import io.vproxy.pni.exec.Main;
 import io.vproxy.pni.exec.ast.AstAnno;
+import io.vproxy.pni.exec.ast.AstGenericDef;
+import io.vproxy.pni.exec.ast.AstTypeDesc;
 import org.objectweb.asm.tree.AnnotationNode;
 
 import java.io.File;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 import static io.vproxy.pni.exec.internal.Consts.*;
 
@@ -52,33 +52,56 @@ public class Utils {
         }
     }
 
-    public static class TypeWithGeneric {
-        private final String type;
-        private final List<String> genericParams;
-
-        public TypeWithGeneric(String type, List<String> genericParams) {
-            this.type = type;
-            this.genericParams = genericParams;
+    public static String convertDescToJavaName(String desc) {
+        if (desc.length() == 1) {
+            switch (desc.charAt(0)) {
+                case '*':
+                    return "?";
+                case 'V':
+                    return "void";
+                case 'B':
+                    return "byte";
+                case 'C':
+                    return "char";
+                case 'D':
+                    return "double";
+                case 'F':
+                    return "float";
+                case 'I':
+                    return "int";
+                case 'J':
+                    return "long";
+                case 'S':
+                    return "short";
+                case 'Z':
+                    return "boolean";
+            }
+        } else if (desc.startsWith("[")) {
+            return convertDescToJavaName(desc.substring(1)) + "[]";
+        } else if (desc.startsWith("L") && desc.endsWith(";")) {
+            var n = desc.substring(1, desc.length() - 1);
+            return n.replace("/", ".");
+        } else if (desc.startsWith("T") && desc.endsWith(";")) {
+            return desc.substring(1, desc.length() - 1);
+        } else if (desc.startsWith("+")) {
+            return "? extends " + convertDescToJavaName(desc.substring(1));
+        } else if (desc.startsWith("-")) {
+            return "? super " + convertDescToJavaName(desc.substring(1));
         }
-
-        public String type() {
-            return type;
-        }
-
-        public List<String> genericParams() {
-            return genericParams;
-        }
+        throw new RuntimeException("cannot convert desc to java name: " + desc);
     }
 
-    private static String extractFirstDesc(String s, int[] offset) {
+    private static AstTypeDesc extractFirstDesc(char[] chars, int[] offset) {
+        var genericTypes = new ArrayList<AstTypeDesc>();
         var sb = new StringBuilder();
-        var chars = s.toCharArray();
-        int state = 0; // 0: normal, 1: array, 2: object type
+        int state = 0; // 0: normal, 1: array, 2: object type or generic type, 3: extends or super
         while (offset[0] < chars.length) {
             var c = chars[offset[0]++];
             switch (state) {
                 case 0:
                     switch (c) {
+                        case '*':
+                        case 'V':
                         case 'B':
                         case 'C':
                         case 'D':
@@ -87,17 +110,23 @@ public class Utils {
                         case 'J':
                         case 'S':
                         case 'Z':
-                            return String.valueOf(c);
+                            return new AstTypeDesc(c);
                         case '[':
                             state = 1;
                             sb.append("[");
                             break;
                         case 'L':
+                        case 'T':
                             state = 2;
-                            sb.append("L");
+                            sb.append(c);
+                            break;
+                        case '+':
+                        case '-':
+                            state = 3;
+                            sb.append(c);
                             break;
                         default:
-                            throw new RuntimeException("unknown symbol " + c + " in desc");
+                            throw new RuntimeException("unknown symbol " + c + ": " + new String(chars, 0, offset[0]) + "|" + new String(chars, offset[0], chars.length - offset[0]));
                     }
                     break;
                 case 1:
@@ -111,127 +140,95 @@ public class Utils {
                         case 'J':
                         case 'S':
                         case 'Z':
-                            return sb.toString();
+                            return new AstTypeDesc(sb.toString());
                         case '[':
                             // do nothing
                             break;
                         case 'L':
+                        case 'T':
                             state = 2;
                             break;
                         default:
-                            throw new RuntimeException("unknown symbol " + c + " in desc");
+                            throw new RuntimeException("unknown symbol " + c + ": " + new String(chars, 0, offset[0]) + "|" + new String(chars, offset[0], chars.length - offset[0]));
+                    }
+                    break;
+                case 3:
+                    switch (c) {
+                        case 'L':
+                        case 'T':
+                            state = 2;
+                            sb.append(c);
+                            break;
+                        case '[':
+                            state = 1;
+                            sb.append(c);
+                            break;
+                        default:
+                            throw new RuntimeException("expecting 'L' or 'T': " + new String(chars, 0, offset[0]) + "|" + new String(chars, offset[0], chars.length - offset[0]));
                     }
                     break;
                 case 2:
                 default:
                     if (c == '<') {
-                        sb.append("<");
                         do {
-                            var genericType = extractFirstDesc(s, offset);
-                            sb.append(genericType);
+                            var genericType = extractFirstDesc(chars, offset);
+                            genericTypes.add(genericType);
                         } while (offset[0] < chars.length && chars[offset[0]] != '>');
-                        if (offset[0] != '>') {
-                            throw new RuntimeException("expecting '>': " + s.substring(0, offset[0]) + "|" + s.substring(offset[0]));
+                        if (chars.length == offset[0]) {
+                            throw new RuntimeException("unexpected EOF: " + new String(chars) + "|");
                         }
-                        sb.append(">");
+                        if (chars[offset[0]] != '>') {
+                            throw new RuntimeException("expecting '>': " + new String(chars, 0, offset[0]) + "|" + new String(chars, offset[0], chars.length - offset[0]));
+                        }
                         ++offset[0];
                         continue;
                     }
                     sb.append(c);
                     if (c == ';') {
-                        return sb.toString();
+                        return new AstTypeDesc(sb.toString(), genericTypes);
                     }
             }
         }
-        throw new RuntimeException("unknown symbol: " + s.substring(0, offset[0]) + "|" + s.substring(offset[0]));
+        throw new RuntimeException("unexpected EOF: " + new String(chars) + "|");
     }
 
-    public static List<TypeWithGeneric> extractMethodDescParamsPart(String paramsPart) {
-        List<TypeWithGeneric> result = new ArrayList<>();
-        var sb = new StringBuilder();
-        var genericTypes = new ArrayList<String>();
-        var chars = paramsPart.toCharArray();
-        int state = 0; // 0: normal, 1: array, 2: object type
-        for (int i = 0; i < chars.length; i++) {
-            char c = chars[i];
-            switch (state) {
-                case 0:
-                    switch (c) {
-                        case 'B':
-                        case 'C':
-                        case 'D':
-                        case 'F':
-                        case 'I':
-                        case 'J':
-                        case 'S':
-                        case 'Z':
-                            result.add(new TypeWithGeneric(String.valueOf(c), Collections.emptyList()));
-                            break;
-                        case '[':
-                            state = 1;
-                            sb.append("[");
-                            break;
-                        case 'L':
-                            state = 2;
-                            sb.append("L");
-                            break;
-                        default:
-                            throw new RuntimeException("unknown symbol " + c + " in desc");
-                    }
-                    break;
-                case 1:
-                    sb.append(c);
-                    switch (c) {
-                        case 'B':
-                        case 'C':
-                        case 'D':
-                        case 'F':
-                        case 'I':
-                        case 'J':
-                        case 'S':
-                        case 'Z':
-                            state = 0;
-                            result.add(new TypeWithGeneric(sb.toString(), Collections.emptyList()));
-                            sb.delete(0, sb.length());
-                            break;
-                        case '[':
-                            // do nothing
-                            break;
-                        case 'L':
-                            state = 2;
-                            break;
-                        default:
-                            throw new RuntimeException("unknown symbol " + c + " in desc");
-                    }
-                    break;
-                case 2:
-                default:
-                    if (c == '<') {
-                        while (true) {
-                            var ii = new int[]{i + 1};
-                            var genericType = extractFirstDesc(paramsPart, ii);
-                            if (ii[0] >= chars.length) {
-                                throw new RuntimeException("generic type not finishing with '>': " + paramsPart);
-                            }
-                            if (chars[ii[0]] != '>') {
-                                continue;
-                            }
-                            i = ii[0];
-                            genericTypes.add(genericType);
-                            break;
-                        }
-                        continue;
-                    }
-                    sb.append(c);
-                    if (c == ';') {
-                        state = 0;
-                        result.add(new TypeWithGeneric(sb.toString(), new ArrayList<>(genericTypes)));
-                        genericTypes.clear();
-                        sb.delete(0, sb.length());
-                    }
-            }
+    public static List<AstTypeDesc> extractDesc(String desc) {
+        List<AstTypeDesc> result = new ArrayList<>();
+        var chars = desc.toCharArray();
+        int[] offset = {0};
+        while (offset[0] < chars.length) {
+            result.add(extractFirstDesc(chars, offset));
         }
         return result;
+    }
+
+    public static List<AstGenericDef> extractGenericDefinition(String desc) {
+        if (!desc.startsWith("<")) {
+            return Collections.emptyList();
+        }
+        char[] chars = desc.toCharArray();
+        var sb = new StringBuilder();
+        int[] offset = {1};
+        List<AstGenericDef> result = new ArrayList<>();
+        while (offset[0] < chars.length) {
+            char c = chars[offset[0]++];
+            if (c == ':') {
+                if (offset[0] < chars.length && chars[offset[0]] == ':') {
+                    offset[0]++;
+                }
+                var d = extractFirstDesc(chars, offset);
+                result.add(new AstGenericDef(sb.toString(), d));
+                sb.delete(0, sb.length());
+            } else if (c == '>') {
+                if (sb.length() != 0) {
+                    throw new RuntimeException("unknown symbol " + c + ": " + new String(chars, 0, offset[0]) + "|" + new String(chars, offset[0], chars.length - offset[0]));
+                }
+                return result;
+            } else {
+                sb.append(c);
+            }
+        }
+        throw new RuntimeException("unexpected eof : " + desc + "|");
     }
 
     public static String getName(List<AstAnno> annos) {

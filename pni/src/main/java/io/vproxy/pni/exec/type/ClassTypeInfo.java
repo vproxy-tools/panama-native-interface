@@ -5,6 +5,8 @@ import io.vproxy.pni.exec.internal.AllocationForReturnedValue;
 import io.vproxy.pni.exec.internal.Utils;
 import io.vproxy.pni.exec.internal.VarOpts;
 
+import java.util.List;
+
 public class ClassTypeInfo extends TypeInfo {
     private final AstClass cls;
     private final String name;
@@ -33,6 +35,14 @@ public class ClassTypeInfo extends TypeInfo {
     @Override
     public String desc() {
         return desc;
+    }
+
+    @Override
+    public void checkType(List<String> errors, String path, VarOpts opts) {
+        super.checkType(errors, path, opts);
+        if (getClazz().isInterface) {
+            errors.add(path + ": unable to use interface type: " + name);
+        }
     }
 
     @Override
