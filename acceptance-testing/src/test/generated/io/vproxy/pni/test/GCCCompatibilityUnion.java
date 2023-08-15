@@ -140,20 +140,23 @@ public class GCCCompatibilityUnion {
             super(func);
         }
 
+        private Func(MemorySegment MEMORY) {
+            super(MEMORY);
+        }
+
         public static Func of(io.vproxy.pni.CallSite<GCCCompatibilityUnion> func) {
             return new Func(func);
+        }
+
+        public static Func of(MemorySegment MEMORY) {
+            return new Func(MEMORY);
         }
 
         @Override
         protected GCCCompatibilityUnion construct(MemorySegment seg) {
             return new GCCCompatibilityUnion(seg);
         }
-
-        @Override
-        protected MemorySegment getSegment(GCCCompatibilityUnion value) {
-            return value.MEMORY;
-        }
     }
 }
 // metadata.generator-version: pni test
-// sha256:dd7bed1b3b6cfac8dacfef6b14b5aaf5aa3329408cfaab6a78bdd3e598cc233c
+// sha256:307646ca88c01b240607a7eeb539520857c00116126adaea0cd2b5d59562379f

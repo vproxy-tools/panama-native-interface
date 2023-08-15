@@ -64,7 +64,7 @@ public class GCCompatibilityPackedContainUnion {
         ENV.reset();
         int ERR;
         try {
-            ERR = (int) this.initBMH.invokeExact(ENV.MEMORY, MEMORY);
+            ERR = (int) initBMH.invokeExact(ENV.MEMORY, MEMORY);
         } catch (Throwable THROWABLE) {
             throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
@@ -79,7 +79,7 @@ public class GCCompatibilityPackedContainUnion {
         ENV.reset();
         int ERR;
         try {
-            ERR = (int) this.initSMH.invokeExact(ENV.MEMORY, MEMORY);
+            ERR = (int) initSMH.invokeExact(ENV.MEMORY, MEMORY);
         } catch (Throwable THROWABLE) {
             throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
@@ -94,7 +94,7 @@ public class GCCompatibilityPackedContainUnion {
         ENV.reset();
         int ERR;
         try {
-            ERR = (int) this.initNMH.invokeExact(ENV.MEMORY, MEMORY);
+            ERR = (int) initNMH.invokeExact(ENV.MEMORY, MEMORY);
         } catch (Throwable THROWABLE) {
             throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
@@ -109,7 +109,7 @@ public class GCCompatibilityPackedContainUnion {
         ENV.reset();
         int ERR;
         try {
-            ERR = (int) this.initFMH.invokeExact(ENV.MEMORY, MEMORY);
+            ERR = (int) initFMH.invokeExact(ENV.MEMORY, MEMORY);
         } catch (Throwable THROWABLE) {
             throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
@@ -124,7 +124,7 @@ public class GCCompatibilityPackedContainUnion {
         ENV.reset();
         int ERR;
         try {
-            ERR = (int) this.initDMH.invokeExact(ENV.MEMORY, MEMORY);
+            ERR = (int) initDMH.invokeExact(ENV.MEMORY, MEMORY);
         } catch (Throwable THROWABLE) {
             throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
@@ -139,7 +139,7 @@ public class GCCompatibilityPackedContainUnion {
         ENV.reset();
         int ERR;
         try {
-            ERR = (int) this.initLMH.invokeExact(ENV.MEMORY, MEMORY);
+            ERR = (int) initLMH.invokeExact(ENV.MEMORY, MEMORY);
         } catch (Throwable THROWABLE) {
             throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
@@ -154,7 +154,7 @@ public class GCCompatibilityPackedContainUnion {
         ENV.reset();
         int ERR;
         try {
-            ERR = (int) this.sizeMH.invokeExact(ENV.MEMORY, MEMORY);
+            ERR = (int) sizeMH.invokeExact(ENV.MEMORY, MEMORY);
         } catch (Throwable THROWABLE) {
             throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
@@ -193,20 +193,23 @@ public class GCCompatibilityPackedContainUnion {
             super(func);
         }
 
+        private Func(MemorySegment MEMORY) {
+            super(MEMORY);
+        }
+
         public static Func of(io.vproxy.pni.CallSite<GCCompatibilityPackedContainUnion> func) {
             return new Func(func);
+        }
+
+        public static Func of(MemorySegment MEMORY) {
+            return new Func(MEMORY);
         }
 
         @Override
         protected GCCompatibilityPackedContainUnion construct(MemorySegment seg) {
             return new GCCompatibilityPackedContainUnion(seg);
         }
-
-        @Override
-        protected MemorySegment getSegment(GCCompatibilityPackedContainUnion value) {
-            return value.MEMORY;
-        }
     }
 }
 // metadata.generator-version: pni test
-// sha256:0bff4f39ec78a7a663aea5a47d621311ae5a4bdf1de195bb858b0de280ca62ed
+// sha256:cfed04f3ecd6d42952cf79e6cb98b95d3d1654def3ed277ae51ce0cde93e0122

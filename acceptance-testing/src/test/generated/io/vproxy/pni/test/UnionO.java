@@ -90,20 +90,23 @@ public class UnionO {
             super(func);
         }
 
+        private Func(MemorySegment MEMORY) {
+            super(MEMORY);
+        }
+
         public static Func of(io.vproxy.pni.CallSite<UnionO> func) {
             return new Func(func);
+        }
+
+        public static Func of(MemorySegment MEMORY) {
+            return new Func(MEMORY);
         }
 
         @Override
         protected UnionO construct(MemorySegment seg) {
             return new UnionO(seg);
         }
-
-        @Override
-        protected MemorySegment getSegment(UnionO value) {
-            return value.MEMORY;
-        }
     }
 }
 // metadata.generator-version: pni test
-// sha256:976e7f3079c08b53685a831fb48b12caf0c667c1dd47a5ae064e223f6b02e562
+// sha256:a7b1ec4283de0383e8c0b12d98b5d41ec7e17bb1a10faf4f946a7bedca2cd36b

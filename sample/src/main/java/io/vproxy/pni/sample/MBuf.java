@@ -123,20 +123,23 @@ public class MBuf {
             super(func);
         }
 
+        private Func(MemorySegment MEMORY) {
+            super(MEMORY);
+        }
+
         public static Func of(io.vproxy.pni.CallSite<MBuf> func) {
             return new Func(func);
+        }
+
+        public static Func of(MemorySegment MEMORY) {
+            return new Func(MEMORY);
         }
 
         @Override
         protected MBuf construct(MemorySegment seg) {
             return new MBuf(seg);
         }
-
-        @Override
-        protected MemorySegment getSegment(MBuf value) {
-            return value.MEMORY;
-        }
     }
 }
 // metadata.generator-version: pni test
-// sha256:15640ba6f676e35866210173933293e173856c9adbec9ea7343160bf035ef7e2
+// sha256:9be78ea65bbdd6f1d264bcf2a0a502b33c56af3b8684c25245acd47326adcecb

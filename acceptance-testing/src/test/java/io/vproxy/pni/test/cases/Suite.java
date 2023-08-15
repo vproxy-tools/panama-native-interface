@@ -14,6 +14,8 @@ import org.junit.runner.RunWith;
     TestNull.class,
     TestGeneratedFileFormat.class,
     TestDefiningCFunction.class,
+    TestRefAndFunc.class,
+    TestGeneric.class,
 })
 public class Suite {
 }

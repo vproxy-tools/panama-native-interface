@@ -148,6 +148,6 @@ public class TestObjectStruct {
 
         s = Files.readAllLines(Path.of("src", "test", "generated", "io", "vproxy", "pni", "test", "ObjectStruct.java"));
         lastLine = s.get(s.size() - 1);
-        assertEquals("// sha256:683d71e169c28249aeea0bf5ace99d78c81d72eb5e311c0fb50a33d69b88a2bf", lastLine);
+        assertEquals("// sha256:999fe199427b5ba8186ce832a02c1efb0273b31b3feac30ac60e40d958be42d9", lastLine);
     }
 }

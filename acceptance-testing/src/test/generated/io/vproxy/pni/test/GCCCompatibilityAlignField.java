@@ -73,7 +73,7 @@ public class GCCCompatibilityAlignField {
         ENV.reset();
         int ERR;
         try {
-            ERR = (int) this.initMH.invokeExact(ENV.MEMORY, MEMORY);
+            ERR = (int) initMH.invokeExact(ENV.MEMORY, MEMORY);
         } catch (Throwable THROWABLE) {
             throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
@@ -88,7 +88,7 @@ public class GCCCompatibilityAlignField {
         ENV.reset();
         int ERR;
         try {
-            ERR = (int) this.sizeMH.invokeExact(ENV.MEMORY, MEMORY);
+            ERR = (int) sizeMH.invokeExact(ENV.MEMORY, MEMORY);
         } catch (Throwable THROWABLE) {
             throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
@@ -127,20 +127,23 @@ public class GCCCompatibilityAlignField {
             super(func);
         }
 
+        private Func(MemorySegment MEMORY) {
+            super(MEMORY);
+        }
+
         public static Func of(io.vproxy.pni.CallSite<GCCCompatibilityAlignField> func) {
             return new Func(func);
+        }
+
+        public static Func of(MemorySegment MEMORY) {
+            return new Func(MEMORY);
         }
 
         @Override
         protected GCCCompatibilityAlignField construct(MemorySegment seg) {
             return new GCCCompatibilityAlignField(seg);
         }
-
-        @Override
-        protected MemorySegment getSegment(GCCCompatibilityAlignField value) {
-            return value.MEMORY;
-        }
     }
 }
 // metadata.generator-version: pni test
-// sha256:a347357cf01c3e068b805eac119d994b3c2c38d7398b1dc9aa689d58d2014784
+// sha256:c2b898728b054e24642dea632da8fca421e9a5a115b25b3b59933bc1cabe00a5

@@ -22,7 +22,7 @@ public class SampleFunctions {
         ENV.reset();
         int ERR;
         try {
-            ERR = (int) this.readMH.invokeExact(ENV.MEMORY, fd, (MemorySegment) (buf == null ? MemorySegment.NULL : buf.MEMORY));
+            ERR = (int) readMH.invokeExact(ENV.MEMORY, fd, (MemorySegment) (buf == null ? MemorySegment.NULL : buf.MEMORY));
         } catch (Throwable THROWABLE) {
             throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
@@ -34,4 +34,4 @@ public class SampleFunctions {
     }
 }
 // metadata.generator-version: pni test
-// sha256:fe7059ac405e27823005952a0b4499cd5ed83d8fe1819822908d076ce080ea3c
+// sha256:56a7acc1d4a6702dd8aa076e53b3d2b6f652c09b5395356fe109a3669d1378d8

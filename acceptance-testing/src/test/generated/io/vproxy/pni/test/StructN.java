@@ -57,7 +57,7 @@ public class StructN {
         ENV.reset();
         int ERR;
         try {
-            ERR = (int) this.retrieveSMH.invokeExact(ENV.MEMORY, MEMORY);
+            ERR = (int) retrieveSMH.invokeExact(ENV.MEMORY, MEMORY);
         } catch (Throwable THROWABLE) {
             throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
@@ -73,7 +73,7 @@ public class StructN {
         ENV.reset();
         int ERR;
         try {
-            ERR = (int) this.retrieveLMH.invokeExact(ENV.MEMORY, MEMORY);
+            ERR = (int) retrieveLMH.invokeExact(ENV.MEMORY, MEMORY);
         } catch (Throwable THROWABLE) {
             throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
@@ -112,20 +112,23 @@ public class StructN {
             super(func);
         }
 
+        private Func(MemorySegment MEMORY) {
+            super(MEMORY);
+        }
+
         public static Func of(io.vproxy.pni.CallSite<StructN> func) {
             return new Func(func);
+        }
+
+        public static Func of(MemorySegment MEMORY) {
+            return new Func(MEMORY);
         }
 
         @Override
         protected StructN construct(MemorySegment seg) {
             return new StructN(seg);
         }
-
-        @Override
-        protected MemorySegment getSegment(StructN value) {
-            return value.MEMORY;
-        }
     }
 }
 // metadata.generator-version: pni test
-// sha256:5624d5fd6f6b7568b713daf3f2cc04324105daf4bc159c3779fbdce52353270e
+// sha256:a2e0f381cb349f039596bb4edc001d86c626353adfa8c0c1193f5c80ffd9972c

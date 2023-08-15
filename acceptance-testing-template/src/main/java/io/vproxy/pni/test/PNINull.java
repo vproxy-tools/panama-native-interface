@@ -1,5 +1,7 @@
 package io.vproxy.pni.test;
 
+import io.vproxy.pni.PNIFunc;
+import io.vproxy.pni.PNIRef;
 import io.vproxy.pni.annotation.*;
 
 import java.lang.foreign.MemorySegment;
@@ -20,6 +22,8 @@ abstract class PNINull {
     long[] longArr;
     short[] shortArr;
     PNIObjectStruct[] oArr;
+    PNIRef<Object> ref;
+    PNIFunc<PNINull> func;
 
     @Impl(
         // language="c"
@@ -27,7 +31,8 @@ abstract class PNINull {
             env->return_= o == NULL && str == NULL && seg == NULL && buf == NULL &&
                           byteArr == NULL && boolArr == NULL && charArr == NULL &&
                           floatArr == NULL && doubleArr == NULL && intArr == NULL &&
-                          longArr == NULL && shortArr == NULL && oArr == NULL;
+                          longArr == NULL && shortArr == NULL && oArr == NULL &&
+                          ref == NULL && func == NULL;
             return 0;
             """
     )
@@ -44,7 +49,9 @@ abstract class PNINull {
         int[] intArr,
         long[] longArr,
         short[] shortArr,
-        PNIObjectStruct[] oArr
+        PNIObjectStruct[] oArr,
+        PNIRef<Object> ref,
+        PNIFunc<PNINull> func
     );
 
     @Critical
@@ -54,7 +61,8 @@ abstract class PNINull {
             return o == NULL && str == NULL && seg == NULL && buf == NULL &&
                    byteArr == NULL && boolArr == NULL && charArr == NULL &&
                    floatArr == NULL && doubleArr == NULL && intArr == NULL &&
-                   longArr == NULL && shortArr == NULL && oArr == NULL;
+                   longArr == NULL && shortArr == NULL && oArr == NULL &&
+                   ref == NULL && func == NULL;
             """
     )
     abstract boolean testParamCritical(
@@ -70,7 +78,9 @@ abstract class PNINull {
         int[] intArr,
         long[] longArr,
         short[] shortArr,
-        PNIObjectStruct[] oArr
+        PNIObjectStruct[] oArr,
+        PNIRef<Object> ref,
+        PNIFunc<PNINull> func
     );
 
     @Impl(
@@ -79,7 +89,8 @@ abstract class PNINull {
             env->return_= buf == NULL &&
                           byteArr == NULL && boolArr == NULL && charArr == NULL &&
                           floatArr == NULL && doubleArr == NULL && intArr == NULL &&
-                          longArr == NULL && shortArr == NULL && oArr == NULL;
+                          longArr == NULL && shortArr == NULL && oArr == NULL &&
+                          ref == NULL;
             return 0;
             """
     )
@@ -93,7 +104,8 @@ abstract class PNINull {
         @Raw int[] intArr,
         @Raw long[] longArr,
         @Raw short[] shortArr,
-        @Raw PNIObjectStruct[] oArr
+        @Raw PNIObjectStruct[] oArr,
+        @Raw PNIRef<Object> ref
     );
 
     @Critical
@@ -103,7 +115,8 @@ abstract class PNINull {
             return buf == NULL &&
                    byteArr == NULL && boolArr == NULL && charArr == NULL &&
                    floatArr == NULL && doubleArr == NULL && intArr == NULL &&
-                   longArr == NULL && shortArr == NULL && oArr == NULL;
+                   longArr == NULL && shortArr == NULL && oArr == NULL &&
+                   ref == NULL;
             """
     )
     abstract boolean testParamRawCritical(
@@ -116,7 +129,8 @@ abstract class PNINull {
         @Raw int[] intArr,
         @Raw long[] longArr,
         @Raw short[] shortArr,
-        @Raw PNIObjectStruct[] oArr
+        @Raw PNIObjectStruct[] oArr,
+        @Raw PNIRef<Object> ref
     );
 
     @Impl(
@@ -414,4 +428,36 @@ abstract class PNINull {
     )
     @Critical
     abstract PNIObjectStruct[] returnOArrCritical2();
+
+    @Impl(
+        c = """
+            env->return_ = NULL;
+            return 0;
+            """
+    )
+    abstract PNIRef<Object> returnRef();
+
+    @Impl(
+        c = """
+            return NULL;
+            """
+    )
+    @Critical
+    abstract PNIRef<Object> returnRefCritical();
+
+    @Impl(
+        c = """
+            env->return_ = NULL;
+            return 0;
+            """
+    )
+    abstract PNIFunc<PNINull> returnFunc();
+
+    @Impl(
+        c = """
+            return NULL;
+            """
+    )
+    @Critical
+    abstract PNIFunc<PNINull> returnFuncCritical();
 }

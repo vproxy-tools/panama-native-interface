@@ -86,20 +86,23 @@ public class UserData {
             super(func);
         }
 
+        private Func(MemorySegment MEMORY) {
+            super(MEMORY);
+        }
+
         public static Func of(io.vproxy.pni.CallSite<UserData> func) {
             return new Func(func);
+        }
+
+        public static Func of(MemorySegment MEMORY) {
+            return new Func(MEMORY);
         }
 
         @Override
         protected UserData construct(MemorySegment seg) {
             return new UserData(seg);
         }
-
-        @Override
-        protected MemorySegment getSegment(UserData value) {
-            return value.MEMORY;
-        }
     }
 }
 // metadata.generator-version: pni test
-// sha256:41a0d92251ba52da265253262792a317fe4b4465e25ea6ef5e1fa1a335200526
+// sha256:38a40e3ea7ca94e2605282b870ef51d5cde35360caba90fd87ff284acb1b3ab4

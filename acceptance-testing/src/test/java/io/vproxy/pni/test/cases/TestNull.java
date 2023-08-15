@@ -15,9 +15,9 @@ public class TestNull {
             var env = new PNIEnv(allocator);
             var n = new Null(allocator);
 
-            var b = n.testParam(env, null, null, null, null, null, null, null, null, null, null, null, null, null);
+            var b = n.testParam(env, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
             assertTrue(b);
-            b = n.testParamCritical(null, null, null, null, null, null, null, null, null, null, null, null, null);
+            b = n.testParamCritical(null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
             assertTrue(b);
         }
     }
@@ -28,9 +28,9 @@ public class TestNull {
             var env = new PNIEnv(allocator);
             var n = new Null(allocator);
 
-            var b = n.testParamRaw(env, null, null, null, null, null, null, null, null, null, null);
+            var b = n.testParamRaw(env, null, null, null, null, null, null, null, null, null, null, null);
             assertTrue(b);
-            b = n.testParamRawCritical(null, null, null, null, null, null, null, null, null, null);
+            b = n.testParamRawCritical(null, null, null, null, null, null, null, null, null, null, null);
             assertTrue(b);
         }
     }
@@ -211,6 +211,32 @@ public class TestNull {
             assertNull(n.returnOArr(env));
             assertNull(n.returnOArrCritical());
             assertNull(n.returnOArrCritical2());
+        }
+    }
+
+    @Test
+    public void ref() {
+        try (var allocator = Allocator.ofConfined()) {
+            var env = new PNIEnv(allocator);
+            var n = new Null(allocator);
+
+            n.setRef(null);
+            assertNull(n.getRef());
+            assertNull(n.returnRef(env));
+            assertNull(n.returnRefCritical());
+        }
+    }
+
+    @Test
+    public void func() {
+        try (var allocator = Allocator.ofConfined()) {
+            var env = new PNIEnv(allocator);
+            var n = new Null(allocator);
+
+            n.setFunc(null);
+            assertNull(n.getFunc());
+            assertNull(n.returnFunc(env));
+            assertNull(n.returnFuncCritical());
         }
     }
 }

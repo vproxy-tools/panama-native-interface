@@ -386,22 +386,22 @@ public class TestStructUnion {
 
         s = Files.readAllLines(Path.of("src", "test", "generated", "io", "vproxy", "pni", "test", "StructA.java"));
         lastLine = s.get(s.size() - 1);
-        assertEquals("// sha256:af274ba5f2c2d20beb41ecb5d41ebdf302e7a88240e85acfc2f536ccc86f31a7", lastLine);
+        assertEquals("// sha256:7b7bf34f27b90ca8b7ad8d7c7421ac305370e1ef539ae1155b1acba9ead3d91e", lastLine);
 
         s = Files.readAllLines(Path.of("src", "test", "generated", "io", "vproxy", "pni", "test", "StructB.java"));
         lastLine = s.get(s.size() - 1);
-        assertEquals("// sha256:4c99e489f5cb96706b8640e7aad0d578cdf7153f1df352637e67035eb1ab2b38", lastLine);
+        assertEquals("// sha256:e3643a3a347771ffe7ea1ca5d599ab478a82022731e818532a746b114a405080", lastLine);
 
         s = Files.readAllLines(Path.of("src", "test", "generated", "io", "vproxy", "pni", "test", "StructD.java"));
         lastLine = s.get(s.size() - 1);
-        assertEquals("// sha256:7904035ca157b7ce920be830d91254db9b267705f45bcb402fcede60fd9df3ac", lastLine);
+        assertEquals("// sha256:87682263e911383570160864f113838b2102c4dbe101189b810e07ad3096a457", lastLine);
 
         s = Files.readAllLines(Path.of("src", "test", "generated", "io", "vproxy", "pni", "test", "UnionC.java"));
         lastLine = s.get(s.size() - 1);
-        assertEquals("// sha256:87d0bc138f452dbded7b533b4bc776ebe8e26d9a7f1947003d5ce6227ed7d3a2", lastLine);
+        assertEquals("// sha256:dba5ea1d1623f8d1872ff052882c79a0f3557f5f987686ea958537c0b7dd730c", lastLine);
 
         s = Files.readAllLines(Path.of("src", "test", "generated", "io", "vproxy", "pni", "test", "UnionEmbedded.java"));
         lastLine = s.get(s.size() - 1);
-        assertEquals("// sha256:30f55f76eeb439ec3139025710a9b1deda2830b3ee39baa5e256d5cedd416d59", lastLine);
+        assertEquals("// sha256:a02fd14b1f628101f1559c38d2ff02e3b56f68e3e2ece6b8306ef0e2c7e81e0b", lastLine);
     }
 }

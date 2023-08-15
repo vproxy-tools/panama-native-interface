@@ -57,7 +57,7 @@ public class UnionP {
         ENV.reset();
         int ERR;
         try {
-            ERR = (int) this.retrieveIMH.invokeExact(ENV.MEMORY, MEMORY);
+            ERR = (int) retrieveIMH.invokeExact(ENV.MEMORY, MEMORY);
         } catch (Throwable THROWABLE) {
             throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
@@ -73,7 +73,7 @@ public class UnionP {
         ENV.reset();
         int ERR;
         try {
-            ERR = (int) this.retrieveLMH.invokeExact(ENV.MEMORY, MEMORY);
+            ERR = (int) retrieveLMH.invokeExact(ENV.MEMORY, MEMORY);
         } catch (Throwable THROWABLE) {
             throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
@@ -112,20 +112,23 @@ public class UnionP {
             super(func);
         }
 
+        private Func(MemorySegment MEMORY) {
+            super(MEMORY);
+        }
+
         public static Func of(io.vproxy.pni.CallSite<UnionP> func) {
             return new Func(func);
+        }
+
+        public static Func of(MemorySegment MEMORY) {
+            return new Func(MEMORY);
         }
 
         @Override
         protected UnionP construct(MemorySegment seg) {
             return new UnionP(seg);
         }
-
-        @Override
-        protected MemorySegment getSegment(UnionP value) {
-            return value.MEMORY;
-        }
     }
 }
 // metadata.generator-version: pni test
-// sha256:063c4150369c39c859e26233b33776027c365dfd0a1db8ea7cea0dc4919182fb
+// sha256:8d40cb4339c2985959f93fffd2eff1a401ce57aee9b5cbba40720a88611a489c

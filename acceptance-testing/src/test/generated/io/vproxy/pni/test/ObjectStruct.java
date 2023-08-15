@@ -104,7 +104,7 @@ public class ObjectStruct {
         try (var POOLED = Allocator.ofPooled()) {
             int ERR;
             try {
-                ERR = (int) this.func1MH.invokeExact(ENV.MEMORY, MEMORY, (MemorySegment) (str == null ? MemorySegment.NULL : str.MEMORY), (MemorySegment) (str2 == null ? MemorySegment.NULL : str2.MEMORY), (MemorySegment) (seg == null ? MemorySegment.NULL : seg), PanamaUtils.format(buf, POOLED));
+                ERR = (int) func1MH.invokeExact(ENV.MEMORY, MEMORY, (MemorySegment) (str == null ? MemorySegment.NULL : str.MEMORY), (MemorySegment) (str2 == null ? MemorySegment.NULL : str2.MEMORY), (MemorySegment) (seg == null ? MemorySegment.NULL : seg), PanamaUtils.format(buf, POOLED));
             } catch (Throwable THROWABLE) {
                 throw PanamaUtils.convertInvokeExactException(THROWABLE);
             }
@@ -119,7 +119,7 @@ public class ObjectStruct {
     public void func1Critical(PNIString str, PNIString str2, MemorySegment seg, ByteBuffer buf) {
         try (var POOLED = Allocator.ofPooled()) {
             try {
-                this.func1CriticalMH.invokeExact(MEMORY, (MemorySegment) (str == null ? MemorySegment.NULL : str.MEMORY), (MemorySegment) (str2 == null ? MemorySegment.NULL : str2.MEMORY), (MemorySegment) (seg == null ? MemorySegment.NULL : seg), PanamaUtils.format(buf, POOLED));
+                func1CriticalMH.invokeExact(MEMORY, (MemorySegment) (str == null ? MemorySegment.NULL : str.MEMORY), (MemorySegment) (str2 == null ? MemorySegment.NULL : str2.MEMORY), (MemorySegment) (seg == null ? MemorySegment.NULL : seg), PanamaUtils.format(buf, POOLED));
             } catch (Throwable THROWABLE) {
                 throw PanamaUtils.convertInvokeExactException(THROWABLE);
             }
@@ -132,7 +132,7 @@ public class ObjectStruct {
         ENV.reset();
         int ERR;
         try {
-            ERR = (int) this.retrieveStrMH.invokeExact(ENV.MEMORY, MEMORY);
+            ERR = (int) retrieveStrMH.invokeExact(ENV.MEMORY, MEMORY);
         } catch (Throwable THROWABLE) {
             throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
@@ -148,7 +148,7 @@ public class ObjectStruct {
     public PNIString retrieveStrCritical() {
         MemorySegment RESULT;
         try {
-            RESULT = (MemorySegment) this.retrieveStrCriticalMH.invokeExact(MEMORY);
+            RESULT = (MemorySegment) retrieveStrCriticalMH.invokeExact(MEMORY);
         } catch (Throwable THROWABLE) {
             throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
@@ -161,7 +161,7 @@ public class ObjectStruct {
         ENV.reset();
         int ERR;
         try {
-            ERR = (int) this.retrieveLenStrMH.invokeExact(ENV.MEMORY, MEMORY);
+            ERR = (int) retrieveLenStrMH.invokeExact(ENV.MEMORY, MEMORY);
         } catch (Throwable THROWABLE) {
             throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
@@ -177,7 +177,7 @@ public class ObjectStruct {
     public PNIString retrieveLenStrCritical() {
         MemorySegment RESULT;
         try {
-            RESULT = (MemorySegment) this.retrieveLenStrCriticalMH.invokeExact(MEMORY);
+            RESULT = (MemorySegment) retrieveLenStrCriticalMH.invokeExact(MEMORY);
         } catch (Throwable THROWABLE) {
             throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
@@ -190,7 +190,7 @@ public class ObjectStruct {
         ENV.reset();
         int ERR;
         try {
-            ERR = (int) this.retrieveSegMH.invokeExact(ENV.MEMORY, MEMORY);
+            ERR = (int) retrieveSegMH.invokeExact(ENV.MEMORY, MEMORY);
         } catch (Throwable THROWABLE) {
             throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
@@ -205,7 +205,7 @@ public class ObjectStruct {
     public MemorySegment retrieveSegCritical() {
         MemorySegment RESULT;
         try {
-            RESULT = (MemorySegment) this.retrieveSegCriticalMH.invokeExact(MEMORY);
+            RESULT = (MemorySegment) retrieveSegCriticalMH.invokeExact(MEMORY);
         } catch (Throwable THROWABLE) {
             throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
@@ -219,7 +219,7 @@ public class ObjectStruct {
         ENV.reset();
         int ERR;
         try {
-            ERR = (int) this.retrieveBufMH.invokeExact(ENV.MEMORY, MEMORY);
+            ERR = (int) retrieveBufMH.invokeExact(ENV.MEMORY, MEMORY);
         } catch (Throwable THROWABLE) {
             throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
@@ -236,7 +236,7 @@ public class ObjectStruct {
         try (var POOLED = Allocator.ofPooled()) {
             MemorySegment RESULT;
             try {
-                RESULT = (MemorySegment) this.retrieveBufCriticalMH.invokeExact(MEMORY, POOLED.allocate(PNIBuf.LAYOUT.byteSize()));
+                RESULT = (MemorySegment) retrieveBufCriticalMH.invokeExact(MEMORY, POOLED.allocate(PNIBuf.LAYOUT.byteSize()));
             } catch (Throwable THROWABLE) {
                 throw PanamaUtils.convertInvokeExactException(THROWABLE);
             }
@@ -252,7 +252,7 @@ public class ObjectStruct {
         ENV.reset();
         int ERR;
         try {
-            ERR = (int) this.checkPointerSetToNonNullMH.invokeExact(ENV.MEMORY, MEMORY);
+            ERR = (int) checkPointerSetToNonNullMH.invokeExact(ENV.MEMORY, MEMORY);
         } catch (Throwable THROWABLE) {
             throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
@@ -267,7 +267,7 @@ public class ObjectStruct {
     public boolean checkPointerSetToNonNullCritical() {
         boolean RESULT;
         try {
-            RESULT = (boolean) this.checkPointerSetToNonNullCriticalMH.invokeExact(MEMORY);
+            RESULT = (boolean) checkPointerSetToNonNullCriticalMH.invokeExact(MEMORY);
         } catch (Throwable THROWABLE) {
             throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
@@ -280,7 +280,7 @@ public class ObjectStruct {
         ENV.reset();
         int ERR;
         try {
-            ERR = (int) this.checkPointerSetToNullMH.invokeExact(ENV.MEMORY, MEMORY);
+            ERR = (int) checkPointerSetToNullMH.invokeExact(ENV.MEMORY, MEMORY);
         } catch (Throwable THROWABLE) {
             throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
@@ -295,7 +295,7 @@ public class ObjectStruct {
     public boolean checkPointerSetToNullCritical() {
         boolean RESULT;
         try {
-            RESULT = (boolean) this.checkPointerSetToNullCriticalMH.invokeExact(MEMORY);
+            RESULT = (boolean) checkPointerSetToNullCriticalMH.invokeExact(MEMORY);
         } catch (Throwable THROWABLE) {
             throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
@@ -331,20 +331,23 @@ public class ObjectStruct {
             super(func);
         }
 
+        private Func(MemorySegment MEMORY) {
+            super(MEMORY);
+        }
+
         public static Func of(io.vproxy.pni.CallSite<ObjectStruct> func) {
             return new Func(func);
+        }
+
+        public static Func of(MemorySegment MEMORY) {
+            return new Func(MEMORY);
         }
 
         @Override
         protected ObjectStruct construct(MemorySegment seg) {
             return new ObjectStruct(seg);
         }
-
-        @Override
-        protected MemorySegment getSegment(ObjectStruct value) {
-            return value.MEMORY;
-        }
     }
 }
 // metadata.generator-version: pni test
-// sha256:683d71e169c28249aeea0bf5ace99d78c81d72eb5e311c0fb50a33d69b88a2bf
+// sha256:999fe199427b5ba8186ce832a02c1efb0273b31b3feac30ac60e40d958be42d9

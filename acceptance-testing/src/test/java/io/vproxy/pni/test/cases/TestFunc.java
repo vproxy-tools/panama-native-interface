@@ -1,18 +1,20 @@
 package io.vproxy.pni.test.cases;
 
-import io.vproxy.pni.Allocator;
-import io.vproxy.pni.PNIEnv;
-import io.vproxy.pni.PNIString;
+import io.vproxy.pni.*;
 import io.vproxy.pni.test.Func;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.io.*;
+import java.lang.foreign.Arena;
 import java.lang.foreign.MemorySegment;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
@@ -158,17 +160,90 @@ public class TestFunc {
     }
 
     @Test
+    public void callJavaRefFromC() {
+        callJavaRefFromC(0);
+    }
+
+    @Test
+    public void callJavaRefFromCCritical() {
+        callJavaRefFromC(1);
+    }
+
+    private void callJavaRefFromC(int round) {
+        long refHolderSizeBefore = PNIRef.currentRefStorageSize();
+        long funcHolderSizeBefore = PNIFunc.currentFuncStorageSize();
+        try (var allocator = Allocator.ofConfined()) {
+            var env = new PNIEnv(allocator);
+
+            var ls = new ArrayList<String>();
+            ls.add("hello");
+
+            CallSite<List<String>> callSite = ref -> {
+                ref.add("world");
+                return 0;
+            };
+            if (round == 0) {
+                Func.get().callJavaRefFromC(env, callSite, ls);
+            } else {
+                Func.get().callJavaRefFromCCritical(callSite, ls);
+            }
+
+            assertEquals(Arrays.asList("hello", "world"), ls);
+        }
+        assertEquals(refHolderSizeBefore, PNIRef.currentRefStorageSize());
+        assertEquals(funcHolderSizeBefore, PNIFunc.currentFuncStorageSize());
+    }
+
+    @Test
+    public void callJavaMethodWithRefFromC() {
+        callJavaMethodWithRefFromC(0);
+    }
+
+    @Test
+    public void callJavaMethodWithRefFromCCritical() {
+        callJavaMethodWithRefFromC(1);
+    }
+
+    private void callJavaMethodWithRefFromC(int round) {
+        long holderSizeBefore = PNIRef.currentRefStorageSize();
+        try (var arena = Arena.ofConfined()) {
+            var method = PanamaUtils.defineCFunctionByName(arena,
+                TestFunc.class, "methodForCallJavaMethodWithRefFromC");
+            var env = new PNIEnv(Allocator.of(arena));
+
+            var ls = new ArrayList<Integer>();
+            ls.add(1);
+            int res;
+            if (round == 0) {
+                res = Func.get().callJavaMethodWithRefFromC(env, method, ls, 3);
+            } else {
+                res = Func.get().callJavaMethodWithRefFromCCritical(method, ls, 3);
+            }
+            assertEquals(4, res);
+            assertEquals(Arrays.asList(1, 3), ls);
+        }
+        assertEquals(holderSizeBefore, PNIRef.currentRefStorageSize());
+    }
+
+    @SuppressWarnings("unused")
+    public static int methodForCallJavaMethodWithRefFromC(MemorySegment seg, int a) {
+        var ls = PNIRef.<List<Integer>>getRef(seg);
+        ls.add(a);
+        return ls.get(0) + a;
+    }
+
+    @Test
     public void shaCheck() throws Exception {
         var s = Files.readAllLines(Path.of("src", "test", "c-generated", "io_vproxy_pni_test_Func.h"));
         var lastLine = s.get(s.size() - 1);
-        assertEquals("// sha256:68cb36d6797717757b40f66cefeba2ef7bd9873ab3d0b96b94b7a20783d7822e", lastLine);
+        assertEquals("// sha256:9128b96bc6344e1be69ee452fec70323b36e4a47bd994febc39f86ff02a50c9c", lastLine);
 
         s = Files.readAllLines(Path.of("src", "test", "c-generated", "io_vproxy_pni_test_Func.impl.h"));
         lastLine = s.get(s.size() - 1);
-        assertEquals("// sha256:5dbf609163d3f0e62dd1e04fa351071596ff89a8f807498963cd70cdad2e3b0c", lastLine);
+        assertEquals("// sha256:dee6489c367b273db501832f4057a9dbf0b482bd044b6d17de19a59a6377a90b", lastLine);
 
         s = Files.readAllLines(Path.of("src", "test", "generated", "io", "vproxy", "pni", "test", "Func.java"));
         lastLine = s.get(s.size() - 1);
-        assertEquals("// sha256:53e9cfc0d4bde282dea2b3172c5224f7d09bed6aa1dcc4c2e0093847cf9b08a4", lastLine);
+        assertEquals("// sha256:2b2d86ea9836a6d73453cc653989833f64bbf899999f04248405c5c8702e156d", lastLine);
     }
 }

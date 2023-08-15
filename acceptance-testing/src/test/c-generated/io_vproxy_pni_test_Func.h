@@ -28,10 +28,14 @@ JNIEXPORT int JNICALL Java_io_vproxy_pni_test_Func_writeWithErrno(PNIEnv_int * e
 JNIEXPORT int JNICALL Java_io_vproxy_pni_test_Func_writeByteArray(PNIEnv_int * env, int32_t fd, void * buf, int32_t off, int32_t len);
 JNIEXPORT int JNICALL Java_io_vproxy_pni_test_Func_callJavaFromC(PNIEnv_pointer * env, PNIFunc * func);
 JNIEXPORT void * JNICALL JavaCritical_io_vproxy_pni_test_Func_callJavaFromCCritical(PNIFunc * func);
+JNIEXPORT int JNICALL Java_io_vproxy_pni_test_Func_callJavaRefFromC(PNIEnv_void * env, PNIFunc * func, PNIRef * ref);
+JNIEXPORT void JNICALL JavaCritical_io_vproxy_pni_test_Func_callJavaRefFromCCritical(PNIFunc * func, PNIRef * ref);
+JNIEXPORT int JNICALL Java_io_vproxy_pni_test_Func_callJavaMethodWithRefFromC(PNIEnv_int * env, void * func, PNIRef * ref, int32_t a);
+JNIEXPORT int32_t JNICALL JavaCritical_io_vproxy_pni_test_Func_callJavaMethodWithRefFromCCritical(void * func, PNIRef * ref, int32_t a);
 
 #ifdef __cplusplus
 }
 #endif
 #endif // _Included_io_vproxy_pni_test_Func
 // metadata.generator-version: pni test
-// sha256:68cb36d6797717757b40f66cefeba2ef7bd9873ab3d0b96b94b7a20783d7822e
+// sha256:9128b96bc6344e1be69ee452fec70323b36e4a47bd994febc39f86ff02a50c9c

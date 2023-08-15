@@ -1,6 +1,7 @@
 package io.vproxy.pni.test;
 
 import io.vproxy.pni.CallSite;
+import io.vproxy.pni.PNIRef;
 import io.vproxy.pni.annotation.Critical;
 import io.vproxy.pni.annotation.Function;
 import io.vproxy.pni.annotation.Impl;
@@ -9,6 +10,7 @@ import io.vproxy.pni.annotation.Raw;
 import java.io.IOException;
 import java.lang.foreign.MemorySegment;
 import java.nio.ByteBuffer;
+import java.util.List;
 
 @Function
 public interface PNIFunc {
@@ -101,4 +103,49 @@ public interface PNIFunc {
     )
     @Critical
     MemorySegment callJavaFromCCritical(CallSite<PNIObjectStruct> func);
+
+    @Impl(
+        // language="c"
+        c = """
+            PNIFuncInvoke(func, ref);
+            PNIFuncRelease(func);
+            PNIRefRelease(ref);
+            return 0;
+            """
+    )
+    void callJavaRefFromC(CallSite<PNIRef<List<String>>> func, PNIRef<List<String>> ref);
+
+    @Impl(
+        // language="c"
+        c = """
+            PNIFuncInvoke(func, ref);
+            PNIFuncRelease(func);
+            PNIRefRelease(ref);
+            """
+    )
+    @Critical
+    void callJavaRefFromCCritical(CallSite<PNIRef<List<String>>> func, PNIRef<List<String>> ref);
+
+    @Impl(
+        // language="c"
+        c = """
+            int (*ff)(void*, int) = func;
+            env->return_ = ff(ref, a);
+            PNIRefRelease(ref);
+            return 0;
+            """
+    )
+    int callJavaMethodWithRefFromC(MemorySegment func, PNIRef<List<Integer>> ref, int a);
+
+    @Impl(
+        // language="c"
+        c = """
+            int (*ff)(void*, int) = func;
+            int res = ff(ref, a);
+            PNIRefRelease(ref);
+            return res;
+            """
+    )
+    @Critical
+    int callJavaMethodWithRefFromCCritical(MemorySegment func, PNIRef<List<Integer>> ref, int a);
 }

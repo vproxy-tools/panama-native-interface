@@ -22,7 +22,7 @@ public class NativeFunctions {
         ENV.reset();
         int ERR;
         try {
-            ERR = (int) this.openIPv4TcpSocketMH.invokeExact(ENV.MEMORY);
+            ERR = (int) openIPv4TcpSocketMH.invokeExact(ENV.MEMORY);
         } catch (Throwable THROWABLE) {
             throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
@@ -39,7 +39,7 @@ public class NativeFunctions {
         ENV.reset();
         int ERR;
         try {
-            ERR = (int) this.bindIPv4MH.invokeExact(ENV.MEMORY, fd, ipv4HostOrder, port);
+            ERR = (int) bindIPv4MH.invokeExact(ENV.MEMORY, fd, ipv4HostOrder, port);
         } catch (Throwable THROWABLE) {
             throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
@@ -55,7 +55,7 @@ public class NativeFunctions {
         ENV.reset();
         int ERR;
         try {
-            ERR = (int) this.listenMH.invokeExact(ENV.MEMORY, fd, n);
+            ERR = (int) listenMH.invokeExact(ENV.MEMORY, fd, n);
         } catch (Throwable THROWABLE) {
             throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
@@ -71,7 +71,7 @@ public class NativeFunctions {
         ENV.reset();
         int ERR;
         try {
-            ERR = (int) this.acceptMH.invokeExact(ENV.MEMORY, fd);
+            ERR = (int) acceptMH.invokeExact(ENV.MEMORY, fd);
         } catch (Throwable THROWABLE) {
             throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
@@ -88,7 +88,7 @@ public class NativeFunctions {
         ENV.reset();
         int ERR;
         try {
-            ERR = (int) this.closeMH.invokeExact(ENV.MEMORY, fd);
+            ERR = (int) closeMH.invokeExact(ENV.MEMORY, fd);
         } catch (Throwable THROWABLE) {
             throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
@@ -103,7 +103,7 @@ public class NativeFunctions {
         ENV.reset();
         int ERR;
         try {
-            ERR = (int) this.writeMH.invokeExact(ENV.MEMORY, fd, (MemorySegment) (mem == null ? MemorySegment.NULL : mem), off, len);
+            ERR = (int) writeMH.invokeExact(ENV.MEMORY, fd, (MemorySegment) (mem == null ? MemorySegment.NULL : mem), off, len);
         } catch (Throwable THROWABLE) {
             throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
@@ -120,7 +120,7 @@ public class NativeFunctions {
         ENV.reset();
         int ERR;
         try {
-            ERR = (int) this.readMH.invokeExact(ENV.MEMORY, fd, (MemorySegment) (mem == null ? MemorySegment.NULL : mem), off, len);
+            ERR = (int) readMH.invokeExact(ENV.MEMORY, fd, (MemorySegment) (mem == null ? MemorySegment.NULL : mem), off, len);
         } catch (Throwable THROWABLE) {
             throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
@@ -132,4 +132,4 @@ public class NativeFunctions {
     }
 }
 // metadata.generator-version: pni test
-// sha256:5b086ae5a7cfffb6a3fc8c45552d5d9cae74ea38e93e91c27a88ed4e13da6d45
+// sha256:a1e7702d13a09eb7664e36b045594f98c897a4aea174e3f519c6e8ab1d1f7705

@@ -86,20 +86,23 @@ public class UnionEmbedded {
             super(func);
         }
 
+        private Func(MemorySegment MEMORY) {
+            super(MEMORY);
+        }
+
         public static Func of(io.vproxy.pni.CallSite<UnionEmbedded> func) {
             return new Func(func);
+        }
+
+        public static Func of(MemorySegment MEMORY) {
+            return new Func(MEMORY);
         }
 
         @Override
         protected UnionEmbedded construct(MemorySegment seg) {
             return new UnionEmbedded(seg);
         }
-
-        @Override
-        protected MemorySegment getSegment(UnionEmbedded value) {
-            return value.MEMORY;
-        }
     }
 }
 // metadata.generator-version: pni test
-// sha256:30f55f76eeb439ec3139025710a9b1deda2830b3ee39baa5e256d5cedd416d59
+// sha256:a02fd14b1f628101f1559c38d2ff02e3b56f68e3e2ece6b8306ef0e2c7e81e0b

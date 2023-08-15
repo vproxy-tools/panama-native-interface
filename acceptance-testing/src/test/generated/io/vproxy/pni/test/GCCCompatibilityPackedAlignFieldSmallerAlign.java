@@ -71,7 +71,7 @@ public class GCCCompatibilityPackedAlignFieldSmallerAlign {
         ENV.reset();
         int ERR;
         try {
-            ERR = (int) this.initMH.invokeExact(ENV.MEMORY, MEMORY);
+            ERR = (int) initMH.invokeExact(ENV.MEMORY, MEMORY);
         } catch (Throwable THROWABLE) {
             throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
@@ -86,7 +86,7 @@ public class GCCCompatibilityPackedAlignFieldSmallerAlign {
         ENV.reset();
         int ERR;
         try {
-            ERR = (int) this.sizeMH.invokeExact(ENV.MEMORY, MEMORY);
+            ERR = (int) sizeMH.invokeExact(ENV.MEMORY, MEMORY);
         } catch (Throwable THROWABLE) {
             throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
@@ -125,20 +125,23 @@ public class GCCCompatibilityPackedAlignFieldSmallerAlign {
             super(func);
         }
 
+        private Func(MemorySegment MEMORY) {
+            super(MEMORY);
+        }
+
         public static Func of(io.vproxy.pni.CallSite<GCCCompatibilityPackedAlignFieldSmallerAlign> func) {
             return new Func(func);
+        }
+
+        public static Func of(MemorySegment MEMORY) {
+            return new Func(MEMORY);
         }
 
         @Override
         protected GCCCompatibilityPackedAlignFieldSmallerAlign construct(MemorySegment seg) {
             return new GCCCompatibilityPackedAlignFieldSmallerAlign(seg);
         }
-
-        @Override
-        protected MemorySegment getSegment(GCCCompatibilityPackedAlignFieldSmallerAlign value) {
-            return value.MEMORY;
-        }
     }
 }
 // metadata.generator-version: pni test
-// sha256:0ab0dab22c47bb472fc3dd49f223243adafe2c51e3d5599520fcc2d42eb5f468
+// sha256:da7e410931397ec3d1f0567260343dd9732dbe04754b562fcebc9817a1f9f5fc

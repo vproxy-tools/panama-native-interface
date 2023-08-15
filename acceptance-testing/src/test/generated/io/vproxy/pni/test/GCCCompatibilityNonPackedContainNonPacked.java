@@ -68,7 +68,7 @@ public class GCCCompatibilityNonPackedContainNonPacked {
         ENV.reset();
         int ERR;
         try {
-            ERR = (int) this.initMH.invokeExact(ENV.MEMORY, MEMORY);
+            ERR = (int) initMH.invokeExact(ENV.MEMORY, MEMORY);
         } catch (Throwable THROWABLE) {
             throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
@@ -83,7 +83,7 @@ public class GCCCompatibilityNonPackedContainNonPacked {
         ENV.reset();
         int ERR;
         try {
-            ERR = (int) this.sizeMH.invokeExact(ENV.MEMORY, MEMORY);
+            ERR = (int) sizeMH.invokeExact(ENV.MEMORY, MEMORY);
         } catch (Throwable THROWABLE) {
             throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
@@ -122,20 +122,23 @@ public class GCCCompatibilityNonPackedContainNonPacked {
             super(func);
         }
 
+        private Func(MemorySegment MEMORY) {
+            super(MEMORY);
+        }
+
         public static Func of(io.vproxy.pni.CallSite<GCCCompatibilityNonPackedContainNonPacked> func) {
             return new Func(func);
+        }
+
+        public static Func of(MemorySegment MEMORY) {
+            return new Func(MEMORY);
         }
 
         @Override
         protected GCCCompatibilityNonPackedContainNonPacked construct(MemorySegment seg) {
             return new GCCCompatibilityNonPackedContainNonPacked(seg);
         }
-
-        @Override
-        protected MemorySegment getSegment(GCCCompatibilityNonPackedContainNonPacked value) {
-            return value.MEMORY;
-        }
     }
 }
 // metadata.generator-version: pni test
-// sha256:bf9fd1420d0eb669e652b92c9bb11a70614a1d0ee10725ff55fd34ae378d73ae
+// sha256:fa086a5890ccbf9bb4b5e66b898f289d518be96919c9b975230ae5b31e3eb21b

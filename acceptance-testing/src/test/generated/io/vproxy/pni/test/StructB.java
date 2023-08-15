@@ -118,20 +118,23 @@ public class StructB {
             super(func);
         }
 
+        private Func(MemorySegment MEMORY) {
+            super(MEMORY);
+        }
+
         public static Func of(io.vproxy.pni.CallSite<StructB> func) {
             return new Func(func);
+        }
+
+        public static Func of(MemorySegment MEMORY) {
+            return new Func(MEMORY);
         }
 
         @Override
         protected StructB construct(MemorySegment seg) {
             return new StructB(seg);
         }
-
-        @Override
-        protected MemorySegment getSegment(StructB value) {
-            return value.MEMORY;
-        }
     }
 }
 // metadata.generator-version: pni test
-// sha256:4c99e489f5cb96706b8640e7aad0d578cdf7153f1df352637e67035eb1ab2b38
+// sha256:e3643a3a347771ffe7ea1ca5d599ab478a82022731e818532a746b114a405080

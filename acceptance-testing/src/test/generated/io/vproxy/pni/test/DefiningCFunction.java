@@ -22,7 +22,7 @@ public class DefiningCFunction {
         ENV.reset();
         int ERR;
         try {
-            ERR = (int) this.upcallVoidNoParamMH.invokeExact(ENV.MEMORY, (MemorySegment) (func == null ? MemorySegment.NULL : func));
+            ERR = (int) upcallVoidNoParamMH.invokeExact(ENV.MEMORY, (MemorySegment) (func == null ? MemorySegment.NULL : func));
         } catch (Throwable THROWABLE) {
             throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
@@ -37,7 +37,7 @@ public class DefiningCFunction {
         ENV.reset();
         int ERR;
         try {
-            ERR = (int) this.upcallVoid1ParamMH.invokeExact(ENV.MEMORY, (MemorySegment) (func == null ? MemorySegment.NULL : func), (MemorySegment) (data == null ? MemorySegment.NULL : data));
+            ERR = (int) upcallVoid1ParamMH.invokeExact(ENV.MEMORY, (MemorySegment) (func == null ? MemorySegment.NULL : func), (MemorySegment) (data == null ? MemorySegment.NULL : data));
         } catch (Throwable THROWABLE) {
             throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
@@ -52,7 +52,7 @@ public class DefiningCFunction {
         ENV.reset();
         int ERR;
         try {
-            ERR = (int) this.upcallVoid2ParamMH.invokeExact(ENV.MEMORY, (MemorySegment) (func == null ? MemorySegment.NULL : func), (MemorySegment) (data == null ? MemorySegment.NULL : data), b);
+            ERR = (int) upcallVoid2ParamMH.invokeExact(ENV.MEMORY, (MemorySegment) (func == null ? MemorySegment.NULL : func), (MemorySegment) (data == null ? MemorySegment.NULL : data), b);
         } catch (Throwable THROWABLE) {
             throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
@@ -67,7 +67,7 @@ public class DefiningCFunction {
         ENV.reset();
         int ERR;
         try {
-            ERR = (int) this.upcallVoid3ParamMH.invokeExact(ENV.MEMORY, (MemorySegment) (func == null ? MemorySegment.NULL : func), (MemorySegment) (data == null ? MemorySegment.NULL : data), z, c);
+            ERR = (int) upcallVoid3ParamMH.invokeExact(ENV.MEMORY, (MemorySegment) (func == null ? MemorySegment.NULL : func), (MemorySegment) (data == null ? MemorySegment.NULL : data), z, c);
         } catch (Throwable THROWABLE) {
             throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
@@ -82,7 +82,7 @@ public class DefiningCFunction {
         ENV.reset();
         int ERR;
         try {
-            ERR = (int) this.upcallVoid4ParamMH.invokeExact(ENV.MEMORY, (MemorySegment) (func == null ? MemorySegment.NULL : func), (MemorySegment) (data == null ? MemorySegment.NULL : data), d, f, i);
+            ERR = (int) upcallVoid4ParamMH.invokeExact(ENV.MEMORY, (MemorySegment) (func == null ? MemorySegment.NULL : func), (MemorySegment) (data == null ? MemorySegment.NULL : data), d, f, i);
         } catch (Throwable THROWABLE) {
             throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
@@ -97,7 +97,7 @@ public class DefiningCFunction {
         ENV.reset();
         int ERR;
         try {
-            ERR = (int) this.upcallVoid3Param2MH.invokeExact(ENV.MEMORY, (MemorySegment) (func == null ? MemorySegment.NULL : func), (MemorySegment) (data == null ? MemorySegment.NULL : data), l, s);
+            ERR = (int) upcallVoid3Param2MH.invokeExact(ENV.MEMORY, (MemorySegment) (func == null ? MemorySegment.NULL : func), (MemorySegment) (data == null ? MemorySegment.NULL : data), l, s);
         } catch (Throwable THROWABLE) {
             throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
@@ -112,7 +112,7 @@ public class DefiningCFunction {
         ENV.reset();
         int ERR;
         try {
-            ERR = (int) this.upcallReturnByteNoParamMH.invokeExact(ENV.MEMORY, (MemorySegment) (func == null ? MemorySegment.NULL : func));
+            ERR = (int) upcallReturnByteNoParamMH.invokeExact(ENV.MEMORY, (MemorySegment) (func == null ? MemorySegment.NULL : func));
         } catch (Throwable THROWABLE) {
             throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
@@ -128,7 +128,7 @@ public class DefiningCFunction {
         ENV.reset();
         int ERR;
         try {
-            ERR = (int) this.upcallReturnBoolNoParamMH.invokeExact(ENV.MEMORY, (MemorySegment) (func == null ? MemorySegment.NULL : func));
+            ERR = (int) upcallReturnBoolNoParamMH.invokeExact(ENV.MEMORY, (MemorySegment) (func == null ? MemorySegment.NULL : func));
         } catch (Throwable THROWABLE) {
             throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
@@ -144,7 +144,7 @@ public class DefiningCFunction {
         ENV.reset();
         int ERR;
         try {
-            ERR = (int) this.upcallReturnCharNoParamMH.invokeExact(ENV.MEMORY, (MemorySegment) (func == null ? MemorySegment.NULL : func));
+            ERR = (int) upcallReturnCharNoParamMH.invokeExact(ENV.MEMORY, (MemorySegment) (func == null ? MemorySegment.NULL : func));
         } catch (Throwable THROWABLE) {
             throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
@@ -160,7 +160,7 @@ public class DefiningCFunction {
         ENV.reset();
         int ERR;
         try {
-            ERR = (int) this.upcallReturnDoubleNoParamMH.invokeExact(ENV.MEMORY, (MemorySegment) (func == null ? MemorySegment.NULL : func));
+            ERR = (int) upcallReturnDoubleNoParamMH.invokeExact(ENV.MEMORY, (MemorySegment) (func == null ? MemorySegment.NULL : func));
         } catch (Throwable THROWABLE) {
             throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
@@ -176,7 +176,7 @@ public class DefiningCFunction {
         ENV.reset();
         int ERR;
         try {
-            ERR = (int) this.upcallReturnFloatNoParamMH.invokeExact(ENV.MEMORY, (MemorySegment) (func == null ? MemorySegment.NULL : func));
+            ERR = (int) upcallReturnFloatNoParamMH.invokeExact(ENV.MEMORY, (MemorySegment) (func == null ? MemorySegment.NULL : func));
         } catch (Throwable THROWABLE) {
             throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
@@ -192,7 +192,7 @@ public class DefiningCFunction {
         ENV.reset();
         int ERR;
         try {
-            ERR = (int) this.upcallReturnIntNoParamMH.invokeExact(ENV.MEMORY, (MemorySegment) (func == null ? MemorySegment.NULL : func));
+            ERR = (int) upcallReturnIntNoParamMH.invokeExact(ENV.MEMORY, (MemorySegment) (func == null ? MemorySegment.NULL : func));
         } catch (Throwable THROWABLE) {
             throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
@@ -208,7 +208,7 @@ public class DefiningCFunction {
         ENV.reset();
         int ERR;
         try {
-            ERR = (int) this.upcallReturnLongNoParamMH.invokeExact(ENV.MEMORY, (MemorySegment) (func == null ? MemorySegment.NULL : func));
+            ERR = (int) upcallReturnLongNoParamMH.invokeExact(ENV.MEMORY, (MemorySegment) (func == null ? MemorySegment.NULL : func));
         } catch (Throwable THROWABLE) {
             throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
@@ -224,7 +224,7 @@ public class DefiningCFunction {
         ENV.reset();
         int ERR;
         try {
-            ERR = (int) this.upcallReturnShortNoParamMH.invokeExact(ENV.MEMORY, (MemorySegment) (func == null ? MemorySegment.NULL : func));
+            ERR = (int) upcallReturnShortNoParamMH.invokeExact(ENV.MEMORY, (MemorySegment) (func == null ? MemorySegment.NULL : func));
         } catch (Throwable THROWABLE) {
             throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
@@ -240,7 +240,7 @@ public class DefiningCFunction {
         ENV.reset();
         int ERR;
         try {
-            ERR = (int) this.upcallReturnPointerNoParamMH.invokeExact(ENV.MEMORY, (MemorySegment) (func == null ? MemorySegment.NULL : func));
+            ERR = (int) upcallReturnPointerNoParamMH.invokeExact(ENV.MEMORY, (MemorySegment) (func == null ? MemorySegment.NULL : func));
         } catch (Throwable THROWABLE) {
             throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
@@ -256,7 +256,7 @@ public class DefiningCFunction {
         ENV.reset();
         int ERR;
         try {
-            ERR = (int) this.upcallReturnByte1ParamMH.invokeExact(ENV.MEMORY, (MemorySegment) (func == null ? MemorySegment.NULL : func), b);
+            ERR = (int) upcallReturnByte1ParamMH.invokeExact(ENV.MEMORY, (MemorySegment) (func == null ? MemorySegment.NULL : func), b);
         } catch (Throwable THROWABLE) {
             throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
@@ -272,7 +272,7 @@ public class DefiningCFunction {
         ENV.reset();
         int ERR;
         try {
-            ERR = (int) this.upcallReturnBool1ParamMH.invokeExact(ENV.MEMORY, (MemorySegment) (func == null ? MemorySegment.NULL : func), z);
+            ERR = (int) upcallReturnBool1ParamMH.invokeExact(ENV.MEMORY, (MemorySegment) (func == null ? MemorySegment.NULL : func), z);
         } catch (Throwable THROWABLE) {
             throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
@@ -288,7 +288,7 @@ public class DefiningCFunction {
         ENV.reset();
         int ERR;
         try {
-            ERR = (int) this.upcallReturnChar1ParamMH.invokeExact(ENV.MEMORY, (MemorySegment) (func == null ? MemorySegment.NULL : func), c);
+            ERR = (int) upcallReturnChar1ParamMH.invokeExact(ENV.MEMORY, (MemorySegment) (func == null ? MemorySegment.NULL : func), c);
         } catch (Throwable THROWABLE) {
             throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
@@ -304,7 +304,7 @@ public class DefiningCFunction {
         ENV.reset();
         int ERR;
         try {
-            ERR = (int) this.upcallReturnDouble1ParamMH.invokeExact(ENV.MEMORY, (MemorySegment) (func == null ? MemorySegment.NULL : func), d);
+            ERR = (int) upcallReturnDouble1ParamMH.invokeExact(ENV.MEMORY, (MemorySegment) (func == null ? MemorySegment.NULL : func), d);
         } catch (Throwable THROWABLE) {
             throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
@@ -320,7 +320,7 @@ public class DefiningCFunction {
         ENV.reset();
         int ERR;
         try {
-            ERR = (int) this.upcallReturnFloat1ParamMH.invokeExact(ENV.MEMORY, (MemorySegment) (func == null ? MemorySegment.NULL : func), f);
+            ERR = (int) upcallReturnFloat1ParamMH.invokeExact(ENV.MEMORY, (MemorySegment) (func == null ? MemorySegment.NULL : func), f);
         } catch (Throwable THROWABLE) {
             throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
@@ -336,7 +336,7 @@ public class DefiningCFunction {
         ENV.reset();
         int ERR;
         try {
-            ERR = (int) this.upcallReturnInt1ParamMH.invokeExact(ENV.MEMORY, (MemorySegment) (func == null ? MemorySegment.NULL : func), i);
+            ERR = (int) upcallReturnInt1ParamMH.invokeExact(ENV.MEMORY, (MemorySegment) (func == null ? MemorySegment.NULL : func), i);
         } catch (Throwable THROWABLE) {
             throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
@@ -352,7 +352,7 @@ public class DefiningCFunction {
         ENV.reset();
         int ERR;
         try {
-            ERR = (int) this.upcallReturnLong1ParamMH.invokeExact(ENV.MEMORY, (MemorySegment) (func == null ? MemorySegment.NULL : func), j);
+            ERR = (int) upcallReturnLong1ParamMH.invokeExact(ENV.MEMORY, (MemorySegment) (func == null ? MemorySegment.NULL : func), j);
         } catch (Throwable THROWABLE) {
             throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
@@ -368,7 +368,7 @@ public class DefiningCFunction {
         ENV.reset();
         int ERR;
         try {
-            ERR = (int) this.upcallReturnShort1ParamMH.invokeExact(ENV.MEMORY, (MemorySegment) (func == null ? MemorySegment.NULL : func), s);
+            ERR = (int) upcallReturnShort1ParamMH.invokeExact(ENV.MEMORY, (MemorySegment) (func == null ? MemorySegment.NULL : func), s);
         } catch (Throwable THROWABLE) {
             throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
@@ -384,7 +384,7 @@ public class DefiningCFunction {
         ENV.reset();
         int ERR;
         try {
-            ERR = (int) this.upcallReturnPointer1ParamMH.invokeExact(ENV.MEMORY, (MemorySegment) (func == null ? MemorySegment.NULL : func), (MemorySegment) (p == null ? MemorySegment.NULL : p));
+            ERR = (int) upcallReturnPointer1ParamMH.invokeExact(ENV.MEMORY, (MemorySegment) (func == null ? MemorySegment.NULL : func), (MemorySegment) (p == null ? MemorySegment.NULL : p));
         } catch (Throwable THROWABLE) {
             throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
@@ -395,4 +395,4 @@ public class DefiningCFunction {
     }
 }
 // metadata.generator-version: pni test
-// sha256:1226b9f34dcc229cf3cdfc9883ff80d1b84e0f2a50b004a0cc0dc3fdfd7334cc
+// sha256:6d4d668e07fa870c07432463a17e1afe224cfb6548b03cee8f6fe5932e5e5f7d
