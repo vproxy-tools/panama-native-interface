@@ -106,7 +106,7 @@ sourceSets {
 }
 ```
 
-You now have two folders to contain java source files: `java` and `generated`.
+You now have two folders to contain java source files: `java` and `generated` (you still need to create the folders manually).
 
 ### 2. Create folders for generated C headers
 
@@ -303,7 +303,9 @@ The regexp matches the full name of the class, for example `io\.vproxy\.luajn\.n
 
 ### 4. Write native implementation
 
-All native functions are in the same pattern **if `@Critical` is NOT annotated**:
+All native functions are in the same pattern.
+
+**if `@Critical` is NOT annotated**: (`JNI` Style Function)
 
 1. take an argument `PNIEnv* env` as the first argument, but with different type variations based on the result type;
 2. return `int` where `0` means OK and any other value (usually `-1`) means an exception is thrown;
@@ -323,10 +325,11 @@ JNIEXPORT int JNICALL Java_io_vproxy_vfd_posix_GeneralPosix_createIPv4TcpFD
 }
 ```
 
-You should set `env->return_ = the_extra_variable` if you need to return the value, or `env->return_ = NULL` if you want to return `NULL`.  
 If you need to pass `errno` to Java, you can call `PNIStoreErrno(env)`. You can retrieve it from `env.ex().errno()` in Java.
 
-**If `@Critical` is annotated**:
+---
+
+**If `@Critical` is annotated**: (`Critical` Style Function)
 
 1. There will be no `PNIEnv` argument.
 2. Directly return values.
@@ -347,24 +350,31 @@ JNIEXPORT int32_t JNICALL JavaCritical_io_vproxy_pni_test_Func_writeCritical
 
 ---
 
-If the Java method is defined inside a class, then the generated C function will have an extra parameter right after `PNIEnv`, providing the `this` pointer.
+If the Java method is defined inside a class, then the generated C function will have an extra parameter right after `PNIEnv`, providing the `self` pointer.
+For `Critical` style functions, `self` will be the first parameter.
 
 If the method's return type requires memory allocation, the generated C function accepts one more argument, as the memory address of that object.
+You should set `env->return_ = the_extra_variable` if you need to return the value, or `env->return_ = NULL` if you want to return `NULL`.
+For `Critical` style functions, you can simply return the extra variable or return `NULL`.
 
 ### 5. Use generated Java types
 
 All generated Java classes have getters for all fields, and setters for all non-embedded fields (struct/union/array),
 as well as methods defined in the templates.  
-Methods defined inside template interfaces will be generated in singleton classes.  
+Template interfaces will generated singleton classes.  
 All generated classes will NOT extend/implement template classes/interfaces.
 
 The generated Java types have similar names to their templates.  
 If the template type name starts with `PNI`, then the generated type will remove `PNI` prefix, otherwise adding the `PNI` prefix.
 
 If the method's return type requires memory allocation, an extra parameter `Allocator ALLOCATOR` will be added to the last of the arguments list.  
-You can release the memory after accessing the returned object by closing the allocator.
+You can release the memory by closing the allocator.
 
-`io.vproxy.pni.Allocator` can be constructed with `Arena` or `SegmentAllocator`.
+---
+
+It's recommended to use `Allocator.ofPooled()` whenever possible. You can define your own memory pool by providing your allocator via
+`Allocator.setPooledAllocatorProvider(...)`.  
+The default behavor for `Pooled` allocators when custom allocator is not present, is the same as `Confined` allocators.
 
 </details>
 
@@ -380,7 +390,7 @@ Panama provides a way for C to invoke Java methods. You can use `PanamaUtils.def
 
 Done!
 
-Note: only `primitive types` and `MemorySegment` are allowed to be used as the method parameter types to define C functions.
+Note: only `primitive types` and `MemorySegment` are allowed to be used as the method parameter types and return types.
 
 ---
 
@@ -399,11 +409,24 @@ To invoke the function, use `int result = PNIFuncInvoke(func, &value);`
 You may store the `PNIFunc` object and use it later, you can even invoke it on a new thread.
 As a result, you **MUST** release the object when you finished using it: `PNIFuncRelease(func);`
 
-The `PNIFunc` struct has a field `void * userdata` for you to store you own data in it.
+The `PNIFunc` struct has a union field `union { void * userdata; uint64_t udata64; }` for you to store you own data in it.
 This is useful for example when you store the `PNIFunc*` in `epoll_event.data.ptr`.
 
 If any error thrown from the CallSite, the PNIFunc will catch it and print the exception,
-then return `PNIFuncInvokeExceptionCaught` to C.
+then return `((int32_t) PNIFuncInvokeExceptionCaught)` to C.
+
+---
+
+You can use `CallSite<T>` only in method parameters, but you can use `PNIFunc<T>` in method parameters, return types, or fields.
+
+You can create `PNIFunc<T>` using `PNIFunc.VoidFunc.of(CallSite<Void>)` or `T.Func.of(CallSite<T>)`.  
+You can also release a `PNIFunc<T>` using `func.close()` on the Java side.
+
+---
+
+To share Java objects with C, you can use `PNIRef<T>`: `PNIRef.of(object)`.
+
+You can release the `PNIRef<T>` on the Java side: `ref.close()`, or release it on the C side: `PNIRefRelease(ref)`.
 
 </details>
 
@@ -475,6 +498,8 @@ Annotate the data type to be converted to its raw form. You can only mark method
   after setting `ByteBuffer.position()` to 0 and `ByteBuffer.limit()` to `ByteBuffer.capacity()`,
   without actually modifying these properties.
 * `T[]`: arrays will be converted to their raw form without the `PNIBuf` wrapper. There will be no length info, so you might need to pass in their length manually.
+* `PNIRef<T>`: if without `@Raw` annotation, template `PNIRef<T>` params will result in `T` in generated java params.  
+  With `@Raw` annotation, template `PNIRef<T>` params will result in `PNIRef<T>` in generated java params.
 
 </details>
 
@@ -482,63 +507,68 @@ Annotate the data type to be converted to its raw form. You can only mark method
 
 <details><summary>Click to reveal</summary>
 
-| Java                | `@Unsigned` | `@Pointer` | `@Len` | C Field           | C Function Param | C Extra Return Param | C `PNIEnv_${type}` | Generated Java Type | Generated Layout                    |
-|---------------------|-------------|------------|--------|-------------------|------------------|----------------------|--------------------|---------------------|-------------------------------------|
-| int                 | No          | -          | -      | `int32_t`         | `int32_t`        | -                    | `int`              | int                 | `JAVA_INT`                          |
-| int                 | Yes         | -          | -      | `uint32_t`        | `uint32_t`       | -                    | `int`              | int                 | `JAVA_INT`                          |
-| long                | No          | -          | -      | `int64_t`         | `int64_t`        | -                    | `long`             | long                | `JAVA_LONG`                         |
-| long                | Yes         | -          | -      | `uint64_t`        | `uint64_t`       | -                    | `long`             | long                | `JAVA_LONG`                         |
-| short               | No          | -          | -      | `int16_t`         | `int16_t`        | -                    | `short`            | short               | `JAVA_SHORT`                        |
-| short               | Yes         | -          | -      | `uint16_t`        | `uint16_t`       | -                    | `short`            | short               | `JAVA_SHORT`                        |
-| byte                | No          | -          | -      | `int8_t`          | `int8_t`         | -                    | `byte`             | byte                | `JAVA_BYTE`                         |
-| byte                | Yes         | -          | -      | `uint8_t`         | `uint8_t`        | -                    | `byte`             | byte                | `JAVA_BYTE`                         |
-| float               | -           | -          | -      | `float`           | `float`          | -                    | `float`            | float               | `JAVA_FLOAT`                        |
-| double              | -           | -          | -      | `double`          | `double`         | -                    | `double`           | double              | `JAVA_DOUBLE`                       |
-| boolean             | -           | -          | -      | `uint8_t`         | `uint8_t`        | -                    | `bool`             | boolean             | `JAVA_BOOLEAN`                      |
-| char                | -           | -          | -      | `uint16_t`        | `uint16_t`       | -                    | `char`             | char                | `JAVA_CHAR`                         |
-| String              | -           | -          | No     | `char *`          | `char *`         | -                    | `pointer`          | PNIString           | `ADDRESS`                           |
-| String              | -           | -          | Yes    | `char x[len]`     | -                | -                    | -                  | String              | `sequenceLayout(len, JAVA_BYTE)`    |
-| MemorySegment       | -           | -          | -      | `void *`          | `void *`         | -                    | `pointer`          | MemorySegment       | `ADDRESS`                           |
-| ByteBuffer          | -           | -          | -      | `PNIBuf`          | `PNIBuf *`       | `PNIBuf *`           | `buf`              | ByteBuffer          | `PNIBuf.LAYOUT`                     |
-| ByteBuffer (`@Raw`) | -           | -          | -      | -                 | `char *`         | -                    | -                  | ByteBuffer          | -                                   |
-| Struct/Union        | -           | No         | -      | `Type`            | -                | -                    | -                  | Type                | `Type.LAYOUT`                       |
-| Struct/Union        | -           | Yes        | -      | `Type *`          | `Type *`         | `Type *`             | `pointer`          | Type                | `ADDRESS`                           |
-| int[]               | `*`         | `*`        | No     | `PNIBuf`          | `PNIBuf *`       | `PNIBuf *`           | `buf`              | IntArray            | `PNIBuf.LAYOUT`                     |
-| long[]              | `*`         | `*`        | No     | `PNIBuf`          | `PNIBuf *`       | `PNIBuf *`           | `buf`              | LongArray           | `PNIBuf.LAYOUT`                     |
-| short[]             | `*`         | `*`        | No     | `PNIBuf`          | `PNIBuf *`       | `PNIBuf *`           | `buf`              | ShortArray          | `PNIBuf.LAYOUT`                     |
-| byte[]              | `*`         | `*`        | No     | `PNIBuf`          | `PNIBuf *`       | `PNIBuf *`           | `buf`              | MemorySegment       | `PNIBuf.LAYOUT`                     |
-| float[]             | -           | `*`        | No     | `PNIBuf`          | `PNIBuf *`       | `PNIBuf *`           | `buf`              | FloatArray          | `PNIBuf.LAYOUT`                     |
-| double[]            | -           | `*`        | No     | `PNIBuf`          | `PNIBuf *`       | `PNIBuf *`           | `buf`              | DoubleArray         | `PNIBuf.LAYOUT`                     |
-| boolean[]           | -           | `*`        | No     | `PNIBuf`          | `PNIBuf *`       | `PNIBuf *`           | `buf`              | BoolArray           | `PNIBuf.LAYOUT`                     |
-| char[]              | -           | `*`        | No     | `PNIBuf`          | `PNIBuf *`       | `PNIBuf *`           | `buf`              | CharArray           | `PNIBuf.LAYOUT`                     |
-| Type[]              | -           | `*`        | No     | `PNIBuf`          | `PNIBuf *`       | `PNIBuf *`           | `buf`              | Type.Array          | `PNIBuf.LAYOUT`                     |
-| int[]     (`@Raw`)  | No          | `*`        | No     | -                 | `int32_t *`      | -                    | -                  | IntArray            | -                                   |
-| int[]     (`@Raw`)  | Yes         | `*`        | No     | -                 | `uint32_t *`     | -                    | -                  | IntArray            | -                                   |
-| long[]    (`@Raw`)  | No          | `*`        | No     | -                 | `int64_t *`      | -                    | -                  | LongArray           | -                                   |
-| long[]    (`@Raw`)  | Yes         | `*`        | No     | -                 | `uint64_t *`     | -                    | -                  | LongArray           | -                                   |
-| short[]   (`@Raw`)  | No          | `*`        | No     | -                 | `int16_t *`      | -                    | -                  | ShortArray          | -                                   |
-| short[]   (`@Raw`)  | Yes         | `*`        | No     | -                 | `uint16_t *`     | -                    | -                  | ShortArray          | -                                   |
-| byte[]    (`@Raw`)  | No          | `*`        | No     | -                 | `void *`         | -                    | -                  | MemorySegment       | -                                   |
-| byte[]    (`@Raw`)  | Yes         | `*`        | No     | -                 | `uint8_t *`      | -                    | -                  | MemorySegment       | -                                   |
-| float[]   (`@Raw`)  | -           | `*`        | No     | -                 | `float *`        | -                    | -                  | FloatArray          | -                                   |
-| double[]  (`@Raw`)  | -           | `*`        | No     | -                 | `double *`       | -                    | -                  | DoubleArray         | -                                   |
-| boolean[] (`@Raw`)  | -           | `*`        | No     | -                 | `uint8_t *`      | -                    | -                  | BoolArray           | -                                   |
-| char[]    (`@Raw`)  | -           | `*`        | No     | -                 | `uint16_t *`     | -                    | -                  | CharArray           | -                                   |
-| Type[]    (`@Raw`)  | -           | `*`        | No     | -                 | `Type *`         | -                    | -                  | Type.Array          | -                                   |
-| int[]               | No          | -          | Yes    | `int32_t  x[len]` | -                | -                    | -                  | IntArray            | `sequenceLayout(len, JAVA_INT)`     |
-| int[]               | Yes         | -          | Yes    | `uint32_t x[len]` | -                | -                    | -                  | IntArray            | `sequenceLayout(len, JAVA_INT)`     |
-| long[]              | No          | -          | Yes    | `int64_t  x[len]` | -                | -                    | -                  | LongArray           | `sequenceLayout(len, JAVA_LONG)`    |
-| long[]              | Yes         | -          | Yes    | `uint64_t x[len]` | -                | -                    | -                  | LongArray           | `sequenceLayout(len, JAVA_LONG)`    |
-| short[]             | No          | -          | Yes    | `int16_t  x[len]` | -                | -                    | -                  | ShortArray          | `sequenceLayout(len, JAVA_SHORT)`   |
-| short[]             | Yes         | -          | Yes    | `uint16_t x[len]` | -                | -                    | -                  | ShortArray          | `sequenceLayout(len, JAVA_SHORT)`   |
-| byte[]              | No          | -          | Yes    | `int8_t   x[len]` | -                | -                    | -                  | MemorySegment       | `sequenceLayout(len, JAVA_BYTE)`    |
-| byte[]              | Yes         | -          | Yes    | `uint8_t  x[len]` | -                | -                    | -                  | MemorySegment       | `sequenceLayout(len, JAVA_BYTE)`    |
-| float[]             | -           | -          | Yes    | `float    x[len]` | -                | -                    | -                  | FloatArray          | `sequenceLayout(len, JAVA_FLOAT)`   |
-| double[]            | -           | -          | Yes    | `double   x[len]` | -                | -                    | -                  | DoubleArray         | `sequenceLayout(len, JAVA_DOUBLE)`  |
-| boolean[]           | -           | -          | Yes    | `uint8_t  x[len]` | -                | -                    | -                  | BoolArray           | `sequenceLayout(len, JAVA_BOOLEAN)` |
-| char[]              | -           | -          | Yes    | `uint16_t x[len]` | -                | -                    | -                  | CharArray           | `sequenceLayout(len, JAVA_CHAR)`    |
-| Type[]              | -           | -          | Yes    | `Type     x[len]` | -                | -                    | -                  | Type.Array          | `sequenceLayout(len, Type.LAYOUT)`  |
-| CallSite<T>         | -           | -          | -      | -                 | `PNIFunc *`      | -                    | -                  | CallSite<T>         | -                                   |
+| Java                          | `@Unsigned` | `@Pointer` | `@Len` | C Field           | C Function Param | C Extra Return Param | C `PNIEnv_${type}` | Generated Java Type | Generated Layout                    |
+|-------------------------------|-------------|------------|--------|-------------------|------------------|----------------------|--------------------|---------------------|-------------------------------------|
+| int                           | No          | -          | -      | `int32_t`         | `int32_t`        | -                    | `int`              | int                 | `JAVA_INT`                          |
+| int                           | Yes         | -          | -      | `uint32_t`        | `uint32_t`       | -                    | `int`              | int                 | `JAVA_INT`                          |
+| long                          | No          | -          | -      | `int64_t`         | `int64_t`        | -                    | `long`             | long                | `JAVA_LONG`                         |
+| long                          | Yes         | -          | -      | `uint64_t`        | `uint64_t`       | -                    | `long`             | long                | `JAVA_LONG`                         |
+| short                         | No          | -          | -      | `int16_t`         | `int16_t`        | -                    | `short`            | short               | `JAVA_SHORT`                        |
+| short                         | Yes         | -          | -      | `uint16_t`        | `uint16_t`       | -                    | `short`            | short               | `JAVA_SHORT`                        |
+| byte                          | No          | -          | -      | `int8_t`          | `int8_t`         | -                    | `byte`             | byte                | `JAVA_BYTE`                         |
+| byte                          | Yes         | -          | -      | `uint8_t`         | `uint8_t`        | -                    | `byte`             | byte                | `JAVA_BYTE`                         |
+| float                         | -           | -          | -      | `float`           | `float`          | -                    | `float`            | float               | `JAVA_FLOAT`                        |
+| double                        | -           | -          | -      | `double`          | `double`         | -                    | `double`           | double              | `JAVA_DOUBLE`                       |
+| boolean                       | -           | -          | -      | `uint8_t`         | `uint8_t`        | -                    | `bool`             | boolean             | `JAVA_BOOLEAN`                      |
+| char                          | -           | -          | -      | `uint16_t`        | `uint16_t`       | -                    | `char`             | char                | `JAVA_CHAR`                         |
+| String                        | -           | -          | No     | `char *`          | `char *`         | -                    | `pointer`          | PNIString           | `ADDRESS`                           |
+| String                        | -           | -          | Yes    | `char x[len]`     | -                | -                    | -                  | String              | `sequenceLayout(len, JAVA_BYTE)`    |
+| MemorySegment                 | -           | -          | -      | `void *`          | `void *`         | -                    | `pointer`          | MemorySegment       | `ADDRESS`                           |
+| ByteBuffer                    | -           | -          | -      | `PNIBuf`          | `PNIBuf *`       | `PNIBuf *`           | `buf`              | ByteBuffer          | `PNIBuf.LAYOUT`                     |
+| ByteBuffer (`@Raw`)           | -           | -          | -      | -                 | `char *`         | -                    | -                  | ByteBuffer          | -                                   |
+| Struct/Union                  | -           | No         | -      | `Type`            | -                | -                    | -                  | Type                | `Type.LAYOUT`                       |
+| Struct/Union                  | -           | Yes        | -      | `Type *`          | `Type *`         | `Type *`             | `pointer`          | Type                | `ADDRESS`                           |
+| int[]                         | `*`         | `*`        | No     | `PNIBuf`          | `PNIBuf *`       | `PNIBuf *`           | `buf`              | IntArray            | `PNIBuf.LAYOUT`                     |
+| long[]                        | `*`         | `*`        | No     | `PNIBuf`          | `PNIBuf *`       | `PNIBuf *`           | `buf`              | LongArray           | `PNIBuf.LAYOUT`                     |
+| short[]                       | `*`         | `*`        | No     | `PNIBuf`          | `PNIBuf *`       | `PNIBuf *`           | `buf`              | ShortArray          | `PNIBuf.LAYOUT`                     |
+| byte[]                        | `*`         | `*`        | No     | `PNIBuf`          | `PNIBuf *`       | `PNIBuf *`           | `buf`              | MemorySegment       | `PNIBuf.LAYOUT`                     |
+| float[]                       | -           | `*`        | No     | `PNIBuf`          | `PNIBuf *`       | `PNIBuf *`           | `buf`              | FloatArray          | `PNIBuf.LAYOUT`                     |
+| double[]                      | -           | `*`        | No     | `PNIBuf`          | `PNIBuf *`       | `PNIBuf *`           | `buf`              | DoubleArray         | `PNIBuf.LAYOUT`                     |
+| boolean[]                     | -           | `*`        | No     | `PNIBuf`          | `PNIBuf *`       | `PNIBuf *`           | `buf`              | BoolArray           | `PNIBuf.LAYOUT`                     |
+| char[]                        | -           | `*`        | No     | `PNIBuf`          | `PNIBuf *`       | `PNIBuf *`           | `buf`              | CharArray           | `PNIBuf.LAYOUT`                     |
+| Type[]                        | -           | `*`        | No     | `PNIBuf`          | `PNIBuf *`       | `PNIBuf *`           | `buf`              | Type.Array          | `PNIBuf.LAYOUT`                     |
+| int[]     (`@Raw`)            | No          | `*`        | No     | -                 | `int32_t *`      | -                    | -                  | IntArray            | -                                   |
+| int[]     (`@Raw`)            | Yes         | `*`        | No     | -                 | `uint32_t *`     | -                    | -                  | IntArray            | -                                   |
+| long[]    (`@Raw`)            | No          | `*`        | No     | -                 | `int64_t *`      | -                    | -                  | LongArray           | -                                   |
+| long[]    (`@Raw`)            | Yes         | `*`        | No     | -                 | `uint64_t *`     | -                    | -                  | LongArray           | -                                   |
+| short[]   (`@Raw`)            | No          | `*`        | No     | -                 | `int16_t *`      | -                    | -                  | ShortArray          | -                                   |
+| short[]   (`@Raw`)            | Yes         | `*`        | No     | -                 | `uint16_t *`     | -                    | -                  | ShortArray          | -                                   |
+| byte[]    (`@Raw`)            | No          | `*`        | No     | -                 | `void *`         | -                    | -                  | MemorySegment       | -                                   |
+| byte[]    (`@Raw`)            | Yes         | `*`        | No     | -                 | `uint8_t *`      | -                    | -                  | MemorySegment       | -                                   |
+| float[]   (`@Raw`)            | -           | `*`        | No     | -                 | `float *`        | -                    | -                  | FloatArray          | -                                   |
+| double[]  (`@Raw`)            | -           | `*`        | No     | -                 | `double *`       | -                    | -                  | DoubleArray         | -                                   |
+| boolean[] (`@Raw`)            | -           | `*`        | No     | -                 | `uint8_t *`      | -                    | -                  | BoolArray           | -                                   |
+| char[]    (`@Raw`)            | -           | `*`        | No     | -                 | `uint16_t *`     | -                    | -                  | CharArray           | -                                   |
+| Type[]    (`@Raw`)            | -           | `*`        | No     | -                 | `Type *`         | -                    | -                  | Type.Array          | -                                   |
+| int[]                         | No          | -          | Yes    | `int32_t  x[len]` | -                | -                    | -                  | IntArray            | `sequenceLayout(len, JAVA_INT)`     |
+| int[]                         | Yes         | -          | Yes    | `uint32_t x[len]` | -                | -                    | -                  | IntArray            | `sequenceLayout(len, JAVA_INT)`     |
+| long[]                        | No          | -          | Yes    | `int64_t  x[len]` | -                | -                    | -                  | LongArray           | `sequenceLayout(len, JAVA_LONG)`    |
+| long[]                        | Yes         | -          | Yes    | `uint64_t x[len]` | -                | -                    | -                  | LongArray           | `sequenceLayout(len, JAVA_LONG)`    |
+| short[]                       | No          | -          | Yes    | `int16_t  x[len]` | -                | -                    | -                  | ShortArray          | `sequenceLayout(len, JAVA_SHORT)`   |
+| short[]                       | Yes         | -          | Yes    | `uint16_t x[len]` | -                | -                    | -                  | ShortArray          | `sequenceLayout(len, JAVA_SHORT)`   |
+| byte[]                        | No          | -          | Yes    | `int8_t   x[len]` | -                | -                    | -                  | MemorySegment       | `sequenceLayout(len, JAVA_BYTE)`    |
+| byte[]                        | Yes         | -          | Yes    | `uint8_t  x[len]` | -                | -                    | -                  | MemorySegment       | `sequenceLayout(len, JAVA_BYTE)`    |
+| float[]                       | -           | -          | Yes    | `float    x[len]` | -                | -                    | -                  | FloatArray          | `sequenceLayout(len, JAVA_FLOAT)`   |
+| double[]                      | -           | -          | Yes    | `double   x[len]` | -                | -                    | -                  | DoubleArray         | `sequenceLayout(len, JAVA_DOUBLE)`  |
+| boolean[]                     | -           | -          | Yes    | `uint8_t  x[len]` | -                | -                    | -                  | BoolArray           | `sequenceLayout(len, JAVA_BOOLEAN)` |
+| char[]                        | -           | -          | Yes    | `uint16_t x[len]` | -                | -                    | -                  | CharArray           | `sequenceLayout(len, JAVA_CHAR)`    |
+| Type[]                        | -           | -          | Yes    | `Type     x[len]` | -                | -                    | -                  | Type.Array          | `sequenceLayout(len, Type.LAYOUT)`  |
+| `CallSite<T>`                 | -           | -          | -      | -                 | `PNIFunc *`      | -                    | -                  | `CallSite<T>`       | -                                   |
+| `CallSite<PNIRef<T>>`         | -           | -          | -      | -                 | `PNIFunc *`      | -                    | -                  | `CallSite<T>`       | -                                   |
+| `PNIFunc<T>`                  | -           | -          | -      | `PNIFunc *`       | `PNIFunc *`      | -                    | `func`             | `PNIFunc<T>`        | `ADDRESS`                           |
+| `PNIRef<T>` (field or return) | -           | -          | -      | `PNIRef *`        | `PNIRef *`       | -                    | `ref`              | `PNIRef<T>`         | `ADDRESS`                           |
+| `PNIRef<T>` (param)           | -           | -          | -      | -                 | `PNIRef *`       | -                    | -                  | `T`                 | -                                   |
+| `PNIRef<T>` (param `@Raw`)    | -           | -          | -      | -                 | `PNIRef *`       | -                    | -                  | `PNIRef<T>`         | -                                   |
 
 `*`: Both `Yes` and `No`.  
 `-`: Cannot mark the annotation.
@@ -567,10 +597,6 @@ Any other combination except the above table is disallowed.
   and naming collisions of these variables are not checked during the validation phase.
   This shouldn't be a problem, because normally people won't define
   "all upper case" type names or member fields.
-* The `CallSite<T>` is only allowed in parameters, you cannot use it in struct fields.  
-  However you can store it in a field inside your C code and use it later, even using it on a new thread.  
-  Also, in Java, you can construct `PNIFunc` objects using `PNIFunc.VoidFunc.of(...)` or `T.Func.of(...)` to
-  build a pointer to PNIFunc and retrieve memory of it using `func.MEMORY` then assign it to wherever you want.
 
 </details>
 
