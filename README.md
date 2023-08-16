@@ -123,7 +123,7 @@ Add dependency to your project:
 
 ```groovy
 dependencies {
-    implementation "io.vproxy:pni-api:21.0.0.5"
+    implementation "io.vproxy:pni-api:21.0.0.6"
 }
 ```
 
@@ -154,7 +154,7 @@ Add pni api dependency to the subproject:
 
 ```groovy
 dependencies {
-    implementation "io.vproxy:pni-api:$version"
+    implementation "io.vproxy:pni-api:21.0.0.6"
 }
 ```
 
