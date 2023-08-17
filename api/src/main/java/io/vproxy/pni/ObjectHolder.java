@@ -1,86 +1,108 @@
 package io.vproxy.pni;
 
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.atomic.AtomicLong;
-import java.util.concurrent.locks.ReadWriteLock;
-import java.util.concurrent.locks.ReentrantReadWriteLock;
+import java.util.concurrent.atomic.AtomicReferenceArray;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
-public abstract class ObjectHolder<T> {
+public class ObjectHolder<T> {
     private final AtomicLong indexCounter = new AtomicLong();
-    private final ConcurrentHashMap<Long, T> storage = new ConcurrentHashMap<>();
-    private final Object[] fastStorage;
-    private final ReadWriteLock fastStorageLock = new ReentrantReadWriteLock();
+    private final ConcurrentMap<Long, T> storage = new ConcurrentHashMap<>();
+    private final AtomicReferenceArray<Box<T>> fastStorage; // step 1
+    private final Lock fastStorageLock = new ReentrantLock();
 
-    public ObjectHolder(int fastStorageSize) {
-        fastStorage = new Object[fastStorageSize];
+    private record Box<T>(long index, T obj) {
     }
 
-    abstract protected long getObjectIndex(T obj);
+    public ObjectHolder(int fastStorageSize) {
+        fastStorage = new AtomicReferenceArray<>(fastStorageSize);
+    }
 
     public long store(T obj) {
-        var index = indexCounter.incrementAndGet();
-        while (index == 0) {
-            index = indexCounter.incrementAndGet();
+        long index;
+        do {
+            do {
+                index = indexCounter.incrementAndGet();
+            } while (index == 0);
+        } while (indexIsInUse(index));
+
+        if (fastStorage.length() != 0) {
+            var arrIdx = (int) (Math.abs(index) % fastStorage.length());
+            fastStorageLock.lock();
+            try {
+                if (fastStorage.get(arrIdx) == null) {
+                    fastStorage.set(arrIdx, new Box<>(index, obj));
+                    return index;
+                }
+            } finally {
+                fastStorageLock.unlock();
+            }
         }
+
         storage.put(index, obj);
-        if (fastStorage.length != 0) {
-            var arrIdx = (int) (Math.abs(index) % fastStorage.length);
-            var wlock = fastStorageLock.writeLock();
-            wlock.lock();
-            fastStorage[arrIdx] = obj;
-            wlock.unlock();
-        }
         return index;
     }
 
-    private Object tryToFindFuncFast(long index) {
-        if (fastStorage.length == 0) {
+    private boolean indexIsInUse(long index) {
+        if (fastStorage.length() != 0) {
+            var arrIdx = (int) (Math.abs(index) % fastStorage.length());
+            var box = fastStorage.get(arrIdx);
+            if (box != null && box.index == index) {
+                return true;
+            }
+        }
+        return storage.containsKey(index);
+    }
+
+    private T tryToFindFuncFast(long index) {
+        if (fastStorage.length() == 0) {
             return null;
         }
-        int arrIdx = (int) (Math.abs(index) % fastStorage.length);
-        var rlock = fastStorageLock.readLock();
-        rlock.lock();
-        var obj = fastStorage[arrIdx];
-        if (obj == null) {
-            rlock.unlock();
+        int arrIdx = (int) (Math.abs(index) % fastStorage.length());
+        var box = fastStorage.get(arrIdx);
+        if (box == null) {
             return null;
         }
-        //noinspection unchecked
-        long objIdx = getObjectIndex((T) obj);
-        assert objIdx != 0;
-        if (objIdx != index) {
-            obj = null;
+        if (box.index == index) {
+            return box.obj;
         }
-        rlock.unlock();
-        return obj;
+        return null;
     }
 
     public T get(long index) {
-        Object obj = tryToFindFuncFast(index);
-        if (obj == null) {
-            obj = storage.get(index);
+        T obj = tryToFindFuncFast(index);
+        if (obj != null) {
+            return obj;
         }
-        // nullable
-        //noinspection unchecked
-        return (T) obj;
+        return storage.get(index);
     }
 
     public T remove(long index) {
-        if (fastStorage.length != 0) {
-            int arrIdx = (int) (Math.abs(index) % fastStorage.length);
-            var wlock = fastStorageLock.writeLock();
-            wlock.lock();
-            var obj = fastStorage[arrIdx];
-            //noinspection unchecked
-            if (obj != null && getObjectIndex((T) obj) == index) {
-                fastStorage[arrIdx] = null;
+        if (fastStorage.length() != 0) {
+            int arrIdx = (int) (Math.abs(index) % fastStorage.length());
+            fastStorageLock.lock();
+            try {
+                var box = fastStorage.get(arrIdx);
+                if (box != null && box.index == index) {
+                    fastStorage.set(arrIdx, null);
+                    return box.obj;
+                }
+            } finally {
+                fastStorageLock.unlock();
             }
-            wlock.unlock();
         }
         return storage.remove(index);
     }
 
     public int size() {
-        return storage.size();
+        // no lock here because it won't hurt for concurrency
+        int cnt = 0;
+        for (int i = 0; i < fastStorage.length(); ++i) {
+            var o = fastStorage.get(i);
+            if (o != null) ++cnt;
+        }
+        return cnt + storage.size();
     }
 }

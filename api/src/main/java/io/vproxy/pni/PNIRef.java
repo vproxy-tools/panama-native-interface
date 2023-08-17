@@ -83,12 +83,7 @@ public class PNIRef<T> {
             System.out.println("[PNI][WARN][PNIRef#cinit] invalid " + KEY + ": value should >= 0: " + len + ", the value is modified to 0");
             len = 0;
         }
-        holder = new ObjectHolder<>(len) {
-            @Override
-            protected long getObjectIndex(PNIRef<?> obj) {
-                return obj.index;
-            }
-        };
+        holder = new ObjectHolder<>(len);
     }
 
     public static long currentRefStorageSize() {

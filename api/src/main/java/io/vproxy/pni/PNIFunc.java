@@ -88,12 +88,7 @@ public abstract class PNIFunc<T> {
             System.out.println("[PNI][WARN][PNIFunc#cinit] invalid " + KEY + ": value should >= 0: " + len + ", the value is modified to 0");
             len = 0;
         }
-        holder = new ObjectHolder<>(len) {
-            @Override
-            protected long getObjectIndex(PNIFunc<?> obj) {
-                return obj.index;
-            }
-        };
+        holder = new ObjectHolder<>(len);
     }
 
     public static long currentFuncStorageSize() {
