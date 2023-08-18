@@ -7,6 +7,7 @@ import org.junit.runner.RunWith;
     TestCorner.class,
     TestTypesNoGen.class,
     TestDescParsing.class,
+    TestObjectHolder.class,
 })
 @RunWith(org.junit.runners.Suite.class)
 public class Suite {
