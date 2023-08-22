@@ -758,91 +758,6 @@ public class TestTypes {
     }
 
     @Test
-    public void callSite() {
-        var info = CallSiteTypeInfo.get();
-        var voidInfo = new CallSiteGenericTypeInfo(
-            List.of(new AstTypeDesc("V")),
-            List.of(VoidRefTypeInfo.get())
-        );
-        var objectRef = new PNIRefGenericTypeInfo(
-            List.of(new AstTypeDesc("Ljava/lang/Object;"))
-        );
-        var refInfo = new CallSiteGenericTypeInfo(
-            List.of(new AstTypeDesc("Lio/vproxy/pni/PNIRef;", List.of(new AstTypeDesc("Ljava/lang/Object;")))),
-            List.of(objectRef)
-        );
-        var clsRef = Utils.generalClsTypeInfo();
-        var clsInfo = new CallSiteGenericTypeInfo(
-            List.of(new AstTypeDesc("La/b/Cls;")),
-            List.of(clsRef)
-        );
-
-        assertEquals("io.vproxy.pni.CallSite", info.name());
-        assertEquals("io/vproxy/pni/CallSite", info.internalName());
-        assertEquals("Lio/vproxy/pni/CallSite;", info.desc());
-        checkError(() -> info.checkType(errors, "?", paramVarOpts(0), false), "?: cannot use raw type of CallSite");
-        checkTypeField(voidInfo, 0);
-        checkTypeParam(voidInfo, 0);
-        {
-            var moreParams = List.of(new AstTypeDesc("La/b/PNICls;"), new AstTypeDesc("La/b/PNICls;"));
-            var i = new CallSiteGenericTypeInfo(moreParams, List.of(clsRef, clsRef));
-            checkError(() -> i.checkType(errors, "?", paramVarOpts(0), false), "?: CallSite should have exactly one generic param: [a.b.PNICls, a.b.PNICls]");
-        }
-        {
-            clsRef.getClazz().isInterface = true;
-            checkError(() -> clsInfo.checkType(errors, "?", paramVarOpts(0), false), "?#<0>: unable to use interface type: a.b.PNICls");
-            clsRef.getClazz().isInterface = false;
-        }
-        {
-            var i = new CallSiteGenericTypeInfo(
-                List.of(new AstTypeDesc("Lio/vproxy/pni/CallSite;", List.of(new AstTypeDesc("Ljava/lang/Void;")))),
-                List.of(voidInfo)
-            );
-            checkError(() -> i.checkType(errors, "?", paramVarOpts(0), false), "?#<0>: CallSite can only take Struct/Union or PNIRef or java.lang.Void as its argument");
-        }
-        {
-            var i = new CallSiteGenericTypeInfo(
-                List.of(new AstTypeDesc("Lx/y/Z;")),
-                Collections.singletonList(null)
-            );
-            checkError(() -> i.checkType(errors, "?", paramVarOpts(0), false), "?#<0>: unable to find genericTypeRef: x.y.Z");
-        }
-        Utils.checkUnsupported(() -> info.nativeEnvType(returnVarOpts(0)));
-        assertEquals("PNIFunc * a", info.nativeParamType("a", paramVarOpts(POINTER)));
-        assertEquals(8, info.nativeMemorySize(fieldVarOpts(0)));
-        Utils.checkUnsupported(() -> info.nativeMemoryAlign(fieldVarOpts(0)));
-        Utils.checkUnsupported(() -> info.memoryLayoutForField(fieldVarOpts(0)));
-        checkUnsupported(() -> info.javaTypeForField(fieldVarOpts(0)), null);
-        checkUnsupported(() -> info.javaTypeForParam(paramVarOpts(0)), "implemented in subclass");
-        assertEquals("io.vproxy.pni.CallSite<Void>", voidInfo.javaTypeForParam(paramVarOpts(0)));
-        assertEquals("io.vproxy.pni.CallSite<java.lang.Object>", refInfo.javaTypeForParam(paramVarOpts(0)));
-        assertEquals("io.vproxy.pni.CallSite<a.b.Cls>", clsInfo.javaTypeForParam(paramVarOpts(0)));
-        {
-            var refTypeInfo = PNIRefTypeInfo.get();
-            var i = new CallSiteGenericTypeInfo(
-                List.of(new AstTypeDesc("Lio/vproxy/pni/PNIRef;")),
-                List.of(refTypeInfo)
-            );
-            checkUnsupported(() -> i.javaTypeForParam(paramVarOpts(0)), "should not reach here");
-        }
-        Utils.checkUnsupported(() -> info.generateGetterSetter(new StringBuilder(), 0, "a", fieldVarOpts(0)));
-        Utils.checkUnsupported(() -> info.generateConstructor(new StringBuilder(), 0, "a", fieldVarOpts(0)));
-        assertEquals("io.vproxy.pni.CallSite.class", info.methodHandleType(paramVarOpts(0)));
-        checkUnsupported(() -> info.convertParamToInvokeExactArgument("a", paramVarOpts(0)), "implemented in subclass");
-        assertEquals("PNIFunc.VoidFunc.of(a).MEMORY",
-            voidInfo.convertParamToInvokeExactArgument("a", paramVarOpts(0)));
-        assertEquals("PNIRef.Func.of(a).MEMORY",
-            refInfo.convertParamToInvokeExactArgument("a", paramVarOpts(0)));
-        assertEquals("a.b.Cls.Func.of(a).MEMORY",
-            clsInfo.convertParamToInvokeExactArgument("a", paramVarOpts(0)));
-        assertEquals(AllocationForReturnedValue.noAllocationRequired(),
-            info.allocationInfoForReturnValue(returnVarOpts(0)));
-        Utils.checkUnsupported(() -> info.convertInvokeExactReturnValueToJava(new StringBuilder(), 0, returnVarOpts(0)));
-        assertEquals(AllocationForParam.noAllocationRequired(),
-            info.allocationInfoForParam(paramVarOpts(0)));
-    }
-
-    @Test
     public void cls() {
         var info = Utils.generalClsTypeInfo();
         assertEquals("a/b/PNICls", info.getClazz().name);
@@ -1346,15 +1261,20 @@ public class TestTypes {
         checkUnsupported(() -> info.generateGetterSetter(new StringBuilder(), 0, "a", fieldVarOpts(0)), "implemented in subclass");
         assertEquals("OFFSET += ValueLayout.ADDRESS_UNALIGNED.byteSize();\n",
             Utils.sbHelper(sb -> info.generateConstructor(sb, 0, "a", fieldVarOpts(0))));
-        assertEquals("PNIFunc.class", info.methodHandleType(paramVarOpts(0)));
-        assertEquals("(MemorySegment) (a == null ? MemorySegment.NULL : a.MEMORY)",
-            info.convertParamToInvokeExactArgument("a", paramVarOpts(0)));
-        checkUnsupported(() -> info.convertInvokeExactReturnValueToJava(new StringBuilder(), 0, returnVarOpts(0)), "implemented in subclass");
+        assertEquals("io.vproxy.pni.CallSite.class", info.methodHandleType(paramVarOpts(0)));
+        assertEquals("PNIFunc.class", info.methodHandleType(paramVarOpts(RAW)));
 
         var clsInfo = Utils.generalClsTypeInfo();
         var gInfo = new PNIFuncGenericTypeInfo(List.of(new AstTypeDesc("La/b/PNICls;")), List.of(clsInfo));
-        checkTypeField(gInfo, 0);
-        checkTypeParam(gInfo, 0);
+
+        assertEquals("(MemorySegment) (a == null ? MemorySegment.NULL : a.b.Cls.Func.of(a).MEMORY)",
+            gInfo.convertParamToInvokeExactArgument("a", paramVarOpts(0)));
+        assertEquals("(MemorySegment) (a == null ? MemorySegment.NULL : a.MEMORY)",
+            gInfo.convertParamToInvokeExactArgument("a", paramVarOpts(RAW)));
+        checkUnsupported(() -> info.convertInvokeExactReturnValueToJava(new StringBuilder(), 0, returnVarOpts(0)), "implemented in subclass");
+
+        checkTypeField(gInfo, RAW);
+        checkTypeParam(gInfo, RAW);
         {
             var i = new PNIFuncGenericTypeInfo(
                 List.of(new AstTypeDesc("La/b/PNICls;"), new AstTypeDesc("La/b/PNICls;")),
