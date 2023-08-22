@@ -145,10 +145,14 @@ public class TestTypesNoGen {
         checkUnsupported(() -> t.nativeMemoryAlign(VarOpts.fieldDefault()));
         checkUnsupported(() -> t.memoryLayoutForField(VarOpts.fieldDefault()));
         checkUnsupported(() -> t.javaTypeForField(VarOpts.fieldDefault()));
+        checkUnsupported(() -> t.javaTypeForUpcallParam(VarOpts.fieldDefault()));
         checkUnsupported(() -> t.generateGetterSetter(new StringBuilder(), 0, "a", VarOpts.fieldDefault()));
         checkUnsupported(() -> t.generateConstructor(new StringBuilder(), 0, "a", VarOpts.fieldDefault()));
         checkUnsupported(() -> t.methodHandleType(VarOpts.paramDefault()));
+        checkUnsupported(() -> t.methodHandleTypeForUpcall(VarOpts.paramDefault()));
         checkUnsupported(() -> t.convertParamToInvokeExactArgument("a", VarOpts.paramDefault()));
         checkUnsupported(() -> t.convertInvokeExactReturnValueToJava(new StringBuilder(), 0, VarOpts.returnDefault()));
+        checkUnsupported(() -> t.convertToUpcallArgument("a", VarOpts.paramDefault()));
+        checkUnsupported(() -> t.convertFromUpcallReturn(new StringBuilder(), 0, VarOpts.returnDefault()));
     }
 }

@@ -42,15 +42,19 @@ public class TestCorner {
         Utils.checkUnsupported(() -> v.nativeMemoryAlign(emptyParamVarOpts()));
         Utils.checkUnsupported(() -> v.memoryLayoutForField(emptyParamVarOpts()));
         assertEquals("void", v.javaTypeForField(emptyParamVarOpts()));
+        assertEquals("void", v.javaTypeForUpcallParam(emptyParamVarOpts()));
         Utils.checkUnsupported(() -> v.generateGetterSetter(new StringBuilder(), 0, "a", emptyParamVarOpts()));
         Utils.checkUnsupported(() -> v.generateConstructor(new StringBuilder(), 0, "a", emptyParamVarOpts()));
         assertEquals("void.class", v.methodHandleType(emptyParamVarOpts()));
+        assertEquals("void.class", v.methodHandleTypeForUpcall(emptyParamVarOpts()));
         Utils.checkUnsupported(() -> v.convertParamToInvokeExactArgument("a", emptyParamVarOpts()));
         {
             var sb = new StringBuilder();
             v.convertInvokeExactReturnValueToJava(sb, 0, emptyParamVarOpts());
             assertTrue(sb.isEmpty());
         }
+        Utils.checkUnsupported(() -> v.convertToUpcallArgument("a", emptyParamVarOpts()));
+        Utils.checkUnsupported(() -> v.convertFromUpcallReturn(new StringBuilder(), 0, emptyParamVarOpts()));
     }
 
     @Test
@@ -68,6 +72,12 @@ public class TestCorner {
         }
         try {
             arr.javaTypeForField(fieldVarOptsWithLen(3));
+            fail();
+        } catch (RuntimeException e) {
+            assertEquals("unable to handle array with element type void", e.getMessage());
+        }
+        try {
+            arr.convertToUpcallArgument("a", fieldVarOptsWithLen(3));
             fail();
         } catch (RuntimeException e) {
             assertEquals("unable to handle array with element type void", e.getMessage());

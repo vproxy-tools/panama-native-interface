@@ -137,6 +137,11 @@ public class TestTypes {
         assertEquals("byte", info.javaTypeForField(fieldVarOpts(0)));
         assertEquals("byte", info.javaTypeForParam(paramVarOpts(0)));
         assertEquals("byte", info.javaTypeForReturn(returnVarOpts(0)));
+        assertEquals("byte", info.javaTypeForUpcallParam(paramVarOpts(0)));
+        assertEquals("byte", info.javaTypeForUpcallReturn(returnVarOpts(0)));
+        assertEquals("byte", info.javaTypeForUpcallInterfaceParam(paramVarOpts(0)));
+        assertEquals("byte", info.javaTypeForExtraUpcallInterfaceParam(returnVarOpts(0)));
+        assertEquals("byte", info.javaTypeForUpcallInterfaceReturn(returnVarOpts(0)));
         assertEquals(
             """
                 private static final VarHandle aVH = LAYOUT.varHandle(
@@ -156,9 +161,13 @@ public class TestTypes {
                 OFFSET += ValueLayout.JAVA_BYTE.byteSize();
                 """, Utils.sbHelper(sb -> info.generateConstructor(sb, 0, "a", fieldVarOpts(0))));
         assertEquals("byte.class", info.methodHandleType(paramVarOpts(0)));
+        assertEquals("byte.class", info.methodHandleTypeForReturn(returnVarOpts(0)));
+        assertEquals("byte.class", info.methodHandleTypeForUpcall(paramVarOpts(0)));
         assertEquals("a", info.convertParamToInvokeExactArgument("a", paramVarOpts(0)));
         assertEquals(AllocationForReturnedValue.noAllocationRequired(),
             info.allocationInfoForReturnValue(returnVarOpts(0)));
+        assertEquals(AllocationForReturnedValue.noAllocationRequired(),
+            info.allocationInfoForUpcallInterfaceReturnValue(returnVarOpts(0)));
         assertEquals(
             """
                 return ENV.returnByte();
@@ -169,6 +178,10 @@ public class TestTypes {
                 """, Utils.sbHelper(sb -> info.convertInvokeExactReturnValueToJava(sb, 0, returnVarOpts(CRITICAL))));
         assertEquals(AllocationForParam.noAllocationRequired(),
             info.allocationInfoForParam(paramVarOpts(0)));
+        assertEquals("a", info.convertToUpcallArgument("a", paramVarOpts(0)));
+        Utils.checkUnsupported(() -> info.convertExtraToUpcallArgument("a", returnVarOpts(0)));
+        assertEquals("return RESULT;\n",
+            Utils.sbHelper(sb -> info.convertFromUpcallReturn(sb, 0, returnVarOpts(0))));
     }
 
     @Test
@@ -189,6 +202,11 @@ public class TestTypes {
         assertEquals("boolean", info.javaTypeForField(fieldVarOpts(0)));
         assertEquals("boolean", info.javaTypeForParam(paramVarOpts(0)));
         assertEquals("boolean", info.javaTypeForReturn(returnVarOpts(0)));
+        assertEquals("boolean", info.javaTypeForUpcallParam(paramVarOpts(0)));
+        assertEquals("boolean", info.javaTypeForUpcallReturn(returnVarOpts(0)));
+        assertEquals("boolean", info.javaTypeForUpcallInterfaceParam(paramVarOpts(0)));
+        assertEquals("boolean", info.javaTypeForExtraUpcallInterfaceParam(returnVarOpts(0)));
+        assertEquals("boolean", info.javaTypeForUpcallInterfaceReturn(returnVarOpts(0)));
         assertEquals(
             """
                 private static final VarHandle aVH = LAYOUT.varHandle(
@@ -208,9 +226,13 @@ public class TestTypes {
                 OFFSET += ValueLayout.JAVA_BOOLEAN.byteSize();
                 """, Utils.sbHelper(sb -> info.generateConstructor(sb, 0, "a", fieldVarOpts(0))));
         assertEquals("boolean.class", info.methodHandleType(paramVarOpts(0)));
+        assertEquals("boolean.class", info.methodHandleTypeForReturn(returnVarOpts(0)));
+        assertEquals("boolean.class", info.methodHandleTypeForUpcall(paramVarOpts(0)));
         assertEquals("a", info.convertParamToInvokeExactArgument("a", paramVarOpts(0)));
         assertEquals(AllocationForReturnedValue.noAllocationRequired(),
             info.allocationInfoForReturnValue(returnVarOpts(0)));
+        assertEquals(AllocationForReturnedValue.noAllocationRequired(),
+            info.allocationInfoForUpcallInterfaceReturnValue(returnVarOpts(0)));
         assertEquals(
             """
                 return ENV.returnBool();
@@ -221,6 +243,10 @@ public class TestTypes {
                 """, Utils.sbHelper(sb -> info.convertInvokeExactReturnValueToJava(sb, 0, returnVarOpts(CRITICAL))));
         assertEquals(AllocationForParam.noAllocationRequired(),
             info.allocationInfoForParam(paramVarOpts(0)));
+        assertEquals("a", info.convertToUpcallArgument("a", returnVarOpts(0)));
+        Utils.checkUnsupported(() -> info.convertExtraToUpcallArgument("a", returnVarOpts(0)));
+        assertEquals("return RESULT;\n",
+            Utils.sbHelper(sb -> info.convertFromUpcallReturn(sb, 0, returnVarOpts(0))));
     }
 
     @Test
@@ -241,6 +267,11 @@ public class TestTypes {
         assertEquals("char", info.javaTypeForField(fieldVarOpts(0)));
         assertEquals("char", info.javaTypeForParam(paramVarOpts(0)));
         assertEquals("char", info.javaTypeForReturn(returnVarOpts(0)));
+        assertEquals("char", info.javaTypeForUpcallParam(paramVarOpts(0)));
+        assertEquals("char", info.javaTypeForUpcallReturn(returnVarOpts(0)));
+        assertEquals("char", info.javaTypeForUpcallInterfaceParam(paramVarOpts(0)));
+        assertEquals("char", info.javaTypeForExtraUpcallInterfaceParam(returnVarOpts(0)));
+        assertEquals("char", info.javaTypeForUpcallInterfaceReturn(returnVarOpts(0)));
         assertEquals(
             """
                 private static final VarHandle aVH = LAYOUT.varHandle(
@@ -260,9 +291,13 @@ public class TestTypes {
                 OFFSET += ValueLayout.JAVA_CHAR_UNALIGNED.byteSize();
                 """, Utils.sbHelper(sb -> info.generateConstructor(sb, 0, "a", fieldVarOpts(0))));
         assertEquals("char.class", info.methodHandleType(paramVarOpts(0)));
+        assertEquals("char.class", info.methodHandleTypeForReturn(returnVarOpts(0)));
+        assertEquals("char.class", info.methodHandleTypeForUpcall(paramVarOpts(0)));
         assertEquals("a", info.convertParamToInvokeExactArgument("a", paramVarOpts(0)));
         assertEquals(AllocationForReturnedValue.noAllocationRequired(),
             info.allocationInfoForReturnValue(returnVarOpts(0)));
+        assertEquals(AllocationForReturnedValue.noAllocationRequired(),
+            info.allocationInfoForUpcallInterfaceReturnValue(returnVarOpts(0)));
         assertEquals(
             """
                 return ENV.returnChar();
@@ -273,6 +308,10 @@ public class TestTypes {
                 """, Utils.sbHelper(sb -> info.convertInvokeExactReturnValueToJava(sb, 0, returnVarOpts(CRITICAL))));
         assertEquals(AllocationForParam.noAllocationRequired(),
             info.allocationInfoForParam(paramVarOpts(0)));
+        assertEquals("a", info.convertToUpcallArgument("a", paramVarOpts(0)));
+        Utils.checkUnsupported(() -> info.convertExtraToUpcallArgument("a", returnVarOpts(0)));
+        assertEquals("return RESULT;\n",
+            Utils.sbHelper(sb -> info.convertFromUpcallReturn(sb, 0, returnVarOpts(0))));
     }
 
     @Test
@@ -293,6 +332,11 @@ public class TestTypes {
         assertEquals("double", info.javaTypeForField(fieldVarOpts(0)));
         assertEquals("double", info.javaTypeForParam(paramVarOpts(0)));
         assertEquals("double", info.javaTypeForReturn(returnVarOpts(0)));
+        assertEquals("double", info.javaTypeForUpcallParam(paramVarOpts(0)));
+        assertEquals("double", info.javaTypeForUpcallReturn(returnVarOpts(0)));
+        assertEquals("double", info.javaTypeForUpcallInterfaceParam(paramVarOpts(0)));
+        assertEquals("double", info.javaTypeForExtraUpcallInterfaceParam(returnVarOpts(0)));
+        assertEquals("double", info.javaTypeForUpcallInterfaceReturn(returnVarOpts(0)));
         assertEquals(
             """
                 private static final VarHandle aVH = LAYOUT.varHandle(
@@ -312,9 +356,13 @@ public class TestTypes {
                 OFFSET += ValueLayout.JAVA_DOUBLE_UNALIGNED.byteSize();
                 """, Utils.sbHelper(sb -> info.generateConstructor(sb, 0, "a", fieldVarOpts(0))));
         assertEquals("double.class", info.methodHandleType(paramVarOpts(0)));
+        assertEquals("double.class", info.methodHandleTypeForReturn(returnVarOpts(0)));
+        assertEquals("double.class", info.methodHandleTypeForUpcall(paramVarOpts(0)));
         assertEquals("a", info.convertParamToInvokeExactArgument("a", paramVarOpts(0)));
         assertEquals(AllocationForReturnedValue.noAllocationRequired(),
             info.allocationInfoForReturnValue(returnVarOpts(0)));
+        assertEquals(AllocationForReturnedValue.noAllocationRequired(),
+            info.allocationInfoForUpcallInterfaceReturnValue(returnVarOpts(0)));
         assertEquals(
             """
                 return ENV.returnDouble();
@@ -325,6 +373,10 @@ public class TestTypes {
                 """, Utils.sbHelper(sb -> info.convertInvokeExactReturnValueToJava(sb, 0, returnVarOpts(CRITICAL))));
         assertEquals(AllocationForParam.noAllocationRequired(),
             info.allocationInfoForParam(paramVarOpts(0)));
+        assertEquals("a", info.convertToUpcallArgument("a", paramVarOpts(0)));
+        Utils.checkUnsupported(() -> info.convertExtraToUpcallArgument("a", returnVarOpts(0)));
+        assertEquals("return RESULT;\n",
+            Utils.sbHelper(sb -> info.convertFromUpcallReturn(sb, 0, returnVarOpts(0))));
     }
 
     @Test
@@ -345,6 +397,11 @@ public class TestTypes {
         assertEquals("float", info.javaTypeForField(fieldVarOpts(0)));
         assertEquals("float", info.javaTypeForParam(paramVarOpts(0)));
         assertEquals("float", info.javaTypeForReturn(returnVarOpts(0)));
+        assertEquals("float", info.javaTypeForUpcallParam(paramVarOpts(0)));
+        assertEquals("float", info.javaTypeForUpcallReturn(returnVarOpts(0)));
+        assertEquals("float", info.javaTypeForUpcallInterfaceParam(paramVarOpts(0)));
+        assertEquals("float", info.javaTypeForExtraUpcallInterfaceParam(returnVarOpts(0)));
+        assertEquals("float", info.javaTypeForUpcallInterfaceReturn(returnVarOpts(0)));
         assertEquals(
             """
                 private static final VarHandle aVH = LAYOUT.varHandle(
@@ -364,9 +421,13 @@ public class TestTypes {
                 OFFSET += ValueLayout.JAVA_FLOAT_UNALIGNED.byteSize();
                 """, Utils.sbHelper(sb -> info.generateConstructor(sb, 0, "a", fieldVarOpts(0))));
         assertEquals("float.class", info.methodHandleType(paramVarOpts(0)));
+        assertEquals("float.class", info.methodHandleTypeForReturn(returnVarOpts(0)));
+        assertEquals("float.class", info.methodHandleTypeForUpcall(paramVarOpts(0)));
         assertEquals("a", info.convertParamToInvokeExactArgument("a", paramVarOpts(0)));
         assertEquals(AllocationForReturnedValue.noAllocationRequired(),
             info.allocationInfoForReturnValue(returnVarOpts(0)));
+        assertEquals(AllocationForReturnedValue.noAllocationRequired(),
+            info.allocationInfoForUpcallInterfaceReturnValue(returnVarOpts(0)));
         assertEquals(
             """
                 return ENV.returnFloat();
@@ -377,6 +438,10 @@ public class TestTypes {
                 """, Utils.sbHelper(sb -> info.convertInvokeExactReturnValueToJava(sb, 0, returnVarOpts(CRITICAL))));
         assertEquals(AllocationForParam.noAllocationRequired(),
             info.allocationInfoForParam(paramVarOpts(0)));
+        assertEquals("a", info.convertToUpcallArgument("a", paramVarOpts(0)));
+        Utils.checkUnsupported(() -> info.convertExtraToUpcallArgument("a", returnVarOpts(0)));
+        assertEquals("return RESULT;\n",
+            Utils.sbHelper(sb -> info.convertFromUpcallReturn(sb, 0, returnVarOpts(0))));
     }
 
     @Test
@@ -399,6 +464,11 @@ public class TestTypes {
         assertEquals("int", info.javaTypeForField(fieldVarOpts(0)));
         assertEquals("int", info.javaTypeForParam(paramVarOpts(0)));
         assertEquals("int", info.javaTypeForReturn(returnVarOpts(0)));
+        assertEquals("int", info.javaTypeForUpcallParam(paramVarOpts(0)));
+        assertEquals("int", info.javaTypeForUpcallReturn(returnVarOpts(0)));
+        assertEquals("int", info.javaTypeForUpcallInterfaceParam(paramVarOpts(0)));
+        assertEquals("int", info.javaTypeForExtraUpcallInterfaceParam(returnVarOpts(0)));
+        assertEquals("int", info.javaTypeForUpcallInterfaceReturn(returnVarOpts(0)));
         assertEquals(
             """
                 private static final VarHandle aVH = LAYOUT.varHandle(
@@ -418,9 +488,13 @@ public class TestTypes {
                 OFFSET += ValueLayout.JAVA_INT_UNALIGNED.byteSize();
                 """, Utils.sbHelper(sb -> info.generateConstructor(sb, 0, "a", fieldVarOpts(0))));
         assertEquals("int.class", info.methodHandleType(paramVarOpts(0)));
+        assertEquals("int.class", info.methodHandleTypeForReturn(returnVarOpts(0)));
+        assertEquals("int.class", info.methodHandleTypeForUpcall(paramVarOpts(0)));
         assertEquals("a", info.convertParamToInvokeExactArgument("a", paramVarOpts(0)));
         assertEquals(AllocationForReturnedValue.noAllocationRequired(),
             info.allocationInfoForReturnValue(returnVarOpts(0)));
+        assertEquals(AllocationForReturnedValue.noAllocationRequired(),
+            info.allocationInfoForUpcallInterfaceReturnValue(returnVarOpts(0)));
         assertEquals(
             """
                 return ENV.returnInt();
@@ -431,6 +505,10 @@ public class TestTypes {
                 """, Utils.sbHelper(sb -> info.convertInvokeExactReturnValueToJava(sb, 0, returnVarOpts(CRITICAL))));
         assertEquals(AllocationForParam.noAllocationRequired(),
             info.allocationInfoForParam(paramVarOpts(0)));
+        assertEquals("a", info.convertToUpcallArgument("a", paramVarOpts(0)));
+        Utils.checkUnsupported(() -> info.convertExtraToUpcallArgument("a", returnVarOpts(0)));
+        assertEquals("return RESULT;\n",
+            Utils.sbHelper(sb -> info.convertFromUpcallReturn(sb, 0, returnVarOpts(0))));
     }
 
     @Test
@@ -453,6 +531,11 @@ public class TestTypes {
         assertEquals("long", info.javaTypeForField(fieldVarOpts(0)));
         assertEquals("long", info.javaTypeForParam(paramVarOpts(0)));
         assertEquals("long", info.javaTypeForReturn(returnVarOpts(0)));
+        assertEquals("long", info.javaTypeForUpcallParam(paramVarOpts(0)));
+        assertEquals("long", info.javaTypeForUpcallReturn(returnVarOpts(0)));
+        assertEquals("long", info.javaTypeForUpcallInterfaceParam(paramVarOpts(0)));
+        assertEquals("long", info.javaTypeForExtraUpcallInterfaceParam(returnVarOpts(0)));
+        assertEquals("long", info.javaTypeForUpcallInterfaceReturn(returnVarOpts(0)));
         assertEquals(
             """
                 private static final VarHandle aVH = LAYOUT.varHandle(
@@ -472,9 +555,13 @@ public class TestTypes {
                 OFFSET += ValueLayout.JAVA_LONG_UNALIGNED.byteSize();
                 """, Utils.sbHelper(sb -> info.generateConstructor(sb, 0, "a", fieldVarOpts(0))));
         assertEquals("long.class", info.methodHandleType(paramVarOpts(0)));
+        assertEquals("long.class", info.methodHandleTypeForReturn(returnVarOpts(0)));
+        assertEquals("long.class", info.methodHandleTypeForUpcall(paramVarOpts(0)));
         assertEquals("a", info.convertParamToInvokeExactArgument("a", paramVarOpts(0)));
         assertEquals(AllocationForReturnedValue.noAllocationRequired(),
             info.allocationInfoForReturnValue(returnVarOpts(0)));
+        assertEquals(AllocationForReturnedValue.noAllocationRequired(),
+            info.allocationInfoForUpcallInterfaceReturnValue(returnVarOpts(0)));
         assertEquals(
             """
                 return ENV.returnLong();
@@ -485,6 +572,10 @@ public class TestTypes {
                 """, Utils.sbHelper(sb -> info.convertInvokeExactReturnValueToJava(sb, 0, returnVarOpts(CRITICAL))));
         assertEquals(AllocationForParam.noAllocationRequired(),
             info.allocationInfoForParam(paramVarOpts(0)));
+        assertEquals("a", info.convertToUpcallArgument("a", paramVarOpts(0)));
+        Utils.checkUnsupported(() -> info.convertExtraToUpcallArgument("a", returnVarOpts(0)));
+        assertEquals("return RESULT;\n",
+            Utils.sbHelper(sb -> info.convertFromUpcallReturn(sb, 0, returnVarOpts(0))));
     }
 
     @Test
@@ -507,6 +598,11 @@ public class TestTypes {
         assertEquals("short", info.javaTypeForField(fieldVarOpts(0)));
         assertEquals("short", info.javaTypeForParam(paramVarOpts(0)));
         assertEquals("short", info.javaTypeForReturn(returnVarOpts(0)));
+        assertEquals("short", info.javaTypeForUpcallParam(paramVarOpts(0)));
+        assertEquals("short", info.javaTypeForUpcallReturn(returnVarOpts(0)));
+        assertEquals("short", info.javaTypeForUpcallInterfaceParam(paramVarOpts(0)));
+        assertEquals("short", info.javaTypeForExtraUpcallInterfaceParam(returnVarOpts(0)));
+        assertEquals("short", info.javaTypeForUpcallInterfaceReturn(returnVarOpts(0)));
         assertEquals(
             """
                 private static final VarHandle aVH = LAYOUT.varHandle(
@@ -526,9 +622,13 @@ public class TestTypes {
                 OFFSET += ValueLayout.JAVA_SHORT_UNALIGNED.byteSize();
                 """, Utils.sbHelper(sb -> info.generateConstructor(sb, 0, "a", fieldVarOpts(0))));
         assertEquals("short.class", info.methodHandleType(paramVarOpts(0)));
+        assertEquals("short.class", info.methodHandleTypeForReturn(returnVarOpts(0)));
+        assertEquals("short.class", info.methodHandleTypeForUpcall(paramVarOpts(0)));
         assertEquals("a", info.convertParamToInvokeExactArgument("a", paramVarOpts(0)));
         assertEquals(AllocationForReturnedValue.noAllocationRequired(),
             info.allocationInfoForReturnValue(returnVarOpts(0)));
+        assertEquals(AllocationForReturnedValue.noAllocationRequired(),
+            info.allocationInfoForUpcallInterfaceReturnValue(returnVarOpts(0)));
         assertEquals(
             """
                 return ENV.returnShort();
@@ -539,6 +639,10 @@ public class TestTypes {
                 """, Utils.sbHelper(sb -> info.convertInvokeExactReturnValueToJava(sb, 0, returnVarOpts(CRITICAL))));
         assertEquals(AllocationForParam.noAllocationRequired(),
             info.allocationInfoForParam(paramVarOpts(0)));
+        assertEquals("a", info.convertToUpcallArgument("a", paramVarOpts(0)));
+        Utils.checkUnsupported(() -> info.convertExtraToUpcallArgument("a", returnVarOpts(0)));
+        assertEquals("return RESULT;\n",
+            Utils.sbHelper(sb -> info.convertFromUpcallReturn(sb, 0, returnVarOpts(0))));
     }
 
     @Test
@@ -563,6 +667,11 @@ public class TestTypes {
         assertEquals("PNIString", info.javaTypeForField(fieldVarOpts(0)));
         assertEquals("PNIString", info.javaTypeForParam(paramVarOpts(0)));
         assertEquals("PNIString", info.javaTypeForReturn(returnVarOpts(0)));
+        assertEquals("MemorySegment", info.javaTypeForUpcallParam(paramVarOpts(0)));
+        assertEquals("MemorySegment", info.javaTypeForUpcallReturn(returnVarOpts(0)));
+        assertEquals("PNIString", info.javaTypeForUpcallInterfaceParam(paramVarOpts(0)));
+        assertEquals("PNIString", info.javaTypeForExtraUpcallInterfaceParam(returnVarOpts(0)));
+        assertEquals("PNIString", info.javaTypeForUpcallInterfaceReturn(returnVarOpts(0)));
         assertEquals(
             """
                 private static final VarHandle aVH = LAYOUT.varHandle(
@@ -609,10 +718,14 @@ public class TestTypes {
                 OFFSET += 3;
                 """, Utils.sbHelper(sb -> info.generateConstructor(sb, 0, "a", fieldVarOpts(LEN))));
         assertEquals("String.class", info.methodHandleType(paramVarOpts(0)));
+        assertEquals("String.class", info.methodHandleTypeForReturn(returnVarOpts(0)));
+        assertEquals("MemorySegment.class", info.methodHandleTypeForUpcall(paramVarOpts(0)));
         assertEquals("(MemorySegment) (a == null ? MemorySegment.NULL : a.MEMORY)",
             info.convertParamToInvokeExactArgument("a", paramVarOpts(0)));
         assertEquals(AllocationForReturnedValue.noAllocationRequired(),
             info.allocationInfoForReturnValue(returnVarOpts(0)));
+        assertEquals(AllocationForReturnedValue.noAllocationRequired(),
+            info.allocationInfoForUpcallInterfaceReturnValue(returnVarOpts(0)));
         assertEquals(
             """
                 var RESULT = ENV.returnPointer();
@@ -624,6 +737,10 @@ public class TestTypes {
                 """, Utils.sbHelper(sb -> info.convertInvokeExactReturnValueToJava(sb, 0, returnVarOpts(CRITICAL))));
         assertEquals(AllocationForParam.noAllocationRequired(),
             info.allocationInfoForParam(paramVarOpts(0)));
+        assertEquals("(a.address() == 0 ? null : new PNIString(a))", info.convertToUpcallArgument("a", paramVarOpts(0)));
+        Utils.checkUnsupported(() -> info.convertExtraToUpcallArgument("a", returnVarOpts(0)));
+        assertEquals("return RESULT == null ? MemorySegment.NULL : RESULT.MEMORY;\n",
+            Utils.sbHelper(sb -> info.convertFromUpcallReturn(sb, 0, returnVarOpts(0))));
     }
 
     @Test
@@ -644,6 +761,11 @@ public class TestTypes {
         assertEquals("MemorySegment", info.javaTypeForField(fieldVarOpts(0)));
         assertEquals("MemorySegment", info.javaTypeForParam(paramVarOpts(0)));
         assertEquals("MemorySegment", info.javaTypeForReturn(returnVarOpts(0)));
+        assertEquals("MemorySegment", info.javaTypeForUpcallParam(paramVarOpts(0)));
+        assertEquals("MemorySegment", info.javaTypeForUpcallReturn(returnVarOpts(0)));
+        assertEquals("MemorySegment", info.javaTypeForUpcallInterfaceParam(paramVarOpts(0)));
+        assertEquals("MemorySegment", info.javaTypeForExtraUpcallInterfaceParam(returnVarOpts(0)));
+        assertEquals("MemorySegment", info.javaTypeForUpcallInterfaceReturn(returnVarOpts(0)));
         assertEquals(
             """
                 private static final VarHandle aVH = LAYOUT.varHandle(
@@ -669,10 +791,14 @@ public class TestTypes {
                 OFFSET += ValueLayout.ADDRESS_UNALIGNED.byteSize();
                 """, Utils.sbHelper(sb -> info.generateConstructor(sb, 0, "a", fieldVarOpts(0))));
         assertEquals("MemorySegment.class", info.methodHandleType(paramVarOpts(0)));
+        assertEquals("MemorySegment.class", info.methodHandleTypeForReturn(returnVarOpts(0)));
+        assertEquals("MemorySegment.class", info.methodHandleTypeForUpcall(paramVarOpts(0)));
         assertEquals("(MemorySegment) (a == null ? MemorySegment.NULL : a)",
             info.convertParamToInvokeExactArgument("a", paramVarOpts(0)));
         assertEquals(AllocationForReturnedValue.noAllocationRequired(),
             info.allocationInfoForReturnValue(returnVarOpts(0)));
+        assertEquals(AllocationForReturnedValue.noAllocationRequired(),
+            info.allocationInfoForUpcallInterfaceReturnValue(returnVarOpts(0)));
         assertEquals(
             """
                 return ENV.returnPointer();
@@ -684,6 +810,10 @@ public class TestTypes {
                 """, Utils.sbHelper(sb -> info.convertInvokeExactReturnValueToJava(sb, 0, returnVarOpts(CRITICAL))));
         assertEquals(AllocationForParam.noAllocationRequired(),
             info.allocationInfoForParam(paramVarOpts(0)));
+        assertEquals("(a.address() == 0 ? null : a)", info.convertToUpcallArgument("a", paramVarOpts(0)));
+        Utils.checkUnsupported(() -> info.convertExtraToUpcallArgument("a", returnVarOpts(0)));
+        assertEquals("return RESULT == null ? MemorySegment.NULL : RESULT;\n",
+            Utils.sbHelper(sb -> info.convertFromUpcallReturn(sb, 0, returnVarOpts(0))));
     }
 
     @Test
@@ -694,6 +824,11 @@ public class TestTypes {
         assertEquals("Ljava/nio/ByteBuffer;", info.desc());
         checkTypeField(info, 0);
         checkTypeParam(info, RAW);
+        {
+            checkError(() -> {
+                info.checkType(errors, "?", paramVarOpts(RAW), true);
+            }, "?: upcall ByteBuffer cannot be marked with @Raw");
+        }
         assertEquals("buf", info.nativeEnvType(returnVarOpts(0)));
         assertEquals("PNIBuf a", info.nativeType("a", fieldVarOpts(0)));
         assertEquals("PNIBuf * a", info.nativeParamType("a", paramVarOpts(0)));
@@ -705,6 +840,11 @@ public class TestTypes {
         assertEquals("ByteBuffer", info.javaTypeForField(fieldVarOpts(0)));
         assertEquals("ByteBuffer", info.javaTypeForParam(paramVarOpts(0)));
         assertEquals("ByteBuffer", info.javaTypeForReturn(returnVarOpts(0)));
+        assertEquals("MemorySegment", info.javaTypeForUpcallParam(paramVarOpts(0)));
+        assertEquals("MemorySegment", info.javaTypeForUpcallReturn(returnVarOpts(0)));
+        assertEquals("ByteBuffer", info.javaTypeForUpcallInterfaceParam(paramVarOpts(0)));
+        assertEquals("ByteBuffer", info.javaTypeForExtraUpcallInterfaceParam(returnVarOpts(0)));
+        assertEquals("ByteBuffer", info.javaTypeForUpcallInterfaceReturn(returnVarOpts(0)));
         assertEquals(
             """
                 private final PNIBuf a;
@@ -730,6 +870,8 @@ public class TestTypes {
                 """, Utils.sbHelper(sb -> info.generateConstructor(sb, 0, "a", fieldVarOpts(0))));
         assertEquals("PNIBuf.class", info.methodHandleType(paramVarOpts(0)));
         assertEquals("ByteBuffer.class", info.methodHandleType(paramVarOpts(RAW)));
+        assertEquals("PNIBuf.class", info.methodHandleTypeForReturn(paramVarOpts(0)));
+        assertEquals("MemorySegment.class", info.methodHandleTypeForUpcall(paramVarOpts(0)));
         assertEquals("PanamaUtils.format(a)",
             info.convertParamToInvokeExactArgument("a", paramVarOpts(RAW)));
         assertEquals("PanamaUtils.format(a, POOLED)",
@@ -738,6 +880,8 @@ public class TestTypes {
             info.allocationInfoForReturnValue(returnVarOpts(0)));
         assertEquals(AllocationForReturnedValue.ofPooledAllocator("PNIBuf.LAYOUT.byteSize()"),
             info.allocationInfoForReturnValue(returnVarOpts(CRITICAL)));
+        assertEquals(AllocationForReturnedValue.noAllocationRequired(),
+            info.allocationInfoForUpcallInterfaceReturnValue(returnVarOpts(0)));
         assertEquals(
             """
                 var RES_SEG = ENV.returnBuf();
@@ -755,6 +899,15 @@ public class TestTypes {
             info.allocationInfoForParam(paramVarOpts(0)));
         assertEquals(AllocationForParam.noAllocationRequired(),
             info.allocationInfoForParam(paramVarOpts(RAW)));
+        assertEquals("(a.address() == 0 ? null : new PNIBuf(a).toByteBuffer())", info.convertToUpcallArgument("a", paramVarOpts(0)));
+        Utils.checkUnsupported(() -> info.convertExtraToUpcallArgument("a", returnVarOpts(0)));
+        assertEquals("""
+                if (RESULT == null) return MemorySegment.NULL;
+                var RETURN = new PNIBuf(return_);
+                RETURN.set(RESULT);
+                return return_;
+                """,
+            Utils.sbHelper(sb -> info.convertFromUpcallReturn(sb, 0, returnVarOpts(0))));
     }
 
     @Test
@@ -784,6 +937,11 @@ public class TestTypes {
         assertEquals("a.b.Cls", info.javaTypeForField(fieldVarOpts(0)));
         assertEquals("a.b.Cls", info.javaTypeForParam(paramVarOpts(0)));
         assertEquals("a.b.Cls", info.javaTypeForReturn(returnVarOpts(0)));
+        assertEquals("MemorySegment", info.javaTypeForUpcallParam(paramVarOpts(0)));
+        assertEquals("MemorySegment", info.javaTypeForUpcallReturn(returnVarOpts(0)));
+        assertEquals("a.b.Cls", info.javaTypeForUpcallInterfaceParam(paramVarOpts(0)));
+        assertEquals("a.b.Cls", info.javaTypeForExtraUpcallInterfaceParam(returnVarOpts(0)));
+        assertEquals("a.b.Cls", info.javaTypeForUpcallInterfaceReturn(returnVarOpts(0)));
         assertEquals(
             """
                 private final a.b.Cls a;
@@ -822,10 +980,14 @@ public class TestTypes {
                 OFFSET += 8;
                 """, Utils.sbHelper(sb -> info.generateConstructor(sb, 0, "a", fieldVarOpts(POINTER))));
         assertEquals("a.b.Cls.LAYOUT.getClass()", info.methodHandleType(paramVarOpts(0)));
+        assertEquals("a.b.Cls.LAYOUT.getClass()", info.methodHandleTypeForReturn(returnVarOpts(0)));
+        assertEquals("MemorySegment.class", info.methodHandleTypeForUpcall(paramVarOpts(0)));
         assertEquals("(MemorySegment) (a == null ? MemorySegment.NULL : a.MEMORY)",
             info.convertParamToInvokeExactArgument("a", paramVarOpts(0)));
         assertEquals(AllocationForReturnedValue.ofExtraAllocator("a.b.Cls.LAYOUT.byteSize()"),
             info.allocationInfoForReturnValue(returnVarOpts(0)));
+        assertEquals(AllocationForReturnedValue.ofExtraAllocator("a.b.Cls.LAYOUT.byteSize()"),
+            info.allocationInfoForUpcallInterfaceReturnValue(returnVarOpts(0)));
         assertEquals(
             """
                 var RESULT = ENV.returnPointer();
@@ -836,13 +998,12 @@ public class TestTypes {
                 if (RESULT.address() == 0) return null;
                 return RESULT == null ? null : new a.b.Cls(RESULT);
                 """, Utils.sbHelper(sb -> info.convertInvokeExactReturnValueToJava(sb, 0, returnVarOpts(CRITICAL))));
-        assertEquals(
-            """
-                if (RESULT.address() == 0) return null;
-                return RESULT == null ? null : new a.b.Cls(RESULT);
-                """, Utils.sbHelper(sb -> info.convertInvokeExactReturnValueToJava(sb, 0, returnVarOpts(CRITICAL))));
         assertEquals(AllocationForParam.noAllocationRequired(),
             info.allocationInfoForParam(paramVarOpts(0)));
+        assertEquals("(a.address() == 0 ? null : new a.b.Cls(a))", info.convertToUpcallArgument("a", paramVarOpts(0)));
+        assertEquals("new a.b.Cls(a)", info.convertExtraToUpcallArgument("a", returnVarOpts(0)));
+        assertEquals("return RESULT == null ? MemorySegment.NULL : RESULT.MEMORY;\n",
+            Utils.sbHelper(sb -> info.convertFromUpcallReturn(sb, 0, returnVarOpts(0))));
     }
 
     @Test
@@ -854,6 +1015,11 @@ public class TestTypes {
         assertEquals("[B", info.desc());
         checkTypeField(info, UNSIGNED | POINTER | LEN);
         checkTypeParam(info, UNSIGNED | POINTER | LEN | RAW);
+        {
+            checkError(() -> {
+                info.checkType(errors, "?", paramVarOpts(RAW), true);
+            }, "?: upcall array cannot be marked with @Raw");
+        }
         assertEquals("buf", info.nativeEnvType(returnVarOpts(0)));
         assertEquals("PNIBuf a", info.nativeType("a", fieldVarOpts(0)));
         assertEquals("PNIBuf", info.nativeType(null, fieldVarOpts(0)));
@@ -872,6 +1038,11 @@ public class TestTypes {
         assertEquals("MemorySegment", info.javaTypeForField(fieldVarOpts(0)));
         assertEquals("MemorySegment", info.javaTypeForParam(paramVarOpts(0)));
         assertEquals("MemorySegment", info.javaTypeForReturn(returnVarOpts(0)));
+        assertEquals("MemorySegment", info.javaTypeForUpcallParam(paramVarOpts(0)));
+        assertEquals("MemorySegment", info.javaTypeForUpcallReturn(returnVarOpts(0)));
+        assertEquals("MemorySegment", info.javaTypeForUpcallInterfaceParam(paramVarOpts(0)));
+        assertEquals("MemorySegment", info.javaTypeForExtraUpcallInterfaceParam(returnVarOpts(0)));
+        assertEquals("MemorySegment", info.javaTypeForUpcallInterfaceReturn(returnVarOpts(0)));
         assertEquals(
             """
                 private final PNIBuf a;
@@ -910,6 +1081,8 @@ public class TestTypes {
                 """, Utils.sbHelper(sb -> info.generateConstructor(sb, 0, "a", fieldVarOpts(LEN))));
         assertEquals("PNIBuf.class", info.methodHandleType(paramVarOpts(0)));
         assertEquals("MemorySegment.class", info.methodHandleType(paramVarOpts(RAW)));
+        assertEquals("PNIBuf.class", info.methodHandleTypeForReturn(returnVarOpts(0)));
+        assertEquals("MemorySegment.class", info.methodHandleTypeForUpcall(paramVarOpts(0)));
         assertEquals("PNIBuf.memoryOf(POOLED, a)",
             info.convertParamToInvokeExactArgument("a", paramVarOpts(0)));
         assertEquals("(MemorySegment) (a == null ? MemorySegment.NULL : a)",
@@ -918,6 +1091,8 @@ public class TestTypes {
             info.allocationInfoForReturnValue(returnVarOpts(0)));
         assertEquals(AllocationForReturnedValue.ofPooledAllocator("PNIBuf.LAYOUT.byteSize()"),
             info.allocationInfoForReturnValue(returnVarOpts(CRITICAL)));
+        assertEquals(AllocationForReturnedValue.noAllocationRequired(),
+            info.allocationInfoForUpcallInterfaceReturnValue(returnVarOpts(0)));
         assertEquals(
             """
                 var RES_SEG = ENV.returnBuf();
@@ -937,6 +1112,15 @@ public class TestTypes {
             info.allocationInfoForParam(paramVarOpts(0)));
         assertEquals(AllocationForParam.noAllocationRequired(),
             info.allocationInfoForParam(fieldVarOpts(LEN)));
+        assertEquals("(a.address() == 0 ? null : new PNIBuf(a).get())", info.convertToUpcallArgument("a", paramVarOpts(0)));
+        Utils.checkUnsupported(() -> info.convertExtraToUpcallArgument("a", returnVarOpts(0)));
+        assertEquals("""
+                if (RESULT == null) return MemorySegment.NULL;
+                var RETURN = new PNIBuf(return_);
+                RETURN.set(RESULT);
+                return return_;
+                """,
+            Utils.sbHelper(sb -> info.convertFromUpcallReturn(sb, 0, returnVarOpts(0))));
     }
 
     @Test
@@ -964,6 +1148,11 @@ public class TestTypes {
         assertEquals("FloatArray", info.javaTypeForField(fieldVarOpts(0)));
         assertEquals("FloatArray", info.javaTypeForParam(paramVarOpts(0)));
         assertEquals("FloatArray", info.javaTypeForReturn(returnVarOpts(0)));
+        assertEquals("MemorySegment", info.javaTypeForUpcallParam(paramVarOpts(0)));
+        assertEquals("MemorySegment", info.javaTypeForUpcallReturn(returnVarOpts(0)));
+        assertEquals("FloatArray", info.javaTypeForUpcallInterfaceParam(paramVarOpts(0)));
+        assertEquals("FloatArray", info.javaTypeForExtraUpcallInterfaceParam(returnVarOpts(0)));
+        assertEquals("FloatArray", info.javaTypeForUpcallInterfaceReturn(returnVarOpts(0)));
         assertEquals(
             """
                 private final PNIBuf a;
@@ -1002,6 +1191,8 @@ public class TestTypes {
                 """, Utils.sbHelper(sb -> info.generateConstructor(sb, 0, "a", fieldVarOpts(LEN))));
         assertEquals("PNIBuf.class", info.methodHandleType(paramVarOpts(0)));
         assertEquals("MemorySegment.class", info.methodHandleType(paramVarOpts(RAW)));
+        assertEquals("PNIBuf.class", info.methodHandleTypeForReturn(returnVarOpts(0)));
+        assertEquals("MemorySegment.class", info.methodHandleTypeForUpcall(paramVarOpts(0)));
         assertEquals("PNIBuf.memoryOf(POOLED, a)",
             info.convertParamToInvokeExactArgument("a", paramVarOpts(0)));
         assertEquals("(MemorySegment) (a == null ? MemorySegment.NULL : a.MEMORY)",
@@ -1010,6 +1201,8 @@ public class TestTypes {
             info.allocationInfoForReturnValue(returnVarOpts(0)));
         assertEquals(AllocationForReturnedValue.ofPooledAllocator("PNIBuf.LAYOUT.byteSize()"),
             info.allocationInfoForReturnValue(returnVarOpts(CRITICAL)));
+        assertEquals(AllocationForReturnedValue.noAllocationRequired(),
+            info.allocationInfoForUpcallInterfaceReturnValue(returnVarOpts(0)));
         assertEquals(
             """
                 var RES_SEG = ENV.returnBuf();
@@ -1029,6 +1222,15 @@ public class TestTypes {
             info.allocationInfoForParam(paramVarOpts(0)));
         assertEquals(AllocationForParam.noAllocationRequired(),
             info.allocationInfoForParam(fieldVarOpts(LEN)));
+        assertEquals("(a.address() == 0 ? null : new PNIBuf(a).toFloatArray())", info.convertToUpcallArgument("a", paramVarOpts(0)));
+        Utils.checkUnsupported(() -> info.convertExtraToUpcallArgument("a", returnVarOpts(0)));
+        assertEquals("""
+                if (RESULT == null) return MemorySegment.NULL;
+                var RETURN = new PNIBuf(return_);
+                RETURN.set(RESULT.MEMORY);
+                return return_;
+                """,
+            Utils.sbHelper(sb -> info.convertFromUpcallReturn(sb, 0, returnVarOpts(0))));
     }
 
     @Test
@@ -1057,6 +1259,10 @@ public class TestTypes {
         assertEquals("a.b.Cls.Array", info.javaTypeForField(fieldVarOpts(0)));
         assertEquals("a.b.Cls.Array", info.javaTypeForParam(paramVarOpts(0)));
         assertEquals("a.b.Cls.Array", info.javaTypeForReturn(returnVarOpts(0)));
+        assertEquals("MemorySegment", info.javaTypeForUpcallParam(paramVarOpts(0)));
+        assertEquals("MemorySegment", info.javaTypeForUpcallReturn(returnVarOpts(0)));
+        assertEquals("a.b.Cls.Array", info.javaTypeForExtraUpcallInterfaceParam(returnVarOpts(0)));
+        assertEquals("a.b.Cls.Array", info.javaTypeForUpcallInterfaceReturn(returnVarOpts(0)));
         assertEquals(
             """
                 private final PNIBuf a;
@@ -1095,6 +1301,8 @@ public class TestTypes {
                 """, Utils.sbHelper(sb -> info.generateConstructor(sb, 0, "a", fieldVarOpts(LEN))));
         assertEquals("PNIBuf.class", info.methodHandleType(paramVarOpts(0)));
         assertEquals("MemorySegment.class", info.methodHandleType(paramVarOpts(RAW)));
+        assertEquals("PNIBuf.class", info.methodHandleTypeForReturn(returnVarOpts(0)));
+        assertEquals("MemorySegment.class", info.methodHandleTypeForUpcall(paramVarOpts(0)));
         assertEquals("PNIBuf.memoryOf(POOLED, a)",
             info.convertParamToInvokeExactArgument("a", paramVarOpts(0)));
         assertEquals("(MemorySegment) (a == null ? MemorySegment.NULL : a.MEMORY)",
@@ -1103,6 +1311,8 @@ public class TestTypes {
             info.allocationInfoForReturnValue(returnVarOpts(0)));
         assertEquals(AllocationForReturnedValue.ofPooledAllocator("PNIBuf.LAYOUT.byteSize()"),
             info.allocationInfoForReturnValue(returnVarOpts(CRITICAL)));
+        assertEquals(AllocationForReturnedValue.noAllocationRequired(),
+            info.allocationInfoForUpcallInterfaceReturnValue(returnVarOpts(0)));
         assertEquals(
             """
                 var RES_SEG = ENV.returnBuf();
@@ -1122,6 +1332,15 @@ public class TestTypes {
             info.allocationInfoForParam(paramVarOpts(0)));
         assertEquals(AllocationForParam.noAllocationRequired(),
             info.allocationInfoForParam(fieldVarOpts(LEN)));
+        assertEquals("(a.address() == 0 ? null : new a.b.Cls.Array(new PNIBuf(a).get()))", info.convertToUpcallArgument("a", paramVarOpts(0)));
+        Utils.checkUnsupported(() -> info.convertExtraToUpcallArgument("a", returnVarOpts(0)));
+        assertEquals("""
+                if (RESULT == null) return MemorySegment.NULL;
+                var RETURN = new PNIBuf(return_);
+                RETURN.set(RESULT.MEMORY);
+                return return_;
+                """,
+            Utils.sbHelper(sb -> info.convertFromUpcallReturn(sb, 0, returnVarOpts(0))));
     }
 
     @Test
@@ -1130,37 +1349,53 @@ public class TestTypes {
         assertEquals("void * a", arr.nativeParamType("a", paramVarOpts(RAW)));
         assertEquals("uint8_t * a", arr.nativeParamType("a", paramVarOpts(RAW | UNSIGNED)));
         assertEquals("MemorySegment", arr.javaTypeForField(fieldVarOpts(0)));
+        assertEquals("(a.address() == 0 ? null : new PNIBuf(a).get())",
+            arr.convertToUpcallArgument("a", paramVarOpts(0)));
 
         arr = new ArrayTypeInfo(BooleanTypeInfo.get());
         assertEquals("uint8_t * a", arr.nativeParamType("a", paramVarOpts(RAW)));
         assertEquals("BoolArray", arr.javaTypeForField(fieldVarOpts(0)));
+        assertEquals("(a.address() == 0 ? null : new PNIBuf(a).toBoolArray())",
+            arr.convertToUpcallArgument("a", paramVarOpts(0)));
 
         arr = new ArrayTypeInfo(CharTypeInfo.get());
         assertEquals("uint16_t * a", arr.nativeParamType("a", paramVarOpts(RAW)));
         assertEquals("CharArray", arr.javaTypeForField(fieldVarOpts(0)));
+        assertEquals("(a.address() == 0 ? null : new PNIBuf(a).toCharArray())",
+            arr.convertToUpcallArgument("a", paramVarOpts(0)));
 
         arr = new ArrayTypeInfo(FloatTypeInfo.get());
         assertEquals("float * a", arr.nativeParamType("a", paramVarOpts(RAW)));
         assertEquals("FloatArray", arr.javaTypeForField(fieldVarOpts(0)));
+        assertEquals("(a.address() == 0 ? null : new PNIBuf(a).toFloatArray())",
+            arr.convertToUpcallArgument("a", paramVarOpts(0)));
 
         arr = new ArrayTypeInfo(DoubleTypeInfo.get());
         assertEquals("double * a", arr.nativeParamType("a", paramVarOpts(RAW)));
         assertEquals("DoubleArray", arr.javaTypeForField(fieldVarOpts(0)));
+        assertEquals("(a.address() == 0 ? null : new PNIBuf(a).toDoubleArray())",
+            arr.convertToUpcallArgument("a", paramVarOpts(0)));
 
         arr = new ArrayTypeInfo(IntTypeInfo.get());
         assertEquals("int32_t * a", arr.nativeParamType("a", paramVarOpts(RAW)));
         assertEquals("uint32_t * a", arr.nativeParamType("a", paramVarOpts(RAW | UNSIGNED)));
         assertEquals("IntArray", arr.javaTypeForField(fieldVarOpts(0)));
+        assertEquals("(a.address() == 0 ? null : new PNIBuf(a).toIntArray())",
+            arr.convertToUpcallArgument("a", paramVarOpts(0)));
 
         arr = new ArrayTypeInfo(LongTypeInfo.get());
         assertEquals("int64_t * a", arr.nativeParamType("a", paramVarOpts(RAW)));
         assertEquals("uint64_t * a", arr.nativeParamType("a", paramVarOpts(RAW | UNSIGNED)));
         assertEquals("LongArray", arr.javaTypeForField(fieldVarOpts(0)));
+        assertEquals("(a.address() == 0 ? null : new PNIBuf(a).toLongArray())",
+            arr.convertToUpcallArgument("a", paramVarOpts(0)));
 
         arr = new ArrayTypeInfo(ShortTypeInfo.get());
         assertEquals("int16_t * a", arr.nativeParamType("a", paramVarOpts(RAW)));
         assertEquals("uint16_t * a", arr.nativeParamType("a", paramVarOpts(RAW | UNSIGNED)));
         assertEquals("ShortArray", arr.javaTypeForField(fieldVarOpts(0)));
+        assertEquals("(a.address() == 0 ? null : new PNIBuf(a).toShortArray())",
+            arr.convertToUpcallArgument("a", paramVarOpts(0)));
     }
 
     @Test
@@ -1183,6 +1418,8 @@ public class TestTypes {
             Utils.sbHelper(sb -> info.generateConstructor(sb, 0, "a", fieldVarOpts(0))));
         assertEquals("PNIRef.class", info.methodHandleType(paramVarOpts(0)));
         assertEquals("PNIRef.class", info.methodHandleType(paramVarOpts(RAW)));
+        assertEquals("PNIRef.class", info.methodHandleTypeForReturn(returnVarOpts(0)));
+        assertEquals("MemorySegment.class", info.methodHandleTypeForUpcall(paramVarOpts(0)));
         assertEquals("(MemorySegment) (a == null ? MemorySegment.NULL : PNIRef.of(a).MEMORY)",
             info.convertParamToInvokeExactArgument("a", paramVarOpts(0)));
         assertEquals("(MemorySegment) (a == null ? MemorySegment.NULL : a.MEMORY)",
@@ -1196,6 +1433,8 @@ public class TestTypes {
             if (RESULT.address() == 0) return null;
             return PNIRef.of(RESULT);
             """, Utils.sbHelper(sb -> info.convertInvokeExactReturnValueToJava(sb, 0, returnVarOpts(CRITICAL))));
+        assertEquals("(a.address() == 0 ? null : PNIRef.getRef(a))", info.convertToUpcallArgument("a", paramVarOpts(0)));
+        assertEquals("(a.address() == 0 ? null : PNIRef.of(a))", info.convertToUpcallArgument("a", paramVarOpts(RAW)));
 
         var gInfo = new PNIRefGenericTypeInfo(List.of(new AstTypeDesc("Ljava/lang/Object;")));
         checkTypeField(gInfo, 0);
@@ -1222,6 +1461,12 @@ public class TestTypes {
             assertEquals("PNIRef<? super java.lang.Number>", i.javaTypeForParam(paramVarOpts(RAW)));
         }
         assertEquals("PNIRef<java.lang.Object>", gInfo.javaTypeForReturn(returnVarOpts(0)));
+        assertEquals("MemorySegment", gInfo.javaTypeForUpcallParam(paramVarOpts(0)));
+        assertEquals("MemorySegment", gInfo.javaTypeForUpcallReturn(returnVarOpts(0)));
+        assertEquals("java.lang.Object", gInfo.javaTypeForUpcallInterfaceParam(paramVarOpts(0)));
+        assertEquals("java.lang.Object", gInfo.javaTypeForExtraUpcallInterfaceParam(paramVarOpts(0)));
+        assertEquals("PNIRef<java.lang.Object>", gInfo.javaTypeForUpcallInterfaceParam(paramVarOpts(RAW)));
+        assertEquals("PNIRef<java.lang.Object>", gInfo.javaTypeForUpcallInterfaceReturn(returnVarOpts(0)));
         assertEquals("""
             private static final VarHandle aVH = LAYOUT.varHandle(
                 MemoryLayout.PathElement.groupElement("a")
@@ -1263,6 +1508,10 @@ public class TestTypes {
             Utils.sbHelper(sb -> info.generateConstructor(sb, 0, "a", fieldVarOpts(0))));
         assertEquals("io.vproxy.pni.CallSite.class", info.methodHandleType(paramVarOpts(0)));
         assertEquals("PNIFunc.class", info.methodHandleType(paramVarOpts(RAW)));
+        assertEquals("PNIFunc.class", info.methodHandleTypeForReturn(returnVarOpts(0)));
+        assertEquals("MemorySegment.class", info.methodHandleTypeForUpcall(paramVarOpts(0)));
+        checkUnsupported(() -> info.convertParamToInvokeExactArgument("a", paramVarOpts(0)), "implemented in subclass");
+        checkUnsupported(() -> info.convertToUpcallArgument("a", paramVarOpts(0)), "implemented in subclass");
 
         var clsInfo = Utils.generalClsTypeInfo();
         var gInfo = new PNIFuncGenericTypeInfo(List.of(new AstTypeDesc("La/b/PNICls;")), List.of(clsInfo));
@@ -1271,6 +1520,35 @@ public class TestTypes {
             gInfo.convertParamToInvokeExactArgument("a", paramVarOpts(0)));
         assertEquals("(MemorySegment) (a == null ? MemorySegment.NULL : a.MEMORY)",
             gInfo.convertParamToInvokeExactArgument("a", paramVarOpts(RAW)));
+        assertEquals("(a.address() == 0 ? null : a.b.Cls.Func.of(a).getCallSite())",
+            gInfo.convertToUpcallArgument("a", paramVarOpts(0)));
+        assertEquals("(a.address() == 0 ? null : a.b.Cls.Func.of(a))",
+            gInfo.convertToUpcallArgument("a", paramVarOpts(RAW)));
+        {
+            var i = new PNIFuncGenericTypeInfo(
+                List.of(new AstTypeDesc("Ljava/lang/Void;")),
+                List.of(VoidRefTypeInfo.get()));
+            assertEquals("(MemorySegment) (a == null ? MemorySegment.NULL : PNIFunc.VoidFunc.of(a).MEMORY)",
+                i.convertParamToInvokeExactArgument("a", paramVarOpts(0)));
+            assertEquals("(a.address() == 0 ? null : PNIFunc.VoidFunc.of(a).getCallSite())",
+                i.convertToUpcallArgument("a", paramVarOpts(0)));
+            assertEquals("(a.address() == 0 ? null : PNIFunc.VoidFunc.of(a))",
+                i.convertToUpcallArgument("a", paramVarOpts(RAW)));
+        }
+        {
+            var i = new PNIFuncGenericTypeInfo(
+                List.of(new AstTypeDesc("Lio/vproxy/pni/PNIRef;",
+                    List.of(new AstTypeDesc("Ljava/lang/Object;")))),
+                List.of(new PNIRefGenericTypeInfo(
+                    List.of(new AstTypeDesc("Ljava/lang/Object;"))
+                )));
+            assertEquals("(MemorySegment) (a == null ? MemorySegment.NULL : PNIRef.Func.of(a).MEMORY)",
+                i.convertParamToInvokeExactArgument("a", paramVarOpts(0)));
+            assertEquals("(a.address() == 0 ? null : (io.vproxy.pni.CallSite) PNIRef.Func.of(a).getCallSite())",
+                i.convertToUpcallArgument("a", paramVarOpts(0)));
+            assertEquals("(a.address() == 0 ? null : PNIRef.Func.of(a))",
+                i.convertToUpcallArgument("a", paramVarOpts(RAW)));
+        }
         checkUnsupported(() -> info.convertInvokeExactReturnValueToJava(new StringBuilder(), 0, returnVarOpts(0)), "implemented in subclass");
 
         checkTypeField(gInfo, RAW);
@@ -1306,6 +1584,15 @@ public class TestTypes {
                 "?#<0>: cannot find generic param: java.lang.Object");
         }
         assertEquals("PNIFunc<a.b.Cls>", gInfo.javaTypeForField(fieldVarOpts(0)));
+        assertEquals("io.vproxy.pni.CallSite<a.b.Cls>", gInfo.javaTypeForParam(paramVarOpts(0)));
+        assertEquals("PNIFunc<a.b.Cls>", gInfo.javaTypeForParam(paramVarOpts(RAW)));
+        assertEquals("PNIFunc<a.b.Cls>", gInfo.javaTypeForReturn(returnVarOpts(0)));
+        assertEquals("MemorySegment", gInfo.javaTypeForUpcallParam(paramVarOpts(0)));
+        assertEquals("MemorySegment", gInfo.javaTypeForUpcallReturn(returnVarOpts(0)));
+        assertEquals("io.vproxy.pni.CallSite<a.b.Cls>", gInfo.javaTypeForUpcallInterfaceParam(paramVarOpts(0)));
+        assertEquals("PNIFunc<a.b.Cls>", gInfo.javaTypeForUpcallInterfaceParam(paramVarOpts(RAW)));
+        assertEquals("io.vproxy.pni.CallSite<a.b.Cls>", gInfo.javaTypeForExtraUpcallInterfaceParam(returnVarOpts(0)));
+        assertEquals("PNIFunc<a.b.Cls>", gInfo.javaTypeForUpcallInterfaceReturn(returnVarOpts(0)));
         var objectRef = new PNIRefGenericTypeInfo(
             List.of(new AstTypeDesc("Ljava/lang/Object;"))
         );
@@ -1314,6 +1601,8 @@ public class TestTypes {
             List.of(objectRef)
         );
         assertEquals("PNIFunc<java.lang.Object>", rInfo.javaTypeForField(fieldVarOpts(0)));
+        assertEquals("io.vproxy.pni.CallSite<java.lang.Object>", rInfo.javaTypeForParam(paramVarOpts(0)));
+        assertEquals("PNIFunc<java.lang.Object>", rInfo.javaTypeForParam(paramVarOpts(RAW)));
         {
             var refTypeInfo = PNIRefTypeInfo.get();
             var i = new PNIFuncGenericTypeInfo(
@@ -1323,10 +1612,15 @@ public class TestTypes {
             checkUnsupported(() -> i.javaTypeForField(fieldVarOpts(0)), "should not reach here");
         }
         assertEquals("PNIFunc<a.b.Cls>", gInfo.javaTypeForField(fieldVarOpts(0)));
+        assertEquals("io.vproxy.pni.CallSite<a.b.Cls>", gInfo.javaTypeForParam(paramVarOpts(0)));
+        assertEquals("PNIFunc<a.b.Cls>", gInfo.javaTypeForParam(paramVarOpts(RAW)));
         var vInfo = new PNIFuncGenericTypeInfo(
             List.of(new AstTypeDesc("Ljava/lang/Void;")),
             List.of(VoidRefTypeInfo.get())
         );
+        assertEquals("PNIFunc<Void>", vInfo.javaTypeForField(fieldVarOpts(0)));
+        assertEquals("io.vproxy.pni.CallSite<Void>", vInfo.javaTypeForParam(paramVarOpts(0)));
+        assertEquals("PNIFunc<Void>", vInfo.javaTypeForParam(paramVarOpts(RAW)));
         assertEquals("""
             private static final VarHandle aVH = LAYOUT.varHandle(
                 MemoryLayout.PathElement.groupElement("a")
