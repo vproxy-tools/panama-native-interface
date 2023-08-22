@@ -1,6 +1,5 @@
 package io.vproxy.pni.test;
 
-import io.vproxy.pni.CallSite;
 import io.vproxy.pni.PNIFunc;
 import io.vproxy.pni.PNIRef;
 import io.vproxy.pni.annotation.Raw;
@@ -72,13 +71,13 @@ public interface PNIUpcall {
     PNIObjectStruct[] returnObjectArray();
 
     void otherParams(ByteBuffer buffer,
-                     CallSite<Void> voidCallSite,
-                     CallSite<PNIObjectStruct> objCallSite,
-                     CallSite<PNIRef<List<String>>> refCallSite,
+                     PNIFunc<Void> voidCallSite,
+                     PNIFunc<PNIObjectStruct> objCallSite,
+                     PNIFunc<PNIRef<List<String>>> refCallSite,
                      MemorySegment mem,
-                     PNIFunc<Void> voidFunc,
-                     PNIFunc<PNIObjectStruct> objFunc,
-                     PNIFunc<PNIRef<List<String>>> refFunc,
+                     @Raw PNIFunc<Void> voidFunc,
+                     @Raw PNIFunc<PNIObjectStruct> objFunc,
+                     @Raw PNIFunc<PNIRef<List<String>>> refFunc,
                      PNIRef<List<Integer>> ref,
                      @Raw PNIRef<List<Integer>> rawRef,
                      String str);

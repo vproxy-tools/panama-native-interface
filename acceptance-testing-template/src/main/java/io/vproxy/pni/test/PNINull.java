@@ -51,7 +51,7 @@ abstract class PNINull {
         short[] shortArr,
         PNIObjectStruct[] oArr,
         PNIRef<Object> ref,
-        PNIFunc<PNINull> func
+        @Raw PNIFunc<PNINull> func
     );
 
     @Critical
@@ -80,7 +80,7 @@ abstract class PNINull {
         short[] shortArr,
         PNIObjectStruct[] oArr,
         PNIRef<Object> ref,
-        PNIFunc<PNINull> func
+        @Raw PNIFunc<PNINull> func
     );
 
     @Impl(

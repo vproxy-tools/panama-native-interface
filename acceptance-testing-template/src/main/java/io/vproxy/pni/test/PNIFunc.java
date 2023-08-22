@@ -1,6 +1,5 @@
 package io.vproxy.pni.test;
 
-import io.vproxy.pni.CallSite;
 import io.vproxy.pni.PNIRef;
 import io.vproxy.pni.annotation.Critical;
 import io.vproxy.pni.annotation.Function;
@@ -89,7 +88,7 @@ public interface PNIFunc {
             return 0;
             """
     )
-    MemorySegment callJavaFromC(CallSite<PNIObjectStruct> func);
+    MemorySegment callJavaFromC(io.vproxy.pni.PNIFunc<PNIObjectStruct> func);
 
     @Impl(
         // language="c"
@@ -102,7 +101,7 @@ public interface PNIFunc {
             """
     )
     @Critical
-    MemorySegment callJavaFromCCritical(CallSite<PNIObjectStruct> func);
+    MemorySegment callJavaFromCCritical(io.vproxy.pni.PNIFunc<PNIObjectStruct> func);
 
     @Impl(
         // language="c"
@@ -113,7 +112,7 @@ public interface PNIFunc {
             return 0;
             """
     )
-    void callJavaRefFromC(CallSite<PNIRef<List<String>>> func, PNIRef<List<String>> ref);
+    void callJavaRefFromC(io.vproxy.pni.PNIFunc<PNIRef<List<String>>> func, PNIRef<List<String>> ref);
 
     @Impl(
         // language="c"
@@ -124,7 +123,7 @@ public interface PNIFunc {
             """
     )
     @Critical
-    void callJavaRefFromCCritical(CallSite<PNIRef<List<String>>> func, PNIRef<List<String>> ref);
+    void callJavaRefFromCCritical(io.vproxy.pni.PNIFunc<PNIRef<List<String>>> func, PNIRef<List<String>> ref);
 
     @Impl(
         // language="c"

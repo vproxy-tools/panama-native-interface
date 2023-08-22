@@ -49,8 +49,8 @@ public abstract class PNIRefAndFuncFields {
     abstract void set(PNIRef<Map<String, Integer>> ref,
                       PNIRef<List<PNIObjectStruct>> ref2,
                       PNIRef<PNIObjectStruct[]> ref3,
-                      PNIFunc<PNIRef<Map<String, Integer>>> func,
-                      PNIFunc<PNIObjectStruct> func2);
+                      @Raw PNIFunc<PNIRef<Map<String, Integer>>> func,
+                      @Raw PNIFunc<PNIObjectStruct> func2);
 
     @Impl(
         // language="c"
