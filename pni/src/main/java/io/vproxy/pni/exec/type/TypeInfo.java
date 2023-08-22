@@ -141,6 +141,6 @@ public abstract class TypeInfo {
 
     public void convertFromUpcallReturn(StringBuilder sb, int indent, VarOpts opts) {
         Utils.appendIndent(sb, indent)
-            .append("return RESULT == null ? null : RESULT.MEMORY;\n");
+            .append("return RESULT == null ? MemorySegment.NULL : RESULT.MEMORY;\n");
     }
 }

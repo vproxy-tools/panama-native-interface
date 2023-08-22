@@ -175,7 +175,7 @@ public class ByteBufferTypeInfo extends BuiltInReferenceTypeInfo {
     @Override
     public void convertFromUpcallReturn(StringBuilder sb, int indent, VarOpts opts) {
         Utils.appendIndent(sb, indent)
-            .append("if (RESULT == null) return null;\n");
+            .append("if (RESULT == null) return MemorySegment.NULL;\n");
         Utils.appendIndent(sb, indent)
             .append("var RETURN = new PNIBuf(return_);\n");
         Utils.appendIndent(sb, indent)

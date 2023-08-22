@@ -113,11 +113,12 @@ public class PNIFuncGenericTypeInfo extends PNIFuncTypeInfo {
             return "(MemorySegment) (" + name + " == null ? MemorySegment.NULL : " + name + ".MEMORY)";
         } else {
             if (genericTypeRefs.get(0) instanceof VoidRefTypeInfo) {
-                return "PNIFunc.VoidFunc.of(" + name + ").MEMORY";
+                return "(MemorySegment) (" + name + " == null ? MemorySegment.NULL : PNIFunc.VoidFunc.of(" + name + ").MEMORY)";
             } else if (genericTypeRefs.get(0) instanceof PNIRefTypeInfo) {
-                return "PNIRef.Func.of(" + name + ").MEMORY";
+                return "(MemorySegment) (" + name + " == null ? MemorySegment.NULL : PNIRef.Func.of(" + name + ").MEMORY)";
             }
-            return ((ClassTypeInfo) genericTypeRefs.get(0)).getClazz().fullName() + ".Func.of(" + name + ").MEMORY";
+            var fullName = ((ClassTypeInfo) genericTypeRefs.get(0)).getClazz().fullName();
+            return "(MemorySegment) (" + name + " == null ? MemorySegment.NULL : " + fullName + ".Func.of(" + name + ").MEMORY)";
         }
     }
 
