@@ -277,7 +277,7 @@ public class Upcall {
         var RESULT = IMPL.returnObject(
             new io.vproxy.pni.test.ObjectStruct(return_)
         );
-        return RESULT == null ? null : RESULT.MEMORY;
+        return RESULT == null ? MemorySegment.NULL : RESULT.MEMORY;
     }
 
     public static final MemorySegment objectArrayParams;
@@ -336,7 +336,7 @@ public class Upcall {
             System.exit(1);
         }
         var RESULT = IMPL.returnBuffer();
-        if (RESULT == null) return null;
+        if (RESULT == null) return MemorySegment.NULL;
         var RETURN = new PNIBuf(return_);
         RETURN.set(RESULT);
         return return_;
@@ -361,7 +361,7 @@ public class Upcall {
             System.exit(1);
         }
         var RESULT = IMPL.returnVoidFunc();
-        return RESULT == null ? null : RESULT.MEMORY;
+        return RESULT == null ? MemorySegment.NULL : RESULT.MEMORY;
     }
 
     public static final MemorySegment returnObjFunc;
@@ -372,7 +372,7 @@ public class Upcall {
             System.exit(1);
         }
         var RESULT = IMPL.returnObjFunc();
-        return RESULT == null ? null : RESULT.MEMORY;
+        return RESULT == null ? MemorySegment.NULL : RESULT.MEMORY;
     }
 
     public static final MemorySegment returnRefFunc;
@@ -383,7 +383,7 @@ public class Upcall {
             System.exit(1);
         }
         var RESULT = IMPL.returnRefFunc();
-        return RESULT == null ? null : RESULT.MEMORY;
+        return RESULT == null ? MemorySegment.NULL : RESULT.MEMORY;
     }
 
     public static final MemorySegment returnRef;
@@ -394,7 +394,7 @@ public class Upcall {
             System.exit(1);
         }
         var RESULT = IMPL.returnRef();
-        return RESULT == null ? null : RESULT.MEMORY;
+        return RESULT == null ? MemorySegment.NULL : RESULT.MEMORY;
     }
 
     public static final MemorySegment returnStr;
@@ -405,7 +405,7 @@ public class Upcall {
             System.exit(1);
         }
         var RESULT = IMPL.returnStr();
-        return RESULT == null ? null : RESULT.MEMORY;
+        return RESULT == null ? MemorySegment.NULL : RESULT.MEMORY;
     }
 
     static {
@@ -582,4 +582,4 @@ public class Upcall {
     }
 }
 // metadata.generator-version: pni test
-// sha256:7e170bf10533d9b28ffca8c629354344aefbfdf02360e99402a1a1d8968fac15
+// sha256:ecffd50795e1b182170935a2d26dfd4e3c3e7dfe2b1e1ec33f32fb1ec4614a33

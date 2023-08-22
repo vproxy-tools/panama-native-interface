@@ -145,7 +145,7 @@ public class Func {
         ENV.reset();
         int ERR;
         try {
-            ERR = (int) callJavaFromCMH.invokeExact(ENV.MEMORY, io.vproxy.pni.test.ObjectStruct.Func.of(func).MEMORY);
+            ERR = (int) callJavaFromCMH.invokeExact(ENV.MEMORY, (MemorySegment) (func == null ? MemorySegment.NULL : io.vproxy.pni.test.ObjectStruct.Func.of(func).MEMORY));
         } catch (Throwable THROWABLE) {
             throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
@@ -160,7 +160,7 @@ public class Func {
     public MemorySegment callJavaFromCCritical(io.vproxy.pni.CallSite<io.vproxy.pni.test.ObjectStruct> func) {
         MemorySegment RESULT;
         try {
-            RESULT = (MemorySegment) callJavaFromCCriticalMH.invokeExact(io.vproxy.pni.test.ObjectStruct.Func.of(func).MEMORY);
+            RESULT = (MemorySegment) callJavaFromCCriticalMH.invokeExact((MemorySegment) (func == null ? MemorySegment.NULL : io.vproxy.pni.test.ObjectStruct.Func.of(func).MEMORY));
         } catch (Throwable THROWABLE) {
             throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
@@ -174,7 +174,7 @@ public class Func {
         ENV.reset();
         int ERR;
         try {
-            ERR = (int) callJavaRefFromCMH.invokeExact(ENV.MEMORY, PNIRef.Func.of(func).MEMORY, (MemorySegment) (ref == null ? MemorySegment.NULL : PNIRef.of(ref).MEMORY));
+            ERR = (int) callJavaRefFromCMH.invokeExact(ENV.MEMORY, (MemorySegment) (func == null ? MemorySegment.NULL : PNIRef.Func.of(func).MEMORY), (MemorySegment) (ref == null ? MemorySegment.NULL : PNIRef.of(ref).MEMORY));
         } catch (Throwable THROWABLE) {
             throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
@@ -187,7 +187,7 @@ public class Func {
 
     public void callJavaRefFromCCritical(io.vproxy.pni.CallSite<java.util.List<java.lang.String>> func, java.util.List<java.lang.String> ref) {
         try {
-            callJavaRefFromCCriticalMH.invokeExact(PNIRef.Func.of(func).MEMORY, (MemorySegment) (ref == null ? MemorySegment.NULL : PNIRef.of(ref).MEMORY));
+            callJavaRefFromCCriticalMH.invokeExact((MemorySegment) (func == null ? MemorySegment.NULL : PNIRef.Func.of(func).MEMORY), (MemorySegment) (ref == null ? MemorySegment.NULL : PNIRef.of(ref).MEMORY));
         } catch (Throwable THROWABLE) {
             throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
@@ -222,4 +222,4 @@ public class Func {
     }
 }
 // metadata.generator-version: pni test
-// sha256:2b2d86ea9836a6d73453cc653989833f64bbf899999f04248405c5c8702e156d
+// sha256:969668a7d254fa6d01d5fb8b5180139f28bde1daadbb5bdbbe2fe06ce234d0d0

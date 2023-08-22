@@ -327,7 +327,7 @@ public class InvokeUpcall {
     public void otherParams(ByteBuffer buffer, io.vproxy.pni.CallSite<Void> voidCallSite, io.vproxy.pni.CallSite<io.vproxy.pni.test.ObjectStruct> objCallSite, io.vproxy.pni.CallSite<java.util.List<java.lang.String>> refCallSite, MemorySegment mem, PNIFunc<Void> voidFunc, PNIFunc<io.vproxy.pni.test.ObjectStruct> objFunc, PNIFunc<java.util.List<java.lang.String>> refFunc, java.util.List<java.lang.Integer> ref, PNIRef<java.util.List<java.lang.Integer>> rawRef, PNIString str) {
         try (var POOLED = Allocator.ofPooled()) {
             try {
-                otherParamsMH.invokeExact(PanamaUtils.format(buffer, POOLED), PNIFunc.VoidFunc.of(voidCallSite).MEMORY, io.vproxy.pni.test.ObjectStruct.Func.of(objCallSite).MEMORY, PNIRef.Func.of(refCallSite).MEMORY, (MemorySegment) (mem == null ? MemorySegment.NULL : mem), (MemorySegment) (voidFunc == null ? MemorySegment.NULL : voidFunc.MEMORY), (MemorySegment) (objFunc == null ? MemorySegment.NULL : objFunc.MEMORY), (MemorySegment) (refFunc == null ? MemorySegment.NULL : refFunc.MEMORY), (MemorySegment) (ref == null ? MemorySegment.NULL : PNIRef.of(ref).MEMORY), (MemorySegment) (rawRef == null ? MemorySegment.NULL : rawRef.MEMORY), (MemorySegment) (str == null ? MemorySegment.NULL : str.MEMORY));
+                otherParamsMH.invokeExact(PanamaUtils.format(buffer, POOLED), (MemorySegment) (voidCallSite == null ? MemorySegment.NULL : PNIFunc.VoidFunc.of(voidCallSite).MEMORY), (MemorySegment) (objCallSite == null ? MemorySegment.NULL : io.vproxy.pni.test.ObjectStruct.Func.of(objCallSite).MEMORY), (MemorySegment) (refCallSite == null ? MemorySegment.NULL : PNIRef.Func.of(refCallSite).MEMORY), (MemorySegment) (mem == null ? MemorySegment.NULL : mem), (MemorySegment) (voidFunc == null ? MemorySegment.NULL : voidFunc.MEMORY), (MemorySegment) (objFunc == null ? MemorySegment.NULL : objFunc.MEMORY), (MemorySegment) (refFunc == null ? MemorySegment.NULL : refFunc.MEMORY), (MemorySegment) (ref == null ? MemorySegment.NULL : PNIRef.of(ref).MEMORY), (MemorySegment) (rawRef == null ? MemorySegment.NULL : rawRef.MEMORY), (MemorySegment) (str == null ? MemorySegment.NULL : str.MEMORY));
             } catch (Throwable THROWABLE) {
                 throw PanamaUtils.convertInvokeExactException(THROWABLE);
             }
@@ -428,4 +428,4 @@ public class InvokeUpcall {
     }
 }
 // metadata.generator-version: pni test
-// sha256:00a8b59c79caf20a0a259788d86e2766e8d1d1510bffcde8137faa72e40e5a90
+// sha256:f7542d1500cf357447a4838c194a2f3bf81cb88893cb6a7966588431e961bb15
