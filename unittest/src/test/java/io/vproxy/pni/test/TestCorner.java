@@ -57,7 +57,7 @@ public class TestCorner {
     public void invalidArray() {
         var errors = new ArrayList<String>();
         var arr = new ArrayTypeInfo(VoidTypeInfo.get());
-        arr.checkType(errors, "?", emptyParamVarOpts());
+        arr.checkType(errors, "?", emptyParamVarOpts(), false);
         assertEquals(1, errors.size());
         assertEquals("?: void[] is not supported, only primitive and custom types can be used with array", errors.get(0));
         try {

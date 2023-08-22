@@ -4,6 +4,7 @@ import org.junit.runner.RunWith;
 
 @RunWith(org.junit.runners.Suite.class)
 @org.junit.runners.Suite.SuiteClasses({
+    TestBeforeAll.class,
     TestPrimitiveStruct.class,
     TestObjectStruct.class,
     TestStructUnion.class,
@@ -16,6 +17,7 @@ import org.junit.runner.RunWith;
     TestDefiningCFunction.class,
     TestRefAndFunc.class,
     TestGeneric.class,
+    TestUpcall.class,
 })
 public class Suite {
 }

@@ -62,23 +62,23 @@ public class TestTypes {
     }
 
     private void checkTypeField(TypeInfo info, int flags) {
-        checkError(() -> info.checkType(errors, "?", fieldVarOpts(0)));
+        checkError(() -> info.checkType(errors, "?", fieldVarOpts(0), false));
         if ((flags & UNSIGNED) == UNSIGNED) {
-            checkError(() -> info.checkType(errors, "?", fieldVarOpts(UNSIGNED)));
+            checkError(() -> info.checkType(errors, "?", fieldVarOpts(UNSIGNED), false));
         } else {
-            checkError(() -> info.checkType(errors, "?", fieldVarOpts(UNSIGNED)), "?: " + info.name() + " cannot be marked with @Unsigned");
+            checkError(() -> info.checkType(errors, "?", fieldVarOpts(UNSIGNED), false), "?: " + info.name() + " cannot be marked with @Unsigned");
         }
         if ((flags & POINTER) == POINTER) {
-            checkError(() -> info.checkType(errors, "?", fieldVarOpts(POINTER)));
+            checkError(() -> info.checkType(errors, "?", fieldVarOpts(POINTER), false));
         } else {
-            checkError(() -> info.checkType(errors, "?", fieldVarOpts(POINTER)), "?: " + info.name() + " cannot be marked with @Pointer");
+            checkError(() -> info.checkType(errors, "?", fieldVarOpts(POINTER), false), "?: " + info.name() + " cannot be marked with @Pointer");
         }
         if ((flags & LEN) == LEN) {
-            checkError(() -> info.checkType(errors, "?", fieldVarOpts(LEN)));
+            checkError(() -> info.checkType(errors, "?", fieldVarOpts(LEN), false));
         } else {
-            checkError(() -> info.checkType(errors, "?", fieldVarOpts(LEN)), "?: " + info.name() + " cannot be marked with @Len");
+            checkError(() -> info.checkType(errors, "?", fieldVarOpts(LEN), false), "?: " + info.name() + " cannot be marked with @Len");
         }
-        info.checkType(errors, "?", fieldVarOpts(POINTER | LEN));
+        info.checkType(errors, "?", fieldVarOpts(POINTER | LEN), false);
         assertFalse(errors.isEmpty());
         var last = errors.get(errors.size() - 1);
         assertEquals("?: " + info.name() + " cannot be marked with @Pointer because it is marked with @Len", last);
@@ -86,31 +86,31 @@ public class TestTypes {
     }
 
     private void checkTypeParam(TypeInfo info, int flags) {
-        checkError(() -> info.checkType(errors, "?", paramVarOpts(0)));
+        checkError(() -> info.checkType(errors, "?", paramVarOpts(0), false));
         if ((flags & UNSIGNED) == UNSIGNED) {
-            checkError(() -> info.checkType(errors, "?", paramVarOpts(UNSIGNED)));
+            checkError(() -> info.checkType(errors, "?", paramVarOpts(UNSIGNED), false));
         } else {
-            checkError(() -> info.checkType(errors, "?", paramVarOpts(UNSIGNED)), "?: " + info.name() + " cannot be marked with @Unsigned");
+            checkError(() -> info.checkType(errors, "?", paramVarOpts(UNSIGNED), false), "?: " + info.name() + " cannot be marked with @Unsigned");
         }
         if ((flags & POINTER) == POINTER) {
-            checkError(() -> info.checkType(errors, "?", paramVarOpts(POINTER)));
+            checkError(() -> info.checkType(errors, "?", paramVarOpts(POINTER), false));
         } else {
-            checkError(() -> info.checkType(errors, "?", paramVarOpts(POINTER)), "?: " + info.name() + " cannot be marked with @Pointer");
+            checkError(() -> info.checkType(errors, "?", paramVarOpts(POINTER), false), "?: " + info.name() + " cannot be marked with @Pointer");
         }
         if ((flags & LEN) == LEN) {
-            checkError(() -> info.checkType(errors, "?", paramVarOpts(LEN)),
+            checkError(() -> info.checkType(errors, "?", paramVarOpts(LEN), false),
                 "?: " + info.name() + " cannot be marked with @Len because it is pointer by default");
         } else {
-            checkError(() -> info.checkType(errors, "?", paramVarOpts(LEN)),
+            checkError(() -> info.checkType(errors, "?", paramVarOpts(LEN), false),
                 "?: " + info.name() + " cannot be marked with @Len",
                 "?: " + info.name() + " cannot be marked with @Len because it is pointer by default");
         }
         if ((flags & RAW) == RAW) {
-            checkError(() -> info.checkType(errors, "?", paramVarOpts(RAW)));
+            checkError(() -> info.checkType(errors, "?", paramVarOpts(RAW), false));
         } else {
-            checkError(() -> info.checkType(errors, "?", paramVarOpts(RAW)), "?: " + info.name() + " cannot be marked with @Raw");
+            checkError(() -> info.checkType(errors, "?", paramVarOpts(RAW), false), "?: " + info.name() + " cannot be marked with @Raw");
         }
-        info.checkType(errors, "?", paramVarOpts(POINTER | LEN));
+        info.checkType(errors, "?", paramVarOpts(POINTER | LEN), false);
         assertFalse(errors.isEmpty());
         var last = errors.get(errors.size() - 1);
         assertEquals("?: " + info.name() + " cannot be marked with @Pointer because it is marked with @Len", last);
@@ -780,17 +780,17 @@ public class TestTypes {
         assertEquals("io.vproxy.pni.CallSite", info.name());
         assertEquals("io/vproxy/pni/CallSite", info.internalName());
         assertEquals("Lio/vproxy/pni/CallSite;", info.desc());
-        checkError(() -> info.checkType(errors, "?", paramVarOpts(0)), "?: cannot use raw type of CallSite");
+        checkError(() -> info.checkType(errors, "?", paramVarOpts(0), false), "?: cannot use raw type of CallSite");
         checkTypeField(voidInfo, 0);
         checkTypeParam(voidInfo, 0);
         {
             var moreParams = List.of(new AstTypeDesc("La/b/PNICls;"), new AstTypeDesc("La/b/PNICls;"));
             var i = new CallSiteGenericTypeInfo(moreParams, List.of(clsRef, clsRef));
-            checkError(() -> i.checkType(errors, "?", paramVarOpts(0)), "?: CallSite should have exactly one generic param: [a.b.PNICls, a.b.PNICls]");
+            checkError(() -> i.checkType(errors, "?", paramVarOpts(0), false), "?: CallSite should have exactly one generic param: [a.b.PNICls, a.b.PNICls]");
         }
         {
             clsRef.getClazz().isInterface = true;
-            checkError(() -> clsInfo.checkType(errors, "?", paramVarOpts(0)), "?#<0>: unable to use interface type: a.b.PNICls");
+            checkError(() -> clsInfo.checkType(errors, "?", paramVarOpts(0), false), "?#<0>: unable to use interface type: a.b.PNICls");
             clsRef.getClazz().isInterface = false;
         }
         {
@@ -798,14 +798,14 @@ public class TestTypes {
                 List.of(new AstTypeDesc("Lio/vproxy/pni/CallSite;", List.of(new AstTypeDesc("Ljava/lang/Void;")))),
                 List.of(voidInfo)
             );
-            checkError(() -> i.checkType(errors, "?", paramVarOpts(0)), "?#<0>: CallSite can only take Struct/Union or PNIRef or java.lang.Void as its argument");
+            checkError(() -> i.checkType(errors, "?", paramVarOpts(0), false), "?#<0>: CallSite can only take Struct/Union or PNIRef or java.lang.Void as its argument");
         }
         {
             var i = new CallSiteGenericTypeInfo(
                 List.of(new AstTypeDesc("Lx/y/Z;")),
                 Collections.singletonList(null)
             );
-            checkError(() -> i.checkType(errors, "?", paramVarOpts(0)), "?#<0>: unable to find genericTypeRef: x.y.Z");
+            checkError(() -> i.checkType(errors, "?", paramVarOpts(0), false), "?#<0>: unable to find genericTypeRef: x.y.Z");
         }
         Utils.checkUnsupported(() -> info.nativeEnvType(returnVarOpts(0)));
         assertEquals("PNIFunc * a", info.nativeParamType("a", paramVarOpts(POINTER)));
@@ -853,7 +853,7 @@ public class TestTypes {
         checkTypeParam(info, POINTER);
         {
             info.getClazz().isInterface = true;
-            checkError(() -> info.checkType(errors, "?", fieldVarOpts(0)), "?: unable to use interface type: a.b.PNICls");
+            checkError(() -> info.checkType(errors, "?", fieldVarOpts(0), false), "?: unable to use interface type: a.b.PNICls");
             info.getClazz().isInterface = false;
         }
         assertEquals("Cls", info.nativeEnvType(returnVarOpts(0)));
@@ -1255,7 +1255,7 @@ public class TestTypes {
         assertEquals("io/vproxy/pni/PNIRef", info.internalName());
         assertEquals("Lio/vproxy/pni/PNIRef;", info.desc());
 
-        checkError(() -> info.checkType(errors, "?", fieldVarOpts(0)), "?: cannot use raw type of PNIRef");
+        checkError(() -> info.checkType(errors, "?", fieldVarOpts(0), false), "?: cannot use raw type of PNIRef");
         assertEquals("ref", info.nativeEnvType(returnVarOpts(0)));
         assertEquals("PNIRef *", info.nativeType(null, fieldVarOpts(0)));
         assertEquals("PNIRef * ref", info.nativeType("ref", fieldVarOpts(0)));
@@ -1287,7 +1287,7 @@ public class TestTypes {
         checkTypeParam(gInfo, RAW);
         {
             var i = new PNIRefGenericTypeInfo(List.of(new AstTypeDesc("Ljava/lang/Object;"), new AstTypeDesc("Ljava/lang/Object;")));
-            checkError(() -> i.checkType(errors, "?", fieldVarOpts(0)), "?: PNIRef should have exactly one generic param: [java.lang.Object, java.lang.Object]");
+            checkError(() -> i.checkType(errors, "?", fieldVarOpts(0), false), "?: PNIRef should have exactly one generic param: [java.lang.Object, java.lang.Object]");
         }
         assertEquals("java.lang.Object", gInfo.getGenericTypeString(0));
         assertEquals("PNIRef<java.lang.Object>", gInfo.javaTypeForField(fieldVarOpts(0)));
@@ -1335,7 +1335,7 @@ public class TestTypes {
         assertEquals("io/vproxy/pni/PNIFunc", info.internalName());
         assertEquals("Lio/vproxy/pni/PNIFunc;", info.desc());
 
-        checkError(() -> info.checkType(errors, "?", fieldVarOpts(0)), "?: cannot use raw type of PNIFunc");
+        checkError(() -> info.checkType(errors, "?", fieldVarOpts(0), false), "?: cannot use raw type of PNIFunc");
         assertEquals("func", info.nativeEnvType(returnVarOpts(0)));
         assertEquals("PNIFunc *", info.nativeType(null, fieldVarOpts(0)));
         assertEquals("PNIFunc * func", info.nativeType("func", fieldVarOpts(0)));
@@ -1360,11 +1360,11 @@ public class TestTypes {
                 List.of(new AstTypeDesc("La/b/PNICls;"), new AstTypeDesc("La/b/PNICls;")),
                 List.of(clsInfo, clsInfo)
             );
-            checkError(() -> i.checkType(errors, "?", fieldVarOpts(0)), "?: PNIFunc should have exactly one generic param: [a.b.PNICls, a.b.PNICls]");
+            checkError(() -> i.checkType(errors, "?", fieldVarOpts(0), false), "?: PNIFunc should have exactly one generic param: [a.b.PNICls, a.b.PNICls]");
         }
         {
             clsInfo.getClazz().isInterface = true;
-            checkError(() -> gInfo.checkType(errors, "?", fieldVarOpts(0)), "?#<0>: unable to use interface type: a.b.PNICls");
+            checkError(() -> gInfo.checkType(errors, "?", fieldVarOpts(0), false), "?#<0>: unable to use interface type: a.b.PNICls");
             clsInfo.getClazz().isInterface = false;
         }
         {
@@ -1374,7 +1374,7 @@ public class TestTypes {
                     "java.lang.Exception", "java/lang/Exception", "Ljava/lang/Exception;"
                 ))
             );
-            checkError(() -> i.checkType(errors, "?", fieldVarOpts(0)),
+            checkError(() -> i.checkType(errors, "?", fieldVarOpts(0), false),
                 "?#<0>: PNIFunc can only take Struct/Union or PNIRef or java.lang.Void as its argument");
         }
         {
@@ -1382,7 +1382,7 @@ public class TestTypes {
                 List.of(new AstTypeDesc("Ljava/lang/Object;")),
                 Collections.singletonList(null)
             );
-            checkError(() -> i.checkType(errors, "?", fieldVarOpts(0)),
+            checkError(() -> i.checkType(errors, "?", fieldVarOpts(0), false),
                 "?#<0>: cannot find generic param: java.lang.Object");
         }
         assertEquals("PNIFunc<a.b.Cls>", gInfo.javaTypeForField(fieldVarOpts(0)));

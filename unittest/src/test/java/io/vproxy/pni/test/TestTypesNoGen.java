@@ -113,6 +113,14 @@ public class TestTypesNoGen {
     }
 
     @Test
+    public void AnnoUpcall() {
+        var t = AnnoUpcallTypeInfo.get();
+        assertEquals("io.vproxy.pni.annotation.Upcall", t.name());
+        assertEquals("io/vproxy/pni/annotation/Upcall", t.internalName());
+        assertEquals("Lio/vproxy/pni/annotation/Upcall;", t.desc());
+    }
+
+    @Test
     public void BuiltInException() {
         var t = new BuiltInExceptionTypeInfo("java.lang.Exception", "java/lang/Exception", "Ljava/lang/Exception;");
         assertEquals("java.lang.Exception", t.name());
