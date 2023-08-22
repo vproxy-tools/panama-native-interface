@@ -74,18 +74,18 @@ public class AstMethod {
         }
     }
 
-    public void validate(String path, List<String> errors) {
+    public void validate(String path, List<String> errors, boolean upcall) {
         path = path + "#method(" + name + ")";
         if (returnTypeRef == null) {
             errors.add(path + ": unable to find returnTypeRef: " + returnType);
         } else {
-            returnTypeRef.checkType(errors, path, varOptsForReturn());
+            returnTypeRef.checkType(errors, path, varOptsForReturn(upcall), upcall);
             if (returnTypeRef instanceof CallSiteTypeInfo) {
                 errors.add(path + ": cannot use CallSite as return value");
             }
         }
         for (var p : params) {
-            p.validate(path, errors);
+            p.validate(path, errors, upcall);
         }
         if (critical() && !throwTypes.isEmpty()) {
             errors.add(path + ": cannot throw exceptions for Critical methods");
@@ -100,6 +100,9 @@ public class AstMethod {
             if (tRef == null) {
                 errors.add(path2 + ": unable to find throwTypeRef");
             }
+        }
+        if (upcall && !throwTypes.isEmpty()) {
+            errors.add(path + ": upcall method cannot have throws list");
         }
         for (var a : annos) {
             a.validate(path, errors);
@@ -167,14 +170,18 @@ public class AstMethod {
     }
 
     public String nativeName(String classUnderlinedName) {
+        return nativeName(classUnderlinedName, false);
+    }
+
+    public String nativeName(String classUnderlinedName, boolean upcall) {
         var name = Utils.getName(annos);
         if (name != null)
             return name;
-        return (critical() ? "JavaCritical_" : "Java_") + classUnderlinedName + "_" + this.name;
+        return ((critical() || upcall) ? "JavaCritical_" : "Java_") + classUnderlinedName + "_" + this.name;
     }
 
-    public void generateC(StringBuilder sb, int indent, String classUnderlinedName, String classNativeTypeName) {
-        generateC0(sb, indent, classUnderlinedName, classNativeTypeName);
+    public void generateC(StringBuilder sb, int indent, String classUnderlinedName, String classNativeTypeName, boolean upcall) {
+        generateC0(sb, indent, classUnderlinedName, classNativeTypeName, upcall);
         sb.append(";\n");
     }
 
@@ -195,15 +202,19 @@ public class AstMethod {
     }
 
     private void generateC0(StringBuilder sb, int indent, String classUnderlinedName, String classNativeTypeName) {
+        generateC0(sb, indent, classUnderlinedName, classNativeTypeName, false);
+    }
+
+    private void generateC0(StringBuilder sb, int indent, String classUnderlinedName, String classNativeTypeName, boolean upcall) {
         Utils.appendIndent(sb, indent)
             .append("JNIEXPORT ");
-        if (critical()) {
-            sb.append(returnTypeRef.nativeReturnType(varOptsForReturn()));
+        if (critical() || upcall) {
+            sb.append(returnTypeRef.nativeReturnType(varOptsForReturn(upcall)));
         } else {
             sb.append("int");
         }
-        sb.append(" JNICALL ").append(nativeName(classUnderlinedName)).append("(");
-        if (!critical()) {
+        sb.append(" JNICALL ").append(nativeName(classUnderlinedName, upcall)).append("(");
+        if (!critical() && !upcall) {
             sb.append("PNIEnv_").append(returnTypeRef.nativeEnvType(varOptsForReturn()));
             sb.append(" * env");
             if (classNativeTypeName != null || !params.isEmpty()) {
@@ -216,10 +227,10 @@ public class AstMethod {
                 sb.append(", ");
             }
         }
-        var returnAllocation = returnTypeRef.allocationInfoForReturnValue(varOptsForReturn());
+        var returnAllocation = returnTypeRef.allocationInfoForReturnValue(varOptsForReturn(upcall));
         String returnTypeExtraType = null;
         if (returnAllocation.requireAllocator()) {
-            returnTypeExtraType = returnTypeRef.nativeParamType(null, varOptsForReturn());
+            returnTypeExtraType = returnTypeRef.nativeParamType(null, varOptsForReturn(upcall));
         }
         var isFirst = true;
         for (var p : params) {
@@ -231,7 +242,7 @@ public class AstMethod {
             p.generateC(sb, 0);
         }
         if (returnTypeExtraType != null) {
-            if (!critical() || (classNativeTypeName != null || !params.isEmpty())) {
+            if ((!critical() && !upcall) || (classNativeTypeName != null || !params.isEmpty())) {
                 sb.append(", ");
             }
             sb.append(returnTypeExtraType).append(" return_");
@@ -421,8 +432,113 @@ public class AstMethod {
         Utils.appendIndent(sb, indent).append("}\n");
     }
 
+    public void generateJavaUpcall(StringBuilder sb, int indent, String classFullName) {
+        sb.append("\n");
+        Utils.appendIndent(sb, indent).append("public static final MemorySegment ").append(name).append(";\n");
+        sb.append("\n");
+        Utils.appendIndent(sb, indent).append("private static ");
+        sb.append(returnTypeRef.javaTypeForUpcallReturn(varOptsForReturn(true)))
+            .append(" ").append(name).append("(");
+        var isFirst = true;
+        for (var p : params) {
+            if (isFirst) {
+                isFirst = false;
+            } else {
+                sb.append(", ");
+            }
+            p.generateUpcallParam(sb, 0);
+        }
+        var returnAllocation = returnTypeRef.allocationInfoForReturnValue(varOptsForReturn(true));
+        var interfaceReturnAllocation = returnTypeRef.allocationInfoForUpcallInterfaceReturnValue(varOptsForReturn(true));
+        if (returnAllocation.requireAllocator()) {
+            if (!params.isEmpty()) {
+                sb.append(", ");
+            }
+            sb.append("MemorySegment return_");
+        }
+        sb.append(") {\n");
+        Utils.appendIndent(sb, indent + 4)
+            .append("if (IMPL == null) {\n");
+        Utils.appendIndent(sb, indent + 8)
+            .append("System.out.println(\"").append(classFullName).append("#").append(name).append("\");\n");
+        Utils.appendIndent(sb, indent + 8)
+            .append("System.exit(1);\n");
+        Utils.appendIndent(sb, indent + 4).append("}\n");
+        Utils.appendIndent(sb, indent + 4);
+        if (!(returnTypeRef instanceof VoidTypeInfo)) {
+            sb.append("var RESULT = ");
+        }
+        sb.append("IMPL.").append(name).append("(");
+        for (int i = 0; i < params.size(); i++) {
+            var p = params.get(i);
+            sb.append("\n");
+            p.generateUpcallConvert(sb, indent + 8);
+            if (i < params.size() - 1) {
+                sb.append(",");
+            }
+        }
+        if (interfaceReturnAllocation.requireAllocator()) {
+            if (!params.isEmpty()) {
+                sb.append(",");
+            }
+            sb.append("\n");
+            Utils.appendIndent(sb, indent + 8)
+                .append(returnTypeRef.convertExtraToUpcallArgument("return_", varOptsForReturn(true)))
+                .append("\n");
+            Utils.appendIndent(sb, indent + 4).append(");\n");
+        } else if (!params.isEmpty()) {
+            sb.append("\n");
+            Utils.appendIndent(sb, indent + 4).append(");\n");
+        } else {
+            sb.append(");\n");
+        }
+        if (!(returnTypeRef instanceof VoidTypeInfo)) {
+            returnTypeRef.convertFromUpcallReturn(sb, indent + 4, varOptsForReturn(true));
+        }
+        Utils.appendIndent(sb, indent).append("}\n");
+    }
+
+    public void generateJavaUpcallInterfaceMethod(StringBuilder sb) {
+        if (!genericDefs.isEmpty()) {
+            sb.append("<");
+            var isFirst = true;
+            for (var g : genericDefs) {
+                if (isFirst) {
+                    isFirst = false;
+                } else {
+                    sb.append(", ");
+                }
+                sb.append(g);
+            }
+            sb.append("> ");
+        }
+        sb.append(returnTypeRef.javaTypeForUpcallInterfaceReturn(varOptsForReturn(true)))
+            .append(" ").append(name).append("(");
+        var isFirst = true;
+        for (var p : params) {
+            if (isFirst) {
+                isFirst = false;
+            } else {
+                sb.append(", ");
+            }
+            p.generateUpcallInterfaceParam(sb, 0);
+        }
+        var returnAllocation = returnTypeRef.allocationInfoForUpcallInterfaceReturnValue(varOptsForReturn(true));
+        if (returnAllocation.requireAllocator()) {
+            if (!params.isEmpty()) {
+                sb.append(", ");
+            }
+            sb.append(returnTypeRef.javaTypeForExtraUpcallInterfaceParam(VarOpts.paramDefault())).append(" ").append("return_");
+        }
+        sb.append(");\n");
+    }
+
     private VarOpts varOptsForReturn() {
-        return VarOpts.ofReturn(critical());
+        return varOptsForReturn(false);
+    }
+
+    private VarOpts varOptsForReturn(boolean upcall) {
+        return VarOpts.ofReturn(critical() || upcall);
     }
 
     private boolean trivial() {
@@ -473,5 +589,113 @@ public class AstMethod {
             return (List<String>) ls;
         }
         return null;
+    }
+
+    public String nativeUpcallFunctionPointer(boolean isParam) {
+        var sb = new StringBuilder();
+        sb.append(returnTypeRef.nativeReturnType(varOptsForReturn(true)));
+        sb.append(" (*");
+        if (!isParam) {
+            sb.append("_");
+        }
+        sb.append(name);
+        sb.append(")(");
+        boolean isFirst = true;
+        for (var p : params) {
+            if (isFirst) {
+                isFirst = false;
+            } else {
+                sb.append(",");
+            }
+            sb.append(p.typeRef.nativeParamType(null, p.varOpts()));
+        }
+        var returnAllocation = returnTypeRef.allocationInfoForReturnValue(varOptsForReturn(true));
+        String returnTypeExtraType = null;
+        if (returnAllocation.requireAllocator()) {
+            returnTypeExtraType = returnTypeRef.nativeParamType(null, varOptsForReturn(true));
+        }
+        if (returnTypeExtraType != null) {
+            if (!params.isEmpty()) {
+                sb.append(",");
+            }
+            sb.append(returnTypeExtraType);
+        }
+        sb.append(")");
+        return sb.toString();
+    }
+
+    public void generateCUpcallImpl(StringBuilder sb, int indent, String classUnderlinedName) {
+        generateC0(sb, indent, classUnderlinedName, null, true);
+        sb.append(" {\n");
+        Utils.appendIndent(sb, indent + 4)
+            .append("if (_").append(name).append(" == NULL) {\n");
+        Utils.appendIndent(sb, indent + 8)
+            .append("printf(\"").append(nativeName(classUnderlinedName, true)).append(" function pointer is null\");\n");
+        Utils.appendIndent(sb, indent + 8)
+            .append("fflush(stdout);\n");
+        Utils.appendIndent(sb, indent + 8)
+            .append("exit(1);\n");
+        Utils.appendIndent(sb, indent + 4).append("}\n");
+        Utils.appendIndent(sb, indent + 4);
+        if (!(returnTypeRef instanceof VoidTypeInfo)) {
+            sb.append("return ");
+        }
+        sb.append("_").append(name).append("(");
+        boolean isFirst = true;
+        for (var p : params) {
+            if (isFirst) {
+                isFirst = false;
+            } else {
+                sb.append(", ");
+            }
+            sb.append(p.name);
+        }
+        if (returnTypeRef.allocationInfoForReturnValue(varOptsForReturn(true)).requireAllocator()) {
+            if (!params.isEmpty()) {
+                sb.append(", ");
+            }
+            sb.append("return_");
+        }
+        sb.append(");\n");
+        Utils.appendIndent(sb, indent).append("}\n");
+    }
+
+    public void generateUpcallMethodHandle(StringBuilder sb, String classFullName) {
+        sb.append("MethodHandles.lookup().findStatic(").append(classFullName).append(".class, ")
+            .append("\"").append(name).append("\", ")
+            .append("MethodType.methodType(");
+        if (returnTypeRef instanceof VoidTypeInfo) {
+            sb.append("void.class");
+        } else {
+            sb.append(returnTypeRef.javaTypeForUpcallReturn(varOptsForReturn(true))).append(".class");
+        }
+        for (var p : params) {
+            sb.append(", ");
+            p.generateUpcallParamClass(sb, 0);
+        }
+        if (returnTypeRef.allocationInfoForReturnValue(varOptsForReturn(true)).requireAllocator()) {
+            sb.append(", ");
+            sb.append("MemorySegment.class");
+        }
+        sb.append("))");
+    }
+
+    public void generateUpcallStub(StringBuilder sb) {
+        sb.append("PanamaUtils.defineCFunction(ARENA, ")
+            .append(name).append("MH, ");
+        if (returnTypeRef instanceof VoidTypeInfo) {
+            sb.append("void.class");
+        } else {
+            sb.append(returnTypeRef.methodHandleTypeForUpcall(varOptsForReturn(true)));
+        }
+        for (var p : params) {
+            sb.append(", ");
+            p.generateMethodHandleForUpcall(sb, 0);
+        }
+        if (returnTypeRef.allocationInfoForReturnValue(varOptsForReturn(true)).requireAllocator()) {
+            sb.append(", ");
+            sb.append("MemorySegment.class");
+        }
+        sb.append(")");
     }
 }

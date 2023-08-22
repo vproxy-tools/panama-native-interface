@@ -16,8 +16,8 @@ public class CallSiteGenericTypeInfo extends CallSiteTypeInfo {
     }
 
     @Override
-    public void checkType(List<String> errors, String path, VarOpts opts) {
-        super.checkType(errors, path, opts);
+    public void checkType(List<String> errors, String path, VarOpts opts, boolean upcall) {
+        super.checkType(errors, path, opts, upcall);
         if (genericTypeRefs.size() != 1) {
             errors.add(path + ": CallSite should have exactly one generic param: " + genericTypes);
         } else if (genericTypeRefs.get(0) != null) {
@@ -25,7 +25,7 @@ public class CallSiteGenericTypeInfo extends CallSiteTypeInfo {
             if (!(ref instanceof ClassTypeInfo) && !(ref instanceof VoidRefTypeInfo) && !(ref instanceof PNIRefTypeInfo)) {
                 errors.add(path + "#<0>: CallSite can only take Struct/Union or PNIRef or java.lang.Void as its argument");
             }
-            ref.checkType(errors, path + "#<0>", VarOpts.fieldDefault());
+            ref.checkType(errors, path + "#<0>", VarOpts.fieldDefault(), upcall);
         }
         for (int i = 0; i < genericTypeRefs.size(); i++) {
             var r = genericTypeRefs.get(i);
@@ -57,5 +57,16 @@ public class CallSiteGenericTypeInfo extends CallSiteTypeInfo {
             return "PNIRef.Func.of(" + name + ").MEMORY";
         }
         return ((ClassTypeInfo) genericTypeRefs.get(0)).getClazz().fullName() + ".Func.of(" + name + ").MEMORY";
+    }
+
+    @Override
+    public String convertToUpcallArgument(String name, VarOpts opts) {
+        if (genericTypeRefs.get(0) instanceof VoidRefTypeInfo) {
+            return "(" + name + ".address() == 0 ? null : PNIFunc.VoidFunc.of(" + name + ").getCallSite())";
+        } else if (genericTypeRefs.get(0) instanceof PNIRefTypeInfo) {
+            return "(" + name + ".address() == 0 ? null : (io.vproxy.pni.CallSite) PNIRef.Func.of(" + name + ").getCallSite())";
+        }
+        return "(" + name + ".address() == 0 ? null : " +
+               ((ClassTypeInfo) genericTypeRefs.get(0)).getClazz().fullName() + ".Func.of(" + name + ").getCallSite())";
     }
 }

@@ -11,8 +11,8 @@ public class PNIFuncTypeInfo extends BuiltInReferenceTypeInfo {
     }
 
     @Override
-    public void checkType(List<String> errors, String path, VarOpts opts) {
-        super.checkType(errors, path, opts);
+    public void checkType(List<String> errors, String path, VarOpts opts, boolean upcall) {
+        super.checkType(errors, path, opts, upcall);
         if (this.getClass() == PNIFuncTypeInfo.class) {
             errors.add(path + ": cannot use raw type of PNIFunc");
         }
@@ -53,6 +53,11 @@ public class PNIFuncTypeInfo extends BuiltInReferenceTypeInfo {
     }
 
     @Override
+    public String javaTypeForUpcallParam(VarOpts opts) {
+        return "MemorySegment";
+    }
+
+    @Override
     public void generateGetterSetter(StringBuilder sb, int indent, String fieldName, VarOpts opts) {
         throw new UnsupportedOperationException("implemented in subclass");
     }
@@ -68,12 +73,22 @@ public class PNIFuncTypeInfo extends BuiltInReferenceTypeInfo {
     }
 
     @Override
+    public String methodHandleTypeForUpcall(VarOpts opts) {
+        return "MemorySegment.class";
+    }
+
+    @Override
     public String convertParamToInvokeExactArgument(String name, VarOpts opts) {
         return "(MemorySegment) (" + name + " == null ? MemorySegment.NULL : " + name + ".MEMORY)";
     }
 
     @Override
     public void convertInvokeExactReturnValueToJava(StringBuilder sb, int indent, VarOpts opts) {
+        throw new UnsupportedOperationException("implemented in subclass");
+    }
+
+    @Override
+    public String convertToUpcallArgument(String name, VarOpts opts) {
         throw new UnsupportedOperationException("implemented in subclass");
     }
 

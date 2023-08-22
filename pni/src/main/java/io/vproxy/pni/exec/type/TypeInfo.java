@@ -2,6 +2,7 @@ package io.vproxy.pni.exec.type;
 
 import io.vproxy.pni.exec.internal.AllocationForParam;
 import io.vproxy.pni.exec.internal.AllocationForReturnedValue;
+import io.vproxy.pni.exec.internal.Utils;
 import io.vproxy.pni.exec.internal.VarOpts;
 
 import java.util.List;
@@ -13,7 +14,7 @@ public abstract class TypeInfo {
 
     abstract public String desc();
 
-    public void checkType(List<String> errors, String path, VarOpts opts) {
+    public void checkType(List<String> errors, String path, VarOpts opts, boolean upcall) {
         if (opts.isUnsigned() && !canMarkWithUnsigned()) {
             errors.add(path + ": " + name() + " cannot be marked with @Unsigned");
         }
@@ -81,11 +82,31 @@ public abstract class TypeInfo {
         return javaTypeForParam(opts);
     }
 
+    public abstract String javaTypeForUpcallParam(VarOpts opts);
+
+    public String javaTypeForUpcallReturn(VarOpts opts) {
+        return javaTypeForUpcallParam(opts);
+    }
+
+    public String javaTypeForUpcallInterfaceParam(VarOpts opts) {
+        return javaTypeForParam(opts);
+    }
+
+    public String javaTypeForExtraUpcallInterfaceParam(VarOpts opts) {
+        return javaTypeForUpcallInterfaceParam(opts);
+    }
+
+    public String javaTypeForUpcallInterfaceReturn(VarOpts opts) {
+        return javaTypeForReturn(opts);
+    }
+
     abstract public void generateGetterSetter(StringBuilder sb, int indent, String fieldName, VarOpts opts);
 
     abstract public void generateConstructor(StringBuilder sb, int indent, String fieldName, VarOpts opts);
 
     abstract public String methodHandleType(VarOpts opts);
+
+    public abstract String methodHandleTypeForUpcall(VarOpts opts);
 
     @Override
     public String toString() {
@@ -98,9 +119,24 @@ public abstract class TypeInfo {
         return AllocationForReturnedValue.noAllocationRequired();
     }
 
+    public AllocationForReturnedValue allocationInfoForUpcallInterfaceReturnValue(VarOpts opts) {
+        return AllocationForReturnedValue.noAllocationRequired();
+    }
+
     public abstract void convertInvokeExactReturnValueToJava(StringBuilder sb, int indent, VarOpts opts);
 
     public AllocationForParam allocationInfoForParam(VarOpts opts) {
         return AllocationForParam.noAllocationRequired();
+    }
+
+    public abstract String convertToUpcallArgument(String name, VarOpts opts);
+
+    public String convertExtraToUpcallArgument(String name, VarOpts opts) {
+        throw new UnsupportedOperationException();
+    }
+
+    public void convertFromUpcallReturn(StringBuilder sb, int indent, VarOpts opts) {
+        Utils.appendIndent(sb, indent)
+            .append("return RESULT == null ? null : RESULT.MEMORY;\n");
     }
 }

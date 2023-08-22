@@ -15,8 +15,8 @@ public class PNIRefGenericTypeInfo extends PNIRefTypeInfo {
     }
 
     @Override
-    public void checkType(List<String> errors, String path, VarOpts opts) {
-        super.checkType(errors, path, opts);
+    public void checkType(List<String> errors, String path, VarOpts opts, boolean upcall) {
+        super.checkType(errors, path, opts, upcall);
         if (genericTypes.size() != 1) {
             errors.add(path + ": PNIRef should have exactly one generic param: " + genericTypes);
         }

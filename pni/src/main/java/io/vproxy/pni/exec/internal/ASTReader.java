@@ -78,7 +78,7 @@ public class ASTReader {
         for (var a : astClass.annos) {
             if (a.type.desc.startsWith("Lio/vproxy/pni/annotation/")) {
                 var n = a.type.desc.substring("Lio/vproxy/pni/annotation/".length(), a.type.desc.length() - 1);
-                if (n.equals("Function") || n.equals("Struct") || n.equals("Union")) {
+                if (n.equals("Function") || n.equals("Struct") || n.equals("Union") || n.equals("Upcall")) {
                     return true;
                 }
             }

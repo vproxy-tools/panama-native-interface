@@ -17,8 +17,8 @@ public class PNIFuncGenericTypeInfo extends PNIFuncTypeInfo {
     }
 
     @Override
-    public void checkType(List<String> errors, String path, VarOpts opts) {
-        super.checkType(errors, path, opts);
+    public void checkType(List<String> errors, String path, VarOpts opts, boolean upcall) {
+        super.checkType(errors, path, opts, upcall);
         if (genericTypeRefs.size() != 1) {
             errors.add(path + ": PNIFunc should have exactly one generic param: " + genericTypes);
         } else if (genericTypeRefs.get(0) != null) {
@@ -26,7 +26,7 @@ public class PNIFuncGenericTypeInfo extends PNIFuncTypeInfo {
             if (!(ref instanceof ClassTypeInfo) && !(ref instanceof VoidRefTypeInfo) && !(ref instanceof PNIRefTypeInfo)) {
                 errors.add(path + "#<0>: PNIFunc can only take Struct/Union or PNIRef or java.lang.Void as its argument");
             }
-            ref.checkType(errors, path + "#<0>", VarOpts.fieldDefault());
+            ref.checkType(errors, path + "#<0>", VarOpts.fieldDefault(), upcall);
         }
         for (int i = 0; i < genericTypeRefs.size(); i++) {
             var r = genericTypeRefs.get(i);
@@ -102,6 +102,18 @@ public class PNIFuncGenericTypeInfo extends PNIFuncTypeInfo {
             Utils.appendIndent(sb, indent)
                 .append("return ")
                 .append(genericTypeRefs.get(0).javaTypeForReturn(opts)).append(".Func.of(RESULT);\n");
+        }
+    }
+
+    @Override
+    public String convertToUpcallArgument(String name, VarOpts opts) {
+        if (genericTypeRefs.get(0) instanceof VoidRefTypeInfo) {
+            return "(" + name + ".address() == 0 ? null : PNIFunc.VoidFunc.of(" + name + "))";
+        } else if (genericTypeRefs.get(0) instanceof PNIRefTypeInfo) {
+            return "(" + name + ".address() == 0 ? null : PNIRef.Func.of(" + name + "))";
+        } else {
+            return "(" + name + ".address() == 0 ? null : " +
+                   genericTypeRefs.get(0).javaTypeForReturn(opts) + ".Func.of(" + name + "))";
         }
     }
 }

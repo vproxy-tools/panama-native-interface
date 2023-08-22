@@ -19,4 +19,5 @@ public class Consts {
     public static final String TrivialClassName = pniAnnoPackage + ".Trivial";
     public static final String UnionClassName = pniAnnoPackage + ".Union";
     public static final String UnsignedClassName = pniAnnoPackage + ".Unsigned";
+    public static final String UpcallClassName = pniAnnoPackage + ".Upcall";
 }

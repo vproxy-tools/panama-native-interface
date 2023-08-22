@@ -34,10 +34,13 @@ public class ArrayTypeInfo extends TypeInfo {
     }
 
     @Override
-    public void checkType(List<String> errors, String path, VarOpts opts) {
-        super.checkType(errors, path, opts);
+    public void checkType(List<String> errors, String path, VarOpts opts, boolean upcall) {
+        super.checkType(errors, path, opts, upcall);
         if (!(elementType instanceof PrimitiveTypeInfo) && !(elementType instanceof ClassTypeInfo)) {
             errors.add(path + ": " + name() + " is not supported, only primitive and custom types can be used with array");
+        }
+        if (upcall && opts.isRaw()) {
+            errors.add(path + ": upcall array cannot be marked with @Raw");
         }
     }
 
@@ -175,6 +178,11 @@ public class ArrayTypeInfo extends TypeInfo {
     }
 
     @Override
+    public String javaTypeForUpcallParam(VarOpts opts) {
+        return "MemorySegment";
+    }
+
+    @Override
     public void generateGetterSetter(StringBuilder sb, int indent, String fieldName, VarOpts opts) {
         if (opts.isPointerGeneral()) {
             Utils.appendIndent(sb, indent)
@@ -268,6 +276,11 @@ public class ArrayTypeInfo extends TypeInfo {
     }
 
     @Override
+    public String methodHandleTypeForUpcall(VarOpts opts) {
+        return "MemorySegment.class";
+    }
+
+    @Override
     public String convertParamToInvokeExactArgument(String name, VarOpts opts) {
         if (opts.isRaw()) {
             if (elementType instanceof ByteTypeInfo) {
@@ -321,5 +334,56 @@ public class ArrayTypeInfo extends TypeInfo {
             return AllocationForParam.ofPooledAllocator();
         }
         return AllocationForParam.noAllocationRequired();
+    }
+
+    @Override
+    public String convertToUpcallArgument(String name, VarOpts opts) {
+        var sb = new StringBuilder();
+        sb.append("(").append(name).append(".address() == 0 ? null : ");
+        if (elementType instanceof ByteTypeInfo) {
+            sb.append("new PNIBuf(").append(name).append(").get()");
+        } else if (elementType instanceof ClassTypeInfo) {
+            var classTypeInfo = (ClassTypeInfo) elementType;
+            sb.append("new ").append(classTypeInfo.getClazz().fullName()).append(".Array(new PNIBuf(").append(name).append(").get())");
+        } else {
+            sb.append("new PNIBuf(").append(name).append(").to");
+            if (elementType instanceof BooleanTypeInfo) {
+                sb.append("BoolArray");
+            } else if (elementType instanceof CharTypeInfo) {
+                sb.append("CharArray");
+            } else if (elementType instanceof DoubleTypeInfo) {
+                sb.append("DoubleArray");
+            } else if (elementType instanceof FloatTypeInfo) {
+                sb.append("FloatArray");
+            } else if (elementType instanceof IntTypeInfo) {
+                sb.append("IntArray");
+            } else if (elementType instanceof LongTypeInfo) {
+                sb.append("LongArray");
+            } else if (elementType instanceof ShortTypeInfo) {
+                sb.append("ShortArray");
+            } else {
+                throw new RuntimeException("unable to handle array with element type " + elementType);
+            }
+            sb.append("()");
+        }
+        sb.append(")");
+        return sb.toString();
+    }
+
+    @Override
+    public void convertFromUpcallReturn(StringBuilder sb, int indent, VarOpts opts) {
+        Utils.appendIndent(sb, indent)
+            .append("if (RESULT == null) return MemorySegment.NULL;\n");
+        Utils.appendIndent(sb, indent)
+            .append("var RETURN = new PNIBuf(return_);\n");
+        if (elementType instanceof ByteTypeInfo) {
+            Utils.appendIndent(sb, indent)
+                .append("RETURN.set(RESULT);\n");
+        } else {
+            Utils.appendIndent(sb, indent)
+                .append("RETURN.set(RESULT.MEMORY);\n");
+        }
+        Utils.appendIndent(sb, indent)
+            .append("return return_;\n");
     }
 }

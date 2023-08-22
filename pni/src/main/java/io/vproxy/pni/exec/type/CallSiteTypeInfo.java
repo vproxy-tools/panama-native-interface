@@ -10,8 +10,8 @@ public class CallSiteTypeInfo extends BuiltInReferenceTypeInfo {
     }
 
     @Override
-    public void checkType(List<String> errors, String path, VarOpts opts) {
-        super.checkType(errors, path, opts);
+    public void checkType(List<String> errors, String path, VarOpts opts, boolean upcall) {
+        super.checkType(errors, path, opts, upcall);
         if (this.getClass() == CallSiteTypeInfo.class) {
             errors.add(path + ": cannot use raw type of CallSite");
         }
@@ -57,6 +57,11 @@ public class CallSiteTypeInfo extends BuiltInReferenceTypeInfo {
     }
 
     @Override
+    public String javaTypeForUpcallParam(VarOpts opts) {
+        return "MemorySegment";
+    }
+
+    @Override
     public void generateGetterSetter(StringBuilder sb, int indent, String fieldName, VarOpts opts) {
         throw new UnsupportedOperationException();
     }
@@ -72,12 +77,27 @@ public class CallSiteTypeInfo extends BuiltInReferenceTypeInfo {
     }
 
     @Override
+    public String methodHandleTypeForUpcall(VarOpts opts) {
+        return "MemorySegment.class";
+    }
+
+    @Override
     public String convertParamToInvokeExactArgument(String name, VarOpts opts) {
         throw new UnsupportedOperationException("implemented in subclass");
     }
 
     @Override
     public void convertInvokeExactReturnValueToJava(StringBuilder sb, int indent, VarOpts opts) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public String convertToUpcallArgument(String name, VarOpts opts) {
+        throw new UnsupportedOperationException("implemented in subclass");
+    }
+
+    @Override
+    public void convertFromUpcallReturn(StringBuilder sb, int indent, VarOpts opts) {
         throw new UnsupportedOperationException();
     }
 

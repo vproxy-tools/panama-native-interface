@@ -35,6 +35,7 @@ public class TypePool {
         record(AnnoTrivialTypeInfo.get());
         record(AnnoUnionTypeInfo.get());
         record(AnnoUnsignedTypeInfo.get());
+        record(AnnoUpcallTypeInfo.get());
 
         record(CallSiteTypeInfo.get());
         record(PNIFuncTypeInfo.get());

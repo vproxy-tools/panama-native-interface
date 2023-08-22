@@ -38,6 +38,11 @@ public abstract class NoGenReferenceTypeInfo extends BuiltInReferenceTypeInfo {
     }
 
     @Override
+    public String javaTypeForUpcallParam(VarOpts opts) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
     public void generateGetterSetter(StringBuilder sb, int indent, String fieldName, VarOpts opts) {
         throw new UnsupportedOperationException();
     }
@@ -53,12 +58,27 @@ public abstract class NoGenReferenceTypeInfo extends BuiltInReferenceTypeInfo {
     }
 
     @Override
+    public String methodHandleTypeForUpcall(VarOpts opts) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
     public String convertParamToInvokeExactArgument(String name, VarOpts opts) {
         throw new UnsupportedOperationException();
     }
 
     @Override
     public void convertInvokeExactReturnValueToJava(StringBuilder sb, int indent, VarOpts opts) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public String convertToUpcallArgument(String name, VarOpts opts) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void convertFromUpcallReturn(StringBuilder sb, int indent, VarOpts opts) {
         throw new UnsupportedOperationException();
     }
 }

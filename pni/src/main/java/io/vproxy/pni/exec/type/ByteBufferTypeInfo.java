@@ -5,9 +5,19 @@ import io.vproxy.pni.exec.internal.AllocationForReturnedValue;
 import io.vproxy.pni.exec.internal.Utils;
 import io.vproxy.pni.exec.internal.VarOpts;
 
+import java.util.List;
+
 public class ByteBufferTypeInfo extends BuiltInReferenceTypeInfo {
     private ByteBufferTypeInfo() {
         super("java.nio.ByteBuffer", "java/nio/ByteBuffer", "Ljava/nio/ByteBuffer;");
+    }
+
+    @Override
+    public void checkType(List<String> errors, String path, VarOpts opts, boolean upcall) {
+        super.checkType(errors, path, opts, upcall);
+        if (upcall && opts.isRaw()) {
+            errors.add(path + ": upcall ByteBuffer cannot be marked with @Raw");
+        }
     }
 
     @Override
@@ -64,6 +74,11 @@ public class ByteBufferTypeInfo extends BuiltInReferenceTypeInfo {
     }
 
     @Override
+    public String javaTypeForUpcallParam(VarOpts opts) {
+        return "MemorySegment";
+    }
+
+    @Override
     public void generateGetterSetter(StringBuilder sb, int indent, String fieldName, VarOpts opts) {
         Utils.appendIndent(sb, indent)
             .append("private final PNIBuf ").append(fieldName).append(";\n");
@@ -108,6 +123,11 @@ public class ByteBufferTypeInfo extends BuiltInReferenceTypeInfo {
     }
 
     @Override
+    public String methodHandleTypeForUpcall(VarOpts opts) {
+        return "MemorySegment.class";
+    }
+
+    @Override
     public String convertParamToInvokeExactArgument(String name, VarOpts opts) {
         if (opts.isRaw()) {
             return "PanamaUtils.format(" + name + ")";
@@ -145,6 +165,23 @@ public class ByteBufferTypeInfo extends BuiltInReferenceTypeInfo {
             return AllocationForParam.ofPooledAllocator();
         }
         return AllocationForParam.noAllocationRequired();
+    }
+
+    @Override
+    public String convertToUpcallArgument(String name, VarOpts opts) {
+        return "(" + name + ".address() == 0 ? null : " + "new PNIBuf(" + name + ").toByteBuffer())";
+    }
+
+    @Override
+    public void convertFromUpcallReturn(StringBuilder sb, int indent, VarOpts opts) {
+        Utils.appendIndent(sb, indent)
+            .append("if (RESULT == null) return null;\n");
+        Utils.appendIndent(sb, indent)
+            .append("var RETURN = new PNIBuf(return_);\n");
+        Utils.appendIndent(sb, indent)
+            .append("RETURN.set(RESULT);\n");
+        Utils.appendIndent(sb, indent)
+            .append("return return_;\n");
     }
 
     private static final ByteBufferTypeInfo INSTANCE = new ByteBufferTypeInfo();

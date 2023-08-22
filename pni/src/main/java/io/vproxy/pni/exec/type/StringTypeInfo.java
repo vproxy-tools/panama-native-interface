@@ -68,6 +68,11 @@ public class StringTypeInfo extends BuiltInReferenceTypeInfo {
     }
 
     @Override
+    public String javaTypeForUpcallParam(VarOpts opts) {
+        return "MemorySegment";
+    }
+
+    @Override
     public void generateGetterSetter(StringBuilder sb, int indent, String fieldName, VarOpts opts) {
         if (opts.isPointerGeneral()) {
             Utils.varHandleField(sb, indent, fieldName);
@@ -133,6 +138,11 @@ public class StringTypeInfo extends BuiltInReferenceTypeInfo {
     }
 
     @Override
+    public String methodHandleTypeForUpcall(VarOpts opts) {
+        return "MemorySegment.class";
+    }
+
+    @Override
     public String convertParamToInvokeExactArgument(String name, VarOpts opts) {
         return "(MemorySegment) (" + name + " == null ? MemorySegment.NULL : " + name + ".MEMORY)";
     }
@@ -148,6 +158,11 @@ public class StringTypeInfo extends BuiltInReferenceTypeInfo {
             Utils.appendIndent(sb, indent)
                 .append("return RESULT == null ? null : new PNIString(RESULT);\n");
         }
+    }
+
+    @Override
+    public String convertToUpcallArgument(String name, VarOpts opts) {
+        return "(" + name + ".address() == 0 ? null : new PNIString(" + name + "))";
     }
 
     private static final StringTypeInfo INSTANCE = new StringTypeInfo();

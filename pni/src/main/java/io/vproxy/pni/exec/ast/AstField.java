@@ -41,7 +41,7 @@ public class AstField {
         if (typeRef == null) {
             errors.add(path + ": unable to find typeRef: " + type);
         } else {
-            typeRef.checkType(errors, path, varOpts());
+            typeRef.checkType(errors, path, varOpts(), false);
             if (typeRef instanceof CallSiteTypeInfo) {
                 errors.add(path + ": cannot use CallSite as field");
             }

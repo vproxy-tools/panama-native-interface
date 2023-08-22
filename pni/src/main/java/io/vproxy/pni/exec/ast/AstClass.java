@@ -61,7 +61,7 @@ public class AstClass {
             f.validate(path, errors);
         }
         for (var m : methods) {
-            m.validate(path, errors);
+            m.validate(path, errors, isUpcall());
         }
 
         var names = new HashSet<String>();
@@ -89,18 +89,31 @@ public class AstClass {
         }
         var hasStruct = isStruct();
         var hasUnion = isUnion();
-        var hasFunction = annos.stream().anyMatch(a -> a.typeRef != null && a.typeRef.name().equals(FunctionClassName));
+        var hasFunction = isFunction();
+        var hasUpcall = isUpcall();
         if (hasStruct && hasUnion) {
             errors.add(path + ": is annotated with both @Struct and @Union");
         }
         if (hasStruct && hasFunction) {
             errors.add(path + ": is annotated with both @Struct and @Function");
         }
+        if (hasStruct && hasUpcall) {
+            errors.add(path + ": is annotated with both @Struct and @Upcall");
+        }
         if (hasUnion && hasFunction) {
             errors.add(path + ": is annotated with both @Union and @Function");
         }
+        if (hasUnion && hasUpcall) {
+            errors.add(path + ": is annotated with both @Union and @Upcall");
+        }
+        if (hasFunction && hasUpcall) {
+            errors.add(path + ": is annotated with both @Function and @Upcall");
+        }
         if (hasFunction && !isInterface) {
             errors.add(path + ": is annotated with @Function but is not an interface");
+        }
+        if (hasUpcall && !isInterface) {
+            errors.add(path + ": is annotated with @Upcall but is not an interface");
         }
         if (hasStruct && isInterface) {
             errors.add(path + ": is annotated with @Struct but is an interface");
@@ -155,6 +168,14 @@ public class AstClass {
 
     public boolean isUnion() {
         return annos.stream().anyMatch(a -> a.typeRef != null && a.typeRef.name().equals(UnionClassName));
+    }
+
+    public boolean isFunction() {
+        return annos.stream().anyMatch(a -> a.typeRef != null && a.typeRef.name().equals(FunctionClassName));
+    }
+
+    public boolean isUpcall() {
+        return annos.stream().anyMatch(a -> a.typeRef != null && a.typeRef.name().equals(UpcallClassName));
     }
 
     public boolean isUnionEmbed() {
@@ -376,7 +397,11 @@ public class AstClass {
                   "import java.lang.invoke.*;\n" +
                   "import java.nio.ByteBuffer;\n");
         sb.append("\n");
-        generateJava(sb);
+        if (isUpcall()) {
+            generateJavaUpcall(sb);
+        } else {
+            generateJava(sb);
+        }
         return sb.toString();
     }
 
@@ -504,6 +529,103 @@ public class AstClass {
         sb.append("        protected ").append(simpleName()).append(" construct(MemorySegment seg) {\n");
         sb.append("            return new ").append(simpleName()).append("(seg);\n");
         sb.append("        }\n");
+    }
+
+    private void generateJavaUpcall(StringBuilder sb) {
+        sb.append("public class ").append(simpleName()).append(" {\n");
+        sb.append("    private static final Arena ARENA = Arena.ofShared();\n");
+
+        for (var m : methods) {
+            m.generateJavaUpcall(sb, 4, fullName());
+        }
+
+        sb.append("\n");
+        sb.append("    static {\n");
+        generateUpcallStatic(sb, 8);
+        sb.append("    }\n");
+
+        sb.append("\n");
+        sb.append("    private static Interface IMPL = null;\n");
+        sb.append("\n");
+        sb.append("    public static void setImpl(Interface impl) {\n");
+        sb.append("        java.util.Objects.requireNonNull(impl);\n");
+        sb.append("        IMPL = impl;\n");
+        sb.append("    }\n");
+
+        sb.append("\n");
+        sb.append("    public interface Interface {\n");
+
+        boolean isFirst = true;
+        for (var m : methods) {
+            if (isFirst) {
+                isFirst = false;
+            } else {
+                sb.append("\n");
+            }
+            Utils.appendIndent(sb, 8);
+            m.generateJavaUpcallInterfaceMethod(sb);
+        }
+
+        sb.append("    }\n");
+
+        sb.append("}\n");
+    }
+
+    private void generateUpcallStatic(StringBuilder sb, @SuppressWarnings("SameParameterValue") int indent) {
+        for (var m : methods) {
+            Utils.appendIndent(sb, indent)
+                .append("MethodHandle ").append(m.name).append("MH;\n");
+        }
+        Utils.appendIndent(sb, indent)
+            .append("try {\n");
+        for (var m : methods) {
+            Utils.appendIndent(sb, indent + 4)
+                .append(m.name).append("MH = ");
+            m.generateUpcallMethodHandle(sb, fullName());
+            sb.append(";\n");
+        }
+        Utils.appendIndent(sb, indent)
+            .append("} catch (Throwable t) {\n");
+        Utils.appendIndent(sb, indent + 4)
+            .append("throw new RuntimeException(t);\n");
+        Utils.appendIndent(sb, indent).append("}\n");
+
+        for (var m : methods) {
+            Utils.appendIndent(sb, indent)
+                .append(m.name).append(" = ");
+            m.generateUpcallStub(sb);
+            sb.append(";\n");
+        }
+
+        sb.append("\n");
+        Utils.appendIndent(sb, indent)
+            .append("var initMH = PanamaUtils.lookupPNICriticalFunction(true, void.class, ")
+            .append("\"JavaCritical_").append(underlinedName()).append("_INIT\"");
+        //noinspection unused
+        for (var m : methods) {
+            sb.append(", MemorySegment.class");
+        }
+        sb.append(");\n");
+        Utils.appendIndent(sb, indent)
+            .append("try {\n");
+        Utils.appendIndent(sb, indent + 4)
+            .append("initMH.invoke(");
+        boolean isFirst = true;
+        for (var m : methods) {
+            if (isFirst) {
+                isFirst = false;
+            } else {
+                sb.append(", ");
+            }
+            sb.append(m.name);
+        }
+        sb.append(");\n");
+        Utils.appendIndent(sb, indent)
+            .append("} catch (Throwable t) {\n");
+        Utils.appendIndent(sb, indent + 4)
+            .append("throw new RuntimeException(t);\n");
+        Utils.appendIndent(sb, indent)
+            .append("}\n");
     }
 
     public String fullName() {
@@ -701,6 +823,57 @@ public class AstClass {
         return sb.toString();
     }
 
+    public String generateCUpcallImpl() {
+        if (!isUpcall()) {
+            return null;
+        }
+
+        var sb = new StringBuilder();
+        sb.append("#include \"").append(underlinedName()).append(".h\"\n");
+        sb.append("#include <stdio.h>\n");
+        sb.append("#include <stdlib.h>\n");
+
+        sb.append("\n" +
+                  "#ifdef __cplusplus\n" +
+                  "extern \"C\" {\n" +
+                  "#endif\n");
+
+        sb.append("\n");
+        for (var m : methods) {
+            sb.append("static ").append(m.nativeUpcallFunctionPointer(false)).append(";\n");
+        }
+
+        sb.append("\n");
+        sb.append("JNIEXPORT void JNICALL JavaCritical_").append(underlinedName()).append("_INIT").append("(\n");
+        for (int i = 0; i < methods.size(); i++) {
+            var m = methods.get(i);
+            Utils.appendIndent(sb, 4)
+                .append(m.nativeUpcallFunctionPointer(true));
+            if (i < methods.size() - 1) {
+                sb.append(",");
+            }
+            sb.append("\n");
+        }
+        sb.append(") {\n");
+        for (var m : methods) {
+            Utils.appendIndent(sb, 4)
+                .append("_").append(m.name).append(" = ").append(m.name).append(";\n");
+        }
+        sb.append("}\n");
+
+        for (var m : methods) {
+            sb.append("\n");
+            m.generateCUpcallImpl(sb, 0, underlinedName());
+        }
+
+        sb.append("\n" +
+                  "#ifdef __cplusplus\n" +
+                  "}\n" +
+                  "#endif\n");
+
+        return sb.toString();
+    }
+
     private void include(StringBuilder sb, AstClass cls) {
         sb.append("#include \"").append(cls.underlinedName()).append(".h\"\n");
     }
@@ -756,7 +929,7 @@ public class AstClass {
             sb.append("\n");
         }
         for (var m : methods) {
-            m.generateC(sb, indent, underlinedName(), nativeTypeName());
+            m.generateC(sb, indent, underlinedName(), nativeTypeName(), isUpcall());
         }
     }
 }

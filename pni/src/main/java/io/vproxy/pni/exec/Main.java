@@ -185,6 +185,7 @@ public class Main {
             new JavaFileWriter(cls).flush(new File(d), opts);
             new CFileWriter(cls).flush(new File(h), opts);
             new CImplFileWriter(cls).flush(new File(h), opts);
+            new CUpcallImplFileWriter(cls).flush(new File(h), opts);
         }
         System.out.println("done");
     }

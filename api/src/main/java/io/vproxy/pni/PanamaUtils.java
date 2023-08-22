@@ -203,9 +203,13 @@ public class PanamaUtils {
         } catch (Throwable t) {
             throw new IllegalArgumentException(t);
         }
+        return defineCFunction(arena, methodHandle, method.getReturnType(), method.getParameterTypes());
+    }
+
+    public static MemorySegment defineCFunction(Arena arena, MethodHandle methodHandle, Class<?> returnType, Class<?>... paramTypes) {
         return Linker.nativeLinker().upcallStub(
             methodHandle,
-            buildCriticalFunctionDescriptor(method.getReturnType(), method.getParameterTypes()),
+            buildCriticalFunctionDescriptor(returnType, paramTypes),
             arena
         );
     }

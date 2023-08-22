@@ -49,6 +49,11 @@ public class VoidTypeInfo extends TypeInfo {
     }
 
     @Override
+    public String javaTypeForUpcallParam(VarOpts opts) {
+        return "void";
+    }
+
+    @Override
     public void generateGetterSetter(StringBuilder sb, int indent, String fieldName, VarOpts opts) {
         throw new UnsupportedOperationException();
     }
@@ -64,6 +69,11 @@ public class VoidTypeInfo extends TypeInfo {
     }
 
     @Override
+    public String methodHandleTypeForUpcall(VarOpts opts) {
+        return "void.class";
+    }
+
+    @Override
     public String convertParamToInvokeExactArgument(String name, VarOpts opts) {
         throw new UnsupportedOperationException();
     }
@@ -71,6 +81,16 @@ public class VoidTypeInfo extends TypeInfo {
     @Override
     public void convertInvokeExactReturnValueToJava(StringBuilder sb, int indent, VarOpts opts) {
         // do nothing
+    }
+
+    @Override
+    public String convertToUpcallArgument(String name, VarOpts opts) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void convertFromUpcallReturn(StringBuilder sb, int indent, VarOpts opts) {
+        throw new UnsupportedOperationException();
     }
 
     private VoidTypeInfo() {

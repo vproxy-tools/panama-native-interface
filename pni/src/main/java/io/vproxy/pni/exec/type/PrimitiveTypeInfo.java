@@ -15,6 +15,11 @@ public abstract class PrimitiveTypeInfo extends TypeInfo {
     }
 
     @Override
+    public String javaTypeForUpcallParam(VarOpts opts) {
+        return javaTypeForField(opts);
+    }
+
+    @Override
     public void generateGetterSetter(StringBuilder sb, int indent, String fieldName, VarOpts opts) {
         Utils.varHandleField(sb, indent, fieldName);
         sb.append("\n");
@@ -42,6 +47,11 @@ public abstract class PrimitiveTypeInfo extends TypeInfo {
     }
 
     @Override
+    public String methodHandleTypeForUpcall(VarOpts opts) {
+        return methodHandleType(opts);
+    }
+
+    @Override
     public String convertParamToInvokeExactArgument(String name, VarOpts opts) {
         return name;
     }
@@ -49,5 +59,16 @@ public abstract class PrimitiveTypeInfo extends TypeInfo {
     @Override
     public long nativeMemoryAlign(VarOpts opts) {
         return nativeMemorySize(opts);
+    }
+
+    @Override
+    public String convertToUpcallArgument(String name, VarOpts opts) {
+        return name;
+    }
+
+    @Override
+    public void convertFromUpcallReturn(StringBuilder sb, int indent, VarOpts opts) {
+        Utils.appendIndent(sb, indent)
+            .append("return RESULT;\n");
     }
 }

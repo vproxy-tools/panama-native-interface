@@ -38,8 +38,8 @@ public class ClassTypeInfo extends TypeInfo {
     }
 
     @Override
-    public void checkType(List<String> errors, String path, VarOpts opts) {
-        super.checkType(errors, path, opts);
+    public void checkType(List<String> errors, String path, VarOpts opts, boolean upcall) {
+        super.checkType(errors, path, opts, upcall);
         if (getClazz().isInterface) {
             errors.add(path + ": unable to use interface type: " + name);
         }
@@ -92,6 +92,11 @@ public class ClassTypeInfo extends TypeInfo {
     @Override
     public String javaTypeForField(VarOpts opts) {
         return cls.fullName();
+    }
+
+    @Override
+    public String javaTypeForUpcallParam(VarOpts opts) {
+        return "MemorySegment";
     }
 
     @Override
@@ -150,6 +155,11 @@ public class ClassTypeInfo extends TypeInfo {
     }
 
     @Override
+    public String methodHandleTypeForUpcall(VarOpts opts) {
+        return "MemorySegment.class";
+    }
+
+    @Override
     public String convertParamToInvokeExactArgument(String name, VarOpts opts) {
         return "(MemorySegment) (" + name + " == null ? MemorySegment.NULL : " + name + ".MEMORY)";
     }
@@ -157,6 +167,11 @@ public class ClassTypeInfo extends TypeInfo {
     @Override
     public AllocationForReturnedValue allocationInfoForReturnValue(VarOpts opts) {
         return AllocationForReturnedValue.ofExtraAllocator(cls.fullName() + ".LAYOUT.byteSize()");
+    }
+
+    @Override
+    public AllocationForReturnedValue allocationInfoForUpcallInterfaceReturnValue(VarOpts opts) {
+        return allocationInfoForReturnValue(opts);
     }
 
     @Override
@@ -170,5 +185,15 @@ public class ClassTypeInfo extends TypeInfo {
         }
         Utils.appendIndent(sb, indent)
             .append("return RESULT == null ? null : new ").append(getClazz().fullName()).append("(RESULT);\n");
+    }
+
+    @Override
+    public String convertExtraToUpcallArgument(String name, VarOpts opts) {
+        return "new " + cls.fullName() + "(" + name + ")";
+    }
+
+    @Override
+    public String convertToUpcallArgument(String name, VarOpts opts) {
+        return "(" + name + ".address() == 0 ? null : new " + cls.fullName() + "(" + name + "))";
     }
 }

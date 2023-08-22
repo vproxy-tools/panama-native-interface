@@ -11,8 +11,8 @@ public class PNIRefTypeInfo extends BuiltInReferenceTypeInfo {
     }
 
     @Override
-    public void checkType(List<String> errors, String path, VarOpts opts) {
-        super.checkType(errors, path, opts);
+    public void checkType(List<String> errors, String path, VarOpts opts, boolean upcall) {
+        super.checkType(errors, path, opts, upcall);
         if (this.getClass() == PNIRefTypeInfo.class) {
             errors.add(path + ": cannot use raw type of PNIRef");
         }
@@ -58,6 +58,11 @@ public class PNIRefTypeInfo extends BuiltInReferenceTypeInfo {
     }
 
     @Override
+    public String javaTypeForUpcallParam(VarOpts opts) {
+        return "MemorySegment";
+    }
+
+    @Override
     public void generateGetterSetter(StringBuilder sb, int indent, String fieldName, VarOpts opts) {
         throw new UnsupportedOperationException("implemented in subclass");
     }
@@ -70,6 +75,11 @@ public class PNIRefTypeInfo extends BuiltInReferenceTypeInfo {
     @Override
     public String methodHandleType(VarOpts opts) {
         return "PNIRef.class";
+    }
+
+    @Override
+    public String methodHandleTypeForUpcall(VarOpts opts) {
+        return "MemorySegment.class";
     }
 
     @Override
@@ -91,6 +101,15 @@ public class PNIRefTypeInfo extends BuiltInReferenceTypeInfo {
             Utils.appendIndent(sb, indent).append("if (RESULT == null) return null;\n");
         }
         Utils.appendIndent(sb, indent).append("return PNIRef.of(RESULT);\n");
+    }
+
+    @Override
+    public String convertToUpcallArgument(String name, VarOpts opts) {
+        if (opts.isRaw()) {
+            return "(" + name + ".address() == 0 ? null : PNIRef.of(" + name + "))";
+        } else {
+            return "(" + name + ".address() == 0 ? null : PNIRef.getRef(" + name + "))";
+        }
     }
 
     private static final PNIRefTypeInfo INSTANCE = new PNIRefTypeInfo();

@@ -43,6 +43,11 @@ public class MemorySegmentTypeInfo extends BuiltInReferenceTypeInfo {
     }
 
     @Override
+    public String javaTypeForUpcallParam(VarOpts opts) {
+        return "MemorySegment";
+    }
+
+    @Override
     public void generateGetterSetter(StringBuilder sb, int indent, String fieldName, VarOpts opts) {
         Utils.varHandleField(sb, indent, fieldName);
         sb.append("\n");
@@ -80,6 +85,11 @@ public class MemorySegmentTypeInfo extends BuiltInReferenceTypeInfo {
     }
 
     @Override
+    public String methodHandleTypeForUpcall(VarOpts opts) {
+        return "MemorySegment.class";
+    }
+
+    @Override
     public String convertParamToInvokeExactArgument(String name, VarOpts opts) {
         return "(MemorySegment) (" + name + " == null ? MemorySegment.NULL : " + name + ")";
     }
@@ -87,12 +97,23 @@ public class MemorySegmentTypeInfo extends BuiltInReferenceTypeInfo {
     @Override
     public void convertInvokeExactReturnValueToJava(StringBuilder sb, int indent, VarOpts opts) {
         if (opts.isCritical()) {
-            Utils.appendIndent(sb,indent).append("if (RESULT.address() == 0) return null;\n");
+            Utils.appendIndent(sb, indent).append("if (RESULT.address() == 0) return null;\n");
             Utils.appendIndent(sb, indent).append("return RESULT;\n");
             return;
         }
         Utils.appendIndent(sb, indent)
             .append("return ENV.returnPointer();\n");
+    }
+
+    @Override
+    public String convertToUpcallArgument(String name, VarOpts opts) {
+        return "(" + name + ".address() == 0 ? null : " + name + ")";
+    }
+
+    @Override
+    public void convertFromUpcallReturn(StringBuilder sb, int indent, VarOpts opts) {
+        Utils.appendIndent(sb, indent)
+            .append("return RESULT == null ? MemorySegment.NULL : RESULT;\n");
     }
 
     private static final MemorySegmentTypeInfo INSTANCE = new MemorySegmentTypeInfo();
