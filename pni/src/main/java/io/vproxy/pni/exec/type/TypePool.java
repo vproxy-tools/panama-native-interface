@@ -37,7 +37,6 @@ public class TypePool {
         record(AnnoUnsignedTypeInfo.get());
         record(AnnoUpcallTypeInfo.get());
 
-        record(CallSiteTypeInfo.get());
         record(PNIFuncTypeInfo.get());
         record(PNIRefTypeInfo.get());
 
@@ -92,8 +91,6 @@ public class TypePool {
             typeInfo = new PNIRefGenericTypeInfo(desc.genericTypes);
         } else if (typeInfo instanceof PNIFuncTypeInfo) {
             typeInfo = new PNIFuncGenericTypeInfo(desc.genericTypes, findAll(desc.genericTypes));
-        } else if (typeInfo instanceof CallSiteTypeInfo) {
-            typeInfo = new CallSiteGenericTypeInfo(desc.genericTypes, findAll(desc.genericTypes));
         }
         desc.typeRef = typeInfo;
         findAll(desc.genericTypes);

@@ -38,16 +38,38 @@ public class PNIFuncGenericTypeInfo extends PNIFuncTypeInfo {
 
     @Override
     public String javaTypeForField(VarOpts opts) {
+        return javaTypeForParam(VarOpts.of(opts.isUnsigned(), opts.getPointerInfo(), opts.getLen(), true));
+    }
+
+    @Override
+    public String javaTypeForParam(VarOpts opts) {
         if (genericTypeRefs.get(0) instanceof VoidRefTypeInfo) {
-            return "PNIFunc<Void>";
+            if (opts.isRaw()) {
+                return "PNIFunc<Void>";
+            } else {
+                return "io.vproxy.pni.CallSite<Void>";
+            }
         } else if (genericTypeRefs.get(0) instanceof PNIRefGenericTypeInfo) {
             var t = (PNIRefGenericTypeInfo) genericTypeRefs.get(0);
-            return "PNIFunc<" + t.getGenericTypeString(0) + ">";
+            if (opts.isRaw()) {
+                return "PNIFunc<" + t.getGenericTypeString(0) + ">";
+            } else {
+                return "io.vproxy.pni.CallSite<" + t.getGenericTypeString(0) + ">";
+            }
         } else if (genericTypeRefs.get(0) instanceof PNIRefTypeInfo) {
             // additional check!
             throw new UnsupportedOperationException("should not reach here");
         }
-        return "PNIFunc<" + ((ClassTypeInfo) genericTypeRefs.get(0)).getClazz().fullName() + ">";
+        if (opts.isRaw()) {
+            return "PNIFunc<" + ((ClassTypeInfo) genericTypeRefs.get(0)).getClazz().fullName() + ">";
+        } else {
+            return "io.vproxy.pni.CallSite<" + ((ClassTypeInfo) genericTypeRefs.get(0)).getClazz().fullName() + ">";
+        }
+    }
+
+    @Override
+    public String javaTypeForReturn(VarOpts opts) {
+        return javaTypeForField(opts);
     }
 
     @Override
@@ -86,6 +108,20 @@ public class PNIFuncGenericTypeInfo extends PNIFuncTypeInfo {
     }
 
     @Override
+    public String convertParamToInvokeExactArgument(String name, VarOpts opts) {
+        if (opts.isRaw()) {
+            return "(MemorySegment) (" + name + " == null ? MemorySegment.NULL : " + name + ".MEMORY)";
+        } else {
+            if (genericTypeRefs.get(0) instanceof VoidRefTypeInfo) {
+                return "PNIFunc.VoidFunc.of(" + name + ").MEMORY";
+            } else if (genericTypeRefs.get(0) instanceof PNIRefTypeInfo) {
+                return "PNIRef.Func.of(" + name + ").MEMORY";
+            }
+            return ((ClassTypeInfo) genericTypeRefs.get(0)).getClazz().fullName() + ".Func.of(" + name + ").MEMORY";
+        }
+    }
+
+    @Override
     public void convertInvokeExactReturnValueToJava(StringBuilder sb, int indent, VarOpts opts) {
         if (opts.isCritical()) {
             Utils.appendIndent(sb, indent).append("if (RESULT.address() == 0) return null;\n");
@@ -108,12 +144,24 @@ public class PNIFuncGenericTypeInfo extends PNIFuncTypeInfo {
     @Override
     public String convertToUpcallArgument(String name, VarOpts opts) {
         if (genericTypeRefs.get(0) instanceof VoidRefTypeInfo) {
-            return "(" + name + ".address() == 0 ? null : PNIFunc.VoidFunc.of(" + name + "))";
+            if (opts.isRaw()) {
+                return "(" + name + ".address() == 0 ? null : PNIFunc.VoidFunc.of(" + name + "))";
+            } else {
+                return "(" + name + ".address() == 0 ? null : PNIFunc.VoidFunc.of(" + name + ").getCallSite())";
+            }
         } else if (genericTypeRefs.get(0) instanceof PNIRefTypeInfo) {
-            return "(" + name + ".address() == 0 ? null : PNIRef.Func.of(" + name + "))";
-        } else {
+            if (opts.isRaw()) {
+                return "(" + name + ".address() == 0 ? null : PNIRef.Func.of(" + name + "))";
+            } else {
+                return "(" + name + ".address() == 0 ? null : (io.vproxy.pni.CallSite) PNIRef.Func.of(" + name + ").getCallSite())";
+            }
+        }
+        if (opts.isRaw()) {
             return "(" + name + ".address() == 0 ? null : " +
                    genericTypeRefs.get(0).javaTypeForReturn(opts) + ".Func.of(" + name + "))";
+        } else {
+            return "(" + name + ".address() == 0 ? null : " +
+                   ((ClassTypeInfo) genericTypeRefs.get(0)).getClazz().fullName() + ".Func.of(" + name + ").getCallSite())";
         }
     }
 }

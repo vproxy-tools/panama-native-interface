@@ -106,6 +106,10 @@ public abstract class TypeInfo {
 
     abstract public String methodHandleType(VarOpts opts);
 
+    public String methodHandleTypeForReturn(VarOpts opts) {
+        return methodHandleType(opts);
+    }
+
     public abstract String methodHandleTypeForUpcall(VarOpts opts);
 
     @Override

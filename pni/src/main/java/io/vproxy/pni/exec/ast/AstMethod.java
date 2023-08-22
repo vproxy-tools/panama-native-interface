@@ -80,9 +80,6 @@ public class AstMethod {
             errors.add(path + ": unable to find returnTypeRef: " + returnType);
         } else {
             returnTypeRef.checkType(errors, path, varOptsForReturn(upcall), upcall);
-            if (returnTypeRef instanceof CallSiteTypeInfo) {
-                errors.add(path + ": cannot use CallSite as return value");
-            }
         }
         for (var p : params) {
             p.validate(path, errors, upcall);
@@ -263,7 +260,7 @@ public class AstMethod {
             sb.append("false, ");
         }
         if (critical()) {
-            sb.append(returnTypeRef.methodHandleType(varOptsForReturn()));
+            sb.append(returnTypeRef.methodHandleTypeForReturn(varOptsForReturn()));
             sb.append(", ");
         }
         sb.append("\"").append(nativeName(classUnderlinedName)).append("\"");

@@ -19,6 +19,11 @@ public class PNIFuncTypeInfo extends BuiltInReferenceTypeInfo {
     }
 
     @Override
+    protected boolean canMarkWithRaw() {
+        return true;
+    }
+
+    @Override
     public String nativeEnvType(VarOpts opts) {
         return "func";
     }
@@ -69,6 +74,15 @@ public class PNIFuncTypeInfo extends BuiltInReferenceTypeInfo {
 
     @Override
     public String methodHandleType(VarOpts opts) {
+        if (opts.isRaw()) {
+            return "PNIFunc.class";
+        } else {
+            return "io.vproxy.pni.CallSite.class";
+        }
+    }
+
+    @Override
+    public String methodHandleTypeForReturn(VarOpts opts) {
         return "PNIFunc.class";
     }
 
@@ -79,7 +93,7 @@ public class PNIFuncTypeInfo extends BuiltInReferenceTypeInfo {
 
     @Override
     public String convertParamToInvokeExactArgument(String name, VarOpts opts) {
-        return "(MemorySegment) (" + name + " == null ? MemorySegment.NULL : " + name + ".MEMORY)";
+        throw new UnsupportedOperationException("implemented in subclass");
     }
 
     @Override
