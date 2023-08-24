@@ -2,6 +2,7 @@ package io.vproxy.pni.test;
 
 import io.vproxy.pni.PNIFunc;
 import io.vproxy.pni.PNIRef;
+import io.vproxy.pni.annotation.Name;
 import io.vproxy.pni.annotation.Raw;
 import io.vproxy.pni.annotation.Unsigned;
 import io.vproxy.pni.annotation.Upcall;
@@ -95,4 +96,7 @@ public interface PNIUpcall {
     PNIRef<List<Integer>> returnRef();
 
     String returnStr();
+
+    @Name("pni_sum")
+    int sum(int a, int b);
 }

@@ -426,6 +426,18 @@ public class InvokeUpcall {
         }
         return RESULT.address() == 0 ? null : new PNIString(RESULT);
     }
+
+    private static final MethodHandle sumMH = PanamaUtils.lookupPNICriticalFunction(false, int.class, "JavaCritical_io_vproxy_pni_test_InvokeUpcall_sum", int.class /* a */, int.class /* b */);
+
+    public int sum(int a, int b) {
+        int RESULT;
+        try {
+            RESULT = (int) sumMH.invokeExact(a, b);
+        } catch (Throwable THROWABLE) {
+            throw PanamaUtils.convertInvokeExactException(THROWABLE);
+        }
+        return RESULT;
+    }
 }
 // metadata.generator-version: pni test
-// sha256:f7542d1500cf357447a4838c194a2f3bf81cb88893cb6a7966588431e961bb15
+// sha256:ce982efb450ad7fc9905e8cc10e0a34c5017dc78eec4011eb464e33bcb88ddcc

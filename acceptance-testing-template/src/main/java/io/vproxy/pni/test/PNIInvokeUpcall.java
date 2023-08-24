@@ -207,4 +207,10 @@ public interface PNIInvokeUpcall {
     )
     @Critical
     String returnStr();
+
+    @Impl(
+        c = "return pni_sum(a, b);"
+    )
+    @Critical
+    int sum(int a, int b);
 }

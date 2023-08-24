@@ -381,4 +381,9 @@ public class UpcallImpl implements Upcall.Interface {
     public PNIString returnStr() {
         return str;
     }
+
+    @Override
+    public int sum(int a, int b) {
+        return a + b;
+    }
 }

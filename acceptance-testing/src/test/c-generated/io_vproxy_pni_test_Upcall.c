@@ -36,6 +36,7 @@ static PNIFunc * (*_returnObjFunc)();
 static PNIFunc * (*_returnRefFunc)();
 static PNIRef * (*_returnRef)();
 static char * (*_returnStr)();
+static int32_t (*_sum)(int32_t,int32_t);
 
 JNIEXPORT void JNICALL JavaCritical_io_vproxy_pni_test_Upcall_INIT(
     void (*primaryParams)(int8_t,uint8_t,uint8_t,uint16_t,double,float,int32_t,uint32_t,int64_t,uint64_t,int16_t,uint16_t),
@@ -67,7 +68,8 @@ JNIEXPORT void JNICALL JavaCritical_io_vproxy_pni_test_Upcall_INIT(
     PNIFunc * (*returnObjFunc)(),
     PNIFunc * (*returnRefFunc)(),
     PNIRef * (*returnRef)(),
-    char * (*returnStr)()
+    char * (*returnStr)(),
+    int32_t (*sum)(int32_t,int32_t)
 ) {
     _primaryParams = primaryParams;
     _returnByte = returnByte;
@@ -99,6 +101,7 @@ JNIEXPORT void JNICALL JavaCritical_io_vproxy_pni_test_Upcall_INIT(
     _returnRefFunc = returnRefFunc;
     _returnRef = returnRef;
     _returnStr = returnStr;
+    _sum = sum;
 }
 
 JNIEXPORT void JNICALL JavaCritical_io_vproxy_pni_test_Upcall_primaryParams(int8_t b, uint8_t ub, uint8_t z, uint16_t c, double d, float f, int32_t i, uint32_t ui, int64_t j, uint64_t uj, int16_t s, uint16_t us) {
@@ -371,8 +374,17 @@ JNIEXPORT char * JNICALL JavaCritical_io_vproxy_pni_test_Upcall_returnStr() {
     return _returnStr();
 }
 
+JNIEXPORT int32_t JNICALL pni_sum(int32_t a, int32_t b) {
+    if (_sum == NULL) {
+        printf("pni_sum function pointer is null");
+        fflush(stdout);
+        exit(1);
+    }
+    return _sum(a, b);
+}
+
 #ifdef __cplusplus
 }
 #endif
 // metadata.generator-version: pni test
-// sha256:fbf243eba301a3eb47689b9e60d00bd1ddf9b11358103c129cc933139c9278e6
+// sha256:2d29c0cd1fe2f693cc4da1e1226702c10c894c64c22f2c2b3c53fb5f61c2f298

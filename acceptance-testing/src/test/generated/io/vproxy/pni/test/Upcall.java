@@ -408,6 +408,20 @@ public class Upcall {
         return RESULT == null ? MemorySegment.NULL : RESULT.MEMORY;
     }
 
+    public static final MemorySegment sum;
+
+    private static int sum(int a, int b) {
+        if (IMPL == null) {
+            System.out.println("io.vproxy.pni.test.Upcall#sum");
+            System.exit(1);
+        }
+        var RESULT = IMPL.sum(
+            a,
+            b
+        );
+        return RESULT;
+    }
+
     static {
         MethodHandle primaryParamsMH;
         MethodHandle returnByteMH;
@@ -439,6 +453,7 @@ public class Upcall {
         MethodHandle returnRefFuncMH;
         MethodHandle returnRefMH;
         MethodHandle returnStrMH;
+        MethodHandle sumMH;
         try {
             primaryParamsMH = MethodHandles.lookup().findStatic(io.vproxy.pni.test.Upcall.class, "primaryParams", MethodType.methodType(void.class, byte.class, byte.class, boolean.class, char.class, double.class, float.class, int.class, int.class, long.class, long.class, short.class, short.class));
             returnByteMH = MethodHandles.lookup().findStatic(io.vproxy.pni.test.Upcall.class, "returnByte", MethodType.methodType(byte.class));
@@ -470,6 +485,7 @@ public class Upcall {
             returnRefFuncMH = MethodHandles.lookup().findStatic(io.vproxy.pni.test.Upcall.class, "returnRefFunc", MethodType.methodType(MemorySegment.class));
             returnRefMH = MethodHandles.lookup().findStatic(io.vproxy.pni.test.Upcall.class, "returnRef", MethodType.methodType(MemorySegment.class));
             returnStrMH = MethodHandles.lookup().findStatic(io.vproxy.pni.test.Upcall.class, "returnStr", MethodType.methodType(MemorySegment.class));
+            sumMH = MethodHandles.lookup().findStatic(io.vproxy.pni.test.Upcall.class, "sum", MethodType.methodType(int.class, int.class, int.class));
         } catch (Throwable t) {
             throw new RuntimeException(t);
         }
@@ -503,10 +519,11 @@ public class Upcall {
         returnRefFunc = PanamaUtils.defineCFunction(ARENA, returnRefFuncMH, MemorySegment.class);
         returnRef = PanamaUtils.defineCFunction(ARENA, returnRefMH, MemorySegment.class);
         returnStr = PanamaUtils.defineCFunction(ARENA, returnStrMH, MemorySegment.class);
+        sum = PanamaUtils.defineCFunction(ARENA, sumMH, int.class, int.class, int.class);
 
-        var initMH = PanamaUtils.lookupPNICriticalFunction(true, void.class, "JavaCritical_io_vproxy_pni_test_Upcall_INIT", MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class);
+        var initMH = PanamaUtils.lookupPNICriticalFunction(true, void.class, "JavaCritical_io_vproxy_pni_test_Upcall_INIT", MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class);
         try {
-            initMH.invoke(primaryParams, returnByte, returnBool, returnChar, returnDouble, returnFloat, returnInt, returnLong, returnShort, primaryArrayParams, returnByteArray, returnBoolArray, returnCharArray, returnDoubleArray, returnFloatArray, returnIntArray, returnLongArray, returnShortArray, objectParams, returnObject, objectArrayParams, returnObjectArray, otherParams, returnBuffer, returnMem, returnVoidFunc, returnObjFunc, returnRefFunc, returnRef, returnStr);
+            initMH.invoke(primaryParams, returnByte, returnBool, returnChar, returnDouble, returnFloat, returnInt, returnLong, returnShort, primaryArrayParams, returnByteArray, returnBoolArray, returnCharArray, returnDoubleArray, returnFloatArray, returnIntArray, returnLongArray, returnShortArray, objectParams, returnObject, objectArrayParams, returnObjectArray, otherParams, returnBuffer, returnMem, returnVoidFunc, returnObjFunc, returnRefFunc, returnRef, returnStr, sum);
         } catch (Throwable t) {
             throw new RuntimeException(t);
         }
@@ -579,7 +596,9 @@ public class Upcall {
         PNIRef<java.util.List<java.lang.Integer>> returnRef();
 
         PNIString returnStr();
+
+        int sum(int a, int b);
     }
 }
 // metadata.generator-version: pni test
-// sha256:ecffd50795e1b182170935a2d26dfd4e3c3e7dfe2b1e1ec33f32fb1ec4614a33
+// sha256:4aa604eb0876e1654cb4e1feec4360c2513054828096b82ec5360de0768ba1ee

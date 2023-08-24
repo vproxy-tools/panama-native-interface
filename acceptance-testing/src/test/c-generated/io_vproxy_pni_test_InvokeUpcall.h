@@ -49,10 +49,11 @@ JNIEXPORT PNIFunc * JNICALL JavaCritical_io_vproxy_pni_test_InvokeUpcall_returnO
 JNIEXPORT PNIFunc * JNICALL JavaCritical_io_vproxy_pni_test_InvokeUpcall_returnRefFunc();
 JNIEXPORT PNIRef * JNICALL JavaCritical_io_vproxy_pni_test_InvokeUpcall_returnRef();
 JNIEXPORT char * JNICALL JavaCritical_io_vproxy_pni_test_InvokeUpcall_returnStr();
+JNIEXPORT int32_t JNICALL JavaCritical_io_vproxy_pni_test_InvokeUpcall_sum(int32_t a, int32_t b);
 
 #ifdef __cplusplus
 }
 #endif
 #endif // _Included_io_vproxy_pni_test_InvokeUpcall
 // metadata.generator-version: pni test
-// sha256:d4d83ff744ba175b3e8bbfdc9a25c65b8a9ba45d1a3d5c7877135c0e3ab978b5
+// sha256:94a58b52569c4a8688fb15db1598d06ae815c2db973bd6d4711fe040df3d9c9f

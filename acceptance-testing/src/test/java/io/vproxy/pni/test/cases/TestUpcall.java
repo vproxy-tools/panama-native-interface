@@ -425,4 +425,10 @@ public class TestUpcall {
         var str = InvokeUpcall.get().returnStr();
         assertEquals("str", str.toString());
     }
+
+    @Test
+    public void annotateNameSum() {
+        assertEquals(12, InvokeUpcall.get().sum(3, 9));
+        assertEquals(47, InvokeUpcall.get().sum(28, 19));
+    }
 }
