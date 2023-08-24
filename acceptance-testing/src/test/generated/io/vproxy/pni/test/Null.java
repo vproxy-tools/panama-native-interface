@@ -22,7 +22,9 @@ public class Null {
         PNIBuf.LAYOUT.withName("shortArr"),
         PNIBuf.LAYOUT.withName("oArr"),
         ValueLayout.ADDRESS_UNALIGNED.withName("ref"),
-        ValueLayout.ADDRESS_UNALIGNED.withName("func")
+        ValueLayout.ADDRESS_UNALIGNED.withName("func"),
+        ValueLayout.ADDRESS_UNALIGNED.withName("funcVoid"),
+        ValueLayout.ADDRESS_UNALIGNED.withName("funcRef")
     );
     public final MemorySegment MEMORY;
 
@@ -280,6 +282,42 @@ public class Null {
         }
     }
 
+    private static final VarHandle funcVoidVH = LAYOUT.varHandle(
+        MemoryLayout.PathElement.groupElement("funcVoid")
+    );
+
+    public PNIFunc<Void> getFuncVoid() {
+        var SEG = (MemorySegment) funcVoidVH.get(MEMORY);
+        if (SEG.address() == 0) return null;
+        return PNIFunc.VoidFunc.of(SEG);
+    }
+
+    public void setFuncVoid(PNIFunc<Void> funcVoid) {
+        if (funcVoid == null) {
+            funcVoidVH.set(MEMORY, MemorySegment.NULL);
+        } else {
+            funcVoidVH.set(MEMORY, funcVoid.MEMORY);
+        }
+    }
+
+    private static final VarHandle funcRefVH = LAYOUT.varHandle(
+        MemoryLayout.PathElement.groupElement("funcRef")
+    );
+
+    public PNIFunc<java.lang.Object> getFuncRef() {
+        var SEG = (MemorySegment) funcRefVH.get(MEMORY);
+        if (SEG.address() == 0) return null;
+        return PNIRef.Func.of(SEG);
+    }
+
+    public void setFuncRef(PNIFunc<java.lang.Object> funcRef) {
+        if (funcRef == null) {
+            funcRefVH.set(MEMORY, MemorySegment.NULL);
+        } else {
+            funcRefVH.set(MEMORY, funcRef.MEMORY);
+        }
+    }
+
     public Null(MemorySegment MEMORY) {
         MEMORY = MEMORY.reinterpret(LAYOUT.byteSize());
         this.MEMORY = MEMORY;
@@ -309,20 +347,22 @@ public class Null {
         OFFSET += PNIBuf.LAYOUT.byteSize();
         OFFSET += ValueLayout.ADDRESS_UNALIGNED.byteSize();
         OFFSET += ValueLayout.ADDRESS_UNALIGNED.byteSize();
+        OFFSET += ValueLayout.ADDRESS_UNALIGNED.byteSize();
+        OFFSET += ValueLayout.ADDRESS_UNALIGNED.byteSize();
     }
 
     public Null(Allocator ALLOCATOR) {
         this(ALLOCATOR.allocate(LAYOUT.byteSize()));
     }
 
-    private static final MethodHandle testParamMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_Null_testParam", MemorySegment.class /* self */, io.vproxy.pni.test.ObjectStruct.LAYOUT.getClass() /* o */, String.class /* str */, MemorySegment.class /* seg */, PNIBuf.class /* buf */, PNIBuf.class /* byteArr */, PNIBuf.class /* boolArr */, PNIBuf.class /* charArr */, PNIBuf.class /* floatArr */, PNIBuf.class /* doubleArr */, PNIBuf.class /* intArr */, PNIBuf.class /* longArr */, PNIBuf.class /* shortArr */, PNIBuf.class /* oArr */, PNIRef.class /* ref */, PNIFunc.class /* func */);
+    private static final MethodHandle testParamMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_Null_testParam", MemorySegment.class /* self */, io.vproxy.pni.test.ObjectStruct.LAYOUT.getClass() /* o */, String.class /* str */, MemorySegment.class /* seg */, PNIBuf.class /* buf */, PNIBuf.class /* byteArr */, PNIBuf.class /* boolArr */, PNIBuf.class /* charArr */, PNIBuf.class /* floatArr */, PNIBuf.class /* doubleArr */, PNIBuf.class /* intArr */, PNIBuf.class /* longArr */, PNIBuf.class /* shortArr */, PNIBuf.class /* oArr */, PNIRef.class /* ref */, io.vproxy.pni.CallSite.class /* func */, io.vproxy.pni.CallSite.class /* funcVoid */, io.vproxy.pni.CallSite.class /* funcRef */);
 
-    public boolean testParam(PNIEnv ENV, io.vproxy.pni.test.ObjectStruct o, PNIString str, MemorySegment seg, ByteBuffer buf, MemorySegment byteArr, BoolArray boolArr, CharArray charArr, FloatArray floatArr, DoubleArray doubleArr, IntArray intArr, LongArray longArr, ShortArray shortArr, io.vproxy.pni.test.ObjectStruct.Array oArr, java.lang.Object ref, PNIFunc<io.vproxy.pni.test.Null> func) {
+    public boolean testParam(PNIEnv ENV, io.vproxy.pni.test.ObjectStruct o, PNIString str, MemorySegment seg, ByteBuffer buf, MemorySegment byteArr, BoolArray boolArr, CharArray charArr, FloatArray floatArr, DoubleArray doubleArr, IntArray intArr, LongArray longArr, ShortArray shortArr, io.vproxy.pni.test.ObjectStruct.Array oArr, java.lang.Object ref, io.vproxy.pni.CallSite<io.vproxy.pni.test.Null> func, io.vproxy.pni.CallSite<Void> funcVoid, io.vproxy.pni.CallSite<java.lang.Object> funcRef) {
         ENV.reset();
         try (var POOLED = Allocator.ofPooled()) {
             int ERR;
             try {
-                ERR = (int) testParamMH.invokeExact(ENV.MEMORY, MEMORY, (MemorySegment) (o == null ? MemorySegment.NULL : o.MEMORY), (MemorySegment) (str == null ? MemorySegment.NULL : str.MEMORY), (MemorySegment) (seg == null ? MemorySegment.NULL : seg), PanamaUtils.format(buf, POOLED), PNIBuf.memoryOf(POOLED, byteArr), PNIBuf.memoryOf(POOLED, boolArr), PNIBuf.memoryOf(POOLED, charArr), PNIBuf.memoryOf(POOLED, floatArr), PNIBuf.memoryOf(POOLED, doubleArr), PNIBuf.memoryOf(POOLED, intArr), PNIBuf.memoryOf(POOLED, longArr), PNIBuf.memoryOf(POOLED, shortArr), PNIBuf.memoryOf(POOLED, oArr), (MemorySegment) (ref == null ? MemorySegment.NULL : PNIRef.of(ref).MEMORY), (MemorySegment) (func == null ? MemorySegment.NULL : func.MEMORY));
+                ERR = (int) testParamMH.invokeExact(ENV.MEMORY, MEMORY, (MemorySegment) (o == null ? MemorySegment.NULL : o.MEMORY), (MemorySegment) (str == null ? MemorySegment.NULL : str.MEMORY), (MemorySegment) (seg == null ? MemorySegment.NULL : seg), PanamaUtils.format(buf, POOLED), PNIBuf.memoryOf(POOLED, byteArr), PNIBuf.memoryOf(POOLED, boolArr), PNIBuf.memoryOf(POOLED, charArr), PNIBuf.memoryOf(POOLED, floatArr), PNIBuf.memoryOf(POOLED, doubleArr), PNIBuf.memoryOf(POOLED, intArr), PNIBuf.memoryOf(POOLED, longArr), PNIBuf.memoryOf(POOLED, shortArr), PNIBuf.memoryOf(POOLED, oArr), (MemorySegment) (ref == null ? MemorySegment.NULL : PNIRef.of(ref).MEMORY), (MemorySegment) (func == null ? MemorySegment.NULL : io.vproxy.pni.test.Null.Func.of(func).MEMORY), (MemorySegment) (funcVoid == null ? MemorySegment.NULL : PNIFunc.VoidFunc.of(funcVoid).MEMORY), (MemorySegment) (funcRef == null ? MemorySegment.NULL : PNIRef.Func.of(funcRef).MEMORY));
             } catch (Throwable THROWABLE) {
                 throw PanamaUtils.convertInvokeExactException(THROWABLE);
             }
@@ -333,13 +373,13 @@ public class Null {
         }
     }
 
-    private static final MethodHandle testParamCriticalMH = PanamaUtils.lookupPNICriticalFunction(false, boolean.class, "JavaCritical_io_vproxy_pni_test_Null_testParamCritical", MemorySegment.class /* self */, io.vproxy.pni.test.ObjectStruct.LAYOUT.getClass() /* o */, String.class /* str */, MemorySegment.class /* seg */, PNIBuf.class /* buf */, PNIBuf.class /* byteArr */, PNIBuf.class /* boolArr */, PNIBuf.class /* charArr */, PNIBuf.class /* floatArr */, PNIBuf.class /* doubleArr */, PNIBuf.class /* intArr */, PNIBuf.class /* longArr */, PNIBuf.class /* shortArr */, PNIBuf.class /* oArr */, PNIRef.class /* ref */, PNIFunc.class /* func */);
+    private static final MethodHandle testParamCriticalMH = PanamaUtils.lookupPNICriticalFunction(false, boolean.class, "JavaCritical_io_vproxy_pni_test_Null_testParamCritical", MemorySegment.class /* self */, io.vproxy.pni.test.ObjectStruct.LAYOUT.getClass() /* o */, String.class /* str */, MemorySegment.class /* seg */, PNIBuf.class /* buf */, PNIBuf.class /* byteArr */, PNIBuf.class /* boolArr */, PNIBuf.class /* charArr */, PNIBuf.class /* floatArr */, PNIBuf.class /* doubleArr */, PNIBuf.class /* intArr */, PNIBuf.class /* longArr */, PNIBuf.class /* shortArr */, PNIBuf.class /* oArr */, PNIRef.class /* ref */, io.vproxy.pni.CallSite.class /* func */, io.vproxy.pni.CallSite.class /* funcVoid */, io.vproxy.pni.CallSite.class /* funcRef */);
 
-    public boolean testParamCritical(io.vproxy.pni.test.ObjectStruct o, PNIString str, MemorySegment seg, ByteBuffer buf, MemorySegment byteArr, BoolArray boolArr, CharArray charArr, FloatArray floatArr, DoubleArray doubleArr, IntArray intArr, LongArray longArr, ShortArray shortArr, io.vproxy.pni.test.ObjectStruct.Array oArr, java.lang.Object ref, PNIFunc<io.vproxy.pni.test.Null> func) {
+    public boolean testParamCritical(io.vproxy.pni.test.ObjectStruct o, PNIString str, MemorySegment seg, ByteBuffer buf, MemorySegment byteArr, BoolArray boolArr, CharArray charArr, FloatArray floatArr, DoubleArray doubleArr, IntArray intArr, LongArray longArr, ShortArray shortArr, io.vproxy.pni.test.ObjectStruct.Array oArr, java.lang.Object ref, io.vproxy.pni.CallSite<io.vproxy.pni.test.Null> func, io.vproxy.pni.CallSite<Void> funcVoid, io.vproxy.pni.CallSite<java.lang.Object> funcRef) {
         try (var POOLED = Allocator.ofPooled()) {
             boolean RESULT;
             try {
-                RESULT = (boolean) testParamCriticalMH.invokeExact(MEMORY, (MemorySegment) (o == null ? MemorySegment.NULL : o.MEMORY), (MemorySegment) (str == null ? MemorySegment.NULL : str.MEMORY), (MemorySegment) (seg == null ? MemorySegment.NULL : seg), PanamaUtils.format(buf, POOLED), PNIBuf.memoryOf(POOLED, byteArr), PNIBuf.memoryOf(POOLED, boolArr), PNIBuf.memoryOf(POOLED, charArr), PNIBuf.memoryOf(POOLED, floatArr), PNIBuf.memoryOf(POOLED, doubleArr), PNIBuf.memoryOf(POOLED, intArr), PNIBuf.memoryOf(POOLED, longArr), PNIBuf.memoryOf(POOLED, shortArr), PNIBuf.memoryOf(POOLED, oArr), (MemorySegment) (ref == null ? MemorySegment.NULL : PNIRef.of(ref).MEMORY), (MemorySegment) (func == null ? MemorySegment.NULL : func.MEMORY));
+                RESULT = (boolean) testParamCriticalMH.invokeExact(MEMORY, (MemorySegment) (o == null ? MemorySegment.NULL : o.MEMORY), (MemorySegment) (str == null ? MemorySegment.NULL : str.MEMORY), (MemorySegment) (seg == null ? MemorySegment.NULL : seg), PanamaUtils.format(buf, POOLED), PNIBuf.memoryOf(POOLED, byteArr), PNIBuf.memoryOf(POOLED, boolArr), PNIBuf.memoryOf(POOLED, charArr), PNIBuf.memoryOf(POOLED, floatArr), PNIBuf.memoryOf(POOLED, doubleArr), PNIBuf.memoryOf(POOLED, intArr), PNIBuf.memoryOf(POOLED, longArr), PNIBuf.memoryOf(POOLED, shortArr), PNIBuf.memoryOf(POOLED, oArr), (MemorySegment) (ref == null ? MemorySegment.NULL : PNIRef.of(ref).MEMORY), (MemorySegment) (func == null ? MemorySegment.NULL : io.vproxy.pni.test.Null.Func.of(func).MEMORY), (MemorySegment) (funcVoid == null ? MemorySegment.NULL : PNIFunc.VoidFunc.of(funcVoid).MEMORY), (MemorySegment) (funcRef == null ? MemorySegment.NULL : PNIRef.Func.of(funcRef).MEMORY));
             } catch (Throwable THROWABLE) {
                 throw PanamaUtils.convertInvokeExactException(THROWABLE);
             }
@@ -347,13 +387,13 @@ public class Null {
         }
     }
 
-    private static final MethodHandle testParamRawMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_Null_testParamRaw", MemorySegment.class /* self */, ByteBuffer.class /* buf */, MemorySegment.class /* byteArr */, MemorySegment.class /* boolArr */, MemorySegment.class /* charArr */, MemorySegment.class /* floatArr */, MemorySegment.class /* doubleArr */, MemorySegment.class /* intArr */, MemorySegment.class /* longArr */, MemorySegment.class /* shortArr */, MemorySegment.class /* oArr */, PNIRef.class /* ref */);
+    private static final MethodHandle testParamRawMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_Null_testParamRaw", MemorySegment.class /* self */, ByteBuffer.class /* buf */, MemorySegment.class /* byteArr */, MemorySegment.class /* boolArr */, MemorySegment.class /* charArr */, MemorySegment.class /* floatArr */, MemorySegment.class /* doubleArr */, MemorySegment.class /* intArr */, MemorySegment.class /* longArr */, MemorySegment.class /* shortArr */, MemorySegment.class /* oArr */, PNIRef.class /* ref */, PNIFunc.class /* func */, PNIFunc.class /* funcVoid */, PNIFunc.class /* funcRef */);
 
-    public boolean testParamRaw(PNIEnv ENV, ByteBuffer buf, MemorySegment byteArr, BoolArray boolArr, CharArray charArr, FloatArray floatArr, DoubleArray doubleArr, IntArray intArr, LongArray longArr, ShortArray shortArr, io.vproxy.pni.test.ObjectStruct.Array oArr, PNIRef<java.lang.Object> ref) {
+    public boolean testParamRaw(PNIEnv ENV, ByteBuffer buf, MemorySegment byteArr, BoolArray boolArr, CharArray charArr, FloatArray floatArr, DoubleArray doubleArr, IntArray intArr, LongArray longArr, ShortArray shortArr, io.vproxy.pni.test.ObjectStruct.Array oArr, PNIRef<java.lang.Object> ref, PNIFunc<io.vproxy.pni.test.Null> func, PNIFunc<Void> funcVoid, PNIFunc<java.lang.Object> funcRef) {
         ENV.reset();
         int ERR;
         try {
-            ERR = (int) testParamRawMH.invokeExact(ENV.MEMORY, MEMORY, PanamaUtils.format(buf), (MemorySegment) (byteArr == null ? MemorySegment.NULL : byteArr), (MemorySegment) (boolArr == null ? MemorySegment.NULL : boolArr.MEMORY), (MemorySegment) (charArr == null ? MemorySegment.NULL : charArr.MEMORY), (MemorySegment) (floatArr == null ? MemorySegment.NULL : floatArr.MEMORY), (MemorySegment) (doubleArr == null ? MemorySegment.NULL : doubleArr.MEMORY), (MemorySegment) (intArr == null ? MemorySegment.NULL : intArr.MEMORY), (MemorySegment) (longArr == null ? MemorySegment.NULL : longArr.MEMORY), (MemorySegment) (shortArr == null ? MemorySegment.NULL : shortArr.MEMORY), (MemorySegment) (oArr == null ? MemorySegment.NULL : oArr.MEMORY), (MemorySegment) (ref == null ? MemorySegment.NULL : ref.MEMORY));
+            ERR = (int) testParamRawMH.invokeExact(ENV.MEMORY, MEMORY, PanamaUtils.format(buf), (MemorySegment) (byteArr == null ? MemorySegment.NULL : byteArr), (MemorySegment) (boolArr == null ? MemorySegment.NULL : boolArr.MEMORY), (MemorySegment) (charArr == null ? MemorySegment.NULL : charArr.MEMORY), (MemorySegment) (floatArr == null ? MemorySegment.NULL : floatArr.MEMORY), (MemorySegment) (doubleArr == null ? MemorySegment.NULL : doubleArr.MEMORY), (MemorySegment) (intArr == null ? MemorySegment.NULL : intArr.MEMORY), (MemorySegment) (longArr == null ? MemorySegment.NULL : longArr.MEMORY), (MemorySegment) (shortArr == null ? MemorySegment.NULL : shortArr.MEMORY), (MemorySegment) (oArr == null ? MemorySegment.NULL : oArr.MEMORY), (MemorySegment) (ref == null ? MemorySegment.NULL : ref.MEMORY), (MemorySegment) (func == null ? MemorySegment.NULL : func.MEMORY), (MemorySegment) (funcVoid == null ? MemorySegment.NULL : funcVoid.MEMORY), (MemorySegment) (funcRef == null ? MemorySegment.NULL : funcRef.MEMORY));
         } catch (Throwable THROWABLE) {
             throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
@@ -363,12 +403,12 @@ public class Null {
         return ENV.returnBool();
     }
 
-    private static final MethodHandle testParamRawCriticalMH = PanamaUtils.lookupPNICriticalFunction(false, boolean.class, "JavaCritical_io_vproxy_pni_test_Null_testParamRawCritical", MemorySegment.class /* self */, ByteBuffer.class /* buf */, MemorySegment.class /* byteArr */, MemorySegment.class /* boolArr */, MemorySegment.class /* charArr */, MemorySegment.class /* floatArr */, MemorySegment.class /* doubleArr */, MemorySegment.class /* intArr */, MemorySegment.class /* longArr */, MemorySegment.class /* shortArr */, MemorySegment.class /* oArr */, PNIRef.class /* ref */);
+    private static final MethodHandle testParamRawCriticalMH = PanamaUtils.lookupPNICriticalFunction(false, boolean.class, "JavaCritical_io_vproxy_pni_test_Null_testParamRawCritical", MemorySegment.class /* self */, ByteBuffer.class /* buf */, MemorySegment.class /* byteArr */, MemorySegment.class /* boolArr */, MemorySegment.class /* charArr */, MemorySegment.class /* floatArr */, MemorySegment.class /* doubleArr */, MemorySegment.class /* intArr */, MemorySegment.class /* longArr */, MemorySegment.class /* shortArr */, MemorySegment.class /* oArr */, PNIRef.class /* ref */, PNIFunc.class /* func */, PNIFunc.class /* funcVoid */, PNIFunc.class /* funcRef */);
 
-    public boolean testParamRawCritical(ByteBuffer buf, MemorySegment byteArr, BoolArray boolArr, CharArray charArr, FloatArray floatArr, DoubleArray doubleArr, IntArray intArr, LongArray longArr, ShortArray shortArr, io.vproxy.pni.test.ObjectStruct.Array oArr, PNIRef<java.lang.Object> ref) {
+    public boolean testParamRawCritical(ByteBuffer buf, MemorySegment byteArr, BoolArray boolArr, CharArray charArr, FloatArray floatArr, DoubleArray doubleArr, IntArray intArr, LongArray longArr, ShortArray shortArr, io.vproxy.pni.test.ObjectStruct.Array oArr, PNIRef<java.lang.Object> ref, PNIFunc<io.vproxy.pni.test.Null> func, PNIFunc<Void> funcVoid, PNIFunc<java.lang.Object> funcRef) {
         boolean RESULT;
         try {
-            RESULT = (boolean) testParamRawCriticalMH.invokeExact(MEMORY, PanamaUtils.format(buf), (MemorySegment) (byteArr == null ? MemorySegment.NULL : byteArr), (MemorySegment) (boolArr == null ? MemorySegment.NULL : boolArr.MEMORY), (MemorySegment) (charArr == null ? MemorySegment.NULL : charArr.MEMORY), (MemorySegment) (floatArr == null ? MemorySegment.NULL : floatArr.MEMORY), (MemorySegment) (doubleArr == null ? MemorySegment.NULL : doubleArr.MEMORY), (MemorySegment) (intArr == null ? MemorySegment.NULL : intArr.MEMORY), (MemorySegment) (longArr == null ? MemorySegment.NULL : longArr.MEMORY), (MemorySegment) (shortArr == null ? MemorySegment.NULL : shortArr.MEMORY), (MemorySegment) (oArr == null ? MemorySegment.NULL : oArr.MEMORY), (MemorySegment) (ref == null ? MemorySegment.NULL : ref.MEMORY));
+            RESULT = (boolean) testParamRawCriticalMH.invokeExact(MEMORY, PanamaUtils.format(buf), (MemorySegment) (byteArr == null ? MemorySegment.NULL : byteArr), (MemorySegment) (boolArr == null ? MemorySegment.NULL : boolArr.MEMORY), (MemorySegment) (charArr == null ? MemorySegment.NULL : charArr.MEMORY), (MemorySegment) (floatArr == null ? MemorySegment.NULL : floatArr.MEMORY), (MemorySegment) (doubleArr == null ? MemorySegment.NULL : doubleArr.MEMORY), (MemorySegment) (intArr == null ? MemorySegment.NULL : intArr.MEMORY), (MemorySegment) (longArr == null ? MemorySegment.NULL : longArr.MEMORY), (MemorySegment) (shortArr == null ? MemorySegment.NULL : shortArr.MEMORY), (MemorySegment) (oArr == null ? MemorySegment.NULL : oArr.MEMORY), (MemorySegment) (ref == null ? MemorySegment.NULL : ref.MEMORY), (MemorySegment) (func == null ? MemorySegment.NULL : func.MEMORY), (MemorySegment) (funcVoid == null ? MemorySegment.NULL : funcVoid.MEMORY), (MemorySegment) (funcRef == null ? MemorySegment.NULL : funcRef.MEMORY));
         } catch (Throwable THROWABLE) {
             throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
@@ -1042,6 +1082,68 @@ public class Null {
         return io.vproxy.pni.test.Null.Func.of(RESULT);
     }
 
+    private static final MethodHandle returnFuncVoidMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_Null_returnFuncVoid", MemorySegment.class /* self */);
+
+    public PNIFunc<Void> returnFuncVoid(PNIEnv ENV) {
+        ENV.reset();
+        int ERR;
+        try {
+            ERR = (int) returnFuncVoidMH.invokeExact(ENV.MEMORY, MEMORY);
+        } catch (Throwable THROWABLE) {
+            throw PanamaUtils.convertInvokeExactException(THROWABLE);
+        }
+        if (ERR != 0) {
+            ENV.throwLast();
+        }
+        var RESULT = ENV.returnPointer();
+        if (RESULT == null) return null;
+        return PNIFunc.VoidFunc.of(RESULT);
+    }
+
+    private static final MethodHandle returnFuncVoidCriticalMH = PanamaUtils.lookupPNICriticalFunction(false, PNIFunc.class, "JavaCritical_io_vproxy_pni_test_Null_returnFuncVoidCritical", MemorySegment.class /* self */);
+
+    public PNIFunc<Void> returnFuncVoidCritical() {
+        MemorySegment RESULT;
+        try {
+            RESULT = (MemorySegment) returnFuncVoidCriticalMH.invokeExact(MEMORY);
+        } catch (Throwable THROWABLE) {
+            throw PanamaUtils.convertInvokeExactException(THROWABLE);
+        }
+        if (RESULT.address() == 0) return null;
+        return PNIFunc.VoidFunc.of(RESULT);
+    }
+
+    private static final MethodHandle returnFuncRefMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_Null_returnFuncRef", MemorySegment.class /* self */);
+
+    public PNIFunc<java.lang.Object> returnFuncRef(PNIEnv ENV) {
+        ENV.reset();
+        int ERR;
+        try {
+            ERR = (int) returnFuncRefMH.invokeExact(ENV.MEMORY, MEMORY);
+        } catch (Throwable THROWABLE) {
+            throw PanamaUtils.convertInvokeExactException(THROWABLE);
+        }
+        if (ERR != 0) {
+            ENV.throwLast();
+        }
+        var RESULT = ENV.returnPointer();
+        if (RESULT == null) return null;
+        return PNIRef.Func.of(RESULT);
+    }
+
+    private static final MethodHandle returnFuncRefCriticalMH = PanamaUtils.lookupPNICriticalFunction(false, PNIFunc.class, "JavaCritical_io_vproxy_pni_test_Null_returnFuncRefCritical", MemorySegment.class /* self */);
+
+    public PNIFunc<java.lang.Object> returnFuncRefCritical() {
+        MemorySegment RESULT;
+        try {
+            RESULT = (MemorySegment) returnFuncRefCriticalMH.invokeExact(MEMORY);
+        } catch (Throwable THROWABLE) {
+            throw PanamaUtils.convertInvokeExactException(THROWABLE);
+        }
+        if (RESULT.address() == 0) return null;
+        return PNIRef.Func.of(RESULT);
+    }
+
     public static class Array extends RefArray<Null> {
         public Array(MemorySegment buf) {
             super(buf, Null.LAYOUT);
@@ -1090,4 +1192,4 @@ public class Null {
     }
 }
 // metadata.generator-version: pni test
-// sha256:467e08039a9fda162e86f53e9f2f4bd41513d415309da563cdc1c3e14d42ab1c
+// sha256:2fd68eb56b5c6caf36f1024ab5bf3bd23a890edfaf7ba7fe040b044bc91aa886

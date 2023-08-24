@@ -18,6 +18,7 @@ import org.junit.runner.RunWith;
     TestRefAndFunc.class,
     TestGeneric.class,
     TestUpcall.class,
+    TestUpcallNull.class,
 })
 public class Suite {
 }

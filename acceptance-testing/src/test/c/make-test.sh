@@ -46,4 +46,6 @@ gcc -std=gnu99 -O2 \
     io_vproxy_pni_test_Generic.c \
     ../c-generated/io_vproxy_pni_test_Upcall.c \
     io_vproxy_pni_test_InvokeUpcall.c \
+    ../c-generated/io_vproxy_pni_test_UpcallNull.c \
+    io_vproxy_pni_test_InvokeUpcallNull.c \
     -o "$target"

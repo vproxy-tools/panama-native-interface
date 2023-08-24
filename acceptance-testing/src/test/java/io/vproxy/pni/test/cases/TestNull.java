@@ -15,9 +15,9 @@ public class TestNull {
             var env = new PNIEnv(allocator);
             var n = new Null(allocator);
 
-            var b = n.testParam(env, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+            var b = n.testParam(env, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
             assertTrue(b);
-            b = n.testParamCritical(null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+            b = n.testParamCritical(null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
             assertTrue(b);
         }
     }
@@ -28,9 +28,9 @@ public class TestNull {
             var env = new PNIEnv(allocator);
             var n = new Null(allocator);
 
-            var b = n.testParamRaw(env, null, null, null, null, null, null, null, null, null, null, null);
+            var b = n.testParamRaw(env, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
             assertTrue(b);
-            b = n.testParamRawCritical(null, null, null, null, null, null, null, null, null, null, null);
+            b = n.testParamRawCritical(null, null, null, null, null, null, null, null, null, null, null, null, null, null);
             assertTrue(b);
         }
     }
@@ -237,6 +237,32 @@ public class TestNull {
             assertNull(n.getFunc());
             assertNull(n.returnFunc(env));
             assertNull(n.returnFuncCritical());
+        }
+    }
+
+    @Test
+    public void funcVoid() {
+        try (var allocator = Allocator.ofConfined()) {
+            var env = new PNIEnv(allocator);
+            var n = new Null(allocator);
+
+            n.setFuncVoid(null);
+            assertNull(n.getFuncVoid());
+            assertNull(n.returnFuncVoid(env));
+            assertNull(n.returnFuncVoidCritical());
+        }
+    }
+
+    @Test
+    public void funcRef() {
+        try (var allocator = Allocator.ofConfined()) {
+            var env = new PNIEnv(allocator);
+            var n = new Null(allocator);
+
+            n.setFuncRef(null);
+            assertNull(n.getFuncRef());
+            assertNull(n.returnFuncRef(env));
+            assertNull(n.returnFuncRefCritical());
         }
     }
 }

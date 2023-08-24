@@ -4,38 +4,38 @@
 extern "C" {
 #endif
 
-JNIEXPORT int JNICALL Java_io_vproxy_pni_test_Null_testParam(PNIEnv_bool * env, Null * self, ObjectStruct * o, char * str, void * seg, PNIBuf * buf, PNIBuf * byteArr, PNIBuf * boolArr, PNIBuf * charArr, PNIBuf * floatArr, PNIBuf * doubleArr, PNIBuf * intArr, PNIBuf * longArr, PNIBuf * shortArr, PNIBuf * oArr, PNIRef * ref, PNIFunc * func) {
+JNIEXPORT int JNICALL Java_io_vproxy_pni_test_Null_testParam(PNIEnv_bool * env, Null * self, ObjectStruct * o, char * str, void * seg, PNIBuf * buf, PNIBuf * byteArr, PNIBuf * boolArr, PNIBuf * charArr, PNIBuf * floatArr, PNIBuf * doubleArr, PNIBuf * intArr, PNIBuf * longArr, PNIBuf * shortArr, PNIBuf * oArr, PNIRef * ref, PNIFunc * func, PNIFunc * funcVoid, PNIFunc * funcRef) {
     env->return_= o == NULL && str == NULL && seg == NULL && buf == NULL &&
                   byteArr == NULL && boolArr == NULL && charArr == NULL &&
                   floatArr == NULL && doubleArr == NULL && intArr == NULL &&
                   longArr == NULL && shortArr == NULL && oArr == NULL &&
-                  ref == NULL && func == NULL;
+                  ref == NULL && func == NULL && funcVoid == NULL && funcRef == NULL;
     return 0;
 }
 
-JNIEXPORT uint8_t JNICALL JavaCritical_io_vproxy_pni_test_Null_testParamCritical(Null * self, ObjectStruct * o, char * str, void * seg, PNIBuf * buf, PNIBuf * byteArr, PNIBuf * boolArr, PNIBuf * charArr, PNIBuf * floatArr, PNIBuf * doubleArr, PNIBuf * intArr, PNIBuf * longArr, PNIBuf * shortArr, PNIBuf * oArr, PNIRef * ref, PNIFunc * func) {
+JNIEXPORT uint8_t JNICALL JavaCritical_io_vproxy_pni_test_Null_testParamCritical(Null * self, ObjectStruct * o, char * str, void * seg, PNIBuf * buf, PNIBuf * byteArr, PNIBuf * boolArr, PNIBuf * charArr, PNIBuf * floatArr, PNIBuf * doubleArr, PNIBuf * intArr, PNIBuf * longArr, PNIBuf * shortArr, PNIBuf * oArr, PNIRef * ref, PNIFunc * func, PNIFunc * funcVoid, PNIFunc * funcRef) {
     return o == NULL && str == NULL && seg == NULL && buf == NULL &&
            byteArr == NULL && boolArr == NULL && charArr == NULL &&
            floatArr == NULL && doubleArr == NULL && intArr == NULL &&
            longArr == NULL && shortArr == NULL && oArr == NULL &&
-           ref == NULL && func == NULL;
+           ref == NULL && func == NULL && funcVoid == NULL && funcRef == NULL;
 }
 
-JNIEXPORT int JNICALL Java_io_vproxy_pni_test_Null_testParamRaw(PNIEnv_bool * env, Null * self, void * buf, void * byteArr, uint8_t * boolArr, uint16_t * charArr, float * floatArr, double * doubleArr, int32_t * intArr, int64_t * longArr, int16_t * shortArr, ObjectStruct * oArr, PNIRef * ref) {
+JNIEXPORT int JNICALL Java_io_vproxy_pni_test_Null_testParamRaw(PNIEnv_bool * env, Null * self, void * buf, void * byteArr, uint8_t * boolArr, uint16_t * charArr, float * floatArr, double * doubleArr, int32_t * intArr, int64_t * longArr, int16_t * shortArr, ObjectStruct * oArr, PNIRef * ref, PNIFunc * func, PNIFunc * funcVoid, PNIFunc * funcRef) {
     env->return_= buf == NULL &&
                   byteArr == NULL && boolArr == NULL && charArr == NULL &&
                   floatArr == NULL && doubleArr == NULL && intArr == NULL &&
                   longArr == NULL && shortArr == NULL && oArr == NULL &&
-                  ref == NULL;
+                  ref == NULL && func == NULL && funcVoid == NULL && funcRef == NULL;
     return 0;
 }
 
-JNIEXPORT uint8_t JNICALL JavaCritical_io_vproxy_pni_test_Null_testParamRawCritical(Null * self, void * buf, void * byteArr, uint8_t * boolArr, uint16_t * charArr, float * floatArr, double * doubleArr, int32_t * intArr, int64_t * longArr, int16_t * shortArr, ObjectStruct * oArr, PNIRef * ref) {
+JNIEXPORT uint8_t JNICALL JavaCritical_io_vproxy_pni_test_Null_testParamRawCritical(Null * self, void * buf, void * byteArr, uint8_t * boolArr, uint16_t * charArr, float * floatArr, double * doubleArr, int32_t * intArr, int64_t * longArr, int16_t * shortArr, ObjectStruct * oArr, PNIRef * ref, PNIFunc * func, PNIFunc * funcVoid, PNIFunc * funcRef) {
     return buf == NULL &&
            byteArr == NULL && boolArr == NULL && charArr == NULL &&
            floatArr == NULL && doubleArr == NULL && intArr == NULL &&
            longArr == NULL && shortArr == NULL && oArr == NULL &&
-           ref == NULL;
+           ref == NULL && func == NULL && funcVoid == NULL && funcRef == NULL;
 }
 
 JNIEXPORT int JNICALL Java_io_vproxy_pni_test_Null_returnO(PNIEnv_ObjectStruct * env, Null * self, ObjectStruct * return_) {
@@ -223,8 +223,26 @@ JNIEXPORT PNIFunc * JNICALL JavaCritical_io_vproxy_pni_test_Null_returnFuncCriti
     return NULL;
 }
 
+JNIEXPORT int JNICALL Java_io_vproxy_pni_test_Null_returnFuncVoid(PNIEnv_func * env, Null * self) {
+    env->return_ = NULL;
+    return 0;
+}
+
+JNIEXPORT PNIFunc * JNICALL JavaCritical_io_vproxy_pni_test_Null_returnFuncVoidCritical(Null * self) {
+    return NULL;
+}
+
+JNIEXPORT int JNICALL Java_io_vproxy_pni_test_Null_returnFuncRef(PNIEnv_func * env, Null * self) {
+    env->return_ = NULL;
+    return 0;
+}
+
+JNIEXPORT PNIFunc * JNICALL JavaCritical_io_vproxy_pni_test_Null_returnFuncRefCritical(Null * self) {
+    return NULL;
+}
+
 #ifdef __cplusplus
 }
 #endif
 // metadata.generator-version: pni test
-// sha256:01e50ffb599675f710ae1e72581d5f26c303798d03c3d3069dc3e34307717d84
+// sha256:e30e747937179e13eac3e49ecfe1ed796861255af9015e190b37e7e7ce65d4ac
