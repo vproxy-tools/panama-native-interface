@@ -109,7 +109,7 @@ project(":api") {
         publications {
             maven(MavenPublication) {
                 from components.java
-                artifactId 'pni-' + project.name
+                artifactId 'pni-' + project.name + '-jdk21'
 
                 artifact(javadocJar)
 
