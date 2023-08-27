@@ -244,6 +244,12 @@ public class AstMethod {
             }
             sb.append(returnTypeExtraType).append(" return_");
         }
+        if ((critical() || upcall)
+            && classNativeTypeName == null
+            && params.isEmpty()
+            && returnTypeExtraType == null) {
+            sb.append("void");
+        }
         sb.append(")");
     }
 
@@ -616,6 +622,10 @@ public class AstMethod {
                 sb.append(",");
             }
             sb.append(returnTypeExtraType);
+        }
+        if (params.isEmpty()
+            && returnTypeExtraType == null) {
+            sb.append("void");
         }
         sb.append(")");
         return sb.toString();
