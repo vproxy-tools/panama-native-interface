@@ -5,7 +5,7 @@ JNIEXPORT int JNICALL Java_io_vproxy_pni_test_Func_func1(PNIEnv_int * env) {
     return 0;
 }
 
-JNIEXPORT int32_t JNICALL JavaCritical_io_vproxy_pni_test_Func_func1Critical() {
+JNIEXPORT int32_t JNICALL JavaCritical_io_vproxy_pni_test_Func_func1Critical(void) {
     return 10;
 }
 

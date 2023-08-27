@@ -19,7 +19,7 @@ extern "C" {
 #endif
 
 JNIEXPORT int JNICALL Java_io_vproxy_pni_test_Func_func1(PNIEnv_int * env);
-JNIEXPORT int32_t JNICALL JavaCritical_io_vproxy_pni_test_Func_func1Critical();
+JNIEXPORT int32_t JNICALL JavaCritical_io_vproxy_pni_test_Func_func1Critical(void);
 JNIEXPORT int JNICALL Java_io_vproxy_pni_test_Func_func2(PNIEnv_void * env);
 JNIEXPORT int JNICALL Java_io_vproxy_pni_test_Func_func3(PNIEnv_void * env, char * ex);
 JNIEXPORT int JNICALL Java_io_vproxy_pni_test_Func_write(PNIEnv_int * env, int32_t fd, void * buf, int32_t off, int32_t len);
@@ -38,4 +38,4 @@ JNIEXPORT int32_t JNICALL JavaCritical_io_vproxy_pni_test_Func_callJavaMethodWit
 #endif
 #endif // _Included_io_vproxy_pni_test_Func
 // metadata.generator-version: pni test
-// sha256:9128b96bc6344e1be69ee452fec70323b36e4a47bd994febc39f86ff02a50c9c
+// sha256:f4f9f3d8219c25b41a342def73abcc00801691b089723c3cdf2ab264e1e0e448

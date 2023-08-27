@@ -8,35 +8,35 @@ JNIEXPORT void JNICALL JavaCritical_io_vproxy_pni_test_InvokeUpcall_primaryParam
     JavaCritical_io_vproxy_pni_test_Upcall_primaryParams(b, ub, z, c, d, f, i, ui, j, uj, s, us);
 }
 
-JNIEXPORT int8_t JNICALL JavaCritical_io_vproxy_pni_test_InvokeUpcall_returnByte() {
+JNIEXPORT int8_t JNICALL JavaCritical_io_vproxy_pni_test_InvokeUpcall_returnByte(void) {
     return JavaCritical_io_vproxy_pni_test_Upcall_returnByte();
 }
 
-JNIEXPORT uint8_t JNICALL JavaCritical_io_vproxy_pni_test_InvokeUpcall_returnBool() {
+JNIEXPORT uint8_t JNICALL JavaCritical_io_vproxy_pni_test_InvokeUpcall_returnBool(void) {
     return JavaCritical_io_vproxy_pni_test_Upcall_returnBool();
 }
 
-JNIEXPORT uint16_t JNICALL JavaCritical_io_vproxy_pni_test_InvokeUpcall_returnChar() {
+JNIEXPORT uint16_t JNICALL JavaCritical_io_vproxy_pni_test_InvokeUpcall_returnChar(void) {
     return JavaCritical_io_vproxy_pni_test_Upcall_returnChar();
 }
 
-JNIEXPORT double JNICALL JavaCritical_io_vproxy_pni_test_InvokeUpcall_returnDouble() {
+JNIEXPORT double JNICALL JavaCritical_io_vproxy_pni_test_InvokeUpcall_returnDouble(void) {
     return JavaCritical_io_vproxy_pni_test_Upcall_returnDouble();
 }
 
-JNIEXPORT float JNICALL JavaCritical_io_vproxy_pni_test_InvokeUpcall_returnFloat() {
+JNIEXPORT float JNICALL JavaCritical_io_vproxy_pni_test_InvokeUpcall_returnFloat(void) {
     return JavaCritical_io_vproxy_pni_test_Upcall_returnFloat();
 }
 
-JNIEXPORT int32_t JNICALL JavaCritical_io_vproxy_pni_test_InvokeUpcall_returnInt() {
+JNIEXPORT int32_t JNICALL JavaCritical_io_vproxy_pni_test_InvokeUpcall_returnInt(void) {
     return JavaCritical_io_vproxy_pni_test_Upcall_returnInt();
 }
 
-JNIEXPORT int64_t JNICALL JavaCritical_io_vproxy_pni_test_InvokeUpcall_returnLong() {
+JNIEXPORT int64_t JNICALL JavaCritical_io_vproxy_pni_test_InvokeUpcall_returnLong(void) {
     return JavaCritical_io_vproxy_pni_test_Upcall_returnLong();
 }
 
-JNIEXPORT int16_t JNICALL JavaCritical_io_vproxy_pni_test_InvokeUpcall_returnShort() {
+JNIEXPORT int16_t JNICALL JavaCritical_io_vproxy_pni_test_InvokeUpcall_returnShort(void) {
     return JavaCritical_io_vproxy_pni_test_Upcall_returnShort();
 }
 
@@ -100,27 +100,27 @@ JNIEXPORT PNIBuf * JNICALL JavaCritical_io_vproxy_pni_test_InvokeUpcall_returnBu
     return JavaCritical_io_vproxy_pni_test_Upcall_returnBuffer(return_);
 }
 
-JNIEXPORT void * JNICALL JavaCritical_io_vproxy_pni_test_InvokeUpcall_returnMem() {
+JNIEXPORT void * JNICALL JavaCritical_io_vproxy_pni_test_InvokeUpcall_returnMem(void) {
     return JavaCritical_io_vproxy_pni_test_Upcall_returnMem();
 }
 
-JNIEXPORT PNIFunc * JNICALL JavaCritical_io_vproxy_pni_test_InvokeUpcall_returnVoidFunc() {
+JNIEXPORT PNIFunc * JNICALL JavaCritical_io_vproxy_pni_test_InvokeUpcall_returnVoidFunc(void) {
     return JavaCritical_io_vproxy_pni_test_Upcall_returnVoidFunc();
 }
 
-JNIEXPORT PNIFunc * JNICALL JavaCritical_io_vproxy_pni_test_InvokeUpcall_returnObjFunc() {
+JNIEXPORT PNIFunc * JNICALL JavaCritical_io_vproxy_pni_test_InvokeUpcall_returnObjFunc(void) {
     return JavaCritical_io_vproxy_pni_test_Upcall_returnObjFunc();
 }
 
-JNIEXPORT PNIFunc * JNICALL JavaCritical_io_vproxy_pni_test_InvokeUpcall_returnRefFunc() {
+JNIEXPORT PNIFunc * JNICALL JavaCritical_io_vproxy_pni_test_InvokeUpcall_returnRefFunc(void) {
     return JavaCritical_io_vproxy_pni_test_Upcall_returnRefFunc();
 }
 
-JNIEXPORT PNIRef * JNICALL JavaCritical_io_vproxy_pni_test_InvokeUpcall_returnRef() {
+JNIEXPORT PNIRef * JNICALL JavaCritical_io_vproxy_pni_test_InvokeUpcall_returnRef(void) {
     return JavaCritical_io_vproxy_pni_test_Upcall_returnRef();
 }
 
-JNIEXPORT char * JNICALL JavaCritical_io_vproxy_pni_test_InvokeUpcall_returnStr() {
+JNIEXPORT char * JNICALL JavaCritical_io_vproxy_pni_test_InvokeUpcall_returnStr(void) {
     return JavaCritical_io_vproxy_pni_test_Upcall_returnStr();
 }
 
@@ -132,4 +132,4 @@ JNIEXPORT int32_t JNICALL JavaCritical_io_vproxy_pni_test_InvokeUpcall_sum(int32
 }
 #endif
 // metadata.generator-version: pni test
-// sha256:2644f68894b8f20899b53b45260f4a6d29a508e76270c19f5a73c87f764540fd
+// sha256:db6b980ccc4de749da5c1c3b517de7fa383de59b8c4f09ae8605b3328d8c1644

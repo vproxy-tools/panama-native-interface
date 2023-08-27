@@ -20,14 +20,14 @@ extern "C" {
 #endif
 
 JNIEXPORT void JNICALL JavaCritical_io_vproxy_pni_test_InvokeUpcall_primaryParams(int8_t b, int8_t ub, uint8_t z, uint16_t c, double d, float f, int32_t i, int32_t ui, int64_t j, int64_t uj, int16_t s, int16_t us);
-JNIEXPORT int8_t JNICALL JavaCritical_io_vproxy_pni_test_InvokeUpcall_returnByte();
-JNIEXPORT uint8_t JNICALL JavaCritical_io_vproxy_pni_test_InvokeUpcall_returnBool();
-JNIEXPORT uint16_t JNICALL JavaCritical_io_vproxy_pni_test_InvokeUpcall_returnChar();
-JNIEXPORT double JNICALL JavaCritical_io_vproxy_pni_test_InvokeUpcall_returnDouble();
-JNIEXPORT float JNICALL JavaCritical_io_vproxy_pni_test_InvokeUpcall_returnFloat();
-JNIEXPORT int32_t JNICALL JavaCritical_io_vproxy_pni_test_InvokeUpcall_returnInt();
-JNIEXPORT int64_t JNICALL JavaCritical_io_vproxy_pni_test_InvokeUpcall_returnLong();
-JNIEXPORT int16_t JNICALL JavaCritical_io_vproxy_pni_test_InvokeUpcall_returnShort();
+JNIEXPORT int8_t JNICALL JavaCritical_io_vproxy_pni_test_InvokeUpcall_returnByte(void);
+JNIEXPORT uint8_t JNICALL JavaCritical_io_vproxy_pni_test_InvokeUpcall_returnBool(void);
+JNIEXPORT uint16_t JNICALL JavaCritical_io_vproxy_pni_test_InvokeUpcall_returnChar(void);
+JNIEXPORT double JNICALL JavaCritical_io_vproxy_pni_test_InvokeUpcall_returnDouble(void);
+JNIEXPORT float JNICALL JavaCritical_io_vproxy_pni_test_InvokeUpcall_returnFloat(void);
+JNIEXPORT int32_t JNICALL JavaCritical_io_vproxy_pni_test_InvokeUpcall_returnInt(void);
+JNIEXPORT int64_t JNICALL JavaCritical_io_vproxy_pni_test_InvokeUpcall_returnLong(void);
+JNIEXPORT int16_t JNICALL JavaCritical_io_vproxy_pni_test_InvokeUpcall_returnShort(void);
 JNIEXPORT void JNICALL JavaCritical_io_vproxy_pni_test_InvokeUpcall_primaryArrayParams(PNIBuf * b, PNIBuf * ub, PNIBuf * z, PNIBuf * c, PNIBuf * d, PNIBuf * f, PNIBuf * i, PNIBuf * ui, PNIBuf * j, PNIBuf * uj, PNIBuf * s, PNIBuf * us);
 JNIEXPORT PNIBuf * JNICALL JavaCritical_io_vproxy_pni_test_InvokeUpcall_returnByteArray(PNIBuf * return_);
 JNIEXPORT PNIBuf * JNICALL JavaCritical_io_vproxy_pni_test_InvokeUpcall_returnBoolArray(PNIBuf * return_);
@@ -43,12 +43,12 @@ JNIEXPORT void JNICALL JavaCritical_io_vproxy_pni_test_InvokeUpcall_objectArrayP
 JNIEXPORT PNIBuf * JNICALL JavaCritical_io_vproxy_pni_test_InvokeUpcall_returnObjectArray(PNIBuf * return_);
 JNIEXPORT void JNICALL JavaCritical_io_vproxy_pni_test_InvokeUpcall_otherParams(PNIBuf * buffer, PNIFunc * voidCallSite, PNIFunc * objCallSite, PNIFunc * refCallSite, void * mem, PNIFunc * voidFunc, PNIFunc * objFunc, PNIFunc * refFunc, PNIRef * ref, PNIRef * rawRef, char * str);
 JNIEXPORT PNIBuf * JNICALL JavaCritical_io_vproxy_pni_test_InvokeUpcall_returnBuffer(PNIBuf * return_);
-JNIEXPORT void * JNICALL JavaCritical_io_vproxy_pni_test_InvokeUpcall_returnMem();
-JNIEXPORT PNIFunc * JNICALL JavaCritical_io_vproxy_pni_test_InvokeUpcall_returnVoidFunc();
-JNIEXPORT PNIFunc * JNICALL JavaCritical_io_vproxy_pni_test_InvokeUpcall_returnObjFunc();
-JNIEXPORT PNIFunc * JNICALL JavaCritical_io_vproxy_pni_test_InvokeUpcall_returnRefFunc();
-JNIEXPORT PNIRef * JNICALL JavaCritical_io_vproxy_pni_test_InvokeUpcall_returnRef();
-JNIEXPORT char * JNICALL JavaCritical_io_vproxy_pni_test_InvokeUpcall_returnStr();
+JNIEXPORT void * JNICALL JavaCritical_io_vproxy_pni_test_InvokeUpcall_returnMem(void);
+JNIEXPORT PNIFunc * JNICALL JavaCritical_io_vproxy_pni_test_InvokeUpcall_returnVoidFunc(void);
+JNIEXPORT PNIFunc * JNICALL JavaCritical_io_vproxy_pni_test_InvokeUpcall_returnObjFunc(void);
+JNIEXPORT PNIFunc * JNICALL JavaCritical_io_vproxy_pni_test_InvokeUpcall_returnRefFunc(void);
+JNIEXPORT PNIRef * JNICALL JavaCritical_io_vproxy_pni_test_InvokeUpcall_returnRef(void);
+JNIEXPORT char * JNICALL JavaCritical_io_vproxy_pni_test_InvokeUpcall_returnStr(void);
 JNIEXPORT int32_t JNICALL JavaCritical_io_vproxy_pni_test_InvokeUpcall_sum(int32_t a, int32_t b);
 
 #ifdef __cplusplus
@@ -56,4 +56,4 @@ JNIEXPORT int32_t JNICALL JavaCritical_io_vproxy_pni_test_InvokeUpcall_sum(int32
 #endif
 #endif // _Included_io_vproxy_pni_test_InvokeUpcall
 // metadata.generator-version: pni test
-// sha256:94a58b52569c4a8688fb15db1598d06ae815c2db973bd6d4711fe040df3d9c9f
+// sha256:61ba11d480beda27a5648945005343617edd88f175aad06e0310efd3f3cdbbcc

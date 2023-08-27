@@ -4,93 +4,93 @@
 extern "C" {
 #endif
 
-JNIEXPORT uint8_t JNICALL JavaCritical_io_vproxy_pni_test_InvokeUpcallNull_testParam() {
+JNIEXPORT uint8_t JNICALL JavaCritical_io_vproxy_pni_test_InvokeUpcallNull_testParam(void) {
     return JavaCritical_io_vproxy_pni_test_UpcallNull_testParam(
         NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL,
         NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL,
         NULL);
 }
 
-JNIEXPORT uint8_t JNICALL JavaCritical_io_vproxy_pni_test_InvokeUpcallNull_testParamRaw() {
+JNIEXPORT uint8_t JNICALL JavaCritical_io_vproxy_pni_test_InvokeUpcallNull_testParamRaw(void) {
     return JavaCritical_io_vproxy_pni_test_UpcallNull_testParamRaw(NULL, NULL, NULL, NULL);
 }
 
-JNIEXPORT uint8_t JNICALL JavaCritical_io_vproxy_pni_test_InvokeUpcallNull_returnO() {
+JNIEXPORT uint8_t JNICALL JavaCritical_io_vproxy_pni_test_InvokeUpcallNull_returnO(void) {
     ObjectStruct o;
     return JavaCritical_io_vproxy_pni_test_UpcallNull_returnO(&o) == NULL;
 }
 
-JNIEXPORT uint8_t JNICALL JavaCritical_io_vproxy_pni_test_InvokeUpcallNull_returnStr() {
+JNIEXPORT uint8_t JNICALL JavaCritical_io_vproxy_pni_test_InvokeUpcallNull_returnStr(void) {
     return JavaCritical_io_vproxy_pni_test_UpcallNull_returnStr() == NULL;
 }
 
-JNIEXPORT uint8_t JNICALL JavaCritical_io_vproxy_pni_test_InvokeUpcallNull_returnSeg() {
+JNIEXPORT uint8_t JNICALL JavaCritical_io_vproxy_pni_test_InvokeUpcallNull_returnSeg(void) {
     return JavaCritical_io_vproxy_pni_test_UpcallNull_returnSeg() == NULL;
 }
 
-JNIEXPORT uint8_t JNICALL JavaCritical_io_vproxy_pni_test_InvokeUpcallNull_returnBuf() {
+JNIEXPORT uint8_t JNICALL JavaCritical_io_vproxy_pni_test_InvokeUpcallNull_returnBuf(void) {
     PNIBuf b;
     return JavaCritical_io_vproxy_pni_test_UpcallNull_returnBuf(&b) == NULL;
 }
 
-JNIEXPORT uint8_t JNICALL JavaCritical_io_vproxy_pni_test_InvokeUpcallNull_returnByteArr() {
+JNIEXPORT uint8_t JNICALL JavaCritical_io_vproxy_pni_test_InvokeUpcallNull_returnByteArr(void) {
     PNIBuf b;
     return JavaCritical_io_vproxy_pni_test_UpcallNull_returnByteArr(&b) == NULL;
 }
 
-JNIEXPORT uint8_t JNICALL JavaCritical_io_vproxy_pni_test_InvokeUpcallNull_returnBoolArr() {
+JNIEXPORT uint8_t JNICALL JavaCritical_io_vproxy_pni_test_InvokeUpcallNull_returnBoolArr(void) {
     PNIBuf b;
     return JavaCritical_io_vproxy_pni_test_UpcallNull_returnBoolArr(&b) == NULL;
 }
 
-JNIEXPORT uint8_t JNICALL JavaCritical_io_vproxy_pni_test_InvokeUpcallNull_returnCharArr() {
+JNIEXPORT uint8_t JNICALL JavaCritical_io_vproxy_pni_test_InvokeUpcallNull_returnCharArr(void) {
     PNIBuf b;
     return JavaCritical_io_vproxy_pni_test_UpcallNull_returnCharArr(&b) == NULL;
 }
 
-JNIEXPORT uint8_t JNICALL JavaCritical_io_vproxy_pni_test_InvokeUpcallNull_returnFloatArr() {
+JNIEXPORT uint8_t JNICALL JavaCritical_io_vproxy_pni_test_InvokeUpcallNull_returnFloatArr(void) {
     PNIBuf b;
     return JavaCritical_io_vproxy_pni_test_UpcallNull_returnFloatArr(&b) == NULL;
 }
 
-JNIEXPORT uint8_t JNICALL JavaCritical_io_vproxy_pni_test_InvokeUpcallNull_returnDoubleArr() {
+JNIEXPORT uint8_t JNICALL JavaCritical_io_vproxy_pni_test_InvokeUpcallNull_returnDoubleArr(void) {
     PNIBuf b;
     return JavaCritical_io_vproxy_pni_test_UpcallNull_returnDoubleArr(&b) == NULL;
 }
 
-JNIEXPORT uint8_t JNICALL JavaCritical_io_vproxy_pni_test_InvokeUpcallNull_returnIntArr() {
+JNIEXPORT uint8_t JNICALL JavaCritical_io_vproxy_pni_test_InvokeUpcallNull_returnIntArr(void) {
     PNIBuf b;
     return JavaCritical_io_vproxy_pni_test_UpcallNull_returnIntArr(&b) == NULL;
 }
 
-JNIEXPORT uint8_t JNICALL JavaCritical_io_vproxy_pni_test_InvokeUpcallNull_returnLongArr() {
+JNIEXPORT uint8_t JNICALL JavaCritical_io_vproxy_pni_test_InvokeUpcallNull_returnLongArr(void) {
     PNIBuf b;
     return JavaCritical_io_vproxy_pni_test_UpcallNull_returnLongArr(&b) == NULL;
 }
 
-JNIEXPORT uint8_t JNICALL JavaCritical_io_vproxy_pni_test_InvokeUpcallNull_returnShortArr() {
+JNIEXPORT uint8_t JNICALL JavaCritical_io_vproxy_pni_test_InvokeUpcallNull_returnShortArr(void) {
     PNIBuf b;
     return JavaCritical_io_vproxy_pni_test_UpcallNull_returnShortArr(&b) == NULL;
 }
 
-JNIEXPORT uint8_t JNICALL JavaCritical_io_vproxy_pni_test_InvokeUpcallNull_returnOArr() {
+JNIEXPORT uint8_t JNICALL JavaCritical_io_vproxy_pni_test_InvokeUpcallNull_returnOArr(void) {
     PNIBuf b;
     return JavaCritical_io_vproxy_pni_test_UpcallNull_returnOArr(&b) == NULL;
 }
 
-JNIEXPORT uint8_t JNICALL JavaCritical_io_vproxy_pni_test_InvokeUpcallNull_returnRef() {
+JNIEXPORT uint8_t JNICALL JavaCritical_io_vproxy_pni_test_InvokeUpcallNull_returnRef(void) {
     return JavaCritical_io_vproxy_pni_test_UpcallNull_returnRef() == NULL;
 }
 
-JNIEXPORT uint8_t JNICALL JavaCritical_io_vproxy_pni_test_InvokeUpcallNull_returnFunc() {
+JNIEXPORT uint8_t JNICALL JavaCritical_io_vproxy_pni_test_InvokeUpcallNull_returnFunc(void) {
     return JavaCritical_io_vproxy_pni_test_UpcallNull_returnFunc() == NULL;
 }
 
-JNIEXPORT uint8_t JNICALL JavaCritical_io_vproxy_pni_test_InvokeUpcallNull_returnFuncVoid() {
+JNIEXPORT uint8_t JNICALL JavaCritical_io_vproxy_pni_test_InvokeUpcallNull_returnFuncVoid(void) {
     return JavaCritical_io_vproxy_pni_test_UpcallNull_returnFuncVoid() == NULL;
 }
 
-JNIEXPORT uint8_t JNICALL JavaCritical_io_vproxy_pni_test_InvokeUpcallNull_returnFuncRef() {
+JNIEXPORT uint8_t JNICALL JavaCritical_io_vproxy_pni_test_InvokeUpcallNull_returnFuncRef(void) {
     return JavaCritical_io_vproxy_pni_test_UpcallNull_returnFuncRef() == NULL;
 }
 
@@ -98,4 +98,4 @@ JNIEXPORT uint8_t JNICALL JavaCritical_io_vproxy_pni_test_InvokeUpcallNull_retur
 }
 #endif
 // metadata.generator-version: pni test
-// sha256:08b4e4244d80cb9a66441f9e7eba83804fa2d93ab69369a2591a87fe8744ceea
+// sha256:414b5856b38ad860627f55d44a6770c18a6456d301ecf8cb35f7e4ca56a8bd8e
