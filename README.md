@@ -483,6 +483,9 @@ but you can pass it around and use it as an argument in an upcall function.
 * `@Len`: define the element count of an array, or the native memory length of a string (memory length, not string length).
 * `@Unsigned`: make an integer type `unsinged`.
 * `@Raw`: convert to raw form for native invocation. See the below section `@Raw Annotation` for more info.
+* `@PointerOnly`: this annotation is only effective during validation phase. The marked class cannot have fields, the type should only be used as a pointer. However the generated Java class or C struct/union will stay the same as they were.
+* `@BitField`: mark a byte/short/int/long field to be a bit field. For example: `@BitField(name={"a", "b"}, bit={1, 1}) @Unsigned byte x`, defines two bit fields `uint8_t a : 1` and `uint8_t b : 1`, and automatically generates an anonymous padding to fillup the field's type (`uint8_t : 6`).  
+  **WARNING**: bit fields' memory layout is **NOT** specified in C standard and is **NOT** compiler/platform portable, use with caution!!!
 
 ### Convention
 
@@ -627,6 +630,14 @@ Any other combination except the above table is disallowed.
   and naming collisions of these variables are not checked during the validation phase.
   This shouldn't be a problem, because normally people won't define
   "all upper case" type names or member fields.
+* Bit fields are not compiler/platform portable. `Panama Native Interface` provides limited bit fields support,
+  it allows you to define bit fields, but you must define them on an integer type. The total bit must not exceed
+  the integer type's memory size, and a padding will automatically be generated if the bit fields' total bit
+  is less than the integer type memory size.  
+  You must use bit fields with caution. The most common use case of bit fields is to define switches, and this should
+  work well usually, but it's **NOT** guarenteed. \[1\]
+
+> \[1\] C11: An implementation may allocate any addressable storage unit large enough to hold a bit-field. If enough space remains, a bit-field that immediately follows another bit-field in a structure shall be packed into adjacent bits of the same unit. If insufficient space remains, whether a bit-field that does not fit is put into the next unit or overlaps adjacent units is implementation-defined. The order of allocation of bit-fields within a unit (high-order to low-order or low-order to high-order) is implementation-defined. The alignment of the addressable storage unit is unspecified.
 
 </details>
 
@@ -636,5 +647,6 @@ Any other combination except the above table is disallowed.
 
 * [vproxy](http://github.com/wkgcass/vproxy): LoadBalancer and virtual networking on Java, migrated from the old `JNI` to `PNI`, using the `JNI` style C functions.
 * [luajn](https://github.com/vproxy-tools/luajn): A Lua/C/Java binding, built upon `PNI`, using the `Critical` style C functions.
+* [msquic-java](https://github.com/wkgcass/msquic-java): MsQuic for Java, built upon `PNI`, heavily uses `Struct(skip=true)`.
 
 </details>
