@@ -1,5 +1,6 @@
 package io.vproxy.pni.test;
 
+import io.vproxy.pni.exec.ast.BitFieldInfo;
 import io.vproxy.pni.exec.internal.PointerInfo;
 import io.vproxy.pni.exec.internal.VarOpts;
 import io.vproxy.pni.exec.type.ArrayTypeInfo;
@@ -82,5 +83,11 @@ public class TestCorner {
         } catch (RuntimeException e) {
             assertEquals("unable to handle array with element type void", e.getMessage());
         }
+    }
+
+    @Test
+    public void bitField() {
+        var info = Utils.generalClsTypeInfo();
+        Utils.checkUnsupported(() -> info.generateBitFieldGetterSetter(new StringBuilder(), 0, "a", new BitFieldInfo("x", 5, 3), emptyFieldVarOpts()));
     }
 }

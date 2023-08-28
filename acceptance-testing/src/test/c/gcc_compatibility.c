@@ -13,3 +13,5 @@
 #include "io_vproxy_pni_test_GCCompatibilityNormalContainUnion.impl.h"
 #include "io_vproxy_pni_test_GCCompatibilityPackedContainUnion.impl.h"
 #include "io_vproxy_pni_test_GCCompatibilityStructAlign.impl.h"
+#include "io_vproxy_pni_test_GCCompatibilityBitField.impl.h"
+#include "io_vproxy_pni_test_BitField.impl.h"

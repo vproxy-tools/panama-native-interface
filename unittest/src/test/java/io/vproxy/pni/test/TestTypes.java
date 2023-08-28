@@ -1,6 +1,7 @@
 package io.vproxy.pni.test;
 
 import io.vproxy.pni.exec.ast.AstTypeDesc;
+import io.vproxy.pni.exec.ast.BitFieldInfo;
 import io.vproxy.pni.exec.internal.AllocationForParam;
 import io.vproxy.pni.exec.internal.AllocationForReturnedValue;
 import io.vproxy.pni.exec.internal.PointerInfo;
@@ -643,6 +644,59 @@ public class TestTypes {
         Utils.checkUnsupported(() -> info.convertExtraToUpcallArgument("a", returnVarOpts(0)));
         assertEquals("return RESULT;\n",
             Utils.sbHelper(sb -> info.convertFromUpcallReturn(sb, 0, returnVarOpts(0))));
+    }
+
+    @Test
+    public void primitiveIntegerTypeInfo() {
+        var info = LongTypeInfo.get();
+        var ret = Utils.sbHelper(sb -> info.generateBitFieldGetterSetter(sb, 0, "a", new BitFieldInfo("x", 5, 3), fieldVarOpts(0)));
+        assertEquals("""
+            public long getX() {
+                var N = getA();
+                return (long) ((N >> 5) & 0b111);
+            }
+                        
+            public void setX(long x) {
+                var N = getA();
+                long MASK = (long) (0b111 << 5);
+                x = (long) (x & 0b111);
+                x = (long) (x << 5);
+                N = (long) ((N & ~MASK) | (x & MASK));
+                setA(N);
+            }
+            """, ret);
+        ret = Utils.sbHelper(sb -> info.generateBitFieldGetterSetter(sb, 0, "a", new BitFieldInfo("x", 5, 32), fieldVarOpts(0)));
+        assertEquals("""
+            public long getX() {
+                var N = getA();
+                return (long) ((N >> 5) & 0b11111111111111111111111111111111L);
+            }
+                        
+            public void setX(long x) {
+                var N = getA();
+                long MASK = (long) (0b11111111111111111111111111111111L << 5);
+                x = (long) (x & 0b11111111111111111111111111111111L);
+                x = (long) (x << 5);
+                N = (long) ((N & ~MASK) | (x & MASK));
+                setA(N);
+            }
+            """, ret);
+        ret = Utils.sbHelper(sb -> info.generateBitFieldGetterSetter(sb, 0, "a", new BitFieldInfo("x", 5, 48), fieldVarOpts(0)));
+        assertEquals("""
+            public long getX() {
+                var N = getA();
+                return (long) ((N >> 5) & 0b111111111111111111111111111111111111111111111111L);
+            }
+                        
+            public void setX(long x) {
+                var N = getA();
+                long MASK = (long) (0b111111111111111111111111111111111111111111111111L << 5);
+                x = (long) (x & 0b111111111111111111111111111111111111111111111111L);
+                x = (long) (x << 5);
+                N = (long) ((N & ~MASK) | (x & MASK));
+                setA(N);
+            }
+            """, ret);
     }
 
     @Test

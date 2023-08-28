@@ -133,4 +133,40 @@ typedef struct {
   int64_t l;
 } __attribute__((aligned(32))) GCCompatibilityStructAlign;
 
+typedef struct {
+  uint8_t  a : 1;
+  uint8_t  b : 3;
+  uint8_t : 4;
+  uint8_t  a2 : 1;
+  uint8_t  b2 : 3;
+  void* spe1;
+  uint16_t c : 2;
+  uint16_t d : 3;
+  uint16_t e : 4;
+  uint16_t : 7;
+  uint16_t c2 : 2;
+  uint16_t d2 : 3;
+  uint16_t e2 : 4;
+  void* spe2;
+  uint32_t f : 5;
+  uint32_t g : 6;
+  uint32_t h : 7;
+  uint32_t i : 8;
+  uint32_t : 6;
+  uint32_t f2 : 5;
+  uint32_t g2 : 6;
+  uint32_t h2 : 7;
+  uint32_t i2 : 8;
+  void* spe3;
+  uint64_t j : 1;
+  uint64_t k : 2;
+  uint64_t l : 22;
+  uint64_t m : 33;
+  uint64_t : 6;
+  uint64_t j2 : 1;
+  uint64_t k2 : 2;
+  uint64_t l2 : 22;
+  uint64_t m2 : 33;
+} GCCompatibilityBitField;
+
 #endif // _Included_gcc_compatibility

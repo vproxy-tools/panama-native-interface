@@ -17,6 +17,14 @@ public class TestTypesNoGen {
     }
 
     @Test
+    public void AnnoBitField() {
+        var t = AnnoBitFieldTypeInfo.get();
+        assertEquals("io.vproxy.pni.annotation.BitField", t.name());
+        assertEquals("io/vproxy/pni/annotation/BitField", t.internalName());
+        assertEquals("Lio/vproxy/pni/annotation/BitField;", t.desc());
+    }
+
+    @Test
     public void AnnoCritical() {
         var t = AnnoCriticalTypeInfo.get();
         assertEquals("io.vproxy.pni.annotation.Critical", t.name());
