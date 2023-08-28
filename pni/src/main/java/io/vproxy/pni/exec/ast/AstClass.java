@@ -450,6 +450,13 @@ public class AstClass {
             for (var f : fields) {
                 sb.append("\n");
                 f.generateJavaGetterSetter(sb, 4);
+                var bitfields = f.getBitFieldInfo();
+                if (bitfields != null) {
+                    for (var bitfield : bitfields) {
+                        sb.append("\n");
+                        f.generateJavaBitFieldGetterSetter(sb, 4, bitfield);
+                    }
+                }
             }
             sb.append("\n");
             Utils.appendIndent(sb, 4)

@@ -23,6 +23,7 @@ public class TypePool {
         record(BooleanTypeInfo.get());
 
         record(AnnoAlignTypeInfo.get());
+        record(AnnoBitFieldTypeInfo.get());
         record(AnnoCriticalTypeInfo.get());
         record(AnnoFunctionTypeInfo.get());
         record(AnnoImplTypeInfo.get());

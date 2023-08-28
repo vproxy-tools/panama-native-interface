@@ -3,7 +3,7 @@ package io.vproxy.pni.exec.type;
 import io.vproxy.pni.exec.internal.Utils;
 import io.vproxy.pni.exec.internal.VarOpts;
 
-public class IntTypeInfo extends PrimitiveTypeInfo {
+public class IntTypeInfo extends PrimitiveIntegerTypeInfo {
     @Override
     public String internalName() {
         return "int";

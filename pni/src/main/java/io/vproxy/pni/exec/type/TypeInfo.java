@@ -1,5 +1,6 @@
 package io.vproxy.pni.exec.type;
 
+import io.vproxy.pni.exec.ast.BitFieldInfo;
 import io.vproxy.pni.exec.internal.AllocationForParam;
 import io.vproxy.pni.exec.internal.AllocationForReturnedValue;
 import io.vproxy.pni.exec.internal.Utils;
@@ -101,6 +102,10 @@ public abstract class TypeInfo {
     }
 
     abstract public void generateGetterSetter(StringBuilder sb, int indent, String fieldName, VarOpts opts);
+
+    public void generateBitFieldGetterSetter(StringBuilder sb, int indent, String name, BitFieldInfo bitfield, VarOpts varOpts) {
+        throw new UnsupportedOperationException();
+    }
 
     abstract public void generateConstructor(StringBuilder sb, int indent, String fieldName, VarOpts opts);
 

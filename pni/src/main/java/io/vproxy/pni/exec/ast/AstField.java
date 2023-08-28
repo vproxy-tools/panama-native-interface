@@ -52,6 +52,39 @@ public class AstField {
                 errors.add(path + ": invalid @Name(" + name + ")");
             }
         }
+        var bitfieldAnnoOpt = annos.stream().filter(a -> a.typeRef != null && a.typeRef.name().equals(BitFieldClassName)).findFirst();
+        if (bitfieldAnnoOpt.isPresent()) {
+            var infoLs = validateAndGetBitFieldInfo(path, errors);
+            if (infoLs != null) {
+                int totalSize = 0;
+                for (var info : infoLs) {
+                    if (!Utils.isValidName(info.name, false)) {
+                        errors.add(path + ": invalid @BitField name: " + info.name);
+                    }
+                    if (info.bit < 1) {
+                        errors.add(path + ": invalid @BitField bit for " + info.name + ": " + info.bit);
+                    }
+                    totalSize += info.bit;
+                }
+                int allowedSize = 0;
+                if (typeRef != null) {
+                    if (typeRef instanceof IntTypeInfo) {
+                        allowedSize = 32;
+                    } else if (typeRef instanceof LongTypeInfo) {
+                        allowedSize = 64;
+                    } else if (typeRef instanceof ShortTypeInfo) {
+                        allowedSize = 16;
+                    } else if (typeRef instanceof ByteTypeInfo) {
+                        allowedSize = 8;
+                    } else {
+                        errors.add(path + ": cannot use @BitField on " + typeRef.name() + " fields");
+                    }
+                }
+                if (allowedSize > 0 && totalSize > allowedSize) {
+                    errors.add(path + ": invalid @BitField, bit size (" + totalSize + ") is larger than the field (" + allowedSize + ")");
+                }
+            }
+        }
     }
 
     public String nativeName() {
@@ -90,6 +123,61 @@ public class AstField {
         return Utils.getAlignPacked(annos);
     }
 
+    public List<BitFieldInfo> getBitFieldInfo() {
+        return validateAndGetBitFieldInfo("", new ArrayList<>());
+    }
+
+    private List<BitFieldInfo> validateAndGetBitFieldInfo(String path, List<String> errors) {
+        path = path + "#anno(io.vproxy.pni.annotation.BitField)";
+        var opt = annos.stream().filter(a -> a.typeRef != null && a.typeRef.name().equals(BitFieldClassName)).findFirst();
+        if (opt.isEmpty()) {
+            return null;
+        }
+        var anno = opt.get();
+        var vNames = anno.values.stream().filter(v -> v.name.equals("name")).findFirst();
+        var vBits = anno.values.stream().filter(v -> v.name.equals("bit")).findFirst();
+        if (vNames.isEmpty() || vBits.isEmpty()) {
+            errors.add(path + ": annotation field(name or bit) not specified");
+            return null;
+        }
+        if (!(vNames.get().value instanceof List) || !(vBits.get().value instanceof List)) {
+            errors.add(path + ": invalid type for annotation field(name or bit)");
+            return null;
+        }
+        //noinspection rawtypes
+        var rNames = (List) vNames.get().value;
+        for (Object o : rNames) {
+            if (!(o instanceof String)) {
+                errors.add(path + ": name is not a list of strings");
+                return null;
+            }
+        }
+        //noinspection rawtypes
+        var rBits = (List) vBits.get().value;
+        for (Object o : rBits) {
+            if (!(o instanceof Integer)) {
+                errors.add(path + ": bit is not a list of integers");
+                return null;
+            }
+        }
+        if (rNames.size() != rBits.size()) {
+            errors.add(path + ": name and bit length mismatch");
+            return null;
+        }
+        //noinspection unchecked
+        var names = (List<String>) rNames;
+        //noinspection unchecked
+        var bits = (List<Integer>) rBits;
+        var ret = new ArrayList<BitFieldInfo>();
+        int total = 0;
+        for (int i = 0; i < names.size(); ++i) {
+            int b = bits.get(i);
+            ret.add(new BitFieldInfo(names.get(i), total, b));
+            total += b;
+        }
+        return ret;
+    }
+
     public long getAlignmentBytes(boolean packed) {
         if (isAlignPacked()) {
             return 0;
@@ -109,16 +197,35 @@ public class AstField {
     }
 
     public void generateC(StringBuilder sb, int indent) {
-        Utils.appendIndent(sb, indent);
         if (typeRef instanceof ClassTypeInfo) {
             var clsTypeInfo = (ClassTypeInfo) typeRef;
             var cls = clsTypeInfo.getClazz();
             if (cls.isUnionEmbed()) {
+                Utils.appendIndent(sb, indent);
                 cls.generateC(sb, indent, false);
                 return;
             }
         }
-        sb.append(typeRef.nativeType(nativeName(), varOpts())).append(";");
+        var bitfields = getBitFieldInfo();
+        if (bitfields == null) {
+            Utils.appendIndent(sb, indent);
+            sb.append(typeRef.nativeType(nativeName(), varOpts())).append(";");
+        } else {
+            var tname = typeRef.nativeType(null, varOpts());
+            for (var b : bitfields) {
+                Utils.appendIndent(sb, indent)
+                    .append(tname).append(" ").append(b.name).append(" : ").append(b.bit).append(";\n");
+            }
+            var last = bitfields.get(bitfields.size() - 1);
+            if (last.offset + last.bit < getNativeMemorySize() * 8) {
+                Utils.appendIndent(sb, indent)
+                    .append(tname).append(" : ").append(getNativeMemorySize() * 8 - (last.offset + last.bit)).append(";\n");
+            }
+            // add indent for padding
+            if (padding > 0) {
+                Utils.appendIndent(sb, indent);
+            }
+        }
         if (padding > 0) {
             long p = padding;
             sb.append(" /* padding */");
@@ -150,6 +257,10 @@ public class AstField {
 
     public void generateJavaGetterSetter(StringBuilder sb, int indent) {
         typeRef.generateGetterSetter(sb, indent, name, varOpts());
+    }
+
+    public void generateJavaBitFieldGetterSetter(StringBuilder sb, int indent, BitFieldInfo bitfield) {
+        typeRef.generateBitFieldGetterSetter(sb, indent, name, bitfield, varOpts());
     }
 
     public void generateJavaConstructor(StringBuilder sb, int indent) {
