@@ -13,6 +13,7 @@ public class Consts {
     public static final String IncludeClassName = pniAnnoPackage + ".Include";
     public static final String LenClassName = pniAnnoPackage + ".Len";
     public static final String NameClassName = pniAnnoPackage + ".Name";
+    public static final String PointerOnlyClassName = pniAnnoPackage + ".PointerOnly";
     public static final String PointerClassName = pniAnnoPackage + ".Pointer";
     public static final String RawClassName = pniAnnoPackage + ".Raw";
     public static final String StructClassName = pniAnnoPackage + ".Struct";

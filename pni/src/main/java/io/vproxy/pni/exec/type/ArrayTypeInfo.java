@@ -36,7 +36,11 @@ public class ArrayTypeInfo extends TypeInfo {
     @Override
     public void checkType(List<String> errors, String path, VarOpts opts, boolean upcall) {
         super.checkType(errors, path, opts, upcall);
-        if (!(elementType instanceof PrimitiveTypeInfo) && !(elementType instanceof ClassTypeInfo)) {
+        if (elementType instanceof PrimitiveTypeInfo || elementType instanceof ClassTypeInfo) {
+            if (elementType.nativeMemorySize(opts) == 0) {
+                errors.add(path + ": " + name() + " is not supported because the element type byteSize is 0");
+            }
+        } else {
             errors.add(path + ": " + name() + " is not supported, only primitive and custom types can be used with array");
         }
         if (upcall && opts.isRaw()) {

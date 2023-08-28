@@ -64,6 +64,12 @@ public class AstClass {
             m.validate(path, errors, isUpcall());
         }
 
+        if (isPointerOnly()) {
+            if (!fields.isEmpty()) {
+                errors.add(path + ": cannot define fields in this type because it is marked with @PointerOnly");
+            }
+        }
+
         var names = new HashSet<String>();
         for (var f : fields) {
             if (!names.add(f.nativeName())) {
@@ -176,6 +182,10 @@ public class AstClass {
 
     public boolean isUpcall() {
         return annos.stream().anyMatch(a -> a.typeRef != null && a.typeRef.name().equals(UpcallClassName));
+    }
+
+    public boolean isPointerOnly() {
+        return annos.stream().anyMatch(a -> a.typeRef != null && a.typeRef.name().equals(PointerOnlyClassName));
     }
 
     public boolean isUnionEmbed() {
