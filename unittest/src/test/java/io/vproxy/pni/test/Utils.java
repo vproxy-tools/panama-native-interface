@@ -41,4 +41,13 @@ public class Utils {
         }});
         return new ClassTypeInfo(astClass);
     }
+
+    public static ClassTypeInfo emptyClsTypeInfo() {
+        var astClass = new AstClass();
+        astClass.name = "a/b/PNIEmptyCls";
+        astClass.annos.add(new AstAnno() {{
+            typeRef = AnnoStructTypeInfo.get();
+        }});
+        return new ClassTypeInfo(astClass);
+    }
 }

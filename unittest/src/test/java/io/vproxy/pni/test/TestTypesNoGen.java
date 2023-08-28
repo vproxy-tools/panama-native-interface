@@ -65,6 +65,14 @@ public class TestTypesNoGen {
     }
 
     @Test
+    public void AnnoPointerOnly() {
+        var t = AnnoPointerOnlyTypeInfo.get();
+        assertEquals("io.vproxy.pni.annotation.PointerOnly", t.name());
+        assertEquals("io/vproxy/pni/annotation/PointerOnly", t.internalName());
+        assertEquals("Lio/vproxy/pni/annotation/PointerOnly;", t.desc());
+    }
+
+    @Test
     public void AnnoPointer() {
         var t = AnnoPointerTypeInfo.get();
         assertEquals("io.vproxy.pni.annotation.Pointer", t.name());

@@ -1243,6 +1243,11 @@ public class TestTypes {
         assertEquals("[La/b/PNICls;", info.desc());
         checkTypeField(info, POINTER | LEN);
         checkTypeParam(info, POINTER | LEN | RAW);
+        {
+            var i = new ArrayTypeInfo(Utils.emptyClsTypeInfo());
+            checkError(() -> i.checkType(errors, "?", fieldVarOpts(0), false),
+                "?: a.b.PNIEmptyCls[] is not supported because the element type byteSize is 0");
+        }
         assertEquals("buf", info.nativeEnvType(returnVarOpts(0)));
         assertEquals("PNIBuf a", info.nativeType("a", fieldVarOpts(0)));
         assertEquals("PNIBuf", info.nativeType(null, fieldVarOpts(0)));
