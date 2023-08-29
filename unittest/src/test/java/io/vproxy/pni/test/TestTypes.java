@@ -986,6 +986,7 @@ public class TestTypes {
         assertEquals(4, info.nativeMemorySize(fieldVarOpts(0)));
         assertEquals(8, info.nativeMemorySize(fieldVarOpts(POINTER)));
         assertEquals(2, info.nativeMemoryAlign(fieldVarOpts(0)));
+        assertEquals(8, info.nativeMemoryAlign(fieldVarOpts(POINTER)));
         assertEquals("a.b.Cls.LAYOUT", info.memoryLayoutForField(fieldVarOpts(0)));
         assertEquals("ValueLayout.ADDRESS_UNALIGNED", info.memoryLayoutForField(fieldVarOpts(POINTER)));
         assertEquals("a.b.Cls", info.javaTypeForField(fieldVarOpts(0)));

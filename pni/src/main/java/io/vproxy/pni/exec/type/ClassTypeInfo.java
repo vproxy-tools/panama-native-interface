@@ -77,6 +77,9 @@ public class ClassTypeInfo extends TypeInfo {
 
     @Override
     public long nativeMemoryAlign(VarOpts opts) {
+        if (opts.isPointer()) {
+            return 8;
+        }
         return cls.largestAlignmentBytes();
     }
 
