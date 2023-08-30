@@ -3,6 +3,7 @@ package io.vproxy.pni;
 import io.vproxy.pni.impl.ArenaAllocator;
 import io.vproxy.pni.impl.DummyAllocator;
 import io.vproxy.pni.impl.SegmentAllocatorAllocator;
+import io.vproxy.pni.impl.UnsafeAllocator;
 
 import java.lang.foreign.Arena;
 import java.lang.foreign.MemorySegment;
@@ -29,6 +30,10 @@ public interface Allocator extends AutoCloseable {
         return of(Arena.ofConfined());
     }
 
+    static Allocator ofShared() {
+        return of(Arena.ofShared());
+    }
+
     static Allocator of(SegmentAllocator allocator) {
         return new SegmentAllocatorAllocator(allocator);
     }
@@ -40,6 +45,10 @@ public interface Allocator extends AutoCloseable {
         } else {
             return provider.create();
         }
+    }
+
+    static Allocator ofUnsafe() {
+        return new UnsafeAllocator();
     }
 
     static Allocator ofDummy() {
