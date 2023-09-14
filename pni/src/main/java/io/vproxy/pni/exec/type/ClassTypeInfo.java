@@ -43,6 +43,11 @@ public class ClassTypeInfo extends TypeInfo {
         if (getClazz().isInterface) {
             errors.add(path + ": unable to use interface type: " + name);
         }
+        if (getClazz().isPointerOnly()) {
+            if (!opts.isPointer()) {
+                errors.add(path + ": " + name + " is annotated with @PointerOnly, but used as non-pointer");
+            }
+        }
     }
 
     @Override

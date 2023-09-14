@@ -1,5 +1,6 @@
 package io.vproxy.pni.test;
 
+import io.vproxy.pni.exec.ast.AstAnno;
 import io.vproxy.pni.exec.ast.AstTypeDesc;
 import io.vproxy.pni.exec.ast.BitFieldInfo;
 import io.vproxy.pni.exec.internal.AllocationForParam;
@@ -975,8 +976,19 @@ public class TestTypes {
         checkTypeParam(info, POINTER);
         {
             info.getClazz().isInterface = true;
-            checkError(() -> info.checkType(errors, "?", fieldVarOpts(0), false), "?: unable to use interface type: a.b.PNICls");
+            {
+                checkError(() -> info.checkType(errors, "?", fieldVarOpts(0), false), "?: unable to use interface type: a.b.PNICls");
+            }
             info.getClazz().isInterface = false;
+        }
+        {
+            var anno = new AstAnno();
+            anno.typeRef = AnnoPointerOnlyTypeInfo.get();
+            info.getClazz().annos.add(anno);
+            {
+                checkError(() -> info.checkType(errors, "?", fieldVarOpts(0), false), "?: a.b.PNICls is annotated with @PointerOnly, but used as non-pointer");
+            }
+            info.getClazz().annos.remove(anno);
         }
         assertEquals("Cls", info.nativeEnvType(returnVarOpts(0)));
         assertEquals("Cls a", info.nativeType("a", fieldVarOpts(0)));
