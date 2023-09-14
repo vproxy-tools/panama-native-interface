@@ -22,6 +22,10 @@ public class SunUnsafe {
         return MemorySegment.ofAddress(U.allocateMemory(size)).reinterpret(size);
     }
 
+    public static void setMemory(long address, long bytes, byte value) {
+        U.setMemory(address, bytes, value);
+    }
+
     public static void freeMemory(long address) {
         U.freeMemory(address);
     }
