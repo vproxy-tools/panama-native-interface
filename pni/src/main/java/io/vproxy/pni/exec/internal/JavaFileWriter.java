@@ -18,7 +18,7 @@ public class JavaFileWriter {
     public void flush(File baseDir, CompilerOptions opts) {
         var javaCode = cls.generateJava();
         var hash = Utils.sha256(javaCode);
-        javaCode += Utils.metadata(opts);
+        javaCode += Utils.metadata(opts, Main.JAVA_GEN_VERSION);
         javaCode += "// sha256:" + hash + "\n";
         var file = Utils.ensureJavaFile(baseDir, cls.fullName());
         if (opts.verbose()) {

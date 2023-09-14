@@ -10,15 +10,22 @@ import java.util.regex.Pattern;
 
 public class Main {
     public static final String VERSION;
+    public static final String JAVA_GEN_VERSION;
+    public static final String C_GEN_VERSION;
 
     static {
         final String _VERSION = "21.0.0.9-dev"; // _THE_VERSION_
+        final String _JAVA_GEN_VERSION = "21.0.0.8";
+        final String _C_GEN_VERSION = "21.0.0.8";
         var testing = System.getProperty("io.vproxy.pni.Testing", "false");
         if (testing.equals("true")) {
-            VERSION = "test";
+            JAVA_GEN_VERSION = "test";
+            C_GEN_VERSION = "test";
         } else {
-            VERSION = _VERSION;
+            JAVA_GEN_VERSION = _JAVA_GEN_VERSION;
+            C_GEN_VERSION = _C_GEN_VERSION;
         }
+        VERSION = _VERSION;
     }
 
     private static final String HELP_STR = (
@@ -119,6 +126,8 @@ public class Main {
                 verbose = true;
             } else if (a.equals("-version") || a.equals("--version")) {
                 System.out.println("pni " + VERSION);
+                System.out.println("gen.java " + JAVA_GEN_VERSION);
+                System.out.println("gen.c " + C_GEN_VERSION);
                 return;
             } else {
                 System.out.println("unexpected argument " + a);

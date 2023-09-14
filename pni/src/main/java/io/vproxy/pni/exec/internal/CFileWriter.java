@@ -25,7 +25,7 @@ public class CFileWriter {
             return;
         }
         var hash = Utils.sha256(cCode);
-        cCode += Utils.metadata(opts);
+        cCode += Utils.metadata(opts, Main.C_GEN_VERSION);
         cCode += "// sha256:" + hash + "\n";
         String fileName = fileName();
         Path path = Path.of(dir.getAbsolutePath(), fileName);

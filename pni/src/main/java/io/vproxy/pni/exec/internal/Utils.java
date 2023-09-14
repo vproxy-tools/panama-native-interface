@@ -370,9 +370,9 @@ public class Utils {
         return false;
     }
 
-    public static String metadata(CompilerOptions opts) {
+    public static String metadata(CompilerOptions opts, String version) {
         var sb = new StringBuilder();
-        sb.append("// metadata.generator-version: pni ").append(Main.VERSION).append("\n");
+        sb.append("// metadata.generator-version: pni ").append(version).append("\n");
         for (var entry : opts.metadata().entrySet()) {
             var k = entry.getKey();
             var v = entry.getValue();
