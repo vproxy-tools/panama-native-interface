@@ -26,10 +26,16 @@ public class AstClass {
         this.name = classNode.name;
         Utils.readAnnotations(annos, classNode.visibleAnnotations);
         for (var f : classNode.fields) {
+            if ((f.access & Opcodes.ACC_STATIC) == Opcodes.ACC_STATIC) {
+                continue;
+            }
             this.fields.add(new AstField(f));
         }
         for (var m : classNode.methods) {
             if (m.name.equals("<init>") || m.name.equals("<cinit>")) {
+                continue;
+            }
+            if ((m.access & Opcodes.ACC_STATIC) == Opcodes.ACC_STATIC) {
                 continue;
             }
             this.methods.add(new AstMethod(m));
