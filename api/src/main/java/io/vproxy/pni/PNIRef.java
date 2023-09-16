@@ -7,6 +7,7 @@ import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodType;
 import java.lang.invoke.VarHandle;
+import java.util.Objects;
 
 public class PNIRef<T> {
     private static final Arena UPCALL_STUB_ARENA = Arena.ofShared(); // should not be released
@@ -39,23 +40,42 @@ public class PNIRef<T> {
     );
     public final MemorySegment MEMORY;
 
-    private final long index;
     private final T ref;
 
-    private PNIRef(T ref) {
-        // ref is nullable
-        MEMORY = SunUnsafe.allocateMemory(LAYOUT.byteSize());
+    private PNIRef(T ref, Options opts) {
+        Objects.requireNonNull(ref);
+        if (opts.userdataByteSize < 0)
+            throw new IllegalArgumentException("userdataMemSize(" + opts.userdataByteSize + ") < 0");
+
+        MEMORY = SunUnsafe.allocateMemory(LAYOUT.byteSize() + opts.userdataByteSize);
+        SunUnsafe.setMemory(MEMORY.address(), MEMORY.byteSize(), (byte) 0);
+        if (opts.userdataByteSize > 0) {
+            var ud = MEMORY.asSlice(LAYOUT.byteSize());
+            setUserdata(ud);
+        }
         this.ref = ref;
 
         long index = holder.store(this);
-        this.index = index;
         indexVH.set(MEMORY, index);
 
         releaseVH.set(MEMORY, UPCALL_STUB_RELEASE);
     }
 
+    public static class Options {
+        public long userdataByteSize;
+
+        public Options setUserdataByteSize(long userdataByteSize) {
+            this.userdataByteSize = userdataByteSize;
+            return this;
+        }
+    }
+
     public static <T> PNIRef<T> of(T ref) {
-        return new PNIRef<>(ref);
+        return new PNIRef<>(ref, new Options());
+    }
+
+    public static <T> PNIRef<T> of(T ref, Options opts) {
+        return new PNIRef<>(ref, opts);
     }
 
     public static <T> PNIRef<T> of(MemorySegment seg) {
@@ -64,7 +84,6 @@ public class PNIRef<T> {
 
     private PNIRef(MemorySegment MEMORY) {
         this.MEMORY = MEMORY.reinterpret(LAYOUT.byteSize());
-        this.index = 0;
         this.ref = null;
     }
 
@@ -162,12 +181,20 @@ public class PNIRef<T> {
             super(func);
         }
 
+        private Func(CallSite<T> func, Options opts) {
+            super(func, opts);
+        }
+
         private Func(MemorySegment MEMORY) {
             super(MEMORY);
         }
 
         public static <T> Func<T> of(CallSite<T> func) {
             return new Func<>(func);
+        }
+
+        public static <T> Func<T> of(CallSite<T> func, Options options) {
+            return new Func<>(func, options);
         }
 
         public static <T> Func<T> of(MemorySegment MEMORY) {

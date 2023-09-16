@@ -50,26 +50,43 @@ public abstract class PNIFunc<T> {
         ).withName("union0")
     );
     public final MemorySegment MEMORY;
-    private final long index;
     private final CallSite<T> func;
 
     protected PNIFunc(CallSite<T> func) {
-        Objects.requireNonNull(func);
+        this(func, new Options());
+    }
 
-        MEMORY = SunUnsafe.allocateMemory(LAYOUT.byteSize());
+    protected PNIFunc(CallSite<T> func, Options opts) {
+        Objects.requireNonNull(func);
+        if (opts.userdataByteSize < 0)
+            throw new IllegalArgumentException("userdataMemSize(" + opts.userdataByteSize + ") < 0");
+
+        MEMORY = SunUnsafe.allocateMemory(LAYOUT.byteSize() + opts.userdataByteSize);
+        SunUnsafe.setMemory(MEMORY.address(), MEMORY.byteSize(), (byte) 0);
+        if (opts.userdataByteSize > 0) {
+            var ud = MEMORY.asSlice(LAYOUT.byteSize());
+            setUserdata(ud);
+        }
         this.func = func;
 
         var index = holder.store(this);
-        this.index = index;
         indexVH.set(MEMORY, index);
 
         funcVH.set(MEMORY, UPCALL_STUB_CALL);
         releaseVH.set(MEMORY, UPCALL_STUB_RELEASE);
     }
 
+    public static class Options {
+        public long userdataByteSize;
+
+        public Options setUserdataByteSize(long userdataByteSize) {
+            this.userdataByteSize = userdataByteSize;
+            return this;
+        }
+    }
+
     protected PNIFunc(MemorySegment MEMORY) {
         this.MEMORY = MEMORY.reinterpret(LAYOUT.byteSize());
-        this.index = 0;
         this.func = null;
     }
 
@@ -199,12 +216,20 @@ public abstract class PNIFunc<T> {
             super(func);
         }
 
+        private VoidFunc(CallSite<Void> func, Options opts) {
+            super(func, opts);
+        }
+
         private VoidFunc(MemorySegment MEMORY) {
             super(MEMORY);
         }
 
         public static VoidFunc of(CallSite<Void> func) {
             return new VoidFunc(func);
+        }
+
+        public static VoidFunc of(CallSite<Void> func, Options opts) {
+            return new VoidFunc(func, opts);
         }
 
         public static VoidFunc of(MemorySegment MEMORY) {
