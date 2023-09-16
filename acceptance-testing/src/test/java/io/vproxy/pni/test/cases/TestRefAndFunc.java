@@ -4,10 +4,16 @@ import io.vproxy.pni.Allocator;
 import io.vproxy.pni.PNIEnv;
 import io.vproxy.pni.PNIFunc;
 import io.vproxy.pni.PNIRef;
+import io.vproxy.pni.array.IntArray;
+import io.vproxy.pni.array.LongArray;
+import io.vproxy.pni.array.ShortArray;
+import io.vproxy.pni.test.NativeCheck;
 import io.vproxy.pni.test.ObjectStruct;
 import io.vproxy.pni.test.RefAndFuncFields;
+import io.vproxy.pni.test.Userdata;
 import org.junit.Test;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -181,5 +187,70 @@ public class TestRefAndFunc {
             o.getRef3().close();
         }
         assertEquals(sizeR, PNIRef.currentRefStorageSize());
+    }
+
+    @Test
+    public void refUserData() {
+        try (var allocator = Allocator.ofConfined()) {
+            var env = new PNIEnv(allocator);
+
+            List<Integer> ls = new ArrayList<>();
+            var ref = PNIRef.of(ls, new PNIRef.Options().setUserdataByteSize(Userdata.LAYOUT.byteSize()));
+            var udMem = ref.getUserdata();
+            assertNotNull(udMem);
+
+            var ud = new Userdata(udMem);
+            assertEquals(0, ud.getX());
+            assertEquals(0L, ud.getY());
+            assertEquals((short) 0, ud.getZ());
+
+            ud.setX(12);
+            ud.setY(34);
+            ud.setZ((short) 56);
+
+            var x = new IntArray(allocator, 1);
+            var y = new LongArray(allocator, 1);
+            var z = new ShortArray(allocator, 1);
+
+            NativeCheck.get().checkUserdataForRef(env, ref, x, y, z);
+
+            assertEquals(12, x.get(0));
+            assertEquals(34L, y.get(0));
+            assertEquals((short) 56, z.get(0));
+
+            ref.close();
+        }
+    }
+
+    @Test
+    public void funcUserData() {
+        try (var allocator = Allocator.ofConfined()) {
+            var env = new PNIEnv(allocator);
+
+            var func = PNIFunc.VoidFunc.of(v -> 0, new PNIFunc.Options().setUserdataByteSize(Userdata.LAYOUT.byteSize()));
+            var udMem = func.getUserdata();
+            assertNotNull(udMem);
+
+            var ud = new Userdata(udMem);
+            assertEquals(0, ud.getX());
+            assertEquals(0L, ud.getY());
+            assertEquals((short) 0, ud.getZ());
+
+            ud.setX(12);
+            ud.setY(34);
+            ud.setZ((short) 56);
+
+            var x = new IntArray(allocator, 1);
+            var y = new LongArray(allocator, 1);
+            var z = new ShortArray(allocator, 1);
+
+            NativeCheck.get().checkUserdataForFunc(env, func, x, y, z);
+
+            assertEquals(12, x.get(0));
+            assertEquals(34L, y.get(0));
+            assertEquals((short) 56, z.get(0));
+
+            func.close();
+        }
     }
 }
