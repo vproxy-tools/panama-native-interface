@@ -9,6 +9,7 @@ import org.junit.runner.RunWith;
     TestDescParsing.class,
     TestObjectHolder.class,
     TestValidation.class,
+    TestAllocator.class,
 })
 @RunWith(org.junit.runners.Suite.class)
 public class Suite {

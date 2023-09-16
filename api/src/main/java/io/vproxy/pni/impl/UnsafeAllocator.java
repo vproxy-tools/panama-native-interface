@@ -11,6 +11,10 @@ public class UnsafeAllocator implements Allocator {
 
     @Override
     public MemorySegment allocate(long size) {
+        if (size == 0) {
+            return MemorySegment.NULL;
+        }
+
         MemorySegment seg = SunUnsafe.allocateMemory(size);
         SunUnsafe.setMemory(seg.address(), seg.byteSize(), (byte) 0);
         int currentCap = allocatedAddresses.length;
