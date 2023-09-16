@@ -80,12 +80,20 @@ public class StructD {
             super(func);
         }
 
+        private Func(io.vproxy.pni.CallSite<StructD> func, Options opts) {
+            super(func, opts);
+        }
+
         private Func(MemorySegment MEMORY) {
             super(MEMORY);
         }
 
         public static Func of(io.vproxy.pni.CallSite<StructD> func) {
             return new Func(func);
+        }
+
+        public static Func of(io.vproxy.pni.CallSite<StructD> func, Options opts) {
+            return new Func(func, opts);
         }
 
         public static Func of(MemorySegment MEMORY) {
@@ -99,4 +107,4 @@ public class StructD {
     }
 }
 // metadata.generator-version: pni test
-// sha256:87682263e911383570160864f113838b2102c4dbe101189b810e07ad3096a457
+// sha256:a8df79c9f238d9faa6ea7126bca929ea45dd3b3bd25a895768ac836b442deab6

@@ -1173,12 +1173,20 @@ public class Null {
             super(func);
         }
 
+        private Func(io.vproxy.pni.CallSite<Null> func, Options opts) {
+            super(func, opts);
+        }
+
         private Func(MemorySegment MEMORY) {
             super(MEMORY);
         }
 
         public static Func of(io.vproxy.pni.CallSite<Null> func) {
             return new Func(func);
+        }
+
+        public static Func of(io.vproxy.pni.CallSite<Null> func, Options opts) {
+            return new Func(func, opts);
         }
 
         public static Func of(MemorySegment MEMORY) {
@@ -1192,4 +1200,4 @@ public class Null {
     }
 }
 // metadata.generator-version: pni test
-// sha256:2fd68eb56b5c6caf36f1024ab5bf3bd23a890edfaf7ba7fe040b044bc91aa886
+// sha256:1825af0b4d7d5215e99123762be5fae43d5a3f04706e9cdc7e4b6bb337fba6f1

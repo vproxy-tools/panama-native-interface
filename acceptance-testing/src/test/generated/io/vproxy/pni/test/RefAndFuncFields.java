@@ -300,12 +300,20 @@ public class RefAndFuncFields {
             super(func);
         }
 
+        private Func(io.vproxy.pni.CallSite<RefAndFuncFields> func, Options opts) {
+            super(func, opts);
+        }
+
         private Func(MemorySegment MEMORY) {
             super(MEMORY);
         }
 
         public static Func of(io.vproxy.pni.CallSite<RefAndFuncFields> func) {
             return new Func(func);
+        }
+
+        public static Func of(io.vproxy.pni.CallSite<RefAndFuncFields> func, Options opts) {
+            return new Func(func, opts);
         }
 
         public static Func of(MemorySegment MEMORY) {
@@ -319,4 +327,4 @@ public class RefAndFuncFields {
     }
 }
 // metadata.generator-version: pni test
-// sha256:c232de15519c99898726b030dd321f1becc255912dd8e75bdca20b636a9541f7
+// sha256:ebfdc6be482de5f662c7efd46656d77867bd2fc79a1e053a0f1176386433753b

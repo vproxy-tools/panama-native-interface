@@ -127,12 +127,20 @@ public class GCCCompatibilityPackedAlignField {
             super(func);
         }
 
+        private Func(io.vproxy.pni.CallSite<GCCCompatibilityPackedAlignField> func, Options opts) {
+            super(func, opts);
+        }
+
         private Func(MemorySegment MEMORY) {
             super(MEMORY);
         }
 
         public static Func of(io.vproxy.pni.CallSite<GCCCompatibilityPackedAlignField> func) {
             return new Func(func);
+        }
+
+        public static Func of(io.vproxy.pni.CallSite<GCCCompatibilityPackedAlignField> func, Options opts) {
+            return new Func(func, opts);
         }
 
         public static Func of(MemorySegment MEMORY) {
@@ -146,4 +154,4 @@ public class GCCCompatibilityPackedAlignField {
     }
 }
 // metadata.generator-version: pni test
-// sha256:95ac4a8a1fd9c6c2a8cdae7d0630bc4b868a0a20a490c5fa4a86447795b91f0a
+// sha256:a46c508ab8f58881dce0a162cd10c6072b2e369bac7dd8f41f4e0305d2516e0c

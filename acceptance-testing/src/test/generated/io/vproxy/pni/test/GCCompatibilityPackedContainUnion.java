@@ -193,12 +193,20 @@ public class GCCompatibilityPackedContainUnion {
             super(func);
         }
 
+        private Func(io.vproxy.pni.CallSite<GCCompatibilityPackedContainUnion> func, Options opts) {
+            super(func, opts);
+        }
+
         private Func(MemorySegment MEMORY) {
             super(MEMORY);
         }
 
         public static Func of(io.vproxy.pni.CallSite<GCCompatibilityPackedContainUnion> func) {
             return new Func(func);
+        }
+
+        public static Func of(io.vproxy.pni.CallSite<GCCompatibilityPackedContainUnion> func, Options opts) {
+            return new Func(func, opts);
         }
 
         public static Func of(MemorySegment MEMORY) {
@@ -212,4 +220,4 @@ public class GCCompatibilityPackedContainUnion {
     }
 }
 // metadata.generator-version: pni test
-// sha256:cfed04f3ecd6d42952cf79e6cb98b95d3d1654def3ed277ae51ce0cde93e0122
+// sha256:63de06e922f421f1f32623ed2bf4e39aa21394626e5c53b16dc4779b4cb24b7b

@@ -86,12 +86,20 @@ public class UnionEmbedded {
             super(func);
         }
 
+        private Func(io.vproxy.pni.CallSite<UnionEmbedded> func, Options opts) {
+            super(func, opts);
+        }
+
         private Func(MemorySegment MEMORY) {
             super(MEMORY);
         }
 
         public static Func of(io.vproxy.pni.CallSite<UnionEmbedded> func) {
             return new Func(func);
+        }
+
+        public static Func of(io.vproxy.pni.CallSite<UnionEmbedded> func, Options opts) {
+            return new Func(func, opts);
         }
 
         public static Func of(MemorySegment MEMORY) {
@@ -105,4 +113,4 @@ public class UnionEmbedded {
     }
 }
 // metadata.generator-version: pni test
-// sha256:a02fd14b1f628101f1559c38d2ff02e3b56f68e3e2ece6b8306ef0e2c7e81e0b
+// sha256:21e41ede4eb64de4a2549882a4a560ba0e8a1c3c9548b162ba2d95a13fac78d6

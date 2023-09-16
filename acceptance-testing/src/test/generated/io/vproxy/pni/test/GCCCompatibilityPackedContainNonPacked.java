@@ -118,12 +118,20 @@ public class GCCCompatibilityPackedContainNonPacked {
             super(func);
         }
 
+        private Func(io.vproxy.pni.CallSite<GCCCompatibilityPackedContainNonPacked> func, Options opts) {
+            super(func, opts);
+        }
+
         private Func(MemorySegment MEMORY) {
             super(MEMORY);
         }
 
         public static Func of(io.vproxy.pni.CallSite<GCCCompatibilityPackedContainNonPacked> func) {
             return new Func(func);
+        }
+
+        public static Func of(io.vproxy.pni.CallSite<GCCCompatibilityPackedContainNonPacked> func, Options opts) {
+            return new Func(func, opts);
         }
 
         public static Func of(MemorySegment MEMORY) {
@@ -137,4 +145,4 @@ public class GCCCompatibilityPackedContainNonPacked {
     }
 }
 // metadata.generator-version: pni test
-// sha256:5c36d2311b1942bd8611d2dd4da27534a41f9bf3386d804afb7a7203a6356348
+// sha256:2367928199eb22d20ed80e0f41377f5f1a1012a3e932ee09aef523ed28ec2264

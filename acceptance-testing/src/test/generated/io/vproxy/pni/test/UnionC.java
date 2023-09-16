@@ -80,12 +80,20 @@ public class UnionC {
             super(func);
         }
 
+        private Func(io.vproxy.pni.CallSite<UnionC> func, Options opts) {
+            super(func, opts);
+        }
+
         private Func(MemorySegment MEMORY) {
             super(MEMORY);
         }
 
         public static Func of(io.vproxy.pni.CallSite<UnionC> func) {
             return new Func(func);
+        }
+
+        public static Func of(io.vproxy.pni.CallSite<UnionC> func, Options opts) {
+            return new Func(func, opts);
         }
 
         public static Func of(MemorySegment MEMORY) {
@@ -99,4 +107,4 @@ public class UnionC {
     }
 }
 // metadata.generator-version: pni test
-// sha256:dba5ea1d1623f8d1872ff052882c79a0f3557f5f987686ea958537c0b7dd730c
+// sha256:5361b172cd0b769c020bc97e49112aaf8c14d1ed08db2559e89bac977fcd6504

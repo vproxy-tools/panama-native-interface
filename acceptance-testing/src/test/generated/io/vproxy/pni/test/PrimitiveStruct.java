@@ -1900,12 +1900,20 @@ public class PrimitiveStruct {
             super(func);
         }
 
+        private Func(io.vproxy.pni.CallSite<PrimitiveStruct> func, Options opts) {
+            super(func, opts);
+        }
+
         private Func(MemorySegment MEMORY) {
             super(MEMORY);
         }
 
         public static Func of(io.vproxy.pni.CallSite<PrimitiveStruct> func) {
             return new Func(func);
+        }
+
+        public static Func of(io.vproxy.pni.CallSite<PrimitiveStruct> func, Options opts) {
+            return new Func(func, opts);
         }
 
         public static Func of(MemorySegment MEMORY) {
@@ -1919,4 +1927,4 @@ public class PrimitiveStruct {
     }
 }
 // metadata.generator-version: pni test
-// sha256:241f5e6890a60172192953fbeaf04f0c1616baea592ac81a2390f9cca3b9008c
+// sha256:8770c05861ce4973eab506bcd8883d77c137bc1e7bda22f4442b2dd6ff7dd779

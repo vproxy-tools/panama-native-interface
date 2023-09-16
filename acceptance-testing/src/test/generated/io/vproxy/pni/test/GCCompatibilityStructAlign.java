@@ -113,12 +113,20 @@ public class GCCompatibilityStructAlign {
             super(func);
         }
 
+        private Func(io.vproxy.pni.CallSite<GCCompatibilityStructAlign> func, Options opts) {
+            super(func, opts);
+        }
+
         private Func(MemorySegment MEMORY) {
             super(MEMORY);
         }
 
         public static Func of(io.vproxy.pni.CallSite<GCCompatibilityStructAlign> func) {
             return new Func(func);
+        }
+
+        public static Func of(io.vproxy.pni.CallSite<GCCompatibilityStructAlign> func, Options opts) {
+            return new Func(func, opts);
         }
 
         public static Func of(MemorySegment MEMORY) {
@@ -132,4 +140,4 @@ public class GCCompatibilityStructAlign {
     }
 }
 // metadata.generator-version: pni test
-// sha256:6f9476076b83e3b9add0a8b01f01a32761ed23c82ccb084f7ec44bccef07ff6b
+// sha256:cd32f9a7a08d15970ca2fa9bf5838c726545f381fc2514a950aa8b28789955ae

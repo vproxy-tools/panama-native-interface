@@ -912,12 +912,20 @@ public class BitField {
             super(func);
         }
 
+        private Func(io.vproxy.pni.CallSite<BitField> func, Options opts) {
+            super(func, opts);
+        }
+
         private Func(MemorySegment MEMORY) {
             super(MEMORY);
         }
 
         public static Func of(io.vproxy.pni.CallSite<BitField> func) {
             return new Func(func);
+        }
+
+        public static Func of(io.vproxy.pni.CallSite<BitField> func, Options opts) {
+            return new Func(func, opts);
         }
 
         public static Func of(MemorySegment MEMORY) {
@@ -931,4 +939,4 @@ public class BitField {
     }
 }
 // metadata.generator-version: pni test
-// sha256:16799eec5ea819cb63106cb92fece99f1e7ccbb852f0d2f91a92a9a776f0a4e5
+// sha256:1a5478a66b79a918d94dfcfa2bfdb51eaa3bcc519a3e8563ca4ecf6e667740fb

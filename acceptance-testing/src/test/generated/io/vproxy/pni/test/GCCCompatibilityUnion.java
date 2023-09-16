@@ -140,12 +140,20 @@ public class GCCCompatibilityUnion {
             super(func);
         }
 
+        private Func(io.vproxy.pni.CallSite<GCCCompatibilityUnion> func, Options opts) {
+            super(func, opts);
+        }
+
         private Func(MemorySegment MEMORY) {
             super(MEMORY);
         }
 
         public static Func of(io.vproxy.pni.CallSite<GCCCompatibilityUnion> func) {
             return new Func(func);
+        }
+
+        public static Func of(io.vproxy.pni.CallSite<GCCCompatibilityUnion> func, Options opts) {
+            return new Func(func, opts);
         }
 
         public static Func of(MemorySegment MEMORY) {
@@ -159,4 +167,4 @@ public class GCCCompatibilityUnion {
     }
 }
 // metadata.generator-version: pni test
-// sha256:307646ca88c01b240607a7eeb539520857c00116126adaea0cd2b5d59562379f
+// sha256:82463104b248938d0607bd480c73090a7bbc40f5e2e26b38a47930370e5b123f

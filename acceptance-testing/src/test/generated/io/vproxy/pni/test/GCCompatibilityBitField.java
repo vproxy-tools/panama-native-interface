@@ -912,12 +912,20 @@ public class GCCompatibilityBitField {
             super(func);
         }
 
+        private Func(io.vproxy.pni.CallSite<GCCompatibilityBitField> func, Options opts) {
+            super(func, opts);
+        }
+
         private Func(MemorySegment MEMORY) {
             super(MEMORY);
         }
 
         public static Func of(io.vproxy.pni.CallSite<GCCompatibilityBitField> func) {
             return new Func(func);
+        }
+
+        public static Func of(io.vproxy.pni.CallSite<GCCompatibilityBitField> func, Options opts) {
+            return new Func(func, opts);
         }
 
         public static Func of(MemorySegment MEMORY) {
@@ -931,4 +939,4 @@ public class GCCompatibilityBitField {
     }
 }
 // metadata.generator-version: pni test
-// sha256:ed17e35665afb57b72b5f3aae8734fb729fc6088c2b31b074acadc9fee4943d9
+// sha256:dccce6da28572407848d6cda9aca54547836558f12403ab8fe23ece79782986e
