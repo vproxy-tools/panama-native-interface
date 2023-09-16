@@ -86,12 +86,20 @@ public class UserData {
             super(func);
         }
 
+        private Func(io.vproxy.pni.CallSite<UserData> func, Options opts) {
+            super(func, opts);
+        }
+
         private Func(MemorySegment MEMORY) {
             super(MEMORY);
         }
 
         public static Func of(io.vproxy.pni.CallSite<UserData> func) {
             return new Func(func);
+        }
+
+        public static Func of(io.vproxy.pni.CallSite<UserData> func, Options opts) {
+            return new Func(func, opts);
         }
 
         public static Func of(MemorySegment MEMORY) {
@@ -105,4 +113,4 @@ public class UserData {
     }
 }
 // metadata.generator-version: pni test
-// sha256:38a40e3ea7ca94e2605282b870ef51d5cde35360caba90fd87ff284acb1b3ab4
+// sha256:419b31ca7f35adc9ee0f6105b996444f0ed0ab8908177cc71e2aae6555411c7c

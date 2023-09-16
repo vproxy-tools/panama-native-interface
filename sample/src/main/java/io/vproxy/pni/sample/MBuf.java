@@ -123,12 +123,20 @@ public class MBuf {
             super(func);
         }
 
+        private Func(io.vproxy.pni.CallSite<MBuf> func, Options opts) {
+            super(func, opts);
+        }
+
         private Func(MemorySegment MEMORY) {
             super(MEMORY);
         }
 
         public static Func of(io.vproxy.pni.CallSite<MBuf> func) {
             return new Func(func);
+        }
+
+        public static Func of(io.vproxy.pni.CallSite<MBuf> func, Options opts) {
+            return new Func(func, opts);
         }
 
         public static Func of(MemorySegment MEMORY) {
@@ -142,4 +150,4 @@ public class MBuf {
     }
 }
 // metadata.generator-version: pni test
-// sha256:9be78ea65bbdd6f1d264bcf2a0a502b33c56af3b8684c25245acd47326adcecb
+// sha256:cb39eefee9888433f45721f924e403e93d0bad3ad2ac71aefb171291f0d6e4ec
