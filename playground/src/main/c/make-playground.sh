@@ -1,10 +1,5 @@
 #!/bin/bash
 
-if [[ -z "$JAVA_HOME" ]]
-then
-	JAVA_HOME="/Library/Java/JavaVirtualMachines/jdk-11.0.2.jdk/Contents/Home"
-fi
-
 os=`uname`
 
 target="pniplayground"
@@ -29,9 +24,8 @@ gcc -std=gnu99 -O2 \
     $GCC_OPTS \
     -I "./" \
     -I "../c-generated" \
-    -I "$JAVA_HOME/include" \
-    -I "$JAVA_HOME/include/$include_platform_dir" \
     -I "../../../../api/src/main/c" \
+    -I "../../../../api/src/main/c/jnimock" \
     -shared -Werror -lc -lpthread -fPIC \
     playground.c \
     -o "$target"

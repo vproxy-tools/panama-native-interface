@@ -218,7 +218,8 @@ Go to `src/main/c`, write your C implementation there.
 To compile the C files, you will need `pni.h` and `jni.h` in your include search path (`-I` option).
 
 You can find `pni.h` [here](https://github.com/vproxy-tools/panama-native-interface/tree/master/api/src/main/c).  
-and you can find `jni.h` in `"$JAVA_HOME/include"` and `"$JAVA_HOME/include/$your_platform"`.
+and you can find `jni.h` in `"$JAVA_HOME/include"` and `"$JAVA_HOME/include/$your_platform"`,
+or use the [mock version](https://github.com/vproxy-tools/panama-native-interface/tree/master/api/src/main/c/jnimock) instead.
 
 You may refer to [make-sample.sh](https://github.com/vproxy-tools/panama-native-interface/blob/master/sample/src/main/c/make-sample.sh) for more info.
 
