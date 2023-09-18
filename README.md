@@ -487,6 +487,20 @@ but you can pass it around and use it as an argument in an upcall function.
 * `@PointerOnly`: this annotation is only effective during validation phase. The marked class cannot have fields, the type should only be used as a pointer. However the generated Java class or C struct/union will stay the same as they were.
 * `@BitField`: mark a byte/short/int/long field to be a bit field. For example: `@BitField(name={"a", "b"}, bit={1, 1}) @Unsigned byte x`, defines two bit fields `uint8_t a : 1` and `uint8_t b : 1`, and automatically generates an anonymous padding to fillup the field's type (`uint8_t : 6`).  
   **WARNING**: bit fields' memory layout is **NOT** specified in C standard and is **NOT** compiler/platform portable, use with caution!!!
+* `@Sizeof`: specify the minimum byte size of the type. This is useful for `@PointerOnly` types and `skip=true` types when only part of fields are specified in Java.  
+  For example:  
+  ```java
+  @Struct(skip = true)
+  @Include("msquic.h")
+  @Name("QUIC_ADDR")
+  @PointerOnly
+  @Sizeof("QUIC_ADDR") // you may also write multi-line statements here, and you can include header files as well
+  public abstract class PNIQuicAddr {
+  }
+  ```  
+  With the help of `@Sizeof`, you can allocate memory for `QuicAddr` from Java and pass it to native.  
+  Note: You CANNOT use a `@Sizeof` class for a non-pointer field unless it's in a union or is the last field in a struct.  
+  Also, the `@Sizeof` annotation is infectious, if `class A` has a non-pointer field whose class is annotated with `@Sizeof`, then `class A` must be annotated with `Sizeof` as well.
 
 ### Convention
 
