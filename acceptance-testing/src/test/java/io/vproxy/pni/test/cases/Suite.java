@@ -19,6 +19,7 @@ import org.junit.runner.RunWith;
     TestGeneric.class,
     TestUpcall.class,
     TestUpcallNull.class,
+    TestSizeof.class,
 })
 public class Suite {
 }

@@ -1,0 +1,117 @@
+package io.vproxy.pni.test;
+
+import io.vproxy.pni.*;
+import io.vproxy.pni.array.*;
+import java.lang.foreign.*;
+import java.lang.invoke.*;
+import java.nio.ByteBuffer;
+
+public class SizeofUnion {
+    private static final MethodHandle __getLayoutByteSizeMH = PanamaUtils.lookupPNICriticalFunction(true, long.class, "JavaCritical_io_vproxy_pni_test_SizeofUnion___getLayoutByteSize");
+
+    private static long __getLayoutByteSize() {
+        long RESULT;
+        try {
+            RESULT = (long) __getLayoutByteSizeMH.invokeExact();
+        } catch (Throwable THROWABLE) {
+            throw PanamaUtils.convertInvokeExactException(THROWABLE);
+        }
+        return RESULT;
+    }
+
+    public static final MemoryLayout LAYOUT = PanamaUtils.padLayout(__getLayoutByteSize(), MemoryLayout::unionLayout,
+        io.vproxy.pni.test.SizeofStruct.LAYOUT.withName("st"),
+        ValueLayout.JAVA_INT_UNALIGNED.withName("a")
+    );
+    public final MemorySegment MEMORY;
+
+    private final io.vproxy.pni.test.SizeofStruct st;
+
+    public io.vproxy.pni.test.SizeofStruct getSt() {
+        return this.st;
+    }
+
+    private static final VarHandle aVH = LAYOUT.varHandle(
+        MemoryLayout.PathElement.groupElement("a")
+    );
+
+    public int getA() {
+        return (int) aVH.get(MEMORY);
+    }
+
+    public void setA(int a) {
+        aVH.set(MEMORY, a);
+    }
+
+    public SizeofUnion(MemorySegment MEMORY) {
+        MEMORY = MEMORY.reinterpret(LAYOUT.byteSize());
+        this.MEMORY = MEMORY;
+        long OFFSET = 0;
+        this.st = new io.vproxy.pni.test.SizeofStruct(MEMORY.asSlice(OFFSET, io.vproxy.pni.test.SizeofStruct.LAYOUT.byteSize()));
+        OFFSET += io.vproxy.pni.test.SizeofStruct.LAYOUT.byteSize();
+        OFFSET = 0;
+        OFFSET += ValueLayout.JAVA_INT_UNALIGNED.byteSize();
+        OFFSET = 0;
+    }
+
+    public SizeofUnion(Allocator ALLOCATOR) {
+        this(ALLOCATOR.allocate(LAYOUT.byteSize()));
+    }
+
+    public static class Array extends RefArray<SizeofUnion> {
+        public Array(MemorySegment buf) {
+            super(buf, SizeofUnion.LAYOUT);
+        }
+
+        public Array(Allocator allocator, long len) {
+            this(allocator.allocate(SizeofUnion.LAYOUT.byteSize() * len));
+        }
+
+        public Array(PNIBuf buf) {
+            this(buf.get());
+        }
+
+        @Override
+        protected SizeofUnion construct(MemorySegment seg) {
+            return new SizeofUnion(seg);
+        }
+
+        @Override
+        protected MemorySegment getSegment(SizeofUnion value) {
+            return value.MEMORY;
+        }
+    }
+
+    public static class Func extends PNIFunc<SizeofUnion> {
+        private Func(io.vproxy.pni.CallSite<SizeofUnion> func) {
+            super(func);
+        }
+
+        private Func(io.vproxy.pni.CallSite<SizeofUnion> func, Options opts) {
+            super(func, opts);
+        }
+
+        private Func(MemorySegment MEMORY) {
+            super(MEMORY);
+        }
+
+        public static Func of(io.vproxy.pni.CallSite<SizeofUnion> func) {
+            return new Func(func);
+        }
+
+        public static Func of(io.vproxy.pni.CallSite<SizeofUnion> func, Options opts) {
+            return new Func(func, opts);
+        }
+
+        public static Func of(MemorySegment MEMORY) {
+            return new Func(MEMORY);
+        }
+
+        @Override
+        protected SizeofUnion construct(MemorySegment seg) {
+            return new SizeofUnion(seg);
+        }
+    }
+}
+// metadata.generator-version: pni test
+// sha256:285150b07a2daac726933775a734145ebb6de6bbd4f896f404657c7d604dd618

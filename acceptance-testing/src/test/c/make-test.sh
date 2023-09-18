@@ -43,4 +43,9 @@ gcc -std=gnu99 -O2 \
     ../c-generated/io_vproxy_pni_test_UpcallNull.c \
     io_vproxy_pni_test_InvokeUpcallNull.c \
     io_vproxy_pni_test_NativeCheck.c \
+    sizeof.c \
+    ../c-generated/io_vproxy_pni_test_SizeofStruct.extra.c \
+    ../c-generated/io_vproxy_pni_test_SizeofStructExpr.extra.c \
+    ../c-generated/io_vproxy_pni_test_SizeofUnion.extra.c \
+    ../c-generated/io_vproxy_pni_test_SizeofEmbed.extra.c \
     -o "$target"
