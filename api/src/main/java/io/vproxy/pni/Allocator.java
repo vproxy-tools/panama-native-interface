@@ -1,9 +1,6 @@
 package io.vproxy.pni;
 
-import io.vproxy.pni.impl.ArenaAllocator;
-import io.vproxy.pni.impl.DummyAllocator;
-import io.vproxy.pni.impl.SegmentAllocatorAllocator;
-import io.vproxy.pni.impl.UnsafeAllocator;
+import io.vproxy.pni.impl.*;
 
 import java.lang.foreign.Arena;
 import java.lang.foreign.MemorySegment;
@@ -34,6 +31,10 @@ public interface Allocator extends AutoCloseable {
         return of(Arena.ofShared());
     }
 
+    static Allocator ofAuto() {
+        return new AutoArenaAllocator();
+    }
+
     static Allocator of(SegmentAllocator allocator) {
         return new SegmentAllocatorAllocator(allocator);
     }
@@ -42,6 +43,15 @@ public interface Allocator extends AutoCloseable {
         var provider = AllocatorUtils.provider;
         if (provider == null) {
             return ofConfined();
+        } else {
+            return provider.create();
+        }
+    }
+
+    static Allocator ofConcurrentPooled() {
+        var provider = AllocatorUtils.concurrentProvider;
+        if (provider == null) {
+            return ofShared();
         } else {
             return provider.create();
         }
@@ -65,10 +75,19 @@ public interface Allocator extends AutoCloseable {
     static void setPooledAllocatorProvider(PooledAllocatorProvider allocatorProvider) {
         AllocatorUtils.provider = allocatorProvider;
     }
+
+    static PooledAllocatorProvider getConcurrentPooledAllocatorProvider() {
+        return AllocatorUtils.concurrentProvider;
+    }
+
+    static void setConcurrentPooledAllocatorProvider(PooledAllocatorProvider allocatorProvider) {
+        AllocatorUtils.concurrentProvider = allocatorProvider;
+    }
 }
 
 class AllocatorUtils {
     static PooledAllocatorProvider provider;
+    static PooledAllocatorProvider concurrentProvider;
 
     private AllocatorUtils() {
     }
