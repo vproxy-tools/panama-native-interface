@@ -185,16 +185,7 @@ public class AstMethod {
     public void generateCImpl(StringBuilder sb, int indent, String classUnderlinedName, String classNativeTypeName, String impl) {
         generateC0(sb, indent, classUnderlinedName, classNativeTypeName);
         sb.append(" {\n");
-        Arrays.stream(impl.replace("\r", "").split("\n")).map(line -> {
-            if (line.isBlank()) return "";
-            return line;
-        }).forEach(line -> {
-            if (line.isEmpty()) {
-                sb.append("\n");
-            } else {
-                Utils.appendIndent(sb, indent + 4).append(line).append("\n");
-            }
-        });
+        Utils.generateCFunctionImpl(sb, indent + 4, impl);
         Utils.appendIndent(sb, indent).append("}\n");
     }
 
@@ -254,6 +245,10 @@ public class AstMethod {
     }
 
     public void generateJava(StringBuilder sb, int indent, String classUnderlinedName, boolean needSelf) {
+        generateJava(sb, indent, classUnderlinedName, needSelf, false, false);
+    }
+
+    public void generateJava(StringBuilder sb, int indent, String classUnderlinedName, boolean needSelf, boolean isStatic, boolean isPrivate) {
         Utils.appendIndent(sb, indent).append("private static final MethodHandle ").append(name).append("MH").append(" = PanamaUtils.");
         if (critical()) {
             sb.append("lookupPNICriticalFunction(");
@@ -285,7 +280,15 @@ public class AstMethod {
         sb.append(");\n");
         sb.append("\n");
 
-        Utils.appendIndent(sb, indent).append("public ");
+        Utils.appendIndent(sb, indent);
+        if (isPrivate) {
+            sb.append("private ");
+        } else {
+            sb.append("public ");
+        }
+        if (isStatic) {
+            sb.append("static ");
+        }
         if (!genericDefs.isEmpty()) {
             sb.append("<");
             var isFirst = true;
@@ -570,28 +573,7 @@ public class AstMethod {
     }
 
     public List<String> getImplInclude() {
-        var opt = annos.stream().filter(a -> a.typeRef != null && a.typeRef.name().equals(ImplClassName)).findFirst();
-        if (opt.isEmpty()) {
-            return null;
-        }
-        var anno = opt.get();
-        var vOpt = anno.values.stream().filter(v -> v.name.equals("include")).findFirst();
-        if (vOpt.isEmpty()) {
-            return null;
-        }
-        var v = vOpt.get().value;
-        if (v instanceof List) {
-            //noinspection rawtypes
-            var ls = (List) v;
-            for (var o : ls) {
-                if (!(o instanceof String)) {
-                    return null;
-                }
-            }
-            //noinspection unchecked
-            return (List<String>) ls;
-        }
-        return null;
+        return Utils.getStringListFromAnno(annos, ImplClassName, "include");
     }
 
     public String nativeUpcallFunctionPointer(boolean isParam) {

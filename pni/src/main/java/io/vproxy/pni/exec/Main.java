@@ -15,8 +15,8 @@ public class Main {
 
     static {
         final String _VERSION = "21.0.0.11-dev"; // _THE_VERSION_
-        final String _JAVA_GEN_VERSION = "21.0.0.10";
-        final String _C_GEN_VERSION = "21.0.0.8";
+        final String _JAVA_GEN_VERSION = "21.0.0.11";
+        final String _C_GEN_VERSION = "21.0.0.11";
         var testing = System.getProperty("io.vproxy.pni.Testing", "false");
         if (testing.equals("true")) {
             JAVA_GEN_VERSION = "test";
@@ -194,6 +194,7 @@ public class Main {
             new JavaFileWriter(cls).flush(new File(d), opts);
             new CFileWriter(cls).flush(new File(h), opts);
             new CImplFileWriter(cls).flush(new File(h), opts);
+            new CExtraFileWriter(cls).flush(new File(h), opts);
             new CUpcallImplFileWriter(cls).flush(new File(h), opts);
         }
         System.out.println("done");

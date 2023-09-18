@@ -33,6 +33,7 @@ public class TypePool {
         record(AnnoPointerOnlyTypeInfo.get());
         record(AnnoPointerTypeInfo.get());
         record(AnnoRawTypeInfo.get());
+        record(AnnoSizeofTypeInfo.get());
         record(AnnoStructTypeInfo.get());
         record(AnnoTrivialTypeInfo.get());
         record(AnnoUnionTypeInfo.get());

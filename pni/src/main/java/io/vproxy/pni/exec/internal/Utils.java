@@ -370,6 +370,44 @@ public class Utils {
         return false;
     }
 
+    public static List<String> getStringListFromAnno(List<AstAnno> annos, String typename, String fieldName) {
+        var opt = annos.stream().filter(a -> a.typeRef != null && a.typeRef.name().equals(typename)).findFirst();
+        if (opt.isEmpty()) {
+            return null;
+        }
+        var anno = opt.get();
+        var vOpt = anno.values.stream().filter(v -> v.name.equals(fieldName)).findFirst();
+        if (vOpt.isEmpty()) {
+            return null;
+        }
+        var v = vOpt.get().value;
+        if (v instanceof List) {
+            //noinspection rawtypes
+            var ls = (List) v;
+            for (var o : ls) {
+                if (!(o instanceof String)) {
+                    return null;
+                }
+            }
+            //noinspection unchecked
+            return (List<String>) ls;
+        }
+        return null;
+    }
+
+    public static void generateCFunctionImpl(StringBuilder sb, int indent, String impl) {
+        Arrays.stream(impl.replace("\r", "").split("\n")).map(line -> {
+            if (line.isBlank()) return "";
+            return line;
+        }).forEach(line -> {
+            if (line.isEmpty()) {
+                sb.append("\n");
+            } else {
+                Utils.appendIndent(sb, indent).append(line).append("\n");
+            }
+        });
+    }
+
     public static String metadata(CompilerOptions opts, String version) {
         var sb = new StringBuilder();
         sb.append("// metadata.generator-version: pni ").append(version).append("\n");

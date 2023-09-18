@@ -9,7 +9,10 @@ import java.lang.invoke.MethodType;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.nio.ByteBuffer;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @SuppressWarnings("rawtypes")
@@ -114,6 +117,26 @@ public class PanamaUtils {
         } else {
             throw new IllegalArgumentException("unsupported type, unable to convert to MemoryLayout: " + type);
         }
+    }
+
+    public static MemoryLayout padLayout(long minByteSize, Function<MemoryLayout[], MemoryLayout> builder, MemoryLayout... layouts) {
+        var layout = builder.apply(layouts);
+        if (layout.byteSize() >= minByteSize) {
+            return layout;
+        }
+        long pad;
+        if (layout instanceof UnionLayout) {
+            pad = minByteSize;
+        } else {
+            pad = minByteSize - layout.byteSize();
+        }
+        var padLayout = MemoryLayout.sequenceLayout(pad, ValueLayout.JAVA_BYTE);
+
+        MemoryLayout[] newArray = new MemoryLayout[layouts.length + 1];
+        System.arraycopy(layouts, 0, newArray, 0, layouts.length);
+
+        newArray[layouts.length] = padLayout;
+        return builder.apply(newArray);
     }
 
     public static MemorySegment format(ByteBuffer arg, Allocator allocator) {

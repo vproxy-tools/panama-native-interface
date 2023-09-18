@@ -1,10 +1,7 @@
 package io.vproxy.pni.exec.ast;
 
 import io.vproxy.pni.exec.internal.Utils;
-import io.vproxy.pni.exec.type.ArrayTypeInfo;
-import io.vproxy.pni.exec.type.ClassTypeInfo;
-import io.vproxy.pni.exec.type.TypeInfo;
-import io.vproxy.pni.exec.type.TypePool;
+import io.vproxy.pni.exec.type.*;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.tree.ClassNode;
 
@@ -77,6 +74,7 @@ public class AstClass {
         }
 
         var names = new HashSet<String>();
+        AstField lastSizeofField = null;
         for (var f : fields) {
             if (!names.add(f.nativeName())) {
                 var err = path + ": two or more fields have the same native name " + f.nativeName();
@@ -84,7 +82,20 @@ public class AstClass {
                     errors.add(err);
                 }
             }
+            if (lastSizeofField != null && !isUnion()) {
+                errors.add(path + "#field(" + lastSizeofField.name + "): class of the field is annotated with @Sizeof, but is not the last field");
+            }
+            if (!f.pointerInfo().isPointer() && f.typeRef instanceof ClassTypeInfo) {
+                var cls = ((ClassTypeInfo) f.typeRef).getClazz();
+                if (cls.getSizeof() != null) {
+                    lastSizeofField = f;
+                }
+            }
         }
+        if (lastSizeofField != null && getSizeof() == null) {
+            errors.add(path + ": has a field whose class is annotated with @Sizeof, but this class is not");
+        }
+
         names.clear();
         if (!methods.isEmpty()) {
             if (isUnionEmbed()) {
@@ -194,6 +205,27 @@ public class AstClass {
         return annos.stream().anyMatch(a -> a.typeRef != null && a.typeRef.name().equals(PointerOnlyClassName));
     }
 
+    public String getSizeof() {
+        var opt = annos.stream().filter(a -> a.typeRef != null && a.typeRef.name().equals(SizeofClassName)).findFirst();
+        if (opt.isEmpty()) {
+            return null;
+        }
+        var anno = opt.get();
+        var valueOpt = anno.values.stream().filter(v -> v.name.equals("value")).findFirst();
+        if (valueOpt.isEmpty()) {
+            return null;
+        }
+        var v = valueOpt.get();
+        if (v.value instanceof String) {
+            return (String) v.value;
+        }
+        return null;
+    }
+
+    public List<String> getSizeofInclude() {
+        return Utils.getStringListFromAnno(annos, SizeofClassName, "include");
+    }
+
     public boolean isUnionEmbed() {
         if (!isUnion()) {
             return false;
@@ -239,28 +271,7 @@ public class AstClass {
     }
 
     public List<String> extraInclude() {
-        var opt = annos.stream().filter(a -> a.typeRef != null && a.typeRef.name().equals(IncludeClassName)).findFirst();
-        if (opt.isEmpty()) {
-            return null;
-        }
-        var anno = opt.get();
-        var vOpt = anno.values.stream().filter(v -> v.name.equals("value")).findFirst();
-        if (vOpt.isEmpty()) {
-            return null;
-        }
-        var v = vOpt.get().value;
-        if (v instanceof List) {
-            //noinspection rawtypes
-            var arr = (List) v;
-            for (var e : arr) {
-                if (!(e instanceof String)) {
-                    return null;
-                }
-            }
-            //noinspection unchecked
-            return (List<String>) arr;
-        }
-        return null;
+        return Utils.getStringListFromAnno(annos, IncludeClassName, "value");
     }
 
     private long __calculatedNativeMemorySize = -1;
@@ -298,7 +309,7 @@ public class AstClass {
             total += size;
             lastField = f;
         }
-        if (lastField != null) {
+        if (lastField != null && !lastField.typeOfTheFieldIsAnnotatedWithSizeof()) {
             var n = largestAlignmentBytes();
             var annoAlign = getAlign();
             if (n < annoAlign) {
@@ -433,11 +444,42 @@ public class AstClass {
             sb.append("        return INSTANCE;\n");
             sb.append("    }\n");
         } else {
-            sb.append("    public static final MemoryLayout LAYOUT = MemoryLayout.");
-            if (isUnion()) {
-                sb.append("unionLayout(\n");
+            var sizeof = getSizeof();
+            if (sizeof != null) { // build the call to `sizeof` native function
+                var meth = new AstMethod();
+                meth.returnTypeRef = LongTypeInfo.get();
+                meth.name = "__getLayoutByteSize";
+                meth.annos.add(new AstAnno() {{
+                    typeRef = AnnoCriticalTypeInfo.get();
+                }});
+                meth.annos.add(new AstAnno() {{
+                    typeRef = AnnoTrivialTypeInfo.get();
+                }});
+
+                meth.generateJava(sb, 4, underlinedName(), false, true, true);
+                sb.append("\n");
+            }
+
+            sb.append("    public static final MemoryLayout LAYOUT = ");
+            if (sizeof != null) {
+                sb.append("PanamaUtils.padLayout(__getLayoutByteSize()");
+                sb.append(", ");
+            }
+            sb.append("MemoryLayout");
+            if (sizeof == null) {
+                sb.append(".");
             } else {
-                sb.append("structLayout(\n");
+                sb.append("::");
+            }
+            if (isUnion()) {
+                sb.append("unionLayout");
+            } else {
+                sb.append("structLayout");
+            }
+            if (sizeof == null) {
+                sb.append("(\n");
+            } else {
+                sb.append(",\n");
             }
             var isFirst = true;
             for (var f : fields) {
@@ -956,11 +998,44 @@ public class AstClass {
         if (!generateCompleteFile) {
             return;
         }
+        if (getSizeof() != null) {
+            sb.append("\n");
+            sb.append("JNIEXPORT size_t JNICALL JavaCritical_").append(underlinedName()).append("___getLayoutByteSize();\n");
+        }
         if (!methods.isEmpty()) {
             sb.append("\n");
         }
         for (var m : methods) {
             m.generateC(sb, indent, underlinedName(), nativeTypeName(), isUpcall());
         }
+    }
+
+    public String generateCSizeof() {
+        var sizeof = getSizeof();
+        if (sizeof == null) {
+            return null;
+        }
+
+        var sb = new StringBuilder();
+        sb.append("#include \"").append(underlinedName()).append(".h\"\n");
+        var extraInclude = getSizeofInclude();
+        if (extraInclude != null) {
+            for (var i : extraInclude) {
+                if (i.startsWith("<") && i.endsWith(">")) {
+                    sb.append("#include ").append(i).append("\n");
+                } else {
+                    sb.append("#include \"").append(i).append("\"\n");
+                }
+            }
+        }
+        sb.append("\n");
+        sb.append("JNIEXPORT size_t JNICALL JavaCritical_").append(underlinedName()).append("___getLayoutByteSize() {\n");
+        if (sizeof.contains("\n") || sizeof.startsWith("return ")) {
+            Utils.generateCFunctionImpl(sb, 4, sizeof);
+        } else {
+            sb.append("    return sizeof(").append(sizeof).append(");\n");
+        }
+        sb.append("}\n");
+        return sb.toString();
     }
 }

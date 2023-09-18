@@ -178,6 +178,13 @@ public class AstField {
         return ret;
     }
 
+    public boolean typeOfTheFieldIsAnnotatedWithSizeof() {
+        if (!(typeRef instanceof ClassTypeInfo))
+            return false;
+        var cls = ((ClassTypeInfo) typeRef).getClazz();
+        return cls.getSizeof() != null;
+    }
+
     public long getAlignmentBytes(boolean packed) {
         if (isAlignPacked()) {
             return 0;
