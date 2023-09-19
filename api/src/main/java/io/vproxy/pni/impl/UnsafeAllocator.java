@@ -31,10 +31,12 @@ public class UnsafeAllocator implements Allocator {
 
     @Override
     public void close() {
-        for (long addr : allocatedAddresses) {
+        for (int i = 0; i < allocatedAddresses.length; i++) {
+            long addr = allocatedAddresses[i];
             if (addr == 0) {
                 break;
             }
+            allocatedAddresses[i] = 0;
             SunUnsafe.freeMemory(addr);
         }
     }
