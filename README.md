@@ -473,7 +473,9 @@ You may store the `PNIFunc` object and use it later, you can even invoke it on a
 As a result, you **MUST** release the object when you finished using it: `PNIFuncRelease(func);`
 
 The `PNIFunc` struct has a union field `union { void * userdata; uint64_t udata64; }` for you to store you own data in it.
-This is useful for example when you store the `PNIFunc*` in `epoll_event.data.ptr`.
+This is useful for example when you store the `PNIFunc*` in `epoll_event.data.ptr`.  
+You can allocate some extra memory when creating a `PNIFunc` by calling `T.Func.of(<lambda>, new Options().setUserdataByteSize(...))`.
+The extra memory will be stored inside the `userdata` pointer field automatically. In this way, the memory gets released with the func.
 
 If any error thrown from the CallSite, the PNIFunc will catch it and print the exception,
 then return `((int32_t) PNIFuncInvokeExceptionCaught)` to C.
@@ -492,7 +494,10 @@ To share Java objects with C, you can use `PNIRef<T>`: `PNIRef.of(object)`.
 You can release the `PNIRef<T>` on the Java side: `ref.close()`, or release it on the C side: `PNIRefRelease(ref)`.
 
 You will not be able to manipulate the Java object on the C side obviously,
-but you can pass it around and use it as an argument in an upcall function.
+but you can pass it around and use it as an argument in an upcall function or store it in a field.
+
+Also the `PNIRef` provides a similar `userdata` union as the `PNIFunc` does.  
+You can call `PNIRef.of(obj, new Options().setUserdataByteSize(...))`, the behavior is exactly the same as `PNIFunc`.
 
 </details>
 
