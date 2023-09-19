@@ -379,6 +379,45 @@ The default behavor for `Pooled` allocators when custom allocator is not present
 
 </details>
 
+## Type Inheritance
+
+<details><summary>Click to reveal</summary>
+
+`Panama Native Interface` supports inheritance. You can use Java `extends` keyword in template classes.  
+Only a `struct` can extend from another `struct`, `union`s are not allowed to inherit nor to be inherited.  
+For example:
+
+```java
+@Struct
+abstract class PNIBaseClass {
+    byte a;
+}
+
+@Struct
+abstract class PNIChildClass extends PNIBaseClass {
+    short x;
+}
+
+@Struct
+abstract class PNIGrandChildClass extends PNIChildClass {
+    long y;
+}
+```
+
+The memory layout of `ChildClass` would be:
+
+```c
+struct ChildClass {
+    BaseClass SUPER;
+    short x;
+};
+```
+
+So basically what the code generator does is to insert the parent struct before the first field.  
+Supporting inheritance can make use of Java's object oriented type system, while composition cannot achieve this.
+
+</details>
+
 ## Call Java from C
 
 <details><summary>Click to reveal</summary>
