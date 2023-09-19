@@ -1,0 +1,5 @@
+#include "io_vproxy_pni_test_BaseClass.impl.h"
+#include "io_vproxy_pni_test_ChildClass.impl.h"
+#include "io_vproxy_pni_test_ChildOfPacked.impl.h"
+#include "io_vproxy_pni_test_GrandChildClass.impl.h"
+#include "io_vproxy_pni_test_PackedBaseClass.impl.h"
