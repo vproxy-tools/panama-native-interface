@@ -29,6 +29,12 @@ public class CFileWriter {
         cCode += "// sha256:" + hash + "\n";
         String fileName = fileName();
         Path path = Path.of(dir.getAbsolutePath(), fileName);
+        if (Utils.hashesAreTheSame(path.toFile(), hash)) {
+            if (opts.verbose()) {
+                System.out.println("skipping native file because nothing changed: " + path);
+            }
+            return;
+        }
         if (opts.verbose()) {
             System.out.println("writing generated native file for " + cls.fullName() + " to " + path);
         }

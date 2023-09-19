@@ -21,6 +21,12 @@ public class JavaFileWriter {
         javaCode += Utils.metadata(opts, Main.JAVA_GEN_VERSION);
         javaCode += "// sha256:" + hash + "\n";
         var file = Utils.ensureJavaFile(baseDir, cls.fullName());
+        if (Utils.hashesAreTheSame(file, hash)) {
+            if (opts.verbose()) {
+                System.out.println("skipping java file because nothing changed: " + file.getAbsolutePath());
+            }
+            return;
+        }
         if (opts.verbose()) {
             System.out.println("writing generated java file: " + file.getAbsolutePath());
         }

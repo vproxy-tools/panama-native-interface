@@ -1,14 +1,15 @@
 package io.vproxy.pni.exec.internal;
 
 import io.vproxy.pni.exec.CompilerOptions;
-import io.vproxy.pni.exec.Main;
 import io.vproxy.pni.exec.ast.AstAnno;
 import io.vproxy.pni.exec.ast.AstGenericDef;
 import io.vproxy.pni.exec.ast.AstTypeDesc;
 import org.objectweb.asm.tree.AnnotationNode;
 
 import java.io.File;
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.security.MessageDigest;
 import java.util.*;
 
@@ -424,6 +425,7 @@ public class Utils {
         });
     }
 
+    @SuppressWarnings("UnusedReturnValue")
     public static StringBuilder appendJavaPadding(StringBuilder sb, int indent, long padding) {
         Utils.appendIndent(sb, indent)
             .append("MemoryLayout.sequenceLayout(").append(padding).append("L, ValueLayout.JAVA_BYTE) /* padding */");
@@ -439,5 +441,41 @@ public class Utils {
             sb.append("// metadata.").append(k).append(": ").append(v).append("\n");
         }
         return sb.toString();
+    }
+
+    public static boolean hashesAreTheSame(File file, String hash) {
+        if (!file.exists())
+            return false;
+        if (!file.isFile())
+            return false;
+        List<String> lines;
+        try {
+            lines = Files.readAllLines(file.toPath());
+        } catch (IOException e) {
+            throw new RuntimeException("failed reading file " + file, e);
+        }
+        if (lines.isEmpty())
+            return false;
+        String lastLine = null;
+        var ite = lines.listIterator(lines.size());
+        while (lastLine == null && ite.hasPrevious()) {
+            var prev = ite.previous();
+            if (prev.isBlank()) {
+                continue;
+            }
+            lastLine = prev.trim();
+        }
+        if (lastLine == null)
+            return false;
+
+        if (!lastLine.startsWith("//")) {
+            return false;
+        }
+        lastLine = lastLine.substring("//".length()).trim();
+        if (!lastLine.startsWith("sha256:")) {
+            return false;
+        }
+        lastLine = lastLine.substring("sha256:".length()).trim();
+        return lastLine.equals(hash);
     }
 }
