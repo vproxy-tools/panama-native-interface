@@ -318,6 +318,22 @@ public class Utils {
             .append(");\n");
     }
 
+    public static StringBuilder appendCPadding(StringBuilder sb, long p) {
+        sb.append(" /* padding */");
+        while (p > 0) {
+            sb.append(" uint64_t :");
+            if (p >= 8) {
+                sb.append("64");
+                p -= 8;
+            } else {
+                sb.append(p * 8);
+                p = 0;
+            }
+            sb.append(";");
+        }
+        return sb;
+    }
+
     public static String sha256(String s) {
         try {
             var digest = MessageDigest.getInstance("SHA-256");
@@ -406,6 +422,12 @@ public class Utils {
                 Utils.appendIndent(sb, indent).append(line).append("\n");
             }
         });
+    }
+
+    public static StringBuilder appendJavaPadding(StringBuilder sb, int indent, long padding) {
+        Utils.appendIndent(sb, indent)
+            .append("MemoryLayout.sequenceLayout(").append(padding).append("L, ValueLayout.JAVA_BYTE) /* padding */");
+        return sb;
     }
 
     public static String metadata(CompilerOptions opts, String version) {

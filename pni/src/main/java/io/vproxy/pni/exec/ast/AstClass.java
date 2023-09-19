@@ -1,6 +1,7 @@
 package io.vproxy.pni.exec.ast;
 
 import io.vproxy.pni.exec.internal.Utils;
+import io.vproxy.pni.exec.internal.VarOpts;
 import io.vproxy.pni.exec.type.*;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.tree.ClassNode;
@@ -14,13 +15,21 @@ import static io.vproxy.pni.exec.internal.Consts.*;
 public class AstClass {
     public boolean isInterface;
     public String name;
+    public String superName;
     public final List<AstAnno> annos = new ArrayList<>();
     public final List<AstField> fields = new ArrayList<>();
     public final List<AstMethod> methods = new ArrayList<>();
 
+    public TypeInfo superTypeRef;
+    public long headPadding = 0;
+
     public AstClass(ClassNode classNode) {
         isInterface = (classNode.access & Opcodes.ACC_INTERFACE) == Opcodes.ACC_INTERFACE;
         this.name = classNode.name;
+        this.superName = classNode.superName;
+        if ("java/lang/Object".equals(classNode.superName)) {
+            this.superName = null;
+        }
         Utils.readAnnotations(annos, classNode.visibleAnnotations);
         for (var f : classNode.fields) {
             if ((f.access & Opcodes.ACC_STATIC) == Opcodes.ACC_STATIC) {
@@ -44,6 +53,9 @@ public class AstClass {
     }
 
     public void ref(TypePool pool) {
+        if (superName != null) {
+            superTypeRef = pool.find(superName);
+        }
         for (var a : annos) {
             a.ref(pool);
         }
@@ -57,6 +69,25 @@ public class AstClass {
 
     public void validate(List<String> errors) {
         var path = "class(" + name + ")";
+        if (superName != null && superTypeRef == null) {
+            errors.add(path + ": unable to find typeRef: " + superName);
+        }
+        if (superTypeRef != null) {
+            if (!(superTypeRef instanceof ClassTypeInfo)) {
+                errors.add(path + ": superType(" + superTypeRef + ") is not a user defined class");
+            } else {
+                var superCls = ((ClassTypeInfo) superTypeRef).getClazz();
+                if (!superCls.isStruct()) {
+                    errors.add(path + ": superType(" + superTypeRef + ") is not a struct");
+                }
+                if (superCls.getSizeof() != null) {
+                    errors.add(path + ": superType(" + superTypeRef + ") cannot be annotated with @Sizeof");
+                }
+            }
+            if (!isStruct()) {
+                errors.add(path + ": cannot extend from other types because it's not a struct");
+            }
+        }
         for (var a : annos) {
             a.validate(path, errors);
         }
@@ -295,12 +326,31 @@ public class AstClass {
 
         var packed = isAlignPacked();
         long total = 0;
+        if (superTypeRef != null) {
+            var superCls = ((ClassTypeInfo) superTypeRef).getClazz();
+            total = superCls.getNativeMemorySize();
+
+            // must handle first field manually, to satisfy the following algorithm
+            if (!fields.isEmpty()) {
+                var first = fields.get(0);
+                var align = first.getAlignmentBytes(packed);
+                if (align > 1) {
+                    if (total % align != 0) {
+                        var padding = align - (total % align);
+                        headPadding = padding;
+                        total += padding;
+                    }
+                }
+            }
+        }
         AstField lastField = null;
         for (var f : fields) {
             var size = f.getNativeMemorySize();
             var align = f.getAlignmentBytes(packed);
             if (align > 1) {
                 if (total % align != 0) {
+                    assert lastField != null; // the first field is already handled
+
                     var padding = align - (total % align);
                     lastField.padding = padding;
                     total += padding;
@@ -338,6 +388,12 @@ public class AstClass {
         if (!packed && max < align) {
             max = align;
         }
+        if (superTypeRef != null) {
+            var superAlign = ((ClassTypeInfo) superTypeRef).getClazz().largestAlignmentBytes();
+            if (superAlign > max) {
+                max = superAlign;
+            }
+        }
         return max;
     }
 
@@ -353,7 +409,11 @@ public class AstClass {
         } else {
             sb.append("class");
         }
-        sb.append(" ").append(name).append(" {\n");
+        sb.append(" ").append(name);
+        if (superTypeRef != null) {
+            sb.append(" extends ").append(((ClassTypeInfo) superTypeRef).getClazz().name);
+        }
+        sb.append(" {\n");
         for (var f : fields) {
             f.toString(sb, 4);
             sb.append("\n");
@@ -433,7 +493,11 @@ public class AstClass {
     }
 
     private void generateJava(StringBuilder sb) {
-        sb.append("public class ").append(simpleName()).append(" {\n");
+        sb.append("public class ").append(simpleName());
+        if (superTypeRef != null) {
+            sb.append(" extends ").append(((ClassTypeInfo) superTypeRef).getClazz().fullName());
+        }
+        sb.append(" {\n");
         if (isInterface) {
             sb.append("    private ").append(simpleName()).append("() {\n");
             sb.append("    }\n");
@@ -479,7 +543,25 @@ public class AstClass {
             if (sizeof == null) {
                 sb.append("(\n");
             } else {
-                sb.append(",\n");
+                if (superTypeRef != null || headPadding > 0 || !fields.isEmpty()) {
+                    sb.append(",");
+                }
+                sb.append("\n");
+            }
+            if (superTypeRef != null) {
+                Utils.appendIndent(sb, 8)
+                    .append(((ClassTypeInfo) superTypeRef).getClazz().fullName()).append(".LAYOUT");
+                if (headPadding > 0 || !fields.isEmpty()) {
+                    sb.append(",");
+                }
+                sb.append("\n");
+            }
+            if (headPadding > 0) {
+                Utils.appendJavaPadding(sb, 8, headPadding);
+                if (!fields.isEmpty()) {
+                    sb.append(",");
+                }
+                sb.append("\n");
             }
             var isFirst = true;
             for (var f : fields) {
@@ -509,12 +591,28 @@ public class AstClass {
             sb.append("\n");
             Utils.appendIndent(sb, 4)
                 .append("public ").append(simpleName()).append("(MemorySegment MEMORY) {\n");
+            if (superTypeRef != null) {
+                Utils.appendIndent(sb, 8)
+                    .append("super(MEMORY);\n");
+            }
             Utils.appendIndent(sb, 8)
                 .append("MEMORY = MEMORY.reinterpret(LAYOUT.byteSize());\n");
             Utils.appendIndent(sb, 8)
                 .append("this.MEMORY = MEMORY;\n");
             Utils.appendIndent(sb, 8)
                 .append("long OFFSET = 0;\n");
+            if (superTypeRef != null) {
+                Utils.appendIndent(sb, 8)
+                    .append("OFFSET += ")
+                    .append(((ClassTypeInfo) superTypeRef).getClazz().fullName())
+                    .append(".LAYOUT.byteSize();\n");
+            }
+            if (headPadding > 0) {
+                Utils.appendIndent(sb, 8)
+                    .append("OFFSET += ")
+                    .append(headPadding)
+                    .append("; // head padding\n");
+            }
             for (var f : fields) {
                 f.generateJavaConstructor(sb, 8);
                 if (isUnion()) {
@@ -789,6 +887,11 @@ public class AstClass {
             }
         }
         var includedClasses = new HashSet<AstClass>();
+        if (superTypeRef != null) {
+            var cls = ((ClassTypeInfo) superTypeRef).getClazz();
+            includedClasses.add(cls);
+            include(sb, cls);
+        }
         for (var f : fields) {
             if (f.typeRef instanceof ClassTypeInfo) {
                 var classTypeInfo = (ClassTypeInfo) f.typeRef;
@@ -986,6 +1089,15 @@ public class AstClass {
                 sb.append(" ");
             }
             sb.append("{\n");
+            if (superTypeRef != null) {
+                Utils.appendIndent(sb, indent + 4).append(
+                    superTypeRef.nativeType("SUPER", VarOpts.fieldDefault())
+                ).append(";\n");
+            }
+            if (headPadding > 0) {
+                Utils.appendIndent(sb, indent + 4);
+                Utils.appendCPadding(sb, headPadding).append("\n");
+            }
             for (var f : fields) {
                 f.generateC(sb, indent + 4);
             }

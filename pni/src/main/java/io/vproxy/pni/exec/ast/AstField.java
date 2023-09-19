@@ -234,19 +234,7 @@ public class AstField {
             }
         }
         if (padding > 0) {
-            long p = padding;
-            sb.append(" /* padding */");
-            while (p > 0) {
-                sb.append(" uint64_t :");
-                if (p >= 8) {
-                    sb.append("64");
-                    p -= 8;
-                } else {
-                    sb.append(p * 8);
-                    p = 0;
-                }
-                sb.append(";");
-            }
+            Utils.appendCPadding(sb, padding);
         }
         sb.append("\n");
     }
@@ -257,8 +245,7 @@ public class AstField {
             .append(".withName(\"").append(name).append("\")");
         if (padding > 0) {
             sb.append(",\n");
-            Utils.appendIndent(sb, indent)
-                .append("MemoryLayout.sequenceLayout(").append(padding).append("L, ValueLayout.JAVA_BYTE) /* padding */");
+            Utils.appendJavaPadding(sb, indent, padding);
         }
     }
 
