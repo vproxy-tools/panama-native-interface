@@ -21,6 +21,7 @@ import org.junit.runner.RunWith;
     TestUpcallNull.class,
     TestSizeof.class,
     TestSuperClass.class,
+    TestAlwaysAligned.class,
 })
 public class Suite {
 }

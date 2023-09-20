@@ -49,4 +49,5 @@ gcc -std=gnu99 -O2 \
     ../c-generated/io_vproxy_pni_test_SizeofUnion.extra.c \
     ../c-generated/io_vproxy_pni_test_SizeofEmbed.extra.c \
     super_class.c \
+    ../c-generated/io_vproxy_pni_test_AlwaysAlignedSizeof.extra.c \
     -o "$target"
