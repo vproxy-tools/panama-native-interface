@@ -8,8 +8,8 @@ import java.nio.ByteBuffer;
 
 public class UserData {
     public static final MemoryLayout LAYOUT = MemoryLayout.unionLayout(
-        ValueLayout.ADDRESS_UNALIGNED.withName("userdata"),
-        ValueLayout.JAVA_LONG_UNALIGNED.withName("udata64")
+        ValueLayout.ADDRESS.withName("userdata"),
+        ValueLayout.JAVA_LONG.withName("udata64")
     );
     public final MemorySegment MEMORY;
 
@@ -113,4 +113,4 @@ public class UserData {
     }
 }
 // metadata.generator-version: pni test
-// sha256:419b31ca7f35adc9ee0f6105b996444f0ed0ab8908177cc71e2aae6555411c7c
+// sha256:4b5ec65cd22222a49aaf0574c33a2cb4f163f033cb64d13323b212ab08cdaf80

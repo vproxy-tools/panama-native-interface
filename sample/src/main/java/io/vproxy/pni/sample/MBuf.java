@@ -8,10 +8,10 @@ import java.nio.ByteBuffer;
 
 public class MBuf {
     public static final MemoryLayout LAYOUT = MemoryLayout.structLayout(
-        ValueLayout.ADDRESS_UNALIGNED.withName("bufAddr"),
-        ValueLayout.JAVA_INT_UNALIGNED.withName("pktLen"),
-        ValueLayout.JAVA_INT_UNALIGNED.withName("pktOff"),
-        ValueLayout.JAVA_INT_UNALIGNED.withName("bufLen"),
+        ValueLayout.ADDRESS.withName("bufAddr"),
+        ValueLayout.JAVA_INT.withName("pktLen"),
+        ValueLayout.JAVA_INT.withName("pktOff"),
+        ValueLayout.JAVA_INT.withName("bufLen"),
         MemoryLayout.sequenceLayout(4L, ValueLayout.JAVA_BYTE) /* padding */,
         io.vproxy.pni.sample.UserData.LAYOUT.withName("userdata")
     );
@@ -150,4 +150,4 @@ public class MBuf {
     }
 }
 // metadata.generator-version: pni test
-// sha256:cb39eefee9888433f45721f924e403e93d0bad3ad2ac71aefb171291f0d6e4ec
+// sha256:9ae10a9ec28d9b7823e6b0c217ecaa701d58239b63c4b8dd41726da6e8275bcd

@@ -7,6 +7,7 @@ import java.lang.foreign.MemorySegment;
 
 @Struct
 @Name("mbuf_t")
+@AlwaysAligned
 class PNIMBuf {
     MemorySegment bufAddr;
     @Unsigned int pktLen;
@@ -16,6 +17,7 @@ class PNIMBuf {
 }
 
 @Union(embedded = true)
+@AlwaysAligned
 class PNIUserData {
     MemorySegment userdata;
     @Unsigned long udata64;
