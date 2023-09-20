@@ -3,10 +3,7 @@ package io.vproxy.pni.exec.internal;
 import io.vproxy.pni.exec.CompilerOptions;
 import io.vproxy.pni.exec.Main;
 import io.vproxy.pni.exec.ast.*;
-import io.vproxy.pni.exec.type.AnnoCriticalTypeInfo;
-import io.vproxy.pni.exec.type.AnnoTrivialTypeInfo;
-import io.vproxy.pni.exec.type.ClassTypeInfo;
-import io.vproxy.pni.exec.type.LongTypeInfo;
+import io.vproxy.pni.exec.type.*;
 
 import java.io.File;
 import java.io.IOException;
@@ -92,7 +89,7 @@ public class JavaFileWriter {
                     typeRef = AnnoTrivialTypeInfo.get();
                 }});
 
-                meth.generateJava(sb, 4, cls.underlinedName(), false, true, true);
+                get(meth).generateJava(sb, 4, cls.underlinedName(), false, true, true);
                 sb.append("\n");
             }
 
@@ -202,7 +199,7 @@ public class JavaFileWriter {
 
         for (var m : cls.methods) {
             sb.append("\n");
-            m.generateJava(sb, 4, cls.underlinedName(), !cls.isInterface);
+            get(m).generateJava(sb, 4, cls.underlinedName(), !cls.isInterface);
         }
 
         if (!cls.isInterface) {
@@ -279,7 +276,7 @@ public class JavaFileWriter {
         sb.append("    private static final Arena ARENA = Arena.ofShared();\n");
 
         for (var m : cls.methods) {
-            m.generateJavaUpcall(sb, 4, cls.fullName());
+            get(m).generateJavaUpcall(sb, 4, cls.fullName());
         }
 
         sb.append("\n");
@@ -306,7 +303,7 @@ public class JavaFileWriter {
                 sb.append("\n");
             }
             Utils.appendIndent(sb, 8);
-            m.generateJavaUpcallInterfaceMethod(sb);
+            get(m).generateJavaUpcallInterfaceMethod(sb);
         }
 
         sb.append("    }\n");
@@ -324,7 +321,7 @@ public class JavaFileWriter {
         for (var m : cls.methods) {
             Utils.appendIndent(sb, indent + 4)
                 .append(m.name).append("MH = ");
-            m.generateUpcallMethodHandle(sb, cls.fullName());
+            get(m).generateUpcallMethodHandle(sb, cls.fullName());
             sb.append(";\n");
         }
         Utils.appendIndent(sb, indent)
@@ -336,7 +333,7 @@ public class JavaFileWriter {
         for (var m : cls.methods) {
             Utils.appendIndent(sb, indent)
                 .append(m.name).append(" = ");
-            m.generateUpcallStub(sb);
+            get(m).generateUpcallStub(sb);
             sb.append(";\n");
         }
 
@@ -413,6 +410,354 @@ public class JavaFileWriter {
             if (field.padding > 0) {
                 Utils.appendIndent(sb, indent).append("OFFSET += ").append(field.padding).append("; /* padding */\n");
             }
+        }
+    }
+
+    private final Map<AstMethod, MethodGenerator> methodGenerators = new HashMap<>();
+
+    private MethodGenerator get(AstMethod m) {
+        return methodGenerators.computeIfAbsent(m, MethodGenerator::new);
+    }
+
+    private static class MethodGenerator {
+        private final AstMethod method;
+
+        private MethodGenerator(AstMethod method) {
+            this.method = method;
+        }
+
+        private void generateJava(StringBuilder sb, int indent, String classUnderlinedName, boolean needSelf) {
+            generateJava(sb, indent, classUnderlinedName, needSelf, false, false);
+        }
+
+        private void generateJava(StringBuilder sb, int indent, String classUnderlinedName, boolean needSelf, boolean isStatic, boolean isPrivate) {
+            Utils.appendIndent(sb, indent).append("private static final MethodHandle ").append(method.name).append("MH").append(" = PanamaUtils.");
+            if (method.critical()) {
+                sb.append("lookupPNICriticalFunction(");
+            } else {
+                sb.append("lookupPNIFunction(");
+            }
+            if (method.trivial()) {
+                sb.append("true, ");
+            } else {
+                sb.append("false, ");
+            }
+            if (method.critical()) {
+                sb.append(method.returnTypeRef.methodHandleTypeForReturn(method.varOptsForReturn()));
+                sb.append(", ");
+            }
+            sb.append("\"").append(method.nativeName(classUnderlinedName)).append("\"");
+            if (needSelf) {
+                sb.append(", MemorySegment.class /* self */");
+            }
+            for (var p : method.params) {
+                sb.append(", ");
+                p.generateMethodHandle(sb, 0);
+                sb.append(" /* ").append(p.name).append(" */");
+            }
+            var returnAllocation = method.returnTypeRef.allocationInfoForReturnValue(method.varOptsForReturn());
+            if (returnAllocation.requireAllocator()) {
+                sb.append(", MemorySegment.class /* return */");
+            }
+            sb.append(");\n");
+            sb.append("\n");
+
+            Utils.appendIndent(sb, indent);
+            if (isPrivate) {
+                sb.append("private ");
+            } else {
+                sb.append("public ");
+            }
+            if (isStatic) {
+                sb.append("static ");
+            }
+            if (!method.genericDefs.isEmpty()) {
+                sb.append("<");
+                var isFirst = true;
+                for (var g : method.genericDefs) {
+                    if (isFirst) {
+                        isFirst = false;
+                    } else {
+                        sb.append(", ");
+                    }
+                    sb.append(g);
+                }
+                sb.append("> ");
+            }
+            sb.append(method.returnTypeRef.javaTypeForReturn(method.varOptsForReturn()))
+                .append(" ").append(method.name).append("(");
+            if (!method.critical()) {
+                sb.append("PNIEnv ENV");
+                if (!method.params.isEmpty()) {
+                    sb.append(", ");
+                }
+            }
+            var paramNeedsAllocator = returnAllocation.requirePooledAllocator();
+            var isFirst = true;
+            for (var p : method.params) {
+                if (isFirst) {
+                    isFirst = false;
+                } else {
+                    sb.append(", ");
+                }
+                p.generateParam(sb, 0);
+                var paramOpts = p.paramOpts();
+                if (paramOpts.isDependOnAllocator()) {
+                    paramNeedsAllocator = true;
+                }
+            }
+            if (returnAllocation.requireExtraParameter()) {
+                if (!method.critical() || !method.params.isEmpty()) {
+                    sb.append(", ");
+                }
+                sb.append("Allocator ALLOCATOR");
+            }
+            sb.append(")");
+            if (!method.throwTypeRefs.isEmpty()) {
+                sb.append(" throws ");
+                isFirst = true;
+                for (var t : method.throwTypeRefs) {
+                    if (isFirst) {
+                        isFirst = false;
+                    } else {
+                        sb.append(", ");
+                    }
+                    sb.append(t.name());
+                }
+            }
+            sb.append(" {\n");
+            if (!method.critical()) {
+                Utils.appendIndent(sb, indent + 4).append("ENV.reset();\n");
+            }
+            int invocationIndent = indent + 4;
+            if (paramNeedsAllocator) {
+                Utils.appendIndent(sb, indent + 4).append("try (var POOLED = Allocator.ofPooled()) {\n");
+                invocationIndent += 4;
+            }
+            if (method.critical()) {
+                if (!(method.returnTypeRef instanceof VoidTypeInfo)) {
+                    Utils.appendIndent(sb, invocationIndent);
+                    if (method.returnTypeRef instanceof PrimitiveTypeInfo) {
+                        sb.append(method.returnTypeRef.javaTypeForReturn(method.varOptsForReturn()));
+                    } else {
+                        sb.append("MemorySegment");
+                    }
+                    sb.append(" RESULT;\n");
+                }
+            } else {
+                Utils.appendIndent(sb, invocationIndent).append("int ERR;\n");
+            }
+            Utils.appendIndent(sb, invocationIndent)
+                .append("try {\n");
+            Utils.appendIndent(sb, invocationIndent + 4);
+            if (method.critical()) {
+                if (!(method.returnTypeRef instanceof VoidTypeInfo)) {
+                    sb.append("RESULT = (");
+                    if (method.returnTypeRef instanceof PrimitiveTypeInfo) {
+                        sb.append(method.returnTypeRef.javaTypeForReturn(method.varOptsForReturn()));
+                    } else {
+                        sb.append("MemorySegment");
+                    }
+                    sb.append(") ");
+                }
+            } else {
+                sb.append("ERR = (int) ");
+            }
+            sb.append(method.name).append("MH").append(".invokeExact(");
+            if (!method.critical()) {
+                sb.append("ENV.MEMORY");
+                if (!method.params.isEmpty() || needSelf) {
+                    sb.append(", ");
+                }
+            }
+            if (needSelf) {
+                sb.append("MEMORY");
+                if (!method.params.isEmpty()) {
+                    sb.append(", ");
+                }
+            }
+            isFirst = true;
+            for (var p : method.params) {
+                if (isFirst) {
+                    isFirst = false;
+                } else {
+                    sb.append(", ");
+                }
+                p.generateConvert(sb, 0);
+            }
+            if (returnAllocation.requireExtraParameter()) {
+                if (!method.critical() || needSelf || !method.params.isEmpty()) {
+                    sb.append(", ");
+                }
+                sb.append("ALLOCATOR.allocate(").append(returnAllocation.byteSize()).append(")");
+            } else if (returnAllocation.requirePooledAllocator()) {
+                if (!method.critical() || needSelf || !method.params.isEmpty()) {
+                    sb.append(", ");
+                }
+                sb.append("POOLED.allocate(").append(returnAllocation.byteSize()).append(")");
+            }
+            sb.append(");\n");
+            Utils.appendIndent(sb, invocationIndent)
+                .append("} catch (Throwable THROWABLE) {\n");
+            Utils.appendIndent(sb, invocationIndent + 4)
+                .append("throw PanamaUtils.convertInvokeExactException(THROWABLE);\n");
+            Utils.appendIndent(sb, invocationIndent)
+                .append("}\n");
+            if (!method.critical()) {
+                Utils.appendIndent(sb, invocationIndent)
+                    .append("if (ERR != 0) {\n");
+                for (var t : method.throwTypeRefs) {
+                    Utils.appendIndent(sb, invocationIndent + 4)
+                        .append("ENV.throwIf(").append(t.name()).append(".class);\n");
+                }
+                Utils.appendIndent(sb, invocationIndent + 4).append("ENV.throwLast();\n");
+                Utils.appendIndent(sb, invocationIndent).append("}\n");
+            }
+            method.returnTypeRef.convertInvokeExactReturnValueToJava(sb, invocationIndent, method.varOptsForReturn());
+            if (paramNeedsAllocator) {
+                Utils.appendIndent(sb, indent + 4).append("}\n");
+            }
+            Utils.appendIndent(sb, indent).append("}\n");
+        }
+
+        private void generateJavaUpcall(StringBuilder sb, int indent, String classFullName) {
+            sb.append("\n");
+            Utils.appendIndent(sb, indent).append("public static final MemorySegment ").append(method.name).append(";\n");
+            sb.append("\n");
+            Utils.appendIndent(sb, indent).append("private static ");
+            sb.append(method.returnTypeRef.javaTypeForUpcallReturn(method.varOptsForReturn(true)))
+                .append(" ").append(method.name).append("(");
+            var isFirst = true;
+            for (var p : method.params) {
+                if (isFirst) {
+                    isFirst = false;
+                } else {
+                    sb.append(", ");
+                }
+                p.generateUpcallParam(sb, 0);
+            }
+            var returnAllocation = method.returnTypeRef.allocationInfoForReturnValue(method.varOptsForReturn(true));
+            var interfaceReturnAllocation = method.returnTypeRef.allocationInfoForUpcallInterfaceReturnValue(method.varOptsForReturn(true));
+            if (returnAllocation.requireAllocator()) {
+                if (!method.params.isEmpty()) {
+                    sb.append(", ");
+                }
+                sb.append("MemorySegment return_");
+            }
+            sb.append(") {\n");
+            Utils.appendIndent(sb, indent + 4)
+                .append("if (IMPL == null) {\n");
+            Utils.appendIndent(sb, indent + 8)
+                .append("System.out.println(\"").append(classFullName).append("#").append(method.name).append("\");\n");
+            Utils.appendIndent(sb, indent + 8)
+                .append("System.exit(1);\n");
+            Utils.appendIndent(sb, indent + 4).append("}\n");
+            Utils.appendIndent(sb, indent + 4);
+            if (!(method.returnTypeRef instanceof VoidTypeInfo)) {
+                sb.append("var RESULT = ");
+            }
+            sb.append("IMPL.").append(method.name).append("(");
+            for (int i = 0; i < method.params.size(); i++) {
+                var p = method.params.get(i);
+                sb.append("\n");
+                p.generateUpcallConvert(sb, indent + 8);
+                if (i < method.params.size() - 1) {
+                    sb.append(",");
+                }
+            }
+            if (interfaceReturnAllocation.requireAllocator()) {
+                if (!method.params.isEmpty()) {
+                    sb.append(",");
+                }
+                sb.append("\n");
+                Utils.appendIndent(sb, indent + 8)
+                    .append(method.returnTypeRef.convertExtraToUpcallArgument("return_", method.varOptsForReturn(true)))
+                    .append("\n");
+                Utils.appendIndent(sb, indent + 4).append(");\n");
+            } else if (!method.params.isEmpty()) {
+                sb.append("\n");
+                Utils.appendIndent(sb, indent + 4).append(");\n");
+            } else {
+                sb.append(");\n");
+            }
+            if (!(method.returnTypeRef instanceof VoidTypeInfo)) {
+                method.returnTypeRef.convertFromUpcallReturn(sb, indent + 4, method.varOptsForReturn(true));
+            }
+            Utils.appendIndent(sb, indent).append("}\n");
+        }
+
+        private void generateJavaUpcallInterfaceMethod(StringBuilder sb) {
+            if (!method.genericDefs.isEmpty()) {
+                sb.append("<");
+                var isFirst = true;
+                for (var g : method.genericDefs) {
+                    if (isFirst) {
+                        isFirst = false;
+                    } else {
+                        sb.append(", ");
+                    }
+                    sb.append(g);
+                }
+                sb.append("> ");
+            }
+            sb.append(method.returnTypeRef.javaTypeForUpcallInterfaceReturn(method.varOptsForReturn(true)))
+                .append(" ").append(method.name).append("(");
+            var isFirst = true;
+            for (var p : method.params) {
+                if (isFirst) {
+                    isFirst = false;
+                } else {
+                    sb.append(", ");
+                }
+                p.generateUpcallInterfaceParam(sb, 0);
+            }
+            var returnAllocation = method.returnTypeRef.allocationInfoForUpcallInterfaceReturnValue(method.varOptsForReturn(true));
+            if (returnAllocation.requireAllocator()) {
+                if (!method.params.isEmpty()) {
+                    sb.append(", ");
+                }
+                sb.append(method.returnTypeRef.javaTypeForExtraUpcallInterfaceParam(VarOpts.paramDefault())).append(" ").append("return_");
+            }
+            sb.append(");\n");
+        }
+
+        private void generateUpcallMethodHandle(StringBuilder sb, String classFullName) {
+            sb.append("MethodHandles.lookup().findStatic(").append(classFullName).append(".class, ")
+                .append("\"").append(method.name).append("\", ")
+                .append("MethodType.methodType(");
+            if (method.returnTypeRef instanceof VoidTypeInfo) {
+                sb.append("void.class");
+            } else {
+                sb.append(method.returnTypeRef.javaTypeForUpcallReturn(method.varOptsForReturn(true))).append(".class");
+            }
+            for (var p : method.params) {
+                sb.append(", ");
+                p.generateUpcallParamClass(sb, 0);
+            }
+            if (method.returnTypeRef.allocationInfoForReturnValue(method.varOptsForReturn(true)).requireAllocator()) {
+                sb.append(", ");
+                sb.append("MemorySegment.class");
+            }
+            sb.append("))");
+        }
+
+        private void generateUpcallStub(StringBuilder sb) {
+            sb.append("PanamaUtils.defineCFunction(ARENA, ")
+                .append(method.name).append("MH, ");
+            if (method.returnTypeRef instanceof VoidTypeInfo) {
+                sb.append("void.class");
+            } else {
+                sb.append(method.returnTypeRef.methodHandleTypeForUpcall(method.varOptsForReturn(true)));
+            }
+            for (var p : method.params) {
+                sb.append(", ");
+                p.generateMethodHandleForUpcall(sb, 0);
+            }
+            if (method.returnTypeRef.allocationInfoForReturnValue(method.varOptsForReturn(true)).requireAllocator()) {
+                sb.append(", ");
+                sb.append("MemorySegment.class");
+            }
+            sb.append(")");
         }
     }
 }
