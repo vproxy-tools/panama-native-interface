@@ -547,33 +547,4 @@ public class AstClass {
         if (isInterface) return false;
         return true;
     }
-
-    public String generateCSizeof() {
-        var sizeof = getSizeof();
-        if (sizeof == null) {
-            return null;
-        }
-
-        var sb = new StringBuilder();
-        sb.append("#include \"").append(underlinedName()).append(".h\"\n");
-        var extraInclude = getSizeofInclude();
-        if (extraInclude != null) {
-            for (var i : extraInclude) {
-                if (i.startsWith("<") && i.endsWith(">")) {
-                    sb.append("#include ").append(i).append("\n");
-                } else {
-                    sb.append("#include \"").append(i).append("\"\n");
-                }
-            }
-        }
-        sb.append("\n");
-        sb.append("JNIEXPORT size_t JNICALL JavaCritical_").append(underlinedName()).append("___getLayoutByteSize() {\n");
-        if (sizeof.contains("\n") || sizeof.startsWith("return ")) {
-            Utils.generateCFunctionImpl(sb, 4, sizeof);
-        } else {
-            sb.append("    return sizeof(").append(sizeof).append(");\n");
-        }
-        sb.append("}\n");
-        return sb.toString();
-    }
 }
