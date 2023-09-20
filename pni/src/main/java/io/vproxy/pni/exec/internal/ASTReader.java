@@ -71,6 +71,12 @@ public class ASTReader {
         for (var cls : classes) {
             cls.getNativeMemorySize(); // ensure padding calculated
         }
+        for (var cls : classes) {
+            cls.validateAlignment(errors);
+        }
+        if (!errors.isEmpty()) {
+            throw new RuntimeException("Error!\n" + String.join("\n", errors));
+        }
         return classes;
     }
 

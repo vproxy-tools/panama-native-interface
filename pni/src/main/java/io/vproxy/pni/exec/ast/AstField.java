@@ -87,6 +87,22 @@ public class AstField {
         }
     }
 
+    public void validateAlignment(List<String> errors, String path, long sum, boolean alwaysAligned, boolean packed) {
+        path = path + "#field(" + name + ")";
+
+        if (!alwaysAligned && !isAlwaysAligned()) {
+            return;
+        }
+        var align = getAlignmentBytes(packed);
+        if (align <= 1) {
+            return;
+        }
+        if (sum % align == 0) {
+            return;
+        }
+        errors.add(path + ": is not aligned properly");
+    }
+
     public String nativeName() {
         var name = Utils.getName(annos);
         if (name == null)
@@ -101,6 +117,10 @@ public class AstField {
 
     public boolean isUnsigned() {
         return annos.stream().anyMatch(a -> a.typeRef != null && a.typeRef.name().equals(UnsignedClassName));
+    }
+
+    public boolean isAlwaysAligned() {
+        return annos.stream().anyMatch(a -> a.typeRef != null && a.typeRef.name().equals(AlwaysAlignedClassName));
     }
 
     public long getLen() {
@@ -239,9 +259,15 @@ public class AstField {
         sb.append("\n");
     }
 
-    public void generateJavaLayout(StringBuilder sb, int indent) {
+    public void generateJavaLayout(StringBuilder sb, int indent, boolean alwaysAligned) {
         Utils.appendIndent(sb, indent);
-        sb.append(typeRef.memoryLayoutForField(varOpts()))
+        var layout = typeRef.memoryLayoutForField(varOpts());
+        if (layout.endsWith("_UNALIGNED")) {
+            if (alwaysAligned || isAlwaysAligned()) {
+                layout = layout.substring(0, layout.length() - "_UNALIGNED".length());
+            }
+        }
+        sb.append(layout)
             .append(".withName(\"").append(name).append("\")");
         if (padding > 0) {
             sb.append(",\n");

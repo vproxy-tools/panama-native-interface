@@ -216,6 +216,30 @@ public class AstClass {
         }
     }
 
+    public void validateAlignment(List<String> errors) {
+        if (!isStruct()) {
+            return;
+        }
+        var path = "class(" + name + ")";
+        long sum = 0;
+        if (superTypeRef != null) {
+            sum = ((ClassTypeInfo) superTypeRef).getClazz().getNativeMemorySize();
+        }
+        if (headPadding > 0) {
+            sum += headPadding;
+        }
+        for (var f : fields) {
+            f.validateAlignment(errors, path, sum, isAlwaysAligned(), isAlignPacked());
+            sum += f.getNativeMemorySize();
+            sum += f.padding;
+        }
+        if (isAlwaysAligned() && largestAlignmentBytes() > 1 && getSizeof() == null) {
+            if (sum % largestAlignmentBytes() != 0) {
+                errors.add(path + ": struct trailing padding is not aligned properly");
+            }
+        }
+    }
+
     public boolean isStruct() {
         return annos.stream().anyMatch(a -> a.typeRef != null && a.typeRef.name().equals(StructClassName));
     }
@@ -299,6 +323,10 @@ public class AstClass {
 
     public boolean isAlignPacked() {
         return Utils.getAlignPacked(annos);
+    }
+
+    public boolean isAlwaysAligned() {
+        return annos.stream().anyMatch(a -> a.typeRef != null && a.typeRef.name().equals(AlwaysAlignedClassName));
     }
 
     public List<String> extraInclude() {
@@ -570,7 +598,7 @@ public class AstClass {
                 } else {
                     sb.append(",\n");
                 }
-                f.generateJavaLayout(sb, 8);
+                f.generateJavaLayout(sb, 8, isAlwaysAligned());
             }
             sb.append("\n    );\n");
             sb.append("    public final MemorySegment MEMORY;\n");
