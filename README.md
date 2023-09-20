@@ -249,6 +249,7 @@ You may define all template classes inside one single Java file, they don't have
 ```java
 @Struct
 @Name("mbuf_t")
+@AlwaysAligned
 abstract class PNIMBuf {     // typedef PNI_PACK(struct, mbuf_t, {
     MemorySegment bufAddr;   //     void*    bufAddr;
     @Unsigned int pktLen;    //     uint32_t pktLen;
@@ -261,6 +262,7 @@ abstract class PNIMBuf {     // typedef PNI_PACK(struct, mbuf_t, {
 }                            // }) mbuf_t;
 
 @Union(embedded = true)
+@AlwaysAligned
 abstract class PNIUserData {
     MemorySegment userdata;
     @Unsigned long udata64;
@@ -389,16 +391,19 @@ For example:
 
 ```java
 @Struct
+@AlwaysAligned
 abstract class PNIBaseClass {
     byte a;
 }
 
 @Struct
+@AlwaysAligned
 abstract class PNIChildClass extends PNIBaseClass {
     short x;
 }
 
 @Struct
+@AlwaysAligned
 abstract class PNIGrandChildClass extends PNIChildClass {
     long y;
 }
@@ -521,6 +526,9 @@ You can call `PNIRef.of(obj, new Options().setUserdataByteSize(...))`, the behav
 * `@Align`: define the minimum alignment bytes. You can set `@Align(packed=true)` to disable padding.
   This annotation has the same effect as setting `__attribute__((aligned(N)))` or `__attribute__((packed))` in `GCC`.
 * `@Critical`: generate native functions without `PNIEnv`. You can directly use `return` to return values to Java. However, since the `PNIEnv` is absent, you will not be able to use any functionality associated with it, for example, throwing exceptions from the C code.
+* `@AlwaysAligned`: assumes that the annotated class or field to be always aligned. This will result in a Java `ValueLayout` without `_UNALIGNED` suffix. A jmh benchmark shows that accessing "manually aligned" fields has the same performance as accessing "unaligned" fields, and is a little bit slower than "aligned" fields in Panama.  
+  This annotation is not the default behavior because adding it means that you will not be allowed to put the type on a random memory location.  
+  The generated C code will not have a difference due to this annotation because modern compilers such as GCC generates exactly the same code for accessing "manually aligned" and "implicitly aligned" fields (tested on misp, which generates completely different code for unaligned access).
 
 ### Enhance Java Types
 
