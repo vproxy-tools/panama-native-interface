@@ -73,28 +73,99 @@ curl 127.0.0.1:80
 
 <details><summary>Click to reveal</summary>
 
-It's recommended to use `Gradle`, otherwise you will have to generate classes using the `pni` command line tool by your self.
+It's recommended to use `Gradle` as the building system, otherwise you will have to manually generate files using the `pni` command line tool.
 
-Here's the tutorial when using `Gradle`:
+Here's the tutorial for `Gradle`:
 
-1. Add source root
-2. Create folders for generated C headers
-3. Add `pni-api` dependency
-4. Add a Gradle subproject
-5. Add `pni-api` dependency to the subproject
-6. Add a task to generate files
-7. Add `-parameters` compiler argument
-8. Write template classes
-9. Generate
-10. Implement functions in C
-11. Compile
-12. Load library in Java
+1. Configure your building environment
+2. Choose a pni version to use
+3. Add a new source root for generated java classes
+4. Create folders for C files
+5. Add `pni-api` dependency to your project
+6. Add a Gradle subproject for template classes
+7. Add `pni-api` dependency to the subproject
+8. Add a Gradle task to run the code generator
+9. Add `-parameters` compiler argument
+10. Write template classes
+11. Generate
+12. Implement functions in C
+13. Compile
+14. Load the shared library in Java
 
-> This tutorial can run smoothly on Linux or macOS or MinGW.
+### 1. Configure your building environment
 
-### 1. Add source root
+Please follow the steps in chapter `How to build`. Installing JDKs, configuring environment variables, installing compiling tools, etc.  
+If you are able to run the sample program, then you are ready to go!
 
-It's recommended to separate generated files and handwritten files, so you may want to add a new `source root`.
+In your Gradle project, add a `gradle.properties` file, and enter the following lines:
+
+```properties
+org.gradle.java.installations.auto-detect=false
+org.gradle.java.installations.auto-download=false
+org.gradle.java.installations.fromEnv=JAVA_HOME_21
+```
+
+This will enforce Gradle to use `$JAVA_HOME_21` as the JDK home for building when setting `toolchain` to `21`.
+
+---
+
+In your `build.gradle`, add the following snippet:
+
+```groovy
+allprojects {
+    apply plugin: 'java'
+
+    java {
+        toolchain {
+            languageVersion = JavaLanguageVersion.of(21)
+        }
+    }
+
+    tasks.withType(JavaCompile) {
+        options.compilerArgs += '--enable-preview'
+    }
+    tasks.withType(JavaExec) {
+        jvmArgs += '--enable-preview'
+        jvmArgs += '--enable-native-access=ALL-UNNAMED'
+        javaLauncher.set(javaToolchains.launcherFor(java.toolchain))
+    }
+    tasks.withType(Test) {
+        jvmArgs += '--enable-preview'
+        jvmArgs += '--enable-native-access=ALL-UNNAMED'
+    }
+
+    repositories {
+        mavenLocal()
+        mavenCentral()
+    }
+}
+```
+
+This tells Gradle to build all projects (including subprojects) with JDK 21 and adding `--enable-preview` compiler option, and also specifies the repositories for all projects.
+
+### 2. Choose a pni version to use
+
+The latest `Panama Native Interface` version is `21.0.0.11`  
+The version will appear multiple times in `build.gradle`, so you can define a variable at the beginning of the file:
+
+```groovy
+buildscript {
+    def PNI_VERSION = '21.0.0.11'
+    ext.set("PNI_VERSION", PNI_VERSION)
+}
+
+plugins {
+    // ...
+}
+
+def PNI_VERSION = project.PNI_VERSION
+```
+
+The `buildscript` block will be used later.
+
+### 3. Add a new source root for generated java classes
+
+It's recommended to separate generated files and handwritten files, so you may need a new `source root`:
 
 ```groovy
 sourceSets {
@@ -106,90 +177,131 @@ sourceSets {
 }
 ```
 
-You now have two folders to contain java source files: `java` and `generated` (you still need to create the folders manually).
+Now the project has two folders for java source files: `java` and `generated`.  
+You will still need to create the folders manually:
 
-### 2. Create folders for generated C headers
+```shell
+mkdir -p src/main/generated
+```
 
-Create a directory `src/main/c` to store C files and `src/main/c-generated` to store generated headers.
+### 4. Create folders for C files
+
+Create a directory `src/main/c` to store handwritten C files and `src/main/c-generated` to store generated C files.
 
 ```shell
 mkdir -p src/main/c
 mkdir -p src/main/c-generated
 ```
 
-### 3. Add `pni-api` dependency
-
-Add dependency to your project:
+### 5. Add `pni-api` dependency to your project
 
 ```groovy
 dependencies {
-    implementation "io.vproxy:pni-api-jdk21:21.0.0.11"
+    implementation "io.vproxy:pni-api-jdk21:"+PNI_VERSION
 }
 ```
 
-### 4. Add a Gradle subproject
+This module contains necessary classes for `Panama Native Interface` to work,
+and also contains useful classes for you to interact with the native world.
 
-The subproject is used to hold template classes, you may name it as `pni-template`
+### 6. Add a Gradle subproject for template classes
 
-If you are using `IDEA`, it's easy to create a subproject by simply adding a new module.
+The subproject is used to hold template classes, you may name it as `pni-template`.  
+If you want to use a different subproject name, make sure you change all names accordingly during this tutorial.
 
-Otherwise, you will have to edit `settings.gradle` manually, you may refer to the script:
+If you are using `IDEA`, it's easy to create a subproject simply by adding a new module.  
+Otherwise, you may have to edit `settings.gradle` and create subproject folders manually.
+
+You may refer to the following bash script to create the subproject:
 
 ```bash
 #!/bin/bash
 set -e
+set -x
 
 SUBPROJECT="pni-template"
 
 echo "include '$SUBPROJECT'" >> ./settings.gradle
 mkdir -p "./$SUBPROJECT/src/main/java"
-echo 'compileJava {}' >> "./$SUBPROJECT/build.gradle"
+echo 'compileJava {}' > "./$SUBPROJECT/build.gradle"
 
-echo 'project(":'$SUBPROJECT'") {}' >> "./build.gradle"
+tee -a ./build.gradle <<EOF
+project(":$SUBPROJECT") {
+}
+EOF
 ```
 
-### 5. Add `pni-api` dependency to the subproject
-
-Add pni api dependency to the subproject:
+### 7. Add `pni-api` dependency to the subproject
 
 ```groovy
 dependencies {
-    implementation "io.vproxy:pni-api-jdk21:21.0.0.11"
+    implementation "io.vproxy:pni-api-jdk21:"+PNI_VERSION
 }
 ```
 
-### 6. Add a task to generate files
+The template classes also require access to types in the `pni-api` module.
 
-Add the following task to your subproject.
+You can add it to the `build.gradle` inside the subproject folder, or you can add it in the root `build.gradle` just like this:
 
 ```groovy
-def PROJECT_DIR = '' // FIXME: Change this variable to your main project directory
-                     // FIXME: If it's the root project, leave it empty.
-                     // FIXME: If it's a subproject, set the value to 'sub-project-dir/'
-def PNI_JAR_PATH = './misc/pni.jar'
-                     // FIXME: Change this variable to the location of pni.jar
-                     // FIXME: the location is relevant to your root project directory.
+project(':pni-template') {
+    // ...
 
-task pniClean(type: Exec) {
-    workingDir project.rootProject.rootDir.getAbsolutePath() + '/' + PROJECT_DIR + 'src/main/'
-    commandLine 'bash', '-c', 'rm -rf c-generated/* && rm -rf generated/*'
-}
-task pniGenerate(type: Exec) {
-    workingDir project.rootProject.rootDir.getAbsolutePath()
-    commandLine('java', '-jar', PNI_JAR_PATH,
-        '-cp', "pni-template/build/classes/java/main",
-        '-d', "$PROJECT_DIR/src/main/generated",
-        '-h', "$PROJECT_DIR/src/main/c-generated")
-
-    dependsOn pniClean
-    dependsOn compileJava
+    dependencies { /* ... */ }
 }
 ```
 
-### 7. Add `-parameters` compiler argument
+### 8. Add a Gradle task to run the code generator
 
-In order to retrieve parameter names from Java byte code, you will need to explicity add `-parameters` compiler argument.  
-Add the following code snippet to project `pni-template`.
+At the beginning of the `build.gradle` file, insert the following code snippet into the `buildscript` block:
+
+```groovy
+buildscript {
+    // ...
+
+    dependencies {
+        classpath group: 'io.vproxy', name: 'pni-exec', version: PNI_VERSION
+    }
+}
+```
+
+This snippet adds the code generator into classpath of the Gradle building system, so that you can directly invoke the generator in `build.gradle`.
+
+---
+
+Add the following task inside the subproject:
+
+```groovy
+task pniGenerate() {
+    dependsOn compileJava
+
+    def workingDir = project.rootProject.rootDir.getAbsolutePath()
+    def gen = new io.vproxy.pni.exec.Generator(
+        new io.vproxy.pni.exec.CompilerOptions()
+            .setClasspath(List.of(workingDir + '/pni-template/build/classes/java/main'))
+            .setJavaOutputBaseDirectory(workingDir + '/src/main/generated')
+            .setCOutputDirectory(workingDir + '/src/main/c-generated')
+    )
+
+    doLast {
+        gen.generate()
+    }
+}
+```
+
+You can add it to the `build.gradle` inside the subproject folder, or you can add it in the root `build.gradle` just like this:
+
+```groovy
+project(':pni-template') {
+    task pniGenerate() { /* ... */ }
+}
+```
+
+### 9. Add `-parameters` compiler argument
+
+In order to retrieve parameter names from Java byte code, the `-parameters` compiler argument should be added explicitly.
+
+Add the following code snippet inside project `pni-template`:
 
 ```groovy
 compileJava {
@@ -197,41 +309,41 @@ compileJava {
 }
 ```
 
-### 8. Write template classes
+### 10. Write template classes
 
 Write template classes in project `pni-template`. See the below section `How to use`.
 
-### 9. Generate
+### 11. Generate
 
 ```shell
 ./gradlew clean pniGenerate
 ```
 
-Then you will find C headers in `src/main/c-generated` and Java classes in `src/main/generated`
+Then you will find generated C files in `src/main/c-generated` and generated Java classes in `src/main/generated`
 
-### 10. Implement functions in C
+### 12. Implement functions in C
 
-Go to `src/main/c`, write your C implementation there.
+Go to `src/main/c`, write C implementation here.
 
-### 11. Compile
+### 13. Compile
 
 To compile the C files, you will need `pni.h` and `jni.h` in your include search path (`-I` option).
 
 You can find `pni.h` [here](https://github.com/vproxy-tools/panama-native-interface/tree/master/api/src/main/c).  
-and you can find `jni.h` in `"$JAVA_HOME/include"` and `"$JAVA_HOME/include/$your_platform"`,
-or use the [mock version](https://github.com/vproxy-tools/panama-native-interface/tree/master/api/src/main/c/jnimock) instead.
+and you can find use the [mocked jni.h](https://github.com/vproxy-tools/panama-native-interface/tree/master/api/src/main/c/jnimock),
+or you can add `"$JAVA_HOME/include"` and `"$JAVA_HOME/include/$your_platform"` in your include search path instead, which is the traditional way when using `JNI`.
 
 You may refer to [make-sample.sh](https://github.com/vproxy-tools/panama-native-interface/blob/master/sample/src/main/c/make-sample.sh) for more info.
 
-### 12. Load library in Java
+### 14. Load the shared library in Java
 
-Finally, you need to load the shared library in Java:
+The shared library should be loaded in Java before any native capability is used:
 
 ```java
 System.loadLibrary("your-library-name");
 ```
 
-You must ensure your library placed in `-Djava.library.path`.
+The shared library file must be placed in `-Djava.library.path` for Java to load.
 
 </details>
 
