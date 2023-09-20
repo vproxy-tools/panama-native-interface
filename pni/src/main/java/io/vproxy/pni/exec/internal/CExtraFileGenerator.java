@@ -2,12 +2,12 @@ package io.vproxy.pni.exec.internal;
 
 import io.vproxy.pni.exec.ast.AstClass;
 
-public class CExtraFileWriter extends CFileWriter {
-    public CExtraFileWriter(AstClass cls) {
+public class CExtraFileGenerator extends CFileGenerator {
+    public CExtraFileGenerator(AstClass cls) {
         super(cls);
     }
 
-    protected String gen() {
+    public String generate() {
         return generateCSizeof();
     }
 

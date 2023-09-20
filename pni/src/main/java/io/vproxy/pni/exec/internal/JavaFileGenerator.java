@@ -12,10 +12,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 @SuppressWarnings("SameParameterValue")
-public class JavaFileWriter {
+public class JavaFileGenerator {
     private final AstClass cls;
 
-    public JavaFileWriter(AstClass cls) {
+    public JavaFileGenerator(AstClass cls) {
         this.cls = cls;
     }
 
@@ -41,7 +41,7 @@ public class JavaFileWriter {
         }
     }
 
-    private String generateJava() {
+    public String generateJava() {
         var sb = new StringBuilder();
         if (!cls.packageName().isEmpty()) {
             sb.append("package ").append(cls.packageName()).append(";\n\n");

@@ -19,15 +19,15 @@ import java.util.HashSet;
 import java.util.Map;
 
 @SuppressWarnings("SameParameterValue")
-public class CFileWriter {
+public class CFileGenerator {
     protected final AstClass cls;
 
-    public CFileWriter(AstClass cls) {
+    public CFileGenerator(AstClass cls) {
         this.cls = cls;
     }
 
     public void flush(File dir, CompilerOptions opts) {
-        var cCode = gen();
+        var cCode = generate();
         if (cCode == null) {
             if (opts.isVerbose()) {
                 System.out.println("no native code generated for " + cls.fullName() + " @ " + this.getClass().getSimpleName());
@@ -55,7 +55,7 @@ public class CFileWriter {
         }
     }
 
-    protected String gen() {
+    public String generate() {
         return generateC();
     }
 
@@ -253,7 +253,7 @@ public class CFileWriter {
                 var cls = clsTypeInfo.getClazz();
                 if (cls.isUnionEmbed()) {
                     Utils.appendIndent(sb, indent);
-                    new CFileWriter(cls).generateC(sb, indent, false);
+                    new CFileGenerator(cls).generateC(sb, indent, false);
                     return;
                 }
             }

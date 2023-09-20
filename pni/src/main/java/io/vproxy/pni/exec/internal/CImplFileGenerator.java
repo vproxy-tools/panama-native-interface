@@ -8,12 +8,12 @@ import java.util.HashSet;
 import java.util.Map;
 
 @SuppressWarnings("SameParameterValue")
-public class CImplFileWriter extends CFileWriter {
-    public CImplFileWriter(AstClass cls) {
+public class CImplFileGenerator extends CFileGenerator {
+    public CImplFileGenerator(AstClass cls) {
         super(cls);
     }
 
-    protected String gen() {
+    public String generate() {
         return generateCImpl();
     }
 
@@ -21,7 +21,7 @@ public class CImplFileWriter extends CFileWriter {
         return cls.underlinedName() + ".impl.h";
     }
 
-    public String generateCImpl() {
+    private String generateCImpl() {
         boolean doGenerate = false;
         for (var m : cls.methods) {
             var s = m.getImplC();
@@ -80,7 +80,7 @@ public class CImplFileWriter extends CFileWriter {
         return methodGenerators.computeIfAbsent(m, MethodGenerator::new);
     }
 
-    private static class MethodGenerator extends CFileWriter.MethodGenerator {
+    private static class MethodGenerator extends CFileGenerator.MethodGenerator {
         protected MethodGenerator(AstMethod method) {
             super(method);
         }

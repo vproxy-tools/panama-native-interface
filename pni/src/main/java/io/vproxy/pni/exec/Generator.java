@@ -31,11 +31,11 @@ public class Generator {
                 continue;
             }
 
-            new JavaFileWriter(cls).flush(new File(opts.getJavaOutputBaseDirectory()), opts);
-            new CFileWriter(cls).flush(new File(opts.getCOutputDirectory()), opts);
-            new CImplFileWriter(cls).flush(new File(opts.getCOutputDirectory()), opts);
-            new CExtraFileWriter(cls).flush(new File(opts.getCOutputDirectory()), opts);
-            new CUpcallImplFileWriter(cls).flush(new File(opts.getCOutputDirectory()), opts);
+            new JavaFileGenerator(cls).flush(new File(opts.getJavaOutputBaseDirectory()), opts);
+            new CFileGenerator(cls).flush(new File(opts.getCOutputDirectory()), opts);
+            new CImplFileGenerator(cls).flush(new File(opts.getCOutputDirectory()), opts);
+            new CExtraFileGenerator(cls).flush(new File(opts.getCOutputDirectory()), opts);
+            new CUpcallImplFileGenerator(cls).flush(new File(opts.getCOutputDirectory()), opts);
         }
     }
 }

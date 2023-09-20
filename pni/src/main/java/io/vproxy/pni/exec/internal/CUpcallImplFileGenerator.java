@@ -8,12 +8,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 @SuppressWarnings("SameParameterValue")
-public class CUpcallImplFileWriter extends CFileWriter {
-    public CUpcallImplFileWriter(AstClass cls) {
+public class CUpcallImplFileGenerator extends CFileGenerator {
+    public CUpcallImplFileGenerator(AstClass cls) {
         super(cls);
     }
 
-    protected String gen() {
+    public String generate() {
         return generateCUpcallImpl();
     }
 
@@ -78,7 +78,7 @@ public class CUpcallImplFileWriter extends CFileWriter {
         return methodGenerators.computeIfAbsent(m, MethodGenerator::new);
     }
 
-    private static class MethodGenerator extends CFileWriter.MethodGenerator {
+    private static class MethodGenerator extends CFileGenerator.MethodGenerator {
         private MethodGenerator(AstMethod method) {
             super(method);
         }
