@@ -1,7 +1,6 @@
 package io.vproxy.pni.exec.ast;
 
 import io.vproxy.pni.exec.internal.Utils;
-import io.vproxy.pni.exec.internal.VarOpts;
 import io.vproxy.pni.exec.type.*;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.tree.ClassNode;
