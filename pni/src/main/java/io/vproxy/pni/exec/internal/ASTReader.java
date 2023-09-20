@@ -19,10 +19,6 @@ public class ASTReader {
         this.classReaders = classReaders;
     }
 
-    public List<AstClass> read() {
-        return read(CompilerOptions.empty());
-    }
-
     public List<AstClass> read(CompilerOptions opts) {
         // load all classes which requires handling
         for (var r : classReaders) {
@@ -30,7 +26,7 @@ public class ASTReader {
             r.accept(classNode, ClassReader.SKIP_FRAMES | ClassReader.SKIP_CODE);
             var astClass = new AstClass(classNode);
             if (!requiresHandling(astClass)) {
-                if (opts.verbose()) {
+                if (opts.isVerbose()) {
                     System.out.println("skipping " + astClass.name);
                 }
                 continue;
@@ -46,7 +42,7 @@ public class ASTReader {
         }
 
         // verbose
-        if (opts.verbose()) {
+        if (opts.isVerbose()) {
             for (var cls : classes) {
                 System.out.println("-----BEGIN CLASS-----");
                 System.out.println(cls);

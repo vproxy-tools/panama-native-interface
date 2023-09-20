@@ -16,10 +16,6 @@ public class JavaReader {
         this.classpath = classpath;
     }
 
-    public List<ClassReader> read() {
-        return read(CompilerOptions.empty());
-    }
-
     public List<ClassReader> read(CompilerOptions opts) {
         for (var cp : classpath) {
             var f = new File(cp);
@@ -74,7 +70,7 @@ public class JavaReader {
     }
 
     private void readClass(String filename, InputStream inputStream, CompilerOptions opts) {
-        if (opts.verbose()) {
+        if (opts.isVerbose()) {
             System.out.println("reading class " + filename);
         }
         try {

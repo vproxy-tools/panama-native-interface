@@ -171,32 +171,14 @@ public class Main {
             return;
         }
 
-        var opts = new CompilerOptions(
-            verbose, metadata
-        );
-        var classReaders = new JavaReader(cp).read(opts);
-        var classes = new ASTReader(classReaders).read(opts);
-        for (var cls : classes) {
-            var generate = filter.isEmpty();
-            for (var f : filter) {
-                if (f.matcher(cls.fullName()).find()) {
-                    if (opts.verbose()) {
-                        System.out.println(cls.fullName() + " matches filtering rule " + f);
-                    }
-                    generate = true;
-                    break;
-                }
-            }
-            if (!generate) {
-                continue;
-            }
-
-            new JavaFileWriter(cls).flush(new File(d), opts);
-            new CFileWriter(cls).flush(new File(h), opts);
-            new CImplFileWriter(cls).flush(new File(h), opts);
-            new CExtraFileWriter(cls).flush(new File(h), opts);
-            new CUpcallImplFileWriter(cls).flush(new File(h), opts);
-        }
+        var opts = new CompilerOptions()
+            .setClasspath(cp)
+            .setJavaOutputBaseDirectory(d)
+            .setCOutputDirectory(h)
+            .setFilters(filter)
+            .setVerbose(verbose)
+            .putMetadata(metadata);
+        new Generator(opts).generate();
         System.out.println("done");
     }
 }

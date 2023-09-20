@@ -435,7 +435,7 @@ public class Utils {
     public static String metadata(CompilerOptions opts, String version) {
         var sb = new StringBuilder();
         sb.append("// metadata.generator-version: pni ").append(version).append("\n");
-        for (var entry : opts.metadata().entrySet()) {
+        for (var entry : opts.getMetadata().entrySet()) {
             var k = entry.getKey();
             var v = entry.getValue();
             sb.append("// metadata.").append(k).append(": ").append(v).append("\n");

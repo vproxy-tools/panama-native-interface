@@ -19,7 +19,7 @@ public class CFileWriter {
     public void flush(File dir, CompilerOptions opts) {
         var cCode = gen();
         if (cCode == null) {
-            if (opts.verbose()) {
+            if (opts.isVerbose()) {
                 System.out.println("no native code generated for " + cls.fullName() + " @ " + this.getClass().getSimpleName());
             }
             return;
@@ -30,12 +30,12 @@ public class CFileWriter {
         String fileName = fileName();
         Path path = Path.of(dir.getAbsolutePath(), fileName);
         if (Utils.hashesAreTheSame(path.toFile(), hash)) {
-            if (opts.verbose()) {
+            if (opts.isVerbose()) {
                 System.out.println("skipping native file because nothing changed: " + path);
             }
             return;
         }
-        if (opts.verbose()) {
+        if (opts.isVerbose()) {
             System.out.println("writing generated native file for " + cls.fullName() + " to " + path);
         }
         try {
