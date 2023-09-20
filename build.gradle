@@ -40,6 +40,8 @@ shadowJar {
 
 subprojects {
     apply plugin: 'java'
+    apply plugin: 'maven-publish'
+    apply plugin: 'signing'
 
     group 'io.vproxy'
     version rootProject.version
@@ -96,74 +98,76 @@ subprojects {
     tasks.withType(GenerateModuleMetadata) {
         enabled = false
     }
-}
-
-project(":api") {
-    apply plugin: 'maven-publish'
-    apply plugin: 'signing'
 
     java {
         withSourcesJar()
     }
 
-    publishing {
-        publications {
-            maven(MavenPublication) {
-                from components.java
-                artifactId 'pni-' + project.name + '-jdk21'
+    if (['api', 'pni'].contains(project.name)) {
+        def releaseName = ""
+        def pomName = ""
+        if (project.name == 'api') {
+            releaseName = 'pni-api-jdk21'
+            pomName = "pni"
+        } else {
+            releaseName = 'pni-exec'
+            pomName = "pni.exec"
+        }
 
-                artifact(javadocJar)
+        publishing {
+            publications {
+                maven(MavenPublication) {
+                    from components.java
+                    artifactId releaseName
 
-                pom {
-                    name = 'io.vproxy.pni-' + project.name
-                    description = 'panama native interface ' + project.name
-                    url = 'https://vproxy.io'
-                    licenses {
-                        license {
-                            name = 'MIT License'
-                            url = 'https://github.com/vproxy-tools/panama-native-interface/blob/master/LICENSE'
+                    artifact(javadocJar)
+
+                    pom {
+                        name = 'io.vproxy.' + pomName
+                        description = 'panama native interface ' + releaseName
+                        url = 'https://vproxy.io'
+                        licenses {
+                            license {
+                                name = 'MIT License'
+                                url = 'https://github.com/vproxy-tools/panama-native-interface/blob/master/LICENSE'
+                            }
                         }
-                    }
-                    developers {
-                        developer {
-                            id = 'wkgcass'
-                            name = 'K.G. Wang'
-                            email = 'wkgcass@hotmail.com'
+                        developers {
+                            developer {
+                                id = 'wkgcass'
+                                name = 'K.G. Wang'
+                                email = 'wkgcass@hotmail.com'
+                            }
                         }
-                    }
-                    scm {
-                        connection = 'scm:git:git://github.com/vproxy-tools/panama-native-interface.git'
-                        developerConnection = 'scm:git:git://github.com/vproxy-tools/panama-native-interface.git'
-                        url = 'https://github.com/vproxy-tools/panama-native-interface'
-                    }
-                }
-                pom.withXml {
-                    def pomNode = asNode()
-                    pomNode.dependencies.'*'.findAll() {
-                        it.groupId.text() == 'org.jetbrains.kotlin' || it.groupId.text() == 'org.jetbrains.kotlinx'
-                    }.each {
-                        it.parent().remove(it)
+                        scm {
+                            connection = 'scm:git:git://github.com/vproxy-tools/panama-native-interface.git'
+                            developerConnection = 'scm:git:git://github.com/vproxy-tools/panama-native-interface.git'
+                            url = 'https://github.com/vproxy-tools/panama-native-interface'
+                        }
                     }
                 }
             }
-        }
-        repositories {
-            maven {
-                credentials {
-                    username 'wkgcass'
-                    password System.getProperty("MavenPublishPassword")
+            repositories {
+                maven {
+                    credentials {
+                        username 'wkgcass'
+                        password System.getProperty("MavenPublishPassword")
+                    }
+                    def releasesRepoUrl = 'https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/'
+                    def snapshotsRepoUrl = 'https://s01.oss.sonatype.org/content/repositories/snapshots/'
+                    url = version.contains('-DEV') ? snapshotsRepoUrl : releasesRepoUrl
                 }
-                def releasesRepoUrl = 'https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/'
-                def snapshotsRepoUrl = 'https://s01.oss.sonatype.org/content/repositories/snapshots/'
-                url = version.contains('-DEV') ? snapshotsRepoUrl : releasesRepoUrl
+            }
+        }
+        if (!System.getProperty("MavenLocalInstall", "false").equals("true")) {
+            signing {
+                sign publishing.publications.maven
             }
         }
     }
-    if (!System.getProperty("MavenLocalInstall", "false").equals("true")) {
-        signing {
-            sign publishing.publications.maven
-        }
-    }
+}
+
+project(":api") {
 }
 
 project(":pni") {
