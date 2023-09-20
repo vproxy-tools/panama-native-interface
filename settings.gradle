@@ -6,4 +6,5 @@ include 'acceptance-testing'
 include 'acceptance-testing-template'
 include 'playground'
 include 'unittest'
+include 'performance'
 

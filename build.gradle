@@ -5,6 +5,7 @@ plugins {
     id 'maven-publish'
     id 'signing'
     id 'com.github.johnrengelman.shadow' version '7.1.2'
+    id 'me.champeau.jmh' version "0.7.1" apply false
 }
 
 group = 'org.example'
@@ -313,6 +314,24 @@ project(":playground") {
 
         dependsOn compileJava
         dependsOn compilePNIPlaygroundLib
+    }
+}
+
+project(':performance') {
+    apply plugin: 'me.champeau.jmh'
+    sourceSets {
+        main {
+            java {
+                srcDirs = ['src/main/java']
+                destinationDirectory.set(file('build/classes/java/jmh'))
+            }
+        }
+    }
+    jmhRunBytecodeGenerator {
+        getJvmArgs().addAll(["--enable-preview", "--enable-native-access=ALL-UNNAMED"])
+    }
+    dependencies {
+        implementation 'org.openjdk.jmh:jmh-generator-annprocess:1.37'
     }
 }
 
