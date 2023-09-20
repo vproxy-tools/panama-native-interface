@@ -1,6 +1,7 @@
-package io.vproxy.pni.exec.internal;
+package io.vproxy.pni.exec.generator;
 
 import io.vproxy.pni.exec.ast.AstClass;
+import io.vproxy.pni.exec.internal.Utils;
 
 public class CExtraFileGenerator extends CFileGenerator {
     public CExtraFileGenerator(AstClass cls) {

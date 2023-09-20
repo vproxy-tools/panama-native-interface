@@ -1,7 +1,8 @@
-package io.vproxy.pni.exec.internal;
+package io.vproxy.pni.exec.generator;
 
 import io.vproxy.pni.exec.ast.AstClass;
 import io.vproxy.pni.exec.ast.AstMethod;
+import io.vproxy.pni.exec.internal.Utils;
 
 import java.util.HashMap;
 import java.util.HashSet;

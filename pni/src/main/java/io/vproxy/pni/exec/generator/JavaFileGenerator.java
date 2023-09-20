@@ -1,8 +1,10 @@
-package io.vproxy.pni.exec.internal;
+package io.vproxy.pni.exec.generator;
 
 import io.vproxy.pni.exec.CompilerOptions;
 import io.vproxy.pni.exec.Main;
 import io.vproxy.pni.exec.ast.*;
+import io.vproxy.pni.exec.internal.Utils;
+import io.vproxy.pni.exec.internal.VarOpts;
 import io.vproxy.pni.exec.type.*;
 
 import java.io.File;

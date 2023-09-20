@@ -1,4 +1,4 @@
-package io.vproxy.pni.exec.internal;
+package io.vproxy.pni.exec.generator;
 
 import io.vproxy.pni.exec.CompilerOptions;
 import io.vproxy.pni.exec.Main;
@@ -6,6 +6,8 @@ import io.vproxy.pni.exec.ast.AstClass;
 import io.vproxy.pni.exec.ast.AstField;
 import io.vproxy.pni.exec.ast.AstMethod;
 import io.vproxy.pni.exec.ast.AstParam;
+import io.vproxy.pni.exec.internal.Utils;
+import io.vproxy.pni.exec.internal.VarOpts;
 import io.vproxy.pni.exec.type.ArrayTypeInfo;
 import io.vproxy.pni.exec.type.ClassTypeInfo;
 import io.vproxy.pni.exec.type.TypeInfo;
