@@ -223,42 +223,6 @@ public class AstField {
         return n;
     }
 
-    public void generateC(StringBuilder sb, int indent) {
-        if (typeRef instanceof ClassTypeInfo) {
-            var clsTypeInfo = (ClassTypeInfo) typeRef;
-            var cls = clsTypeInfo.getClazz();
-            if (cls.isUnionEmbed()) {
-                Utils.appendIndent(sb, indent);
-                cls.generateC(sb, indent, false);
-                return;
-            }
-        }
-        var bitfields = getBitFieldInfo();
-        if (bitfields == null) {
-            Utils.appendIndent(sb, indent);
-            sb.append(typeRef.nativeType(nativeName(), varOpts())).append(";");
-        } else {
-            var tname = typeRef.nativeType(null, varOpts());
-            for (var b : bitfields) {
-                Utils.appendIndent(sb, indent)
-                    .append(tname).append(" ").append(b.name).append(" : ").append(b.bit).append(";\n");
-            }
-            var last = bitfields.get(bitfields.size() - 1);
-            if (last.offset + last.bit < getNativeMemorySize() * 8) {
-                Utils.appendIndent(sb, indent)
-                    .append(tname).append(" : ").append(getNativeMemorySize() * 8 - (last.offset + last.bit)).append(";\n");
-            }
-            // add indent for padding
-            if (padding > 0) {
-                Utils.appendIndent(sb, indent);
-            }
-        }
-        if (padding > 0) {
-            Utils.appendCPadding(sb, padding);
-        }
-        sb.append("\n");
-    }
-
     public void toString(StringBuilder sb, int indent) {
         Utils.appendIndent(sb, indent);
         for (var a : annos) {

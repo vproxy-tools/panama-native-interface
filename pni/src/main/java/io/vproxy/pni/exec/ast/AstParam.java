@@ -94,9 +94,4 @@ public class AstParam {
     public ParamOpts paramOpts() {
         return ParamOpts.of(typeRef.allocationInfoForParam(varOpts()).requireAllocator());
     }
-
-    public void generateC(StringBuilder sb, int indent) {
-        Utils.appendIndent(sb, indent);
-        sb.append(typeRef.nativeParamType(nativeName(), varOpts()));
-    }
 }
