@@ -300,7 +300,7 @@ The generated Java types will share the same package as the template ones,
 the generated C headers will have almost the same format as JNI output, see the following section for more details.
 
 If you have multiple projects, let's say project `A` and project `B`, where template files of `B` depends on
-template files of `A`, you can add both projects' classpath to `-cp`, and specify `-f <regexp>` to filter which
+template files of `A`, you can add both projects' classpath to `-cp`, and specify `-F <regexp>` to filter which
 class needs to be generated.  
 The regexp matches the full name of the class, for example `io\.vproxy\.luajn\.n\..*`.
 

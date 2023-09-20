@@ -35,14 +35,14 @@ public class Main {
         "  -d <directory>               Specify where to place generated class files\n" +
         "  -h <directory>\n" +
         "        Specify where to place generated native header files\n" +
-        "  -f <regexp>                  Only generate for selected classes (default .*)\n" +
+        "  -F <regexp>                  Only generate for selected classes (default .*)\n" +
         "  -M <key>=<value>             Add metadata on generated files\n" +
         "  --help, -help, -?            Print this help message\n" +
         "  -verbose                     Output messages about what the compiler is doing\n" +
         "  --version, -version          Version information\n" +
         "\n" +
         "Note:\n" +
-        "  -cp,-f,-M can appear multiple times\n"
+        "  -cp,-F,-M can appear multiple times\n"
     ).trim();
 
     public static void main(String[] args) {
@@ -93,9 +93,9 @@ public class Main {
                 }
                 ++i;
                 h = next.trim();
-            } else if (a.equals("-f")) {
+            } else if (a.equals("-F")) {
                 if (next == null) {
-                    System.out.println("missing regexp after -f");
+                    System.out.println("missing regexp after -F");
                     System.exit(1);
                     return;
                 }
