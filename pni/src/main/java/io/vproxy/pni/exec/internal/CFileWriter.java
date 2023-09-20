@@ -63,7 +63,7 @@ public class CFileWriter {
         return cls.underlinedName() + ".h";
     }
 
-    protected void include(StringBuilder sb, AstClass cls) {
+    protected void includeClassHeader(StringBuilder sb, AstClass cls) {
         sb.append("#include \"").append(cls.underlinedName()).append(".h\"\n");
     }
 
@@ -118,14 +118,14 @@ public class CFileWriter {
         if (cls.superTypeRef != null) {
             var cls = ((ClassTypeInfo) this.cls.superTypeRef).getClazz();
             includedClasses.add(cls);
-            include(sb, cls);
+            includeClassHeader(sb, cls);
         }
         for (var f : cls.fields) {
             if (f.typeRef instanceof ClassTypeInfo) {
                 var classTypeInfo = (ClassTypeInfo) f.typeRef;
                 var cls = classTypeInfo.getClazz();
                 if (includedClasses.add(cls)) {
-                    include(sb, cls);
+                    includeClassHeader(sb, cls);
                 }
             }
         }
@@ -134,7 +134,7 @@ public class CFileWriter {
                 var classTypeInfo = (ClassTypeInfo) m.returnTypeRef;
                 var cls = classTypeInfo.getClazz();
                 if (includedClasses.add(cls)) {
-                    include(sb, cls);
+                    includeClassHeader(sb, cls);
                 }
             }
             for (var p : m.params) {
@@ -146,7 +146,7 @@ public class CFileWriter {
                     var classTypeInfo = (ClassTypeInfo) typeInfo;
                     var cls = classTypeInfo.getClazz();
                     if (includedClasses.add(cls)) {
-                        include(sb, cls);
+                        includeClassHeader(sb, cls);
                     }
                 }
                 for (var g : p.genericTypeRefs) {
@@ -155,7 +155,7 @@ public class CFileWriter {
                         var classTypeInfo = (ClassTypeInfo) g;
                         var cls = classTypeInfo.getClazz();
                         if (includedClasses.add(cls)) {
-                            include(sb, cls);
+                            includeClassHeader(sb, cls);
                         }
                     }
                 }

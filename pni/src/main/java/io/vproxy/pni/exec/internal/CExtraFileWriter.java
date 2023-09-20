@@ -22,7 +22,7 @@ public class CExtraFileWriter extends CFileWriter {
         }
 
         var sb = new StringBuilder();
-        sb.append("#include \"").append(cls.underlinedName()).append(".h\"\n");
+        includeClassHeader(sb, cls);
         var extraInclude = cls.getSizeofInclude();
         if (extraInclude != null) {
             for (var i : extraInclude) {

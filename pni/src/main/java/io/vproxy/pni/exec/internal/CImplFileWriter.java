@@ -35,7 +35,7 @@ public class CImplFileWriter extends CFileWriter {
         }
 
         var sb = new StringBuilder();
-        sb.append("#include \"").append(cls.underlinedName()).append(".h\"\n");
+        includeClassHeader(sb, cls);
         var imports = new HashSet<String>();
         for (var m : cls.methods) {
             var includeLs = m.getImplInclude();

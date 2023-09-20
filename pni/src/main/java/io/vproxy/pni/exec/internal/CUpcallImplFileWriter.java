@@ -27,7 +27,7 @@ public class CUpcallImplFileWriter extends CFileWriter {
         }
 
         var sb = new StringBuilder();
-        sb.append("#include \"").append(cls.underlinedName()).append(".h\"\n");
+        includeClassHeader(sb, cls);
         sb.append("#include <stdio.h>\n");
         sb.append("#include <stdlib.h>\n");
 
