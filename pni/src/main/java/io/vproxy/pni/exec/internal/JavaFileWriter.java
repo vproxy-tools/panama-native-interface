@@ -2,9 +2,7 @@ package io.vproxy.pni.exec.internal;
 
 import io.vproxy.pni.exec.CompilerOptions;
 import io.vproxy.pni.exec.Main;
-import io.vproxy.pni.exec.ast.AstAnno;
-import io.vproxy.pni.exec.ast.AstClass;
-import io.vproxy.pni.exec.ast.AstMethod;
+import io.vproxy.pni.exec.ast.*;
 import io.vproxy.pni.exec.type.AnnoCriticalTypeInfo;
 import io.vproxy.pni.exec.type.AnnoTrivialTypeInfo;
 import io.vproxy.pni.exec.type.ClassTypeInfo;
@@ -13,7 +11,10 @@ import io.vproxy.pni.exec.type.LongTypeInfo;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.util.HashMap;
+import java.util.Map;
 
+@SuppressWarnings("SameParameterValue")
 public class JavaFileWriter {
     private final AstClass cls;
 
@@ -141,7 +142,7 @@ public class JavaFileWriter {
                 } else {
                     sb.append(",\n");
                 }
-                f.generateJavaLayout(sb, 8, cls.isAlwaysAligned());
+                get(f).generateJavaLayout(sb, 8, cls.isAlwaysAligned());
             }
             sb.append("\n    );\n");
             sb.append("    public final MemorySegment MEMORY;\n");
@@ -150,12 +151,12 @@ public class JavaFileWriter {
         if (!cls.isInterface) {
             for (var f : cls.fields) {
                 sb.append("\n");
-                f.generateJavaGetterSetter(sb, 4);
+                get(f).generateJavaGetterSetter(sb, 4);
                 var bitfields = f.getBitFieldInfo();
                 if (bitfields != null) {
                     for (var bitfield : bitfields) {
                         sb.append("\n");
-                        f.generateJavaBitFieldGetterSetter(sb, 4, bitfield);
+                        get(f).generateJavaBitFieldGetterSetter(sb, 4, bitfield);
                     }
                 }
             }
@@ -185,7 +186,7 @@ public class JavaFileWriter {
                     .append("; // head padding\n");
             }
             for (var f : cls.fields) {
-                f.generateJavaConstructor(sb, 8);
+                get(f).generateJavaConstructor(sb, 8);
                 if (cls.isUnion()) {
                     Utils.appendIndent(sb, 8).append("OFFSET = 0;\n");
                 }
@@ -368,5 +369,50 @@ public class JavaFileWriter {
             .append("throw new RuntimeException(t);\n");
         Utils.appendIndent(sb, indent)
             .append("}\n");
+    }
+
+    private final Map<AstField, FieldGenerator> fieldGenerators = new HashMap<>();
+
+    private FieldGenerator get(AstField f) {
+        return fieldGenerators.computeIfAbsent(f, FieldGenerator::new);
+    }
+
+    private static class FieldGenerator {
+        private final AstField field;
+
+        private FieldGenerator(AstField field) {
+            this.field = field;
+        }
+
+        private void generateJavaLayout(StringBuilder sb, int indent, boolean alwaysAligned) {
+            Utils.appendIndent(sb, indent);
+            var layout = field.typeRef.memoryLayoutForField(field.varOpts());
+            if (layout.endsWith("_UNALIGNED")) {
+                if (alwaysAligned || field.isAlwaysAligned()) {
+                    layout = layout.substring(0, layout.length() - "_UNALIGNED".length());
+                }
+            }
+            sb.append(layout)
+                .append(".withName(\"").append(field.name).append("\")");
+            if (field.padding > 0) {
+                sb.append(",\n");
+                Utils.appendJavaPadding(sb, indent, field.padding);
+            }
+        }
+
+        private void generateJavaGetterSetter(StringBuilder sb, int indent) {
+            field.typeRef.generateGetterSetter(sb, indent, field.name, field.varOpts());
+        }
+
+        private void generateJavaBitFieldGetterSetter(StringBuilder sb, int indent, BitFieldInfo bitfield) {
+            field.typeRef.generateBitFieldGetterSetter(sb, indent, field.name, bitfield, field.varOpts());
+        }
+
+        private void generateJavaConstructor(StringBuilder sb, int indent) {
+            field.typeRef.generateConstructor(sb, indent, field.name, field.varOpts());
+            if (field.padding > 0) {
+                Utils.appendIndent(sb, indent).append("OFFSET += ").append(field.padding).append("; /* padding */\n");
+            }
+        }
     }
 }

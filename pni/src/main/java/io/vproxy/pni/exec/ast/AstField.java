@@ -259,37 +259,6 @@ public class AstField {
         sb.append("\n");
     }
 
-    public void generateJavaLayout(StringBuilder sb, int indent, boolean alwaysAligned) {
-        Utils.appendIndent(sb, indent);
-        var layout = typeRef.memoryLayoutForField(varOpts());
-        if (layout.endsWith("_UNALIGNED")) {
-            if (alwaysAligned || isAlwaysAligned()) {
-                layout = layout.substring(0, layout.length() - "_UNALIGNED".length());
-            }
-        }
-        sb.append(layout)
-            .append(".withName(\"").append(name).append("\")");
-        if (padding > 0) {
-            sb.append(",\n");
-            Utils.appendJavaPadding(sb, indent, padding);
-        }
-    }
-
-    public void generateJavaGetterSetter(StringBuilder sb, int indent) {
-        typeRef.generateGetterSetter(sb, indent, name, varOpts());
-    }
-
-    public void generateJavaBitFieldGetterSetter(StringBuilder sb, int indent, BitFieldInfo bitfield) {
-        typeRef.generateBitFieldGetterSetter(sb, indent, name, bitfield, varOpts());
-    }
-
-    public void generateJavaConstructor(StringBuilder sb, int indent) {
-        typeRef.generateConstructor(sb, indent, name, varOpts());
-        if (padding > 0) {
-            Utils.appendIndent(sb, indent).append("OFFSET += ").append(padding).append("; /* padding */\n");
-        }
-    }
-
     public void toString(StringBuilder sb, int indent) {
         Utils.appendIndent(sb, indent);
         for (var a : annos) {
