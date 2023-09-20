@@ -452,7 +452,7 @@ public class JavaFileWriter {
             }
             for (var p : method.params) {
                 sb.append(", ");
-                p.generateMethodHandle(sb, 0);
+                get(p).generateMethodHandle(sb, 0);
                 sb.append(" /* ").append(p.name).append(" */");
             }
             var returnAllocation = method.returnTypeRef.allocationInfoForReturnValue(method.varOptsForReturn());
@@ -500,7 +500,7 @@ public class JavaFileWriter {
                 } else {
                     sb.append(", ");
                 }
-                p.generateParam(sb, 0);
+                get(p).generateParam(sb, 0);
                 var paramOpts = p.paramOpts();
                 if (paramOpts.isDependOnAllocator()) {
                     paramNeedsAllocator = true;
@@ -583,7 +583,7 @@ public class JavaFileWriter {
                 } else {
                     sb.append(", ");
                 }
-                p.generateConvert(sb, 0);
+                get(p).generateConvert(sb, 0);
             }
             if (returnAllocation.requireExtraParameter()) {
                 if (!method.critical() || needSelf || !method.params.isEmpty()) {
@@ -634,7 +634,7 @@ public class JavaFileWriter {
                 } else {
                     sb.append(", ");
                 }
-                p.generateUpcallParam(sb, 0);
+                get(p).generateUpcallParam(sb, 0);
             }
             var returnAllocation = method.returnTypeRef.allocationInfoForReturnValue(method.varOptsForReturn(true));
             var interfaceReturnAllocation = method.returnTypeRef.allocationInfoForUpcallInterfaceReturnValue(method.varOptsForReturn(true));
@@ -660,7 +660,7 @@ public class JavaFileWriter {
             for (int i = 0; i < method.params.size(); i++) {
                 var p = method.params.get(i);
                 sb.append("\n");
-                p.generateUpcallConvert(sb, indent + 8);
+                get(p).generateUpcallConvert(sb, indent + 8);
                 if (i < method.params.size() - 1) {
                     sb.append(",");
                 }
@@ -709,7 +709,7 @@ public class JavaFileWriter {
                 } else {
                     sb.append(", ");
                 }
-                p.generateUpcallInterfaceParam(sb, 0);
+                get(p).generateUpcallInterfaceParam(sb, 0);
             }
             var returnAllocation = method.returnTypeRef.allocationInfoForUpcallInterfaceReturnValue(method.varOptsForReturn(true));
             if (returnAllocation.requireAllocator()) {
@@ -732,7 +732,7 @@ public class JavaFileWriter {
             }
             for (var p : method.params) {
                 sb.append(", ");
-                p.generateUpcallParamClass(sb, 0);
+                get(p).generateUpcallParamClass(sb, 0);
             }
             if (method.returnTypeRef.allocationInfoForReturnValue(method.varOptsForReturn(true)).requireAllocator()) {
                 sb.append(", ");
@@ -751,13 +751,67 @@ public class JavaFileWriter {
             }
             for (var p : method.params) {
                 sb.append(", ");
-                p.generateMethodHandleForUpcall(sb, 0);
+                get(p).generateMethodHandleForUpcall(sb, 0);
             }
             if (method.returnTypeRef.allocationInfoForReturnValue(method.varOptsForReturn(true)).requireAllocator()) {
                 sb.append(", ");
                 sb.append("MemorySegment.class");
             }
             sb.append(")");
+        }
+
+        private final Map<AstParam, ParamGenerator> paramGenerators = new HashMap<>();
+
+        private ParamGenerator get(AstParam p) {
+            return paramGenerators.computeIfAbsent(p, ParamGenerator::new);
+        }
+
+        private static class ParamGenerator {
+            private final AstParam param;
+
+            private ParamGenerator(AstParam param) {
+                this.param = param;
+            }
+
+            private void generateParam(StringBuilder sb, int indent) {
+                Utils.appendIndent(sb, indent);
+                sb.append(param.typeRef.javaTypeForParam(param.varOpts())).append(" ").append(param.name);
+            }
+
+            private void generateUpcallParam(StringBuilder sb, int indent) {
+                Utils.appendIndent(sb, indent);
+                sb.append(param.typeRef.javaTypeForUpcallParam(param.varOpts())).append(" ").append(param.name);
+            }
+
+            private void generateUpcallParamClass(StringBuilder sb, int indent) {
+                Utils.appendIndent(sb, indent);
+                sb.append(param.typeRef.javaTypeForUpcallParam(param.varOpts())).append(".class");
+            }
+
+            private void generateUpcallInterfaceParam(StringBuilder sb, int indent) {
+                Utils.appendIndent(sb, indent);
+                sb.append(param.typeRef.javaTypeForUpcallInterfaceParam(param.varOpts())).append(" ").append(param.name);
+            }
+
+            private void generateMethodHandle(StringBuilder sb, int indent) {
+                Utils.appendIndent(sb, indent);
+                sb.append(param.typeRef.methodHandleType(param.varOpts()));
+            }
+
+            private void generateMethodHandleForUpcall(StringBuilder sb, int indent) {
+                Utils.appendIndent(sb, indent);
+                sb.append(param.typeRef.methodHandleTypeForUpcall(param.varOpts()));
+            }
+
+            private void generateConvert(StringBuilder sb, int indent) {
+                Utils.appendIndent(sb, indent);
+                sb.append(param.typeRef.convertParamToInvokeExactArgument(param.name, param.varOpts()));
+            }
+
+            private void generateUpcallConvert(StringBuilder sb, int indent) {
+                Utils.appendIndent(sb, indent);
+                sb.append(param.typeRef.convertToUpcallArgument(param.name, param.varOpts()));
+            }
         }
     }
 }

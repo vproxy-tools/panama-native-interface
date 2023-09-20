@@ -99,44 +99,4 @@ public class AstParam {
         Utils.appendIndent(sb, indent);
         sb.append(typeRef.nativeParamType(nativeName(), varOpts()));
     }
-
-    public void generateParam(StringBuilder sb, int indent) {
-        Utils.appendIndent(sb, indent);
-        sb.append(typeRef.javaTypeForParam(varOpts())).append(" ").append(name);
-    }
-
-    public void generateUpcallParam(StringBuilder sb, int indent) {
-        Utils.appendIndent(sb, indent);
-        sb.append(typeRef.javaTypeForUpcallParam(varOpts())).append(" ").append(name);
-    }
-
-    public void generateUpcallParamClass(StringBuilder sb, int indent) {
-        Utils.appendIndent(sb, indent);
-        sb.append(typeRef.javaTypeForUpcallParam(varOpts())).append(".class");
-    }
-
-    public void generateUpcallInterfaceParam(StringBuilder sb, int indent) {
-        Utils.appendIndent(sb, indent);
-        sb.append(typeRef.javaTypeForUpcallInterfaceParam(varOpts())).append(" ").append(name);
-    }
-
-    public void generateMethodHandle(StringBuilder sb, int indent) {
-        Utils.appendIndent(sb, indent);
-        sb.append(typeRef.methodHandleType(varOpts()));
-    }
-
-    public void generateMethodHandleForUpcall(StringBuilder sb, int indent) {
-        Utils.appendIndent(sb, indent);
-        sb.append(typeRef.methodHandleTypeForUpcall(varOpts()));
-    }
-
-    public void generateConvert(StringBuilder sb, int indent) {
-        Utils.appendIndent(sb, indent);
-        sb.append(typeRef.convertParamToInvokeExactArgument(name, varOpts()));
-    }
-
-    public void generateUpcallConvert(StringBuilder sb, int indent) {
-        Utils.appendIndent(sb, indent);
-        sb.append(typeRef.convertToUpcallArgument(name, varOpts()));
-    }
 }
