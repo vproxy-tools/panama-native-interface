@@ -39,7 +39,7 @@ public class AstTypeDesc {
         } else {
             sb.append(Utils.convertDescToJavaName(desc));
         }
-        if (genericTypes.size() == 0) {
+        if (genericTypes.isEmpty()) {
             return sb.toString();
         }
 

@@ -38,7 +38,7 @@ public class CUpcallImplFileWriter extends CFileWriter {
 
         sb.append("\n");
         for (var m : cls.methods) {
-            sb.append("static ").append(get(m).nativeUpcallFunctionPointer(false)).append(";\n");
+            sb.append("static ").append(get(m).generateNativeUpcallFunctionPointer(false)).append(";\n");
         }
 
         sb.append("\n");
@@ -46,7 +46,7 @@ public class CUpcallImplFileWriter extends CFileWriter {
         for (int i = 0; i < cls.methods.size(); i++) {
             var m = cls.methods.get(i);
             Utils.appendIndent(sb, 4)
-                .append(get(m).nativeUpcallFunctionPointer(true));
+                .append(get(m).generateNativeUpcallFunctionPointer(true));
             if (i < cls.methods.size() - 1) {
                 sb.append(",");
             }
@@ -83,7 +83,7 @@ public class CUpcallImplFileWriter extends CFileWriter {
             super(method);
         }
 
-        private String nativeUpcallFunctionPointer(boolean isParam) {
+        private String generateNativeUpcallFunctionPointer(boolean isParam) {
             var sb = new StringBuilder();
             sb.append(method.returnTypeRef.nativeReturnType(method.varOptsForReturn(true)));
             sb.append(" (*");
