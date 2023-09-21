@@ -85,19 +85,19 @@ public class TestSuperClass {
     public void shaCheck() throws Exception {
         var s = Files.readAllLines(Path.of("src", "test", "c-generated", "io_vproxy_pni_test_ChildClass.h"));
         var lastLine = s.get(s.size() - 1);
-        assertEquals("// sha256:9d7c19635d41a0ebf90d16ff5ec6f5b4751a7bed75bf548a03ff3708bc501c4e", lastLine);
+        assertEquals("// sha256:c314a6adc5941ff24d3947c6d465bb01f6594040c0c1d27e9176196903f368ba", lastLine);
 
         s = Files.readAllLines(Path.of("src", "test", "c-generated", "io_vproxy_pni_test_ChildOfLargeAlign.h"));
         lastLine = s.get(s.size() - 1);
-        assertEquals("// sha256:9176472ed8265d53888631a48de77353d43f2a4ef173f28ef582bf168c084fdf", lastLine);
+        assertEquals("// sha256:286b46f4871906f27774a51d8f14347c9a43e42c065cfc1a0ddbfb9a3507457c", lastLine);
 
         s = Files.readAllLines(Path.of("src", "test", "c-generated", "io_vproxy_pni_test_ChildOfPacked.h"));
         lastLine = s.get(s.size() - 1);
-        assertEquals("// sha256:442e3de03e5784c866bfa7ae941bc77c8e4c8197390eb4a8142742e44dbea000", lastLine);
+        assertEquals("// sha256:b0247485f314465666c4cde3e242417c9550750259fccec2666a80c2ef173ae9", lastLine);
 
         s = Files.readAllLines(Path.of("src", "test", "c-generated", "io_vproxy_pni_test_GrandChildClass.h"));
         lastLine = s.get(s.size() - 1);
-        assertEquals("// sha256:cd6be1ccc9cc44678f868f70f131a654ad157448d66e1745610556c442aebea2", lastLine);
+        assertEquals("// sha256:9f099e822b28e1a04e5b4547fa6fb40e58e37e8de25980f095c85cca6338aabb", lastLine);
 
         s = Files.readAllLines(Path.of("src", "test", "generated", "io", "vproxy", "pni", "test", "ChildClass.java"));
         lastLine = s.get(s.size() - 1);

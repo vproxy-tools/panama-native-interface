@@ -60,7 +60,7 @@ public interface PNIInvokeUpcallNull {
 
     @Impl(
         c = """
-            PNIBuf b;
+            PNIBuf_byte b;
             return JavaCritical_io_vproxy_pni_test_UpcallNull_returnByteArr(&b) == NULL;
             """
     )
@@ -69,7 +69,7 @@ public interface PNIInvokeUpcallNull {
 
     @Impl(
         c = """
-            PNIBuf b;
+            PNIBuf_bool b;
             return JavaCritical_io_vproxy_pni_test_UpcallNull_returnBoolArr(&b) == NULL;
             """
     )
@@ -78,7 +78,7 @@ public interface PNIInvokeUpcallNull {
 
     @Impl(
         c = """
-            PNIBuf b;
+            PNIBuf_char b;
             return JavaCritical_io_vproxy_pni_test_UpcallNull_returnCharArr(&b) == NULL;
             """
     )
@@ -87,7 +87,7 @@ public interface PNIInvokeUpcallNull {
 
     @Impl(
         c = """
-            PNIBuf b;
+            PNIBuf_float b;
             return JavaCritical_io_vproxy_pni_test_UpcallNull_returnFloatArr(&b) == NULL;
             """
     )
@@ -96,7 +96,7 @@ public interface PNIInvokeUpcallNull {
 
     @Impl(
         c = """
-            PNIBuf b;
+            PNIBuf_double b;
             return JavaCritical_io_vproxy_pni_test_UpcallNull_returnDoubleArr(&b) == NULL;
             """
     )
@@ -105,7 +105,7 @@ public interface PNIInvokeUpcallNull {
 
     @Impl(
         c = """
-            PNIBuf b;
+            PNIBuf_int b;
             return JavaCritical_io_vproxy_pni_test_UpcallNull_returnIntArr(&b) == NULL;
             """
     )
@@ -114,7 +114,7 @@ public interface PNIInvokeUpcallNull {
 
     @Impl(
         c = """
-            PNIBuf b;
+            PNIBuf_long b;
             return JavaCritical_io_vproxy_pni_test_UpcallNull_returnLongArr(&b) == NULL;
             """
     )
@@ -123,7 +123,7 @@ public interface PNIInvokeUpcallNull {
 
     @Impl(
         c = """
-            PNIBuf b;
+            PNIBuf_short b;
             return JavaCritical_io_vproxy_pni_test_UpcallNull_returnShortArr(&b) == NULL;
             """
     )
@@ -132,7 +132,7 @@ public interface PNIInvokeUpcallNull {
 
     @Impl(
         c = """
-            PNIBuf b;
+            PNIBuf_ObjectStruct b;
             return JavaCritical_io_vproxy_pni_test_UpcallNull_returnOArr(&b) == NULL;
             """
     )

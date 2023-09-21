@@ -27,19 +27,19 @@ JNIEXPORT float JNICALL JavaCritical_io_vproxy_pni_test_Upcall_returnFloat(void)
 JNIEXPORT int32_t JNICALL JavaCritical_io_vproxy_pni_test_Upcall_returnInt(void);
 JNIEXPORT int64_t JNICALL JavaCritical_io_vproxy_pni_test_Upcall_returnLong(void);
 JNIEXPORT int16_t JNICALL JavaCritical_io_vproxy_pni_test_Upcall_returnShort(void);
-JNIEXPORT void JNICALL JavaCritical_io_vproxy_pni_test_Upcall_primaryArrayParams(PNIBuf * b, PNIBuf * ub, PNIBuf * z, PNIBuf * c, PNIBuf * d, PNIBuf * f, PNIBuf * i, PNIBuf * ui, PNIBuf * j, PNIBuf * uj, PNIBuf * s, PNIBuf * us);
-JNIEXPORT PNIBuf * JNICALL JavaCritical_io_vproxy_pni_test_Upcall_returnByteArray(PNIBuf * return_);
-JNIEXPORT PNIBuf * JNICALL JavaCritical_io_vproxy_pni_test_Upcall_returnBoolArray(PNIBuf * return_);
-JNIEXPORT PNIBuf * JNICALL JavaCritical_io_vproxy_pni_test_Upcall_returnCharArray(PNIBuf * return_);
-JNIEXPORT PNIBuf * JNICALL JavaCritical_io_vproxy_pni_test_Upcall_returnDoubleArray(PNIBuf * return_);
-JNIEXPORT PNIBuf * JNICALL JavaCritical_io_vproxy_pni_test_Upcall_returnFloatArray(PNIBuf * return_);
-JNIEXPORT PNIBuf * JNICALL JavaCritical_io_vproxy_pni_test_Upcall_returnIntArray(PNIBuf * return_);
-JNIEXPORT PNIBuf * JNICALL JavaCritical_io_vproxy_pni_test_Upcall_returnLongArray(PNIBuf * return_);
-JNIEXPORT PNIBuf * JNICALL JavaCritical_io_vproxy_pni_test_Upcall_returnShortArray(PNIBuf * return_);
+JNIEXPORT void JNICALL JavaCritical_io_vproxy_pni_test_Upcall_primaryArrayParams(PNIBuf_byte * b, PNIBuf_ubyte * ub, PNIBuf_bool * z, PNIBuf_char * c, PNIBuf_double * d, PNIBuf_float * f, PNIBuf_int * i, PNIBuf_uint * ui, PNIBuf_long * j, PNIBuf_ulong * uj, PNIBuf_short * s, PNIBuf_ushort * us);
+JNIEXPORT PNIBuf_byte * JNICALL JavaCritical_io_vproxy_pni_test_Upcall_returnByteArray(PNIBuf_byte * return_);
+JNIEXPORT PNIBuf_bool * JNICALL JavaCritical_io_vproxy_pni_test_Upcall_returnBoolArray(PNIBuf_bool * return_);
+JNIEXPORT PNIBuf_char * JNICALL JavaCritical_io_vproxy_pni_test_Upcall_returnCharArray(PNIBuf_char * return_);
+JNIEXPORT PNIBuf_double * JNICALL JavaCritical_io_vproxy_pni_test_Upcall_returnDoubleArray(PNIBuf_double * return_);
+JNIEXPORT PNIBuf_float * JNICALL JavaCritical_io_vproxy_pni_test_Upcall_returnFloatArray(PNIBuf_float * return_);
+JNIEXPORT PNIBuf_int * JNICALL JavaCritical_io_vproxy_pni_test_Upcall_returnIntArray(PNIBuf_int * return_);
+JNIEXPORT PNIBuf_long * JNICALL JavaCritical_io_vproxy_pni_test_Upcall_returnLongArray(PNIBuf_long * return_);
+JNIEXPORT PNIBuf_short * JNICALL JavaCritical_io_vproxy_pni_test_Upcall_returnShortArray(PNIBuf_short * return_);
 JNIEXPORT void JNICALL JavaCritical_io_vproxy_pni_test_Upcall_objectParams(ObjectStruct * o);
 JNIEXPORT ObjectStruct * JNICALL JavaCritical_io_vproxy_pni_test_Upcall_returnObject(ObjectStruct * return_);
-JNIEXPORT void JNICALL JavaCritical_io_vproxy_pni_test_Upcall_objectArrayParams(PNIBuf * o);
-JNIEXPORT PNIBuf * JNICALL JavaCritical_io_vproxy_pni_test_Upcall_returnObjectArray(PNIBuf * return_);
+JNIEXPORT void JNICALL JavaCritical_io_vproxy_pni_test_Upcall_objectArrayParams(PNIBuf_ObjectStruct * o);
+JNIEXPORT PNIBuf_ObjectStruct * JNICALL JavaCritical_io_vproxy_pni_test_Upcall_returnObjectArray(PNIBuf_ObjectStruct * return_);
 JNIEXPORT void JNICALL JavaCritical_io_vproxy_pni_test_Upcall_otherParams(PNIBuf * buffer, PNIFunc * voidCallSite, PNIFunc * objCallSite, PNIFunc * refCallSite, void * mem, PNIFunc * voidFunc, PNIFunc * objFunc, PNIFunc * refFunc, PNIRef * ref, PNIRef * rawRef, char * str);
 JNIEXPORT PNIBuf * JNICALL JavaCritical_io_vproxy_pni_test_Upcall_returnBuffer(PNIBuf * return_);
 JNIEXPORT void * JNICALL JavaCritical_io_vproxy_pni_test_Upcall_returnMem(void);
@@ -55,4 +55,4 @@ JNIEXPORT int32_t JNICALL pni_sum(int32_t a, int32_t b);
 #endif
 #endif // _Included_io_vproxy_pni_test_Upcall
 // metadata.generator-version: pni test
-// sha256:a7792314cdacffec7b97770983faed818721c7ecee96ef9c9f87ea356cc6e5c0
+// sha256:3b26d1335def6368f6d64df6a4321edbd3f69c593287d82e9ef482fe67b90f1b

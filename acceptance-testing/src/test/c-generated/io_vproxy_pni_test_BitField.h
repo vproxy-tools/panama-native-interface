@@ -21,6 +21,7 @@ extern "C" {
 #endif
 
 PNIEnvExpand(BitField, BitField *)
+PNIBufExpand(BitField, BitField, 64)
 
 PNI_PACK(struct, BitField, {
     uint8_t a : 1;
@@ -103,4 +104,4 @@ JNIEXPORT int64_t JNICALL JavaCritical_io_vproxy_pni_test_BitField_m2(BitField *
 #endif
 #endif // _Included_io_vproxy_pni_test_BitField
 // metadata.generator-version: pni test
-// sha256:0dd308b210a37eeb4382ed0860a121d1b67007829302f073cb09d3d9ff1bf597
+// sha256:7d509c9275322042bcaa134f80cd8fb057d3ba162336c0e8fd81d8a15a53caee

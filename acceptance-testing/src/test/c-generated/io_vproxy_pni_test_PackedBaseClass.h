@@ -21,6 +21,7 @@ extern "C" {
 #endif
 
 PNIEnvExpand(PackedBaseClass, PackedBaseClass *)
+PNIBufExpand(PackedBaseClass, PackedBaseClass, 3)
 
 PNI_PACK(struct, PackedBaseClass, {
     int8_t a;
@@ -35,4 +36,4 @@ JNIEXPORT int JNICALL Java_io_vproxy_pni_test_PackedBaseClass_bbb(PNIEnv_void * 
 #endif
 #endif // _Included_io_vproxy_pni_test_PackedBaseClass
 // metadata.generator-version: pni test
-// sha256:d4ae62fb3ecb09238339a186f5cd04f16bbd11b6b2ee14bd4694a9e8ff75ea58
+// sha256:5d83e77ea207d79aa91f82ff2c84b919344730c13168127cd599d297f80c793c

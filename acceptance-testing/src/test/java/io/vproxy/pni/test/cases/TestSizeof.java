@@ -66,7 +66,7 @@ public class TestSizeof {
 
         s = Files.readAllLines(Path.of("src", "test", "c-generated", "io_vproxy_pni_test_SizeofEmbed.h"));
         lastLine = s.get(s.size() - 1);
-        assertEquals("// sha256:bc4ce08bbb41639a23eee49368c3cb4c0c960e9f99591540afb88e835276e04e", lastLine);
+        assertEquals("// sha256:db468c7200b825da7e2b497db288543d92b775f72a1ff551fd78ff831a51b0ff", lastLine);
 
         s = Files.readAllLines(Path.of("src", "test", "c-generated", "io_vproxy_pni_test_SizeofStruct.extra.c"));
         lastLine = s.get(s.size() - 1);
@@ -74,7 +74,7 @@ public class TestSizeof {
 
         s = Files.readAllLines(Path.of("src", "test", "c-generated", "io_vproxy_pni_test_SizeofStruct.h"));
         lastLine = s.get(s.size() - 1);
-        assertEquals("// sha256:38f973ecdd6676804af090b1864de1b6346537a349c83dca1783675ba0dbcb47", lastLine);
+        assertEquals("// sha256:4a70495cb4d3e69fe4a0bcae700aa6f9705056e0b1d9b5771303697f61d6a937", lastLine);
 
         s = Files.readAllLines(Path.of("src", "test", "c-generated", "io_vproxy_pni_test_SizeofStructExpr.extra.c"));
         lastLine = s.get(s.size() - 1);
@@ -82,7 +82,7 @@ public class TestSizeof {
 
         s = Files.readAllLines(Path.of("src", "test", "c-generated", "io_vproxy_pni_test_SizeofStructExpr.h"));
         lastLine = s.get(s.size() - 1);
-        assertEquals("// sha256:82b09f50f820ad9b5303bbd4227934eb9601a9642589ce15c6f5abfba8fcaa78", lastLine);
+        assertEquals("// sha256:6bba9f20403b346456a31ef26d9035117181a4e08b8a6403ec3722dd4cfde78a", lastLine);
 
         s = Files.readAllLines(Path.of("src", "test", "c-generated", "io_vproxy_pni_test_SizeofUnion.extra.c"));
         lastLine = s.get(s.size() - 1);
@@ -90,7 +90,7 @@ public class TestSizeof {
 
         s = Files.readAllLines(Path.of("src", "test", "c-generated", "io_vproxy_pni_test_SizeofUnion.h"));
         lastLine = s.get(s.size() - 1);
-        assertEquals("// sha256:42c0a3844c82e5270fcfb11f32c3fd2082be680938be2fab5c4176e67aeb94c4", lastLine);
+        assertEquals("// sha256:99dbca9e0dfd6c865d54a6bde2f95001f12e4d19c7b9eccb8ab102665216427f", lastLine);
 
         s = Files.readAllLines(Path.of("src", "test", "generated", "io", "vproxy", "pni", "test", "SizeofEmbed.java"));
         lastLine = s.get(s.size() - 1);

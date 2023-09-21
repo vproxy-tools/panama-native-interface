@@ -21,6 +21,7 @@ extern "C" {
 #endif
 
 PNIEnvExpand(LargeAlignBase, LargeAlignBase *)
+PNIBufExpand(LargeAlignBase, LargeAlignBase, 8)
 
 PNI_PACK(struct, LargeAlignBase, {
     int64_t x;
@@ -31,4 +32,4 @@ PNI_PACK(struct, LargeAlignBase, {
 #endif
 #endif // _Included_io_vproxy_pni_test_LargeAlignBase
 // metadata.generator-version: pni test
-// sha256:04a12eb3571764bc617524cd761350febf42124e707208cd75f435ac7fd293ef
+// sha256:6d9ade01724a3ad68bae13f8aaf381988076383b19055b72bb6c46f098f4000a

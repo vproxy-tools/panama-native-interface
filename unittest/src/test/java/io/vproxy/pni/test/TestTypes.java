@@ -1087,15 +1087,15 @@ public class TestTypes {
                 info.checkType(errors, "?", paramVarOpts(RAW), true);
             }, "?: upcall array cannot be marked with @Raw");
         }
-        assertEquals("buf", info.nativeEnvType(returnVarOpts(0)));
-        assertEquals("PNIBuf a", info.nativeType("a", fieldVarOpts(0)));
-        assertEquals("PNIBuf", info.nativeType(null, fieldVarOpts(0)));
+        assertEquals("buf_byte", info.nativeEnvType(returnVarOpts(0)));
+        assertEquals("PNIBuf_byte a", info.nativeType("a", fieldVarOpts(0)));
+        assertEquals("PNIBuf_byte", info.nativeType(null, fieldVarOpts(0)));
         assertEquals("int8_t a[3]", info.nativeType("a", fieldVarOpts(LEN)));
         assertEquals("uint8_t a[3]", info.nativeType("a", fieldVarOpts(UNSIGNED | LEN)));
-        assertEquals("PNIBuf * a", info.nativeParamType("a", paramVarOpts(0)));
+        assertEquals("PNIBuf_byte * a", info.nativeParamType("a", paramVarOpts(0)));
         assertEquals("void * a", info.nativeParamType("a", paramVarOpts(RAW)));
         assertEquals("uint8_t * a", info.nativeParamType("a", paramVarOpts(UNSIGNED | RAW)));
-        assertEquals("PNIBuf *", info.nativeReturnType(returnVarOpts(0)));
+        assertEquals("PNIBuf_byte *", info.nativeReturnType(returnVarOpts(0)));
         assertEquals(16, info.nativeMemorySize(fieldVarOpts(0)));
         assertEquals(3, info.nativeMemorySize(fieldVarOpts(LEN)));
         assertEquals(8, info.nativeMemoryAlign(fieldVarOpts(0)));
@@ -1199,13 +1199,13 @@ public class TestTypes {
         assertEquals("[F", info.desc());
         checkTypeField(info, POINTER | LEN);
         checkTypeParam(info, POINTER | LEN | RAW);
-        assertEquals("buf", info.nativeEnvType(returnVarOpts(0)));
-        assertEquals("PNIBuf a", info.nativeType("a", fieldVarOpts(0)));
-        assertEquals("PNIBuf", info.nativeType(null, fieldVarOpts(0)));
+        assertEquals("buf_float", info.nativeEnvType(returnVarOpts(0)));
+        assertEquals("PNIBuf_float a", info.nativeType("a", fieldVarOpts(0)));
+        assertEquals("PNIBuf_float", info.nativeType(null, fieldVarOpts(0)));
         assertEquals("float a[3]", info.nativeType("a", fieldVarOpts(LEN)));
-        assertEquals("PNIBuf * a", info.nativeParamType("a", paramVarOpts(0)));
+        assertEquals("PNIBuf_float * a", info.nativeParamType("a", paramVarOpts(0)));
         assertEquals("float * a", info.nativeParamType("a", paramVarOpts(RAW)));
-        assertEquals("PNIBuf *", info.nativeReturnType(returnVarOpts(0)));
+        assertEquals("PNIBuf_float *", info.nativeReturnType(returnVarOpts(0)));
         assertEquals(16, info.nativeMemorySize(fieldVarOpts(0)));
         assertEquals(12, info.nativeMemorySize(fieldVarOpts(LEN)));
         assertEquals(8, info.nativeMemoryAlign(fieldVarOpts(0)));
@@ -1315,13 +1315,13 @@ public class TestTypes {
             checkError(() -> i.checkType(errors, "?", fieldVarOpts(0), false),
                 "?: a.b.PNIEmptyCls[] is not supported because the element type byteSize is 0");
         }
-        assertEquals("buf", info.nativeEnvType(returnVarOpts(0)));
-        assertEquals("PNIBuf a", info.nativeType("a", fieldVarOpts(0)));
-        assertEquals("PNIBuf", info.nativeType(null, fieldVarOpts(0)));
+        assertEquals("buf_Cls", info.nativeEnvType(returnVarOpts(0)));
+        assertEquals("PNIBuf_Cls a", info.nativeType("a", fieldVarOpts(0)));
+        assertEquals("PNIBuf_Cls", info.nativeType(null, fieldVarOpts(0)));
         assertEquals("Cls a[3]", info.nativeType("a", fieldVarOpts(LEN)));
-        assertEquals("PNIBuf * a", info.nativeParamType("a", paramVarOpts(0)));
+        assertEquals("PNIBuf_Cls * a", info.nativeParamType("a", paramVarOpts(0)));
         assertEquals("Cls * a", info.nativeParamType("a", paramVarOpts(RAW)));
-        assertEquals("PNIBuf *", info.nativeReturnType(returnVarOpts(0)));
+        assertEquals("PNIBuf_Cls *", info.nativeReturnType(returnVarOpts(0)));
         assertEquals(16, info.nativeMemorySize(fieldVarOpts(0)));
         assertEquals(12, info.nativeMemorySize(fieldVarOpts(LEN)));
         assertEquals(8, info.nativeMemoryAlign(fieldVarOpts(0)));

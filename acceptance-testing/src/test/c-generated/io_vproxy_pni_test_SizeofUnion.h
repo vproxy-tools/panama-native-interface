@@ -21,18 +21,19 @@ typedef union SizeofUnion SizeofUnion;
 extern "C" {
 #endif
 
+JNIEXPORT size_t JNICALL JavaCritical_io_vproxy_pni_test_SizeofUnion___getLayoutByteSize();
+
 PNIEnvExpand(SizeofUnion, SizeofUnion *)
+PNIBufExpand(SizeofUnion, SizeofUnion, JavaCritical_io_vproxy_pni_test_SizeofUnion___getLayoutByteSize())
 
 PNI_PACK(union, SizeofUnion, {
     SizeofStruct st;
     int32_t a;
 });
 
-JNIEXPORT size_t JNICALL JavaCritical_io_vproxy_pni_test_SizeofUnion___getLayoutByteSize();
-
 #ifdef __cplusplus
 }
 #endif
 #endif // _Included_io_vproxy_pni_test_SizeofUnion
 // metadata.generator-version: pni test
-// sha256:42c0a3844c82e5270fcfb11f32c3fd2082be680938be2fab5c4176e67aeb94c4
+// sha256:99dbca9e0dfd6c865d54a6bde2f95001f12e4d19c7b9eccb8ab102665216427f

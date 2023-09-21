@@ -18,13 +18,14 @@ extern "C" {
 extern "C" {
 #endif
 
-PNIEnvExpand(SizeofStructExpr, SizeofStructExpr *)
-
 JNIEXPORT size_t JNICALL JavaCritical_io_vproxy_pni_test_AlwaysAlignedSizeof___getLayoutByteSize();
+
+PNIEnvExpand(SizeofStructExpr, SizeofStructExpr *)
+PNIBufExpand(SizeofStructExpr, SizeofStructExpr, JavaCritical_io_vproxy_pni_test_AlwaysAlignedSizeof___getLayoutByteSize())
 
 #ifdef __cplusplus
 }
 #endif
 #endif // _Included_io_vproxy_pni_test_AlwaysAlignedSizeof
 // metadata.generator-version: pni test
-// sha256:a240efe184336c06cc617fb97ee42f357d5890917b9c5fc279bdeb6b7b3b7b0f
+// sha256:fdbb45df7d233df9f0d5bf4cbc281b68a4e1614ac12467b29c06cc2a070c4e0f

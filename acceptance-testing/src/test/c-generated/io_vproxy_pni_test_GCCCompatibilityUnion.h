@@ -18,10 +18,11 @@ extern "C" {
 #endif
 
 PNIEnvExpand(GCCCompatibilityUnion, GCCCompatibilityUnion *)
+PNIBufExpand(GCCCompatibilityUnion, GCCCompatibilityUnion, 8)
 
 #ifdef __cplusplus
 }
 #endif
 #endif // _Included_io_vproxy_pni_test_GCCCompatibilityUnion
 // metadata.generator-version: pni test
-// sha256:42c30a0c667153f023e406772d108e9ba08ab8c2441916baab17002c4aaa360e
+// sha256:c6b63a10c2e7b205f33569fa36e5445bc0b8583ca4fe9386c027e80de46cf5cb

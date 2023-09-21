@@ -6,42 +6,42 @@
 extern "C" {
 #endif
 
-static uint8_t (*_testParam)(ObjectStruct *,char *,void *,PNIBuf *,PNIBuf *,PNIBuf *,PNIBuf *,PNIBuf *,PNIBuf *,PNIBuf *,PNIBuf *,PNIBuf *,PNIBuf *,PNIRef *,PNIFunc *,PNIFunc *,PNIFunc *);
+static uint8_t (*_testParam)(ObjectStruct *,char *,void *,PNIBuf *,PNIBuf_byte *,PNIBuf_bool *,PNIBuf_char *,PNIBuf_float *,PNIBuf_double *,PNIBuf_int *,PNIBuf_long *,PNIBuf_short *,PNIBuf_ObjectStruct *,PNIRef *,PNIFunc *,PNIFunc *,PNIFunc *);
 static uint8_t (*_testParamRaw)(PNIRef *,PNIFunc *,PNIFunc *,PNIFunc *);
 static ObjectStruct * (*_returnO)(ObjectStruct *);
 static char * (*_returnStr)(void);
 static void * (*_returnSeg)(void);
 static PNIBuf * (*_returnBuf)(PNIBuf *);
-static PNIBuf * (*_returnByteArr)(PNIBuf *);
-static PNIBuf * (*_returnBoolArr)(PNIBuf *);
-static PNIBuf * (*_returnCharArr)(PNIBuf *);
-static PNIBuf * (*_returnFloatArr)(PNIBuf *);
-static PNIBuf * (*_returnDoubleArr)(PNIBuf *);
-static PNIBuf * (*_returnIntArr)(PNIBuf *);
-static PNIBuf * (*_returnLongArr)(PNIBuf *);
-static PNIBuf * (*_returnShortArr)(PNIBuf *);
-static PNIBuf * (*_returnOArr)(PNIBuf *);
+static PNIBuf_byte * (*_returnByteArr)(PNIBuf_byte *);
+static PNIBuf_bool * (*_returnBoolArr)(PNIBuf_bool *);
+static PNIBuf_char * (*_returnCharArr)(PNIBuf_char *);
+static PNIBuf_float * (*_returnFloatArr)(PNIBuf_float *);
+static PNIBuf_double * (*_returnDoubleArr)(PNIBuf_double *);
+static PNIBuf_int * (*_returnIntArr)(PNIBuf_int *);
+static PNIBuf_long * (*_returnLongArr)(PNIBuf_long *);
+static PNIBuf_short * (*_returnShortArr)(PNIBuf_short *);
+static PNIBuf_ObjectStruct * (*_returnOArr)(PNIBuf_ObjectStruct *);
 static PNIRef * (*_returnRef)(void);
 static PNIFunc * (*_returnFunc)(void);
 static PNIFunc * (*_returnFuncVoid)(void);
 static PNIFunc * (*_returnFuncRef)(void);
 
 JNIEXPORT void JNICALL JavaCritical_io_vproxy_pni_test_UpcallNull_INIT(
-    uint8_t (*testParam)(ObjectStruct *,char *,void *,PNIBuf *,PNIBuf *,PNIBuf *,PNIBuf *,PNIBuf *,PNIBuf *,PNIBuf *,PNIBuf *,PNIBuf *,PNIBuf *,PNIRef *,PNIFunc *,PNIFunc *,PNIFunc *),
+    uint8_t (*testParam)(ObjectStruct *,char *,void *,PNIBuf *,PNIBuf_byte *,PNIBuf_bool *,PNIBuf_char *,PNIBuf_float *,PNIBuf_double *,PNIBuf_int *,PNIBuf_long *,PNIBuf_short *,PNIBuf_ObjectStruct *,PNIRef *,PNIFunc *,PNIFunc *,PNIFunc *),
     uint8_t (*testParamRaw)(PNIRef *,PNIFunc *,PNIFunc *,PNIFunc *),
     ObjectStruct * (*returnO)(ObjectStruct *),
     char * (*returnStr)(void),
     void * (*returnSeg)(void),
     PNIBuf * (*returnBuf)(PNIBuf *),
-    PNIBuf * (*returnByteArr)(PNIBuf *),
-    PNIBuf * (*returnBoolArr)(PNIBuf *),
-    PNIBuf * (*returnCharArr)(PNIBuf *),
-    PNIBuf * (*returnFloatArr)(PNIBuf *),
-    PNIBuf * (*returnDoubleArr)(PNIBuf *),
-    PNIBuf * (*returnIntArr)(PNIBuf *),
-    PNIBuf * (*returnLongArr)(PNIBuf *),
-    PNIBuf * (*returnShortArr)(PNIBuf *),
-    PNIBuf * (*returnOArr)(PNIBuf *),
+    PNIBuf_byte * (*returnByteArr)(PNIBuf_byte *),
+    PNIBuf_bool * (*returnBoolArr)(PNIBuf_bool *),
+    PNIBuf_char * (*returnCharArr)(PNIBuf_char *),
+    PNIBuf_float * (*returnFloatArr)(PNIBuf_float *),
+    PNIBuf_double * (*returnDoubleArr)(PNIBuf_double *),
+    PNIBuf_int * (*returnIntArr)(PNIBuf_int *),
+    PNIBuf_long * (*returnLongArr)(PNIBuf_long *),
+    PNIBuf_short * (*returnShortArr)(PNIBuf_short *),
+    PNIBuf_ObjectStruct * (*returnOArr)(PNIBuf_ObjectStruct *),
     PNIRef * (*returnRef)(void),
     PNIFunc * (*returnFunc)(void),
     PNIFunc * (*returnFuncVoid)(void),
@@ -68,7 +68,7 @@ JNIEXPORT void JNICALL JavaCritical_io_vproxy_pni_test_UpcallNull_INIT(
     _returnFuncRef = returnFuncRef;
 }
 
-JNIEXPORT uint8_t JNICALL JavaCritical_io_vproxy_pni_test_UpcallNull_testParam(ObjectStruct * o, char * str, void * seg, PNIBuf * buf, PNIBuf * byteArr, PNIBuf * boolArr, PNIBuf * charArr, PNIBuf * floatArr, PNIBuf * doubleArr, PNIBuf * intArr, PNIBuf * longArr, PNIBuf * shortArr, PNIBuf * oArr, PNIRef * ref, PNIFunc * func, PNIFunc * funcVoid, PNIFunc * funcRef) {
+JNIEXPORT uint8_t JNICALL JavaCritical_io_vproxy_pni_test_UpcallNull_testParam(ObjectStruct * o, char * str, void * seg, PNIBuf * buf, PNIBuf_byte * byteArr, PNIBuf_bool * boolArr, PNIBuf_char * charArr, PNIBuf_float * floatArr, PNIBuf_double * doubleArr, PNIBuf_int * intArr, PNIBuf_long * longArr, PNIBuf_short * shortArr, PNIBuf_ObjectStruct * oArr, PNIRef * ref, PNIFunc * func, PNIFunc * funcVoid, PNIFunc * funcRef) {
     if (_testParam == NULL) {
         printf("JavaCritical_io_vproxy_pni_test_UpcallNull_testParam function pointer is null");
         fflush(stdout);
@@ -122,7 +122,7 @@ JNIEXPORT PNIBuf * JNICALL JavaCritical_io_vproxy_pni_test_UpcallNull_returnBuf(
     return _returnBuf(return_);
 }
 
-JNIEXPORT PNIBuf * JNICALL JavaCritical_io_vproxy_pni_test_UpcallNull_returnByteArr(PNIBuf * return_) {
+JNIEXPORT PNIBuf_byte * JNICALL JavaCritical_io_vproxy_pni_test_UpcallNull_returnByteArr(PNIBuf_byte * return_) {
     if (_returnByteArr == NULL) {
         printf("JavaCritical_io_vproxy_pni_test_UpcallNull_returnByteArr function pointer is null");
         fflush(stdout);
@@ -131,7 +131,7 @@ JNIEXPORT PNIBuf * JNICALL JavaCritical_io_vproxy_pni_test_UpcallNull_returnByte
     return _returnByteArr(return_);
 }
 
-JNIEXPORT PNIBuf * JNICALL JavaCritical_io_vproxy_pni_test_UpcallNull_returnBoolArr(PNIBuf * return_) {
+JNIEXPORT PNIBuf_bool * JNICALL JavaCritical_io_vproxy_pni_test_UpcallNull_returnBoolArr(PNIBuf_bool * return_) {
     if (_returnBoolArr == NULL) {
         printf("JavaCritical_io_vproxy_pni_test_UpcallNull_returnBoolArr function pointer is null");
         fflush(stdout);
@@ -140,7 +140,7 @@ JNIEXPORT PNIBuf * JNICALL JavaCritical_io_vproxy_pni_test_UpcallNull_returnBool
     return _returnBoolArr(return_);
 }
 
-JNIEXPORT PNIBuf * JNICALL JavaCritical_io_vproxy_pni_test_UpcallNull_returnCharArr(PNIBuf * return_) {
+JNIEXPORT PNIBuf_char * JNICALL JavaCritical_io_vproxy_pni_test_UpcallNull_returnCharArr(PNIBuf_char * return_) {
     if (_returnCharArr == NULL) {
         printf("JavaCritical_io_vproxy_pni_test_UpcallNull_returnCharArr function pointer is null");
         fflush(stdout);
@@ -149,7 +149,7 @@ JNIEXPORT PNIBuf * JNICALL JavaCritical_io_vproxy_pni_test_UpcallNull_returnChar
     return _returnCharArr(return_);
 }
 
-JNIEXPORT PNIBuf * JNICALL JavaCritical_io_vproxy_pni_test_UpcallNull_returnFloatArr(PNIBuf * return_) {
+JNIEXPORT PNIBuf_float * JNICALL JavaCritical_io_vproxy_pni_test_UpcallNull_returnFloatArr(PNIBuf_float * return_) {
     if (_returnFloatArr == NULL) {
         printf("JavaCritical_io_vproxy_pni_test_UpcallNull_returnFloatArr function pointer is null");
         fflush(stdout);
@@ -158,7 +158,7 @@ JNIEXPORT PNIBuf * JNICALL JavaCritical_io_vproxy_pni_test_UpcallNull_returnFloa
     return _returnFloatArr(return_);
 }
 
-JNIEXPORT PNIBuf * JNICALL JavaCritical_io_vproxy_pni_test_UpcallNull_returnDoubleArr(PNIBuf * return_) {
+JNIEXPORT PNIBuf_double * JNICALL JavaCritical_io_vproxy_pni_test_UpcallNull_returnDoubleArr(PNIBuf_double * return_) {
     if (_returnDoubleArr == NULL) {
         printf("JavaCritical_io_vproxy_pni_test_UpcallNull_returnDoubleArr function pointer is null");
         fflush(stdout);
@@ -167,7 +167,7 @@ JNIEXPORT PNIBuf * JNICALL JavaCritical_io_vproxy_pni_test_UpcallNull_returnDoub
     return _returnDoubleArr(return_);
 }
 
-JNIEXPORT PNIBuf * JNICALL JavaCritical_io_vproxy_pni_test_UpcallNull_returnIntArr(PNIBuf * return_) {
+JNIEXPORT PNIBuf_int * JNICALL JavaCritical_io_vproxy_pni_test_UpcallNull_returnIntArr(PNIBuf_int * return_) {
     if (_returnIntArr == NULL) {
         printf("JavaCritical_io_vproxy_pni_test_UpcallNull_returnIntArr function pointer is null");
         fflush(stdout);
@@ -176,7 +176,7 @@ JNIEXPORT PNIBuf * JNICALL JavaCritical_io_vproxy_pni_test_UpcallNull_returnIntA
     return _returnIntArr(return_);
 }
 
-JNIEXPORT PNIBuf * JNICALL JavaCritical_io_vproxy_pni_test_UpcallNull_returnLongArr(PNIBuf * return_) {
+JNIEXPORT PNIBuf_long * JNICALL JavaCritical_io_vproxy_pni_test_UpcallNull_returnLongArr(PNIBuf_long * return_) {
     if (_returnLongArr == NULL) {
         printf("JavaCritical_io_vproxy_pni_test_UpcallNull_returnLongArr function pointer is null");
         fflush(stdout);
@@ -185,7 +185,7 @@ JNIEXPORT PNIBuf * JNICALL JavaCritical_io_vproxy_pni_test_UpcallNull_returnLong
     return _returnLongArr(return_);
 }
 
-JNIEXPORT PNIBuf * JNICALL JavaCritical_io_vproxy_pni_test_UpcallNull_returnShortArr(PNIBuf * return_) {
+JNIEXPORT PNIBuf_short * JNICALL JavaCritical_io_vproxy_pni_test_UpcallNull_returnShortArr(PNIBuf_short * return_) {
     if (_returnShortArr == NULL) {
         printf("JavaCritical_io_vproxy_pni_test_UpcallNull_returnShortArr function pointer is null");
         fflush(stdout);
@@ -194,7 +194,7 @@ JNIEXPORT PNIBuf * JNICALL JavaCritical_io_vproxy_pni_test_UpcallNull_returnShor
     return _returnShortArr(return_);
 }
 
-JNIEXPORT PNIBuf * JNICALL JavaCritical_io_vproxy_pni_test_UpcallNull_returnOArr(PNIBuf * return_) {
+JNIEXPORT PNIBuf_ObjectStruct * JNICALL JavaCritical_io_vproxy_pni_test_UpcallNull_returnOArr(PNIBuf_ObjectStruct * return_) {
     if (_returnOArr == NULL) {
         printf("JavaCritical_io_vproxy_pni_test_UpcallNull_returnOArr function pointer is null");
         fflush(stdout);
@@ -243,4 +243,4 @@ JNIEXPORT PNIFunc * JNICALL JavaCritical_io_vproxy_pni_test_UpcallNull_returnFun
 }
 #endif
 // metadata.generator-version: pni test
-// sha256:230a627368a1057667e94daabd82160b17cbbcf646d63f1bbfea929e45148f63
+// sha256:373a0d55db4dd04b1315c374a1ab1da11628897871b7a654b9cf499ed3ffe4d7

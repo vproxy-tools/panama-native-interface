@@ -20,18 +20,19 @@ typedef struct SizeofStruct SizeofStruct;
 extern "C" {
 #endif
 
+JNIEXPORT size_t JNICALL JavaCritical_io_vproxy_pni_test_SizeofStruct___getLayoutByteSize();
+
 PNIEnvExpand(SizeofStruct, SizeofStruct *)
+PNIBufExpand(SizeofStruct, SizeofStruct, JavaCritical_io_vproxy_pni_test_SizeofStruct___getLayoutByteSize())
 
 PNI_PACK(struct, SizeofStruct, {
     int32_t a;
     int16_t b; /* padding */ uint64_t :16;
 });
 
-JNIEXPORT size_t JNICALL JavaCritical_io_vproxy_pni_test_SizeofStruct___getLayoutByteSize();
-
 #ifdef __cplusplus
 }
 #endif
 #endif // _Included_io_vproxy_pni_test_SizeofStruct
 // metadata.generator-version: pni test
-// sha256:38f973ecdd6676804af090b1864de1b6346537a349c83dca1783675ba0dbcb47
+// sha256:4a70495cb4d3e69fe4a0bcae700aa6f9705056e0b1d9b5771303697f61d6a937

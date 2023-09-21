@@ -20,6 +20,7 @@ extern "C" {
 #endif
 
 PNIEnvExpand(GCCompatibilityNormalContainUnion, GCCompatibilityNormalContainUnion *)
+PNIBufExpand(GCCompatibilityNormalContainUnion, GCCompatibilityNormalContainUnion, 24)
 
 JNIEXPORT int JNICALL Java_io_vproxy_pni_test_GCCompatibilityNormalContainUnion_initB(PNIEnv_void * env, GCCompatibilityNormalContainUnion * self);
 JNIEXPORT int JNICALL Java_io_vproxy_pni_test_GCCompatibilityNormalContainUnion_initS(PNIEnv_void * env, GCCompatibilityNormalContainUnion * self);
@@ -34,4 +35,4 @@ JNIEXPORT int JNICALL Java_io_vproxy_pni_test_GCCompatibilityNormalContainUnion_
 #endif
 #endif // _Included_io_vproxy_pni_test_GCCompatibilityNormalContainUnion
 // metadata.generator-version: pni test
-// sha256:c5d95ac3af62cb852051aeffe0571d8ccffa2781bd144604ed5a141ec0d1c64a
+// sha256:9f64043c37364849d9f7f5eb8b28a3897e3bf497ff87e0900ede5ee2ff12f9d0

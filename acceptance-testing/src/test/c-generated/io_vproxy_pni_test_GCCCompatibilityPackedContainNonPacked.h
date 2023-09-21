@@ -20,6 +20,7 @@ extern "C" {
 #endif
 
 PNIEnvExpand(GCCCompatibilityPackedContainNonPacked, GCCCompatibilityPackedContainNonPacked *)
+PNIBufExpand(GCCCompatibilityPackedContainNonPacked, GCCCompatibilityPackedContainNonPacked, 37)
 
 JNIEXPORT int JNICALL Java_io_vproxy_pni_test_GCCCompatibilityPackedContainNonPacked_init(PNIEnv_void * env, GCCCompatibilityPackedContainNonPacked * self);
 JNIEXPORT int JNICALL Java_io_vproxy_pni_test_GCCCompatibilityPackedContainNonPacked_size(PNIEnv_long * env, GCCCompatibilityPackedContainNonPacked * self);
@@ -29,4 +30,4 @@ JNIEXPORT int JNICALL Java_io_vproxy_pni_test_GCCCompatibilityPackedContainNonPa
 #endif
 #endif // _Included_io_vproxy_pni_test_GCCCompatibilityPackedContainNonPacked
 // metadata.generator-version: pni test
-// sha256:1bd3cae083b2c472acb60f9399a4ee82edf90254cbb6e4170014e9831a9fcccf
+// sha256:91847d5c2d09d368e95a79eb3c9cbd43b21927c8c634eb893e1934a91f056c71

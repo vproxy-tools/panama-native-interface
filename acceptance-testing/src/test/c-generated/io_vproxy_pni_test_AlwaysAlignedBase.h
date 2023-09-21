@@ -21,6 +21,7 @@ extern "C" {
 #endif
 
 PNIEnvExpand(AlwaysAlignedBase, AlwaysAlignedBase *)
+PNIBufExpand(AlwaysAlignedBase, AlwaysAlignedBase, 1)
 
 PNI_PACK(struct, AlwaysAlignedBase, {
     int8_t a;
@@ -31,4 +32,4 @@ PNI_PACK(struct, AlwaysAlignedBase, {
 #endif
 #endif // _Included_io_vproxy_pni_test_AlwaysAlignedBase
 // metadata.generator-version: pni test
-// sha256:92fd6ac63b5a2d3d771609a51b86dc4f1fae0b4f60a1cfeb6a6ee99d7fd3da18
+// sha256:eeeb7d5928a45d02db7f6ec3c97a4bf6f620fcfb4dc8a95243e934fa03ffc21c

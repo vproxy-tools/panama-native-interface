@@ -28,19 +28,19 @@ JNIEXPORT float JNICALL JavaCritical_io_vproxy_pni_test_InvokeUpcall_returnFloat
 JNIEXPORT int32_t JNICALL JavaCritical_io_vproxy_pni_test_InvokeUpcall_returnInt(void);
 JNIEXPORT int64_t JNICALL JavaCritical_io_vproxy_pni_test_InvokeUpcall_returnLong(void);
 JNIEXPORT int16_t JNICALL JavaCritical_io_vproxy_pni_test_InvokeUpcall_returnShort(void);
-JNIEXPORT void JNICALL JavaCritical_io_vproxy_pni_test_InvokeUpcall_primaryArrayParams(PNIBuf * b, PNIBuf * ub, PNIBuf * z, PNIBuf * c, PNIBuf * d, PNIBuf * f, PNIBuf * i, PNIBuf * ui, PNIBuf * j, PNIBuf * uj, PNIBuf * s, PNIBuf * us);
-JNIEXPORT PNIBuf * JNICALL JavaCritical_io_vproxy_pni_test_InvokeUpcall_returnByteArray(PNIBuf * return_);
-JNIEXPORT PNIBuf * JNICALL JavaCritical_io_vproxy_pni_test_InvokeUpcall_returnBoolArray(PNIBuf * return_);
-JNIEXPORT PNIBuf * JNICALL JavaCritical_io_vproxy_pni_test_InvokeUpcall_returnCharArray(PNIBuf * return_);
-JNIEXPORT PNIBuf * JNICALL JavaCritical_io_vproxy_pni_test_InvokeUpcall_returnDoubleArray(PNIBuf * return_);
-JNIEXPORT PNIBuf * JNICALL JavaCritical_io_vproxy_pni_test_InvokeUpcall_returnFloatArray(PNIBuf * return_);
-JNIEXPORT PNIBuf * JNICALL JavaCritical_io_vproxy_pni_test_InvokeUpcall_returnIntArray(PNIBuf * return_);
-JNIEXPORT PNIBuf * JNICALL JavaCritical_io_vproxy_pni_test_InvokeUpcall_returnLongArray(PNIBuf * return_);
-JNIEXPORT PNIBuf * JNICALL JavaCritical_io_vproxy_pni_test_InvokeUpcall_returnShortArray(PNIBuf * return_);
+JNIEXPORT void JNICALL JavaCritical_io_vproxy_pni_test_InvokeUpcall_primaryArrayParams(PNIBuf_byte * b, PNIBuf_ubyte * ub, PNIBuf_bool * z, PNIBuf_char * c, PNIBuf_double * d, PNIBuf_float * f, PNIBuf_int * i, PNIBuf_uint * ui, PNIBuf_long * j, PNIBuf_ulong * uj, PNIBuf_short * s, PNIBuf_ushort * us);
+JNIEXPORT PNIBuf_byte * JNICALL JavaCritical_io_vproxy_pni_test_InvokeUpcall_returnByteArray(PNIBuf_byte * return_);
+JNIEXPORT PNIBuf_bool * JNICALL JavaCritical_io_vproxy_pni_test_InvokeUpcall_returnBoolArray(PNIBuf_bool * return_);
+JNIEXPORT PNIBuf_char * JNICALL JavaCritical_io_vproxy_pni_test_InvokeUpcall_returnCharArray(PNIBuf_char * return_);
+JNIEXPORT PNIBuf_double * JNICALL JavaCritical_io_vproxy_pni_test_InvokeUpcall_returnDoubleArray(PNIBuf_double * return_);
+JNIEXPORT PNIBuf_float * JNICALL JavaCritical_io_vproxy_pni_test_InvokeUpcall_returnFloatArray(PNIBuf_float * return_);
+JNIEXPORT PNIBuf_int * JNICALL JavaCritical_io_vproxy_pni_test_InvokeUpcall_returnIntArray(PNIBuf_int * return_);
+JNIEXPORT PNIBuf_long * JNICALL JavaCritical_io_vproxy_pni_test_InvokeUpcall_returnLongArray(PNIBuf_long * return_);
+JNIEXPORT PNIBuf_short * JNICALL JavaCritical_io_vproxy_pni_test_InvokeUpcall_returnShortArray(PNIBuf_short * return_);
 JNIEXPORT void JNICALL JavaCritical_io_vproxy_pni_test_InvokeUpcall_objectParams(ObjectStruct * o);
 JNIEXPORT ObjectStruct * JNICALL JavaCritical_io_vproxy_pni_test_InvokeUpcall_returnObject(ObjectStruct * return_);
-JNIEXPORT void JNICALL JavaCritical_io_vproxy_pni_test_InvokeUpcall_objectArrayParams(PNIBuf * o);
-JNIEXPORT PNIBuf * JNICALL JavaCritical_io_vproxy_pni_test_InvokeUpcall_returnObjectArray(PNIBuf * return_);
+JNIEXPORT void JNICALL JavaCritical_io_vproxy_pni_test_InvokeUpcall_objectArrayParams(PNIBuf_ObjectStruct * o);
+JNIEXPORT PNIBuf_ObjectStruct * JNICALL JavaCritical_io_vproxy_pni_test_InvokeUpcall_returnObjectArray(PNIBuf_ObjectStruct * return_);
 JNIEXPORT void JNICALL JavaCritical_io_vproxy_pni_test_InvokeUpcall_otherParams(PNIBuf * buffer, PNIFunc * voidCallSite, PNIFunc * objCallSite, PNIFunc * refCallSite, void * mem, PNIFunc * voidFunc, PNIFunc * objFunc, PNIFunc * refFunc, PNIRef * ref, PNIRef * rawRef, char * str);
 JNIEXPORT PNIBuf * JNICALL JavaCritical_io_vproxy_pni_test_InvokeUpcall_returnBuffer(PNIBuf * return_);
 JNIEXPORT void * JNICALL JavaCritical_io_vproxy_pni_test_InvokeUpcall_returnMem(void);
@@ -56,4 +56,4 @@ JNIEXPORT int32_t JNICALL JavaCritical_io_vproxy_pni_test_InvokeUpcall_sum(int32
 #endif
 #endif // _Included_io_vproxy_pni_test_InvokeUpcall
 // metadata.generator-version: pni test
-// sha256:61ba11d480beda27a5648945005343617edd88f175aad06e0310efd3f3cdbbcc
+// sha256:0170ec5464d2fa8af8559b239e644a8a7b0214862ec1e5393f340aef12389984

@@ -22,7 +22,10 @@ typedef struct SizeofEmbed SizeofEmbed;
 extern "C" {
 #endif
 
+JNIEXPORT size_t JNICALL JavaCritical_io_vproxy_pni_test_SizeofEmbed___getLayoutByteSize();
+
 PNIEnvExpand(SizeofEmbed, SizeofEmbed *)
+PNIBufExpand(SizeofEmbed, SizeofEmbed, JavaCritical_io_vproxy_pni_test_SizeofEmbed___getLayoutByteSize())
 
 PNI_PACK(struct, SizeofEmbed, {
     int8_t x; /* padding */ uint64_t :56;
@@ -30,11 +33,9 @@ PNI_PACK(struct, SizeofEmbed, {
     SizeofStructExpr st;
 });
 
-JNIEXPORT size_t JNICALL JavaCritical_io_vproxy_pni_test_SizeofEmbed___getLayoutByteSize();
-
 #ifdef __cplusplus
 }
 #endif
 #endif // _Included_io_vproxy_pni_test_SizeofEmbed
 // metadata.generator-version: pni test
-// sha256:bc4ce08bbb41639a23eee49368c3cb4c0c960e9f99591540afb88e835276e04e
+// sha256:db468c7200b825da7e2b497db288543d92b775f72a1ff551fd78ff831a51b0ff

@@ -21,6 +21,7 @@ extern "C" {
 #endif
 
 PNIEnvExpand(UnionO, union UnionO *)
+PNIBufExpand(UnionO, union UnionO, 8)
 
 PNI_PACK(union, UnionO, {
     int16_t s;
@@ -33,4 +34,4 @@ PNI_PACK(union, UnionO, {
 #endif
 #endif // _Included_io_vproxy_pni_test_UnionO
 // metadata.generator-version: pni test
-// sha256:1ecf3a9c38997ca3f45bdfef86f15b4fcc0771d25cfcd32e725ef3fb0849b20c
+// sha256:646bb1cc51e004d4eafd5e55fcd26ff9c069e96f0e761ee8e7bf2e4a0eba5de7

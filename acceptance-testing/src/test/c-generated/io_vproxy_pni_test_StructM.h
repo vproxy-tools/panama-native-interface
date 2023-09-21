@@ -21,6 +21,7 @@ extern "C" {
 #endif
 
 PNIEnvExpand(StructM, struct StructM *)
+PNIBufExpand(StructM, struct StructM, 16)
 
 PNI_PACK(struct, StructM, {
     struct N_st n_st;
@@ -33,4 +34,4 @@ JNIEXPORT int JNICALL Java_io_vproxy_pni_test_StructM_nnn(PNIEnv_void * env, str
 #endif
 #endif // _Included_io_vproxy_pni_test_StructM
 // metadata.generator-version: pni test
-// sha256:dcd1313a2eea604d3ac338770d30a9b6f840fa5a218f9bfdfaed69035b9a49e2
+// sha256:bf5a0ec658db095a871fba9836e3fddf5bf62aae31703ad039d74b33163ad66f
