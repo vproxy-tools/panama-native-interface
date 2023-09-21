@@ -1418,6 +1418,7 @@ public class TestTypes {
     @Test
     public void arrayTypes() {
         var arr = new ArrayTypeInfo(ByteTypeInfo.get());
+        assertEquals("buf_byte", arr.nativeEnvType(returnVarOpts(0)));
         assertEquals("void * a", arr.nativeParamType("a", paramVarOpts(RAW)));
         assertEquals("uint8_t * a", arr.nativeParamType("a", paramVarOpts(RAW | UNSIGNED)));
         assertEquals("MemorySegment", arr.javaTypeForField(fieldVarOpts(0)));
@@ -1425,30 +1426,35 @@ public class TestTypes {
             arr.convertToUpcallArgument("a", paramVarOpts(0)));
 
         arr = new ArrayTypeInfo(BooleanTypeInfo.get());
+        assertEquals("buf_bool", arr.nativeEnvType(returnVarOpts(0)));
         assertEquals("uint8_t * a", arr.nativeParamType("a", paramVarOpts(RAW)));
         assertEquals("BoolArray", arr.javaTypeForField(fieldVarOpts(0)));
         assertEquals("(a.address() == 0 ? null : new PNIBuf(a).toBoolArray())",
             arr.convertToUpcallArgument("a", paramVarOpts(0)));
 
         arr = new ArrayTypeInfo(CharTypeInfo.get());
+        assertEquals("buf_char", arr.nativeEnvType(returnVarOpts(0)));
         assertEquals("uint16_t * a", arr.nativeParamType("a", paramVarOpts(RAW)));
         assertEquals("CharArray", arr.javaTypeForField(fieldVarOpts(0)));
         assertEquals("(a.address() == 0 ? null : new PNIBuf(a).toCharArray())",
             arr.convertToUpcallArgument("a", paramVarOpts(0)));
 
         arr = new ArrayTypeInfo(FloatTypeInfo.get());
+        assertEquals("buf_float", arr.nativeEnvType(returnVarOpts(0)));
         assertEquals("float * a", arr.nativeParamType("a", paramVarOpts(RAW)));
         assertEquals("FloatArray", arr.javaTypeForField(fieldVarOpts(0)));
         assertEquals("(a.address() == 0 ? null : new PNIBuf(a).toFloatArray())",
             arr.convertToUpcallArgument("a", paramVarOpts(0)));
 
         arr = new ArrayTypeInfo(DoubleTypeInfo.get());
+        assertEquals("buf_double", arr.nativeEnvType(returnVarOpts(0)));
         assertEquals("double * a", arr.nativeParamType("a", paramVarOpts(RAW)));
         assertEquals("DoubleArray", arr.javaTypeForField(fieldVarOpts(0)));
         assertEquals("(a.address() == 0 ? null : new PNIBuf(a).toDoubleArray())",
             arr.convertToUpcallArgument("a", paramVarOpts(0)));
 
         arr = new ArrayTypeInfo(IntTypeInfo.get());
+        assertEquals("buf_int", arr.nativeEnvType(returnVarOpts(0)));
         assertEquals("int32_t * a", arr.nativeParamType("a", paramVarOpts(RAW)));
         assertEquals("uint32_t * a", arr.nativeParamType("a", paramVarOpts(RAW | UNSIGNED)));
         assertEquals("IntArray", arr.javaTypeForField(fieldVarOpts(0)));
@@ -1456,6 +1462,7 @@ public class TestTypes {
             arr.convertToUpcallArgument("a", paramVarOpts(0)));
 
         arr = new ArrayTypeInfo(LongTypeInfo.get());
+        assertEquals("buf_long", arr.nativeEnvType(returnVarOpts(0)));
         assertEquals("int64_t * a", arr.nativeParamType("a", paramVarOpts(RAW)));
         assertEquals("uint64_t * a", arr.nativeParamType("a", paramVarOpts(RAW | UNSIGNED)));
         assertEquals("LongArray", arr.javaTypeForField(fieldVarOpts(0)));
@@ -1463,6 +1470,7 @@ public class TestTypes {
             arr.convertToUpcallArgument("a", paramVarOpts(0)));
 
         arr = new ArrayTypeInfo(ShortTypeInfo.get());
+        assertEquals("buf_short", arr.nativeEnvType(returnVarOpts(0)));
         assertEquals("int16_t * a", arr.nativeParamType("a", paramVarOpts(RAW)));
         assertEquals("uint16_t * a", arr.nativeParamType("a", paramVarOpts(RAW | UNSIGNED)));
         assertEquals("ShortArray", arr.javaTypeForField(fieldVarOpts(0)));

@@ -17,6 +17,14 @@ public class TestTypesNoGen {
     }
 
     @Test
+    public void AnnoAlwaysAligned() {
+        var t = AnnoAlwaysAlignedTypeInfo.get();
+        assertEquals("io.vproxy.pni.annotation.AlwaysAligned", t.name());
+        assertEquals("io/vproxy/pni/annotation/AlwaysAligned", t.internalName());
+        assertEquals("Lio/vproxy/pni/annotation/AlwaysAligned;", t.desc());
+    }
+
+    @Test
     public void AnnoBitField() {
         var t = AnnoBitFieldTypeInfo.get();
         assertEquals("io.vproxy.pni.annotation.BitField", t.name());
@@ -94,6 +102,14 @@ public class TestTypesNoGen {
         assertEquals("io.vproxy.pni.annotation.Raw", t.name());
         assertEquals("io/vproxy/pni/annotation/Raw", t.internalName());
         assertEquals("Lio/vproxy/pni/annotation/Raw;", t.desc());
+    }
+
+    @Test
+    public void AnnoSizeof() {
+        var t = AnnoSizeofTypeInfo.get();
+        assertEquals("io.vproxy.pni.annotation.Sizeof", t.name());
+        assertEquals("io/vproxy/pni/annotation/Sizeof", t.internalName());
+        assertEquals("Lio/vproxy/pni/annotation/Sizeof;", t.desc());
     }
 
     @Test
