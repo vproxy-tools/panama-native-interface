@@ -22,6 +22,7 @@ extern "C" {
 #endif
 
 PNIEnvExpand(mbuf_t, mbuf_t *)
+PNIBufExpand(mbuf_t, mbuf_t, 32)
 
 PNI_PACK(struct, mbuf_t, {
     void * bufAddr;
@@ -39,4 +40,4 @@ PNI_PACK(struct, mbuf_t, {
 #endif
 #endif // _Included_io_vproxy_pni_sample_MBuf
 // metadata.generator-version: pni test
-// sha256:166110e8de11fbb3ba3818b3090e55053cb1ef3951bc5c1c83a3623a85e5940c
+// sha256:6b6fba9a97491db9758eb4ca87380e967faea2b0364d3781525f81ec02ddee77
