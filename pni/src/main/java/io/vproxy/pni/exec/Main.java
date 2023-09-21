@@ -1,7 +1,5 @@
 package io.vproxy.pni.exec;
 
-import io.vproxy.pni.exec.internal.*;
-
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -28,6 +26,7 @@ public class Main {
         VERSION = _VERSION;
     }
 
+    @SuppressWarnings("ConcatenationWithEmptyString")
     private static final String HELP_STR = (
         "Usage: java -jar pni.jar <options>\n" +
         "  -cp <path>\n" +
@@ -41,8 +40,16 @@ public class Main {
         "  -verbose                     Output messages about what the compiler is doing\n" +
         "  --version, -version          Version information\n" +
         "\n" +
+        "  -w                           Inhibit all warning messages\n" +
+        "  -W<warning>                  Enable the specified warning\n" +
+        "  -Wno-<warning>               Disable the specified warning\n" +
+        "  -Werror                      Make all warnings into errors\n" +
+        "  -Werror=                     Make the specified warning into an error\n" +
+        "  -Wno-error=                  Disable error of a warning\n" +
+        "\n" +
         "Note:\n" +
-        "  -cp,-F,-M can appear multiple times\n"
+        "  -cp,-F,-M,-W can appear multiple times\n" +
+        ""
     ).trim();
 
     public static void main(String[] args) {
@@ -50,10 +57,9 @@ public class Main {
             System.out.println(HELP_STR);
             return;
         }
+        var opts = new CompilerOptions();
         var cp = new ArrayList<String>();
         var filter = new ArrayList<Pattern>();
-        String d = null;
-        String h = null;
         LinkedHashMap<String, String> metadata = new LinkedHashMap<>();
         boolean verbose = false;
         for (int i = 0; i < args.length; i++) {
@@ -66,7 +72,6 @@ public class Main {
                 System.out.println(HELP_STR);
                 return;
             }
-            //noinspection IfCanBeSwitch
             if (a.equals("-cp")) {
                 if (next == null) {
                     System.out.println("missing path after -cp");
@@ -84,7 +89,7 @@ public class Main {
                     return;
                 }
                 ++i;
-                d = next.trim();
+                opts.setJavaOutputBaseDirectory(next.trim());
             } else if (a.equals("-h")) {
                 if (next == null) {
                     System.out.println("missing directory after -h");
@@ -92,7 +97,7 @@ public class Main {
                     return;
                 }
                 ++i;
-                h = next.trim();
+                opts.setCOutputDirectory(next.trim());
             } else if (a.equals("-F")) {
                 if (next == null) {
                     System.out.println("missing regexp after -F");
@@ -129,6 +134,28 @@ public class Main {
                 System.out.println("gen.java " + JAVA_GEN_VERSION);
                 System.out.println("gen.c " + C_GEN_VERSION);
                 return;
+            } else if (a.equals("-w")) {
+                opts.setWarningFlags(0);
+            } else if (a.startsWith("-W")) {
+                if (a.startsWith("-Wno-")) {
+                    var name = a.substring("-Wno-".length()).trim();
+                    var w = getWarningByNameOrExit(name);
+                    opts.unsetWarningBits(w.flag);
+                } else if (a.equals("-Werror")) {
+                    opts.setWarningAsErrorBits(opts.getWarningFlags());
+                } else if (a.startsWith("-Werror=")) {
+                    var name = a.substring("-Werror=".length()).trim();
+                    var w = getWarningByNameOrExit(name);
+                    opts.setWarningAsErrorBits(w.flag);
+                } else if (a.startsWith("-Wno-error=")) {
+                    var name = a.substring("-Wno-error=".length()).trim();
+                    var w = getWarningByNameOrExit(name);
+                    opts.unsetWarningAsErrorBits(w.flag);
+                } else {
+                    var name = a.substring("-W".length()).trim();
+                    var w = getWarningByNameOrExit(name);
+                    opts.setWarningBits(w.flag);
+                }
             } else {
                 System.out.println("unexpected argument " + a);
                 System.exit(1);
@@ -140,45 +167,37 @@ public class Main {
             System.out.println("missing -cp");
             ok = false;
         }
-        if (d == null) {
-            System.out.println("missing -d");
-            ok = false;
-        } else {
-            var f = new File(d);
-            if (!f.exists()) {
-                System.out.println("-d " + d + " file not found");
-                ok = false;
-            } else if (!f.isDirectory()) {
-                System.out.println(f + " is not a directory");
-                ok = false;
-            }
-        }
-        if (h == null) {
-            System.out.println("missing -h");
-            ok = false;
-        } else {
-            var f = new File(h);
-            if (!f.exists()) {
-                System.out.println("-h " + h + " file not found");
-                ok = false;
-            } else if (!f.isDirectory()) {
-                System.out.println(h + " is not a directory");
-                ok = false;
-            }
-        }
         if (!ok) {
             System.exit(1);
             return;
         }
 
-        var opts = new CompilerOptions()
-            .setClasspath(cp)
-            .setJavaOutputBaseDirectory(d)
-            .setCOutputDirectory(h)
+        opts.setClasspath(cp)
             .setFilters(filter)
             .setVerbose(verbose)
             .putMetadata(metadata);
+
+        var errors = new ArrayList<String>();
+        opts.validate(errors);
+        if (!errors.isEmpty()) {
+            for (var e : errors) {
+                System.out.println(e);
+            }
+            System.exit(1);
+            return;
+        }
+
         new Generator(opts).generate();
         System.out.println("done");
+    }
+
+    private static WarnType getWarningByNameOrExit(String name) {
+        var w = WarnType.searchForWarnTypeByName(name);
+        if (w == null) {
+            System.out.println("unknown warning " + name);
+            System.exit(1);
+            throw new RuntimeException("should not reach here");
+        }
+        return w;
     }
 }

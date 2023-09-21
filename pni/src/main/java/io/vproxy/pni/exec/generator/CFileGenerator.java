@@ -6,6 +6,7 @@ import io.vproxy.pni.exec.ast.AstClass;
 import io.vproxy.pni.exec.ast.AstField;
 import io.vproxy.pni.exec.ast.AstMethod;
 import io.vproxy.pni.exec.ast.AstParam;
+import io.vproxy.pni.exec.internal.PNILogger;
 import io.vproxy.pni.exec.internal.Utils;
 import io.vproxy.pni.exec.internal.VarOpts;
 import io.vproxy.pni.exec.type.ArrayTypeInfo;
@@ -23,17 +24,17 @@ import java.util.Map;
 @SuppressWarnings("SameParameterValue")
 public class CFileGenerator {
     protected final AstClass cls;
+    protected final CompilerOptions opts;
 
-    public CFileGenerator(AstClass cls) {
+    public CFileGenerator(AstClass cls, CompilerOptions opts) {
         this.cls = cls;
+        this.opts = opts;
     }
 
-    public void flush(File dir, CompilerOptions opts) {
+    public void flush(File dir) {
         var cCode = generate();
         if (cCode == null) {
-            if (opts.isVerbose()) {
-                System.out.println("no native code generated for " + cls.fullName() + " @ " + this.getClass().getSimpleName());
-            }
+            PNILogger.debug(opts, "no native code generated for " + cls.fullName() + " @ " + this.getClass().getSimpleName());
             return;
         }
         var hash = Utils.sha256(cCode);
@@ -42,14 +43,10 @@ public class CFileGenerator {
         String fileName = fileName();
         Path path = Path.of(dir.getAbsolutePath(), fileName);
         if (Utils.hashesAreTheSame(path.toFile(), hash)) {
-            if (opts.isVerbose()) {
-                System.out.println("skipping native file because nothing changed: " + path);
-            }
+            PNILogger.debug(opts, "skipping native file because nothing changed: " + path);
             return;
         }
-        if (opts.isVerbose()) {
-            System.out.println("writing generated native file for " + cls.fullName() + " to " + path);
-        }
+        PNILogger.debug(opts, "writing generated native file for " + cls.fullName() + " to " + path);
         try {
             Files.writeString(path, cCode);
         } catch (IOException e) {
@@ -242,7 +239,7 @@ public class CFileGenerator {
         return fieldGenerators.computeIfAbsent(f, FieldGenerator::new);
     }
 
-    private static class FieldGenerator {
+    private class FieldGenerator {
         private final AstField field;
 
         private FieldGenerator(AstField field) {
@@ -255,7 +252,7 @@ public class CFileGenerator {
                 var cls = clsTypeInfo.getClazz();
                 if (cls.isUnionEmbed()) {
                     Utils.appendIndent(sb, indent);
-                    new CFileGenerator(cls).generateC(sb, indent, false);
+                    new CFileGenerator(cls, opts).generateC(sb, indent, false);
                     return;
                 }
             }

@@ -10,28 +10,30 @@ import java.util.jar.JarFile;
 
 public class JavaReader {
     private final List<String> classpath;
+    private final CompilerOptions opts;
     private final List<ClassReader> classes = new ArrayList<>();
 
-    public JavaReader(List<String> classpath) {
+    public JavaReader(List<String> classpath, CompilerOptions opts) {
         this.classpath = classpath;
+        this.opts = opts;
     }
 
-    public List<ClassReader> read(CompilerOptions opts) {
+    public List<ClassReader> read() {
         for (var cp : classpath) {
             var f = new File(cp);
             if (!f.exists()) {
-                throw new RuntimeException("file is missing " + f);
+                continue;
             }
             if (f.isDirectory()) {
-                readFile(f, opts);
+                readFile(f);
             } else if (f.getName().equals(".jar")) {
                 try {
-                    readJar(f, opts);
+                    readJar(f);
                 } catch (IOException e) {
                     throw new RuntimeException("failed reading jar " + f);
                 }
             } else if (f.getName().equals(".class")) {
-                readFile(f, opts);
+                readFile(f);
             } else {
                 throw new RuntimeException("unknown file " + f.getAbsolutePath());
             }
@@ -39,40 +41,38 @@ public class JavaReader {
         return classes;
     }
 
-    private void readJar(File f, CompilerOptions opts) throws IOException {
+    private void readJar(File f) throws IOException {
         try (var jar = new JarFile(f)) {
             var e = jar.entries();
             while (e.hasMoreElements()) {
                 var entry = e.nextElement();
                 if (entry.getName().endsWith(".class")) {
-                    readClass(f.getAbsolutePath() + "!" + entry.getName(), jar.getInputStream(entry), opts);
+                    readClass(f.getAbsolutePath() + "!" + entry.getName(), jar.getInputStream(entry));
                 }
             }
         }
     }
 
-    private void readFile(File f, CompilerOptions opts) {
+    private void readFile(File f) {
         if (f.isDirectory()) {
             var files = f.listFiles();
             if (files == null) {
                 throw new RuntimeException("cannot list files in " + f);
             }
             for (var ff : files) {
-                readFile(ff, opts);
+                readFile(ff);
             }
         } else {
             try {
-                readClass(f.getAbsolutePath(), new FileInputStream(f), opts);
+                readClass(f.getAbsolutePath(), new FileInputStream(f));
             } catch (FileNotFoundException e) {
                 throw new RuntimeException("cannot read content from " + f);
             }
         }
     }
 
-    private void readClass(String filename, InputStream inputStream, CompilerOptions opts) {
-        if (opts.isVerbose()) {
-            System.out.println("reading class " + filename);
-        }
+    private void readClass(String filename, InputStream inputStream) {
+        PNILogger.debug(opts, "reading class " + filename);
         try {
             classes.add(new ClassReader(inputStream));
         } catch (IOException e) {

@@ -10,33 +10,33 @@ public class Generator {
 
     public Generator(CompilerOptions opts) {
         this.opts = opts;
-        opts.validate();
-        opts.initDefaultValues();
     }
 
     public void generate() {
-        var classReaders = new JavaReader(opts.getClasspath()).read(opts);
-        var classes = new ASTReader(classReaders).read(opts);
+        opts.validate();
+        opts.initDefaultValues();
+
+        var classReaders = new JavaReader(opts.getClasspath(), opts).read();
+        var classes = new ASTReader(classReaders, opts).read();
         for (var cls : classes) {
             var generate = opts.getFilters().isEmpty();
             for (var f : opts.getFilters()) {
                 if (f.matcher(cls.fullName()).find()) {
-                    if (opts.isVerbose()) {
-                        System.out.println(cls.fullName() + " matches filtering rule " + f);
-                    }
+                    PNILogger.debug(opts, cls.fullName() + " matches filtering rule " + f);
                     generate = true;
                     break;
                 }
             }
             if (!generate) {
+                PNILogger.debug(opts, cls.fullName() + " does not match any filtering rule");
                 continue;
             }
 
-            new JavaFileGenerator(cls).flush(new File(opts.getJavaOutputBaseDirectory()), opts);
-            new CFileGenerator(cls).flush(new File(opts.getCOutputDirectory()), opts);
-            new CImplFileGenerator(cls).flush(new File(opts.getCOutputDirectory()), opts);
-            new CExtraFileGenerator(cls).flush(new File(opts.getCOutputDirectory()), opts);
-            new CUpcallImplFileGenerator(cls).flush(new File(opts.getCOutputDirectory()), opts);
+            new JavaFileGenerator(cls, opts).flush(new File(opts.getJavaOutputBaseDirectory()));
+            new CFileGenerator(cls, opts).flush(new File(opts.getCOutputDirectory()));
+            new CImplFileGenerator(cls, opts).flush(new File(opts.getCOutputDirectory()));
+            new CExtraFileGenerator(cls, opts).flush(new File(opts.getCOutputDirectory()));
+            new CUpcallImplFileGenerator(cls, opts).flush(new File(opts.getCOutputDirectory()));
         }
     }
 }

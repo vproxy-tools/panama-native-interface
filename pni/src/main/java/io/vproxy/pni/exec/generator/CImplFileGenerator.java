@@ -1,5 +1,6 @@
 package io.vproxy.pni.exec.generator;
 
+import io.vproxy.pni.exec.CompilerOptions;
 import io.vproxy.pni.exec.ast.AstClass;
 import io.vproxy.pni.exec.ast.AstMethod;
 import io.vproxy.pni.exec.internal.Utils;
@@ -10,8 +11,8 @@ import java.util.Map;
 
 @SuppressWarnings("SameParameterValue")
 public class CImplFileGenerator extends CFileGenerator {
-    public CImplFileGenerator(AstClass cls) {
-        super(cls);
+    public CImplFileGenerator(AstClass cls, CompilerOptions opts) {
+        super(cls, opts);
     }
 
     public String generate() {

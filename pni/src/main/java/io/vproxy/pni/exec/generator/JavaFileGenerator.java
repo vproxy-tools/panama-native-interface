@@ -3,6 +3,7 @@ package io.vproxy.pni.exec.generator;
 import io.vproxy.pni.exec.CompilerOptions;
 import io.vproxy.pni.exec.Main;
 import io.vproxy.pni.exec.ast.*;
+import io.vproxy.pni.exec.internal.PNILogger;
 import io.vproxy.pni.exec.internal.Utils;
 import io.vproxy.pni.exec.internal.VarOpts;
 import io.vproxy.pni.exec.type.*;
@@ -16,26 +17,24 @@ import java.util.Map;
 @SuppressWarnings("SameParameterValue")
 public class JavaFileGenerator {
     private final AstClass cls;
+    private final CompilerOptions opts;
 
-    public JavaFileGenerator(AstClass cls) {
+    public JavaFileGenerator(AstClass cls, CompilerOptions opts) {
         this.cls = cls;
+        this.opts = opts;
     }
 
-    public void flush(File baseDir, CompilerOptions opts) {
+    public void flush(File baseDir) {
         var javaCode = generateJava();
         var hash = Utils.sha256(javaCode);
         javaCode += Utils.metadata(opts, Main.JAVA_GEN_VERSION);
         javaCode += "// sha256:" + hash + "\n";
         var file = Utils.ensureJavaFile(baseDir, cls.fullName());
         if (Utils.hashesAreTheSame(file, hash)) {
-            if (opts.isVerbose()) {
-                System.out.println("skipping java file because nothing changed: " + file.getAbsolutePath());
-            }
+            PNILogger.debug(opts, "skipping java file because nothing changed: " + file.getAbsolutePath());
             return;
         }
-        if (opts.isVerbose()) {
-            System.out.println("writing generated java file: " + file.getAbsolutePath());
-        }
+        PNILogger.debug(opts, "writing generated java file: " + file.getAbsolutePath());
         try {
             Files.writeString(file.toPath(), javaCode);
         } catch (IOException e) {

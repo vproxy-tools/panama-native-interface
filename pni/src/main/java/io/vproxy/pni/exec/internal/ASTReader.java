@@ -11,24 +11,24 @@ import java.util.List;
 
 public class ASTReader {
     private final List<ClassReader> classReaders;
+    private final CompilerOptions opts;
     private final TypePool pool = new TypePool();
 
     private final List<AstClass> classes = new ArrayList<>();
 
-    public ASTReader(List<ClassReader> classReaders) {
+    public ASTReader(List<ClassReader> classReaders, CompilerOptions opts) {
         this.classReaders = classReaders;
+        this.opts = opts;
     }
 
-    public List<AstClass> read(CompilerOptions opts) {
+    public List<AstClass> read() {
         // load all classes which requires handling
         for (var r : classReaders) {
             var classNode = new ClassNode();
             r.accept(classNode, ClassReader.SKIP_FRAMES | ClassReader.SKIP_CODE);
             var astClass = new AstClass(classNode);
             if (!requiresHandling(astClass)) {
-                if (opts.isVerbose()) {
-                    System.out.println("skipping " + astClass.name);
-                }
+                PNILogger.debug(opts, "skipping " + astClass.name);
                 continue;
             }
             classes.add(astClass);
@@ -44,9 +44,9 @@ public class ASTReader {
         // verbose
         if (opts.isVerbose()) {
             for (var cls : classes) {
-                System.out.println("-----BEGIN CLASS-----");
-                System.out.println(cls);
-                System.out.println("-----END CLASS-----");
+                PNILogger.debug(opts, "-----BEGIN CLASS-----");
+                PNILogger.debug(opts, "" + cls);
+                PNILogger.debug(opts, "-----END CLASS-----");
             }
         }
 
