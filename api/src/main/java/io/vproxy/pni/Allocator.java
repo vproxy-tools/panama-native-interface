@@ -61,6 +61,10 @@ public interface Allocator extends AutoCloseable {
         return new UnsafeAllocator();
     }
 
+    static Allocator ofAllocateAndForgetUnsafe() {
+        return AllocateAndForgetUnsafeAllocator.get();
+    }
+
     static Allocator ofDummy() {
         return DummyAllocator.get();
     }
