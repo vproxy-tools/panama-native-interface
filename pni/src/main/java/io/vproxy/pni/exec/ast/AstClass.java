@@ -546,4 +546,8 @@ public class AstClass {
         if (isInterface) return false;
         return true;
     }
+
+    public boolean needToGenerateExpand() {
+        return needToGenerateTypeDefinition() || isSkip();
+    }
 }

@@ -174,9 +174,28 @@ public class CFileGenerator {
     }
 
     private void generateC(StringBuilder sb, int indent, boolean generateCompleteFile) {
-        if (generateCompleteFile && (cls.needToGenerateTypeDefinition() || cls.isSkip())) {
+        if (generateCompleteFile && cls.needToGenerateExpand()) {
+            if (cls.getSizeof() != null) {
+                sb.append("\n");
+                sb.append("JNIEXPORT size_t JNICALL JavaCritical_").append(cls.underlinedName()).append("___getLayoutByteSize();\n");
+            }
             sb.append("\n");
             sb.append("PNIEnvExpand(").append(cls.nativeName()).append(", ").append(cls.nativeTypeName()).append(" *)\n");
+            sb.append("PNIBufExpand(")
+                .append(cls.nativeName()).append(", ")
+                .append(cls.nativeTypeName()).append(", ");
+            var sizeof = cls.getSizeof();
+            if (sizeof == null) {
+                var size = cls.getNativeMemorySize();
+                if (size <= 0) {
+                    sb.append("(0 /* !!invalid!! */)");
+                } else {
+                    sb.append(size);
+                }
+            } else {
+                sb.append("JavaCritical_").append(cls.underlinedName()).append("___getLayoutByteSize()");
+            }
+            sb.append(")\n");
         }
         if (cls.needToGenerateTypeDefinition() || !generateCompleteFile) {
             if (generateCompleteFile) {
@@ -220,10 +239,6 @@ public class CFileGenerator {
         }
         if (!generateCompleteFile) {
             return;
-        }
-        if (cls.getSizeof() != null) {
-            sb.append("\n");
-            sb.append("JNIEXPORT size_t JNICALL JavaCritical_").append(cls.underlinedName()).append("___getLayoutByteSize();\n");
         }
         if (!cls.methods.isEmpty()) {
             sb.append("\n");

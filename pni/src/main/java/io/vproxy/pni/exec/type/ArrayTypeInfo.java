@@ -70,16 +70,43 @@ public class ArrayTypeInfo extends TypeInfo {
 
     @Override
     public String nativeEnvType(VarOpts opts) {
-        return "buf";
+        return "buf_" + pniBufSuffix(opts);
+    }
+
+    private String pniBufSuffix(VarOpts opts) {
+        if (elementType instanceof ByteTypeInfo) {
+            if (opts.isUnsigned()) return "ubyte";
+            return "byte";
+        } else if (elementType instanceof CharTypeInfo) {
+            return "char";
+        } else if (elementType instanceof IntTypeInfo) {
+            if (opts.isUnsigned()) return "uint";
+            return "int";
+        } else if (elementType instanceof LongTypeInfo) {
+            if (opts.isUnsigned()) return "ulong";
+            return "long";
+        } else if (elementType instanceof FloatTypeInfo) {
+            return "float";
+        } else if (elementType instanceof DoubleTypeInfo) {
+            return "double";
+        } else if (elementType instanceof ShortTypeInfo) {
+            if (opts.isUnsigned()) return "ushort";
+            return "short";
+        } else if (elementType instanceof BooleanTypeInfo) {
+            return "bool";
+        } else {
+            assert elementType instanceof ClassTypeInfo;
+            return ((ClassTypeInfo) elementType).getClazz().nativeName();
+        }
     }
 
     @Override
     public String nativeType(String fieldName, VarOpts opts) {
         if (opts.isPointerGeneral()) {
             if (fieldName == null) {
-                return "PNIBuf";
+                return "PNIBuf_" + pniBufSuffix(opts);
             } else {
-                return "PNIBuf " + fieldName;
+                return "PNIBuf_" + pniBufSuffix(opts) + " " + fieldName;
             }
         } else {
             return elementType.nativeType(null, opts) + " " + fieldName + "[" + opts.getLen() + "]";
@@ -120,7 +147,7 @@ public class ArrayTypeInfo extends TypeInfo {
                 ret = "u" + ret;
             }
         } else {
-            ret = "PNIBuf *";
+            ret = "PNIBuf_" + pniBufSuffix(opts) + " *";
         }
         if (fieldName != null) {
             ret += " " + fieldName;
