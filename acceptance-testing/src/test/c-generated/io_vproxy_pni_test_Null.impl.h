@@ -241,8 +241,17 @@ JNIEXPORT PNIFunc * JNICALL JavaCritical_io_vproxy_pni_test_Null_returnFuncRefCr
     return NULL;
 }
 
+JNIEXPORT int JNICALL Java_io_vproxy_pni_test_Null_emptyPassThrough(PNIEnv_Empty * env, Null * self, Empty * empty, Empty * return_) {
+    env->return_ = empty;
+    return 0;
+}
+
+JNIEXPORT Empty * JNICALL JavaCritical_io_vproxy_pni_test_Null_emptyPassThroughCritical(Null * self, Empty * empty, Empty * return_) {
+    return empty;
+}
+
 #ifdef __cplusplus
 }
 #endif
 // metadata.generator-version: pni test
-// sha256:53e4c958b69f6413a72dca46c407e2db911dc0ad8fb4362fa7e532a99b40c937
+// sha256:518152fb75eca510ca04b5edbe9e59cbfe3b5e0c04646b6c7eb87e18912ca506

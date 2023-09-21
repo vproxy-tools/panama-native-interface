@@ -504,4 +504,24 @@ abstract class PNINull {
     )
     @Critical
     abstract PNIFunc<PNIRef<Object>> returnFuncRefCritical();
+
+    @Impl(
+        c = """
+            env->return_ = empty;
+            return 0;
+            """
+    )
+    abstract PNIEmpty emptyPassThrough(PNIEmpty empty);
+
+    @Impl(
+        c = """
+            return empty;
+            """
+    )
+    @Critical
+    abstract PNIEmpty emptyPassThroughCritical(PNIEmpty empty);
+}
+
+@Struct
+class PNIEmpty {
 }

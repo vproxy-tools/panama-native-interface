@@ -1144,6 +1144,36 @@ public class Null {
         return PNIRef.Func.of(RESULT);
     }
 
+    private static final MethodHandle emptyPassThroughMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_Null_emptyPassThrough", MemorySegment.class /* self */, io.vproxy.pni.test.Empty.LAYOUT.getClass() /* empty */, MemorySegment.class /* return */);
+
+    public io.vproxy.pni.test.Empty emptyPassThrough(PNIEnv ENV, io.vproxy.pni.test.Empty empty, Allocator ALLOCATOR) {
+        ENV.reset();
+        int ERR;
+        try {
+            ERR = (int) emptyPassThroughMH.invokeExact(ENV.MEMORY, MEMORY, (MemorySegment) (empty == null ? MemorySegment.NULL : empty.MEMORY), ALLOCATOR.allocate(io.vproxy.pni.test.Empty.LAYOUT.byteSize()));
+        } catch (Throwable THROWABLE) {
+            throw PanamaUtils.convertInvokeExactException(THROWABLE);
+        }
+        if (ERR != 0) {
+            ENV.throwLast();
+        }
+        var RESULT = ENV.returnPointer();
+        return RESULT == null ? null : new io.vproxy.pni.test.Empty(RESULT);
+    }
+
+    private static final MethodHandle emptyPassThroughCriticalMH = PanamaUtils.lookupPNICriticalFunction(false, io.vproxy.pni.test.Empty.LAYOUT.getClass(), "JavaCritical_io_vproxy_pni_test_Null_emptyPassThroughCritical", MemorySegment.class /* self */, io.vproxy.pni.test.Empty.LAYOUT.getClass() /* empty */, MemorySegment.class /* return */);
+
+    public io.vproxy.pni.test.Empty emptyPassThroughCritical(io.vproxy.pni.test.Empty empty, Allocator ALLOCATOR) {
+        MemorySegment RESULT;
+        try {
+            RESULT = (MemorySegment) emptyPassThroughCriticalMH.invokeExact(MEMORY, (MemorySegment) (empty == null ? MemorySegment.NULL : empty.MEMORY), ALLOCATOR.allocate(io.vproxy.pni.test.Empty.LAYOUT.byteSize()));
+        } catch (Throwable THROWABLE) {
+            throw PanamaUtils.convertInvokeExactException(THROWABLE);
+        }
+        if (RESULT.address() == 0) return null;
+        return RESULT == null ? null : new io.vproxy.pni.test.Empty(RESULT);
+    }
+
     public static class Array extends RefArray<Null> {
         public Array(MemorySegment buf) {
             super(buf, Null.LAYOUT);
@@ -1200,4 +1230,4 @@ public class Null {
     }
 }
 // metadata.generator-version: pni test
-// sha256:1825af0b4d7d5215e99123762be5fae43d5a3f04706e9cdc7e4b6bb337fba6f1
+// sha256:0b53b893d69ff12b5fc1631e167aa542ea7a1ba3029c390c2919cfcde6712c3f

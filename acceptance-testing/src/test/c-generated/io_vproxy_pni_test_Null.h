@@ -17,6 +17,7 @@ typedef struct Null Null;
 #include <pni.h>
 #include "io_vproxy_pni_test_ObjectStruct.h"
 #include "io_vproxy_pni_test_Null.h"
+#include "io_vproxy_pni_test_Empty.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -93,10 +94,12 @@ JNIEXPORT int JNICALL Java_io_vproxy_pni_test_Null_returnFuncVoid(PNIEnv_func * 
 JNIEXPORT PNIFunc * JNICALL JavaCritical_io_vproxy_pni_test_Null_returnFuncVoidCritical(Null * self);
 JNIEXPORT int JNICALL Java_io_vproxy_pni_test_Null_returnFuncRef(PNIEnv_func * env, Null * self);
 JNIEXPORT PNIFunc * JNICALL JavaCritical_io_vproxy_pni_test_Null_returnFuncRefCritical(Null * self);
+JNIEXPORT int JNICALL Java_io_vproxy_pni_test_Null_emptyPassThrough(PNIEnv_Empty * env, Null * self, Empty * empty, Empty * return_);
+JNIEXPORT Empty * JNICALL JavaCritical_io_vproxy_pni_test_Null_emptyPassThroughCritical(Null * self, Empty * empty, Empty * return_);
 
 #ifdef __cplusplus
 }
 #endif
 #endif // _Included_io_vproxy_pni_test_Null
 // metadata.generator-version: pni test
-// sha256:8ca2b856a4003b3c581ac43287569dca6e4993a003662d848e885c60db8c8031
+// sha256:fe4daff08b3ea4f98bb93b25575d5d96001a60726e69ddc87cbaa8fd32cad258

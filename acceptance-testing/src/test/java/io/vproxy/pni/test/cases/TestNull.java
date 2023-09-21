@@ -2,11 +2,14 @@ package io.vproxy.pni.test.cases;
 
 import io.vproxy.pni.Allocator;
 import io.vproxy.pni.PNIEnv;
+import io.vproxy.pni.test.Empty;
 import io.vproxy.pni.test.Null;
 import org.junit.Test;
 
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import java.nio.file.Files;
+import java.nio.file.Path;
+
+import static org.junit.Assert.*;
 
 public class TestNull {
     @Test
@@ -264,5 +267,30 @@ public class TestNull {
             assertNull(n.returnFuncRef(env));
             assertNull(n.returnFuncRefCritical());
         }
+    }
+
+    @Test
+    public void empty() {
+        try (var allocator = Allocator.ofConfined()) {
+            var env = new PNIEnv(allocator);
+            var n = new Null(allocator);
+
+            try (var dummy = Allocator.ofDummy()) {
+                var empty = new Empty(dummy);
+
+                var res = n.emptyPassThrough(env, empty, allocator);
+                assertNull(res);
+
+                res = n.emptyPassThroughCritical(empty, allocator);
+                assertNull(res);
+            }
+        }
+    }
+
+    @Test
+    public void shaCheck() throws Exception {
+        var s = Files.readAllLines(Path.of("src", "test", "c-generated", "io_vproxy_pni_test_Empty.h"));
+        var lastLine = s.get(s.size() - 1);
+        assertEquals("// sha256:e9d23b771b608280172eb264ea8be4e6b4d96ca3354cf863fb661b799129371b", lastLine);
     }
 }
