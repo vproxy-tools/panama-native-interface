@@ -65,6 +65,7 @@ curl 127.0.0.1:80
 
 ```shell
 ./gradlew clean runAcceptanceTest
+./gradlew clean runUnitTest
 ```
 
 </details>
@@ -330,7 +331,7 @@ Go to `src/main/c`, write C implementation here.
 To compile the C files, you will need `pni.h` and `jni.h` in your include search path (`-I` option).
 
 You can find `pni.h` [here](https://github.com/vproxy-tools/panama-native-interface/tree/master/api/src/main/c).  
-and you can find use the [mocked jni.h](https://github.com/vproxy-tools/panama-native-interface/tree/master/api/src/main/c/jnimock),
+and you can use the mocked `jni.h` [here](https://github.com/vproxy-tools/panama-native-interface/tree/master/api/src/main/c/jnimock),
 or you can add `"$JAVA_HOME/include"` and `"$JAVA_HOME/include/$your_platform"` in your include search path instead, which is the traditional way when using `JNI`.
 
 You may refer to [make-sample.sh](https://github.com/vproxy-tools/panama-native-interface/blob/master/sample/src/main/c/make-sample.sh) for more info.
@@ -414,7 +415,12 @@ the generated C headers will have almost the same format as JNI output, see the 
 If you have multiple projects, let's say project `A` and project `B`, where template files of `B` depends on
 template files of `A`, you can add both projects' classpath to `-cp`, and specify `-F <regexp>` to filter which
 class needs to be generated.  
-The regexp matches the full name of the class, for example `io\.vproxy\.luajn\.n\..*`.
+The regexp matches the full name of the **generated** Java class, for example `io\.vproxy\.luajn\.n\..*`.
+
+---
+
+You may also use the `Generator` class programmatically to achieve the same effect as using the command line tool.  
+You may refer to: chapter `How to bundle into a Gradle project`, section `Add a Gradle task to run the code generator`.
 
 ### 4. Write native implementation
 
@@ -487,9 +493,10 @@ You can release the memory by closing the allocator.
 
 ---
 
-It's recommended to use `Allocator.ofPooled()` whenever possible. You can define your own memory pool by providing your allocator via
+It's recommended to use `Allocator.ofPooled()` or `Allocator.ofConcurrentPooled()` whenever possible. You can define your own memory pool by providing your allocator via
 `Allocator.setPooledAllocatorProvider(...)`.  
-The default behavor for `Pooled` allocators when custom allocator is not present, is the same as `Confined` allocators.
+The default behavior for `Pooled` allocators when custom allocator is not present, is the same as `Confined` allocators.  
+The default behavior for `ConcurrentPooled` allocators is the same as `Shared` allocators.
 
 </details>
 
@@ -589,9 +596,9 @@ To invoke the function, use `int result = PNIFuncInvoke(func, &value);`
 You may store the `PNIFunc` object and use it later, you can even invoke it on a new thread.
 As a result, you **MUST** release the object when you finished using it: `PNIFuncRelease(func);`
 
-The `PNIFunc` struct has a union field `union { void * userdata; uint64_t udata64; }` for you to store you own data in it.
+The `PNIFunc` struct has a union field `union { void * userdata; uint64_t udata64; }` for you to store your own data in it.  
 This is useful for example when you store the `PNIFunc*` in `epoll_event.data.ptr`.  
-You can allocate some extra memory when creating a `PNIFunc` by calling `T.Func.of(<lambda>, new Options().setUserdataByteSize(...))`.
+You can allocate some extra memory when creating a `PNIFunc` by calling `T.Func.of(<lambda>, new Options().setUserdataByteSize(...))`.  
 The extra memory will be stored inside the `userdata` pointer field automatically. In this way, the memory gets released with the func.
 
 If any error thrown from the CallSite, the PNIFunc will catch it and print the exception,
