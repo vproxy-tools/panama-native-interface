@@ -322,15 +322,19 @@ public class Utils {
     public static StringBuilder appendCPadding(StringBuilder sb, long p) {
         sb.append(" /* padding */");
         while (p > 0) {
-            sb.append(" uint64_t :");
             if (p >= 8) {
-                sb.append("64");
+                sb.append(" uint64_t : 64;");
                 p -= 8;
+            } else if (p >= 4) {
+                sb.append(" uint32_t : 32;");
+                p -= 4;
+            } else if (p >= 2) {
+                sb.append(" uint16_t : 16;");
+                p -= 2;
             } else {
-                sb.append(p * 8);
-                p = 0;
+                sb.append(" uint8_t : 8;");
+                p -= 1;
             }
-            sb.append(";");
         }
         return sb;
     }
