@@ -5,7 +5,7 @@ import io.vproxy.pni.Allocator;
 import java.lang.foreign.MemorySegment;
 import java.lang.foreign.SegmentAllocator;
 
-public class SegmentAllocatorAllocator implements Allocator {
+public class SegmentAllocatorAllocator extends AbstractAllocator implements Allocator {
     private final SegmentAllocator allocator;
 
     public SegmentAllocatorAllocator(SegmentAllocator allocator) {
@@ -15,10 +15,5 @@ public class SegmentAllocatorAllocator implements Allocator {
     @Override
     public MemorySegment allocate(long size) {
         return allocator.allocate(size);
-    }
-
-    @Override
-    public void close() {
-        // do nothing
     }
 }

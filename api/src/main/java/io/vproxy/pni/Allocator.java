@@ -1,6 +1,7 @@
 package io.vproxy.pni;
 
 import io.vproxy.pni.impl.*;
+import io.vproxy.pni.unsafe.SunUnsafe;
 
 import java.lang.foreign.Arena;
 import java.lang.foreign.MemorySegment;
@@ -32,7 +33,11 @@ public interface Allocator extends AutoCloseable {
     }
 
     static Allocator ofAuto() {
-        return new AutoArenaAllocator();
+        return new NoCloseArenaAllocator(Arena.ofAuto());
+    }
+
+    static Allocator global() {
+        return NoCloseArenaAllocator.GLOBAL;
     }
 
     static Allocator of(SegmentAllocator allocator) {
@@ -40,21 +45,7 @@ public interface Allocator extends AutoCloseable {
     }
 
     static Allocator ofPooled() {
-        var provider = AllocatorUtils.provider;
-        if (provider == null) {
-            return ofConfined();
-        } else {
-            return provider.create();
-        }
-    }
-
-    static Allocator ofConcurrentPooled() {
-        var provider = AllocatorUtils.concurrentProvider;
-        if (provider == null) {
-            return ofShared();
-        } else {
-            return provider.create();
-        }
+        return PooledAllocator.ofPooled();
     }
 
     static Allocator ofUnsafe() {
@@ -72,27 +63,18 @@ public interface Allocator extends AutoCloseable {
     @Override
     void close();
 
-    static PooledAllocatorProvider getPooledAllocatorProvider() {
-        return AllocatorUtils.provider;
+    PNIRef<Allocator> ref();
+
+    default Allocator withMetadata(long extraMemory, MetadataAllocationCallback onAllocated) {
+        return new MetadataAllocator(this, extraMemory, onAllocated);
     }
 
-    static void setPooledAllocatorProvider(PooledAllocatorProvider allocatorProvider) {
-        AllocatorUtils.provider = allocatorProvider;
-    }
+    class Unsafe {
+        private Unsafe() {
+        }
 
-    static PooledAllocatorProvider getConcurrentPooledAllocatorProvider() {
-        return AllocatorUtils.concurrentProvider;
-    }
-
-    static void setConcurrentPooledAllocatorProvider(PooledAllocatorProvider allocatorProvider) {
-        AllocatorUtils.concurrentProvider = allocatorProvider;
-    }
-}
-
-class AllocatorUtils {
-    static PooledAllocatorProvider provider;
-    static PooledAllocatorProvider concurrentProvider;
-
-    private AllocatorUtils() {
+        public static void free(MemorySegment mem) {
+            SunUnsafe.freeMemory(mem.address());
+        }
     }
 }

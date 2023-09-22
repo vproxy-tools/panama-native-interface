@@ -5,7 +5,7 @@ import io.vproxy.pni.unsafe.SunUnsafe;
 
 import java.lang.foreign.MemorySegment;
 
-public class UnsafeAllocator implements Allocator {
+public class UnsafeAllocator extends AbstractAllocator implements Allocator {
     private long[] allocatedAddresses = new long[4];
     private int usage = 0;
 
@@ -31,6 +31,7 @@ public class UnsafeAllocator implements Allocator {
 
     @Override
     public void close() {
+        super.close();
         for (int i = 0; i < allocatedAddresses.length; i++) {
             long addr = allocatedAddresses[i];
             if (addr == 0) {

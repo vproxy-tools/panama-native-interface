@@ -5,10 +5,10 @@ import io.vproxy.pni.Allocator;
 import java.lang.foreign.Arena;
 import java.lang.foreign.MemorySegment;
 
-public class ArenaAllocator extends AbstractAllocator implements Allocator {
+public class NoCloseArenaAllocator extends AbstractAllocator implements Allocator {
     private final Arena arena;
 
-    public ArenaAllocator(Arena arena) {
+    public NoCloseArenaAllocator(Arena arena) {
         this.arena = arena;
     }
 
@@ -17,9 +17,5 @@ public class ArenaAllocator extends AbstractAllocator implements Allocator {
         return arena.allocate(size);
     }
 
-    @Override
-    public void close() {
-        super.close();
-        arena.close();
-    }
+    public static final NoCloseArenaAllocator GLOBAL = new NoCloseArenaAllocator(Arena.global());
 }

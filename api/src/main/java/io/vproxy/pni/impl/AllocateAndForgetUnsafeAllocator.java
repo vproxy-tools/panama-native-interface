@@ -5,7 +5,7 @@ import io.vproxy.pni.unsafe.SunUnsafe;
 
 import java.lang.foreign.MemorySegment;
 
-public class AllocateAndForgetUnsafeAllocator implements Allocator {
+public class AllocateAndForgetUnsafeAllocator extends AbstractAllocator implements Allocator {
     private AllocateAndForgetUnsafeAllocator() {
     }
 
@@ -23,10 +23,5 @@ public class AllocateAndForgetUnsafeAllocator implements Allocator {
         var seg = SunUnsafe.allocateMemory(size);
         SunUnsafe.setMemory(seg.address(), size, (byte) 0);
         return seg;
-    }
-
-    @Override
-    public void close() {
-        // do nothing
     }
 }
