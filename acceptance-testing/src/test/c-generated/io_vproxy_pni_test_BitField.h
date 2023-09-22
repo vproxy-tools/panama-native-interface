@@ -31,7 +31,7 @@ PNI_PACK(struct, BitField, {
     uint8_t a2 : 1;
     uint8_t b2 : 3;
     uint8_t : 4;
-     /* padding */ uint64_t :48;
+     /* padding */ uint32_t : 32; uint16_t : 16;
     void * sep01;
     uint16_t c : 2;
     uint16_t d : 3;
@@ -42,7 +42,7 @@ PNI_PACK(struct, BitField, {
     uint16_t d2 : 3;
     uint16_t e2 : 4;
     uint16_t : 7;
-     /* padding */ uint64_t :32;
+     /* padding */ uint32_t : 32;
     void * sep02;
     uint32_t f : 5;
     uint32_t g : 6;
@@ -104,4 +104,4 @@ JNIEXPORT int64_t JNICALL JavaCritical_io_vproxy_pni_test_BitField_m2(BitField *
 #endif
 #endif // _Included_io_vproxy_pni_test_BitField
 // metadata.generator-version: pni test
-// sha256:7d509c9275322042bcaa134f80cd8fb057d3ba162336c0e8fd81d8a15a53caee
+// sha256:f0ce682064521e7a5f972a10dafa98d0d9bee5d80094afdd10d28023a7d9a935

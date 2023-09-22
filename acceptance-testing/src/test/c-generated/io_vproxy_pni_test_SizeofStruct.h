@@ -27,7 +27,7 @@ PNIBufExpand(SizeofStruct, SizeofStruct, JavaCritical_io_vproxy_pni_test_SizeofS
 
 PNI_PACK(struct, SizeofStruct, {
     int32_t a;
-    int16_t b; /* padding */ uint64_t :16;
+    int16_t b; /* padding */ uint16_t : 16;
 });
 
 #ifdef __cplusplus
@@ -35,4 +35,4 @@ PNI_PACK(struct, SizeofStruct, {
 #endif
 #endif // _Included_io_vproxy_pni_test_SizeofStruct
 // metadata.generator-version: pni test
-// sha256:4a70495cb4d3e69fe4a0bcae700aa6f9705056e0b1d9b5771303697f61d6a937
+// sha256:513363a9abffb01dba4f5d133d9e276bd8077cd0c7f0c9a1dcb6e353ec250688

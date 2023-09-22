@@ -367,7 +367,7 @@ abstract class PNIMBuf {     // typedef PNI_PACK(struct, mbuf_t, {
     MemorySegment bufAddr;   //     void*    bufAddr;
     @Unsigned int pktLen;    //     uint32_t pktLen;
     @Unsigned int pktOff;    //     uint32_t pktOff;
-    @Unsigned int bufLen;    //     uint32_t bufLen; /* padding */ uint64_t :32;
+    @Unsigned int bufLen;    //     uint32_t bufLen; /* padding */ uint32_t : 32;
     PNIUserData userdata;    //     union {
                              //         void*  userdata;
                              //         uint64 udata64;

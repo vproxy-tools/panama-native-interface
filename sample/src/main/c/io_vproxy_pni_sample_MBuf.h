@@ -28,7 +28,7 @@ PNI_PACK(struct, mbuf_t, {
     void * bufAddr;
     uint32_t pktLen;
     uint32_t pktOff;
-    uint32_t bufLen; /* padding */ uint64_t :32;
+    uint32_t bufLen; /* padding */ uint32_t : 32;
     union {
         void * userdata;
         uint64_t udata64;
@@ -40,4 +40,4 @@ PNI_PACK(struct, mbuf_t, {
 #endif
 #endif // _Included_io_vproxy_pni_sample_MBuf
 // metadata.generator-version: pni test
-// sha256:6b6fba9a97491db9758eb4ca87380e967faea2b0364d3781525f81ec02ddee77
+// sha256:433122995d51d55c6484f3f68bc0f6e536ae2300424a2e1f630655604769c33b

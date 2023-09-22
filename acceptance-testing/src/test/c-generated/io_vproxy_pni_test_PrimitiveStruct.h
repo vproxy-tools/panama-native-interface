@@ -26,11 +26,11 @@ PNIBufExpand(PrimitiveStruct, PrimitiveStruct, 1000)
 PNI_PACK(struct, PrimitiveStruct, {
     int8_t aByte;
     uint8_t unsignedByte;
-    uint16_t aChar; /* padding */ uint64_t :32;
+    uint16_t aChar; /* padding */ uint32_t : 32;
     double aDouble;
     float aFloat;
     int32_t aInt;
-    uint32_t unsignedInt; /* padding */ uint64_t :32;
+    uint32_t unsignedInt; /* padding */ uint32_t : 32;
     int64_t aLong;
     uint64_t unsignedLong;
     int16_t aShort;
@@ -38,7 +38,7 @@ PNI_PACK(struct, PrimitiveStruct, {
     uint8_t aBoolean;
     int8_t byteArray[11];
     uint8_t unsignedByteArray[12];
-    uint16_t charArray[13]; /* padding */ uint64_t :16;
+    uint16_t charArray[13]; /* padding */ uint16_t : 16;
     double doubleArray[14];
     float floatArray[15];
     int32_t intArray[16];
@@ -152,4 +152,4 @@ JNIEXPORT uint8_t JNICALL JavaCritical_io_vproxy_pni_test_PrimitiveStruct_checkP
 #endif
 #endif // _Included_io_vproxy_pni_test_PrimitiveStruct
 // metadata.generator-version: pni test
-// sha256:b9904615332a316bdad80a1fed533b474baed1e6b39f72433bc425a5275ec25a
+// sha256:91a2938e44090e0724edf9e2ef77a348e79dd83c81ee4d32af12b03ed511fbe2

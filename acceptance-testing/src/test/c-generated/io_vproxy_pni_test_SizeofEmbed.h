@@ -28,7 +28,7 @@ PNIEnvExpand(SizeofEmbed, SizeofEmbed *)
 PNIBufExpand(SizeofEmbed, SizeofEmbed, JavaCritical_io_vproxy_pni_test_SizeofEmbed___getLayoutByteSize())
 
 PNI_PACK(struct, SizeofEmbed, {
-    int8_t x; /* padding */ uint64_t :56;
+    int8_t x; /* padding */ uint32_t : 32; uint16_t : 16; uint8_t : 8;
     SizeofUnion * un;
     SizeofStructExpr st;
 });
@@ -38,4 +38,4 @@ PNI_PACK(struct, SizeofEmbed, {
 #endif
 #endif // _Included_io_vproxy_pni_test_SizeofEmbed
 // metadata.generator-version: pni test
-// sha256:db468c7200b825da7e2b497db288543d92b775f72a1ff551fd78ff831a51b0ff
+// sha256:d0a4fdc21e1683da1a5c25329c34d8222dc55255dfdb263fa099a0074e44a313

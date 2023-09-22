@@ -27,7 +27,7 @@ PNIEnvExpand(StructB, StructB *)
 PNIBufExpand(StructB, StructB, 40)
 
 PNI_PACK(struct, StructB, {
-    int32_t i; /* padding */ uint64_t :32;
+    int32_t i; /* padding */ uint32_t : 32;
     UnionC c;
     int64_t l;
     StructD * d;
@@ -42,4 +42,4 @@ PNI_PACK(struct, StructB, {
 #endif
 #endif // _Included_io_vproxy_pni_test_StructB
 // metadata.generator-version: pni test
-// sha256:4279a77e4b1295c2654244b88db4c5d182127529719f63c9d841e878dd9a0daa
+// sha256:b22f3610c53062d126f4121d02141865c1f371caba0da41e97d9de31f3603f20

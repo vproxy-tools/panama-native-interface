@@ -26,7 +26,7 @@ PNIBufExpand(AlwaysAlignedChild, AlwaysAlignedChild, 4)
 
 PNI_PACK(struct, AlwaysAlignedChild, {
     AlwaysAlignedBase SUPER;
-     /* padding */ uint64_t :8;
+     /* padding */ uint8_t : 8;
     int16_t b;
 });
 
@@ -35,4 +35,4 @@ PNI_PACK(struct, AlwaysAlignedChild, {
 #endif
 #endif // _Included_io_vproxy_pni_test_AlwaysAlignedChild
 // metadata.generator-version: pni test
-// sha256:c4184f371ed85a1897c41350b092e0fa0e618db60933257260d1ed58c7fd6d54
+// sha256:a4a78e63fc6c2dec3135d8a7c4d22cc92ac590b133d505419585bd627b30fba6

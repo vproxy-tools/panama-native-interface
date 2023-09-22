@@ -16,7 +16,7 @@ typedef PNI_PACK(struct, PNIException, {
     char* type;
 #define PNIExceptionMessageLen (4096)
     char  message[PNIExceptionMessageLen];
-    int32_t errno_; /* padding */ uint64_t :32;
+    int32_t errno_; /* padding */ uint32_t : 32;
 }) PNIException;
 
 typedef PNI_PACK(struct, PNIBuf, {

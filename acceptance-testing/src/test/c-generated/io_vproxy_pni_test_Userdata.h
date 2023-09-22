@@ -24,9 +24,9 @@ PNIEnvExpand(Userdata, Userdata *)
 PNIBufExpand(Userdata, Userdata, 24)
 
 PNI_PACK(struct, Userdata, {
-    int32_t x; /* padding */ uint64_t :32;
+    int32_t x; /* padding */ uint32_t : 32;
     int64_t y;
-    int16_t z; /* padding */ uint64_t :48;
+    int16_t z; /* padding */ uint32_t : 32; uint16_t : 16;
 });
 
 #ifdef __cplusplus
@@ -34,4 +34,4 @@ PNI_PACK(struct, Userdata, {
 #endif
 #endif // _Included_io_vproxy_pni_test_Userdata
 // metadata.generator-version: pni test
-// sha256:0368ca83503d55a8335eb2eab5b1747d99f4bb887303ca7772662f3a974febd7
+// sha256:45cc2866b912b62406838305e805176402d9d6f9e6b5c81e757f39357dfd604f
