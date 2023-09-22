@@ -798,6 +798,26 @@ Any other combination except the above table is disallowed.
 
 </details>
 
+## Pooled Allocators
+
+<details><summary>Click to reveal</summary>
+
+`Panama Native Interface` does not provide built-in pooled allocators implementation, but allow you to register your own impl into the framework. You can use `PooledAllocator.ofXxx` functions to retrieve a pooled allocator.
+
+There are three kinds of _Pooled Allocators_:
+
+1. `ofPooled`: the simplest pooled allocator, which doesn't have to provide multi-thread support.
+2. `ofConcurrentPooled`: must provide multi-thread support.
+3. `ofUnsafePooled`: usually wraps around unsafe, or provided by a native allocator implementation, such as `jemalloc`, the memory must not be managed by the JVM (because JVM managed MemorySegments and Arenas may have certain limitations).
+
+You can register you implementation via `PooledAllocator.setXxxProvider`:
+
+1. `setPooledAllocatorProvider`
+2. `setConcurrentPooledAllocatorProvider`
+3. `setUnsafePooledAllocatorProvider`
+
+</details>
+
 ## Limitations
 
 <details><summary>Click to reveal</summary>
