@@ -71,6 +71,10 @@ public abstract class TypeInfo {
 
     abstract public long nativeMemoryAlign(VarOpts opts);
 
+    public long rawNativeMemoryAlign(VarOpts opts) {
+        return nativeMemoryAlign(opts);
+    }
+
     abstract public String memoryLayoutForField(VarOpts opts);
 
     abstract public String javaTypeForField(VarOpts opts);

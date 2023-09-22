@@ -8,6 +8,7 @@ import org.objectweb.asm.tree.ClassNode;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.function.Consumer;
 
 import static io.vproxy.pni.exec.internal.Consts.*;
 
@@ -21,6 +22,7 @@ public class AstClass {
 
     public TypeInfo superTypeRef;
     public long headPadding = 0;
+    public long extraHeadPadding = 0;
 
     public AstClass(ClassNode classNode) {
         isInterface = (classNode.access & Opcodes.ACC_INTERFACE) == Opcodes.ACC_INTERFACE;
@@ -239,6 +241,40 @@ public class AstClass {
         }
     }
 
+    public boolean isAligned() {
+        if (isUnion()) {
+            for (var f : fields) {
+                if (!f.isAligned(0)) {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        long sum = 0;
+        if (superTypeRef != null) {
+            var cls = ((ClassTypeInfo) superTypeRef).getClazz();
+            if (!cls.isAligned()) {
+                return false;
+            }
+            sum = cls.getNativeMemorySize();
+        }
+        if (headPadding > 0) {
+            sum += headPadding;
+        }
+        for (var f : fields) {
+            if (!f.isAligned(sum)) {
+                return false;
+            }
+            sum += f.getNativeMemorySize();
+            sum += f.padding;
+        }
+        if (largestRawAlignmentBytes() > 1 && getSizeof() == null) {
+            return sum % largestRawAlignmentBytes() == 0;
+        }
+        return true;
+    }
+
     public boolean isStruct() {
         return annos.stream().anyMatch(a -> a.typeRef != null && a.typeRef.name().equals(StructClassName));
     }
@@ -361,11 +397,10 @@ public class AstClass {
             if (!fields.isEmpty()) {
                 var first = fields.get(0);
                 var align = first.getAlignmentBytes(packed);
+                var rawAlign = first.getRawAlignmentBytes();
                 if (align > 1) {
                     if (total % align != 0) {
-                        var padding = align - (total % align);
-                        headPadding = padding;
-                        total += padding;
+                        total += assignPaddings(total, n -> headPadding = n, n -> extraHeadPadding = n, align, rawAlign);
                     }
                 }
             }
@@ -374,13 +409,11 @@ public class AstClass {
         for (var f : fields) {
             var size = f.getNativeMemorySize();
             var align = f.getAlignmentBytes(packed);
+            var rawAlign = f.getRawAlignmentBytes();
             if (align > 1) {
                 if (total % align != 0) {
                     assert lastField != null; // the first field is already handled
-
-                    var padding = align - (total % align);
-                    lastField.padding = padding;
-                    total += padding;
+                    total += assignPaddings(total, lastField, align, rawAlign);
                 }
             }
             total += size;
@@ -388,18 +421,32 @@ public class AstClass {
         }
         if (lastField != null && !lastField.typeOfTheFieldIsAnnotatedWithSizeof()) {
             var n = largestAlignmentBytes();
+            var rawAlign = largestRawAlignmentBytes();
             var annoAlign = getAlign();
             if (n < annoAlign) {
                 n = annoAlign;
             }
             if (n > 1 && total % n != 0) {
-                var padding = n - (total % n);
-                lastField.padding = padding;
-                total += padding;
+                total += assignPaddings(total, lastField, n, rawAlign);
             }
         }
         __calculatedNativeMemorySize = total;
         return total;
+    }
+
+    private long assignPaddings(long total, AstField lastField, long align, long rawAlign) {
+        return assignPaddings(total, n -> lastField.padding = n, n -> lastField.extraPadding = n, align, rawAlign);
+    }
+
+    private long assignPaddings(long total, Consumer<Long> paddingSetter, Consumer<Long> extraPaddingSetter, long align, long rawAlign) {
+        var padding = align - (total % align);
+        paddingSetter.accept(padding);
+        if (total % rawAlign != 0) {
+            extraPaddingSetter.accept(padding - (rawAlign - (total % rawAlign)));
+        } else {
+            extraPaddingSetter.accept(padding);
+        }
+        return padding;
     }
 
     public long largestAlignmentBytes() {
@@ -419,6 +466,17 @@ public class AstClass {
             var superAlign = ((ClassTypeInfo) superTypeRef).getClazz().largestAlignmentBytes();
             if (superAlign > max) {
                 max = superAlign;
+            }
+        }
+        return max;
+    }
+
+    public long largestRawAlignmentBytes() {
+        long max = 0;
+        for (var f : fields) {
+            var a = f.getRawAlignmentBytes();
+            if (max < a) {
+                max = a;
             }
         }
         return max;

@@ -205,18 +205,31 @@ public class CFileGenerator {
             // PNI_PACK(union|struct, {nativeName}, { ... });
             // for incomplete:
             // union { ... };
-            if (generateCompleteFile) {
-                sb.append("PNI_PACK(");
-            }
-            if (cls.isUnion()) {
-                sb.append("union");
+            if (cls.isAligned()) {
+                if (cls.isUnion()) {
+                    sb.append("union");
+                } else {
+                    sb.append("struct");
+                }
+                if (generateCompleteFile) {
+                    sb.append(" ").append(cls.nativeName()).append(" ");
+                } else {
+                    sb.append(" ");
+                }
             } else {
-                sb.append("struct");
-            }
-            if (generateCompleteFile) {
-                sb.append(", ").append(cls.nativeName()).append(", ");
-            } else {
-                sb.append(" ");
+                if (generateCompleteFile) {
+                    sb.append("PNI_PACK(");
+                }
+                if (cls.isUnion()) {
+                    sb.append("union");
+                } else {
+                    sb.append("struct");
+                }
+                if (generateCompleteFile) {
+                    sb.append(", ").append(cls.nativeName()).append(", ");
+                } else {
+                    sb.append(" ");
+                }
             }
             sb.append("{\n");
             if (cls.superTypeRef != null) {
@@ -225,15 +238,24 @@ public class CFileGenerator {
                 ).append(";\n");
             }
             if (cls.headPadding > 0) {
-                Utils.appendIndent(sb, indent + 4);
-                Utils.appendCPadding(sb, cls.headPadding).append("\n");
+                if (cls.isAligned()) {
+                    if (cls.extraHeadPadding > 0) {
+                        Utils.appendIndent(sb, indent + 4);
+                        Utils.appendCPadding(sb, cls.extraHeadPadding).append("\n");
+                    }
+                } else {
+                    Utils.appendIndent(sb, indent + 4);
+                    Utils.appendCPadding(sb, cls.headPadding).append("\n");
+                }
             }
             for (var f : cls.fields) {
                 get(f).generateC(sb, indent + 4);
             }
             Utils.appendIndent(sb, indent).append("}");
             if (generateCompleteFile) {
-                sb.append(")");
+                if (!cls.isAligned()) {
+                    sb.append(")");
+                }
             }
             sb.append(";\n");
         }
@@ -288,11 +310,23 @@ public class CFileGenerator {
                 }
                 // add indent for padding
                 if (field.padding > 0) {
-                    Utils.appendIndent(sb, indent);
+                    if (cls.isAligned()) {
+                        if (field.extraPadding > 0) {
+                            Utils.appendIndent(sb, indent);
+                        }
+                    } else {
+                        Utils.appendIndent(sb, indent);
+                    }
                 }
             }
             if (field.padding > 0) {
-                Utils.appendCPadding(sb, field.padding);
+                if (cls.isAligned()) {
+                    if (field.extraPadding > 0) {
+                        Utils.appendCPadding(sb, field.extraPadding);
+                    }
+                } else {
+                    Utils.appendCPadding(sb, field.padding);
+                }
             }
             sb.append("\n");
         }

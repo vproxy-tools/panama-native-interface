@@ -89,6 +89,14 @@ public class ClassTypeInfo extends TypeInfo {
     }
 
     @Override
+    public long rawNativeMemoryAlign(VarOpts opts) {
+        if (opts.isPointer()) {
+            return 8;
+        }
+        return cls.largestRawAlignmentBytes();
+    }
+
+    @Override
     public String memoryLayoutForField(VarOpts opts) {
         if (opts.isPointer()) {
             return "ValueLayout.ADDRESS_UNALIGNED";

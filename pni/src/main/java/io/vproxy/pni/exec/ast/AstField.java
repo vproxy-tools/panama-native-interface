@@ -18,6 +18,7 @@ public class AstField {
 
     public TypeInfo typeRef;
     public long padding = 0;
+    public long extraPadding = 0;
 
     public AstField(FieldNode f) {
         Utils.readAnnotations(annos, f.visibleAnnotations);
@@ -101,6 +102,11 @@ public class AstField {
             return;
         }
         errors.add(path + ": is not aligned properly");
+    }
+
+    public boolean isAligned(long offset) {
+        var align = typeRef.rawNativeMemoryAlign(varOpts());
+        return offset % align == 0;
     }
 
     public String nativeName() {
@@ -221,6 +227,10 @@ public class AstField {
             n = annoAlign;
         }
         return n;
+    }
+
+    public long getRawAlignmentBytes() {
+        return typeRef.rawNativeMemoryAlign(varOpts());
     }
 
     public void toString(StringBuilder sb, int indent) {
