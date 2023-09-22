@@ -24,13 +24,13 @@ extern "C" {
 PNIEnvExpand(RefAndFuncFields, RefAndFuncFields *)
 PNIBufExpand(RefAndFuncFields, RefAndFuncFields, 40)
 
-PNI_PACK(struct, RefAndFuncFields, {
+struct RefAndFuncFields {
     PNIRef * ref;
     PNIRef * ref2;
     PNIRef * ref3;
     PNIFunc * func;
     PNIFunc * func2;
-});
+};
 
 JNIEXPORT int JNICALL Java_io_vproxy_pni_test_RefAndFuncFields_call(PNIEnv_void * env, RefAndFuncFields * self);
 JNIEXPORT int JNICALL Java_io_vproxy_pni_test_RefAndFuncFields_call2(PNIEnv_void * env, RefAndFuncFields * self, ObjectStruct * o);
@@ -47,4 +47,4 @@ JNIEXPORT int JNICALL Java_io_vproxy_pni_test_RefAndFuncFields_retrieveFunc2(PNI
 #endif
 #endif // _Included_io_vproxy_pni_test_RefAndFuncFields
 // metadata.generator-version: pni test
-// sha256:48ea04c3b2985515a70f99ebdd5eead1b30649cea4a6dc8c56e938de68a03851
+// sha256:45f1e93051e972294e0fda89dbb0fa5ec52f4ec770799326aea17421dab7daf0

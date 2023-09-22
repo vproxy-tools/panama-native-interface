@@ -24,14 +24,14 @@ extern "C" {
 PNIEnvExpand(ChildOfLargeAlign, ChildOfLargeAlign *)
 PNIBufExpand(ChildOfLargeAlign, ChildOfLargeAlign, 16)
 
-PNI_PACK(struct, ChildOfLargeAlign, {
+struct ChildOfLargeAlign {
     LargeAlignBase SUPER;
     int8_t y; /* padding */ uint32_t : 32; uint16_t : 16; uint8_t : 8;
-});
+};
 
 #ifdef __cplusplus
 }
 #endif
 #endif // _Included_io_vproxy_pni_test_ChildOfLargeAlign
 // metadata.generator-version: pni test
-// sha256:29c14a579157dc664f2f2056c1191af6c87f03eaf477891ea779a6249054b00d
+// sha256:ac8f4a84de8c448c2c7185a75b5c954d50a35fc50fd053ec9be8661e21bbf4df

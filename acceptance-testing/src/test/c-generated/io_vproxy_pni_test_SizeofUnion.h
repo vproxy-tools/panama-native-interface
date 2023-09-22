@@ -26,14 +26,14 @@ JNIEXPORT size_t JNICALL JavaCritical_io_vproxy_pni_test_SizeofUnion___getLayout
 PNIEnvExpand(SizeofUnion, SizeofUnion *)
 PNIBufExpand(SizeofUnion, SizeofUnion, JavaCritical_io_vproxy_pni_test_SizeofUnion___getLayoutByteSize())
 
-PNI_PACK(union, SizeofUnion, {
+union SizeofUnion {
     SizeofStruct st;
     int32_t a;
-});
+};
 
 #ifdef __cplusplus
 }
 #endif
 #endif // _Included_io_vproxy_pni_test_SizeofUnion
 // metadata.generator-version: pni test
-// sha256:99dbca9e0dfd6c865d54a6bde2f95001f12e4d19c7b9eccb8ab102665216427f
+// sha256:bf2bff254dd2de64affb49f03e1b9e9cdec09bd438e95e0d58307d59a6fc48d3

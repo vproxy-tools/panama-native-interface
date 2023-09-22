@@ -25,14 +25,14 @@ JNIEXPORT size_t JNICALL JavaCritical_io_vproxy_pni_test_SizeofStruct___getLayou
 PNIEnvExpand(SizeofStruct, SizeofStruct *)
 PNIBufExpand(SizeofStruct, SizeofStruct, JavaCritical_io_vproxy_pni_test_SizeofStruct___getLayoutByteSize())
 
-PNI_PACK(struct, SizeofStruct, {
+struct SizeofStruct {
     int32_t a;
-    int16_t b; /* padding */ uint16_t : 16;
-});
+    int16_t b;
+};
 
 #ifdef __cplusplus
 }
 #endif
 #endif // _Included_io_vproxy_pni_test_SizeofStruct
 // metadata.generator-version: pni test
-// sha256:513363a9abffb01dba4f5d133d9e276bd8077cd0c7f0c9a1dcb6e353ec250688
+// sha256:7d0fcfbd97f47a488c8dd8cf244dabd450ea1fb6ca876db166fbd7ce98fb3087

@@ -23,15 +23,15 @@ extern "C" {
 PNIEnvExpand(UnionO, union UnionO *)
 PNIBufExpand(UnionO, union UnionO, 8)
 
-PNI_PACK(union, UnionO, {
+union UnionO {
     int16_t s;
     int32_t i;
     UnionP p;
-});
+};
 
 #ifdef __cplusplus
 }
 #endif
 #endif // _Included_io_vproxy_pni_test_UnionO
 // metadata.generator-version: pni test
-// sha256:646bb1cc51e004d4eafd5e55fcd26ff9c069e96f0e761ee8e7bf2e4a0eba5de7
+// sha256:1743a25ed3e78afb9b2e4382a0ccd59dc39462033a6260f112d66279ad72b096

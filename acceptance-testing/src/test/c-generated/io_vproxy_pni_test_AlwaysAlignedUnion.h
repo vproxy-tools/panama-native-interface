@@ -23,15 +23,15 @@ extern "C" {
 PNIEnvExpand(AlwaysAlignedUnion, AlwaysAlignedUnion *)
 PNIBufExpand(AlwaysAlignedUnion, AlwaysAlignedUnion, 8)
 
-PNI_PACK(union, AlwaysAlignedUnion, {
+union AlwaysAlignedUnion {
     int16_t a;
     int32_t b;
     int64_t c;
-});
+};
 
 #ifdef __cplusplus
 }
 #endif
 #endif // _Included_io_vproxy_pni_test_AlwaysAlignedUnion
 // metadata.generator-version: pni test
-// sha256:642281d9ccfd8de30d3a4f9572269b493ae1da3d7cfabda47132727c66379f55
+// sha256:fff030a231ff9089167f2af94a29aafe2ca48c457d2c2a7b1fdcf523c825244c

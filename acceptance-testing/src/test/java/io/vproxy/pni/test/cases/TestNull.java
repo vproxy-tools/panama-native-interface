@@ -291,6 +291,6 @@ public class TestNull {
     public void shaCheck() throws Exception {
         var s = Files.readAllLines(Path.of("src", "test", "c-generated", "io_vproxy_pni_test_Empty.h"));
         var lastLine = s.get(s.size() - 1);
-        assertEquals("// sha256:e9d23b771b608280172eb264ea8be4e6b4d96ca3354cf863fb661b799129371b", lastLine);
+        assertEquals("// sha256:06c1e7dc355b3f3d0310d1dde826f6691de5dcd88a995a77cf075edde176b9ca", lastLine);
     }
 }

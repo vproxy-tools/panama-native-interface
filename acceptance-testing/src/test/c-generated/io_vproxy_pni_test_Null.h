@@ -26,7 +26,7 @@ extern "C" {
 PNIEnvExpand(Null, Null *)
 PNIBufExpand(Null, Null, 216)
 
-PNI_PACK(struct, Null, {
+struct Null {
     ObjectStruct * o;
     char * str;
     void * seg;
@@ -44,7 +44,7 @@ PNI_PACK(struct, Null, {
     PNIFunc * func;
     PNIFunc * funcVoid;
     PNIFunc * funcRef;
-});
+};
 
 JNIEXPORT int JNICALL Java_io_vproxy_pni_test_Null_testParam(PNIEnv_bool * env, Null * self, ObjectStruct * o, char * str, void * seg, PNIBuf * buf, PNIBuf_byte * byteArr, PNIBuf_bool * boolArr, PNIBuf_char * charArr, PNIBuf_float * floatArr, PNIBuf_double * doubleArr, PNIBuf_int * intArr, PNIBuf_long * longArr, PNIBuf_short * shortArr, PNIBuf_ObjectStruct * oArr, PNIRef * ref, PNIFunc * func, PNIFunc * funcVoid, PNIFunc * funcRef);
 JNIEXPORT uint8_t JNICALL JavaCritical_io_vproxy_pni_test_Null_testParamCritical(Null * self, ObjectStruct * o, char * str, void * seg, PNIBuf * buf, PNIBuf_byte * byteArr, PNIBuf_bool * boolArr, PNIBuf_char * charArr, PNIBuf_float * floatArr, PNIBuf_double * doubleArr, PNIBuf_int * intArr, PNIBuf_long * longArr, PNIBuf_short * shortArr, PNIBuf_ObjectStruct * oArr, PNIRef * ref, PNIFunc * func, PNIFunc * funcVoid, PNIFunc * funcRef);
@@ -102,4 +102,4 @@ JNIEXPORT Empty * JNICALL JavaCritical_io_vproxy_pni_test_Null_emptyPassThroughC
 #endif
 #endif // _Included_io_vproxy_pni_test_Null
 // metadata.generator-version: pni test
-// sha256:fe4daff08b3ea4f98bb93b25575d5d96001a60726e69ddc87cbaa8fd32cad258
+// sha256:6d3d2172b41eadec22e7c97223e8fc0e75af8d370c71fb3ad0f0243d910bb1ba

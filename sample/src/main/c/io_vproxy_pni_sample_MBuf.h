@@ -24,20 +24,20 @@ extern "C" {
 PNIEnvExpand(mbuf_t, mbuf_t *)
 PNIBufExpand(mbuf_t, mbuf_t, 32)
 
-PNI_PACK(struct, mbuf_t, {
+struct mbuf_t {
     void * bufAddr;
     uint32_t pktLen;
     uint32_t pktOff;
-    uint32_t bufLen; /* padding */ uint32_t : 32;
+    uint32_t bufLen;
     union {
         void * userdata;
         uint64_t udata64;
     };
-});
+};
 
 #ifdef __cplusplus
 }
 #endif
 #endif // _Included_io_vproxy_pni_sample_MBuf
 // metadata.generator-version: pni test
-// sha256:433122995d51d55c6484f3f68bc0f6e536ae2300424a2e1f630655604769c33b
+// sha256:e513cbed641492f56d87b30e17e6bf6c2a3a074788c90a28dfd82bb294b05416

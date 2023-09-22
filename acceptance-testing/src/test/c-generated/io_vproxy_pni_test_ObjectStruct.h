@@ -23,12 +23,12 @@ extern "C" {
 PNIEnvExpand(ObjectStruct, ObjectStruct *)
 PNIBufExpand(ObjectStruct, ObjectStruct, 48)
 
-PNI_PACK(struct, ObjectStruct, {
+struct ObjectStruct {
     char * str;
     char lenStr[16];
     void * seg;
     PNIBuf buf;
-});
+};
 
 JNIEXPORT int JNICALL Java_io_vproxy_pni_test_ObjectStruct_func1(PNIEnv_void * env, ObjectStruct * self, char * str, char * str2, void * seg, PNIBuf * buf);
 JNIEXPORT void JNICALL JavaCritical_io_vproxy_pni_test_ObjectStruct_func1Critical(ObjectStruct * self, char * str, char * str2, void * seg, PNIBuf * buf);
@@ -50,4 +50,4 @@ JNIEXPORT uint8_t JNICALL JavaCritical_io_vproxy_pni_test_ObjectStruct_checkPoin
 #endif
 #endif // _Included_io_vproxy_pni_test_ObjectStruct
 // metadata.generator-version: pni test
-// sha256:72126c02b7d7020b7429bf08e632d58ad78b60f98ee67d5ca6700803ef1a3267
+// sha256:778c4319a422b1fb096f1216d7e1a14212438e8f30f1d8976213313020b2321b

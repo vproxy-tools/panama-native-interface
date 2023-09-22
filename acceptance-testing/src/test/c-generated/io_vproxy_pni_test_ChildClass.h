@@ -24,11 +24,10 @@ extern "C" {
 PNIEnvExpand(ChildClass, ChildClass *)
 PNIBufExpand(ChildClass, ChildClass, 4)
 
-PNI_PACK(struct, ChildClass, {
+struct ChildClass {
     BaseClass SUPER;
-     /* padding */ uint8_t : 8;
     int16_t x;
-});
+};
 
 JNIEXPORT int JNICALL Java_io_vproxy_pni_test_ChildClass_xxx(PNIEnv_void * env, ChildClass * self, int16_t x);
 
@@ -37,4 +36,4 @@ JNIEXPORT int JNICALL Java_io_vproxy_pni_test_ChildClass_xxx(PNIEnv_void * env, 
 #endif
 #endif // _Included_io_vproxy_pni_test_ChildClass
 // metadata.generator-version: pni test
-// sha256:41eb5247fc2590e3430f99602efdb66b586664026d3f9e9f9e7f6cecdb92712b
+// sha256:581ea055936898f03845462c7d9796fa4eb06d42163259ff64c55ab2cf27b28e

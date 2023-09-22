@@ -26,8 +26,8 @@ extern "C" {
 PNIEnvExpand(StructB, StructB *)
 PNIBufExpand(StructB, StructB, 40)
 
-PNI_PACK(struct, StructB, {
-    int32_t i; /* padding */ uint32_t : 32;
+struct StructB {
+    int32_t i;
     UnionC c;
     int64_t l;
     StructD * d;
@@ -35,11 +35,11 @@ PNI_PACK(struct, StructB, {
         int32_t n;
         void * seg;
     };
-});
+};
 
 #ifdef __cplusplus
 }
 #endif
 #endif // _Included_io_vproxy_pni_test_StructB
 // metadata.generator-version: pni test
-// sha256:b22f3610c53062d126f4121d02141865c1f371caba0da41e97d9de31f3603f20
+// sha256:d90fc0ede1dd5b453c9d36c52ced018e743fce7d6833b6e5871c27efa0fb66fd

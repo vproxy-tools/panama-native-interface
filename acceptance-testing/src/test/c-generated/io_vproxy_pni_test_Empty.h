@@ -23,12 +23,12 @@ extern "C" {
 PNIEnvExpand(Empty, Empty *)
 PNIBufExpand(Empty, Empty, (0 /* !!invalid!! */))
 
-PNI_PACK(struct, Empty, {
-});
+struct Empty {
+};
 
 #ifdef __cplusplus
 }
 #endif
 #endif // _Included_io_vproxy_pni_test_Empty
 // metadata.generator-version: pni test
-// sha256:e9d23b771b608280172eb264ea8be4e6b4d96ca3354cf863fb661b799129371b
+// sha256:06c1e7dc355b3f3d0310d1dde826f6691de5dcd88a995a77cf075edde176b9ca
