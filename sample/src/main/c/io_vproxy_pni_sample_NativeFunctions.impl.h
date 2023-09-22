@@ -1,6 +1,4 @@
 #include "io_vproxy_pni_sample_NativeFunctions.h"
-#include <arpa/inet.h>
-#include <sys/socket.h>
 #include <unistd.h>
 
 #ifdef __cplusplus
@@ -50,12 +48,12 @@ JNIEXPORT int JNICALL Java_io_vproxy_pni_sample_NativeFunctions_accept(PNIEnv_in
 }
 
 JNIEXPORT int JNICALL Java_io_vproxy_pni_sample_NativeFunctions_close(PNIEnv_void * env, int32_t fd) {
-    close(fd);
+    closesocket(fd);
     return 0;
 }
 
 JNIEXPORT int JNICALL Java_io_vproxy_pni_sample_NativeFunctions_write(PNIEnv_int * env, int32_t fd, void * mem, int32_t off, int32_t len) {
-    int n = write(fd, mem + off, len);
+    int n = send(fd, mem + off, len, 0);
     if (n < 0) {
         return PNIThrowExceptionBasedOnErrno(env, "java.io.IOException");
     }
@@ -64,7 +62,7 @@ JNIEXPORT int JNICALL Java_io_vproxy_pni_sample_NativeFunctions_write(PNIEnv_int
 }
 
 JNIEXPORT int JNICALL Java_io_vproxy_pni_sample_NativeFunctions_read(PNIEnv_int * env, int32_t fd, void * mem, int32_t off, int32_t len) {
-    int n = read(fd, mem + off, len);
+    int n = recv(fd, mem + off, len, 0);
     if (n < 0) {
         return PNIThrowExceptionBasedOnErrno(env, "java.io.IOException");
     }
@@ -76,4 +74,4 @@ JNIEXPORT int JNICALL Java_io_vproxy_pni_sample_NativeFunctions_read(PNIEnv_int 
 }
 #endif
 // metadata.generator-version: pni test
-// sha256:435d54adc20f443176cd69bf514f46f500fe9aed9c4efd35ebaaf3ec711b6bb8
+// sha256:8668023d15623784f5a8ea01e418220c64a60addfad61c4f829159a91027a7e7

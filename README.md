@@ -30,13 +30,15 @@ The JDK `21` is used to compile all projects except `pni`, and another JDK is us
 * Configure `JAVA_HOME_21` to your JDK 21.
 * Configure `PATH` to make sure `javac` points to one of JDK `11-17`
 
+> If you are using `Windows`, it's recommended to use `MinGW UCRT64` to work with this project.
+>
+> * Configure `MINGW_BASH` to the path to `bash.exe` in your `MinGW` directory, usually it's `C:\msys64\usr\bin\bash.exe`
+
 After configuring the environment variables, you might need to restart your terminal/ide, and stop current Gradle daemons using `./gradlew --stop`
 
 ### 3. Install GCC
 
 You will need `GCC` to compile with the generated headers. Any `GCC` that supports `gnu99` or `c11` should be fine.
-
-If you are using `Windows`, it's recommended to use `MinGW` to work with this project.
 
 ### 4. Build
 

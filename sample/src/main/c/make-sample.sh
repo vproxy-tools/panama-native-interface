@@ -4,6 +4,7 @@ os=`uname`
 
 target="pnisample"
 include_platform_dir=""
+extra_ld=""
 
 if [[ "Linux" == "$os" ]]
 then
@@ -16,6 +17,7 @@ then
 else
 	target="$target.dll"
 	include_platform_dir="win32"
+	extra_ld="-lws2_32"
 fi
 
 rm -f "$target"
@@ -25,6 +27,7 @@ gcc -std=gnu99 -O2 \
     -I "./" \
     -I "../../../../api/src/main/c" \
     -I "../../../../api/src/main/c/jnimock" \
-    -shared -Werror -lc -lpthread -fPIC \
+    -shared -Werror -fPIC \
     io_vproxy_pni_sample_NativeFunctions.c \
+    $extra_ld \
     -o "$target"

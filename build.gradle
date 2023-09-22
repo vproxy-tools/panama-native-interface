@@ -232,7 +232,11 @@ project(":acceptance-testing") {
 
     task compilePNITestLib(type: Exec) {
         workingDir project.rootProject.rootDir.getAbsolutePath() + '/acceptance-testing/src/test/c'
-        commandLine './make-test.sh'
+        def bashPath = System.getenv("MINGW_BASH")
+        if (bashPath == null)
+            bashPath = '/bin/bash'
+        executable bashPath
+        args './make-test.sh'
 
         dependsOn project(':acceptance-testing-template').tasks.generateAcceptanceTesting
     }
@@ -267,7 +271,11 @@ project(":sample") {
     }
     task compilePNISampleLib(type: Exec) {
         workingDir project.rootProject.rootDir.getAbsolutePath() + '/sample/src/main/c'
-        commandLine './make-sample.sh'
+        def bashPath = System.getenv("MINGW_BASH")
+        if (bashPath == null)
+            bashPath = '/bin/bash'
+        executable bashPath
+        args './make-sample.sh'
 
         dependsOn generateSample
     }
@@ -307,7 +315,11 @@ project(":playground") {
     }
     task compilePNIPlaygroundLib(type: Exec) {
         workingDir project.rootProject.rootDir.getAbsolutePath() + '/playground/src/main/c'
-        commandLine './make-playground.sh'
+        def bashPath = System.getenv("MINGW_BASH")
+        if (bashPath != null)
+            bashPath = '/bin/bash'
+        executable bashPath
+        args './make-playground.sh'
 
         dependsOn generatePlayground
     }

@@ -11,7 +11,6 @@ import java.lang.foreign.MemorySegment;
 @Function
 interface PNINativeFunctions {
     @Impl(
-        include = "<sys/socket.h>",
         // language="c"
         c = """
             int fd = socket(AF_INET, SOCK_STREAM, 0);
@@ -26,10 +25,6 @@ interface PNINativeFunctions {
     int openIPv4TcpSocket() throws IOException;
 
     @Impl(
-        include = {
-            "<sys/socket.h>",
-            "<arpa/inet.h>",
-        },
         // language="c"
         c = """
             struct sockaddr_in server_addr;
@@ -49,7 +44,6 @@ interface PNINativeFunctions {
     void bindIPv4(int fd, @Name("ipv4") int ipv4HostOrder, int port) throws IOException;
 
     @Impl(
-        include = "<sys/socket.h>",
         // language="c"
         c = """
             int res = listen(fd, n);
@@ -63,10 +57,6 @@ interface PNINativeFunctions {
     void listen(int fd, int n) throws IOException;
 
     @Impl(
-        include = {
-            "<sys/socket.h>",
-            "<arpa/inet.h>",
-        },
         // language="c"
         c = """
             struct sockaddr_in client_addr;
@@ -85,7 +75,7 @@ interface PNINativeFunctions {
         include = "<unistd.h>",
         // language="c"
         c = """
-            close(fd);
+            closesocket(fd);
             return 0;
             """
     )
@@ -96,7 +86,7 @@ interface PNINativeFunctions {
         include = "<unistd.h>",
         // language="c"
         c = """
-            int n = write(fd, mem + off, len);
+            int n = send(fd, mem + off, len, 0);
             if (n < 0) {
                 return PNIThrowExceptionBasedOnErrno(env, "java.io.IOException");
             }
@@ -110,7 +100,7 @@ interface PNINativeFunctions {
         include = "<unistd.h>",
         // language="c"
         c = """
-            int n = read(fd, mem + off, len);
+            int n = recv(fd, mem + off, len, 0);
             if (n < 0) {
                 return PNIThrowExceptionBasedOnErrno(env, "java.io.IOException");
             }
