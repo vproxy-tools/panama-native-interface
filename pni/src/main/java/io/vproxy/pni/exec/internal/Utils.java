@@ -319,22 +319,32 @@ public class Utils {
             .append(");\n");
     }
 
-    public static StringBuilder appendCPadding(StringBuilder sb, long p) {
+    public static StringBuilder appendCPadding(StringBuilder sb, long maxType, long p) {
         sb.append(" /* padding */");
         while (p > 0) {
-            if (p >= 8) {
-                sb.append(" uint64_t : 64;");
-                p -= 8;
-            } else if (p >= 4) {
-                sb.append(" uint32_t : 32;");
-                p -= 4;
-            } else if (p >= 2) {
-                sb.append(" uint16_t : 16;");
-                p -= 2;
-            } else {
-                sb.append(" uint8_t : 8;");
-                p -= 1;
+            if (maxType >= 8) {
+                if (p >= 8) {
+                    sb.append(" uint64_t : 64;");
+                    p -= 8;
+                    continue;
+                }
             }
+            if (maxType >= 4) {
+                if (p >= 4) {
+                    sb.append(" uint32_t : 32;");
+                    p -= 4;
+                    continue;
+                }
+            }
+            if (maxType >= 2) {
+                if (p >= 2) {
+                    sb.append(" uint16_t : 16;");
+                    p -= 2;
+                    continue;
+                }
+            }
+            sb.append(" uint8_t : 8;");
+            p -= 1;
         }
         return sb;
     }

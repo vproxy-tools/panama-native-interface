@@ -238,14 +238,18 @@ public class CFileGenerator {
                 ).append(";\n");
             }
             if (cls.headPadding > 0) {
+                long maxType = 0;
+                if (cls.superTypeRef != null) {
+                    maxType = cls.superTypeRef.rawNativeMemoryAlign(VarOpts.fieldDefault());
+                }
                 if (cls.isAligned()) {
                     if (cls.extraHeadPadding > 0) {
                         Utils.appendIndent(sb, indent + 4);
-                        Utils.appendCPadding(sb, cls.extraHeadPadding).append("\n");
+                        Utils.appendCPadding(sb, maxType, cls.extraHeadPadding).append("\n");
                     }
                 } else {
                     Utils.appendIndent(sb, indent + 4);
-                    Utils.appendCPadding(sb, cls.headPadding).append("\n");
+                    Utils.appendCPadding(sb, maxType, cls.headPadding).append("\n");
                 }
             }
             for (var f : cls.fields) {
@@ -322,10 +326,10 @@ public class CFileGenerator {
             if (field.padding > 0) {
                 if (cls.isAligned()) {
                     if (field.extraPadding > 0) {
-                        Utils.appendCPadding(sb, field.extraPadding);
+                        Utils.appendCPadding(sb, field.typeRef.rawNativeMemoryAlign(field.varOpts()), field.extraPadding);
                     }
                 } else {
-                    Utils.appendCPadding(sb, field.padding);
+                    Utils.appendCPadding(sb, field.typeRef.rawNativeMemoryAlign(field.varOpts()), field.padding);
                 }
             }
             sb.append("\n");
