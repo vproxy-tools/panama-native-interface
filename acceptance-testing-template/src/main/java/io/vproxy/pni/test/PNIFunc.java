@@ -65,6 +65,13 @@ public interface PNIFunc {
     int writeWithErrno(int fd, @Raw ByteBuffer buf, int off, int len);
 
     @Impl(
+        c = """
+            return PNIThrowException(env, "java.io.IOException", strerror(EINVAL));
+            """
+    )
+    int testErrno() throws IOException;
+
+    @Impl(
         include = {"<unistd.h>"},
         // language="c"
         c = """

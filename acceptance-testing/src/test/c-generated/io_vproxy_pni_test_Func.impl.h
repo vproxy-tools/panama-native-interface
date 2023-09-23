@@ -31,6 +31,10 @@ JNIEXPORT int JNICALL Java_io_vproxy_pni_test_Func_writeWithErrno(PNIEnv_int * e
     return 0;
 }
 
+JNIEXPORT int JNICALL Java_io_vproxy_pni_test_Func_testErrno(PNIEnv_int * env) {
+    return PNIThrowException(env, "java.io.IOException", strerror(EINVAL));
+}
+
 JNIEXPORT int JNICALL Java_io_vproxy_pni_test_Func_writeByteArray(PNIEnv_int * env, int32_t fd, void * buf, int32_t off, int32_t len) {
     int ret = write(fd, buf + off, len);
     if (ret < 0) {
@@ -87,4 +91,4 @@ JNIEXPORT int32_t JNICALL JavaCritical_io_vproxy_pni_test_Func_callJavaMethodWit
 }
 #endif
 // metadata.generator-version: pni test
-// sha256:dee6489c367b273db501832f4057a9dbf0b482bd044b6d17de19a59a6377a90b
+// sha256:c0d299acec345a824d7f38ef403c5049d16784365d57e746bb0520913deeb1c8

@@ -122,6 +122,23 @@ public class Func {
         return ENV.returnInt();
     }
 
+    private static final MethodHandle testErrnoMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_Func_testErrno");
+
+    public int testErrno(PNIEnv ENV) throws java.io.IOException {
+        ENV.reset();
+        int ERR;
+        try {
+            ERR = (int) testErrnoMH.invokeExact(ENV.MEMORY);
+        } catch (Throwable THROWABLE) {
+            throw PanamaUtils.convertInvokeExactException(THROWABLE);
+        }
+        if (ERR != 0) {
+            ENV.throwIf(java.io.IOException.class);
+            ENV.throwLast();
+        }
+        return ENV.returnInt();
+    }
+
     private static final MethodHandle writeByteArrayMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_Func_writeByteArray", int.class /* fd */, MemorySegment.class /* buf */, int.class /* off */, int.class /* len */);
 
     public int writeByteArray(PNIEnv ENV, int fd, MemorySegment buf, int off, int len) throws java.io.IOException {
@@ -222,4 +239,4 @@ public class Func {
     }
 }
 // metadata.generator-version: pni test
-// sha256:969668a7d254fa6d01d5fb8b5180139f28bde1daadbb5bdbbe2fe06ce234d0d0
+// sha256:bd50ae3dc51cb0fb51b5b4fc0d0b7d9de6697608889cd1d78f33ead341239685

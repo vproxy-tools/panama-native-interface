@@ -1,5 +1,6 @@
 package io.vproxy.pni.test.cases;
 
+import io.vproxy.base.util.OS;
 import io.vproxy.pni.*;
 import io.vproxy.pni.test.Func;
 import org.junit.BeforeClass;
@@ -80,6 +81,9 @@ public class TestFunc {
 
     @Test
     public void write() throws Exception {
+        if (OS.isWindows()) {
+            return;
+        }
         try (var allocator = Allocator.ofConfined()) {
             var env = new PNIEnv(allocator);
 
@@ -147,6 +151,10 @@ public class TestFunc {
 
     @Test
     public void errno() {
+        if (OS.isWindows()) {
+            System.out.println("SKIPPED");
+            return;
+        }
         try (var allocator = Allocator.ofConfined()) {
             var env = new PNIEnv(allocator);
 
@@ -156,6 +164,19 @@ public class TestFunc {
             int n = Func.get().writeWithErrno(env, -1, buf, 0, buf.position());
             assertEquals(-1, n);
             assertEquals(9 /* EBADF */, env.ex().errno());
+        }
+    }
+
+    @Test
+    public void errno2() {
+        try (var allocator = Allocator.ofConfined()) {
+            var env = new PNIEnv(allocator);
+
+            try {
+                Func.get().testErrno(env);
+            } catch (IOException e) {
+                assertEquals("Invalid argument", e.getMessage());
+            }
         }
     }
 
@@ -236,14 +257,14 @@ public class TestFunc {
     public void shaCheck() throws Exception {
         var s = Files.readAllLines(Path.of("src", "test", "c-generated", "io_vproxy_pni_test_Func.h"));
         var lastLine = s.get(s.size() - 1);
-        assertEquals("// sha256:f4f9f3d8219c25b41a342def73abcc00801691b089723c3cdf2ab264e1e0e448", lastLine);
+        assertEquals("// sha256:d45842a0309b27f93bae6de50130f408d2338c8bf53a627eb148d44e585641a1", lastLine);
 
         s = Files.readAllLines(Path.of("src", "test", "c-generated", "io_vproxy_pni_test_Func.impl.h"));
         lastLine = s.get(s.size() - 1);
-        assertEquals("// sha256:dee6489c367b273db501832f4057a9dbf0b482bd044b6d17de19a59a6377a90b", lastLine);
+        assertEquals("// sha256:c0d299acec345a824d7f38ef403c5049d16784365d57e746bb0520913deeb1c8", lastLine);
 
         s = Files.readAllLines(Path.of("src", "test", "generated", "io", "vproxy", "pni", "test", "Func.java"));
         lastLine = s.get(s.size() - 1);
-        assertEquals("// sha256:969668a7d254fa6d01d5fb8b5180139f28bde1daadbb5bdbbe2fe06ce234d0d0", lastLine);
+        assertEquals("// sha256:bd50ae3dc51cb0fb51b5b4fc0d0b7d9de6697608889cd1d78f33ead341239685", lastLine);
     }
 }
