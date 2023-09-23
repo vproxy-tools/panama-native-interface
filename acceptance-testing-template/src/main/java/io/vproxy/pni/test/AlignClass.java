@@ -66,3 +66,35 @@ abstract class PNIAlignField {
     @Critical
     abstract int cccc();
 }
+
+@Struct
+@AlwaysAligned
+abstract class PNIAlignField2 {
+    @Align(2) byte a;
+    @Align(32) byte b;
+    int c;
+
+    @Impl(
+        c = """
+            return self->a;
+            """
+    )
+    @Critical
+    abstract byte aaaa();
+
+    @Impl(
+        c = """
+            return self->b;
+            """
+    )
+    @Critical
+    abstract byte bbbb();
+
+    @Impl(
+        c = """
+            return self->c;
+            """
+    )
+    @Critical
+    abstract int cccc();
+}

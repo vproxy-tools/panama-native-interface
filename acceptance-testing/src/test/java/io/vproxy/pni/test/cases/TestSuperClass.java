@@ -89,7 +89,7 @@ public class TestSuperClass {
 
         s = Files.readAllLines(Path.of("src", "test", "c-generated", "io_vproxy_pni_test_ChildOfLargeAlign.h"));
         lastLine = s.get(s.size() - 1);
-        assertEquals("// sha256:ac8f4a84de8c448c2c7185a75b5c954d50a35fc50fd053ec9be8661e21bbf4df", lastLine);
+        assertEquals("// sha256:7b3144b03461608f2c6897f10f241dd28537a1a6e4df27f46147eb167c44fd72", lastLine);
 
         s = Files.readAllLines(Path.of("src", "test", "c-generated", "io_vproxy_pni_test_ChildOfPacked.h"));
         lastLine = s.get(s.size() - 1);
