@@ -8,6 +8,41 @@ The `jextract` parses C code and generates Java code, while `Panama Native Inter
 
 This approach is similar to how `JNI(Java Native Interface)` works, so this project is named as `PNI(Panama Native Interface)`.
 
+## Why using `Panama Native Interface` instead of `jextract`
+
+<details><summary>Click to reveal</summary>
+
+The `jextract` tool can automatically generate Java types from C headers. This seems great at first, you can create structs and call functions in Java just like writing C code.
+
+However, when you apply it to your project, you will find that the generated code is so long and so complicated, and contains so much symbols you would never use. Well, this is just the beginning of a nightmare.
+
+Things start to go messy when a C library provides its APIs through `macro`s or `static inline` functions. These information will not preserve after compiling, and you will not be able to call them because they just don't exist.\[1\]  
+Using `macro`s or `static inline` functions to define user friendly APIs, is very common in the C world.\[2\]
+
+It would be much messier when you are trying to adapt to a cross platform library, or a bunch of different versions of libraries of the same origin.  
+In this situation, you will have to ask `jextract` to generate code for each version, and you will have to write adaptors for all versions because these generated types are different.\[3\]
+
+After all, **C** libraries are written for **C** users. The users are happly as long as the code compiles with a **C** compiler.\[4\]
+
+Yes, the real world is much more complex than a simple poc.
+
+So why not take the opposite direction. Let's put the dirty work in the C world and let the C compiler take care of things for us, and let's provide a group of clean and nice APIs for Java.  
+Since the APIs are specifically made for Java, why not just put the definitions on the Java side.
+
+Oh, wait, doesn't that sound familiar? This is exactly the `Java Native Interface` approach.  
+Let's take one more step further. We define not only methods(functions) in Java, but also `struct`s and `union`s, and we use `Project Panama` as the base.
+
+The `Panama Native Interface` helps you deal with all the dirty work mentioned above.  
+You can not only define types/functions in Java, but also bring pre-defined type/function into Java.
+
+> \[1\]: For example, a very common _variable_: `errno` is defined using macro, actually you are calling a function. The macro is platform specific, but `errno` is cross platform.  
+> \[2\]: For example, in Lua, a lot of `documented` APIs are defined using `macro`s.  
+> \[3\]: For example, the `msquic` supports multiple platforms, each platform has some specific `typedef`s.  
+> \[4\]: For example, the Lua 5.1-5.4 exposes their APIs in different ways, however if you are writing C you are likely to compile properly across all platforms (only a few deprecated functions need be modified).  
+> BTW, `jextract` cannot handle some commonly used syntax for now (2023-09-24), e.g. `align or packed` attributes, `bit fields`, ...
+
+</details>
+
 ## How to build
 
 <details><summary>Click to reveal</summary>
