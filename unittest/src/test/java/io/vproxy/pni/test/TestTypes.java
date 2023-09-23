@@ -1,6 +1,7 @@
 package io.vproxy.pni.test;
 
 import io.vproxy.pni.exec.ast.AstAnno;
+import io.vproxy.pni.exec.ast.AstAnnoValue;
 import io.vproxy.pni.exec.ast.AstTypeDesc;
 import io.vproxy.pni.exec.ast.BitFieldInfo;
 import io.vproxy.pni.exec.internal.AllocationForParam;
@@ -1071,6 +1072,19 @@ public class TestTypes {
         assertEquals("new a.b.Cls(a)", info.convertExtraToUpcallArgument("a", returnVarOpts(0)));
         assertEquals("return RESULT == null ? MemorySegment.NULL : RESULT.MEMORY;\n",
             Utils.sbHelper(sb -> info.convertFromUpcallReturn(sb, 0, returnVarOpts(0))));
+    }
+
+    @Test
+    public void clsMemoryAlign() {
+        var info = Utils.generalClsTypeInfo();
+        var f = info.getClazz().fields.get(1);
+        f.annos.add(new AstAnno() {{
+            typeRef = AnnoAlignTypeInfo.get();
+            values.add(new AstAnnoValue("value", 16L));
+        }});
+        assertEquals(16, info.nativeMemoryAlign(fieldVarOpts(0)));
+        assertEquals(2, info.rawNativeMemoryAlign(fieldVarOpts(0)));
+        assertEquals(8, info.rawNativeMemoryAlign(fieldVarOpts(POINTER)));
     }
 
     @Test
