@@ -365,16 +365,16 @@ You may define all template classes inside one single Java file, they don't have
 @Struct
 @Name("mbuf_t")
 @AlwaysAligned
-abstract class PNIMBuf {     // typedef PNI_PACK(struct, mbuf_t, {
+abstract class PNIMBuf {     // typedef struct mbuf_t {
     MemorySegment bufAddr;   //     void*    bufAddr;
     @Unsigned int pktLen;    //     uint32_t pktLen;
     @Unsigned int pktOff;    //     uint32_t pktOff;
-    @Unsigned int bufLen;    //     uint32_t bufLen; /* padding */ uint32_t : 32;
+    @Unsigned int bufLen;    //     uint32_t bufLen;
     PNIUserData userdata;    //     union {
                              //         void*  userdata;
                              //         uint64 udata64;
                              //     };
-}                            // }) mbuf_t;
+}                            // } mbuf_t;
 
 @Union(embedded = true)
 @AlwaysAligned
@@ -649,7 +649,7 @@ You can call `PNIRef.of(obj, new Options().setUserdataByteSize(...))`, the behav
 * `@Critical`: generate native functions without `PNIEnv`. You can directly use `return` to return values to Java. However, since the `PNIEnv` is absent, you will not be able to use any functionality associated with it, for example, throwing exceptions from the C code.
 * `@AlwaysAligned`: assumes that the annotated class or field to be always aligned. This will result in a Java `ValueLayout` without `_UNALIGNED` suffix. A jmh benchmark shows that accessing "manually aligned" fields has the same performance as accessing "unaligned" fields, and is a little bit slower than "aligned" fields in Panama.  
   This annotation is not the default behavior because adding it means that you will not be allowed to put the type on a random memory location.  
-  The generated C code will not have a difference due to this annotation because modern compilers such as GCC generates exactly the same code for accessing "manually aligned" and "implicitly aligned" fields (tested on misp, which generates completely different code for unaligned access).
+  The generated C code will not be affected by this annotation. The generator calculates the paddings only based on type info and `@Align` annotation, and decide to generate packed or non-packed structs, with or without explicit paddings.
 
 ### Enhance Java Types
 
