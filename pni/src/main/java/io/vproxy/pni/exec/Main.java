@@ -12,7 +12,7 @@ public class Main {
     public static final String C_GEN_VERSION;
 
     static {
-        final String _VERSION = "21.0.0.13-dev"; // _THE_VERSION_
+        final String _VERSION = "21.0.0.13"; // _THE_VERSION_
         final String _JAVA_GEN_VERSION = "21.0.0.12";
         final String _C_GEN_VERSION = "21.0.0.13";
         var testing = System.getProperty("io.vproxy.pni.Testing", "false");
