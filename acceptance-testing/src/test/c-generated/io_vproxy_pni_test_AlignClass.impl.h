@@ -16,8 +16,12 @@ JNIEXPORT int64_t JNICALL JavaCritical_io_vproxy_pni_test_AlignClass_cccc(AlignC
     return self->c;
 }
 
+JNIEXPORT int64_t JNICALL JavaCritical_io_vproxy_pni_test_AlignClass_size(AlignClass * self) {
+    return sizeof(*self);
+}
+
 #ifdef __cplusplus
 }
 #endif
 // metadata.generator-version: pni test
-// sha256:c6ff8269e0decd78e1c82d419a67191c77f1eb036ba2d635a74e519e49910e70
+// sha256:66048a0bd3b18c410a54650af3a60f1e3ed5eb245b35dd5e0107778917dc275e

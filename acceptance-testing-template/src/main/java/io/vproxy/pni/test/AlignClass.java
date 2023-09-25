@@ -33,6 +33,14 @@ abstract class PNIAlignClass {
     )
     @Critical
     abstract long cccc();
+
+    @Impl(
+        c = """
+            return sizeof(*self);
+            """
+    )
+    @Critical
+    abstract long size();
 }
 
 @Struct
@@ -65,6 +73,14 @@ abstract class PNIAlignField {
     )
     @Critical
     abstract int cccc();
+
+    @Impl(
+        c = """
+            return sizeof(*self);
+            """
+    )
+    @Critical
+    abstract long size();
 }
 
 @Struct
@@ -97,4 +113,105 @@ abstract class PNIAlignField2 {
     )
     @Critical
     abstract int cccc();
+
+    @Impl(
+        c = """
+            return sizeof(*self);
+            """
+    )
+    @Critical
+    abstract long size();
+}
+
+@Struct
+@AlwaysAligned
+abstract class PNIAlignField3 {
+    @Align(2) short a;
+    @Align(32) int b;
+    int c;
+
+    @Impl(
+        c = """
+            return self->a;
+            """
+    )
+    @Critical
+    abstract short aaaa();
+
+    @Impl(
+        c = """
+            return self->b;
+            """
+    )
+    @Critical
+    abstract int bbbb();
+
+    @Impl(
+        c = """
+            return self->c;
+            """
+    )
+    @Critical
+    abstract int cccc();
+
+    @Impl(
+        c = """
+            return sizeof(*self);
+            """
+    )
+    @Critical
+    abstract long size();
+}
+
+@Struct
+@AlwaysAligned
+abstract class PNIAlignBaseClass {
+    short a;
+
+    @Impl(
+        c = """
+            return self->a;
+            """
+    )
+    @Critical
+    abstract short aaaa();
+
+    @Impl(
+        c = """
+            return sizeof(*self);
+            """
+    )
+    @Critical
+    abstract long size0();
+}
+
+@Struct
+@AlwaysAligned
+abstract class PNIAlignChildClass extends PNIAlignBaseClass {
+    @Align(16) int b;
+    int c;
+
+    @Impl(
+        c = """
+            return self->b;
+            """
+    )
+    @Critical
+    abstract int bbbb();
+
+    @Impl(
+        c = """
+            return self->c;
+            """
+    )
+    @Critical
+    abstract int cccc();
+
+    @Impl(
+        c = """
+            return sizeof(*self);
+            """
+    )
+    @Critical
+    abstract long size();
 }

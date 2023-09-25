@@ -6,13 +6,13 @@ import java.lang.foreign.*;
 import java.lang.invoke.*;
 import java.nio.ByteBuffer;
 
-public class AlignField {
+public class AlignField3 {
     public static final MemoryLayout LAYOUT = MemoryLayout.structLayout(
-        ValueLayout.JAVA_BYTE.withName("a"),
-        MemoryLayout.sequenceLayout(1L, ValueLayout.JAVA_BYTE) /* padding */,
-        ValueLayout.JAVA_BYTE.withName("b"),
-        MemoryLayout.sequenceLayout(1L, ValueLayout.JAVA_BYTE) /* padding */,
-        ValueLayout.JAVA_INT.withName("c")
+        ValueLayout.JAVA_SHORT.withName("a"),
+        MemoryLayout.sequenceLayout(30L, ValueLayout.JAVA_BYTE) /* padding */,
+        ValueLayout.JAVA_INT.withName("b"),
+        ValueLayout.JAVA_INT.withName("c"),
+        MemoryLayout.sequenceLayout(24L, ValueLayout.JAVA_BYTE) /* padding */
     );
     public final MemorySegment MEMORY;
 
@@ -20,11 +20,11 @@ public class AlignField {
         MemoryLayout.PathElement.groupElement("a")
     );
 
-    public byte getA() {
-        return (byte) aVH.get(MEMORY);
+    public short getA() {
+        return (short) aVH.get(MEMORY);
     }
 
-    public void setA(byte a) {
+    public void setA(short a) {
         aVH.set(MEMORY, a);
     }
 
@@ -32,11 +32,11 @@ public class AlignField {
         MemoryLayout.PathElement.groupElement("b")
     );
 
-    public byte getB() {
-        return (byte) bVH.get(MEMORY);
+    public int getB() {
+        return (int) bVH.get(MEMORY);
     }
 
-    public void setB(byte b) {
+    public void setB(int b) {
         bVH.set(MEMORY, b);
     }
 
@@ -52,46 +52,46 @@ public class AlignField {
         cVH.set(MEMORY, c);
     }
 
-    public AlignField(MemorySegment MEMORY) {
+    public AlignField3(MemorySegment MEMORY) {
         MEMORY = MEMORY.reinterpret(LAYOUT.byteSize());
         this.MEMORY = MEMORY;
         long OFFSET = 0;
-        OFFSET += ValueLayout.JAVA_BYTE.byteSize();
-        OFFSET += 1; /* padding */
-        OFFSET += ValueLayout.JAVA_BYTE.byteSize();
-        OFFSET += 1; /* padding */
+        OFFSET += ValueLayout.JAVA_SHORT_UNALIGNED.byteSize();
+        OFFSET += 30; /* padding */
         OFFSET += ValueLayout.JAVA_INT_UNALIGNED.byteSize();
+        OFFSET += ValueLayout.JAVA_INT_UNALIGNED.byteSize();
+        OFFSET += 24; /* padding */
     }
 
-    public AlignField(Allocator ALLOCATOR) {
+    public AlignField3(Allocator ALLOCATOR) {
         this(ALLOCATOR.allocate(LAYOUT.byteSize()));
     }
 
-    private static final MethodHandle aaaaMH = PanamaUtils.lookupPNICriticalFunction(false, byte.class, "JavaCritical_io_vproxy_pni_test_AlignField_aaaa", MemorySegment.class /* self */);
+    private static final MethodHandle aaaaMH = PanamaUtils.lookupPNICriticalFunction(false, short.class, "JavaCritical_io_vproxy_pni_test_AlignField3_aaaa", MemorySegment.class /* self */);
 
-    public byte aaaa() {
-        byte RESULT;
+    public short aaaa() {
+        short RESULT;
         try {
-            RESULT = (byte) aaaaMH.invokeExact(MEMORY);
+            RESULT = (short) aaaaMH.invokeExact(MEMORY);
         } catch (Throwable THROWABLE) {
             throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
         return RESULT;
     }
 
-    private static final MethodHandle bbbbMH = PanamaUtils.lookupPNICriticalFunction(false, byte.class, "JavaCritical_io_vproxy_pni_test_AlignField_bbbb", MemorySegment.class /* self */);
+    private static final MethodHandle bbbbMH = PanamaUtils.lookupPNICriticalFunction(false, int.class, "JavaCritical_io_vproxy_pni_test_AlignField3_bbbb", MemorySegment.class /* self */);
 
-    public byte bbbb() {
-        byte RESULT;
+    public int bbbb() {
+        int RESULT;
         try {
-            RESULT = (byte) bbbbMH.invokeExact(MEMORY);
+            RESULT = (int) bbbbMH.invokeExact(MEMORY);
         } catch (Throwable THROWABLE) {
             throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
         return RESULT;
     }
 
-    private static final MethodHandle ccccMH = PanamaUtils.lookupPNICriticalFunction(false, int.class, "JavaCritical_io_vproxy_pni_test_AlignField_cccc", MemorySegment.class /* self */);
+    private static final MethodHandle ccccMH = PanamaUtils.lookupPNICriticalFunction(false, int.class, "JavaCritical_io_vproxy_pni_test_AlignField3_cccc", MemorySegment.class /* self */);
 
     public int cccc() {
         int RESULT;
@@ -103,7 +103,7 @@ public class AlignField {
         return RESULT;
     }
 
-    private static final MethodHandle sizeMH = PanamaUtils.lookupPNICriticalFunction(false, long.class, "JavaCritical_io_vproxy_pni_test_AlignField_size", MemorySegment.class /* self */);
+    private static final MethodHandle sizeMH = PanamaUtils.lookupPNICriticalFunction(false, long.class, "JavaCritical_io_vproxy_pni_test_AlignField3_size", MemorySegment.class /* self */);
 
     public long size() {
         long RESULT;
@@ -115,13 +115,13 @@ public class AlignField {
         return RESULT;
     }
 
-    public static class Array extends RefArray<AlignField> {
+    public static class Array extends RefArray<AlignField3> {
         public Array(MemorySegment buf) {
-            super(buf, AlignField.LAYOUT);
+            super(buf, AlignField3.LAYOUT);
         }
 
         public Array(Allocator allocator, long len) {
-            this(allocator.allocate(AlignField.LAYOUT.byteSize() * len));
+            this(allocator.allocate(AlignField3.LAYOUT.byteSize() * len));
         }
 
         public Array(PNIBuf buf) {
@@ -129,22 +129,22 @@ public class AlignField {
         }
 
         @Override
-        protected AlignField construct(MemorySegment seg) {
-            return new AlignField(seg);
+        protected AlignField3 construct(MemorySegment seg) {
+            return new AlignField3(seg);
         }
 
         @Override
-        protected MemorySegment getSegment(AlignField value) {
+        protected MemorySegment getSegment(AlignField3 value) {
             return value.MEMORY;
         }
     }
 
-    public static class Func extends PNIFunc<AlignField> {
-        private Func(io.vproxy.pni.CallSite<AlignField> func) {
+    public static class Func extends PNIFunc<AlignField3> {
+        private Func(io.vproxy.pni.CallSite<AlignField3> func) {
             super(func);
         }
 
-        private Func(io.vproxy.pni.CallSite<AlignField> func, Options opts) {
+        private Func(io.vproxy.pni.CallSite<AlignField3> func, Options opts) {
             super(func, opts);
         }
 
@@ -152,11 +152,11 @@ public class AlignField {
             super(MEMORY);
         }
 
-        public static Func of(io.vproxy.pni.CallSite<AlignField> func) {
+        public static Func of(io.vproxy.pni.CallSite<AlignField3> func) {
             return new Func(func);
         }
 
-        public static Func of(io.vproxy.pni.CallSite<AlignField> func, Options opts) {
+        public static Func of(io.vproxy.pni.CallSite<AlignField3> func, Options opts) {
             return new Func(func, opts);
         }
 
@@ -165,10 +165,10 @@ public class AlignField {
         }
 
         @Override
-        protected AlignField construct(MemorySegment seg) {
-            return new AlignField(seg);
+        protected AlignField3 construct(MemorySegment seg) {
+            return new AlignField3(seg);
         }
     }
 }
 // metadata.generator-version: pni test
-// sha256:11ea9576d878c34d86ff407c83db431166ab648af8ebb3363a571dd23d82d022
+// sha256:ab8275f2c92d161229fe178b641db4949237c559bc4c53955f0d1c865a05fb76

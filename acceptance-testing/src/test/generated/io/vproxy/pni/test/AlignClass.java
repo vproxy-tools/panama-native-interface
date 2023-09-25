@@ -105,6 +105,18 @@ public class AlignClass {
         return RESULT;
     }
 
+    private static final MethodHandle sizeMH = PanamaUtils.lookupPNICriticalFunction(false, long.class, "JavaCritical_io_vproxy_pni_test_AlignClass_size", MemorySegment.class /* self */);
+
+    public long size() {
+        long RESULT;
+        try {
+            RESULT = (long) sizeMH.invokeExact(MEMORY);
+        } catch (Throwable THROWABLE) {
+            throw PanamaUtils.convertInvokeExactException(THROWABLE);
+        }
+        return RESULT;
+    }
+
     public static class Array extends RefArray<AlignClass> {
         public Array(MemorySegment buf) {
             super(buf, AlignClass.LAYOUT);
@@ -161,4 +173,4 @@ public class AlignClass {
     }
 }
 // metadata.generator-version: pni test
-// sha256:de36b4a29916fbfc0c230ec92d6076f80f4e77055310f01f014132c743e25797
+// sha256:d5ce307a0068045e6ea879076922d199f6e96c281a78795020a5778ab21ba677

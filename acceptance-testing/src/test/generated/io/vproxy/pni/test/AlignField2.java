@@ -105,6 +105,18 @@ public class AlignField2 {
         return RESULT;
     }
 
+    private static final MethodHandle sizeMH = PanamaUtils.lookupPNICriticalFunction(false, long.class, "JavaCritical_io_vproxy_pni_test_AlignField2_size", MemorySegment.class /* self */);
+
+    public long size() {
+        long RESULT;
+        try {
+            RESULT = (long) sizeMH.invokeExact(MEMORY);
+        } catch (Throwable THROWABLE) {
+            throw PanamaUtils.convertInvokeExactException(THROWABLE);
+        }
+        return RESULT;
+    }
+
     public static class Array extends RefArray<AlignField2> {
         public Array(MemorySegment buf) {
             super(buf, AlignField2.LAYOUT);
@@ -161,4 +173,4 @@ public class AlignField2 {
     }
 }
 // metadata.generator-version: pni test
-// sha256:9d67729ffa1e632d14a6a7196afed317f28392f1b25b0aa3464c2fbdc7cde1bd
+// sha256:587cc613f85b88dd04baa55fd63df74797cdd7f456d2eadafdeb1049e7a73c40

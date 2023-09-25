@@ -32,10 +32,11 @@ struct AlignClass {
 JNIEXPORT int8_t JNICALL JavaCritical_io_vproxy_pni_test_AlignClass_aaaa(AlignClass * self);
 JNIEXPORT int16_t JNICALL JavaCritical_io_vproxy_pni_test_AlignClass_bbbb(AlignClass * self);
 JNIEXPORT int64_t JNICALL JavaCritical_io_vproxy_pni_test_AlignClass_cccc(AlignClass * self);
+JNIEXPORT int64_t JNICALL JavaCritical_io_vproxy_pni_test_AlignClass_size(AlignClass * self);
 
 #ifdef __cplusplus
 }
 #endif
 #endif // _Included_io_vproxy_pni_test_AlignClass
 // metadata.generator-version: pni test
-// sha256:6ef175a6ed3de732bfe72db31021cb39329fe3dc3b9e3e525ce4104ffe813409
+// sha256:0b4e372ff1644721941b160d2d2d1935db70f39c5703d929715fd440e8218dd7

@@ -32,10 +32,11 @@ struct AlignField2 {
 JNIEXPORT int8_t JNICALL JavaCritical_io_vproxy_pni_test_AlignField2_aaaa(AlignField2 * self);
 JNIEXPORT int8_t JNICALL JavaCritical_io_vproxy_pni_test_AlignField2_bbbb(AlignField2 * self);
 JNIEXPORT int32_t JNICALL JavaCritical_io_vproxy_pni_test_AlignField2_cccc(AlignField2 * self);
+JNIEXPORT int64_t JNICALL JavaCritical_io_vproxy_pni_test_AlignField2_size(AlignField2 * self);
 
 #ifdef __cplusplus
 }
 #endif
 #endif // _Included_io_vproxy_pni_test_AlignField2
 // metadata.generator-version: pni test
-// sha256:9239bd00b26b7b4ca18efa738db7056e9cd26959b74c23a6a74844b300e5460d
+// sha256:7ce60a587f17ca2a4fba10aa218174d33a31aac5fa32fe5d308170e56cdd5af5

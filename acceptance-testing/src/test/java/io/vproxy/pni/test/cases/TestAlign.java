@@ -1,9 +1,7 @@
 package io.vproxy.pni.test.cases;
 
 import io.vproxy.pni.Allocator;
-import io.vproxy.pni.test.AlignClass;
-import io.vproxy.pni.test.AlignField;
-import io.vproxy.pni.test.AlignField2;
+import io.vproxy.pni.test.*;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -21,20 +19,7 @@ public class TestAlign {
             assertEquals((short) 23, s.bbbb());
             assertEquals(34, s.cccc());
 
-            var arr = new AlignClass.Array(allocator, 2);
-            arr.get(0).setA((byte) 10);
-            arr.get(0).setB((short) 11);
-            arr.get(0).setC(12);
-            arr.get(1).setA((byte) 20);
-            arr.get(1).setB((short) 21);
-            arr.get(1).setC(22);
-
-            assertEquals((byte) 10, arr.get(0).aaaa());
-            assertEquals((short) 11, arr.get(0).bbbb());
-            assertEquals(12, arr.get(0).cccc());
-            assertEquals((byte) 20, arr.get(1).aaaa());
-            assertEquals((short) 21, arr.get(1).bbbb());
-            assertEquals(22, arr.get(1).cccc());
+            assertEquals(AlignClass.LAYOUT.byteSize(), s.size());
         }
     }
 
@@ -50,20 +35,7 @@ public class TestAlign {
             assertEquals((byte) 20, s.getB());
             assertEquals(30, s.getC());
 
-            var arr = new AlignField.Array(allocator, 2);
-            arr.get(0).setA((byte) 11);
-            arr.get(0).setB((byte) 12);
-            arr.get(0).setC(13);
-            arr.get(1).setA((byte) 21);
-            arr.get(1).setB((byte) 22);
-            arr.get(1).setC(23);
-
-            assertEquals((byte) 11, arr.get(0).aaaa());
-            assertEquals((byte) 12, arr.get(0).bbbb());
-            assertEquals(13, arr.get(0).cccc());
-            assertEquals((byte) 21, arr.get(1).aaaa());
-            assertEquals((byte) 22, arr.get(1).bbbb());
-            assertEquals(23, arr.get(1).cccc());
+            assertEquals(AlignField.LAYOUT.byteSize(), s.size());
         }
     }
 
@@ -79,20 +51,40 @@ public class TestAlign {
             assertEquals((byte) 20, s.getB());
             assertEquals(30, s.getC());
 
-            var arr = new AlignField2.Array(allocator, 2);
-            arr.get(0).setA((byte) 11);
-            arr.get(0).setB((byte) 12);
-            arr.get(0).setC(13);
-            arr.get(1).setA((byte) 21);
-            arr.get(1).setB((byte) 22);
-            arr.get(1).setC(23);
+            assertEquals(AlignField2.LAYOUT.byteSize(), s.size());
+        }
+    }
 
-            assertEquals((byte) 11, arr.get(0).aaaa());
-            assertEquals((byte) 12, arr.get(0).bbbb());
-            assertEquals(13, arr.get(0).cccc());
-            assertEquals((byte) 21, arr.get(1).aaaa());
-            assertEquals((byte) 22, arr.get(1).bbbb());
-            assertEquals(23, arr.get(1).cccc());
+    @Test
+    public void alignField3() {
+        try (var allocator = Allocator.ofConfined()) {
+            var s = new AlignField3(allocator);
+            s.setA((short) 10);
+            s.setB(20);
+            s.setC(30);
+
+            assertEquals((short) 10, s.getA());
+            assertEquals(20, s.getB());
+            assertEquals(30, s.getC());
+
+            assertEquals(AlignField3.LAYOUT.byteSize(), s.size());
+        }
+    }
+
+    @Test
+    public void alignBaseChild() {
+        try (var allocator = Allocator.ofConfined()) {
+            var s = new AlignChildClass(allocator);
+            s.setA((short) 10);
+            s.setB(20);
+            s.setC(30);
+
+            assertEquals((short) 10, s.getA());
+            assertEquals(20, s.getB());
+            assertEquals(30, s.getC());
+
+            assertEquals(AlignBaseClass.LAYOUT.byteSize(), s.size0());
+            assertEquals(AlignChildClass.LAYOUT.byteSize(), s.size());
         }
     }
 }
