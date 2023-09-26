@@ -53,7 +53,7 @@ public class ASTReader {
         // validate
         var errors = new ArrayList<String>();
         for (var cls : classes) {
-            cls.validate(errors);
+            cls.validate(opts, errors);
         }
         if (!errors.isEmpty()) {
             throw new RuntimeException("Error!\n" + String.join("\n", errors));

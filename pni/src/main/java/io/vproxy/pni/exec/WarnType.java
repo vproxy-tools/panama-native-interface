@@ -2,6 +2,7 @@ package io.vproxy.pni.exec;
 
 public enum WarnType {
     INVALID_CLASSPATH_FILE(0x0001, "invalid-classpath-file", true, true),
+    ALIGNMENT_NOT_POWER_OF_2(0x0002, "alignment-not-power-of-2", true, false),
     ;
     public final long flag;
     public final String name;

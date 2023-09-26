@@ -1,5 +1,8 @@
 package io.vproxy.pni.exec.ast;
 
+import io.vproxy.pni.exec.CompilerOptions;
+import io.vproxy.pni.exec.WarnType;
+import io.vproxy.pni.exec.internal.PNILogger;
 import io.vproxy.pni.exec.internal.Utils;
 import io.vproxy.pni.exec.type.*;
 import org.objectweb.asm.Opcodes;
@@ -68,7 +71,7 @@ public class AstClass {
         }
     }
 
-    public void validate(List<String> errors) {
+    public void validate(CompilerOptions opts, List<String> errors) {
         var path = "class(" + name + ")";
         if (superName != null && superTypeRef == null) {
             errors.add(path + ": unable to find typeRef: " + superName);
@@ -93,7 +96,7 @@ public class AstClass {
             a.validate(path, errors);
         }
         for (var f : fields) {
-            f.validate(path, errors);
+            f.validate(opts, path, errors);
         }
         for (var m : methods) {
             m.validate(path, errors, isUpcall());
@@ -103,6 +106,11 @@ public class AstClass {
             if (!fields.isEmpty()) {
                 errors.add(path + ": cannot define fields in this type because it is marked with @PointerOnly");
             }
+        }
+
+        var align = getAlign();
+        if (align > 1 && (align & align - 1) != 0) {
+            PNILogger.warn(errors, path, annos, opts, WarnType.ALIGNMENT_NOT_POWER_OF_2, "alignment is not power of 2");
         }
 
         var names = new HashSet<String>();

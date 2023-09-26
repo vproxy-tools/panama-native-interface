@@ -176,12 +176,14 @@ public class CompilerOptions {
         return warningFlags;
     }
 
-    public void setWarningBits(long bits) {
+    public CompilerOptions setWarningBits(long bits) {
         warningFlags |= bits;
+        return this;
     }
 
-    public void unsetWarningBits(long bits) {
+    public CompilerOptions unsetWarningBits(long bits) {
         warningFlags &= ~bits;
+        return this;
     }
 
     public CompilerOptions setWarningAsErrorFlags(long warningAsErrorFlags) {
@@ -193,12 +195,14 @@ public class CompilerOptions {
         return warningAsErrorFlags;
     }
 
-    public void setWarningAsErrorBits(long bits) {
+    public CompilerOptions setWarningAsErrorBits(long bits) {
         warningAsErrorFlags |= bits;
+        return this;
     }
 
-    public void unsetWarningAsErrorBits(long bits) {
+    public CompilerOptions unsetWarningAsErrorBits(long bits) {
         warningAsErrorFlags &= ~bits;
+        return this;
     }
 
     public CompilerOptions putMetadata(String key, String value) {

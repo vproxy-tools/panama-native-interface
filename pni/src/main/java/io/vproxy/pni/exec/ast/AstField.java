@@ -1,5 +1,8 @@
 package io.vproxy.pni.exec.ast;
 
+import io.vproxy.pni.exec.CompilerOptions;
+import io.vproxy.pni.exec.WarnType;
+import io.vproxy.pni.exec.internal.PNILogger;
 import io.vproxy.pni.exec.internal.PointerInfo;
 import io.vproxy.pni.exec.internal.Utils;
 import io.vproxy.pni.exec.internal.VarOpts;
@@ -37,7 +40,7 @@ public class AstField {
         }
     }
 
-    public void validate(String path, List<String> errors) {
+    public void validate(CompilerOptions opts, String path, List<String> errors) {
         path = path + "#field(" + name + ")";
         if (typeRef == null) {
             errors.add(path + ": unable to find typeRef: " + type);
@@ -85,6 +88,11 @@ public class AstField {
                     errors.add(path + ": invalid @BitField, bit size (" + totalSize + ") is larger than the field (" + allowedSize + ")");
                 }
             }
+        }
+
+        var align = getAlign();
+        if (align > 1 && (align & align - 1) != 0) {
+            PNILogger.warn(errors, path, annos, opts, WarnType.ALIGNMENT_NOT_POWER_OF_2, "alignment is not power of 2");
         }
     }
 

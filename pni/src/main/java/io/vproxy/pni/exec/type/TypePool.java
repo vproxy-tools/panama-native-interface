@@ -36,6 +36,7 @@ public class TypePool {
         record(AnnoRawTypeInfo.get());
         record(AnnoSizeofTypeInfo.get());
         record(AnnoStructTypeInfo.get());
+        record(AnnoSuppressTypeInfo.get());
         record(AnnoTrivialTypeInfo.get());
         record(AnnoUnionTypeInfo.get());
         record(AnnoUnsignedTypeInfo.get());

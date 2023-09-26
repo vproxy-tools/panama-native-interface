@@ -121,6 +121,14 @@ public class TestTypesNoGen {
     }
 
     @Test
+    public void AnnoSuppress() {
+        var t = AnnoSuppressTypeInfo.get();
+        assertEquals("io.vproxy.pni.annotation.Suppress", t.name());
+        assertEquals("io/vproxy/pni/annotation/Suppress", t.internalName());
+        assertEquals("Lio/vproxy/pni/annotation/Suppress;", t.desc());
+    }
+
+    @Test
     public void AnnoTrivial() {
         var t = AnnoTrivialTypeInfo.get();
         assertEquals("io.vproxy.pni.annotation.Trivial", t.name());

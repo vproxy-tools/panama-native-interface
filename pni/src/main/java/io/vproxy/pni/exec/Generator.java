@@ -1,9 +1,11 @@
 package io.vproxy.pni.exec;
 
+import io.vproxy.pni.exec.ast.AstClass;
 import io.vproxy.pni.exec.generator.*;
 import io.vproxy.pni.exec.internal.*;
 
 import java.io.File;
+import java.util.List;
 
 public class Generator {
     private final CompilerOptions opts;
@@ -18,6 +20,7 @@ public class Generator {
 
         var classReaders = new JavaReader(opts.getClasspath(), opts).read();
         var classes = new ASTReader(classReaders, opts).read();
+        lastClasses = classes;
         for (var cls : classes) {
             var generate = opts.getFilters().isEmpty();
             for (var f : opts.getFilters()) {
@@ -39,4 +42,7 @@ public class Generator {
             new CUpcallImplFileGenerator(cls, opts).flush(new File(opts.getCOutputDirectory()));
         }
     }
+
+    // only for testing, will use reflect to retrieve
+    @SuppressWarnings({"unused", "FieldCanBeLocal"}) private List<AstClass> lastClasses;
 }
