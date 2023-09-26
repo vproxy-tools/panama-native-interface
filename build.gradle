@@ -186,6 +186,7 @@ project(":unittest") {
     dependencies {
         implementation project(":api")
         implementation project(":pni")
+        testImplementation 'io.vproxy:commons:1.1.3'
         testImplementation 'junit:junit:4.13.2'
     }
     task runUnitTest(type: Test) {

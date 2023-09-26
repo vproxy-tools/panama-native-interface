@@ -10,6 +10,7 @@ import org.junit.runner.RunWith;
     TestObjectHolder.class,
     TestValidation.class,
     TestAllocator.class,
+    TestWarningFlags.class,
 })
 @RunWith(org.junit.runners.Suite.class)
 public class Suite {
