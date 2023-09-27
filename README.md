@@ -879,6 +879,7 @@ You can register you implementation via `PooledAllocator.setXxxProvider`:
   is less than the integer type memory size.  
   You must use bit fields with caution. The most common use case of bit fields is to define switches, and this should
   work well usually, but it's **NOT** guarenteed. \[1\]
+* A JMH benchmark shows that **disabling** inlining of `ConcurrentHashMap#get` can improve performance when retrieving values from `ObjectHolder`. However the benchmark only shows performance of the certain case. You may try to add or remove jvm option `-XX:CompileCommand=dontinline,io.vproxy.pni.impl.ForceNoInlineConcurrentLongMap::*` and bench your own code.
 
 > \[1\] C11: An implementation may allocate any addressable storage unit large enough to hold a bit-field. If enough space remains, a bit-field that immediately follows another bit-field in a structure shall be packed into adjacent bits of the same unit. If insufficient space remains, whether a bit-field that does not fit is put into the next unit or overlaps adjacent units is implementation-defined. The order of allocation of bit-fields within a unit (high-order to low-order or low-order to high-order) is implementation-defined. The alignment of the addressable storage unit is unspecified.
 
