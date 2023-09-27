@@ -1,5 +1,6 @@
 package io.vproxy.pni;
 
+import io.vproxy.pni.impl.Utils;
 import io.vproxy.pni.unsafe.SunUnsafe;
 
 import java.lang.foreign.*;
@@ -7,6 +8,7 @@ import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodType;
 import java.lang.invoke.VarHandle;
+import java.util.HashMap;
 import java.util.Objects;
 
 public abstract class PNIFunc<T> {
@@ -104,6 +106,11 @@ public abstract class PNIFunc<T> {
         if (len < 0) {
             System.out.println("[PNI][WARN][PNIFunc#cinit] invalid " + KEY + ": value should >= 0: " + len + ", the value is modified to 0");
             len = 0;
+        }
+        if ((len & (len - 1)) != 0) {
+            int n = Utils.smallestPositivePowerOf2GE(len);
+            System.out.println("[PNI][WARN][PNIFunc#cinit] invalid " + KEY + ": not power of 2: " + len + ", the value is modified to " + n);
+            len = n;
         }
         holder = new ObjectHolder<>(len);
     }

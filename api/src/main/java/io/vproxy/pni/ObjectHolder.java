@@ -1,5 +1,7 @@
 package io.vproxy.pni;
 
+import io.vproxy.pni.impl.ForceNoInlineConcurrentLongMap;
+
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.atomic.AtomicLong;
@@ -10,6 +12,7 @@ import java.util.concurrent.locks.ReentrantLock;
 public class ObjectHolder<T> {
     private final AtomicLong indexCounter = new AtomicLong();
     private final ConcurrentMap<Long, T> storage = new ConcurrentHashMap<>();
+    private final ForceNoInlineConcurrentLongMap<T> storageOpaque = new ForceNoInlineConcurrentLongMap<>(storage);
     private final AtomicReferenceArray<Box<T>> fastStorage; // step 1
     private final Lock fastStorageLock = new ReentrantLock();
 
@@ -17,6 +20,9 @@ public class ObjectHolder<T> {
     }
 
     public ObjectHolder(int fastStorageSize) {
+        if ((fastStorageSize & (fastStorageSize - 1)) != 0) {
+            throw new IllegalArgumentException("fastStorageSize is not power of 2: " + fastStorageSize);
+        }
         fastStorage = new AtomicReferenceArray<>(fastStorageSize);
     }
 
@@ -29,7 +35,7 @@ public class ObjectHolder<T> {
         } while (indexIsInUse(index));
 
         if (fastStorage.length() != 0) {
-            var arrIdx = (int) (Math.abs(index) % fastStorage.length());
+            var arrIdx = (int) (Math.abs(index) & (fastStorage.length() - 1));
             fastStorageLock.lock();
             try {
                 if (fastStorage.get(arrIdx) == null) {
@@ -47,7 +53,7 @@ public class ObjectHolder<T> {
 
     private boolean indexIsInUse(long index) {
         if (fastStorage.length() != 0) {
-            var arrIdx = (int) (Math.abs(index) % fastStorage.length());
+            var arrIdx = (int) (Math.abs(index) & (fastStorage.length() - 1));
             var box = fastStorage.get(arrIdx);
             if (box != null && box.index == index) {
                 return true;
@@ -56,11 +62,11 @@ public class ObjectHolder<T> {
         return storage.containsKey(index);
     }
 
-    private T tryToFindFuncFast(long index) {
+    private T tryToFindFast(long index) {
         if (fastStorage.length() == 0) {
             return null;
         }
-        int arrIdx = (int) (Math.abs(index) % fastStorage.length());
+        int arrIdx = (int) (Math.abs(index) & (fastStorage.length() - 1));
         var box = fastStorage.get(arrIdx);
         if (box == null) {
             return null;
@@ -72,16 +78,16 @@ public class ObjectHolder<T> {
     }
 
     public T get(long index) {
-        T obj = tryToFindFuncFast(index);
+        T obj = tryToFindFast(index);
         if (obj != null) {
             return obj;
         }
-        return storage.get(index);
+        return storageOpaque.get(index);
     }
 
     public T remove(long index) {
         if (fastStorage.length() != 0) {
-            int arrIdx = (int) (Math.abs(index) % fastStorage.length());
+            int arrIdx = (int) (Math.abs(index) & (fastStorage.length() - 1));
             fastStorageLock.lock();
             try {
                 var box = fastStorage.get(arrIdx);

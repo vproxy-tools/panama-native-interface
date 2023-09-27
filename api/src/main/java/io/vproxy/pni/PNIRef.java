@@ -1,5 +1,6 @@
 package io.vproxy.pni;
 
+import io.vproxy.pni.impl.Utils;
 import io.vproxy.pni.unsafe.SunUnsafe;
 
 import java.lang.foreign.*;
@@ -84,7 +85,7 @@ public class PNIRef<T> {
 
     private PNIRef(MemorySegment MEMORY) {
         this.MEMORY = MEMORY.reinterpret(LAYOUT.byteSize());
-        this.ref = null;
+        this.ref = getRef(MEMORY);
     }
 
     private static final ObjectHolder<PNIRef<?>> holder;
@@ -101,6 +102,11 @@ public class PNIRef<T> {
         if (len < 0) {
             System.out.println("[PNI][WARN][PNIRef#cinit] invalid " + KEY + ": value should >= 0: " + len + ", the value is modified to 0");
             len = 0;
+        }
+        if ((len & (len - 1)) != 0) {
+            int n = Utils.smallestPositivePowerOf2GE(len);
+            System.out.println("[PNI][WARN][PNIRef#cinit] invalid " + KEY + ": not power of 2: " + len + ", the value is modified to " + n);
+            len = n;
         }
         holder = new ObjectHolder<>(len);
     }
@@ -145,11 +151,7 @@ public class PNIRef<T> {
     }
 
     public T getRef() {
-        if (this.ref != null) {
-            return this.ref;
-        }
-
-        return getRef(MEMORY);
+        return ref;
     }
 
     public static <T> T getRef(MemorySegment seg) {
