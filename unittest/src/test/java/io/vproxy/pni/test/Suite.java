@@ -11,6 +11,8 @@ import org.junit.runner.RunWith;
     TestValidation.class,
     TestAllocator.class,
     TestWarningFlags.class,
+    TestRef.class,
+    TestUtils.class,
 })
 @RunWith(org.junit.runners.Suite.class)
 public class Suite {

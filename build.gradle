@@ -351,6 +351,7 @@ project(':performance') {
     }
     dependencies {
         implementation 'org.openjdk.jmh:jmh-generator-annprocess:1.37'
+        implementation project(':api')
     }
 }
 
