@@ -8,7 +8,9 @@ import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodType;
 import java.lang.invoke.VarHandle;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 public class PNIRef<T> {
     private static final Arena UPCALL_STUB_ARENA = Arena.ofShared(); // should not be released
@@ -178,6 +180,23 @@ public class PNIRef<T> {
         release(getIndex());
     }
 
+    @Override
+    public String toString() {
+        var sb = new StringBuilder();
+        toString(sb, 0, new HashSet<>(), false);
+        return sb.toString();
+    }
+
+    @SuppressWarnings("unused")
+    public void toString(StringBuilder sb, int indent, Set<NativeObjectTuple> visited, boolean corrupted) {
+        if (visited.add(new NativeObjectTuple(getClass(), MEMORY.address()))) {
+            sb.append("PNIRef(").append(getRef()).append(")");
+        } else {
+            sb.append("<...>");
+        }
+        sb.append("@").append(Long.toString(MEMORY.address(), 16));
+    }
+
     public static class Func<T> extends PNIFunc<T> {
         private Func(CallSite<T> func) {
             super(func);
@@ -206,6 +225,11 @@ public class PNIRef<T> {
         @Override
         protected T construct(MemorySegment seg) {
             return getRef(seg);
+        }
+
+        @Override
+        protected String toStringTypeName() {
+            return "PNIRef.Func";
         }
     }
 }

@@ -93,6 +93,11 @@ public class VoidTypeInfo extends TypeInfo {
         throw new UnsupportedOperationException();
     }
 
+    @Override
+    public void javaToString(StringBuilder sb, int indent, String callGetter, VarOpts opts) {
+        throw new UnsupportedOperationException();
+    }
+
     private VoidTypeInfo() {
     }
 

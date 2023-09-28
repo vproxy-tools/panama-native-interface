@@ -165,6 +165,14 @@ public class StringTypeInfo extends BuiltInReferenceTypeInfo {
         return "(" + name + ".address() == 0 ? null : new PNIString(" + name + "))";
     }
 
+    @Override
+    public void javaToString(StringBuilder sb, int indent, String callGetter, VarOpts opts) {
+        Utils.appendIndent(sb, indent)
+            .append("if (CORRUPTED_MEMORY) SB.append(\"<?>\");\n");
+        Utils.appendIndent(sb, indent)
+            .append("else SB.append(").append(callGetter).append(");\n");
+    }
+
     private static final StringTypeInfo INSTANCE = new StringTypeInfo();
 
     public static StringTypeInfo get() {

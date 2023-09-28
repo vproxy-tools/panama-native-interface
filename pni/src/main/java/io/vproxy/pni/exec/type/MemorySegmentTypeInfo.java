@@ -116,6 +116,12 @@ public class MemorySegmentTypeInfo extends BuiltInReferenceTypeInfo {
             .append("return RESULT == null ? MemorySegment.NULL : RESULT;\n");
     }
 
+    @Override
+    public void javaToString(StringBuilder sb, int indent, String callGetter, VarOpts opts) {
+        Utils.appendIndent(sb, indent)
+            .append("SB.append(PanamaUtils.memorySegmentToString(").append(callGetter).append("));\n");
+    }
+
     private static final MemorySegmentTypeInfo INSTANCE = new MemorySegmentTypeInfo();
 
     public static MemorySegmentTypeInfo get() {

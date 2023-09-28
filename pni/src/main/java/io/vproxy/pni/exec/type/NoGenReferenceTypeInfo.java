@@ -81,4 +81,9 @@ public abstract class NoGenReferenceTypeInfo extends BuiltInReferenceTypeInfo {
     public void convertFromUpcallReturn(StringBuilder sb, int indent, VarOpts opts) {
         throw new UnsupportedOperationException();
     }
+
+    @Override
+    public void javaToString(StringBuilder sb, int indent, String callGetter, VarOpts opts) {
+        throw new UnsupportedOperationException();
+    }
 }

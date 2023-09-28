@@ -1,10 +1,13 @@
 package io.vproxy.pni.array;
 
 import io.vproxy.pni.Allocator;
+import io.vproxy.pni.NativeObjectTuple;
 import io.vproxy.pni.PNIBuf;
 
 import java.lang.foreign.MemorySegment;
 import java.lang.foreign.ValueLayout;
+import java.util.HashSet;
+import java.util.Set;
 
 public class CharArray {
     public final MemorySegment MEMORY;
@@ -37,5 +40,29 @@ public class CharArray {
         var pnibuf = new PNIBuf(allocator);
         pnibuf.set(MEMORY);
         return pnibuf;
+    }
+
+    public String toString() {
+        var sb = new StringBuilder();
+        toString(sb, 0, new HashSet<>(), false);
+        return sb.toString();
+    }
+
+    @SuppressWarnings("unused")
+    public void toString(StringBuilder sb, int indent, Set<NativeObjectTuple> visited, boolean corrupted) {
+        sb.append("CharArray[");
+        for (long i = 0, len = length(); i < len; ++i) {
+            if (i != 0) {
+                sb.append(", ");
+            }
+            char c = get(i);
+            if (Character.isISOControl(c)) {
+                sb.append(".");
+            } else {
+                sb.append(c);
+            }
+        }
+        sb.append("]");
+        sb.append("@").append(Long.toString(MEMORY.address(), 16));
     }
 }

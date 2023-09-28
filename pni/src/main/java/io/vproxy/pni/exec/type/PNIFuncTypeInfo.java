@@ -106,6 +106,22 @@ public class PNIFuncTypeInfo extends BuiltInReferenceTypeInfo {
         throw new UnsupportedOperationException("implemented in subclass");
     }
 
+    @Override
+    public void javaToString(StringBuilder sb, int indent, String callGetter, VarOpts opts) {
+        Utils.appendIndent(sb, indent)
+            .append("if (CORRUPTED_MEMORY) SB.append(\"<?>\");\n");
+        Utils.appendIndent(sb, indent)
+            .append("else {\n");
+        Utils.appendIndent(sb, indent + 4)
+            .append("var VALUE = ").append(callGetter).append(";\n");
+        Utils.appendIndent(sb, indent + 4)
+            .append("if (VALUE == null) SB.append(\"null\");\n");
+        Utils.appendIndent(sb, indent + 4)
+            .append("else VALUE.toString(SB, INDENT, VISITED, CORRUPTED_MEMORY);\n");
+        Utils.appendIndent(sb, indent)
+            .append("}\n");
+    }
+
     private static final PNIFuncTypeInfo INSTANCE = new PNIFuncTypeInfo();
 
     public static PNIFuncTypeInfo get() {

@@ -184,6 +184,14 @@ public class ByteBufferTypeInfo extends BuiltInReferenceTypeInfo {
             .append("return return_;\n");
     }
 
+    @Override
+    public void javaToString(StringBuilder sb, int indent, String callGetter, VarOpts opts) {
+        Utils.appendIndent(sb, indent)
+            .append("if (CORRUPTED_MEMORY) SB.append(\"<?>\");\n");
+        Utils.appendIndent(sb, indent)
+            .append("else SB.append(PanamaUtils.byteBufferToString(").append(callGetter).append("));\n");
+    }
+
     private static final ByteBufferTypeInfo INSTANCE = new ByteBufferTypeInfo();
 
     public static ByteBufferTypeInfo get() {

@@ -417,4 +417,23 @@ public class ArrayTypeInfo extends TypeInfo {
         Utils.appendIndent(sb, indent)
             .append("return return_;\n");
     }
+
+    @Override
+    public void javaToString(StringBuilder sb, int indent, String callGetter, VarOpts opts) {
+        Utils.appendIndent(sb, indent)
+            .append("if (CORRUPTED_MEMORY) SB.append(\"<?>\");\n");
+        if (elementType instanceof ByteTypeInfo) {
+            Utils.appendIndent(sb, indent)
+                .append("else SB.append(PanamaUtils.memorySegmentToString(").append(callGetter).append("));\n");
+        } else {
+            Utils.appendIndent(sb, indent).append("else {\n");
+            Utils.appendIndent(sb, indent + 4)
+                .append("var VALUE = ").append(callGetter).append(";\n");
+            Utils.appendIndent(sb, indent + 4)
+                .append("if (VALUE == null) SB.append(\"null\");\n");
+            Utils.appendIndent(sb, indent + 4)
+                .append("else VALUE.toString(SB, INDENT + 4, VISITED, CORRUPTED_MEMORY);\n");
+            Utils.appendIndent(sb, indent).append("}\n");
+        }
+    }
 }

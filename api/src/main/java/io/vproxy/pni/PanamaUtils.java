@@ -157,6 +157,52 @@ public class PanamaUtils {
         return MemorySegment.ofAddress(seg.address() - pos).reinterpret(arg.capacity());
     }
 
+    public static String memorySegmentToString(MemorySegment seg) {
+        if (seg == null)
+            return "null";
+        var sb = new StringBuilder();
+        sb.append("[");
+        for (long i = 0, len = seg.byteSize(); i < len; ++i) {
+            if (i != 0) {
+                sb.append(" ");
+            }
+            byte b = seg.get(ValueLayout.JAVA_BYTE, i);
+            int n = b & 0xff;
+            var hex = Integer.toHexString(n);
+            if (hex.length() == 1) {
+                hex = "0" + hex;
+            }
+            sb.append(hex);
+        }
+        sb.append("]@").append(Long.toString(seg.address(), 16));
+        return sb.toString();
+    }
+
+    public static String byteBufferToString(ByteBuffer buf) {
+        if (buf == null)
+            return "null";
+        var sb = new StringBuilder();
+        sb.append("[");
+        for (int i = buf.position(), lim = buf.limit(); i < lim; ++i) {
+            if (i != 0) {
+                sb.append(" ");
+            }
+            byte b = buf.get(i);
+            int n = b & 0xff;
+            var hex = Integer.toHexString(n);
+            if (hex.length() == 1) {
+                hex = "0" + hex;
+            }
+            sb.append(hex);
+        }
+        sb.append("]");
+        if (buf.isDirect()) {
+            sb.append("@");
+            sb.append(Long.toString(MemorySegment.ofBuffer(buf).address(), 16));
+        }
+        return sb.toString();
+    }
+
     public static PNIException convertInvokeExactException(Throwable t) {
         throw new PNIException("invokeExact throws exception", t);
     }

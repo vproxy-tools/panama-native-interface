@@ -205,6 +205,8 @@ public class JavaFileGenerator {
 
         if (!cls.isInterface) {
             sb.append("\n");
+            generateJavaToString(sb, 4);
+            sb.append("\n");
             sb.append("    public static class Array extends RefArray<").append(cls.simpleName()).append("> {\n");
             sb.append("        public Array(MemorySegment buf) {\n");
             sb.append("            super(buf, ").append(cls.simpleName()).append(".LAYOUT);\n");
@@ -217,6 +219,8 @@ public class JavaFileGenerator {
             sb.append("        public Array(PNIBuf buf) {\n");
             sb.append("            this(buf.get());\n");
             sb.append("        }\n");
+            sb.append("\n");
+            generateJavaArrayToString(sb, 8);
             sb.append("\n");
             generateOverrideConstructAndGetSegment(sb);
             sb.append("    }\n");
@@ -246,11 +250,95 @@ public class JavaFileGenerator {
             sb.append("            return new Func(MEMORY);\n");
             sb.append("        }\n");
             sb.append("\n");
+            generateJavaFuncToString(sb, 8);
+            sb.append("\n");
             generateOverrideConstruct(sb);
             sb.append("    }\n");
         }
 
         sb.append("}\n");
+    }
+
+    private void generateJavaToString(StringBuilder sb, int indent) {
+        Utils.appendIndent(sb, indent).append("@Override\n");
+        Utils.appendIndent(sb, indent)
+            .append("public String toString() {\n");
+        Utils.appendIndent(sb, indent + 4)
+            .append("var sb = new StringBuilder();\n");
+        Utils.appendIndent(sb, indent + 4)
+            .append("toString(sb, 0, new java.util.HashSet<>(), ");
+        sb.append(cls.isUnion());
+        sb.append(");\n");
+        Utils.appendIndent(sb, indent + 4)
+            .append("return sb.toString();\n");
+        Utils.appendIndent(sb, indent).append("}\n");
+        sb.append("\n");
+        Utils.appendIndent(sb, indent)
+            .append("public void toString(StringBuilder SB, int INDENT, java.util.Set<NativeObjectTuple> VISITED, boolean CORRUPTED_MEMORY) {\n");
+        Utils.appendIndent(sb, indent + 4)
+            .append("if (!VISITED.add(new NativeObjectTuple(getClass(), MEMORY.address()))) {\n");
+        Utils.appendIndent(sb, indent + 8)
+            .append("SB.append(\"<...>@\").append(Long.toString(MEMORY.address(), 16));\n");
+        Utils.appendIndent(sb, indent + 8)
+            .append("return;\n");
+        Utils.appendIndent(sb, indent + 4)
+            .append("}\n");
+        if (cls.isUnion()) {
+            Utils.appendIndent(sb, indent + 4)
+                .append("CORRUPTED_MEMORY = true;\n");
+        }
+        Utils.appendIndent(sb, indent + 4).append("SB.append(\"").append(cls.simpleName());
+        if (cls.isUnion()) {
+            sb.append("(\\n");
+        } else {
+            sb.append("{\\n");
+        }
+        sb.append("\");\n");
+        for (int i = 0; i < cls.fields.size(); i++) {
+            var f = cls.fields.get(i);
+            get(f).generateJavaToString(sb, indent + 4);
+            if (i < cls.fields.size() - 1) {
+                Utils.appendIndent(sb, indent + 4).append("SB.append(\",\\n\");\n");
+            } else {
+                Utils.appendIndent(sb, indent + 4).append("SB.append(\"\\n\");\n");
+            }
+        }
+        Utils.appendIndent(sb, indent + 4)
+            .append("SB.append(\" \".repeat(INDENT)).append(\"");
+        if (cls.isUnion()) {
+            sb.append(")");
+        } else {
+            sb.append("}");
+        }
+        sb.append("@\").append(Long.toString(MEMORY.address(), 16));\n");
+        Utils.appendIndent(sb, indent).append("}\n");
+    }
+
+    private void generateJavaArrayToString(StringBuilder sb, int indent) {
+        Utils.appendIndent(sb, indent).append("@Override\n");
+        Utils.appendIndent(sb, indent)
+            .append("protected void elementToString(")
+            .append(cls.fullName())
+            .append(" ELEM, StringBuilder SB, int INDENT, java.util.Set<NativeObjectTuple> VISITED, boolean CORRUPTED_MEMORY) {\n");
+        Utils.appendIndent(sb, indent + 4)
+            .append("ELEM.toString(SB, INDENT, VISITED, CORRUPTED_MEMORY);\n");
+        Utils.appendIndent(sb, indent).append("}\n");
+        sb.append("\n");
+        Utils.appendIndent(sb, indent).append("@Override\n");
+        Utils.appendIndent(sb, indent)
+            .append("protected String toStringTypeName() {\n");
+        Utils.appendIndent(sb, indent + 4)
+            .append("return \"").append(cls.simpleName()).append(".Array\";\n");
+        Utils.appendIndent(sb, indent).append("}\n");
+    }
+
+    private void generateJavaFuncToString(StringBuilder sb, int indent) {
+        Utils.appendIndent(sb, indent).append("@Override\n");
+        Utils.appendIndent(sb, indent)
+            .append("protected String toStringTypeName() {\n");
+        Utils.appendIndent(sb, indent + 4)
+            .append("return \"").append(cls.simpleName()).append(".Func\";\n");
+        Utils.appendIndent(sb, indent).append("}\n");
     }
 
     private void generateOverrideConstructAndGetSegment(StringBuilder sb) {
@@ -411,6 +499,15 @@ public class JavaFileGenerator {
             if (field.padding > 0) {
                 Utils.appendIndent(sb, indent).append("OFFSET += ").append(field.padding).append("; /* padding */\n");
             }
+        }
+
+        public void generateJavaToString(StringBuilder sb, int indent) {
+            Utils.appendIndent(sb, indent).append("{\n");
+            Utils.appendIndent(sb, indent + 4)
+                .append("SB.append(\" \".repeat(INDENT + 4))")
+                .append(".append(\"").append(field.name).append(" => \");\n");
+            field.typeRef.javaToString(sb, indent + 4, Utils.getterName(field.name) + "()", field.varOpts());
+            Utils.appendIndent(sb, indent).append("}\n");
         }
     }
 

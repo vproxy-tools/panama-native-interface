@@ -71,4 +71,10 @@ public abstract class PrimitiveTypeInfo extends TypeInfo {
         Utils.appendIndent(sb, indent)
             .append("return RESULT;\n");
     }
+
+    @Override
+    public void javaToString(StringBuilder sb, int indent, String callGetter, VarOpts opts) {
+        Utils.appendIndent(sb, indent)
+            .append("SB.append(").append(callGetter).append(");\n");
+    }
 }

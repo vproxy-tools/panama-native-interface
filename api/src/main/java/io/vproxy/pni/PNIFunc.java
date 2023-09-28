@@ -8,8 +8,9 @@ import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodType;
 import java.lang.invoke.VarHandle;
-import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 public abstract class PNIFunc<T> {
     private static final Arena UPCALL_STUB_ARENA = Arena.ofShared(); // should not be released
@@ -218,6 +219,27 @@ public abstract class PNIFunc<T> {
         release(getIndex());
     }
 
+    @Override
+    public String toString() {
+        var sb = new StringBuilder();
+        toString(sb, 0, new HashSet<>(), false);
+        return sb.toString();
+    }
+
+    @SuppressWarnings("unused")
+    public void toString(StringBuilder sb, int indent, Set<NativeObjectTuple> visited, boolean corrupted) {
+        if (visited.add(new NativeObjectTuple(getClass(), MEMORY.address()))) {
+            sb.append(toStringTypeName()).append("(").append(getCallSite()).append(")");
+        } else {
+            sb.append("<...>");
+        }
+        sb.append("@").append(Long.toString(MEMORY.address(), 16));
+    }
+
+    protected String toStringTypeName() {
+        return "PNIFunc";
+    }
+
     public static class VoidFunc extends PNIFunc<Void> {
         private VoidFunc(CallSite<Void> func) {
             super(func);
@@ -246,6 +268,11 @@ public abstract class PNIFunc<T> {
         @Override
         protected Void construct(MemorySegment seg) {
             return null;
+        }
+
+        @Override
+        protected String toStringTypeName() {
+            return "PNIFunc.VoidFunc";
         }
     }
 }

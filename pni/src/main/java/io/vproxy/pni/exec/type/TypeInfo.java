@@ -152,4 +152,6 @@ public abstract class TypeInfo {
         Utils.appendIndent(sb, indent)
             .append("return RESULT == null ? MemorySegment.NULL : RESULT.MEMORY;\n");
     }
+
+    public abstract void javaToString(StringBuilder sb, int indent, String callGetter, VarOpts opts);
 }
