@@ -57,6 +57,33 @@ public class UserData {
         this(ALLOCATOR.allocate(LAYOUT.byteSize()));
     }
 
+    @Override
+    public String toString() {
+        var sb = new StringBuilder();
+        toString(sb, 0, new java.util.HashSet<>(), true);
+        return sb.toString();
+    }
+
+    public void toString(StringBuilder SB, int INDENT, java.util.Set<NativeObjectTuple> VISITED, boolean CORRUPTED_MEMORY) {
+        if (!VISITED.add(new NativeObjectTuple(getClass(), MEMORY.address()))) {
+            SB.append("<...>@").append(Long.toString(MEMORY.address(), 16));
+            return;
+        }
+        CORRUPTED_MEMORY = true;
+        SB.append("UserData(\n");
+        {
+            SB.append(" ".repeat(INDENT + 4)).append("userdata => ");
+            SB.append(PanamaUtils.memorySegmentToString(getUserdata()));
+        }
+        SB.append(",\n");
+        {
+            SB.append(" ".repeat(INDENT + 4)).append("udata64 => ");
+            SB.append(getUdata64());
+        }
+        SB.append("\n");
+        SB.append(" ".repeat(INDENT)).append(")@").append(Long.toString(MEMORY.address(), 16));
+    }
+
     public static class Array extends RefArray<UserData> {
         public Array(MemorySegment buf) {
             super(buf, UserData.LAYOUT);
@@ -68,6 +95,16 @@ public class UserData {
 
         public Array(PNIBuf buf) {
             this(buf.get());
+        }
+
+        @Override
+        protected void elementToString(io.vproxy.pni.sample.UserData ELEM, StringBuilder SB, int INDENT, java.util.Set<NativeObjectTuple> VISITED, boolean CORRUPTED_MEMORY) {
+            ELEM.toString(SB, INDENT, VISITED, CORRUPTED_MEMORY);
+        }
+
+        @Override
+        protected String toStringTypeName() {
+            return "UserData.Array";
         }
 
         @Override
@@ -107,10 +144,15 @@ public class UserData {
         }
 
         @Override
+        protected String toStringTypeName() {
+            return "UserData.Func";
+        }
+
+        @Override
         protected UserData construct(MemorySegment seg) {
             return new UserData(seg);
         }
     }
 }
 // metadata.generator-version: pni test
-// sha256:4b5ec65cd22222a49aaf0574c33a2cb4f163f033cb64d13323b212ab08cdaf80
+// sha256:de3efba06987629ec1cf2c744898966b41811b205273c248bff2bc861a622b7d

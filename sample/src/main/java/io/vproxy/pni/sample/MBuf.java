@@ -94,6 +94,47 @@ public class MBuf {
         this(ALLOCATOR.allocate(LAYOUT.byteSize()));
     }
 
+    @Override
+    public String toString() {
+        var sb = new StringBuilder();
+        toString(sb, 0, new java.util.HashSet<>(), false);
+        return sb.toString();
+    }
+
+    public void toString(StringBuilder SB, int INDENT, java.util.Set<NativeObjectTuple> VISITED, boolean CORRUPTED_MEMORY) {
+        if (!VISITED.add(new NativeObjectTuple(getClass(), MEMORY.address()))) {
+            SB.append("<...>@").append(Long.toString(MEMORY.address(), 16));
+            return;
+        }
+        SB.append("MBuf{\n");
+        {
+            SB.append(" ".repeat(INDENT + 4)).append("bufAddr => ");
+            SB.append(PanamaUtils.memorySegmentToString(getBufAddr()));
+        }
+        SB.append(",\n");
+        {
+            SB.append(" ".repeat(INDENT + 4)).append("pktLen => ");
+            SB.append(getPktLen());
+        }
+        SB.append(",\n");
+        {
+            SB.append(" ".repeat(INDENT + 4)).append("pktOff => ");
+            SB.append(getPktOff());
+        }
+        SB.append(",\n");
+        {
+            SB.append(" ".repeat(INDENT + 4)).append("bufLen => ");
+            SB.append(getBufLen());
+        }
+        SB.append(",\n");
+        {
+            SB.append(" ".repeat(INDENT + 4)).append("userdata => ");
+            getUserdata().toString(SB, INDENT + 4, VISITED, CORRUPTED_MEMORY);
+        }
+        SB.append("\n");
+        SB.append(" ".repeat(INDENT)).append("}@").append(Long.toString(MEMORY.address(), 16));
+    }
+
     public static class Array extends RefArray<MBuf> {
         public Array(MemorySegment buf) {
             super(buf, MBuf.LAYOUT);
@@ -105,6 +146,16 @@ public class MBuf {
 
         public Array(PNIBuf buf) {
             this(buf.get());
+        }
+
+        @Override
+        protected void elementToString(io.vproxy.pni.sample.MBuf ELEM, StringBuilder SB, int INDENT, java.util.Set<NativeObjectTuple> VISITED, boolean CORRUPTED_MEMORY) {
+            ELEM.toString(SB, INDENT, VISITED, CORRUPTED_MEMORY);
+        }
+
+        @Override
+        protected String toStringTypeName() {
+            return "MBuf.Array";
         }
 
         @Override
@@ -144,10 +195,15 @@ public class MBuf {
         }
 
         @Override
+        protected String toStringTypeName() {
+            return "MBuf.Func";
+        }
+
+        @Override
         protected MBuf construct(MemorySegment seg) {
             return new MBuf(seg);
         }
     }
 }
 // metadata.generator-version: pni test
-// sha256:9ae10a9ec28d9b7823e6b0c217ecaa701d58239b63c4b8dd41726da6e8275bcd
+// sha256:231e9f07fff2b96255c47175bd33da059c93c895511271b0583bba87941a197a
