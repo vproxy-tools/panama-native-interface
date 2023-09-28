@@ -111,6 +111,53 @@ public class GCCCompatibilityUnion {
         this(ALLOCATOR.allocate(LAYOUT.byteSize()));
     }
 
+    @Override
+    public String toString() {
+        var sb = new StringBuilder();
+        toString(sb, 0, new java.util.HashSet<>(), true);
+        return sb.toString();
+    }
+
+    public void toString(StringBuilder SB, int INDENT, java.util.Set<NativeObjectTuple> VISITED, boolean CORRUPTED_MEMORY) {
+        if (!VISITED.add(new NativeObjectTuple(getClass(), MEMORY.address()))) {
+            SB.append("<...>@").append(Long.toString(MEMORY.address(), 16));
+            return;
+        }
+        CORRUPTED_MEMORY = true;
+        SB.append("GCCCompatibilityUnion(\n");
+        {
+            SB.append(" ".repeat(INDENT + 4)).append("b => ");
+            SB.append(getB());
+        }
+        SB.append(",\n");
+        {
+            SB.append(" ".repeat(INDENT + 4)).append("s => ");
+            SB.append(getS());
+        }
+        SB.append(",\n");
+        {
+            SB.append(" ".repeat(INDENT + 4)).append("n => ");
+            SB.append(getN());
+        }
+        SB.append(",\n");
+        {
+            SB.append(" ".repeat(INDENT + 4)).append("f => ");
+            SB.append(getF());
+        }
+        SB.append(",\n");
+        {
+            SB.append(" ".repeat(INDENT + 4)).append("d => ");
+            SB.append(getD());
+        }
+        SB.append(",\n");
+        {
+            SB.append(" ".repeat(INDENT + 4)).append("l => ");
+            SB.append(getL());
+        }
+        SB.append("\n");
+        SB.append(" ".repeat(INDENT)).append(")@").append(Long.toString(MEMORY.address(), 16));
+    }
+
     public static class Array extends RefArray<GCCCompatibilityUnion> {
         public Array(MemorySegment buf) {
             super(buf, GCCCompatibilityUnion.LAYOUT);
@@ -122,6 +169,16 @@ public class GCCCompatibilityUnion {
 
         public Array(PNIBuf buf) {
             this(buf.get());
+        }
+
+        @Override
+        protected void elementToString(io.vproxy.pni.test.GCCCompatibilityUnion ELEM, StringBuilder SB, int INDENT, java.util.Set<NativeObjectTuple> VISITED, boolean CORRUPTED_MEMORY) {
+            ELEM.toString(SB, INDENT, VISITED, CORRUPTED_MEMORY);
+        }
+
+        @Override
+        protected String toStringTypeName() {
+            return "GCCCompatibilityUnion.Array";
         }
 
         @Override
@@ -161,10 +218,15 @@ public class GCCCompatibilityUnion {
         }
 
         @Override
+        protected String toStringTypeName() {
+            return "GCCCompatibilityUnion.Func";
+        }
+
+        @Override
         protected GCCCompatibilityUnion construct(MemorySegment seg) {
             return new GCCCompatibilityUnion(seg);
         }
     }
 }
 // metadata.generator-version: pni test
-// sha256:82463104b248938d0607bd480c73090a7bbc40f5e2e26b38a47930370e5b123f
+// sha256:2a503d8d6cdc2079e335dd93f83db16ec62e621d5a762d04d51f0768f2bab250

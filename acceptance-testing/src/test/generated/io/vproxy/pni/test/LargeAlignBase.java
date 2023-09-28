@@ -35,6 +35,27 @@ public class LargeAlignBase {
         this(ALLOCATOR.allocate(LAYOUT.byteSize()));
     }
 
+    @Override
+    public String toString() {
+        var sb = new StringBuilder();
+        toString(sb, 0, new java.util.HashSet<>(), false);
+        return sb.toString();
+    }
+
+    public void toString(StringBuilder SB, int INDENT, java.util.Set<NativeObjectTuple> VISITED, boolean CORRUPTED_MEMORY) {
+        if (!VISITED.add(new NativeObjectTuple(getClass(), MEMORY.address()))) {
+            SB.append("<...>@").append(Long.toString(MEMORY.address(), 16));
+            return;
+        }
+        SB.append("LargeAlignBase{\n");
+        {
+            SB.append(" ".repeat(INDENT + 4)).append("x => ");
+            SB.append(getX());
+        }
+        SB.append("\n");
+        SB.append(" ".repeat(INDENT)).append("}@").append(Long.toString(MEMORY.address(), 16));
+    }
+
     public static class Array extends RefArray<LargeAlignBase> {
         public Array(MemorySegment buf) {
             super(buf, LargeAlignBase.LAYOUT);
@@ -46,6 +67,16 @@ public class LargeAlignBase {
 
         public Array(PNIBuf buf) {
             this(buf.get());
+        }
+
+        @Override
+        protected void elementToString(io.vproxy.pni.test.LargeAlignBase ELEM, StringBuilder SB, int INDENT, java.util.Set<NativeObjectTuple> VISITED, boolean CORRUPTED_MEMORY) {
+            ELEM.toString(SB, INDENT, VISITED, CORRUPTED_MEMORY);
+        }
+
+        @Override
+        protected String toStringTypeName() {
+            return "LargeAlignBase.Array";
         }
 
         @Override
@@ -85,10 +116,15 @@ public class LargeAlignBase {
         }
 
         @Override
+        protected String toStringTypeName() {
+            return "LargeAlignBase.Func";
+        }
+
+        @Override
         protected LargeAlignBase construct(MemorySegment seg) {
             return new LargeAlignBase(seg);
         }
     }
 }
 // metadata.generator-version: pni test
-// sha256:71aa6e7a07c4e80ad1b0fc06714009453820fcc95b8553af5c20d194365d75ca
+// sha256:6173236d1109c6166cc3091489fe485759064e64b1a968f19b664a3ec681d9fa

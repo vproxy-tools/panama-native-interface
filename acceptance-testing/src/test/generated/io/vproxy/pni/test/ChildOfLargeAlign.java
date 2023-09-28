@@ -40,6 +40,27 @@ public class ChildOfLargeAlign extends io.vproxy.pni.test.LargeAlignBase {
         this(ALLOCATOR.allocate(LAYOUT.byteSize()));
     }
 
+    @Override
+    public String toString() {
+        var sb = new StringBuilder();
+        toString(sb, 0, new java.util.HashSet<>(), false);
+        return sb.toString();
+    }
+
+    public void toString(StringBuilder SB, int INDENT, java.util.Set<NativeObjectTuple> VISITED, boolean CORRUPTED_MEMORY) {
+        if (!VISITED.add(new NativeObjectTuple(getClass(), MEMORY.address()))) {
+            SB.append("<...>@").append(Long.toString(MEMORY.address(), 16));
+            return;
+        }
+        SB.append("ChildOfLargeAlign{\n");
+        {
+            SB.append(" ".repeat(INDENT + 4)).append("y => ");
+            SB.append(getY());
+        }
+        SB.append("\n");
+        SB.append(" ".repeat(INDENT)).append("}@").append(Long.toString(MEMORY.address(), 16));
+    }
+
     public static class Array extends RefArray<ChildOfLargeAlign> {
         public Array(MemorySegment buf) {
             super(buf, ChildOfLargeAlign.LAYOUT);
@@ -51,6 +72,16 @@ public class ChildOfLargeAlign extends io.vproxy.pni.test.LargeAlignBase {
 
         public Array(PNIBuf buf) {
             this(buf.get());
+        }
+
+        @Override
+        protected void elementToString(io.vproxy.pni.test.ChildOfLargeAlign ELEM, StringBuilder SB, int INDENT, java.util.Set<NativeObjectTuple> VISITED, boolean CORRUPTED_MEMORY) {
+            ELEM.toString(SB, INDENT, VISITED, CORRUPTED_MEMORY);
+        }
+
+        @Override
+        protected String toStringTypeName() {
+            return "ChildOfLargeAlign.Array";
         }
 
         @Override
@@ -90,10 +121,15 @@ public class ChildOfLargeAlign extends io.vproxy.pni.test.LargeAlignBase {
         }
 
         @Override
+        protected String toStringTypeName() {
+            return "ChildOfLargeAlign.Func";
+        }
+
+        @Override
         protected ChildOfLargeAlign construct(MemorySegment seg) {
             return new ChildOfLargeAlign(seg);
         }
     }
 }
 // metadata.generator-version: pni test
-// sha256:dc9a4eecda98eeee06803e7f282f7c2863ac6ff9e66dc396bb264eff455f4b3a
+// sha256:ae5dccc281e0326faa54e91c03182eb42286a2aa4af04432db98f0f2305853ea

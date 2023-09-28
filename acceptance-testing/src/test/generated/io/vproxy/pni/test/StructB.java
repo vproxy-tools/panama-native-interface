@@ -89,6 +89,53 @@ public class StructB {
         this(ALLOCATOR.allocate(LAYOUT.byteSize()));
     }
 
+    @Override
+    public String toString() {
+        var sb = new StringBuilder();
+        toString(sb, 0, new java.util.HashSet<>(), false);
+        return sb.toString();
+    }
+
+    public void toString(StringBuilder SB, int INDENT, java.util.Set<NativeObjectTuple> VISITED, boolean CORRUPTED_MEMORY) {
+        if (!VISITED.add(new NativeObjectTuple(getClass(), MEMORY.address()))) {
+            SB.append("<...>@").append(Long.toString(MEMORY.address(), 16));
+            return;
+        }
+        SB.append("StructB{\n");
+        {
+            SB.append(" ".repeat(INDENT + 4)).append("i => ");
+            SB.append(getI());
+        }
+        SB.append(",\n");
+        {
+            SB.append(" ".repeat(INDENT + 4)).append("c => ");
+            getC().toString(SB, INDENT + 4, VISITED, CORRUPTED_MEMORY);
+        }
+        SB.append(",\n");
+        {
+            SB.append(" ".repeat(INDENT + 4)).append("l => ");
+            SB.append(getL());
+        }
+        SB.append(",\n");
+        {
+            SB.append(" ".repeat(INDENT + 4)).append("d => ");
+            if (CORRUPTED_MEMORY) {
+                SB.append("<?>");
+            } else {
+                var VALUE = getD();
+                if (VALUE == null) SB.append("null");
+                else VALUE.toString(SB, INDENT + 4, VISITED, CORRUPTED_MEMORY);
+            }
+        }
+        SB.append(",\n");
+        {
+            SB.append(" ".repeat(INDENT + 4)).append("embedded => ");
+            getEmbedded().toString(SB, INDENT + 4, VISITED, CORRUPTED_MEMORY);
+        }
+        SB.append("\n");
+        SB.append(" ".repeat(INDENT)).append("}@").append(Long.toString(MEMORY.address(), 16));
+    }
+
     public static class Array extends RefArray<StructB> {
         public Array(MemorySegment buf) {
             super(buf, StructB.LAYOUT);
@@ -100,6 +147,16 @@ public class StructB {
 
         public Array(PNIBuf buf) {
             this(buf.get());
+        }
+
+        @Override
+        protected void elementToString(io.vproxy.pni.test.StructB ELEM, StringBuilder SB, int INDENT, java.util.Set<NativeObjectTuple> VISITED, boolean CORRUPTED_MEMORY) {
+            ELEM.toString(SB, INDENT, VISITED, CORRUPTED_MEMORY);
+        }
+
+        @Override
+        protected String toStringTypeName() {
+            return "StructB.Array";
         }
 
         @Override
@@ -139,10 +196,15 @@ public class StructB {
         }
 
         @Override
+        protected String toStringTypeName() {
+            return "StructB.Func";
+        }
+
+        @Override
         protected StructB construct(MemorySegment seg) {
             return new StructB(seg);
         }
     }
 }
 // metadata.generator-version: pni test
-// sha256:9dcd47ae41344ad43c38add1cf495580deee1757db8deaf2603a80b41aff6591
+// sha256:4cd01865a9e5819e84e175ab16e041828b4b53c3f3afacf49b7ac1f4949a7f51

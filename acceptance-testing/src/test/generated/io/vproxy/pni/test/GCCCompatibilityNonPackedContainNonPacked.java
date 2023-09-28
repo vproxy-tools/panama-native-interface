@@ -93,6 +93,37 @@ public class GCCCompatibilityNonPackedContainNonPacked {
         return ENV.returnLong();
     }
 
+    @Override
+    public String toString() {
+        var sb = new StringBuilder();
+        toString(sb, 0, new java.util.HashSet<>(), false);
+        return sb.toString();
+    }
+
+    public void toString(StringBuilder SB, int INDENT, java.util.Set<NativeObjectTuple> VISITED, boolean CORRUPTED_MEMORY) {
+        if (!VISITED.add(new NativeObjectTuple(getClass(), MEMORY.address()))) {
+            SB.append("<...>@").append(Long.toString(MEMORY.address(), 16));
+            return;
+        }
+        SB.append("GCCCompatibilityNonPackedContainNonPacked{\n");
+        {
+            SB.append(" ".repeat(INDENT + 4)).append("b1 => ");
+            SB.append(getB1());
+        }
+        SB.append(",\n");
+        {
+            SB.append(" ".repeat(INDENT + 4)).append("normal => ");
+            getNormal().toString(SB, INDENT + 4, VISITED, CORRUPTED_MEMORY);
+        }
+        SB.append(",\n");
+        {
+            SB.append(" ".repeat(INDENT + 4)).append("n2 => ");
+            SB.append(getN2());
+        }
+        SB.append("\n");
+        SB.append(" ".repeat(INDENT)).append("}@").append(Long.toString(MEMORY.address(), 16));
+    }
+
     public static class Array extends RefArray<GCCCompatibilityNonPackedContainNonPacked> {
         public Array(MemorySegment buf) {
             super(buf, GCCCompatibilityNonPackedContainNonPacked.LAYOUT);
@@ -104,6 +135,16 @@ public class GCCCompatibilityNonPackedContainNonPacked {
 
         public Array(PNIBuf buf) {
             this(buf.get());
+        }
+
+        @Override
+        protected void elementToString(io.vproxy.pni.test.GCCCompatibilityNonPackedContainNonPacked ELEM, StringBuilder SB, int INDENT, java.util.Set<NativeObjectTuple> VISITED, boolean CORRUPTED_MEMORY) {
+            ELEM.toString(SB, INDENT, VISITED, CORRUPTED_MEMORY);
+        }
+
+        @Override
+        protected String toStringTypeName() {
+            return "GCCCompatibilityNonPackedContainNonPacked.Array";
         }
 
         @Override
@@ -143,10 +184,15 @@ public class GCCCompatibilityNonPackedContainNonPacked {
         }
 
         @Override
+        protected String toStringTypeName() {
+            return "GCCCompatibilityNonPackedContainNonPacked.Func";
+        }
+
+        @Override
         protected GCCCompatibilityNonPackedContainNonPacked construct(MemorySegment seg) {
             return new GCCCompatibilityNonPackedContainNonPacked(seg);
         }
     }
 }
 // metadata.generator-version: pni test
-// sha256:a56627e31caeb3823e25d8488a3d067cbc2cf07fca3655546accddeece83c018
+// sha256:d7452534ec0583c37714202c0d986042b69e27ce190702c1335f170088d44d47

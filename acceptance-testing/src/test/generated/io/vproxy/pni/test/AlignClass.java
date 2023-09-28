@@ -117,6 +117,37 @@ public class AlignClass {
         return RESULT;
     }
 
+    @Override
+    public String toString() {
+        var sb = new StringBuilder();
+        toString(sb, 0, new java.util.HashSet<>(), false);
+        return sb.toString();
+    }
+
+    public void toString(StringBuilder SB, int INDENT, java.util.Set<NativeObjectTuple> VISITED, boolean CORRUPTED_MEMORY) {
+        if (!VISITED.add(new NativeObjectTuple(getClass(), MEMORY.address()))) {
+            SB.append("<...>@").append(Long.toString(MEMORY.address(), 16));
+            return;
+        }
+        SB.append("AlignClass{\n");
+        {
+            SB.append(" ".repeat(INDENT + 4)).append("a => ");
+            SB.append(getA());
+        }
+        SB.append(",\n");
+        {
+            SB.append(" ".repeat(INDENT + 4)).append("b => ");
+            SB.append(getB());
+        }
+        SB.append(",\n");
+        {
+            SB.append(" ".repeat(INDENT + 4)).append("c => ");
+            SB.append(getC());
+        }
+        SB.append("\n");
+        SB.append(" ".repeat(INDENT)).append("}@").append(Long.toString(MEMORY.address(), 16));
+    }
+
     public static class Array extends RefArray<AlignClass> {
         public Array(MemorySegment buf) {
             super(buf, AlignClass.LAYOUT);
@@ -128,6 +159,16 @@ public class AlignClass {
 
         public Array(PNIBuf buf) {
             this(buf.get());
+        }
+
+        @Override
+        protected void elementToString(io.vproxy.pni.test.AlignClass ELEM, StringBuilder SB, int INDENT, java.util.Set<NativeObjectTuple> VISITED, boolean CORRUPTED_MEMORY) {
+            ELEM.toString(SB, INDENT, VISITED, CORRUPTED_MEMORY);
+        }
+
+        @Override
+        protected String toStringTypeName() {
+            return "AlignClass.Array";
         }
 
         @Override
@@ -167,10 +208,15 @@ public class AlignClass {
         }
 
         @Override
+        protected String toStringTypeName() {
+            return "AlignClass.Func";
+        }
+
+        @Override
         protected AlignClass construct(MemorySegment seg) {
             return new AlignClass(seg);
         }
     }
 }
 // metadata.generator-version: pni test
-// sha256:d5ce307a0068045e6ea879076922d199f6e96c281a78795020a5778ab21ba677
+// sha256:1e0fec74aa91dba02ecd8648a3199cc50f5ddb564449aa50177a39bcbd30133c

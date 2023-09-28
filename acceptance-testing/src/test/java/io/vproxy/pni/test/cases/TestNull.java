@@ -288,6 +288,32 @@ public class TestNull {
     }
 
     @Test
+    public void toStringTest() {
+        try (var allocator = Allocator.ofConfined()) {
+            var n = new Null(allocator);
+            assertEquals("Null{\n" +
+                         "    o => null,\n" +
+                         "    str => null,\n" +
+                         "    seg => null,\n" +
+                         "    buf => null,\n" +
+                         "    byteArr => null,\n" +
+                         "    boolArr => null,\n" +
+                         "    charArr => null,\n" +
+                         "    floatArr => null,\n" +
+                         "    doubleArr => null,\n" +
+                         "    intArr => null,\n" +
+                         "    longArr => null,\n" +
+                         "    shortArr => null,\n" +
+                         "    oArr => null,\n" +
+                         "    ref => null,\n" +
+                         "    func => null,\n" +
+                         "    funcVoid => null,\n" +
+                         "    funcRef => null\n" +
+                         "}@" + Long.toString(n.MEMORY.address(), 16), n.toString());
+        }
+    }
+
+    @Test
     public void shaCheck() throws Exception {
         var s = Files.readAllLines(Path.of("src", "test", "c-generated", "io_vproxy_pni_test_Empty.h"));
         var lastLine = s.get(s.size() - 1);

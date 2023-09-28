@@ -63,6 +63,32 @@ public class AlwaysAlignedSizeof {
         this(ALLOCATOR.allocate(LAYOUT.byteSize()));
     }
 
+    @Override
+    public String toString() {
+        var sb = new StringBuilder();
+        toString(sb, 0, new java.util.HashSet<>(), false);
+        return sb.toString();
+    }
+
+    public void toString(StringBuilder SB, int INDENT, java.util.Set<NativeObjectTuple> VISITED, boolean CORRUPTED_MEMORY) {
+        if (!VISITED.add(new NativeObjectTuple(getClass(), MEMORY.address()))) {
+            SB.append("<...>@").append(Long.toString(MEMORY.address(), 16));
+            return;
+        }
+        SB.append("AlwaysAlignedSizeof{\n");
+        {
+            SB.append(" ".repeat(INDENT + 4)).append("b => ");
+            SB.append(getB());
+        }
+        SB.append(",\n");
+        {
+            SB.append(" ".repeat(INDENT + 4)).append("s => ");
+            SB.append(getS());
+        }
+        SB.append("\n");
+        SB.append(" ".repeat(INDENT)).append("}@").append(Long.toString(MEMORY.address(), 16));
+    }
+
     public static class Array extends RefArray<AlwaysAlignedSizeof> {
         public Array(MemorySegment buf) {
             super(buf, AlwaysAlignedSizeof.LAYOUT);
@@ -74,6 +100,16 @@ public class AlwaysAlignedSizeof {
 
         public Array(PNIBuf buf) {
             this(buf.get());
+        }
+
+        @Override
+        protected void elementToString(io.vproxy.pni.test.AlwaysAlignedSizeof ELEM, StringBuilder SB, int INDENT, java.util.Set<NativeObjectTuple> VISITED, boolean CORRUPTED_MEMORY) {
+            ELEM.toString(SB, INDENT, VISITED, CORRUPTED_MEMORY);
+        }
+
+        @Override
+        protected String toStringTypeName() {
+            return "AlwaysAlignedSizeof.Array";
         }
 
         @Override
@@ -113,10 +149,15 @@ public class AlwaysAlignedSizeof {
         }
 
         @Override
+        protected String toStringTypeName() {
+            return "AlwaysAlignedSizeof.Func";
+        }
+
+        @Override
         protected AlwaysAlignedSizeof construct(MemorySegment seg) {
             return new AlwaysAlignedSizeof(seg);
         }
     }
 }
 // metadata.generator-version: pni test
-// sha256:92ee819177e71161a8357acd7c31cc956f5db09c4e76250141f03d788879b990
+// sha256:9d64eb9cff72dbf8f48199165fb9abb658f92cfbd631c63d4c38913c36bebb30

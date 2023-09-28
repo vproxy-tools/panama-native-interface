@@ -185,6 +185,8 @@ public class TestTypes {
         Utils.checkUnsupported(() -> info.convertExtraToUpcallArgument("a", returnVarOpts(0)));
         assertEquals("return RESULT;\n",
             Utils.sbHelper(sb -> info.convertFromUpcallReturn(sb, 0, returnVarOpts(0))));
+        assertEquals("SB.append(getX());\n",
+            Utils.sbHelper(sb -> info.javaToString(sb, 0, "getX()", fieldVarOpts(0))));
     }
 
     @Test
@@ -250,6 +252,8 @@ public class TestTypes {
         Utils.checkUnsupported(() -> info.convertExtraToUpcallArgument("a", returnVarOpts(0)));
         assertEquals("return RESULT;\n",
             Utils.sbHelper(sb -> info.convertFromUpcallReturn(sb, 0, returnVarOpts(0))));
+        assertEquals("SB.append(getX());\n",
+            Utils.sbHelper(sb -> info.javaToString(sb, 0, "getX()", fieldVarOpts(0))));
     }
 
     @Test
@@ -315,6 +319,8 @@ public class TestTypes {
         Utils.checkUnsupported(() -> info.convertExtraToUpcallArgument("a", returnVarOpts(0)));
         assertEquals("return RESULT;\n",
             Utils.sbHelper(sb -> info.convertFromUpcallReturn(sb, 0, returnVarOpts(0))));
+        assertEquals("SB.append(getX());\n",
+            Utils.sbHelper(sb -> info.javaToString(sb, 0, "getX()", fieldVarOpts(0))));
     }
 
     @Test
@@ -380,6 +386,8 @@ public class TestTypes {
         Utils.checkUnsupported(() -> info.convertExtraToUpcallArgument("a", returnVarOpts(0)));
         assertEquals("return RESULT;\n",
             Utils.sbHelper(sb -> info.convertFromUpcallReturn(sb, 0, returnVarOpts(0))));
+        assertEquals("SB.append(getX());\n",
+            Utils.sbHelper(sb -> info.javaToString(sb, 0, "getX()", fieldVarOpts(0))));
     }
 
     @Test
@@ -445,6 +453,8 @@ public class TestTypes {
         Utils.checkUnsupported(() -> info.convertExtraToUpcallArgument("a", returnVarOpts(0)));
         assertEquals("return RESULT;\n",
             Utils.sbHelper(sb -> info.convertFromUpcallReturn(sb, 0, returnVarOpts(0))));
+        assertEquals("SB.append(getX());\n",
+            Utils.sbHelper(sb -> info.javaToString(sb, 0, "getX()", fieldVarOpts(0))));
     }
 
     @Test
@@ -512,6 +522,8 @@ public class TestTypes {
         Utils.checkUnsupported(() -> info.convertExtraToUpcallArgument("a", returnVarOpts(0)));
         assertEquals("return RESULT;\n",
             Utils.sbHelper(sb -> info.convertFromUpcallReturn(sb, 0, returnVarOpts(0))));
+        assertEquals("SB.append(getX());\n",
+            Utils.sbHelper(sb -> info.javaToString(sb, 0, "getX()", fieldVarOpts(0))));
     }
 
     @Test
@@ -579,6 +591,8 @@ public class TestTypes {
         Utils.checkUnsupported(() -> info.convertExtraToUpcallArgument("a", returnVarOpts(0)));
         assertEquals("return RESULT;\n",
             Utils.sbHelper(sb -> info.convertFromUpcallReturn(sb, 0, returnVarOpts(0))));
+        assertEquals("SB.append(getX());\n",
+            Utils.sbHelper(sb -> info.javaToString(sb, 0, "getX()", fieldVarOpts(0))));
     }
 
     @Test
@@ -699,6 +713,8 @@ public class TestTypes {
                 setA(N);
             }
             """, ret);
+        assertEquals("SB.append(getX());\n",
+            Utils.sbHelper(sb -> info.javaToString(sb, 0, "getX()", fieldVarOpts(0))));
     }
 
     @Test
@@ -797,6 +813,11 @@ public class TestTypes {
         Utils.checkUnsupported(() -> info.convertExtraToUpcallArgument("a", returnVarOpts(0)));
         assertEquals("return RESULT == null ? MemorySegment.NULL : RESULT.MEMORY;\n",
             Utils.sbHelper(sb -> info.convertFromUpcallReturn(sb, 0, returnVarOpts(0))));
+        assertEquals("""
+                if (CORRUPTED_MEMORY) SB.append("<?>");
+                else SB.append(getX());
+                """,
+            Utils.sbHelper(sb -> info.javaToString(sb, 0, "getX()", fieldVarOpts(0))));
     }
 
     @Test
@@ -870,6 +891,8 @@ public class TestTypes {
         Utils.checkUnsupported(() -> info.convertExtraToUpcallArgument("a", returnVarOpts(0)));
         assertEquals("return RESULT == null ? MemorySegment.NULL : RESULT;\n",
             Utils.sbHelper(sb -> info.convertFromUpcallReturn(sb, 0, returnVarOpts(0))));
+        assertEquals("SB.append(PanamaUtils.memorySegmentToString(getX()));\n",
+            Utils.sbHelper(sb -> info.javaToString(sb, 0, "getX()", fieldVarOpts(0))));
     }
 
     @Test
@@ -964,6 +987,11 @@ public class TestTypes {
                 return return_;
                 """,
             Utils.sbHelper(sb -> info.convertFromUpcallReturn(sb, 0, returnVarOpts(0))));
+        assertEquals("""
+                if (CORRUPTED_MEMORY) SB.append("<?>");
+                else SB.append(PanamaUtils.byteBufferToString(getX()));
+                """,
+            Utils.sbHelper(sb -> info.javaToString(sb, 0, "getX()", fieldVarOpts(0))));
     }
 
     @Test
@@ -1072,6 +1100,18 @@ public class TestTypes {
         assertEquals("new a.b.Cls(a)", info.convertExtraToUpcallArgument("a", returnVarOpts(0)));
         assertEquals("return RESULT == null ? MemorySegment.NULL : RESULT.MEMORY;\n",
             Utils.sbHelper(sb -> info.convertFromUpcallReturn(sb, 0, returnVarOpts(0))));
+        assertEquals("getX().toString(SB, INDENT + 4, VISITED, CORRUPTED_MEMORY);\n",
+            Utils.sbHelper(sb -> info.javaToString(sb, 0, "getX()", fieldVarOpts(0))));
+        assertEquals("""
+                if (CORRUPTED_MEMORY) {
+                    SB.append("<?>");
+                } else {
+                    var VALUE = getX();
+                    if (VALUE == null) SB.append("null");
+                    else VALUE.toString(SB, INDENT + 4, VISITED, CORRUPTED_MEMORY);
+                }
+                """,
+            Utils.sbHelper(sb -> info.javaToString(sb, 0, "getX()", fieldVarOpts(POINTER))));
     }
 
     @Test
@@ -1202,6 +1242,11 @@ public class TestTypes {
                 return return_;
                 """,
             Utils.sbHelper(sb -> info.convertFromUpcallReturn(sb, 0, returnVarOpts(0))));
+        assertEquals("""
+                if (CORRUPTED_MEMORY) SB.append("<?>");
+                else SB.append(PanamaUtils.memorySegmentToString(getX()));
+                """,
+            Utils.sbHelper(sb -> info.javaToString(sb, 0, "getX()", fieldVarOpts(0))));
     }
 
     @Test
@@ -1312,6 +1357,15 @@ public class TestTypes {
                 return return_;
                 """,
             Utils.sbHelper(sb -> info.convertFromUpcallReturn(sb, 0, returnVarOpts(0))));
+        assertEquals("""
+                if (CORRUPTED_MEMORY) SB.append("<?>");
+                else {
+                    var VALUE = getX();
+                    if (VALUE == null) SB.append("null");
+                    else VALUE.toString(SB, INDENT + 4, VISITED, CORRUPTED_MEMORY);
+                }
+                """,
+            Utils.sbHelper(sb -> info.javaToString(sb, 0, "getX()", fieldVarOpts(0))));
     }
 
     @Test
@@ -1427,6 +1481,15 @@ public class TestTypes {
                 return return_;
                 """,
             Utils.sbHelper(sb -> info.convertFromUpcallReturn(sb, 0, returnVarOpts(0))));
+        assertEquals("""
+                if (CORRUPTED_MEMORY) SB.append("<?>");
+                else {
+                    var VALUE = getX();
+                    if (VALUE == null) SB.append("null");
+                    else VALUE.toString(SB, INDENT + 4, VISITED, CORRUPTED_MEMORY);
+                }
+                """,
+            Utils.sbHelper(sb -> info.javaToString(sb, 0, "getX()", fieldVarOpts(0))));
     }
 
     @Test
@@ -1580,6 +1643,15 @@ public class TestTypes {
                 }
             }
             """, Utils.sbHelper(sb -> gInfo.generateGetterSetter(sb, 0, "a", fieldVarOpts(0))));
+        assertEquals("""
+                if (CORRUPTED_MEMORY) SB.append("<?>");
+                else {
+                    var VALUE = getX();
+                    if (VALUE == null) SB.append("null");
+                    else VALUE.toString(SB, INDENT, VISITED, CORRUPTED_MEMORY);
+                }
+                """,
+            Utils.sbHelper(sb -> info.javaToString(sb, 0, "getX()", fieldVarOpts(0))));
     }
 
     @Test
@@ -1808,5 +1880,14 @@ public class TestTypes {
             if (RESULT.address() == 0) return null;
             return PNIRef.Func.of(RESULT);
             """, Utils.sbHelper(sb -> rInfo.convertInvokeExactReturnValueToJava(sb, 0, returnVarOpts(CRITICAL))));
+        assertEquals("""
+                if (CORRUPTED_MEMORY) SB.append("<?>");
+                else {
+                    var VALUE = getX();
+                    if (VALUE == null) SB.append("null");
+                    else VALUE.toString(SB, INDENT, VISITED, CORRUPTED_MEMORY);
+                }
+                """,
+            Utils.sbHelper(sb -> info.javaToString(sb, 0, "getX()", fieldVarOpts(0))));
     }
 }

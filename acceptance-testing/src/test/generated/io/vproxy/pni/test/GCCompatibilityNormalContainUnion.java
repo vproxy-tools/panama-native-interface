@@ -168,6 +168,37 @@ public class GCCompatibilityNormalContainUnion {
         return ENV.returnLong();
     }
 
+    @Override
+    public String toString() {
+        var sb = new StringBuilder();
+        toString(sb, 0, new java.util.HashSet<>(), false);
+        return sb.toString();
+    }
+
+    public void toString(StringBuilder SB, int INDENT, java.util.Set<NativeObjectTuple> VISITED, boolean CORRUPTED_MEMORY) {
+        if (!VISITED.add(new NativeObjectTuple(getClass(), MEMORY.address()))) {
+            SB.append("<...>@").append(Long.toString(MEMORY.address(), 16));
+            return;
+        }
+        SB.append("GCCompatibilityNormalContainUnion{\n");
+        {
+            SB.append(" ".repeat(INDENT + 4)).append("b1 => ");
+            SB.append(getB1());
+        }
+        SB.append(",\n");
+        {
+            SB.append(" ".repeat(INDENT + 4)).append("un => ");
+            getUn().toString(SB, INDENT + 4, VISITED, CORRUPTED_MEMORY);
+        }
+        SB.append(",\n");
+        {
+            SB.append(" ".repeat(INDENT + 4)).append("n2 => ");
+            SB.append(getN2());
+        }
+        SB.append("\n");
+        SB.append(" ".repeat(INDENT)).append("}@").append(Long.toString(MEMORY.address(), 16));
+    }
+
     public static class Array extends RefArray<GCCompatibilityNormalContainUnion> {
         public Array(MemorySegment buf) {
             super(buf, GCCompatibilityNormalContainUnion.LAYOUT);
@@ -179,6 +210,16 @@ public class GCCompatibilityNormalContainUnion {
 
         public Array(PNIBuf buf) {
             this(buf.get());
+        }
+
+        @Override
+        protected void elementToString(io.vproxy.pni.test.GCCompatibilityNormalContainUnion ELEM, StringBuilder SB, int INDENT, java.util.Set<NativeObjectTuple> VISITED, boolean CORRUPTED_MEMORY) {
+            ELEM.toString(SB, INDENT, VISITED, CORRUPTED_MEMORY);
+        }
+
+        @Override
+        protected String toStringTypeName() {
+            return "GCCompatibilityNormalContainUnion.Array";
         }
 
         @Override
@@ -218,10 +259,15 @@ public class GCCompatibilityNormalContainUnion {
         }
 
         @Override
+        protected String toStringTypeName() {
+            return "GCCompatibilityNormalContainUnion.Func";
+        }
+
+        @Override
         protected GCCompatibilityNormalContainUnion construct(MemorySegment seg) {
             return new GCCompatibilityNormalContainUnion(seg);
         }
     }
 }
 // metadata.generator-version: pni test
-// sha256:adb135a690692d0e6216e2d91a20386dfbd8f4a234b0c9cac7842af9732c50b1
+// sha256:7c96a71e848e16ae551fb0b43d944fa7bf04e90acd2de87733ec4fee0af043d7

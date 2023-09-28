@@ -164,6 +164,37 @@ public class GCCompatibilityPackedContainUnion {
         return ENV.returnLong();
     }
 
+    @Override
+    public String toString() {
+        var sb = new StringBuilder();
+        toString(sb, 0, new java.util.HashSet<>(), false);
+        return sb.toString();
+    }
+
+    public void toString(StringBuilder SB, int INDENT, java.util.Set<NativeObjectTuple> VISITED, boolean CORRUPTED_MEMORY) {
+        if (!VISITED.add(new NativeObjectTuple(getClass(), MEMORY.address()))) {
+            SB.append("<...>@").append(Long.toString(MEMORY.address(), 16));
+            return;
+        }
+        SB.append("GCCompatibilityPackedContainUnion{\n");
+        {
+            SB.append(" ".repeat(INDENT + 4)).append("b1 => ");
+            SB.append(getB1());
+        }
+        SB.append(",\n");
+        {
+            SB.append(" ".repeat(INDENT + 4)).append("un => ");
+            getUn().toString(SB, INDENT + 4, VISITED, CORRUPTED_MEMORY);
+        }
+        SB.append(",\n");
+        {
+            SB.append(" ".repeat(INDENT + 4)).append("n2 => ");
+            SB.append(getN2());
+        }
+        SB.append("\n");
+        SB.append(" ".repeat(INDENT)).append("}@").append(Long.toString(MEMORY.address(), 16));
+    }
+
     public static class Array extends RefArray<GCCompatibilityPackedContainUnion> {
         public Array(MemorySegment buf) {
             super(buf, GCCompatibilityPackedContainUnion.LAYOUT);
@@ -175,6 +206,16 @@ public class GCCompatibilityPackedContainUnion {
 
         public Array(PNIBuf buf) {
             this(buf.get());
+        }
+
+        @Override
+        protected void elementToString(io.vproxy.pni.test.GCCompatibilityPackedContainUnion ELEM, StringBuilder SB, int INDENT, java.util.Set<NativeObjectTuple> VISITED, boolean CORRUPTED_MEMORY) {
+            ELEM.toString(SB, INDENT, VISITED, CORRUPTED_MEMORY);
+        }
+
+        @Override
+        protected String toStringTypeName() {
+            return "GCCompatibilityPackedContainUnion.Array";
         }
 
         @Override
@@ -214,10 +255,15 @@ public class GCCompatibilityPackedContainUnion {
         }
 
         @Override
+        protected String toStringTypeName() {
+            return "GCCompatibilityPackedContainUnion.Func";
+        }
+
+        @Override
         protected GCCompatibilityPackedContainUnion construct(MemorySegment seg) {
             return new GCCompatibilityPackedContainUnion(seg);
         }
     }
 }
 // metadata.generator-version: pni test
-// sha256:63de06e922f421f1f32623ed2bf4e39aa21394626e5c53b16dc4779b4cb24b7b
+// sha256:45bab1340f03c210de282873f989fb34bbdf5c5a2a51ed54ee8aa0489f4c5f4d

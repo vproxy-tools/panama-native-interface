@@ -66,6 +66,38 @@ public class AlwaysAlignedUnion {
         this(ALLOCATOR.allocate(LAYOUT.byteSize()));
     }
 
+    @Override
+    public String toString() {
+        var sb = new StringBuilder();
+        toString(sb, 0, new java.util.HashSet<>(), true);
+        return sb.toString();
+    }
+
+    public void toString(StringBuilder SB, int INDENT, java.util.Set<NativeObjectTuple> VISITED, boolean CORRUPTED_MEMORY) {
+        if (!VISITED.add(new NativeObjectTuple(getClass(), MEMORY.address()))) {
+            SB.append("<...>@").append(Long.toString(MEMORY.address(), 16));
+            return;
+        }
+        CORRUPTED_MEMORY = true;
+        SB.append("AlwaysAlignedUnion(\n");
+        {
+            SB.append(" ".repeat(INDENT + 4)).append("a => ");
+            SB.append(getA());
+        }
+        SB.append(",\n");
+        {
+            SB.append(" ".repeat(INDENT + 4)).append("b => ");
+            SB.append(getB());
+        }
+        SB.append(",\n");
+        {
+            SB.append(" ".repeat(INDENT + 4)).append("c => ");
+            SB.append(getC());
+        }
+        SB.append("\n");
+        SB.append(" ".repeat(INDENT)).append(")@").append(Long.toString(MEMORY.address(), 16));
+    }
+
     public static class Array extends RefArray<AlwaysAlignedUnion> {
         public Array(MemorySegment buf) {
             super(buf, AlwaysAlignedUnion.LAYOUT);
@@ -77,6 +109,16 @@ public class AlwaysAlignedUnion {
 
         public Array(PNIBuf buf) {
             this(buf.get());
+        }
+
+        @Override
+        protected void elementToString(io.vproxy.pni.test.AlwaysAlignedUnion ELEM, StringBuilder SB, int INDENT, java.util.Set<NativeObjectTuple> VISITED, boolean CORRUPTED_MEMORY) {
+            ELEM.toString(SB, INDENT, VISITED, CORRUPTED_MEMORY);
+        }
+
+        @Override
+        protected String toStringTypeName() {
+            return "AlwaysAlignedUnion.Array";
         }
 
         @Override
@@ -116,10 +158,15 @@ public class AlwaysAlignedUnion {
         }
 
         @Override
+        protected String toStringTypeName() {
+            return "AlwaysAlignedUnion.Func";
+        }
+
+        @Override
         protected AlwaysAlignedUnion construct(MemorySegment seg) {
             return new AlwaysAlignedUnion(seg);
         }
     }
 }
 // metadata.generator-version: pni test
-// sha256:16e4f48bdf0526e3c6a10fd9c21a82cbec653223e3b76e74dc8d9256f87c905d
+// sha256:a7417c780cb3927f0dc594b23936ca8a47e4dcea2a7d627b973579d251a103d2

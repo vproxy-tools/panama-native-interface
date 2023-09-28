@@ -78,6 +78,43 @@ public class SizeofEmbed {
         this(ALLOCATOR.allocate(LAYOUT.byteSize()));
     }
 
+    @Override
+    public String toString() {
+        var sb = new StringBuilder();
+        toString(sb, 0, new java.util.HashSet<>(), false);
+        return sb.toString();
+    }
+
+    public void toString(StringBuilder SB, int INDENT, java.util.Set<NativeObjectTuple> VISITED, boolean CORRUPTED_MEMORY) {
+        if (!VISITED.add(new NativeObjectTuple(getClass(), MEMORY.address()))) {
+            SB.append("<...>@").append(Long.toString(MEMORY.address(), 16));
+            return;
+        }
+        SB.append("SizeofEmbed{\n");
+        {
+            SB.append(" ".repeat(INDENT + 4)).append("x => ");
+            SB.append(getX());
+        }
+        SB.append(",\n");
+        {
+            SB.append(" ".repeat(INDENT + 4)).append("un => ");
+            if (CORRUPTED_MEMORY) {
+                SB.append("<?>");
+            } else {
+                var VALUE = getUn();
+                if (VALUE == null) SB.append("null");
+                else VALUE.toString(SB, INDENT + 4, VISITED, CORRUPTED_MEMORY);
+            }
+        }
+        SB.append(",\n");
+        {
+            SB.append(" ".repeat(INDENT + 4)).append("st => ");
+            getSt().toString(SB, INDENT + 4, VISITED, CORRUPTED_MEMORY);
+        }
+        SB.append("\n");
+        SB.append(" ".repeat(INDENT)).append("}@").append(Long.toString(MEMORY.address(), 16));
+    }
+
     public static class Array extends RefArray<SizeofEmbed> {
         public Array(MemorySegment buf) {
             super(buf, SizeofEmbed.LAYOUT);
@@ -89,6 +126,16 @@ public class SizeofEmbed {
 
         public Array(PNIBuf buf) {
             this(buf.get());
+        }
+
+        @Override
+        protected void elementToString(io.vproxy.pni.test.SizeofEmbed ELEM, StringBuilder SB, int INDENT, java.util.Set<NativeObjectTuple> VISITED, boolean CORRUPTED_MEMORY) {
+            ELEM.toString(SB, INDENT, VISITED, CORRUPTED_MEMORY);
+        }
+
+        @Override
+        protected String toStringTypeName() {
+            return "SizeofEmbed.Array";
         }
 
         @Override
@@ -128,10 +175,15 @@ public class SizeofEmbed {
         }
 
         @Override
+        protected String toStringTypeName() {
+            return "SizeofEmbed.Func";
+        }
+
+        @Override
         protected SizeofEmbed construct(MemorySegment seg) {
             return new SizeofEmbed(seg);
         }
     }
 }
 // metadata.generator-version: pni test
-// sha256:f9796317eff899552f86ca6eec616c338f3736ce2e208031049e6745ca8fc381
+// sha256:cb7a70887d7970dc9867515f954b6f9d67dd1d9c093b7b17dacb02ace0416493

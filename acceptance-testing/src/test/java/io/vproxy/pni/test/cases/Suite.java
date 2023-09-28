@@ -23,6 +23,7 @@ import org.junit.runner.RunWith;
     TestSuperClass.class,
     TestAlwaysAligned.class,
     TestAlign.class,
+    TestToString.class,
 })
 public class Suite {
 }

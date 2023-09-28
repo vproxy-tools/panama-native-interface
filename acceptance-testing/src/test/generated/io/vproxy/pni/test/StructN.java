@@ -83,6 +83,32 @@ public class StructN {
         return ENV.returnLong();
     }
 
+    @Override
+    public String toString() {
+        var sb = new StringBuilder();
+        toString(sb, 0, new java.util.HashSet<>(), false);
+        return sb.toString();
+    }
+
+    public void toString(StringBuilder SB, int INDENT, java.util.Set<NativeObjectTuple> VISITED, boolean CORRUPTED_MEMORY) {
+        if (!VISITED.add(new NativeObjectTuple(getClass(), MEMORY.address()))) {
+            SB.append("<...>@").append(Long.toString(MEMORY.address(), 16));
+            return;
+        }
+        SB.append("StructN{\n");
+        {
+            SB.append(" ".repeat(INDENT + 4)).append("s => ");
+            SB.append(getS());
+        }
+        SB.append(",\n");
+        {
+            SB.append(" ".repeat(INDENT + 4)).append("l => ");
+            SB.append(getL());
+        }
+        SB.append("\n");
+        SB.append(" ".repeat(INDENT)).append("}@").append(Long.toString(MEMORY.address(), 16));
+    }
+
     public static class Array extends RefArray<StructN> {
         public Array(MemorySegment buf) {
             super(buf, StructN.LAYOUT);
@@ -94,6 +120,16 @@ public class StructN {
 
         public Array(PNIBuf buf) {
             this(buf.get());
+        }
+
+        @Override
+        protected void elementToString(io.vproxy.pni.test.StructN ELEM, StringBuilder SB, int INDENT, java.util.Set<NativeObjectTuple> VISITED, boolean CORRUPTED_MEMORY) {
+            ELEM.toString(SB, INDENT, VISITED, CORRUPTED_MEMORY);
+        }
+
+        @Override
+        protected String toStringTypeName() {
+            return "StructN.Array";
         }
 
         @Override
@@ -133,10 +169,15 @@ public class StructN {
         }
 
         @Override
+        protected String toStringTypeName() {
+            return "StructN.Func";
+        }
+
+        @Override
         protected StructN construct(MemorySegment seg) {
             return new StructN(seg);
         }
     }
 }
 // metadata.generator-version: pni test
-// sha256:454f6977d5295132bfe3fd8b1ead799253c8f164b7d359cac85c771e56d46fd3
+// sha256:cf61f06a02a85f3041ab9c7f424f02284871f49cd9122c2be5c0ce93b8a94391

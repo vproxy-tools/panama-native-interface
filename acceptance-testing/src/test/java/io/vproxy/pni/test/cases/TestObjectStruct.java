@@ -141,6 +141,28 @@ public class TestObjectStruct {
     }
 
     @Test
+    public void toStringTest() {
+        try (var allocator = Allocator.ofConfined()) {
+            var s = new ObjectStruct(allocator);
+            s.setStr(new PNIString(allocator, "hello"));
+            s.setLenStr("world");
+            var seg = allocator.allocate(5);
+            seg.setUtf8String(0, "aaa");
+            s.setSeg(seg);
+            var buf = allocator.allocate(10);
+            buf.setUtf8String(3, "bbb");
+            s.setBuf(buf.asByteBuffer().limit(8).position(3));
+            assertEquals("ObjectStruct{\n" +
+                         "    str => hello,\n" +
+                         "    lenStr => world,\n" +
+                         // len info is missing
+                         "    seg => []@" + Long.toString(seg.address(), 16) + ",\n" +
+                         "    buf => [62 62 62 00 00]@" + Long.toString(buf.address() + 3, 16) + "\n" +
+                         "}@" + Long.toString(s.MEMORY.address(), 16), s.toString());
+        }
+    }
+
+    @Test
     public void shaCheck() throws Exception {
         var s = Files.readAllLines(Path.of("src", "test", "c-generated", "io_vproxy_pni_test_ObjectStruct.h"));
         var lastLine = s.get(s.size() - 1);
@@ -148,6 +170,6 @@ public class TestObjectStruct {
 
         s = Files.readAllLines(Path.of("src", "test", "generated", "io", "vproxy", "pni", "test", "ObjectStruct.java"));
         lastLine = s.get(s.size() - 1);
-        assertEquals("// sha256:2c1f359d774e400fc934c4a9d05af7ad45f0c0f341361d2c11385a7752590bb1", lastLine);
+        assertEquals("// sha256:077f67b358f8877c2af5ff4fee7c6ff9b7bd6070d519f93fff3b7d83c8d8a63e", lastLine);
     }
 }

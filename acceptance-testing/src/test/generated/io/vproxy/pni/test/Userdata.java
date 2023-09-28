@@ -67,6 +67,37 @@ public class Userdata {
         this(ALLOCATOR.allocate(LAYOUT.byteSize()));
     }
 
+    @Override
+    public String toString() {
+        var sb = new StringBuilder();
+        toString(sb, 0, new java.util.HashSet<>(), false);
+        return sb.toString();
+    }
+
+    public void toString(StringBuilder SB, int INDENT, java.util.Set<NativeObjectTuple> VISITED, boolean CORRUPTED_MEMORY) {
+        if (!VISITED.add(new NativeObjectTuple(getClass(), MEMORY.address()))) {
+            SB.append("<...>@").append(Long.toString(MEMORY.address(), 16));
+            return;
+        }
+        SB.append("Userdata{\n");
+        {
+            SB.append(" ".repeat(INDENT + 4)).append("x => ");
+            SB.append(getX());
+        }
+        SB.append(",\n");
+        {
+            SB.append(" ".repeat(INDENT + 4)).append("y => ");
+            SB.append(getY());
+        }
+        SB.append(",\n");
+        {
+            SB.append(" ".repeat(INDENT + 4)).append("z => ");
+            SB.append(getZ());
+        }
+        SB.append("\n");
+        SB.append(" ".repeat(INDENT)).append("}@").append(Long.toString(MEMORY.address(), 16));
+    }
+
     public static class Array extends RefArray<Userdata> {
         public Array(MemorySegment buf) {
             super(buf, Userdata.LAYOUT);
@@ -78,6 +109,16 @@ public class Userdata {
 
         public Array(PNIBuf buf) {
             this(buf.get());
+        }
+
+        @Override
+        protected void elementToString(io.vproxy.pni.test.Userdata ELEM, StringBuilder SB, int INDENT, java.util.Set<NativeObjectTuple> VISITED, boolean CORRUPTED_MEMORY) {
+            ELEM.toString(SB, INDENT, VISITED, CORRUPTED_MEMORY);
+        }
+
+        @Override
+        protected String toStringTypeName() {
+            return "Userdata.Array";
         }
 
         @Override
@@ -117,10 +158,15 @@ public class Userdata {
         }
 
         @Override
+        protected String toStringTypeName() {
+            return "Userdata.Func";
+        }
+
+        @Override
         protected Userdata construct(MemorySegment seg) {
             return new Userdata(seg);
         }
     }
 }
 // metadata.generator-version: pni test
-// sha256:9de1c0e8bcacfbe9dbaac5be1d9ba8197a926da3e289c6170f381078a903e127
+// sha256:2de31a086bbe697adbee5a26bff73273bd9fa1914fa326992b993489af9a6d26

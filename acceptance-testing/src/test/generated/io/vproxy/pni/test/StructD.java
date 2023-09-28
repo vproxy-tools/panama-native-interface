@@ -51,6 +51,32 @@ public class StructD {
         this(ALLOCATOR.allocate(LAYOUT.byteSize()));
     }
 
+    @Override
+    public String toString() {
+        var sb = new StringBuilder();
+        toString(sb, 0, new java.util.HashSet<>(), false);
+        return sb.toString();
+    }
+
+    public void toString(StringBuilder SB, int INDENT, java.util.Set<NativeObjectTuple> VISITED, boolean CORRUPTED_MEMORY) {
+        if (!VISITED.add(new NativeObjectTuple(getClass(), MEMORY.address()))) {
+            SB.append("<...>@").append(Long.toString(MEMORY.address(), 16));
+            return;
+        }
+        SB.append("StructD{\n");
+        {
+            SB.append(" ".repeat(INDENT + 4)).append("n => ");
+            SB.append(getN());
+        }
+        SB.append(",\n");
+        {
+            SB.append(" ".repeat(INDENT + 4)).append("d => ");
+            SB.append(getD());
+        }
+        SB.append("\n");
+        SB.append(" ".repeat(INDENT)).append("}@").append(Long.toString(MEMORY.address(), 16));
+    }
+
     public static class Array extends RefArray<StructD> {
         public Array(MemorySegment buf) {
             super(buf, StructD.LAYOUT);
@@ -62,6 +88,16 @@ public class StructD {
 
         public Array(PNIBuf buf) {
             this(buf.get());
+        }
+
+        @Override
+        protected void elementToString(io.vproxy.pni.test.StructD ELEM, StringBuilder SB, int INDENT, java.util.Set<NativeObjectTuple> VISITED, boolean CORRUPTED_MEMORY) {
+            ELEM.toString(SB, INDENT, VISITED, CORRUPTED_MEMORY);
+        }
+
+        @Override
+        protected String toStringTypeName() {
+            return "StructD.Array";
         }
 
         @Override
@@ -101,10 +137,15 @@ public class StructD {
         }
 
         @Override
+        protected String toStringTypeName() {
+            return "StructD.Func";
+        }
+
+        @Override
         protected StructD construct(MemorySegment seg) {
             return new StructD(seg);
         }
     }
 }
 // metadata.generator-version: pni test
-// sha256:a8df79c9f238d9faa6ea7126bca929ea45dd3b3bd25a895768ac836b442deab6
+// sha256:fc980e0b792cc6b867eb919012f6eb4722054b25450c8d85a118c7d77bf68437

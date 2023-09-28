@@ -194,5 +194,6 @@ public class TestTypesNoGen {
         checkUnsupported(() -> t.convertInvokeExactReturnValueToJava(new StringBuilder(), 0, VarOpts.returnDefault()));
         checkUnsupported(() -> t.convertToUpcallArgument("a", VarOpts.paramDefault()));
         checkUnsupported(() -> t.convertFromUpcallReturn(new StringBuilder(), 0, VarOpts.returnDefault()));
+        checkUnsupported(() -> t.javaToString(new StringBuilder(), 0, "", VarOpts.fieldDefault()));
     }
 }

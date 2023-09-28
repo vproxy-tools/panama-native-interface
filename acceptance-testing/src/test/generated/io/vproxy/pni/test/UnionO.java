@@ -61,6 +61,38 @@ public class UnionO {
         this(ALLOCATOR.allocate(LAYOUT.byteSize()));
     }
 
+    @Override
+    public String toString() {
+        var sb = new StringBuilder();
+        toString(sb, 0, new java.util.HashSet<>(), true);
+        return sb.toString();
+    }
+
+    public void toString(StringBuilder SB, int INDENT, java.util.Set<NativeObjectTuple> VISITED, boolean CORRUPTED_MEMORY) {
+        if (!VISITED.add(new NativeObjectTuple(getClass(), MEMORY.address()))) {
+            SB.append("<...>@").append(Long.toString(MEMORY.address(), 16));
+            return;
+        }
+        CORRUPTED_MEMORY = true;
+        SB.append("UnionO(\n");
+        {
+            SB.append(" ".repeat(INDENT + 4)).append("s => ");
+            SB.append(getS());
+        }
+        SB.append(",\n");
+        {
+            SB.append(" ".repeat(INDENT + 4)).append("i => ");
+            SB.append(getI());
+        }
+        SB.append(",\n");
+        {
+            SB.append(" ".repeat(INDENT + 4)).append("p => ");
+            getP().toString(SB, INDENT + 4, VISITED, CORRUPTED_MEMORY);
+        }
+        SB.append("\n");
+        SB.append(" ".repeat(INDENT)).append(")@").append(Long.toString(MEMORY.address(), 16));
+    }
+
     public static class Array extends RefArray<UnionO> {
         public Array(MemorySegment buf) {
             super(buf, UnionO.LAYOUT);
@@ -72,6 +104,16 @@ public class UnionO {
 
         public Array(PNIBuf buf) {
             this(buf.get());
+        }
+
+        @Override
+        protected void elementToString(io.vproxy.pni.test.UnionO ELEM, StringBuilder SB, int INDENT, java.util.Set<NativeObjectTuple> VISITED, boolean CORRUPTED_MEMORY) {
+            ELEM.toString(SB, INDENT, VISITED, CORRUPTED_MEMORY);
+        }
+
+        @Override
+        protected String toStringTypeName() {
+            return "UnionO.Array";
         }
 
         @Override
@@ -111,10 +153,15 @@ public class UnionO {
         }
 
         @Override
+        protected String toStringTypeName() {
+            return "UnionO.Func";
+        }
+
+        @Override
         protected UnionO construct(MemorySegment seg) {
             return new UnionO(seg);
         }
     }
 }
 // metadata.generator-version: pni test
-// sha256:9d9ec102efd418736bd50c5462d70912b65c2672ef4be86a3df80d6d25a1a36a
+// sha256:2130996e2242d483440df22c1a510a38d257ac31d5dd62689d86c87279b158f9

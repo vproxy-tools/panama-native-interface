@@ -1174,6 +1174,176 @@ public class Null {
         return RESULT == null ? null : new io.vproxy.pni.test.Empty(RESULT);
     }
 
+    @Override
+    public String toString() {
+        var sb = new StringBuilder();
+        toString(sb, 0, new java.util.HashSet<>(), false);
+        return sb.toString();
+    }
+
+    public void toString(StringBuilder SB, int INDENT, java.util.Set<NativeObjectTuple> VISITED, boolean CORRUPTED_MEMORY) {
+        if (!VISITED.add(new NativeObjectTuple(getClass(), MEMORY.address()))) {
+            SB.append("<...>@").append(Long.toString(MEMORY.address(), 16));
+            return;
+        }
+        SB.append("Null{\n");
+        {
+            SB.append(" ".repeat(INDENT + 4)).append("o => ");
+            if (CORRUPTED_MEMORY) {
+                SB.append("<?>");
+            } else {
+                var VALUE = getO();
+                if (VALUE == null) SB.append("null");
+                else VALUE.toString(SB, INDENT + 4, VISITED, CORRUPTED_MEMORY);
+            }
+        }
+        SB.append(",\n");
+        {
+            SB.append(" ".repeat(INDENT + 4)).append("str => ");
+            if (CORRUPTED_MEMORY) SB.append("<?>");
+            else SB.append(getStr());
+        }
+        SB.append(",\n");
+        {
+            SB.append(" ".repeat(INDENT + 4)).append("seg => ");
+            SB.append(PanamaUtils.memorySegmentToString(getSeg()));
+        }
+        SB.append(",\n");
+        {
+            SB.append(" ".repeat(INDENT + 4)).append("buf => ");
+            if (CORRUPTED_MEMORY) SB.append("<?>");
+            else SB.append(PanamaUtils.byteBufferToString(getBuf()));
+        }
+        SB.append(",\n");
+        {
+            SB.append(" ".repeat(INDENT + 4)).append("byteArr => ");
+            if (CORRUPTED_MEMORY) SB.append("<?>");
+            else SB.append(PanamaUtils.memorySegmentToString(getByteArr()));
+        }
+        SB.append(",\n");
+        {
+            SB.append(" ".repeat(INDENT + 4)).append("boolArr => ");
+            if (CORRUPTED_MEMORY) SB.append("<?>");
+            else {
+                var VALUE = getBoolArr();
+                if (VALUE == null) SB.append("null");
+                else VALUE.toString(SB, INDENT + 4, VISITED, CORRUPTED_MEMORY);
+            }
+        }
+        SB.append(",\n");
+        {
+            SB.append(" ".repeat(INDENT + 4)).append("charArr => ");
+            if (CORRUPTED_MEMORY) SB.append("<?>");
+            else {
+                var VALUE = getCharArr();
+                if (VALUE == null) SB.append("null");
+                else VALUE.toString(SB, INDENT + 4, VISITED, CORRUPTED_MEMORY);
+            }
+        }
+        SB.append(",\n");
+        {
+            SB.append(" ".repeat(INDENT + 4)).append("floatArr => ");
+            if (CORRUPTED_MEMORY) SB.append("<?>");
+            else {
+                var VALUE = getFloatArr();
+                if (VALUE == null) SB.append("null");
+                else VALUE.toString(SB, INDENT + 4, VISITED, CORRUPTED_MEMORY);
+            }
+        }
+        SB.append(",\n");
+        {
+            SB.append(" ".repeat(INDENT + 4)).append("doubleArr => ");
+            if (CORRUPTED_MEMORY) SB.append("<?>");
+            else {
+                var VALUE = getDoubleArr();
+                if (VALUE == null) SB.append("null");
+                else VALUE.toString(SB, INDENT + 4, VISITED, CORRUPTED_MEMORY);
+            }
+        }
+        SB.append(",\n");
+        {
+            SB.append(" ".repeat(INDENT + 4)).append("intArr => ");
+            if (CORRUPTED_MEMORY) SB.append("<?>");
+            else {
+                var VALUE = getIntArr();
+                if (VALUE == null) SB.append("null");
+                else VALUE.toString(SB, INDENT + 4, VISITED, CORRUPTED_MEMORY);
+            }
+        }
+        SB.append(",\n");
+        {
+            SB.append(" ".repeat(INDENT + 4)).append("longArr => ");
+            if (CORRUPTED_MEMORY) SB.append("<?>");
+            else {
+                var VALUE = getLongArr();
+                if (VALUE == null) SB.append("null");
+                else VALUE.toString(SB, INDENT + 4, VISITED, CORRUPTED_MEMORY);
+            }
+        }
+        SB.append(",\n");
+        {
+            SB.append(" ".repeat(INDENT + 4)).append("shortArr => ");
+            if (CORRUPTED_MEMORY) SB.append("<?>");
+            else {
+                var VALUE = getShortArr();
+                if (VALUE == null) SB.append("null");
+                else VALUE.toString(SB, INDENT + 4, VISITED, CORRUPTED_MEMORY);
+            }
+        }
+        SB.append(",\n");
+        {
+            SB.append(" ".repeat(INDENT + 4)).append("oArr => ");
+            if (CORRUPTED_MEMORY) SB.append("<?>");
+            else {
+                var VALUE = getOArr();
+                if (VALUE == null) SB.append("null");
+                else VALUE.toString(SB, INDENT + 4, VISITED, CORRUPTED_MEMORY);
+            }
+        }
+        SB.append(",\n");
+        {
+            SB.append(" ".repeat(INDENT + 4)).append("ref => ");
+            if (CORRUPTED_MEMORY) SB.append("<?>");
+            else {
+                var VALUE = getRef();
+                if (VALUE == null) SB.append("null");
+                else VALUE.toString(SB, INDENT, VISITED, CORRUPTED_MEMORY);
+            }
+        }
+        SB.append(",\n");
+        {
+            SB.append(" ".repeat(INDENT + 4)).append("func => ");
+            if (CORRUPTED_MEMORY) SB.append("<?>");
+            else {
+                var VALUE = getFunc();
+                if (VALUE == null) SB.append("null");
+                else VALUE.toString(SB, INDENT, VISITED, CORRUPTED_MEMORY);
+            }
+        }
+        SB.append(",\n");
+        {
+            SB.append(" ".repeat(INDENT + 4)).append("funcVoid => ");
+            if (CORRUPTED_MEMORY) SB.append("<?>");
+            else {
+                var VALUE = getFuncVoid();
+                if (VALUE == null) SB.append("null");
+                else VALUE.toString(SB, INDENT, VISITED, CORRUPTED_MEMORY);
+            }
+        }
+        SB.append(",\n");
+        {
+            SB.append(" ".repeat(INDENT + 4)).append("funcRef => ");
+            if (CORRUPTED_MEMORY) SB.append("<?>");
+            else {
+                var VALUE = getFuncRef();
+                if (VALUE == null) SB.append("null");
+                else VALUE.toString(SB, INDENT, VISITED, CORRUPTED_MEMORY);
+            }
+        }
+        SB.append("\n");
+        SB.append(" ".repeat(INDENT)).append("}@").append(Long.toString(MEMORY.address(), 16));
+    }
+
     public static class Array extends RefArray<Null> {
         public Array(MemorySegment buf) {
             super(buf, Null.LAYOUT);
@@ -1185,6 +1355,16 @@ public class Null {
 
         public Array(PNIBuf buf) {
             this(buf.get());
+        }
+
+        @Override
+        protected void elementToString(io.vproxy.pni.test.Null ELEM, StringBuilder SB, int INDENT, java.util.Set<NativeObjectTuple> VISITED, boolean CORRUPTED_MEMORY) {
+            ELEM.toString(SB, INDENT, VISITED, CORRUPTED_MEMORY);
+        }
+
+        @Override
+        protected String toStringTypeName() {
+            return "Null.Array";
         }
 
         @Override
@@ -1224,10 +1404,15 @@ public class Null {
         }
 
         @Override
+        protected String toStringTypeName() {
+            return "Null.Func";
+        }
+
+        @Override
         protected Null construct(MemorySegment seg) {
             return new Null(seg);
         }
     }
 }
 // metadata.generator-version: pni test
-// sha256:0b53b893d69ff12b5fc1631e167aa542ea7a1ba3029c390c2919cfcde6712c3f
+// sha256:cca4d8dee576d8728d8ffc54569f4e051e6a1a78e07c1854887104643e18787b

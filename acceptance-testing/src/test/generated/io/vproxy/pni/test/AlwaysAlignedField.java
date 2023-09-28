@@ -91,6 +91,47 @@ public class AlwaysAlignedField {
         this(ALLOCATOR.allocate(LAYOUT.byteSize()));
     }
 
+    @Override
+    public String toString() {
+        var sb = new StringBuilder();
+        toString(sb, 0, new java.util.HashSet<>(), false);
+        return sb.toString();
+    }
+
+    public void toString(StringBuilder SB, int INDENT, java.util.Set<NativeObjectTuple> VISITED, boolean CORRUPTED_MEMORY) {
+        if (!VISITED.add(new NativeObjectTuple(getClass(), MEMORY.address()))) {
+            SB.append("<...>@").append(Long.toString(MEMORY.address(), 16));
+            return;
+        }
+        SB.append("AlwaysAlignedField{\n");
+        {
+            SB.append(" ".repeat(INDENT + 4)).append("a => ");
+            SB.append(getA());
+        }
+        SB.append(",\n");
+        {
+            SB.append(" ".repeat(INDENT + 4)).append("b => ");
+            SB.append(getB());
+        }
+        SB.append(",\n");
+        {
+            SB.append(" ".repeat(INDENT + 4)).append("c => ");
+            SB.append(getC());
+        }
+        SB.append(",\n");
+        {
+            SB.append(" ".repeat(INDENT + 4)).append("d => ");
+            SB.append(getD());
+        }
+        SB.append(",\n");
+        {
+            SB.append(" ".repeat(INDENT + 4)).append("e => ");
+            SB.append(getE());
+        }
+        SB.append("\n");
+        SB.append(" ".repeat(INDENT)).append("}@").append(Long.toString(MEMORY.address(), 16));
+    }
+
     public static class Array extends RefArray<AlwaysAlignedField> {
         public Array(MemorySegment buf) {
             super(buf, AlwaysAlignedField.LAYOUT);
@@ -102,6 +143,16 @@ public class AlwaysAlignedField {
 
         public Array(PNIBuf buf) {
             this(buf.get());
+        }
+
+        @Override
+        protected void elementToString(io.vproxy.pni.test.AlwaysAlignedField ELEM, StringBuilder SB, int INDENT, java.util.Set<NativeObjectTuple> VISITED, boolean CORRUPTED_MEMORY) {
+            ELEM.toString(SB, INDENT, VISITED, CORRUPTED_MEMORY);
+        }
+
+        @Override
+        protected String toStringTypeName() {
+            return "AlwaysAlignedField.Array";
         }
 
         @Override
@@ -141,10 +192,15 @@ public class AlwaysAlignedField {
         }
 
         @Override
+        protected String toStringTypeName() {
+            return "AlwaysAlignedField.Func";
+        }
+
+        @Override
         protected AlwaysAlignedField construct(MemorySegment seg) {
             return new AlwaysAlignedField(seg);
         }
     }
 }
 // metadata.generator-version: pni test
-// sha256:0f6711c9e055150909998cde88ebee8fc3879694a0ffc5497a28defa44925dbb
+// sha256:fd43e55348ad756433cf92e28686765ddf35b13d67d4bd6ded7bb075954bbf77

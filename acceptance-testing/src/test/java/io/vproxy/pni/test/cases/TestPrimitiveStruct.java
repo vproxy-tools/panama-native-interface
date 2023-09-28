@@ -823,6 +823,137 @@ public class TestPrimitiveStruct {
     }
 
     @Test
+    public void toStringTest() {
+        try (var allocator = Allocator.ofConfined()) {
+            var s = new PrimitiveStruct(allocator);
+            s.setAByte((byte) 1);
+            s.setUnsignedByte((byte) 2);
+            s.setAChar('a');
+            s.setADouble(3);
+            s.setAFloat(4);
+            s.setAInt(5);
+            s.setUnsignedInt(6);
+            s.setALong(7);
+            s.setUnsignedLong(8);
+            s.setAShort((short) 9);
+            s.setUnsignedShort((short) 10);
+            s.setABoolean(true);
+
+            s.getByteArray().set(ValueLayout.JAVA_BYTE, 0, (byte) 11);
+            s.getUnsignedByteArray().set(ValueLayout.JAVA_BYTE, 0, (byte) 12);
+            s.getCharArray().set(0, 'b');
+            s.getDoubleArray().set(0, 13);
+            s.getFloatArray().set(0, 14);
+            s.getIntArray().set(0, 15);
+            s.getUnsignedIntArray().set(0, 16);
+            s.getLongArray().set(0, 17);
+            s.getUnsignedLongArray().set(0, 18);
+            s.getShortArray().set(0, (short) 19);
+            s.getUnsignedShortArray().set(0, (short) 20);
+            s.getBooleanArray().set(0, true);
+
+            var barr1 = allocator.allocate(1);
+            {
+                barr1.set(ValueLayout.JAVA_BYTE, 0, (byte) 21);
+                s.setByteArrayPointer(barr1);
+            }
+            var barr2 = allocator.allocate(1);
+            {
+                barr2.set(ValueLayout.JAVA_BYTE, 0, (byte) 22);
+                s.setUnsignedByteArrayPointer(barr2);
+            }
+            var carr = new CharArray(allocator, 1);
+            {
+                carr.set(0, 'c');
+                s.setCharArrayPointer(carr);
+            }
+            var darr = new DoubleArray(allocator, 1);
+            {
+                darr.set(0, 23);
+                s.setDoubleArrayPointer(darr);
+            }
+            var farr = new FloatArray(allocator, 1);
+            {
+                farr.set(0, 24);
+                s.setFloatArrayPointer(farr);
+            }
+            var iarr1 = new IntArray(allocator, 1);
+            {
+                iarr1.set(0, 25);
+                s.setIntArrayPointer(iarr1);
+            }
+            var iarr2 = new IntArray(allocator, 1);
+            {
+                iarr2.set(0, 26);
+                s.setUnsignedIntArrayPointer(iarr2);
+            }
+            var larr1 = new LongArray(allocator, 1);
+            {
+                larr1.set(0, 27);
+                s.setLongArrayPointer(larr1);
+            }
+            var larr2 = new LongArray(allocator, 1);
+            {
+                larr2.set(0, 28);
+                s.setUnsignedLongArrayPointer(larr2);
+            }
+            var sarr1 = new ShortArray(allocator, 1);
+            {
+                sarr1.set(0, (short) 29);
+                s.setShortArrayPointer(sarr1);
+            }
+            var sarr2 = new ShortArray(allocator, 1);
+            {
+                sarr2.set(0, (short) 30);
+                s.setUnsignedShortArrayPointer(sarr2);
+            }
+            var boolarr = new BoolArray(allocator, 1);
+            {
+                boolarr.set(0, true);
+                s.setBooleanArrayPointer(boolarr);
+            }
+            assertEquals("PrimitiveStruct{\n" +
+                         "    aByte => 1,\n" +
+                         "    unsignedByte => 2,\n" +
+                         "    aChar => a,\n" +
+                         "    aDouble => 3.0,\n" +
+                         "    aFloat => 4.0,\n" +
+                         "    aInt => 5,\n" +
+                         "    unsignedInt => 6,\n" +
+                         "    aLong => 7,\n" +
+                         "    unsignedLong => 8,\n" +
+                         "    aShort => 9,\n" +
+                         "    unsignedShort => 10,\n" +
+                         "    aBoolean => true,\n" +
+                         "    byteArray => [0b" + " 00".repeat(10) + "]@" + Long.toString(s.getByteArray().address(), 16) + ",\n" +
+                         "    unsignedByteArray => [0c" + " 00".repeat(11) + "]@" + Long.toString(s.getUnsignedByteArray().address(), 16) + ",\n" +
+                         "    charArray => CharArray[b" + ", .".repeat(12) + "]@" + Long.toString(s.getCharArray().MEMORY.address(), 16) + ",\n" +
+                         "    doubleArray => DoubleArray[13.0" + ", 0.0".repeat(13) + "]@" + Long.toString(s.getDoubleArray().MEMORY.address(), 16) + ",\n" +
+                         "    floatArray => FloatArray[14.0" + ", 0.0".repeat(14) + "]@" + Long.toString(s.getFloatArray().MEMORY.address(), 16) + ",\n" +
+                         "    intArray => IntArray[15" + ", 0".repeat(15) + "]@" + Long.toString(s.getIntArray().MEMORY.address(), 16) + ",\n" +
+                         "    unsignedIntArray => IntArray[16" + ", 0".repeat(16) + "]@" + Long.toString(s.getUnsignedIntArray().MEMORY.address(), 16) + ",\n" +
+                         "    longArray => LongArray[17" + ", 0".repeat(17) + "]@" + Long.toString(s.getLongArray().MEMORY.address(), 16) + ",\n" +
+                         "    unsignedLongArray => LongArray[18" + ", 0".repeat(18) + "]@" + Long.toString(s.getUnsignedLongArray().MEMORY.address(), 16) + ",\n" +
+                         "    shortArray => ShortArray[19" + ", 0".repeat(19) + "]@" + Long.toString(s.getShortArray().MEMORY.address(), 16) + ",\n" +
+                         "    unsignedShortArray => ShortArray[20" + ", 0".repeat(20) + "]@" + Long.toString(s.getUnsignedShortArray().MEMORY.address(), 16) + ",\n" +
+                         "    booleanArray => BoolArray[true" + ", false".repeat(21) + "]@" + Long.toString(s.getBooleanArray().MEMORY.address(), 16) + ",\n" +
+                         "    byteArrayPointer => [15]@" + Long.toString(barr1.address(), 16) + ",\n" +
+                         "    unsignedByteArrayPointer => [16]@" + Long.toString(barr2.address(), 16) + ",\n" +
+                         "    charArrayPointer => CharArray[c]@" + Long.toString(carr.MEMORY.address(), 16) + ",\n" +
+                         "    doubleArrayPointer => DoubleArray[23.0]@" + Long.toString(darr.MEMORY.address(), 16) + ",\n" +
+                         "    floatArrayPointer => FloatArray[24.0]@" + Long.toString(farr.MEMORY.address(), 16) + ",\n" +
+                         "    intArrayPointer => IntArray[25]@" + Long.toString(iarr1.MEMORY.address(), 16) + ",\n" +
+                         "    unsignedIntArrayPointer => IntArray[26]@" + Long.toString(iarr2.MEMORY.address(), 16) + ",\n" +
+                         "    longArrayPointer => LongArray[27]@" + Long.toString(larr1.MEMORY.address(), 16) + ",\n" +
+                         "    unsignedLongArrayPointer => LongArray[28]@" + Long.toString(larr2.MEMORY.address(), 16) + ",\n" +
+                         "    shortArrayPointer => ShortArray[29]@" + Long.toString(sarr1.MEMORY.address(), 16) + ",\n" +
+                         "    unsignedShortArrayPointer => ShortArray[30]@" + Long.toString(sarr2.MEMORY.address(), 16) + ",\n" +
+                         "    booleanArrayPointer => BoolArray[true]@" + Long.toString(boolarr.MEMORY.address(), 16) + "\n" +
+                         "}@" + Long.toString(s.MEMORY.address(), 16), s.toString());
+        }
+    }
+
+    @Test
     public void shaCheck() throws Exception {
         var s = Files.readAllLines(Path.of("src", "test", "c-generated", "io_vproxy_pni_test_PrimitiveStruct.h"));
         var lastLine = s.get(s.size() - 1);
@@ -830,6 +961,6 @@ public class TestPrimitiveStruct {
 
         s = Files.readAllLines(Path.of("src", "test", "generated", "io", "vproxy", "pni", "test", "PrimitiveStruct.java"));
         lastLine = s.get(s.size() - 1);
-        assertEquals("// sha256:8770c05861ce4973eab506bcd8883d77c137bc1e7bda22f4442b2dd6ff7dd779", lastLine);
+        assertEquals("// sha256:e334b16038a005f4081f6d7d157bbec373d4bed30bb5aabf172048b966bd0ece", lastLine);
     }
 }

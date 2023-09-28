@@ -50,6 +50,27 @@ public class BaseClass {
         }
     }
 
+    @Override
+    public String toString() {
+        var sb = new StringBuilder();
+        toString(sb, 0, new java.util.HashSet<>(), false);
+        return sb.toString();
+    }
+
+    public void toString(StringBuilder SB, int INDENT, java.util.Set<NativeObjectTuple> VISITED, boolean CORRUPTED_MEMORY) {
+        if (!VISITED.add(new NativeObjectTuple(getClass(), MEMORY.address()))) {
+            SB.append("<...>@").append(Long.toString(MEMORY.address(), 16));
+            return;
+        }
+        SB.append("BaseClass{\n");
+        {
+            SB.append(" ".repeat(INDENT + 4)).append("a => ");
+            SB.append(getA());
+        }
+        SB.append("\n");
+        SB.append(" ".repeat(INDENT)).append("}@").append(Long.toString(MEMORY.address(), 16));
+    }
+
     public static class Array extends RefArray<BaseClass> {
         public Array(MemorySegment buf) {
             super(buf, BaseClass.LAYOUT);
@@ -61,6 +82,16 @@ public class BaseClass {
 
         public Array(PNIBuf buf) {
             this(buf.get());
+        }
+
+        @Override
+        protected void elementToString(io.vproxy.pni.test.BaseClass ELEM, StringBuilder SB, int INDENT, java.util.Set<NativeObjectTuple> VISITED, boolean CORRUPTED_MEMORY) {
+            ELEM.toString(SB, INDENT, VISITED, CORRUPTED_MEMORY);
+        }
+
+        @Override
+        protected String toStringTypeName() {
+            return "BaseClass.Array";
         }
 
         @Override
@@ -100,10 +131,15 @@ public class BaseClass {
         }
 
         @Override
+        protected String toStringTypeName() {
+            return "BaseClass.Func";
+        }
+
+        @Override
         protected BaseClass construct(MemorySegment seg) {
             return new BaseClass(seg);
         }
     }
 }
 // metadata.generator-version: pni test
-// sha256:2c2786c9b7b5175f54cac02ba3995b5cf8ad7b05f7aad54e15df04399c27af67
+// sha256:4013b692d1c48569a24bb85a005eafc7daffc44e92f49977fa035d2810648356

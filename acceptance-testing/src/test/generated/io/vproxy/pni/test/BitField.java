@@ -883,6 +883,77 @@ public class BitField {
         return RESULT;
     }
 
+    @Override
+    public String toString() {
+        var sb = new StringBuilder();
+        toString(sb, 0, new java.util.HashSet<>(), false);
+        return sb.toString();
+    }
+
+    public void toString(StringBuilder SB, int INDENT, java.util.Set<NativeObjectTuple> VISITED, boolean CORRUPTED_MEMORY) {
+        if (!VISITED.add(new NativeObjectTuple(getClass(), MEMORY.address()))) {
+            SB.append("<...>@").append(Long.toString(MEMORY.address(), 16));
+            return;
+        }
+        SB.append("BitField{\n");
+        {
+            SB.append(" ".repeat(INDENT + 4)).append("field01 => ");
+            SB.append(getField01());
+        }
+        SB.append(",\n");
+        {
+            SB.append(" ".repeat(INDENT + 4)).append("field02 => ");
+            SB.append(getField02());
+        }
+        SB.append(",\n");
+        {
+            SB.append(" ".repeat(INDENT + 4)).append("sep01 => ");
+            SB.append(PanamaUtils.memorySegmentToString(getSep01()));
+        }
+        SB.append(",\n");
+        {
+            SB.append(" ".repeat(INDENT + 4)).append("field03 => ");
+            SB.append(getField03());
+        }
+        SB.append(",\n");
+        {
+            SB.append(" ".repeat(INDENT + 4)).append("field04 => ");
+            SB.append(getField04());
+        }
+        SB.append(",\n");
+        {
+            SB.append(" ".repeat(INDENT + 4)).append("sep02 => ");
+            SB.append(PanamaUtils.memorySegmentToString(getSep02()));
+        }
+        SB.append(",\n");
+        {
+            SB.append(" ".repeat(INDENT + 4)).append("field05 => ");
+            SB.append(getField05());
+        }
+        SB.append(",\n");
+        {
+            SB.append(" ".repeat(INDENT + 4)).append("field06 => ");
+            SB.append(getField06());
+        }
+        SB.append(",\n");
+        {
+            SB.append(" ".repeat(INDENT + 4)).append("sep03 => ");
+            SB.append(PanamaUtils.memorySegmentToString(getSep03()));
+        }
+        SB.append(",\n");
+        {
+            SB.append(" ".repeat(INDENT + 4)).append("field07 => ");
+            SB.append(getField07());
+        }
+        SB.append(",\n");
+        {
+            SB.append(" ".repeat(INDENT + 4)).append("field08 => ");
+            SB.append(getField08());
+        }
+        SB.append("\n");
+        SB.append(" ".repeat(INDENT)).append("}@").append(Long.toString(MEMORY.address(), 16));
+    }
+
     public static class Array extends RefArray<BitField> {
         public Array(MemorySegment buf) {
             super(buf, BitField.LAYOUT);
@@ -894,6 +965,16 @@ public class BitField {
 
         public Array(PNIBuf buf) {
             this(buf.get());
+        }
+
+        @Override
+        protected void elementToString(io.vproxy.pni.test.BitField ELEM, StringBuilder SB, int INDENT, java.util.Set<NativeObjectTuple> VISITED, boolean CORRUPTED_MEMORY) {
+            ELEM.toString(SB, INDENT, VISITED, CORRUPTED_MEMORY);
+        }
+
+        @Override
+        protected String toStringTypeName() {
+            return "BitField.Array";
         }
 
         @Override
@@ -933,10 +1014,15 @@ public class BitField {
         }
 
         @Override
+        protected String toStringTypeName() {
+            return "BitField.Func";
+        }
+
+        @Override
         protected BitField construct(MemorySegment seg) {
             return new BitField(seg);
         }
     }
 }
 // metadata.generator-version: pni test
-// sha256:1a5478a66b79a918d94dfcfa2bfdb51eaa3bcc519a3e8563ca4ecf6e667740fb
+// sha256:53e5f10c9d0753dca619e128c132bb72a9a116ee12dfa9327c1ec7eb34982d87

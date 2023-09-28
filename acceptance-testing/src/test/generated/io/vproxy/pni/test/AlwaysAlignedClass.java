@@ -67,6 +67,37 @@ public class AlwaysAlignedClass {
         this(ALLOCATOR.allocate(LAYOUT.byteSize()));
     }
 
+    @Override
+    public String toString() {
+        var sb = new StringBuilder();
+        toString(sb, 0, new java.util.HashSet<>(), false);
+        return sb.toString();
+    }
+
+    public void toString(StringBuilder SB, int INDENT, java.util.Set<NativeObjectTuple> VISITED, boolean CORRUPTED_MEMORY) {
+        if (!VISITED.add(new NativeObjectTuple(getClass(), MEMORY.address()))) {
+            SB.append("<...>@").append(Long.toString(MEMORY.address(), 16));
+            return;
+        }
+        SB.append("AlwaysAlignedClass{\n");
+        {
+            SB.append(" ".repeat(INDENT + 4)).append("a => ");
+            SB.append(getA());
+        }
+        SB.append(",\n");
+        {
+            SB.append(" ".repeat(INDENT + 4)).append("b => ");
+            SB.append(getB());
+        }
+        SB.append(",\n");
+        {
+            SB.append(" ".repeat(INDENT + 4)).append("c => ");
+            SB.append(getC());
+        }
+        SB.append("\n");
+        SB.append(" ".repeat(INDENT)).append("}@").append(Long.toString(MEMORY.address(), 16));
+    }
+
     public static class Array extends RefArray<AlwaysAlignedClass> {
         public Array(MemorySegment buf) {
             super(buf, AlwaysAlignedClass.LAYOUT);
@@ -78,6 +109,16 @@ public class AlwaysAlignedClass {
 
         public Array(PNIBuf buf) {
             this(buf.get());
+        }
+
+        @Override
+        protected void elementToString(io.vproxy.pni.test.AlwaysAlignedClass ELEM, StringBuilder SB, int INDENT, java.util.Set<NativeObjectTuple> VISITED, boolean CORRUPTED_MEMORY) {
+            ELEM.toString(SB, INDENT, VISITED, CORRUPTED_MEMORY);
+        }
+
+        @Override
+        protected String toStringTypeName() {
+            return "AlwaysAlignedClass.Array";
         }
 
         @Override
@@ -117,10 +158,15 @@ public class AlwaysAlignedClass {
         }
 
         @Override
+        protected String toStringTypeName() {
+            return "AlwaysAlignedClass.Func";
+        }
+
+        @Override
         protected AlwaysAlignedClass construct(MemorySegment seg) {
             return new AlwaysAlignedClass(seg);
         }
     }
 }
 // metadata.generator-version: pni test
-// sha256:ba7624fbadceb2815d7e8d3d5a15d0649419692f7380f9210d40d8f7a7c7baf3
+// sha256:f3f6dd9f31b01f6be1921b57a7e51401fe4a66c12a9fe46e68f8e04ddb2d4704

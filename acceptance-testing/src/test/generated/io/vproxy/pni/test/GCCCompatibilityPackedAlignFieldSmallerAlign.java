@@ -96,6 +96,37 @@ public class GCCCompatibilityPackedAlignFieldSmallerAlign {
         return ENV.returnLong();
     }
 
+    @Override
+    public String toString() {
+        var sb = new StringBuilder();
+        toString(sb, 0, new java.util.HashSet<>(), false);
+        return sb.toString();
+    }
+
+    public void toString(StringBuilder SB, int INDENT, java.util.Set<NativeObjectTuple> VISITED, boolean CORRUPTED_MEMORY) {
+        if (!VISITED.add(new NativeObjectTuple(getClass(), MEMORY.address()))) {
+            SB.append("<...>@").append(Long.toString(MEMORY.address(), 16));
+            return;
+        }
+        SB.append("GCCCompatibilityPackedAlignFieldSmallerAlign{\n");
+        {
+            SB.append(" ".repeat(INDENT + 4)).append("b1 => ");
+            SB.append(getB1());
+        }
+        SB.append(",\n");
+        {
+            SB.append(" ".repeat(INDENT + 4)).append("l => ");
+            SB.append(getL());
+        }
+        SB.append(",\n");
+        {
+            SB.append(" ".repeat(INDENT + 4)).append("n2 => ");
+            SB.append(getN2());
+        }
+        SB.append("\n");
+        SB.append(" ".repeat(INDENT)).append("}@").append(Long.toString(MEMORY.address(), 16));
+    }
+
     public static class Array extends RefArray<GCCCompatibilityPackedAlignFieldSmallerAlign> {
         public Array(MemorySegment buf) {
             super(buf, GCCCompatibilityPackedAlignFieldSmallerAlign.LAYOUT);
@@ -107,6 +138,16 @@ public class GCCCompatibilityPackedAlignFieldSmallerAlign {
 
         public Array(PNIBuf buf) {
             this(buf.get());
+        }
+
+        @Override
+        protected void elementToString(io.vproxy.pni.test.GCCCompatibilityPackedAlignFieldSmallerAlign ELEM, StringBuilder SB, int INDENT, java.util.Set<NativeObjectTuple> VISITED, boolean CORRUPTED_MEMORY) {
+            ELEM.toString(SB, INDENT, VISITED, CORRUPTED_MEMORY);
+        }
+
+        @Override
+        protected String toStringTypeName() {
+            return "GCCCompatibilityPackedAlignFieldSmallerAlign.Array";
         }
 
         @Override
@@ -146,10 +187,15 @@ public class GCCCompatibilityPackedAlignFieldSmallerAlign {
         }
 
         @Override
+        protected String toStringTypeName() {
+            return "GCCCompatibilityPackedAlignFieldSmallerAlign.Func";
+        }
+
+        @Override
         protected GCCCompatibilityPackedAlignFieldSmallerAlign construct(MemorySegment seg) {
             return new GCCCompatibilityPackedAlignFieldSmallerAlign(seg);
         }
     }
 }
 // metadata.generator-version: pni test
-// sha256:687d183eb08bd229504edcd660bf337f9a13795faea7819a07e7fc36efa04f48
+// sha256:6bd9e606e7071a82e861be357497c52ffc1b0ef2f9312aee262680ad9384d545

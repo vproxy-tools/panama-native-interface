@@ -1871,6 +1871,306 @@ public class PrimitiveStruct {
         return RESULT;
     }
 
+    @Override
+    public String toString() {
+        var sb = new StringBuilder();
+        toString(sb, 0, new java.util.HashSet<>(), false);
+        return sb.toString();
+    }
+
+    public void toString(StringBuilder SB, int INDENT, java.util.Set<NativeObjectTuple> VISITED, boolean CORRUPTED_MEMORY) {
+        if (!VISITED.add(new NativeObjectTuple(getClass(), MEMORY.address()))) {
+            SB.append("<...>@").append(Long.toString(MEMORY.address(), 16));
+            return;
+        }
+        SB.append("PrimitiveStruct{\n");
+        {
+            SB.append(" ".repeat(INDENT + 4)).append("aByte => ");
+            SB.append(getAByte());
+        }
+        SB.append(",\n");
+        {
+            SB.append(" ".repeat(INDENT + 4)).append("unsignedByte => ");
+            SB.append(getUnsignedByte());
+        }
+        SB.append(",\n");
+        {
+            SB.append(" ".repeat(INDENT + 4)).append("aChar => ");
+            SB.append(getAChar());
+        }
+        SB.append(",\n");
+        {
+            SB.append(" ".repeat(INDENT + 4)).append("aDouble => ");
+            SB.append(getADouble());
+        }
+        SB.append(",\n");
+        {
+            SB.append(" ".repeat(INDENT + 4)).append("aFloat => ");
+            SB.append(getAFloat());
+        }
+        SB.append(",\n");
+        {
+            SB.append(" ".repeat(INDENT + 4)).append("aInt => ");
+            SB.append(getAInt());
+        }
+        SB.append(",\n");
+        {
+            SB.append(" ".repeat(INDENT + 4)).append("unsignedInt => ");
+            SB.append(getUnsignedInt());
+        }
+        SB.append(",\n");
+        {
+            SB.append(" ".repeat(INDENT + 4)).append("aLong => ");
+            SB.append(getALong());
+        }
+        SB.append(",\n");
+        {
+            SB.append(" ".repeat(INDENT + 4)).append("unsignedLong => ");
+            SB.append(getUnsignedLong());
+        }
+        SB.append(",\n");
+        {
+            SB.append(" ".repeat(INDENT + 4)).append("aShort => ");
+            SB.append(getAShort());
+        }
+        SB.append(",\n");
+        {
+            SB.append(" ".repeat(INDENT + 4)).append("unsignedShort => ");
+            SB.append(getUnsignedShort());
+        }
+        SB.append(",\n");
+        {
+            SB.append(" ".repeat(INDENT + 4)).append("aBoolean => ");
+            SB.append(getABoolean());
+        }
+        SB.append(",\n");
+        {
+            SB.append(" ".repeat(INDENT + 4)).append("byteArray => ");
+            if (CORRUPTED_MEMORY) SB.append("<?>");
+            else SB.append(PanamaUtils.memorySegmentToString(getByteArray()));
+        }
+        SB.append(",\n");
+        {
+            SB.append(" ".repeat(INDENT + 4)).append("unsignedByteArray => ");
+            if (CORRUPTED_MEMORY) SB.append("<?>");
+            else SB.append(PanamaUtils.memorySegmentToString(getUnsignedByteArray()));
+        }
+        SB.append(",\n");
+        {
+            SB.append(" ".repeat(INDENT + 4)).append("charArray => ");
+            if (CORRUPTED_MEMORY) SB.append("<?>");
+            else {
+                var VALUE = getCharArray();
+                if (VALUE == null) SB.append("null");
+                else VALUE.toString(SB, INDENT + 4, VISITED, CORRUPTED_MEMORY);
+            }
+        }
+        SB.append(",\n");
+        {
+            SB.append(" ".repeat(INDENT + 4)).append("doubleArray => ");
+            if (CORRUPTED_MEMORY) SB.append("<?>");
+            else {
+                var VALUE = getDoubleArray();
+                if (VALUE == null) SB.append("null");
+                else VALUE.toString(SB, INDENT + 4, VISITED, CORRUPTED_MEMORY);
+            }
+        }
+        SB.append(",\n");
+        {
+            SB.append(" ".repeat(INDENT + 4)).append("floatArray => ");
+            if (CORRUPTED_MEMORY) SB.append("<?>");
+            else {
+                var VALUE = getFloatArray();
+                if (VALUE == null) SB.append("null");
+                else VALUE.toString(SB, INDENT + 4, VISITED, CORRUPTED_MEMORY);
+            }
+        }
+        SB.append(",\n");
+        {
+            SB.append(" ".repeat(INDENT + 4)).append("intArray => ");
+            if (CORRUPTED_MEMORY) SB.append("<?>");
+            else {
+                var VALUE = getIntArray();
+                if (VALUE == null) SB.append("null");
+                else VALUE.toString(SB, INDENT + 4, VISITED, CORRUPTED_MEMORY);
+            }
+        }
+        SB.append(",\n");
+        {
+            SB.append(" ".repeat(INDENT + 4)).append("unsignedIntArray => ");
+            if (CORRUPTED_MEMORY) SB.append("<?>");
+            else {
+                var VALUE = getUnsignedIntArray();
+                if (VALUE == null) SB.append("null");
+                else VALUE.toString(SB, INDENT + 4, VISITED, CORRUPTED_MEMORY);
+            }
+        }
+        SB.append(",\n");
+        {
+            SB.append(" ".repeat(INDENT + 4)).append("longArray => ");
+            if (CORRUPTED_MEMORY) SB.append("<?>");
+            else {
+                var VALUE = getLongArray();
+                if (VALUE == null) SB.append("null");
+                else VALUE.toString(SB, INDENT + 4, VISITED, CORRUPTED_MEMORY);
+            }
+        }
+        SB.append(",\n");
+        {
+            SB.append(" ".repeat(INDENT + 4)).append("unsignedLongArray => ");
+            if (CORRUPTED_MEMORY) SB.append("<?>");
+            else {
+                var VALUE = getUnsignedLongArray();
+                if (VALUE == null) SB.append("null");
+                else VALUE.toString(SB, INDENT + 4, VISITED, CORRUPTED_MEMORY);
+            }
+        }
+        SB.append(",\n");
+        {
+            SB.append(" ".repeat(INDENT + 4)).append("shortArray => ");
+            if (CORRUPTED_MEMORY) SB.append("<?>");
+            else {
+                var VALUE = getShortArray();
+                if (VALUE == null) SB.append("null");
+                else VALUE.toString(SB, INDENT + 4, VISITED, CORRUPTED_MEMORY);
+            }
+        }
+        SB.append(",\n");
+        {
+            SB.append(" ".repeat(INDENT + 4)).append("unsignedShortArray => ");
+            if (CORRUPTED_MEMORY) SB.append("<?>");
+            else {
+                var VALUE = getUnsignedShortArray();
+                if (VALUE == null) SB.append("null");
+                else VALUE.toString(SB, INDENT + 4, VISITED, CORRUPTED_MEMORY);
+            }
+        }
+        SB.append(",\n");
+        {
+            SB.append(" ".repeat(INDENT + 4)).append("booleanArray => ");
+            if (CORRUPTED_MEMORY) SB.append("<?>");
+            else {
+                var VALUE = getBooleanArray();
+                if (VALUE == null) SB.append("null");
+                else VALUE.toString(SB, INDENT + 4, VISITED, CORRUPTED_MEMORY);
+            }
+        }
+        SB.append(",\n");
+        {
+            SB.append(" ".repeat(INDENT + 4)).append("byteArrayPointer => ");
+            if (CORRUPTED_MEMORY) SB.append("<?>");
+            else SB.append(PanamaUtils.memorySegmentToString(getByteArrayPointer()));
+        }
+        SB.append(",\n");
+        {
+            SB.append(" ".repeat(INDENT + 4)).append("unsignedByteArrayPointer => ");
+            if (CORRUPTED_MEMORY) SB.append("<?>");
+            else SB.append(PanamaUtils.memorySegmentToString(getUnsignedByteArrayPointer()));
+        }
+        SB.append(",\n");
+        {
+            SB.append(" ".repeat(INDENT + 4)).append("charArrayPointer => ");
+            if (CORRUPTED_MEMORY) SB.append("<?>");
+            else {
+                var VALUE = getCharArrayPointer();
+                if (VALUE == null) SB.append("null");
+                else VALUE.toString(SB, INDENT + 4, VISITED, CORRUPTED_MEMORY);
+            }
+        }
+        SB.append(",\n");
+        {
+            SB.append(" ".repeat(INDENT + 4)).append("doubleArrayPointer => ");
+            if (CORRUPTED_MEMORY) SB.append("<?>");
+            else {
+                var VALUE = getDoubleArrayPointer();
+                if (VALUE == null) SB.append("null");
+                else VALUE.toString(SB, INDENT + 4, VISITED, CORRUPTED_MEMORY);
+            }
+        }
+        SB.append(",\n");
+        {
+            SB.append(" ".repeat(INDENT + 4)).append("floatArrayPointer => ");
+            if (CORRUPTED_MEMORY) SB.append("<?>");
+            else {
+                var VALUE = getFloatArrayPointer();
+                if (VALUE == null) SB.append("null");
+                else VALUE.toString(SB, INDENT + 4, VISITED, CORRUPTED_MEMORY);
+            }
+        }
+        SB.append(",\n");
+        {
+            SB.append(" ".repeat(INDENT + 4)).append("intArrayPointer => ");
+            if (CORRUPTED_MEMORY) SB.append("<?>");
+            else {
+                var VALUE = getIntArrayPointer();
+                if (VALUE == null) SB.append("null");
+                else VALUE.toString(SB, INDENT + 4, VISITED, CORRUPTED_MEMORY);
+            }
+        }
+        SB.append(",\n");
+        {
+            SB.append(" ".repeat(INDENT + 4)).append("unsignedIntArrayPointer => ");
+            if (CORRUPTED_MEMORY) SB.append("<?>");
+            else {
+                var VALUE = getUnsignedIntArrayPointer();
+                if (VALUE == null) SB.append("null");
+                else VALUE.toString(SB, INDENT + 4, VISITED, CORRUPTED_MEMORY);
+            }
+        }
+        SB.append(",\n");
+        {
+            SB.append(" ".repeat(INDENT + 4)).append("longArrayPointer => ");
+            if (CORRUPTED_MEMORY) SB.append("<?>");
+            else {
+                var VALUE = getLongArrayPointer();
+                if (VALUE == null) SB.append("null");
+                else VALUE.toString(SB, INDENT + 4, VISITED, CORRUPTED_MEMORY);
+            }
+        }
+        SB.append(",\n");
+        {
+            SB.append(" ".repeat(INDENT + 4)).append("unsignedLongArrayPointer => ");
+            if (CORRUPTED_MEMORY) SB.append("<?>");
+            else {
+                var VALUE = getUnsignedLongArrayPointer();
+                if (VALUE == null) SB.append("null");
+                else VALUE.toString(SB, INDENT + 4, VISITED, CORRUPTED_MEMORY);
+            }
+        }
+        SB.append(",\n");
+        {
+            SB.append(" ".repeat(INDENT + 4)).append("shortArrayPointer => ");
+            if (CORRUPTED_MEMORY) SB.append("<?>");
+            else {
+                var VALUE = getShortArrayPointer();
+                if (VALUE == null) SB.append("null");
+                else VALUE.toString(SB, INDENT + 4, VISITED, CORRUPTED_MEMORY);
+            }
+        }
+        SB.append(",\n");
+        {
+            SB.append(" ".repeat(INDENT + 4)).append("unsignedShortArrayPointer => ");
+            if (CORRUPTED_MEMORY) SB.append("<?>");
+            else {
+                var VALUE = getUnsignedShortArrayPointer();
+                if (VALUE == null) SB.append("null");
+                else VALUE.toString(SB, INDENT + 4, VISITED, CORRUPTED_MEMORY);
+            }
+        }
+        SB.append(",\n");
+        {
+            SB.append(" ".repeat(INDENT + 4)).append("booleanArrayPointer => ");
+            if (CORRUPTED_MEMORY) SB.append("<?>");
+            else {
+                var VALUE = getBooleanArrayPointer();
+                if (VALUE == null) SB.append("null");
+                else VALUE.toString(SB, INDENT + 4, VISITED, CORRUPTED_MEMORY);
+            }
+        }
+        SB.append("\n");
+        SB.append(" ".repeat(INDENT)).append("}@").append(Long.toString(MEMORY.address(), 16));
+    }
+
     public static class Array extends RefArray<PrimitiveStruct> {
         public Array(MemorySegment buf) {
             super(buf, PrimitiveStruct.LAYOUT);
@@ -1882,6 +2182,16 @@ public class PrimitiveStruct {
 
         public Array(PNIBuf buf) {
             this(buf.get());
+        }
+
+        @Override
+        protected void elementToString(io.vproxy.pni.test.PrimitiveStruct ELEM, StringBuilder SB, int INDENT, java.util.Set<NativeObjectTuple> VISITED, boolean CORRUPTED_MEMORY) {
+            ELEM.toString(SB, INDENT, VISITED, CORRUPTED_MEMORY);
+        }
+
+        @Override
+        protected String toStringTypeName() {
+            return "PrimitiveStruct.Array";
         }
 
         @Override
@@ -1921,10 +2231,15 @@ public class PrimitiveStruct {
         }
 
         @Override
+        protected String toStringTypeName() {
+            return "PrimitiveStruct.Func";
+        }
+
+        @Override
         protected PrimitiveStruct construct(MemorySegment seg) {
             return new PrimitiveStruct(seg);
         }
     }
 }
 // metadata.generator-version: pni test
-// sha256:8770c05861ce4973eab506bcd8883d77c137bc1e7bda22f4442b2dd6ff7dd779
+// sha256:e334b16038a005f4081f6d7d157bbec373d4bed30bb5aabf172048b966bd0ece

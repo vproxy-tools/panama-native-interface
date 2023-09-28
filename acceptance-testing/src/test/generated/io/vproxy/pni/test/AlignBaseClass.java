@@ -59,6 +59,27 @@ public class AlignBaseClass {
         return RESULT;
     }
 
+    @Override
+    public String toString() {
+        var sb = new StringBuilder();
+        toString(sb, 0, new java.util.HashSet<>(), false);
+        return sb.toString();
+    }
+
+    public void toString(StringBuilder SB, int INDENT, java.util.Set<NativeObjectTuple> VISITED, boolean CORRUPTED_MEMORY) {
+        if (!VISITED.add(new NativeObjectTuple(getClass(), MEMORY.address()))) {
+            SB.append("<...>@").append(Long.toString(MEMORY.address(), 16));
+            return;
+        }
+        SB.append("AlignBaseClass{\n");
+        {
+            SB.append(" ".repeat(INDENT + 4)).append("a => ");
+            SB.append(getA());
+        }
+        SB.append("\n");
+        SB.append(" ".repeat(INDENT)).append("}@").append(Long.toString(MEMORY.address(), 16));
+    }
+
     public static class Array extends RefArray<AlignBaseClass> {
         public Array(MemorySegment buf) {
             super(buf, AlignBaseClass.LAYOUT);
@@ -70,6 +91,16 @@ public class AlignBaseClass {
 
         public Array(PNIBuf buf) {
             this(buf.get());
+        }
+
+        @Override
+        protected void elementToString(io.vproxy.pni.test.AlignBaseClass ELEM, StringBuilder SB, int INDENT, java.util.Set<NativeObjectTuple> VISITED, boolean CORRUPTED_MEMORY) {
+            ELEM.toString(SB, INDENT, VISITED, CORRUPTED_MEMORY);
+        }
+
+        @Override
+        protected String toStringTypeName() {
+            return "AlignBaseClass.Array";
         }
 
         @Override
@@ -109,10 +140,15 @@ public class AlignBaseClass {
         }
 
         @Override
+        protected String toStringTypeName() {
+            return "AlignBaseClass.Func";
+        }
+
+        @Override
         protected AlignBaseClass construct(MemorySegment seg) {
             return new AlignBaseClass(seg);
         }
     }
 }
 // metadata.generator-version: pni test
-// sha256:ca75321e27763fac9ff43da414d04204954d809ee2651ab703d3f9ad954ff8e6
+// sha256:61b6ff0ce2d7de2d04d70247a0c60f7a181255d226c917da67c1317bffcdda3d

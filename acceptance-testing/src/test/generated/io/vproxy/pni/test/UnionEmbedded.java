@@ -57,6 +57,33 @@ public class UnionEmbedded {
         this(ALLOCATOR.allocate(LAYOUT.byteSize()));
     }
 
+    @Override
+    public String toString() {
+        var sb = new StringBuilder();
+        toString(sb, 0, new java.util.HashSet<>(), true);
+        return sb.toString();
+    }
+
+    public void toString(StringBuilder SB, int INDENT, java.util.Set<NativeObjectTuple> VISITED, boolean CORRUPTED_MEMORY) {
+        if (!VISITED.add(new NativeObjectTuple(getClass(), MEMORY.address()))) {
+            SB.append("<...>@").append(Long.toString(MEMORY.address(), 16));
+            return;
+        }
+        CORRUPTED_MEMORY = true;
+        SB.append("UnionEmbedded(\n");
+        {
+            SB.append(" ".repeat(INDENT + 4)).append("n => ");
+            SB.append(getN());
+        }
+        SB.append(",\n");
+        {
+            SB.append(" ".repeat(INDENT + 4)).append("seg => ");
+            SB.append(PanamaUtils.memorySegmentToString(getSeg()));
+        }
+        SB.append("\n");
+        SB.append(" ".repeat(INDENT)).append(")@").append(Long.toString(MEMORY.address(), 16));
+    }
+
     public static class Array extends RefArray<UnionEmbedded> {
         public Array(MemorySegment buf) {
             super(buf, UnionEmbedded.LAYOUT);
@@ -68,6 +95,16 @@ public class UnionEmbedded {
 
         public Array(PNIBuf buf) {
             this(buf.get());
+        }
+
+        @Override
+        protected void elementToString(io.vproxy.pni.test.UnionEmbedded ELEM, StringBuilder SB, int INDENT, java.util.Set<NativeObjectTuple> VISITED, boolean CORRUPTED_MEMORY) {
+            ELEM.toString(SB, INDENT, VISITED, CORRUPTED_MEMORY);
+        }
+
+        @Override
+        protected String toStringTypeName() {
+            return "UnionEmbedded.Array";
         }
 
         @Override
@@ -107,10 +144,15 @@ public class UnionEmbedded {
         }
 
         @Override
+        protected String toStringTypeName() {
+            return "UnionEmbedded.Func";
+        }
+
+        @Override
         protected UnionEmbedded construct(MemorySegment seg) {
             return new UnionEmbedded(seg);
         }
     }
 }
 // metadata.generator-version: pni test
-// sha256:21e41ede4eb64de4a2549882a4a560ba0e8a1c3c9548b162ba2d95a13fac78d6
+// sha256:d18fa4ea74433b058acd42498c35093fcc94c0c2084d965c87c525d543524750

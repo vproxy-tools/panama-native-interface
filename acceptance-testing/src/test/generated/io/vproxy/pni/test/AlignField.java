@@ -115,6 +115,37 @@ public class AlignField {
         return RESULT;
     }
 
+    @Override
+    public String toString() {
+        var sb = new StringBuilder();
+        toString(sb, 0, new java.util.HashSet<>(), false);
+        return sb.toString();
+    }
+
+    public void toString(StringBuilder SB, int INDENT, java.util.Set<NativeObjectTuple> VISITED, boolean CORRUPTED_MEMORY) {
+        if (!VISITED.add(new NativeObjectTuple(getClass(), MEMORY.address()))) {
+            SB.append("<...>@").append(Long.toString(MEMORY.address(), 16));
+            return;
+        }
+        SB.append("AlignField{\n");
+        {
+            SB.append(" ".repeat(INDENT + 4)).append("a => ");
+            SB.append(getA());
+        }
+        SB.append(",\n");
+        {
+            SB.append(" ".repeat(INDENT + 4)).append("b => ");
+            SB.append(getB());
+        }
+        SB.append(",\n");
+        {
+            SB.append(" ".repeat(INDENT + 4)).append("c => ");
+            SB.append(getC());
+        }
+        SB.append("\n");
+        SB.append(" ".repeat(INDENT)).append("}@").append(Long.toString(MEMORY.address(), 16));
+    }
+
     public static class Array extends RefArray<AlignField> {
         public Array(MemorySegment buf) {
             super(buf, AlignField.LAYOUT);
@@ -126,6 +157,16 @@ public class AlignField {
 
         public Array(PNIBuf buf) {
             this(buf.get());
+        }
+
+        @Override
+        protected void elementToString(io.vproxy.pni.test.AlignField ELEM, StringBuilder SB, int INDENT, java.util.Set<NativeObjectTuple> VISITED, boolean CORRUPTED_MEMORY) {
+            ELEM.toString(SB, INDENT, VISITED, CORRUPTED_MEMORY);
+        }
+
+        @Override
+        protected String toStringTypeName() {
+            return "AlignField.Array";
         }
 
         @Override
@@ -165,10 +206,15 @@ public class AlignField {
         }
 
         @Override
+        protected String toStringTypeName() {
+            return "AlignField.Func";
+        }
+
+        @Override
         protected AlignField construct(MemorySegment seg) {
             return new AlignField(seg);
         }
     }
 }
 // metadata.generator-version: pni test
-// sha256:11ea9576d878c34d86ff407c83db431166ab648af8ebb3363a571dd23d82d022
+// sha256:6cdbc689a6b8d3d24306b043e0adfa01484c0a4ab9ebff8de44848312b5a6517

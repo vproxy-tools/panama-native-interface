@@ -55,6 +55,27 @@ public class GrandChildClass extends io.vproxy.pni.test.ChildClass {
         }
     }
 
+    @Override
+    public String toString() {
+        var sb = new StringBuilder();
+        toString(sb, 0, new java.util.HashSet<>(), false);
+        return sb.toString();
+    }
+
+    public void toString(StringBuilder SB, int INDENT, java.util.Set<NativeObjectTuple> VISITED, boolean CORRUPTED_MEMORY) {
+        if (!VISITED.add(new NativeObjectTuple(getClass(), MEMORY.address()))) {
+            SB.append("<...>@").append(Long.toString(MEMORY.address(), 16));
+            return;
+        }
+        SB.append("GrandChildClass{\n");
+        {
+            SB.append(" ".repeat(INDENT + 4)).append("y => ");
+            SB.append(getY());
+        }
+        SB.append("\n");
+        SB.append(" ".repeat(INDENT)).append("}@").append(Long.toString(MEMORY.address(), 16));
+    }
+
     public static class Array extends RefArray<GrandChildClass> {
         public Array(MemorySegment buf) {
             super(buf, GrandChildClass.LAYOUT);
@@ -66,6 +87,16 @@ public class GrandChildClass extends io.vproxy.pni.test.ChildClass {
 
         public Array(PNIBuf buf) {
             this(buf.get());
+        }
+
+        @Override
+        protected void elementToString(io.vproxy.pni.test.GrandChildClass ELEM, StringBuilder SB, int INDENT, java.util.Set<NativeObjectTuple> VISITED, boolean CORRUPTED_MEMORY) {
+            ELEM.toString(SB, INDENT, VISITED, CORRUPTED_MEMORY);
+        }
+
+        @Override
+        protected String toStringTypeName() {
+            return "GrandChildClass.Array";
         }
 
         @Override
@@ -105,10 +136,15 @@ public class GrandChildClass extends io.vproxy.pni.test.ChildClass {
         }
 
         @Override
+        protected String toStringTypeName() {
+            return "GrandChildClass.Func";
+        }
+
+        @Override
         protected GrandChildClass construct(MemorySegment seg) {
             return new GrandChildClass(seg);
         }
     }
 }
 // metadata.generator-version: pni test
-// sha256:032e96fb654f82c00a0fd1151752d6029334e3f5d912fdcc3003759298040752
+// sha256:4259a800d2a472e888f5cb24eaa640ae1299c4d143ec575771dcb616d5eb9147

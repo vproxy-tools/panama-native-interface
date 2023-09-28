@@ -55,6 +55,27 @@ public class ChildClass extends io.vproxy.pni.test.BaseClass {
         }
     }
 
+    @Override
+    public String toString() {
+        var sb = new StringBuilder();
+        toString(sb, 0, new java.util.HashSet<>(), false);
+        return sb.toString();
+    }
+
+    public void toString(StringBuilder SB, int INDENT, java.util.Set<NativeObjectTuple> VISITED, boolean CORRUPTED_MEMORY) {
+        if (!VISITED.add(new NativeObjectTuple(getClass(), MEMORY.address()))) {
+            SB.append("<...>@").append(Long.toString(MEMORY.address(), 16));
+            return;
+        }
+        SB.append("ChildClass{\n");
+        {
+            SB.append(" ".repeat(INDENT + 4)).append("x => ");
+            SB.append(getX());
+        }
+        SB.append("\n");
+        SB.append(" ".repeat(INDENT)).append("}@").append(Long.toString(MEMORY.address(), 16));
+    }
+
     public static class Array extends RefArray<ChildClass> {
         public Array(MemorySegment buf) {
             super(buf, ChildClass.LAYOUT);
@@ -66,6 +87,16 @@ public class ChildClass extends io.vproxy.pni.test.BaseClass {
 
         public Array(PNIBuf buf) {
             this(buf.get());
+        }
+
+        @Override
+        protected void elementToString(io.vproxy.pni.test.ChildClass ELEM, StringBuilder SB, int INDENT, java.util.Set<NativeObjectTuple> VISITED, boolean CORRUPTED_MEMORY) {
+            ELEM.toString(SB, INDENT, VISITED, CORRUPTED_MEMORY);
+        }
+
+        @Override
+        protected String toStringTypeName() {
+            return "ChildClass.Array";
         }
 
         @Override
@@ -105,10 +136,15 @@ public class ChildClass extends io.vproxy.pni.test.BaseClass {
         }
 
         @Override
+        protected String toStringTypeName() {
+            return "ChildClass.Func";
+        }
+
+        @Override
         protected ChildClass construct(MemorySegment seg) {
             return new ChildClass(seg);
         }
     }
 }
 // metadata.generator-version: pni test
-// sha256:aac7e923b188e00c834bab8c1a5620cd266eeb979be93510e2910b339467c49d
+// sha256:2b5cc389e4796985a8a4fe43765510fb722ed548967dc4c0912a7e7b314910ad

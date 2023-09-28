@@ -271,6 +271,72 @@ public class RefAndFuncFields {
         return io.vproxy.pni.test.ObjectStruct.Func.of(RESULT);
     }
 
+    @Override
+    public String toString() {
+        var sb = new StringBuilder();
+        toString(sb, 0, new java.util.HashSet<>(), false);
+        return sb.toString();
+    }
+
+    public void toString(StringBuilder SB, int INDENT, java.util.Set<NativeObjectTuple> VISITED, boolean CORRUPTED_MEMORY) {
+        if (!VISITED.add(new NativeObjectTuple(getClass(), MEMORY.address()))) {
+            SB.append("<...>@").append(Long.toString(MEMORY.address(), 16));
+            return;
+        }
+        SB.append("RefAndFuncFields{\n");
+        {
+            SB.append(" ".repeat(INDENT + 4)).append("ref => ");
+            if (CORRUPTED_MEMORY) SB.append("<?>");
+            else {
+                var VALUE = getRef();
+                if (VALUE == null) SB.append("null");
+                else VALUE.toString(SB, INDENT, VISITED, CORRUPTED_MEMORY);
+            }
+        }
+        SB.append(",\n");
+        {
+            SB.append(" ".repeat(INDENT + 4)).append("ref2 => ");
+            if (CORRUPTED_MEMORY) SB.append("<?>");
+            else {
+                var VALUE = getRef2();
+                if (VALUE == null) SB.append("null");
+                else VALUE.toString(SB, INDENT, VISITED, CORRUPTED_MEMORY);
+            }
+        }
+        SB.append(",\n");
+        {
+            SB.append(" ".repeat(INDENT + 4)).append("ref3 => ");
+            if (CORRUPTED_MEMORY) SB.append("<?>");
+            else {
+                var VALUE = getRef3();
+                if (VALUE == null) SB.append("null");
+                else VALUE.toString(SB, INDENT, VISITED, CORRUPTED_MEMORY);
+            }
+        }
+        SB.append(",\n");
+        {
+            SB.append(" ".repeat(INDENT + 4)).append("func => ");
+            if (CORRUPTED_MEMORY) SB.append("<?>");
+            else {
+                var VALUE = getFunc();
+                if (VALUE == null) SB.append("null");
+                else VALUE.toString(SB, INDENT, VISITED, CORRUPTED_MEMORY);
+            }
+        }
+        SB.append(",\n");
+        {
+            SB.append(" ".repeat(INDENT + 4)).append("func2 => ");
+            if (CORRUPTED_MEMORY) SB.append("<?>");
+            else {
+                var VALUE = getFunc2();
+                if (VALUE == null) SB.append("null");
+                else VALUE.toString(SB, INDENT, VISITED, CORRUPTED_MEMORY);
+            }
+        }
+        SB.append("\n");
+        SB.append(" ".repeat(INDENT)).append("}@").append(Long.toString(MEMORY.address(), 16));
+    }
+
     public static class Array extends RefArray<RefAndFuncFields> {
         public Array(MemorySegment buf) {
             super(buf, RefAndFuncFields.LAYOUT);
@@ -282,6 +348,16 @@ public class RefAndFuncFields {
 
         public Array(PNIBuf buf) {
             this(buf.get());
+        }
+
+        @Override
+        protected void elementToString(io.vproxy.pni.test.RefAndFuncFields ELEM, StringBuilder SB, int INDENT, java.util.Set<NativeObjectTuple> VISITED, boolean CORRUPTED_MEMORY) {
+            ELEM.toString(SB, INDENT, VISITED, CORRUPTED_MEMORY);
+        }
+
+        @Override
+        protected String toStringTypeName() {
+            return "RefAndFuncFields.Array";
         }
 
         @Override
@@ -321,10 +397,15 @@ public class RefAndFuncFields {
         }
 
         @Override
+        protected String toStringTypeName() {
+            return "RefAndFuncFields.Func";
+        }
+
+        @Override
         protected RefAndFuncFields construct(MemorySegment seg) {
             return new RefAndFuncFields(seg);
         }
     }
 }
 // metadata.generator-version: pni test
-// sha256:ebfdc6be482de5f662c7efd46656d77867bd2fc79a1e053a0f1176386433753b
+// sha256:761707bd8b7b95ffe4a20a6aeb205a520ed4d8d572da7f1351f0cce9536d114c

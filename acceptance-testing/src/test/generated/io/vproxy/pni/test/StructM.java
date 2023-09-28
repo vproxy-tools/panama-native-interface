@@ -45,6 +45,27 @@ public class StructM {
         }
     }
 
+    @Override
+    public String toString() {
+        var sb = new StringBuilder();
+        toString(sb, 0, new java.util.HashSet<>(), false);
+        return sb.toString();
+    }
+
+    public void toString(StringBuilder SB, int INDENT, java.util.Set<NativeObjectTuple> VISITED, boolean CORRUPTED_MEMORY) {
+        if (!VISITED.add(new NativeObjectTuple(getClass(), MEMORY.address()))) {
+            SB.append("<...>@").append(Long.toString(MEMORY.address(), 16));
+            return;
+        }
+        SB.append("StructM{\n");
+        {
+            SB.append(" ".repeat(INDENT + 4)).append("n => ");
+            getN().toString(SB, INDENT + 4, VISITED, CORRUPTED_MEMORY);
+        }
+        SB.append("\n");
+        SB.append(" ".repeat(INDENT)).append("}@").append(Long.toString(MEMORY.address(), 16));
+    }
+
     public static class Array extends RefArray<StructM> {
         public Array(MemorySegment buf) {
             super(buf, StructM.LAYOUT);
@@ -56,6 +77,16 @@ public class StructM {
 
         public Array(PNIBuf buf) {
             this(buf.get());
+        }
+
+        @Override
+        protected void elementToString(io.vproxy.pni.test.StructM ELEM, StringBuilder SB, int INDENT, java.util.Set<NativeObjectTuple> VISITED, boolean CORRUPTED_MEMORY) {
+            ELEM.toString(SB, INDENT, VISITED, CORRUPTED_MEMORY);
+        }
+
+        @Override
+        protected String toStringTypeName() {
+            return "StructM.Array";
         }
 
         @Override
@@ -95,10 +126,15 @@ public class StructM {
         }
 
         @Override
+        protected String toStringTypeName() {
+            return "StructM.Func";
+        }
+
+        @Override
         protected StructM construct(MemorySegment seg) {
             return new StructM(seg);
         }
     }
 }
 // metadata.generator-version: pni test
-// sha256:ba3dbd9986b37f9d17ecfb8202416323460ed14519ffad4de23dbfd9d73a94c1
+// sha256:8b7f58f6c182b37d8f0a37b6043aaf118378f55dfb60bd80535d1b11a3666ed3

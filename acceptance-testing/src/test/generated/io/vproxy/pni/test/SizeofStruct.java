@@ -63,6 +63,32 @@ public class SizeofStruct {
         this(ALLOCATOR.allocate(LAYOUT.byteSize()));
     }
 
+    @Override
+    public String toString() {
+        var sb = new StringBuilder();
+        toString(sb, 0, new java.util.HashSet<>(), false);
+        return sb.toString();
+    }
+
+    public void toString(StringBuilder SB, int INDENT, java.util.Set<NativeObjectTuple> VISITED, boolean CORRUPTED_MEMORY) {
+        if (!VISITED.add(new NativeObjectTuple(getClass(), MEMORY.address()))) {
+            SB.append("<...>@").append(Long.toString(MEMORY.address(), 16));
+            return;
+        }
+        SB.append("SizeofStruct{\n");
+        {
+            SB.append(" ".repeat(INDENT + 4)).append("a => ");
+            SB.append(getA());
+        }
+        SB.append(",\n");
+        {
+            SB.append(" ".repeat(INDENT + 4)).append("b => ");
+            SB.append(getB());
+        }
+        SB.append("\n");
+        SB.append(" ".repeat(INDENT)).append("}@").append(Long.toString(MEMORY.address(), 16));
+    }
+
     public static class Array extends RefArray<SizeofStruct> {
         public Array(MemorySegment buf) {
             super(buf, SizeofStruct.LAYOUT);
@@ -74,6 +100,16 @@ public class SizeofStruct {
 
         public Array(PNIBuf buf) {
             this(buf.get());
+        }
+
+        @Override
+        protected void elementToString(io.vproxy.pni.test.SizeofStruct ELEM, StringBuilder SB, int INDENT, java.util.Set<NativeObjectTuple> VISITED, boolean CORRUPTED_MEMORY) {
+            ELEM.toString(SB, INDENT, VISITED, CORRUPTED_MEMORY);
+        }
+
+        @Override
+        protected String toStringTypeName() {
+            return "SizeofStruct.Array";
         }
 
         @Override
@@ -113,10 +149,15 @@ public class SizeofStruct {
         }
 
         @Override
+        protected String toStringTypeName() {
+            return "SizeofStruct.Func";
+        }
+
+        @Override
         protected SizeofStruct construct(MemorySegment seg) {
             return new SizeofStruct(seg);
         }
     }
 }
 // metadata.generator-version: pni test
-// sha256:6a7bff6ea714d9eb41878d3c882588a0d302939c3c970ec878b11e529e52f2d7
+// sha256:eeceee6c90270d3eaccb77ed91ea1f9221bf3cf1594a3f240688e0da5073b06b

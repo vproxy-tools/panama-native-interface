@@ -91,6 +91,42 @@ public class GCCCompatibilityPackedArray {
         return ENV.returnLong();
     }
 
+    @Override
+    public String toString() {
+        var sb = new StringBuilder();
+        toString(sb, 0, new java.util.HashSet<>(), false);
+        return sb.toString();
+    }
+
+    public void toString(StringBuilder SB, int INDENT, java.util.Set<NativeObjectTuple> VISITED, boolean CORRUPTED_MEMORY) {
+        if (!VISITED.add(new NativeObjectTuple(getClass(), MEMORY.address()))) {
+            SB.append("<...>@").append(Long.toString(MEMORY.address(), 16));
+            return;
+        }
+        SB.append("GCCCompatibilityPackedArray{\n");
+        {
+            SB.append(" ".repeat(INDENT + 4)).append("b1 => ");
+            SB.append(getB1());
+        }
+        SB.append(",\n");
+        {
+            SB.append(" ".repeat(INDENT + 4)).append("array => ");
+            if (CORRUPTED_MEMORY) SB.append("<?>");
+            else {
+                var VALUE = getArray();
+                if (VALUE == null) SB.append("null");
+                else VALUE.toString(SB, INDENT + 4, VISITED, CORRUPTED_MEMORY);
+            }
+        }
+        SB.append(",\n");
+        {
+            SB.append(" ".repeat(INDENT + 4)).append("n2 => ");
+            SB.append(getN2());
+        }
+        SB.append("\n");
+        SB.append(" ".repeat(INDENT)).append("}@").append(Long.toString(MEMORY.address(), 16));
+    }
+
     public static class Array extends RefArray<GCCCompatibilityPackedArray> {
         public Array(MemorySegment buf) {
             super(buf, GCCCompatibilityPackedArray.LAYOUT);
@@ -102,6 +138,16 @@ public class GCCCompatibilityPackedArray {
 
         public Array(PNIBuf buf) {
             this(buf.get());
+        }
+
+        @Override
+        protected void elementToString(io.vproxy.pni.test.GCCCompatibilityPackedArray ELEM, StringBuilder SB, int INDENT, java.util.Set<NativeObjectTuple> VISITED, boolean CORRUPTED_MEMORY) {
+            ELEM.toString(SB, INDENT, VISITED, CORRUPTED_MEMORY);
+        }
+
+        @Override
+        protected String toStringTypeName() {
+            return "GCCCompatibilityPackedArray.Array";
         }
 
         @Override
@@ -141,10 +187,15 @@ public class GCCCompatibilityPackedArray {
         }
 
         @Override
+        protected String toStringTypeName() {
+            return "GCCCompatibilityPackedArray.Func";
+        }
+
+        @Override
         protected GCCCompatibilityPackedArray construct(MemorySegment seg) {
             return new GCCCompatibilityPackedArray(seg);
         }
     }
 }
 // metadata.generator-version: pni test
-// sha256:34634f402a7dfcedddfceb8afa95c78fc70617bcd03668f14e0f222ef9d99df0
+// sha256:60a23976acc883b613305a23c16da0f2abfa63046367e95fba00c3f1771c3bde

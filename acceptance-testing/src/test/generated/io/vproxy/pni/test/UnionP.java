@@ -83,6 +83,33 @@ public class UnionP {
         return ENV.returnLong();
     }
 
+    @Override
+    public String toString() {
+        var sb = new StringBuilder();
+        toString(sb, 0, new java.util.HashSet<>(), true);
+        return sb.toString();
+    }
+
+    public void toString(StringBuilder SB, int INDENT, java.util.Set<NativeObjectTuple> VISITED, boolean CORRUPTED_MEMORY) {
+        if (!VISITED.add(new NativeObjectTuple(getClass(), MEMORY.address()))) {
+            SB.append("<...>@").append(Long.toString(MEMORY.address(), 16));
+            return;
+        }
+        CORRUPTED_MEMORY = true;
+        SB.append("UnionP(\n");
+        {
+            SB.append(" ".repeat(INDENT + 4)).append("i => ");
+            SB.append(getI());
+        }
+        SB.append(",\n");
+        {
+            SB.append(" ".repeat(INDENT + 4)).append("l => ");
+            SB.append(getL());
+        }
+        SB.append("\n");
+        SB.append(" ".repeat(INDENT)).append(")@").append(Long.toString(MEMORY.address(), 16));
+    }
+
     public static class Array extends RefArray<UnionP> {
         public Array(MemorySegment buf) {
             super(buf, UnionP.LAYOUT);
@@ -94,6 +121,16 @@ public class UnionP {
 
         public Array(PNIBuf buf) {
             this(buf.get());
+        }
+
+        @Override
+        protected void elementToString(io.vproxy.pni.test.UnionP ELEM, StringBuilder SB, int INDENT, java.util.Set<NativeObjectTuple> VISITED, boolean CORRUPTED_MEMORY) {
+            ELEM.toString(SB, INDENT, VISITED, CORRUPTED_MEMORY);
+        }
+
+        @Override
+        protected String toStringTypeName() {
+            return "UnionP.Array";
         }
 
         @Override
@@ -133,10 +170,15 @@ public class UnionP {
         }
 
         @Override
+        protected String toStringTypeName() {
+            return "UnionP.Func";
+        }
+
+        @Override
         protected UnionP construct(MemorySegment seg) {
             return new UnionP(seg);
         }
     }
 }
 // metadata.generator-version: pni test
-// sha256:fe1de73f6c33a00c91224d65ebed02f9ab9c0009aeb22b9060c45461d7959e4b
+// sha256:6f0cc0326fd29810629da52ebd7862cef91c6383e890dbbe4ae1c6048c941057

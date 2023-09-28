@@ -101,18 +101,18 @@ public class TestSuperClass {
 
         s = Files.readAllLines(Path.of("src", "test", "generated", "io", "vproxy", "pni", "test", "ChildClass.java"));
         lastLine = s.get(s.size() - 1);
-        assertEquals("// sha256:aac7e923b188e00c834bab8c1a5620cd266eeb979be93510e2910b339467c49d", lastLine);
+        assertEquals("// sha256:2b5cc389e4796985a8a4fe43765510fb722ed548967dc4c0912a7e7b314910ad", lastLine);
 
         s = Files.readAllLines(Path.of("src", "test", "generated", "io", "vproxy", "pni", "test", "ChildOfLargeAlign.java"));
         lastLine = s.get(s.size() - 1);
-        assertEquals("// sha256:dc9a4eecda98eeee06803e7f282f7c2863ac6ff9e66dc396bb264eff455f4b3a", lastLine);
+        assertEquals("// sha256:ae5dccc281e0326faa54e91c03182eb42286a2aa4af04432db98f0f2305853ea", lastLine);
 
         s = Files.readAllLines(Path.of("src", "test", "generated", "io", "vproxy", "pni", "test", "ChildOfPacked.java"));
         lastLine = s.get(s.size() - 1);
-        assertEquals("// sha256:62a5161bf181d4bf6e0108718ac85bbacbc65ed01680cd42da6b62b7dc0eaa2b", lastLine);
+        assertEquals("// sha256:9108c3b130be9965f06ae6e0d75bfa549226f5c979471501290ad62e42130c8e", lastLine);
 
         s = Files.readAllLines(Path.of("src", "test", "generated", "io", "vproxy", "pni", "test", "GrandChildClass.java"));
         lastLine = s.get(s.size() - 1);
-        assertEquals("// sha256:032e96fb654f82c00a0fd1151752d6029334e3f5d912fdcc3003759298040752", lastLine);
+        assertEquals("// sha256:4259a800d2a472e888f5cb24eaa640ae1299c4d143ec575771dcb616d5eb9147", lastLine);
     }
 }

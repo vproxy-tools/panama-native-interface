@@ -58,6 +58,33 @@ public class SizeofUnion {
         this(ALLOCATOR.allocate(LAYOUT.byteSize()));
     }
 
+    @Override
+    public String toString() {
+        var sb = new StringBuilder();
+        toString(sb, 0, new java.util.HashSet<>(), true);
+        return sb.toString();
+    }
+
+    public void toString(StringBuilder SB, int INDENT, java.util.Set<NativeObjectTuple> VISITED, boolean CORRUPTED_MEMORY) {
+        if (!VISITED.add(new NativeObjectTuple(getClass(), MEMORY.address()))) {
+            SB.append("<...>@").append(Long.toString(MEMORY.address(), 16));
+            return;
+        }
+        CORRUPTED_MEMORY = true;
+        SB.append("SizeofUnion(\n");
+        {
+            SB.append(" ".repeat(INDENT + 4)).append("st => ");
+            getSt().toString(SB, INDENT + 4, VISITED, CORRUPTED_MEMORY);
+        }
+        SB.append(",\n");
+        {
+            SB.append(" ".repeat(INDENT + 4)).append("a => ");
+            SB.append(getA());
+        }
+        SB.append("\n");
+        SB.append(" ".repeat(INDENT)).append(")@").append(Long.toString(MEMORY.address(), 16));
+    }
+
     public static class Array extends RefArray<SizeofUnion> {
         public Array(MemorySegment buf) {
             super(buf, SizeofUnion.LAYOUT);
@@ -69,6 +96,16 @@ public class SizeofUnion {
 
         public Array(PNIBuf buf) {
             this(buf.get());
+        }
+
+        @Override
+        protected void elementToString(io.vproxy.pni.test.SizeofUnion ELEM, StringBuilder SB, int INDENT, java.util.Set<NativeObjectTuple> VISITED, boolean CORRUPTED_MEMORY) {
+            ELEM.toString(SB, INDENT, VISITED, CORRUPTED_MEMORY);
+        }
+
+        @Override
+        protected String toStringTypeName() {
+            return "SizeofUnion.Array";
         }
 
         @Override
@@ -108,10 +145,15 @@ public class SizeofUnion {
         }
 
         @Override
+        protected String toStringTypeName() {
+            return "SizeofUnion.Func";
+        }
+
+        @Override
         protected SizeofUnion construct(MemorySegment seg) {
             return new SizeofUnion(seg);
         }
     }
 }
 // metadata.generator-version: pni test
-// sha256:285150b07a2daac726933775a734145ebb6de6bbd4f896f404657c7d604dd618
+// sha256:37ac0961b1f974ef7b27f3f2a6db5cd8a8b3a07a53c4aa96d9ba6095458ebc1f

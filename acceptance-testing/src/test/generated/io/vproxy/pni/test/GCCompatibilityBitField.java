@@ -883,6 +883,77 @@ public class GCCompatibilityBitField {
         return RESULT;
     }
 
+    @Override
+    public String toString() {
+        var sb = new StringBuilder();
+        toString(sb, 0, new java.util.HashSet<>(), false);
+        return sb.toString();
+    }
+
+    public void toString(StringBuilder SB, int INDENT, java.util.Set<NativeObjectTuple> VISITED, boolean CORRUPTED_MEMORY) {
+        if (!VISITED.add(new NativeObjectTuple(getClass(), MEMORY.address()))) {
+            SB.append("<...>@").append(Long.toString(MEMORY.address(), 16));
+            return;
+        }
+        SB.append("GCCompatibilityBitField{\n");
+        {
+            SB.append(" ".repeat(INDENT + 4)).append("field01 => ");
+            SB.append(getField01());
+        }
+        SB.append(",\n");
+        {
+            SB.append(" ".repeat(INDENT + 4)).append("field02 => ");
+            SB.append(getField02());
+        }
+        SB.append(",\n");
+        {
+            SB.append(" ".repeat(INDENT + 4)).append("sep01 => ");
+            SB.append(PanamaUtils.memorySegmentToString(getSep01()));
+        }
+        SB.append(",\n");
+        {
+            SB.append(" ".repeat(INDENT + 4)).append("field03 => ");
+            SB.append(getField03());
+        }
+        SB.append(",\n");
+        {
+            SB.append(" ".repeat(INDENT + 4)).append("field04 => ");
+            SB.append(getField04());
+        }
+        SB.append(",\n");
+        {
+            SB.append(" ".repeat(INDENT + 4)).append("sep02 => ");
+            SB.append(PanamaUtils.memorySegmentToString(getSep02()));
+        }
+        SB.append(",\n");
+        {
+            SB.append(" ".repeat(INDENT + 4)).append("field05 => ");
+            SB.append(getField05());
+        }
+        SB.append(",\n");
+        {
+            SB.append(" ".repeat(INDENT + 4)).append("field06 => ");
+            SB.append(getField06());
+        }
+        SB.append(",\n");
+        {
+            SB.append(" ".repeat(INDENT + 4)).append("sep03 => ");
+            SB.append(PanamaUtils.memorySegmentToString(getSep03()));
+        }
+        SB.append(",\n");
+        {
+            SB.append(" ".repeat(INDENT + 4)).append("field07 => ");
+            SB.append(getField07());
+        }
+        SB.append(",\n");
+        {
+            SB.append(" ".repeat(INDENT + 4)).append("field08 => ");
+            SB.append(getField08());
+        }
+        SB.append("\n");
+        SB.append(" ".repeat(INDENT)).append("}@").append(Long.toString(MEMORY.address(), 16));
+    }
+
     public static class Array extends RefArray<GCCompatibilityBitField> {
         public Array(MemorySegment buf) {
             super(buf, GCCompatibilityBitField.LAYOUT);
@@ -894,6 +965,16 @@ public class GCCompatibilityBitField {
 
         public Array(PNIBuf buf) {
             this(buf.get());
+        }
+
+        @Override
+        protected void elementToString(io.vproxy.pni.test.GCCompatibilityBitField ELEM, StringBuilder SB, int INDENT, java.util.Set<NativeObjectTuple> VISITED, boolean CORRUPTED_MEMORY) {
+            ELEM.toString(SB, INDENT, VISITED, CORRUPTED_MEMORY);
+        }
+
+        @Override
+        protected String toStringTypeName() {
+            return "GCCompatibilityBitField.Array";
         }
 
         @Override
@@ -933,10 +1014,15 @@ public class GCCompatibilityBitField {
         }
 
         @Override
+        protected String toStringTypeName() {
+            return "GCCompatibilityBitField.Func";
+        }
+
+        @Override
         protected GCCompatibilityBitField construct(MemorySegment seg) {
             return new GCCompatibilityBitField(seg);
         }
     }
 }
 // metadata.generator-version: pni test
-// sha256:dccce6da28572407848d6cda9aca54547836558f12403ab8fe23ece79782986e
+// sha256:54ccc368bec6baa46883ea0793aa9663680aa7c6c07eba369af8a0876d6372fa

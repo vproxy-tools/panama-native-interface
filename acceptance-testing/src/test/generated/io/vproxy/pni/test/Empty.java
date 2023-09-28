@@ -22,6 +22,22 @@ public class Empty {
         this(ALLOCATOR.allocate(LAYOUT.byteSize()));
     }
 
+    @Override
+    public String toString() {
+        var sb = new StringBuilder();
+        toString(sb, 0, new java.util.HashSet<>(), false);
+        return sb.toString();
+    }
+
+    public void toString(StringBuilder SB, int INDENT, java.util.Set<NativeObjectTuple> VISITED, boolean CORRUPTED_MEMORY) {
+        if (!VISITED.add(new NativeObjectTuple(getClass(), MEMORY.address()))) {
+            SB.append("<...>@").append(Long.toString(MEMORY.address(), 16));
+            return;
+        }
+        SB.append("Empty{\n");
+        SB.append(" ".repeat(INDENT)).append("}@").append(Long.toString(MEMORY.address(), 16));
+    }
+
     public static class Array extends RefArray<Empty> {
         public Array(MemorySegment buf) {
             super(buf, Empty.LAYOUT);
@@ -33,6 +49,16 @@ public class Empty {
 
         public Array(PNIBuf buf) {
             this(buf.get());
+        }
+
+        @Override
+        protected void elementToString(io.vproxy.pni.test.Empty ELEM, StringBuilder SB, int INDENT, java.util.Set<NativeObjectTuple> VISITED, boolean CORRUPTED_MEMORY) {
+            ELEM.toString(SB, INDENT, VISITED, CORRUPTED_MEMORY);
+        }
+
+        @Override
+        protected String toStringTypeName() {
+            return "Empty.Array";
         }
 
         @Override
@@ -72,10 +98,15 @@ public class Empty {
         }
 
         @Override
+        protected String toStringTypeName() {
+            return "Empty.Func";
+        }
+
+        @Override
         protected Empty construct(MemorySegment seg) {
             return new Empty(seg);
         }
     }
 }
 // metadata.generator-version: pni test
-// sha256:73d77f5d9d622048a324fcc8aac48dc1a7fe1b65a8ed066a5e775f5e0e153190
+// sha256:ef15b952685b179c25056f1959b75cad103d810fc7bb889d93237116213f8cf4

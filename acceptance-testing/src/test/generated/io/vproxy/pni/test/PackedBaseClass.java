@@ -79,6 +79,32 @@ public class PackedBaseClass {
         }
     }
 
+    @Override
+    public String toString() {
+        var sb = new StringBuilder();
+        toString(sb, 0, new java.util.HashSet<>(), false);
+        return sb.toString();
+    }
+
+    public void toString(StringBuilder SB, int INDENT, java.util.Set<NativeObjectTuple> VISITED, boolean CORRUPTED_MEMORY) {
+        if (!VISITED.add(new NativeObjectTuple(getClass(), MEMORY.address()))) {
+            SB.append("<...>@").append(Long.toString(MEMORY.address(), 16));
+            return;
+        }
+        SB.append("PackedBaseClass{\n");
+        {
+            SB.append(" ".repeat(INDENT + 4)).append("a => ");
+            SB.append(getA());
+        }
+        SB.append(",\n");
+        {
+            SB.append(" ".repeat(INDENT + 4)).append("b => ");
+            SB.append(getB());
+        }
+        SB.append("\n");
+        SB.append(" ".repeat(INDENT)).append("}@").append(Long.toString(MEMORY.address(), 16));
+    }
+
     public static class Array extends RefArray<PackedBaseClass> {
         public Array(MemorySegment buf) {
             super(buf, PackedBaseClass.LAYOUT);
@@ -90,6 +116,16 @@ public class PackedBaseClass {
 
         public Array(PNIBuf buf) {
             this(buf.get());
+        }
+
+        @Override
+        protected void elementToString(io.vproxy.pni.test.PackedBaseClass ELEM, StringBuilder SB, int INDENT, java.util.Set<NativeObjectTuple> VISITED, boolean CORRUPTED_MEMORY) {
+            ELEM.toString(SB, INDENT, VISITED, CORRUPTED_MEMORY);
+        }
+
+        @Override
+        protected String toStringTypeName() {
+            return "PackedBaseClass.Array";
         }
 
         @Override
@@ -129,10 +165,15 @@ public class PackedBaseClass {
         }
 
         @Override
+        protected String toStringTypeName() {
+            return "PackedBaseClass.Func";
+        }
+
+        @Override
         protected PackedBaseClass construct(MemorySegment seg) {
             return new PackedBaseClass(seg);
         }
     }
 }
 // metadata.generator-version: pni test
-// sha256:2e4501ee7bf6612c2746f942db4088faef96d3ffa00bec12bd0873960cba68fd
+// sha256:68623142c08c2e1eb49a380f6a94afaf4a21f42a449eb0ec60927ca3b556b035

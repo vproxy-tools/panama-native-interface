@@ -84,6 +84,32 @@ public class GCCompatibilityStructAlign {
         return ENV.returnLong();
     }
 
+    @Override
+    public String toString() {
+        var sb = new StringBuilder();
+        toString(sb, 0, new java.util.HashSet<>(), false);
+        return sb.toString();
+    }
+
+    public void toString(StringBuilder SB, int INDENT, java.util.Set<NativeObjectTuple> VISITED, boolean CORRUPTED_MEMORY) {
+        if (!VISITED.add(new NativeObjectTuple(getClass(), MEMORY.address()))) {
+            SB.append("<...>@").append(Long.toString(MEMORY.address(), 16));
+            return;
+        }
+        SB.append("GCCompatibilityStructAlign{\n");
+        {
+            SB.append(" ".repeat(INDENT + 4)).append("n => ");
+            SB.append(getN());
+        }
+        SB.append(",\n");
+        {
+            SB.append(" ".repeat(INDENT + 4)).append("l => ");
+            SB.append(getL());
+        }
+        SB.append("\n");
+        SB.append(" ".repeat(INDENT)).append("}@").append(Long.toString(MEMORY.address(), 16));
+    }
+
     public static class Array extends RefArray<GCCompatibilityStructAlign> {
         public Array(MemorySegment buf) {
             super(buf, GCCompatibilityStructAlign.LAYOUT);
@@ -95,6 +121,16 @@ public class GCCompatibilityStructAlign {
 
         public Array(PNIBuf buf) {
             this(buf.get());
+        }
+
+        @Override
+        protected void elementToString(io.vproxy.pni.test.GCCompatibilityStructAlign ELEM, StringBuilder SB, int INDENT, java.util.Set<NativeObjectTuple> VISITED, boolean CORRUPTED_MEMORY) {
+            ELEM.toString(SB, INDENT, VISITED, CORRUPTED_MEMORY);
+        }
+
+        @Override
+        protected String toStringTypeName() {
+            return "GCCompatibilityStructAlign.Array";
         }
 
         @Override
@@ -134,10 +170,15 @@ public class GCCompatibilityStructAlign {
         }
 
         @Override
+        protected String toStringTypeName() {
+            return "GCCompatibilityStructAlign.Func";
+        }
+
+        @Override
         protected GCCompatibilityStructAlign construct(MemorySegment seg) {
             return new GCCompatibilityStructAlign(seg);
         }
     }
 }
 // metadata.generator-version: pni test
-// sha256:cd32f9a7a08d15970ca2fa9bf5838c726545f381fc2514a950aa8b28789955ae
+// sha256:414e8cb7d4bf383c667794b6650cd813418dc398be4d32c216b630cc4957ff7d

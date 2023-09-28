@@ -5,6 +5,7 @@ import io.vproxy.pni.PNIEnv;
 import io.vproxy.pni.test.StructA;
 import io.vproxy.pni.test.StructB;
 import io.vproxy.pni.test.UnionC;
+import io.vproxy.pni.test.UnionEmbedded;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -363,6 +364,33 @@ public class TestStructUnion {
     }
 
     @Test
+    public void unionCToString() {
+        try (var allocator = Allocator.ofConfined()) {
+            var u = new UnionC(allocator);
+            u.setL(0xaabbccddeeffL);
+            assertEquals("UnionC(\n" +
+                         "    n => " + 0xccddeeff + ",\n" +
+                         "    l => " + 0xaabbccddeeffL + "\n" +
+                         ")@" + Long.toString(u.MEMORY.address(), 16),
+                u.toString());
+        }
+    }
+
+    @Test
+    public void unionEmbeddedToString() {
+        try (var allocator = Allocator.ofConfined()) {
+            var u = new UnionEmbedded(allocator);
+            var seg = allocator.allocate(8);
+            u.setSeg(seg);
+            assertEquals("UnionEmbedded(\n" +
+                         "    n => " + (int) (seg.address() & 0xffffffffL) + ",\n" +
+                         "    seg => []@" + Long.toString(seg.address(), 16) + "\n" +
+                         ")@" + Long.toString(u.MEMORY.address(), 16),
+                u.toString());
+        }
+    }
+
+    @Test
     public void shaCheck() throws Exception {
         var s = Files.readAllLines(Path.of("src", "test", "c-generated", "io_vproxy_pni_test_StructA.h"));
         var lastLine = s.get(s.size() - 1);
@@ -386,22 +414,22 @@ public class TestStructUnion {
 
         s = Files.readAllLines(Path.of("src", "test", "generated", "io", "vproxy", "pni", "test", "StructA.java"));
         lastLine = s.get(s.size() - 1);
-        assertEquals("// sha256:f9f0d81693b257f055e8f182133e5033e864655d83cf4f8d40af2ae4366c49c4", lastLine);
+        assertEquals("// sha256:c77d6421fa84007dba239dfce89e61fcc6c42b6b60f8c1b54eb04210eee770bf", lastLine);
 
         s = Files.readAllLines(Path.of("src", "test", "generated", "io", "vproxy", "pni", "test", "StructB.java"));
         lastLine = s.get(s.size() - 1);
-        assertEquals("// sha256:9dcd47ae41344ad43c38add1cf495580deee1757db8deaf2603a80b41aff6591", lastLine);
+        assertEquals("// sha256:4cd01865a9e5819e84e175ab16e041828b4b53c3f3afacf49b7ac1f4949a7f51", lastLine);
 
         s = Files.readAllLines(Path.of("src", "test", "generated", "io", "vproxy", "pni", "test", "StructD.java"));
         lastLine = s.get(s.size() - 1);
-        assertEquals("// sha256:a8df79c9f238d9faa6ea7126bca929ea45dd3b3bd25a895768ac836b442deab6", lastLine);
+        assertEquals("// sha256:fc980e0b792cc6b867eb919012f6eb4722054b25450c8d85a118c7d77bf68437", lastLine);
 
         s = Files.readAllLines(Path.of("src", "test", "generated", "io", "vproxy", "pni", "test", "UnionC.java"));
         lastLine = s.get(s.size() - 1);
-        assertEquals("// sha256:5361b172cd0b769c020bc97e49112aaf8c14d1ed08db2559e89bac977fcd6504", lastLine);
+        assertEquals("// sha256:085c64fd943445639653f69abcf1a7aa993010b8c7c951de53741735a7804b72", lastLine);
 
         s = Files.readAllLines(Path.of("src", "test", "generated", "io", "vproxy", "pni", "test", "UnionEmbedded.java"));
         lastLine = s.get(s.size() - 1);
-        assertEquals("// sha256:21e41ede4eb64de4a2549882a4a560ba0e8a1c3c9548b162ba2d95a13fac78d6", lastLine);
+        assertEquals("// sha256:d18fa4ea74433b058acd42498c35093fcc94c0c2084d965c87c525d543524750", lastLine);
     }
 }

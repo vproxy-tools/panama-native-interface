@@ -302,6 +302,45 @@ public class ObjectStruct {
         return RESULT;
     }
 
+    @Override
+    public String toString() {
+        var sb = new StringBuilder();
+        toString(sb, 0, new java.util.HashSet<>(), false);
+        return sb.toString();
+    }
+
+    public void toString(StringBuilder SB, int INDENT, java.util.Set<NativeObjectTuple> VISITED, boolean CORRUPTED_MEMORY) {
+        if (!VISITED.add(new NativeObjectTuple(getClass(), MEMORY.address()))) {
+            SB.append("<...>@").append(Long.toString(MEMORY.address(), 16));
+            return;
+        }
+        SB.append("ObjectStruct{\n");
+        {
+            SB.append(" ".repeat(INDENT + 4)).append("str => ");
+            if (CORRUPTED_MEMORY) SB.append("<?>");
+            else SB.append(getStr());
+        }
+        SB.append(",\n");
+        {
+            SB.append(" ".repeat(INDENT + 4)).append("lenStr => ");
+            if (CORRUPTED_MEMORY) SB.append("<?>");
+            else SB.append(getLenStr());
+        }
+        SB.append(",\n");
+        {
+            SB.append(" ".repeat(INDENT + 4)).append("seg => ");
+            SB.append(PanamaUtils.memorySegmentToString(getSeg()));
+        }
+        SB.append(",\n");
+        {
+            SB.append(" ".repeat(INDENT + 4)).append("buf => ");
+            if (CORRUPTED_MEMORY) SB.append("<?>");
+            else SB.append(PanamaUtils.byteBufferToString(getBuf()));
+        }
+        SB.append("\n");
+        SB.append(" ".repeat(INDENT)).append("}@").append(Long.toString(MEMORY.address(), 16));
+    }
+
     public static class Array extends RefArray<ObjectStruct> {
         public Array(MemorySegment buf) {
             super(buf, ObjectStruct.LAYOUT);
@@ -313,6 +352,16 @@ public class ObjectStruct {
 
         public Array(PNIBuf buf) {
             this(buf.get());
+        }
+
+        @Override
+        protected void elementToString(io.vproxy.pni.test.ObjectStruct ELEM, StringBuilder SB, int INDENT, java.util.Set<NativeObjectTuple> VISITED, boolean CORRUPTED_MEMORY) {
+            ELEM.toString(SB, INDENT, VISITED, CORRUPTED_MEMORY);
+        }
+
+        @Override
+        protected String toStringTypeName() {
+            return "ObjectStruct.Array";
         }
 
         @Override
@@ -352,10 +401,15 @@ public class ObjectStruct {
         }
 
         @Override
+        protected String toStringTypeName() {
+            return "ObjectStruct.Func";
+        }
+
+        @Override
         protected ObjectStruct construct(MemorySegment seg) {
             return new ObjectStruct(seg);
         }
     }
 }
 // metadata.generator-version: pni test
-// sha256:2c1f359d774e400fc934c4a9d05af7ad45f0c0f341361d2c11385a7752590bb1
+// sha256:077f67b358f8877c2af5ff4fee7c6ff9b7bd6070d519f93fff3b7d83c8d8a63e

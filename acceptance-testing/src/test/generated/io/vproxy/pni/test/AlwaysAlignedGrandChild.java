@@ -40,6 +40,27 @@ public class AlwaysAlignedGrandChild extends io.vproxy.pni.test.AlwaysAlignedChi
         this(ALLOCATOR.allocate(LAYOUT.byteSize()));
     }
 
+    @Override
+    public String toString() {
+        var sb = new StringBuilder();
+        toString(sb, 0, new java.util.HashSet<>(), false);
+        return sb.toString();
+    }
+
+    public void toString(StringBuilder SB, int INDENT, java.util.Set<NativeObjectTuple> VISITED, boolean CORRUPTED_MEMORY) {
+        if (!VISITED.add(new NativeObjectTuple(getClass(), MEMORY.address()))) {
+            SB.append("<...>@").append(Long.toString(MEMORY.address(), 16));
+            return;
+        }
+        SB.append("AlwaysAlignedGrandChild{\n");
+        {
+            SB.append(" ".repeat(INDENT + 4)).append("c => ");
+            SB.append(getC());
+        }
+        SB.append("\n");
+        SB.append(" ".repeat(INDENT)).append("}@").append(Long.toString(MEMORY.address(), 16));
+    }
+
     public static class Array extends RefArray<AlwaysAlignedGrandChild> {
         public Array(MemorySegment buf) {
             super(buf, AlwaysAlignedGrandChild.LAYOUT);
@@ -51,6 +72,16 @@ public class AlwaysAlignedGrandChild extends io.vproxy.pni.test.AlwaysAlignedChi
 
         public Array(PNIBuf buf) {
             this(buf.get());
+        }
+
+        @Override
+        protected void elementToString(io.vproxy.pni.test.AlwaysAlignedGrandChild ELEM, StringBuilder SB, int INDENT, java.util.Set<NativeObjectTuple> VISITED, boolean CORRUPTED_MEMORY) {
+            ELEM.toString(SB, INDENT, VISITED, CORRUPTED_MEMORY);
+        }
+
+        @Override
+        protected String toStringTypeName() {
+            return "AlwaysAlignedGrandChild.Array";
         }
 
         @Override
@@ -90,10 +121,15 @@ public class AlwaysAlignedGrandChild extends io.vproxy.pni.test.AlwaysAlignedChi
         }
 
         @Override
+        protected String toStringTypeName() {
+            return "AlwaysAlignedGrandChild.Func";
+        }
+
+        @Override
         protected AlwaysAlignedGrandChild construct(MemorySegment seg) {
             return new AlwaysAlignedGrandChild(seg);
         }
     }
 }
 // metadata.generator-version: pni test
-// sha256:3702df61aa153971028c42e81f943d7591b9ec28bff4b56554a086b62bd86abb
+// sha256:061df4e919dbddd50097daac623b9b56d8e600a6775a87f205af87e8c6b7e997

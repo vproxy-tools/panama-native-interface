@@ -93,6 +93,42 @@ public class GCCCompatibilityArrayZero {
         return ENV.returnLong();
     }
 
+    @Override
+    public String toString() {
+        var sb = new StringBuilder();
+        toString(sb, 0, new java.util.HashSet<>(), false);
+        return sb.toString();
+    }
+
+    public void toString(StringBuilder SB, int INDENT, java.util.Set<NativeObjectTuple> VISITED, boolean CORRUPTED_MEMORY) {
+        if (!VISITED.add(new NativeObjectTuple(getClass(), MEMORY.address()))) {
+            SB.append("<...>@").append(Long.toString(MEMORY.address(), 16));
+            return;
+        }
+        SB.append("GCCCompatibilityArrayZero{\n");
+        {
+            SB.append(" ".repeat(INDENT + 4)).append("b1 => ");
+            SB.append(getB1());
+        }
+        SB.append(",\n");
+        {
+            SB.append(" ".repeat(INDENT + 4)).append("array => ");
+            if (CORRUPTED_MEMORY) SB.append("<?>");
+            else {
+                var VALUE = getArray();
+                if (VALUE == null) SB.append("null");
+                else VALUE.toString(SB, INDENT + 4, VISITED, CORRUPTED_MEMORY);
+            }
+        }
+        SB.append(",\n");
+        {
+            SB.append(" ".repeat(INDENT + 4)).append("n2 => ");
+            SB.append(getN2());
+        }
+        SB.append("\n");
+        SB.append(" ".repeat(INDENT)).append("}@").append(Long.toString(MEMORY.address(), 16));
+    }
+
     public static class Array extends RefArray<GCCCompatibilityArrayZero> {
         public Array(MemorySegment buf) {
             super(buf, GCCCompatibilityArrayZero.LAYOUT);
@@ -104,6 +140,16 @@ public class GCCCompatibilityArrayZero {
 
         public Array(PNIBuf buf) {
             this(buf.get());
+        }
+
+        @Override
+        protected void elementToString(io.vproxy.pni.test.GCCCompatibilityArrayZero ELEM, StringBuilder SB, int INDENT, java.util.Set<NativeObjectTuple> VISITED, boolean CORRUPTED_MEMORY) {
+            ELEM.toString(SB, INDENT, VISITED, CORRUPTED_MEMORY);
+        }
+
+        @Override
+        protected String toStringTypeName() {
+            return "GCCCompatibilityArrayZero.Array";
         }
 
         @Override
@@ -143,10 +189,15 @@ public class GCCCompatibilityArrayZero {
         }
 
         @Override
+        protected String toStringTypeName() {
+            return "GCCCompatibilityArrayZero.Func";
+        }
+
+        @Override
         protected GCCCompatibilityArrayZero construct(MemorySegment seg) {
             return new GCCCompatibilityArrayZero(seg);
         }
     }
 }
 // metadata.generator-version: pni test
-// sha256:31df96ca08831b6f3b50d4eafd440c96f15a118d47618a3fcfa835728357da9f
+// sha256:51683eae309ef6085ca7c91e4b4f9649d746fb1393048557d5ebcc16453ef31e

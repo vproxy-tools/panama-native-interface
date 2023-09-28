@@ -79,6 +79,32 @@ public class ChildOfPacked extends io.vproxy.pni.test.PackedBaseClass {
         }
     }
 
+    @Override
+    public String toString() {
+        var sb = new StringBuilder();
+        toString(sb, 0, new java.util.HashSet<>(), false);
+        return sb.toString();
+    }
+
+    public void toString(StringBuilder SB, int INDENT, java.util.Set<NativeObjectTuple> VISITED, boolean CORRUPTED_MEMORY) {
+        if (!VISITED.add(new NativeObjectTuple(getClass(), MEMORY.address()))) {
+            SB.append("<...>@").append(Long.toString(MEMORY.address(), 16));
+            return;
+        }
+        SB.append("ChildOfPacked{\n");
+        {
+            SB.append(" ".repeat(INDENT + 4)).append("x => ");
+            SB.append(getX());
+        }
+        SB.append(",\n");
+        {
+            SB.append(" ".repeat(INDENT + 4)).append("o => ");
+            getO().toString(SB, INDENT + 4, VISITED, CORRUPTED_MEMORY);
+        }
+        SB.append("\n");
+        SB.append(" ".repeat(INDENT)).append("}@").append(Long.toString(MEMORY.address(), 16));
+    }
+
     public static class Array extends RefArray<ChildOfPacked> {
         public Array(MemorySegment buf) {
             super(buf, ChildOfPacked.LAYOUT);
@@ -90,6 +116,16 @@ public class ChildOfPacked extends io.vproxy.pni.test.PackedBaseClass {
 
         public Array(PNIBuf buf) {
             this(buf.get());
+        }
+
+        @Override
+        protected void elementToString(io.vproxy.pni.test.ChildOfPacked ELEM, StringBuilder SB, int INDENT, java.util.Set<NativeObjectTuple> VISITED, boolean CORRUPTED_MEMORY) {
+            ELEM.toString(SB, INDENT, VISITED, CORRUPTED_MEMORY);
+        }
+
+        @Override
+        protected String toStringTypeName() {
+            return "ChildOfPacked.Array";
         }
 
         @Override
@@ -129,10 +165,15 @@ public class ChildOfPacked extends io.vproxy.pni.test.PackedBaseClass {
         }
 
         @Override
+        protected String toStringTypeName() {
+            return "ChildOfPacked.Func";
+        }
+
+        @Override
         protected ChildOfPacked construct(MemorySegment seg) {
             return new ChildOfPacked(seg);
         }
     }
 }
 // metadata.generator-version: pni test
-// sha256:62a5161bf181d4bf6e0108718ac85bbacbc65ed01680cd42da6b62b7dc0eaa2b
+// sha256:9108c3b130be9965f06ae6e0d75bfa549226f5c979471501290ad62e42130c8e
