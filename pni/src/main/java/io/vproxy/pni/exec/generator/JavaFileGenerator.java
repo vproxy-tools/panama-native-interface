@@ -285,6 +285,11 @@ public class JavaFileGenerator {
             .append("@Override\n");
         Utils.appendIndent(sb, indent)
             .append("public void toString(StringBuilder SB, int INDENT, java.util.Set<NativeObjectTuple> VISITED, boolean CORRUPTED_MEMORY) {\n");
+        generateJavaToStringBody(sb, indent);
+        Utils.appendIndent(sb, indent).append("}\n");
+    }
+
+    private void generateJavaToStringBody(StringBuilder sb, int indent) {
         Utils.appendIndent(sb, indent + 4)
             .append("if (!VISITED.add(new NativeObjectTuple(this))) {\n");
         Utils.appendIndent(sb, indent + 8)
@@ -297,6 +302,10 @@ public class JavaFileGenerator {
             Utils.appendIndent(sb, indent + 4)
                 .append("CORRUPTED_MEMORY = true;\n");
         }
+        generateJavaToStringBody0(sb, indent);
+    }
+
+    private void generateJavaToStringBody0(StringBuilder sb, int indent) {
         Utils.appendIndent(sb, indent + 4).append("SB.append(\"").append(cls.simpleName());
         if (cls.isUnion()) {
             sb.append("(\\n");
@@ -304,6 +313,25 @@ public class JavaFileGenerator {
             sb.append("{\\n");
         }
         sb.append("\");\n");
+        if (cls.superTypeRef != null) {
+            Utils.appendIndent(sb, indent + 4)
+                .append("SB.append(\" \".repeat(INDENT + 4)).append(\"SUPER => \");\n");
+            Utils.appendIndent(sb, indent + 4).append("{\n");
+            Utils.appendIndent(sb, indent + 8).append("INDENT += 4;\n");
+            var parent = ((ClassTypeInfo) cls.superTypeRef).getClazz();
+            new JavaFileGenerator(parent, opts)
+                .generateJavaToStringBody0(sb, indent + 4);
+            Utils.appendIndent(sb, indent + 8).append("INDENT -= 4;\n");
+            if (cls.fields.isEmpty()) {
+                Utils.appendIndent(sb, indent + 8)
+                    .append("SB.append(\"\\n\");\n");
+                sb.append("\n");
+            } else {
+                Utils.appendIndent(sb, indent + 8)
+                    .append("SB.append(\",\\n\");\n");
+            }
+            Utils.appendIndent(sb, indent + 4).append("}\n");
+        }
         for (int i = 0; i < cls.fields.size(); i++) {
             var f = cls.fields.get(i);
             get(f).generateJavaToString(sb, indent + 4);
@@ -321,7 +349,6 @@ public class JavaFileGenerator {
             sb.append("}");
         }
         sb.append("@\").append(Long.toString(MEMORY.address(), 16));\n");
-        Utils.appendIndent(sb, indent).append("}\n");
     }
 
     private void generateJavaArrayToString(StringBuilder sb, int indent) {
