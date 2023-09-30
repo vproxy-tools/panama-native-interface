@@ -6,7 +6,7 @@ import java.lang.foreign.*;
 import java.lang.invoke.*;
 import java.nio.ByteBuffer;
 
-public class RefAndFuncFields {
+public class RefAndFuncFields implements NativeObject {
     public static final MemoryLayout LAYOUT = MemoryLayout.structLayout(
         ValueLayout.ADDRESS_UNALIGNED.withName("ref"),
         ValueLayout.ADDRESS_UNALIGNED.withName("ref2"),
@@ -15,6 +15,11 @@ public class RefAndFuncFields {
         ValueLayout.ADDRESS_UNALIGNED.withName("func2")
     );
     public final MemorySegment MEMORY;
+
+    @Override
+    public MemorySegment MEMORY() {
+        return MEMORY;
+    }
 
     private static final VarHandle refVH = LAYOUT.varHandle(
         MemoryLayout.PathElement.groupElement("ref")
@@ -278,8 +283,9 @@ public class RefAndFuncFields {
         return sb.toString();
     }
 
+    @Override
     public void toString(StringBuilder SB, int INDENT, java.util.Set<NativeObjectTuple> VISITED, boolean CORRUPTED_MEMORY) {
-        if (!VISITED.add(new NativeObjectTuple(getClass(), MEMORY.address()))) {
+        if (!VISITED.add(new NativeObjectTuple(this))) {
             SB.append("<...>@").append(Long.toString(MEMORY.address(), 16));
             return;
         }
@@ -287,51 +293,31 @@ public class RefAndFuncFields {
         {
             SB.append(" ".repeat(INDENT + 4)).append("ref => ");
             if (CORRUPTED_MEMORY) SB.append("<?>");
-            else {
-                var VALUE = getRef();
-                if (VALUE == null) SB.append("null");
-                else VALUE.toString(SB, INDENT, VISITED, CORRUPTED_MEMORY);
-            }
+            else PanamaUtils.nativeObjectToString(getRef(), SB, INDENT + 4, VISITED, CORRUPTED_MEMORY);
         }
         SB.append(",\n");
         {
             SB.append(" ".repeat(INDENT + 4)).append("ref2 => ");
             if (CORRUPTED_MEMORY) SB.append("<?>");
-            else {
-                var VALUE = getRef2();
-                if (VALUE == null) SB.append("null");
-                else VALUE.toString(SB, INDENT, VISITED, CORRUPTED_MEMORY);
-            }
+            else PanamaUtils.nativeObjectToString(getRef2(), SB, INDENT + 4, VISITED, CORRUPTED_MEMORY);
         }
         SB.append(",\n");
         {
             SB.append(" ".repeat(INDENT + 4)).append("ref3 => ");
             if (CORRUPTED_MEMORY) SB.append("<?>");
-            else {
-                var VALUE = getRef3();
-                if (VALUE == null) SB.append("null");
-                else VALUE.toString(SB, INDENT, VISITED, CORRUPTED_MEMORY);
-            }
+            else PanamaUtils.nativeObjectToString(getRef3(), SB, INDENT + 4, VISITED, CORRUPTED_MEMORY);
         }
         SB.append(",\n");
         {
             SB.append(" ".repeat(INDENT + 4)).append("func => ");
             if (CORRUPTED_MEMORY) SB.append("<?>");
-            else {
-                var VALUE = getFunc();
-                if (VALUE == null) SB.append("null");
-                else VALUE.toString(SB, INDENT, VISITED, CORRUPTED_MEMORY);
-            }
+            else PanamaUtils.nativeObjectToString(getFunc(), SB, INDENT + 4, VISITED, CORRUPTED_MEMORY);
         }
         SB.append(",\n");
         {
             SB.append(" ".repeat(INDENT + 4)).append("func2 => ");
             if (CORRUPTED_MEMORY) SB.append("<?>");
-            else {
-                var VALUE = getFunc2();
-                if (VALUE == null) SB.append("null");
-                else VALUE.toString(SB, INDENT, VISITED, CORRUPTED_MEMORY);
-            }
+            else PanamaUtils.nativeObjectToString(getFunc2(), SB, INDENT + 4, VISITED, CORRUPTED_MEMORY);
         }
         SB.append("\n");
         SB.append(" ".repeat(INDENT)).append("}@").append(Long.toString(MEMORY.address(), 16));
@@ -408,4 +394,4 @@ public class RefAndFuncFields {
     }
 }
 // metadata.generator-version: pni test
-// sha256:761707bd8b7b95ffe4a20a6aeb205a520ed4d8d572da7f1351f0cce9536d114c
+// sha256:db7283999adbfc1c45dfdb409a3109b6fa584fa17a3441faa8a5449ca26284d5

@@ -6,13 +6,18 @@ import java.lang.foreign.*;
 import java.lang.invoke.*;
 import java.nio.ByteBuffer;
 
-public class UnionO {
+public class UnionO implements NativeObject {
     public static final MemoryLayout LAYOUT = MemoryLayout.unionLayout(
         ValueLayout.JAVA_SHORT_UNALIGNED.withName("s"),
         ValueLayout.JAVA_INT_UNALIGNED.withName("i"),
         io.vproxy.pni.test.UnionP.LAYOUT.withName("p")
     );
     public final MemorySegment MEMORY;
+
+    @Override
+    public MemorySegment MEMORY() {
+        return MEMORY;
+    }
 
     private static final VarHandle sVH = LAYOUT.varHandle(
         MemoryLayout.PathElement.groupElement("s")
@@ -68,8 +73,9 @@ public class UnionO {
         return sb.toString();
     }
 
+    @Override
     public void toString(StringBuilder SB, int INDENT, java.util.Set<NativeObjectTuple> VISITED, boolean CORRUPTED_MEMORY) {
-        if (!VISITED.add(new NativeObjectTuple(getClass(), MEMORY.address()))) {
+        if (!VISITED.add(new NativeObjectTuple(this))) {
             SB.append("<...>@").append(Long.toString(MEMORY.address(), 16));
             return;
         }
@@ -87,7 +93,7 @@ public class UnionO {
         SB.append(",\n");
         {
             SB.append(" ".repeat(INDENT + 4)).append("p => ");
-            getP().toString(SB, INDENT + 4, VISITED, CORRUPTED_MEMORY);
+            PanamaUtils.nativeObjectToString(getP(), SB, INDENT + 4, VISITED, CORRUPTED_MEMORY);
         }
         SB.append("\n");
         SB.append(" ".repeat(INDENT)).append(")@").append(Long.toString(MEMORY.address(), 16));
@@ -164,4 +170,4 @@ public class UnionO {
     }
 }
 // metadata.generator-version: pni test
-// sha256:2130996e2242d483440df22c1a510a38d257ac31d5dd62689d86c87279b158f9
+// sha256:cbdddcef32c7932ec5e957bebf05dcd47259e5af733318bbe988ab90c7ed0a9d

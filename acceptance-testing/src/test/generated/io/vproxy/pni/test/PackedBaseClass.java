@@ -6,12 +6,17 @@ import java.lang.foreign.*;
 import java.lang.invoke.*;
 import java.nio.ByteBuffer;
 
-public class PackedBaseClass {
+public class PackedBaseClass implements NativeObject {
     public static final MemoryLayout LAYOUT = MemoryLayout.structLayout(
         ValueLayout.JAVA_BYTE.withName("a"),
         ValueLayout.JAVA_SHORT_UNALIGNED.withName("b")
     );
     public final MemorySegment MEMORY;
+
+    @Override
+    public MemorySegment MEMORY() {
+        return MEMORY;
+    }
 
     private static final VarHandle aVH = LAYOUT.varHandle(
         MemoryLayout.PathElement.groupElement("a")
@@ -86,8 +91,9 @@ public class PackedBaseClass {
         return sb.toString();
     }
 
+    @Override
     public void toString(StringBuilder SB, int INDENT, java.util.Set<NativeObjectTuple> VISITED, boolean CORRUPTED_MEMORY) {
-        if (!VISITED.add(new NativeObjectTuple(getClass(), MEMORY.address()))) {
+        if (!VISITED.add(new NativeObjectTuple(this))) {
             SB.append("<...>@").append(Long.toString(MEMORY.address(), 16));
             return;
         }
@@ -176,4 +182,4 @@ public class PackedBaseClass {
     }
 }
 // metadata.generator-version: pni test
-// sha256:68623142c08c2e1eb49a380f6a94afaf4a21f42a449eb0ec60927ca3b556b035
+// sha256:38d2faffa8cf3d90d0fb26a5f7c79031d679e0e8539f1e2de4600108ee61a0dd

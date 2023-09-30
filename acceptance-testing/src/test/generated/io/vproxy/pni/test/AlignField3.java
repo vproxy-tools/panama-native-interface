@@ -6,7 +6,7 @@ import java.lang.foreign.*;
 import java.lang.invoke.*;
 import java.nio.ByteBuffer;
 
-public class AlignField3 {
+public class AlignField3 implements NativeObject {
     public static final MemoryLayout LAYOUT = MemoryLayout.structLayout(
         ValueLayout.JAVA_SHORT.withName("a"),
         MemoryLayout.sequenceLayout(30L, ValueLayout.JAVA_BYTE) /* padding */,
@@ -15,6 +15,11 @@ public class AlignField3 {
         MemoryLayout.sequenceLayout(24L, ValueLayout.JAVA_BYTE) /* padding */
     );
     public final MemorySegment MEMORY;
+
+    @Override
+    public MemorySegment MEMORY() {
+        return MEMORY;
+    }
 
     private static final VarHandle aVH = LAYOUT.varHandle(
         MemoryLayout.PathElement.groupElement("a")
@@ -122,8 +127,9 @@ public class AlignField3 {
         return sb.toString();
     }
 
+    @Override
     public void toString(StringBuilder SB, int INDENT, java.util.Set<NativeObjectTuple> VISITED, boolean CORRUPTED_MEMORY) {
-        if (!VISITED.add(new NativeObjectTuple(getClass(), MEMORY.address()))) {
+        if (!VISITED.add(new NativeObjectTuple(this))) {
             SB.append("<...>@").append(Long.toString(MEMORY.address(), 16));
             return;
         }
@@ -217,4 +223,4 @@ public class AlignField3 {
     }
 }
 // metadata.generator-version: pni test
-// sha256:4e316371fabcf409b1b1a429aa46f6862445cbda31fd6bc62ba6755d46f690b4
+// sha256:d1ceea25fb5c310129be3f09301b58a0a7732ea7464eadba24bd74743585e5c3

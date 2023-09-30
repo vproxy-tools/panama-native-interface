@@ -6,13 +6,18 @@ import java.lang.foreign.*;
 import java.lang.invoke.*;
 import java.nio.ByteBuffer;
 
-public class ChildOfLargeAlign extends io.vproxy.pni.test.LargeAlignBase {
+public class ChildOfLargeAlign extends io.vproxy.pni.test.LargeAlignBase implements NativeObject {
     public static final MemoryLayout LAYOUT = MemoryLayout.structLayout(
         io.vproxy.pni.test.LargeAlignBase.LAYOUT,
         ValueLayout.JAVA_BYTE.withName("y"),
         MemoryLayout.sequenceLayout(7L, ValueLayout.JAVA_BYTE) /* padding */
     );
     public final MemorySegment MEMORY;
+
+    @Override
+    public MemorySegment MEMORY() {
+        return MEMORY;
+    }
 
     private static final VarHandle yVH = LAYOUT.varHandle(
         MemoryLayout.PathElement.groupElement("y")
@@ -47,8 +52,9 @@ public class ChildOfLargeAlign extends io.vproxy.pni.test.LargeAlignBase {
         return sb.toString();
     }
 
+    @Override
     public void toString(StringBuilder SB, int INDENT, java.util.Set<NativeObjectTuple> VISITED, boolean CORRUPTED_MEMORY) {
-        if (!VISITED.add(new NativeObjectTuple(getClass(), MEMORY.address()))) {
+        if (!VISITED.add(new NativeObjectTuple(this))) {
             SB.append("<...>@").append(Long.toString(MEMORY.address(), 16));
             return;
         }
@@ -132,4 +138,4 @@ public class ChildOfLargeAlign extends io.vproxy.pni.test.LargeAlignBase {
     }
 }
 // metadata.generator-version: pni test
-// sha256:ae5dccc281e0326faa54e91c03182eb42286a2aa4af04432db98f0f2305853ea
+// sha256:041425012a1085f86ff1621802c0eb8e742d6ca75ad86399b95335f4492168d7

@@ -6,11 +6,16 @@ import java.lang.foreign.*;
 import java.lang.invoke.*;
 import java.nio.ByteBuffer;
 
-public class StructM {
+public class StructM implements NativeObject {
     public static final MemoryLayout LAYOUT = MemoryLayout.structLayout(
         io.vproxy.pni.test.StructN.LAYOUT.withName("n")
     );
     public final MemorySegment MEMORY;
+
+    @Override
+    public MemorySegment MEMORY() {
+        return MEMORY;
+    }
 
     private final io.vproxy.pni.test.StructN n;
 
@@ -52,15 +57,16 @@ public class StructM {
         return sb.toString();
     }
 
+    @Override
     public void toString(StringBuilder SB, int INDENT, java.util.Set<NativeObjectTuple> VISITED, boolean CORRUPTED_MEMORY) {
-        if (!VISITED.add(new NativeObjectTuple(getClass(), MEMORY.address()))) {
+        if (!VISITED.add(new NativeObjectTuple(this))) {
             SB.append("<...>@").append(Long.toString(MEMORY.address(), 16));
             return;
         }
         SB.append("StructM{\n");
         {
             SB.append(" ".repeat(INDENT + 4)).append("n => ");
-            getN().toString(SB, INDENT + 4, VISITED, CORRUPTED_MEMORY);
+            PanamaUtils.nativeObjectToString(getN(), SB, INDENT + 4, VISITED, CORRUPTED_MEMORY);
         }
         SB.append("\n");
         SB.append(" ".repeat(INDENT)).append("}@").append(Long.toString(MEMORY.address(), 16));
@@ -137,4 +143,4 @@ public class StructM {
     }
 }
 // metadata.generator-version: pni test
-// sha256:8b7f58f6c182b37d8f0a37b6043aaf118378f55dfb60bd80535d1b11a3666ed3
+// sha256:6079a7ee80c54e9b97dafbac20cbe905f4c72ec83acad8433919390a9c218c4a

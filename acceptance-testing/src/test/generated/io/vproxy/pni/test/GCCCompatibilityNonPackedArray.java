@@ -6,7 +6,7 @@ import java.lang.foreign.*;
 import java.lang.invoke.*;
 import java.nio.ByteBuffer;
 
-public class GCCCompatibilityNonPackedArray {
+public class GCCCompatibilityNonPackedArray implements NativeObject {
     public static final MemoryLayout LAYOUT = MemoryLayout.structLayout(
         ValueLayout.JAVA_BYTE.withName("b1"),
         MemoryLayout.sequenceLayout(7L, ValueLayout.JAVA_BYTE) /* padding */,
@@ -15,6 +15,11 @@ public class GCCCompatibilityNonPackedArray {
         MemoryLayout.sequenceLayout(4L, ValueLayout.JAVA_BYTE) /* padding */
     );
     public final MemorySegment MEMORY;
+
+    @Override
+    public MemorySegment MEMORY() {
+        return MEMORY;
+    }
 
     private static final VarHandle b1VH = LAYOUT.varHandle(
         MemoryLayout.PathElement.groupElement("b1")
@@ -100,8 +105,9 @@ public class GCCCompatibilityNonPackedArray {
         return sb.toString();
     }
 
+    @Override
     public void toString(StringBuilder SB, int INDENT, java.util.Set<NativeObjectTuple> VISITED, boolean CORRUPTED_MEMORY) {
-        if (!VISITED.add(new NativeObjectTuple(getClass(), MEMORY.address()))) {
+        if (!VISITED.add(new NativeObjectTuple(this))) {
             SB.append("<...>@").append(Long.toString(MEMORY.address(), 16));
             return;
         }
@@ -114,11 +120,7 @@ public class GCCCompatibilityNonPackedArray {
         {
             SB.append(" ".repeat(INDENT + 4)).append("array => ");
             if (CORRUPTED_MEMORY) SB.append("<?>");
-            else {
-                var VALUE = getArray();
-                if (VALUE == null) SB.append("null");
-                else VALUE.toString(SB, INDENT + 4, VISITED, CORRUPTED_MEMORY);
-            }
+            else PanamaUtils.nativeObjectToString(getArray(), SB, INDENT + 4, VISITED, CORRUPTED_MEMORY);
         }
         SB.append(",\n");
         {
@@ -200,4 +202,4 @@ public class GCCCompatibilityNonPackedArray {
     }
 }
 // metadata.generator-version: pni test
-// sha256:59b088c8addd7690939eec0efecab7ca5eeb2be8bd42f044eb95a4c6698f155a
+// sha256:09ea67fe630928253dd20be880877b64942b3244dacd66ca043512b8d8467d00

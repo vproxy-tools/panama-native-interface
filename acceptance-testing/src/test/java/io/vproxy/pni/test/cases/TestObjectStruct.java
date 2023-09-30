@@ -153,7 +153,7 @@ public class TestObjectStruct {
             buf.setUtf8String(3, "bbb");
             s.setBuf(buf.asByteBuffer().limit(8).position(3));
             assertEquals("ObjectStruct{\n" +
-                         "    str => hello,\n" +
+                         "    str => hello@" + Long.toString(s.getStr().MEMORY.address(), 16) + ",\n" +
                          "    lenStr => world,\n" +
                          // len info is missing
                          "    seg => []@" + Long.toString(seg.address(), 16) + ",\n" +
@@ -170,6 +170,6 @@ public class TestObjectStruct {
 
         s = Files.readAllLines(Path.of("src", "test", "generated", "io", "vproxy", "pni", "test", "ObjectStruct.java"));
         lastLine = s.get(s.size() - 1);
-        assertEquals("// sha256:077f67b358f8877c2af5ff4fee7c6ff9b7bd6070d519f93fff3b7d83c8d8a63e", lastLine);
+        assertEquals("// sha256:b2ac8d777ec5ff63afa85a55f47b2432ab36ac40de4c3d91b1819d666ec422b8", lastLine);
     }
 }

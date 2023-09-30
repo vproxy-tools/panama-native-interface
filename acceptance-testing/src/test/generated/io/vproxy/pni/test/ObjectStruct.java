@@ -6,7 +6,7 @@ import java.lang.foreign.*;
 import java.lang.invoke.*;
 import java.nio.ByteBuffer;
 
-public class ObjectStruct {
+public class ObjectStruct implements NativeObject {
     public static final MemoryLayout LAYOUT = MemoryLayout.structLayout(
         ValueLayout.ADDRESS_UNALIGNED.withName("str"),
         MemoryLayout.sequenceLayout(16L, ValueLayout.JAVA_BYTE).withName("lenStr"),
@@ -14,6 +14,11 @@ public class ObjectStruct {
         PNIBuf.LAYOUT.withName("buf")
     );
     public final MemorySegment MEMORY;
+
+    @Override
+    public MemorySegment MEMORY() {
+        return MEMORY;
+    }
 
     private static final VarHandle strVH = LAYOUT.varHandle(
         MemoryLayout.PathElement.groupElement("str")
@@ -309,8 +314,9 @@ public class ObjectStruct {
         return sb.toString();
     }
 
+    @Override
     public void toString(StringBuilder SB, int INDENT, java.util.Set<NativeObjectTuple> VISITED, boolean CORRUPTED_MEMORY) {
-        if (!VISITED.add(new NativeObjectTuple(getClass(), MEMORY.address()))) {
+        if (!VISITED.add(new NativeObjectTuple(this))) {
             SB.append("<...>@").append(Long.toString(MEMORY.address(), 16));
             return;
         }
@@ -318,7 +324,7 @@ public class ObjectStruct {
         {
             SB.append(" ".repeat(INDENT + 4)).append("str => ");
             if (CORRUPTED_MEMORY) SB.append("<?>");
-            else SB.append(getStr());
+            else PanamaUtils.nativeObjectToString(getStr(), SB, INDENT + 4, VISITED, CORRUPTED_MEMORY);
         }
         SB.append(",\n");
         {
@@ -412,4 +418,4 @@ public class ObjectStruct {
     }
 }
 // metadata.generator-version: pni test
-// sha256:077f67b358f8877c2af5ff4fee7c6ff9b7bd6070d519f93fff3b7d83c8d8a63e
+// sha256:b2ac8d777ec5ff63afa85a55f47b2432ab36ac40de4c3d91b1819d666ec422b8

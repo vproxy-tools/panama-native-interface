@@ -6,11 +6,16 @@ import java.lang.foreign.*;
 import java.lang.invoke.*;
 import java.nio.ByteBuffer;
 
-public class BaseClass {
+public class BaseClass implements NativeObject {
     public static final MemoryLayout LAYOUT = MemoryLayout.structLayout(
         ValueLayout.JAVA_BYTE.withName("a")
     );
     public final MemorySegment MEMORY;
+
+    @Override
+    public MemorySegment MEMORY() {
+        return MEMORY;
+    }
 
     private static final VarHandle aVH = LAYOUT.varHandle(
         MemoryLayout.PathElement.groupElement("a")
@@ -57,8 +62,9 @@ public class BaseClass {
         return sb.toString();
     }
 
+    @Override
     public void toString(StringBuilder SB, int INDENT, java.util.Set<NativeObjectTuple> VISITED, boolean CORRUPTED_MEMORY) {
-        if (!VISITED.add(new NativeObjectTuple(getClass(), MEMORY.address()))) {
+        if (!VISITED.add(new NativeObjectTuple(this))) {
             SB.append("<...>@").append(Long.toString(MEMORY.address(), 16));
             return;
         }
@@ -142,4 +148,4 @@ public class BaseClass {
     }
 }
 // metadata.generator-version: pni test
-// sha256:4013b692d1c48569a24bb85a005eafc7daffc44e92f49977fa035d2810648356
+// sha256:51ea3eb6d02df743e98168c442baccb803dafca9f469b68c50fd8b7332ec52f3

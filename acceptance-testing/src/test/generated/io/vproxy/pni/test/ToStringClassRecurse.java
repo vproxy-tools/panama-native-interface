@@ -6,13 +6,18 @@ import java.lang.foreign.*;
 import java.lang.invoke.*;
 import java.nio.ByteBuffer;
 
-public class ToStringClassRecurse {
+public class ToStringClassRecurse implements NativeObject {
     public static final MemoryLayout LAYOUT = MemoryLayout.structLayout(
         ValueLayout.JAVA_LONG_UNALIGNED.withName("num"),
         ValueLayout.ADDRESS_UNALIGNED.withName("c"),
         MemoryLayout.sequenceLayout(0L, ValueLayout.JAVA_INT_UNALIGNED).withName("arri")
     );
     public final MemorySegment MEMORY;
+
+    @Override
+    public MemorySegment MEMORY() {
+        return MEMORY;
+    }
 
     private static final VarHandle numVH = LAYOUT.varHandle(
         MemoryLayout.PathElement.groupElement("num")
@@ -71,8 +76,9 @@ public class ToStringClassRecurse {
         return sb.toString();
     }
 
+    @Override
     public void toString(StringBuilder SB, int INDENT, java.util.Set<NativeObjectTuple> VISITED, boolean CORRUPTED_MEMORY) {
-        if (!VISITED.add(new NativeObjectTuple(getClass(), MEMORY.address()))) {
+        if (!VISITED.add(new NativeObjectTuple(this))) {
             SB.append("<...>@").append(Long.toString(MEMORY.address(), 16));
             return;
         }
@@ -84,23 +90,14 @@ public class ToStringClassRecurse {
         SB.append(",\n");
         {
             SB.append(" ".repeat(INDENT + 4)).append("c => ");
-            if (CORRUPTED_MEMORY) {
-                SB.append("<?>");
-            } else {
-                var VALUE = getC();
-                if (VALUE == null) SB.append("null");
-                else VALUE.toString(SB, INDENT + 4, VISITED, CORRUPTED_MEMORY);
-            }
+            if (CORRUPTED_MEMORY) SB.append("<?>");
+            else PanamaUtils.nativeObjectToString(getC(), SB, INDENT + 4, VISITED, CORRUPTED_MEMORY);
         }
         SB.append(",\n");
         {
             SB.append(" ".repeat(INDENT + 4)).append("arri => ");
             if (CORRUPTED_MEMORY) SB.append("<?>");
-            else {
-                var VALUE = getArri();
-                if (VALUE == null) SB.append("null");
-                else VALUE.toString(SB, INDENT + 4, VISITED, CORRUPTED_MEMORY);
-            }
+            else PanamaUtils.nativeObjectToString(getArri(), SB, INDENT + 4, VISITED, CORRUPTED_MEMORY);
         }
         SB.append("\n");
         SB.append(" ".repeat(INDENT)).append("}@").append(Long.toString(MEMORY.address(), 16));
@@ -177,4 +174,4 @@ public class ToStringClassRecurse {
     }
 }
 // metadata.generator-version: pni test
-// sha256:18e10bcbea1c5d14159692f3ee5e63835e9dc41168f40bd2529de2eb0eef539d
+// sha256:33655849f836498d6432511fdb274aec6fff28919fa1bf78fbdaf306078bd7cc

@@ -6,13 +6,18 @@ import java.lang.foreign.*;
 import java.lang.invoke.*;
 import java.nio.ByteBuffer;
 
-public class GCCompatibilityPackedContainUnion {
+public class GCCompatibilityPackedContainUnion implements NativeObject {
     public static final MemoryLayout LAYOUT = MemoryLayout.structLayout(
         ValueLayout.JAVA_BYTE.withName("b1"),
         io.vproxy.pni.test.GCCCompatibilityUnion.LAYOUT.withName("un"),
         ValueLayout.JAVA_INT_UNALIGNED.withName("n2")
     );
     public final MemorySegment MEMORY;
+
+    @Override
+    public MemorySegment MEMORY() {
+        return MEMORY;
+    }
 
     private static final VarHandle b1VH = LAYOUT.varHandle(
         MemoryLayout.PathElement.groupElement("b1")
@@ -171,8 +176,9 @@ public class GCCompatibilityPackedContainUnion {
         return sb.toString();
     }
 
+    @Override
     public void toString(StringBuilder SB, int INDENT, java.util.Set<NativeObjectTuple> VISITED, boolean CORRUPTED_MEMORY) {
-        if (!VISITED.add(new NativeObjectTuple(getClass(), MEMORY.address()))) {
+        if (!VISITED.add(new NativeObjectTuple(this))) {
             SB.append("<...>@").append(Long.toString(MEMORY.address(), 16));
             return;
         }
@@ -184,7 +190,7 @@ public class GCCompatibilityPackedContainUnion {
         SB.append(",\n");
         {
             SB.append(" ".repeat(INDENT + 4)).append("un => ");
-            getUn().toString(SB, INDENT + 4, VISITED, CORRUPTED_MEMORY);
+            PanamaUtils.nativeObjectToString(getUn(), SB, INDENT + 4, VISITED, CORRUPTED_MEMORY);
         }
         SB.append(",\n");
         {
@@ -266,4 +272,4 @@ public class GCCompatibilityPackedContainUnion {
     }
 }
 // metadata.generator-version: pni test
-// sha256:45bab1340f03c210de282873f989fb34bbdf5c5a2a51ed54ee8aa0489f4c5f4d
+// sha256:79c9fc2130b86e55cca5384b808a331542bfe3758db4517ed21120035dfe967a

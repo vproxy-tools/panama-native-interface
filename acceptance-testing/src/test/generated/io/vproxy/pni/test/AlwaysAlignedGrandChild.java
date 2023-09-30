@@ -6,13 +6,18 @@ import java.lang.foreign.*;
 import java.lang.invoke.*;
 import java.nio.ByteBuffer;
 
-public class AlwaysAlignedGrandChild extends io.vproxy.pni.test.AlwaysAlignedChild {
+public class AlwaysAlignedGrandChild extends io.vproxy.pni.test.AlwaysAlignedChild implements NativeObject {
     public static final MemoryLayout LAYOUT = MemoryLayout.structLayout(
         io.vproxy.pni.test.AlwaysAlignedChild.LAYOUT,
         MemoryLayout.sequenceLayout(4L, ValueLayout.JAVA_BYTE) /* padding */,
         ValueLayout.JAVA_LONG.withName("c")
     );
     public final MemorySegment MEMORY;
+
+    @Override
+    public MemorySegment MEMORY() {
+        return MEMORY;
+    }
 
     private static final VarHandle cVH = LAYOUT.varHandle(
         MemoryLayout.PathElement.groupElement("c")
@@ -47,8 +52,9 @@ public class AlwaysAlignedGrandChild extends io.vproxy.pni.test.AlwaysAlignedChi
         return sb.toString();
     }
 
+    @Override
     public void toString(StringBuilder SB, int INDENT, java.util.Set<NativeObjectTuple> VISITED, boolean CORRUPTED_MEMORY) {
-        if (!VISITED.add(new NativeObjectTuple(getClass(), MEMORY.address()))) {
+        if (!VISITED.add(new NativeObjectTuple(this))) {
             SB.append("<...>@").append(Long.toString(MEMORY.address(), 16));
             return;
         }
@@ -132,4 +138,4 @@ public class AlwaysAlignedGrandChild extends io.vproxy.pni.test.AlwaysAlignedChi
     }
 }
 // metadata.generator-version: pni test
-// sha256:061df4e919dbddd50097daac623b9b56d8e600a6775a87f205af87e8c6b7e997
+// sha256:5c993610ea9ae279ddac2cab014384dcbeda7bc4baae78461d7d704e2f8275d3

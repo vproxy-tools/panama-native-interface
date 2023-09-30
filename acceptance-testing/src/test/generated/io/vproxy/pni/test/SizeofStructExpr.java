@@ -6,7 +6,7 @@ import java.lang.foreign.*;
 import java.lang.invoke.*;
 import java.nio.ByteBuffer;
 
-public class SizeofStructExpr {
+public class SizeofStructExpr implements NativeObject {
     private static final MethodHandle __getLayoutByteSizeMH = PanamaUtils.lookupPNICriticalFunction(true, long.class, "JavaCritical_io_vproxy_pni_test_SizeofStructExpr___getLayoutByteSize");
 
     private static long __getLayoutByteSize() {
@@ -25,6 +25,11 @@ public class SizeofStructExpr {
         ValueLayout.JAVA_SHORT_UNALIGNED.withName("s")
     );
     public final MemorySegment MEMORY;
+
+    @Override
+    public MemorySegment MEMORY() {
+        return MEMORY;
+    }
 
     private static final VarHandle bVH = LAYOUT.varHandle(
         MemoryLayout.PathElement.groupElement("b")
@@ -70,8 +75,9 @@ public class SizeofStructExpr {
         return sb.toString();
     }
 
+    @Override
     public void toString(StringBuilder SB, int INDENT, java.util.Set<NativeObjectTuple> VISITED, boolean CORRUPTED_MEMORY) {
-        if (!VISITED.add(new NativeObjectTuple(getClass(), MEMORY.address()))) {
+        if (!VISITED.add(new NativeObjectTuple(this))) {
             SB.append("<...>@").append(Long.toString(MEMORY.address(), 16));
             return;
         }
@@ -160,4 +166,4 @@ public class SizeofStructExpr {
     }
 }
 // metadata.generator-version: pni test
-// sha256:9c34bbde9f69ec90fc1d7625dbfb1a05f9596a9ad4360e15fbff37d664df7ce1
+// sha256:d10ecea5cdd5df834c4df0c0c0e1ea3597e6e71a5fa681254ba23d8343a9d3d9

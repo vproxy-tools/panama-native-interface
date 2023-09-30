@@ -6,13 +6,18 @@ import java.lang.foreign.*;
 import java.lang.invoke.*;
 import java.nio.ByteBuffer;
 
-public class ToStringArray {
+public class ToStringArray implements NativeObject {
     public static final MemoryLayout LAYOUT = MemoryLayout.structLayout(
         MemoryLayout.sequenceLayout(0L, io.vproxy.pni.test.ToStringClass.LAYOUT).withName("arrc"),
         MemoryLayout.sequenceLayout(2L, io.vproxy.pni.test.ToStringClass.LAYOUT).withName("arrcLen2"),
         PNIBuf.LAYOUT.withName("parrc")
     );
     public final MemorySegment MEMORY;
+
+    @Override
+    public MemorySegment MEMORY() {
+        return MEMORY;
+    }
 
     private final io.vproxy.pni.test.ToStringClass.Array arrc;
 
@@ -65,8 +70,9 @@ public class ToStringArray {
         return sb.toString();
     }
 
+    @Override
     public void toString(StringBuilder SB, int INDENT, java.util.Set<NativeObjectTuple> VISITED, boolean CORRUPTED_MEMORY) {
-        if (!VISITED.add(new NativeObjectTuple(getClass(), MEMORY.address()))) {
+        if (!VISITED.add(new NativeObjectTuple(this))) {
             SB.append("<...>@").append(Long.toString(MEMORY.address(), 16));
             return;
         }
@@ -74,31 +80,19 @@ public class ToStringArray {
         {
             SB.append(" ".repeat(INDENT + 4)).append("arrc => ");
             if (CORRUPTED_MEMORY) SB.append("<?>");
-            else {
-                var VALUE = getArrc();
-                if (VALUE == null) SB.append("null");
-                else VALUE.toString(SB, INDENT + 4, VISITED, CORRUPTED_MEMORY);
-            }
+            else PanamaUtils.nativeObjectToString(getArrc(), SB, INDENT + 4, VISITED, CORRUPTED_MEMORY);
         }
         SB.append(",\n");
         {
             SB.append(" ".repeat(INDENT + 4)).append("arrcLen2 => ");
             if (CORRUPTED_MEMORY) SB.append("<?>");
-            else {
-                var VALUE = getArrcLen2();
-                if (VALUE == null) SB.append("null");
-                else VALUE.toString(SB, INDENT + 4, VISITED, CORRUPTED_MEMORY);
-            }
+            else PanamaUtils.nativeObjectToString(getArrcLen2(), SB, INDENT + 4, VISITED, CORRUPTED_MEMORY);
         }
         SB.append(",\n");
         {
             SB.append(" ".repeat(INDENT + 4)).append("parrc => ");
             if (CORRUPTED_MEMORY) SB.append("<?>");
-            else {
-                var VALUE = getParrc();
-                if (VALUE == null) SB.append("null");
-                else VALUE.toString(SB, INDENT + 4, VISITED, CORRUPTED_MEMORY);
-            }
+            else PanamaUtils.nativeObjectToString(getParrc(), SB, INDENT + 4, VISITED, CORRUPTED_MEMORY);
         }
         SB.append("\n");
         SB.append(" ".repeat(INDENT)).append("}@").append(Long.toString(MEMORY.address(), 16));
@@ -175,4 +169,4 @@ public class ToStringArray {
     }
 }
 // metadata.generator-version: pni test
-// sha256:ac8aac56efbc4f5e6887aa64ef16395cba8653c09bf89aaa5cc93dcc70ea7793
+// sha256:d46b19c8d6c965cd2f2537bae492486062e08421b309209997f7ba44bba45045

@@ -6,11 +6,16 @@ import java.lang.foreign.*;
 import java.lang.invoke.*;
 import java.nio.ByteBuffer;
 
-public class LargeAlignBase {
+public class LargeAlignBase implements NativeObject {
     public static final MemoryLayout LAYOUT = MemoryLayout.structLayout(
         ValueLayout.JAVA_LONG_UNALIGNED.withName("x")
     );
     public final MemorySegment MEMORY;
+
+    @Override
+    public MemorySegment MEMORY() {
+        return MEMORY;
+    }
 
     private static final VarHandle xVH = LAYOUT.varHandle(
         MemoryLayout.PathElement.groupElement("x")
@@ -42,8 +47,9 @@ public class LargeAlignBase {
         return sb.toString();
     }
 
+    @Override
     public void toString(StringBuilder SB, int INDENT, java.util.Set<NativeObjectTuple> VISITED, boolean CORRUPTED_MEMORY) {
-        if (!VISITED.add(new NativeObjectTuple(getClass(), MEMORY.address()))) {
+        if (!VISITED.add(new NativeObjectTuple(this))) {
             SB.append("<...>@").append(Long.toString(MEMORY.address(), 16));
             return;
         }
@@ -127,4 +133,4 @@ public class LargeAlignBase {
     }
 }
 // metadata.generator-version: pni test
-// sha256:6173236d1109c6166cc3091489fe485759064e64b1a968f19b664a3ec681d9fa
+// sha256:ad32b62a9c3cdcf368d4979734ba6e0b83cb674e5722e567fff67ba23c682f96

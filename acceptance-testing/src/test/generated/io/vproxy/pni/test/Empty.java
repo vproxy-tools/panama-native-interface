@@ -6,11 +6,16 @@ import java.lang.foreign.*;
 import java.lang.invoke.*;
 import java.nio.ByteBuffer;
 
-public class Empty {
+public class Empty implements NativeObject {
     public static final MemoryLayout LAYOUT = MemoryLayout.structLayout(
 
     );
     public final MemorySegment MEMORY;
+
+    @Override
+    public MemorySegment MEMORY() {
+        return MEMORY;
+    }
 
     public Empty(MemorySegment MEMORY) {
         MEMORY = MEMORY.reinterpret(LAYOUT.byteSize());
@@ -29,8 +34,9 @@ public class Empty {
         return sb.toString();
     }
 
+    @Override
     public void toString(StringBuilder SB, int INDENT, java.util.Set<NativeObjectTuple> VISITED, boolean CORRUPTED_MEMORY) {
-        if (!VISITED.add(new NativeObjectTuple(getClass(), MEMORY.address()))) {
+        if (!VISITED.add(new NativeObjectTuple(this))) {
             SB.append("<...>@").append(Long.toString(MEMORY.address(), 16));
             return;
         }
@@ -109,4 +115,4 @@ public class Empty {
     }
 }
 // metadata.generator-version: pni test
-// sha256:ef15b952685b179c25056f1959b75cad103d810fc7bb889d93237116213f8cf4
+// sha256:73dfcf4a6dbbb778c6ed4ac39effe6e2066ba0002d0b3767209cc4ecad3276b4

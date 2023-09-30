@@ -6,7 +6,7 @@ import java.lang.foreign.*;
 import java.lang.invoke.*;
 import java.nio.ByteBuffer;
 
-public class GCCCompatibilityNormal {
+public class GCCCompatibilityNormal implements NativeObject {
     public static final MemoryLayout LAYOUT = MemoryLayout.structLayout(
         ValueLayout.JAVA_BYTE.withName("b"),
         MemoryLayout.sequenceLayout(1L, ValueLayout.JAVA_BYTE) /* padding */,
@@ -18,6 +18,11 @@ public class GCCCompatibilityNormal {
         ValueLayout.JAVA_LONG_UNALIGNED.withName("l")
     );
     public final MemorySegment MEMORY;
+
+    @Override
+    public MemorySegment MEMORY() {
+        return MEMORY;
+    }
 
     private static final VarHandle bVH = LAYOUT.varHandle(
         MemoryLayout.PathElement.groupElement("b")
@@ -147,8 +152,9 @@ public class GCCCompatibilityNormal {
         return sb.toString();
     }
 
+    @Override
     public void toString(StringBuilder SB, int INDENT, java.util.Set<NativeObjectTuple> VISITED, boolean CORRUPTED_MEMORY) {
-        if (!VISITED.add(new NativeObjectTuple(getClass(), MEMORY.address()))) {
+        if (!VISITED.add(new NativeObjectTuple(this))) {
             SB.append("<...>@").append(Long.toString(MEMORY.address(), 16));
             return;
         }
@@ -257,4 +263,4 @@ public class GCCCompatibilityNormal {
     }
 }
 // metadata.generator-version: pni test
-// sha256:6b1f4a8617a56c150bb1c73b1e33ec4fc6af527db3099bdc3239c30a17a011df
+// sha256:1fac0b1255f7ae4ff7604de008c8f59aff267de2e677b05cdb4d27d0794db54a

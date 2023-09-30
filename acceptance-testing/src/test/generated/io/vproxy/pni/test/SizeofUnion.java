@@ -6,7 +6,7 @@ import java.lang.foreign.*;
 import java.lang.invoke.*;
 import java.nio.ByteBuffer;
 
-public class SizeofUnion {
+public class SizeofUnion implements NativeObject {
     private static final MethodHandle __getLayoutByteSizeMH = PanamaUtils.lookupPNICriticalFunction(true, long.class, "JavaCritical_io_vproxy_pni_test_SizeofUnion___getLayoutByteSize");
 
     private static long __getLayoutByteSize() {
@@ -24,6 +24,11 @@ public class SizeofUnion {
         ValueLayout.JAVA_INT_UNALIGNED.withName("a")
     );
     public final MemorySegment MEMORY;
+
+    @Override
+    public MemorySegment MEMORY() {
+        return MEMORY;
+    }
 
     private final io.vproxy.pni.test.SizeofStruct st;
 
@@ -65,8 +70,9 @@ public class SizeofUnion {
         return sb.toString();
     }
 
+    @Override
     public void toString(StringBuilder SB, int INDENT, java.util.Set<NativeObjectTuple> VISITED, boolean CORRUPTED_MEMORY) {
-        if (!VISITED.add(new NativeObjectTuple(getClass(), MEMORY.address()))) {
+        if (!VISITED.add(new NativeObjectTuple(this))) {
             SB.append("<...>@").append(Long.toString(MEMORY.address(), 16));
             return;
         }
@@ -74,7 +80,7 @@ public class SizeofUnion {
         SB.append("SizeofUnion(\n");
         {
             SB.append(" ".repeat(INDENT + 4)).append("st => ");
-            getSt().toString(SB, INDENT + 4, VISITED, CORRUPTED_MEMORY);
+            PanamaUtils.nativeObjectToString(getSt(), SB, INDENT + 4, VISITED, CORRUPTED_MEMORY);
         }
         SB.append(",\n");
         {
@@ -156,4 +162,4 @@ public class SizeofUnion {
     }
 }
 // metadata.generator-version: pni test
-// sha256:37ac0961b1f974ef7b27f3f2a6db5cd8a8b3a07a53c4aa96d9ba6095458ebc1f
+// sha256:c9d8ec0c756687e96798f2acd284fe7ef6594ba9b14eeaaf56482b4053e7419f

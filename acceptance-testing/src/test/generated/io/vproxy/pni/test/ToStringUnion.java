@@ -6,7 +6,7 @@ import java.lang.foreign.*;
 import java.lang.invoke.*;
 import java.nio.ByteBuffer;
 
-public class ToStringUnion {
+public class ToStringUnion implements NativeObject {
     public static final MemoryLayout LAYOUT = MemoryLayout.unionLayout(
         ValueLayout.JAVA_LONG_UNALIGNED.withName("num"),
         io.vproxy.pni.test.ToStringClass.LAYOUT.withName("c1"),
@@ -17,6 +17,11 @@ public class ToStringUnion {
         ValueLayout.ADDRESS_UNALIGNED.withName("pcr")
     );
     public final MemorySegment MEMORY;
+
+    @Override
+    public MemorySegment MEMORY() {
+        return MEMORY;
+    }
 
     private static final VarHandle numVH = LAYOUT.varHandle(
         MemoryLayout.PathElement.groupElement("num")
@@ -136,8 +141,9 @@ public class ToStringUnion {
         return sb.toString();
     }
 
+    @Override
     public void toString(StringBuilder SB, int INDENT, java.util.Set<NativeObjectTuple> VISITED, boolean CORRUPTED_MEMORY) {
-        if (!VISITED.add(new NativeObjectTuple(getClass(), MEMORY.address()))) {
+        if (!VISITED.add(new NativeObjectTuple(this))) {
             SB.append("<...>@").append(Long.toString(MEMORY.address(), 16));
             return;
         }
@@ -150,50 +156,35 @@ public class ToStringUnion {
         SB.append(",\n");
         {
             SB.append(" ".repeat(INDENT + 4)).append("c1 => ");
-            getC1().toString(SB, INDENT + 4, VISITED, CORRUPTED_MEMORY);
+            PanamaUtils.nativeObjectToString(getC1(), SB, INDENT + 4, VISITED, CORRUPTED_MEMORY);
         }
         SB.append(",\n");
         {
             SB.append(" ".repeat(INDENT + 4)).append("c2 => ");
-            getC2().toString(SB, INDENT + 4, VISITED, CORRUPTED_MEMORY);
+            PanamaUtils.nativeObjectToString(getC2(), SB, INDENT + 4, VISITED, CORRUPTED_MEMORY);
         }
         SB.append(",\n");
         {
             SB.append(" ".repeat(INDENT + 4)).append("cr => ");
-            getCr().toString(SB, INDENT + 4, VISITED, CORRUPTED_MEMORY);
+            PanamaUtils.nativeObjectToString(getCr(), SB, INDENT + 4, VISITED, CORRUPTED_MEMORY);
         }
         SB.append(",\n");
         {
             SB.append(" ".repeat(INDENT + 4)).append("pc1 => ");
-            if (CORRUPTED_MEMORY) {
-                SB.append("<?>");
-            } else {
-                var VALUE = getPc1();
-                if (VALUE == null) SB.append("null");
-                else VALUE.toString(SB, INDENT + 4, VISITED, CORRUPTED_MEMORY);
-            }
+            if (CORRUPTED_MEMORY) SB.append("<?>");
+            else PanamaUtils.nativeObjectToString(getPc1(), SB, INDENT + 4, VISITED, CORRUPTED_MEMORY);
         }
         SB.append(",\n");
         {
             SB.append(" ".repeat(INDENT + 4)).append("pc2 => ");
-            if (CORRUPTED_MEMORY) {
-                SB.append("<?>");
-            } else {
-                var VALUE = getPc2();
-                if (VALUE == null) SB.append("null");
-                else VALUE.toString(SB, INDENT + 4, VISITED, CORRUPTED_MEMORY);
-            }
+            if (CORRUPTED_MEMORY) SB.append("<?>");
+            else PanamaUtils.nativeObjectToString(getPc2(), SB, INDENT + 4, VISITED, CORRUPTED_MEMORY);
         }
         SB.append(",\n");
         {
             SB.append(" ".repeat(INDENT + 4)).append("pcr => ");
-            if (CORRUPTED_MEMORY) {
-                SB.append("<?>");
-            } else {
-                var VALUE = getPcr();
-                if (VALUE == null) SB.append("null");
-                else VALUE.toString(SB, INDENT + 4, VISITED, CORRUPTED_MEMORY);
-            }
+            if (CORRUPTED_MEMORY) SB.append("<?>");
+            else PanamaUtils.nativeObjectToString(getPcr(), SB, INDENT + 4, VISITED, CORRUPTED_MEMORY);
         }
         SB.append("\n");
         SB.append(" ".repeat(INDENT)).append(")@").append(Long.toString(MEMORY.address(), 16));
@@ -270,4 +261,4 @@ public class ToStringUnion {
     }
 }
 // metadata.generator-version: pni test
-// sha256:bb864de46f429943b6f41936803c5bdf1c58f6d90634718f8e32cba46519816e
+// sha256:59e8c86e52c2f596eac8ea967a2cff134ecfeee1d9b24ac19af71f0f4ff2d7ce

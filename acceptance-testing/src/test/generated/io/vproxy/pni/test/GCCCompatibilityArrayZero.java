@@ -6,7 +6,7 @@ import java.lang.foreign.*;
 import java.lang.invoke.*;
 import java.nio.ByteBuffer;
 
-public class GCCCompatibilityArrayZero {
+public class GCCCompatibilityArrayZero implements NativeObject {
     public static final MemoryLayout LAYOUT = MemoryLayout.structLayout(
         ValueLayout.JAVA_BYTE.withName("b1"),
         MemoryLayout.sequenceLayout(7L, ValueLayout.JAVA_BYTE) /* padding */,
@@ -15,6 +15,11 @@ public class GCCCompatibilityArrayZero {
         MemoryLayout.sequenceLayout(4L, ValueLayout.JAVA_BYTE) /* padding */
     );
     public final MemorySegment MEMORY;
+
+    @Override
+    public MemorySegment MEMORY() {
+        return MEMORY;
+    }
 
     private static final VarHandle b1VH = LAYOUT.varHandle(
         MemoryLayout.PathElement.groupElement("b1")
@@ -100,8 +105,9 @@ public class GCCCompatibilityArrayZero {
         return sb.toString();
     }
 
+    @Override
     public void toString(StringBuilder SB, int INDENT, java.util.Set<NativeObjectTuple> VISITED, boolean CORRUPTED_MEMORY) {
-        if (!VISITED.add(new NativeObjectTuple(getClass(), MEMORY.address()))) {
+        if (!VISITED.add(new NativeObjectTuple(this))) {
             SB.append("<...>@").append(Long.toString(MEMORY.address(), 16));
             return;
         }
@@ -114,11 +120,7 @@ public class GCCCompatibilityArrayZero {
         {
             SB.append(" ".repeat(INDENT + 4)).append("array => ");
             if (CORRUPTED_MEMORY) SB.append("<?>");
-            else {
-                var VALUE = getArray();
-                if (VALUE == null) SB.append("null");
-                else VALUE.toString(SB, INDENT + 4, VISITED, CORRUPTED_MEMORY);
-            }
+            else PanamaUtils.nativeObjectToString(getArray(), SB, INDENT + 4, VISITED, CORRUPTED_MEMORY);
         }
         SB.append(",\n");
         {
@@ -200,4 +202,4 @@ public class GCCCompatibilityArrayZero {
     }
 }
 // metadata.generator-version: pni test
-// sha256:51683eae309ef6085ca7c91e4b4f9649d746fb1393048557d5ebcc16453ef31e
+// sha256:2659ca7ab1c4939bf7702447d9e5775cfba3c84de64f8d5d82120fbc98a8f93e

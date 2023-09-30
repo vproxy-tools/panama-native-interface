@@ -6,7 +6,7 @@ import java.lang.foreign.*;
 import java.lang.invoke.*;
 import java.nio.ByteBuffer;
 
-public class StructA {
+public class StructA implements NativeObject {
     public static final MemoryLayout LAYOUT = MemoryLayout.structLayout(
         io.vproxy.pni.test.StructB.LAYOUT.withName("b"),
         io.vproxy.pni.test.UnionC.LAYOUT.withName("c"),
@@ -16,6 +16,11 @@ public class StructA {
         MemoryLayout.sequenceLayout(5L, io.vproxy.pni.test.StructB.LAYOUT).withName("bArray2")
     );
     public final MemorySegment MEMORY;
+
+    @Override
+    public MemorySegment MEMORY() {
+        return MEMORY;
+    }
 
     private final io.vproxy.pni.test.StructB b;
 
@@ -396,56 +401,44 @@ public class StructA {
         return sb.toString();
     }
 
+    @Override
     public void toString(StringBuilder SB, int INDENT, java.util.Set<NativeObjectTuple> VISITED, boolean CORRUPTED_MEMORY) {
-        if (!VISITED.add(new NativeObjectTuple(getClass(), MEMORY.address()))) {
+        if (!VISITED.add(new NativeObjectTuple(this))) {
             SB.append("<...>@").append(Long.toString(MEMORY.address(), 16));
             return;
         }
         SB.append("StructA{\n");
         {
             SB.append(" ".repeat(INDENT + 4)).append("b => ");
-            getB().toString(SB, INDENT + 4, VISITED, CORRUPTED_MEMORY);
+            PanamaUtils.nativeObjectToString(getB(), SB, INDENT + 4, VISITED, CORRUPTED_MEMORY);
         }
         SB.append(",\n");
         {
             SB.append(" ".repeat(INDENT + 4)).append("c => ");
-            getC().toString(SB, INDENT + 4, VISITED, CORRUPTED_MEMORY);
+            PanamaUtils.nativeObjectToString(getC(), SB, INDENT + 4, VISITED, CORRUPTED_MEMORY);
         }
         SB.append(",\n");
         {
             SB.append(" ".repeat(INDENT + 4)).append("cPointer => ");
-            if (CORRUPTED_MEMORY) {
-                SB.append("<?>");
-            } else {
-                var VALUE = getCPointer();
-                if (VALUE == null) SB.append("null");
-                else VALUE.toString(SB, INDENT + 4, VISITED, CORRUPTED_MEMORY);
-            }
+            if (CORRUPTED_MEMORY) SB.append("<?>");
+            else PanamaUtils.nativeObjectToString(getCPointer(), SB, INDENT + 4, VISITED, CORRUPTED_MEMORY);
         }
         SB.append(",\n");
         {
             SB.append(" ".repeat(INDENT + 4)).append("d => ");
-            getD().toString(SB, INDENT + 4, VISITED, CORRUPTED_MEMORY);
+            PanamaUtils.nativeObjectToString(getD(), SB, INDENT + 4, VISITED, CORRUPTED_MEMORY);
         }
         SB.append(",\n");
         {
             SB.append(" ".repeat(INDENT + 4)).append("bArray => ");
             if (CORRUPTED_MEMORY) SB.append("<?>");
-            else {
-                var VALUE = getBArray();
-                if (VALUE == null) SB.append("null");
-                else VALUE.toString(SB, INDENT + 4, VISITED, CORRUPTED_MEMORY);
-            }
+            else PanamaUtils.nativeObjectToString(getBArray(), SB, INDENT + 4, VISITED, CORRUPTED_MEMORY);
         }
         SB.append(",\n");
         {
             SB.append(" ".repeat(INDENT + 4)).append("bArray2 => ");
             if (CORRUPTED_MEMORY) SB.append("<?>");
-            else {
-                var VALUE = getBArray2();
-                if (VALUE == null) SB.append("null");
-                else VALUE.toString(SB, INDENT + 4, VISITED, CORRUPTED_MEMORY);
-            }
+            else PanamaUtils.nativeObjectToString(getBArray2(), SB, INDENT + 4, VISITED, CORRUPTED_MEMORY);
         }
         SB.append("\n");
         SB.append(" ".repeat(INDENT)).append("}@").append(Long.toString(MEMORY.address(), 16));
@@ -522,4 +515,4 @@ public class StructA {
     }
 }
 // metadata.generator-version: pni test
-// sha256:c77d6421fa84007dba239dfce89e61fcc6c42b6b60f8c1b54eb04210eee770bf
+// sha256:f3bfd0f01c8f5d6237e38c2c9b7c6ccd6f7ed9c7569ba920fb757e0709692088

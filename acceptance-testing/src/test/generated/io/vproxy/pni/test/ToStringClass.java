@@ -6,12 +6,17 @@ import java.lang.foreign.*;
 import java.lang.invoke.*;
 import java.nio.ByteBuffer;
 
-public class ToStringClass {
+public class ToStringClass implements NativeObject {
     public static final MemoryLayout LAYOUT = MemoryLayout.structLayout(
         ValueLayout.JAVA_LONG_UNALIGNED.withName("num"),
         io.vproxy.pni.test.ToStringClassRecurse.LAYOUT.withName("cr")
     );
     public final MemorySegment MEMORY;
+
+    @Override
+    public MemorySegment MEMORY() {
+        return MEMORY;
+    }
 
     private static final VarHandle numVH = LAYOUT.varHandle(
         MemoryLayout.PathElement.groupElement("num")
@@ -51,8 +56,9 @@ public class ToStringClass {
         return sb.toString();
     }
 
+    @Override
     public void toString(StringBuilder SB, int INDENT, java.util.Set<NativeObjectTuple> VISITED, boolean CORRUPTED_MEMORY) {
-        if (!VISITED.add(new NativeObjectTuple(getClass(), MEMORY.address()))) {
+        if (!VISITED.add(new NativeObjectTuple(this))) {
             SB.append("<...>@").append(Long.toString(MEMORY.address(), 16));
             return;
         }
@@ -64,7 +70,7 @@ public class ToStringClass {
         SB.append(",\n");
         {
             SB.append(" ".repeat(INDENT + 4)).append("cr => ");
-            getCr().toString(SB, INDENT + 4, VISITED, CORRUPTED_MEMORY);
+            PanamaUtils.nativeObjectToString(getCr(), SB, INDENT + 4, VISITED, CORRUPTED_MEMORY);
         }
         SB.append("\n");
         SB.append(" ".repeat(INDENT)).append("}@").append(Long.toString(MEMORY.address(), 16));
@@ -141,4 +147,4 @@ public class ToStringClass {
     }
 }
 // metadata.generator-version: pni test
-// sha256:11753c9a9e26ca1ee8357e1c54e7dea4ec7e3d6811b61889c32d60a8e1c44d27
+// sha256:cc04b7f28994f77e0a2914696443ddbef4fc0769ba0a10e693f0df4a987965c8

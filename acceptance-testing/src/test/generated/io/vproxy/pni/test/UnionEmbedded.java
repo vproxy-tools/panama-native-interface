@@ -6,12 +6,17 @@ import java.lang.foreign.*;
 import java.lang.invoke.*;
 import java.nio.ByteBuffer;
 
-public class UnionEmbedded {
+public class UnionEmbedded implements NativeObject {
     public static final MemoryLayout LAYOUT = MemoryLayout.unionLayout(
         ValueLayout.JAVA_INT_UNALIGNED.withName("n"),
         ValueLayout.ADDRESS_UNALIGNED.withName("seg")
     );
     public final MemorySegment MEMORY;
+
+    @Override
+    public MemorySegment MEMORY() {
+        return MEMORY;
+    }
 
     private static final VarHandle nVH = LAYOUT.varHandle(
         MemoryLayout.PathElement.groupElement("n")
@@ -64,8 +69,9 @@ public class UnionEmbedded {
         return sb.toString();
     }
 
+    @Override
     public void toString(StringBuilder SB, int INDENT, java.util.Set<NativeObjectTuple> VISITED, boolean CORRUPTED_MEMORY) {
-        if (!VISITED.add(new NativeObjectTuple(getClass(), MEMORY.address()))) {
+        if (!VISITED.add(new NativeObjectTuple(this))) {
             SB.append("<...>@").append(Long.toString(MEMORY.address(), 16));
             return;
         }
@@ -155,4 +161,4 @@ public class UnionEmbedded {
     }
 }
 // metadata.generator-version: pni test
-// sha256:d18fa4ea74433b058acd42498c35093fcc94c0c2084d965c87c525d543524750
+// sha256:662aefa5fd6e705f6c7162d8f9125df3fcd454bda1776ea6d84768d7a89c351a

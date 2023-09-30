@@ -6,13 +6,18 @@ import java.lang.foreign.*;
 import java.lang.invoke.*;
 import java.nio.ByteBuffer;
 
-public class StructN {
+public class StructN implements NativeObject {
     public static final MemoryLayout LAYOUT = MemoryLayout.structLayout(
         ValueLayout.JAVA_SHORT_UNALIGNED.withName("s"),
         MemoryLayout.sequenceLayout(6L, ValueLayout.JAVA_BYTE) /* padding */,
         ValueLayout.JAVA_LONG_UNALIGNED.withName("l")
     );
     public final MemorySegment MEMORY;
+
+    @Override
+    public MemorySegment MEMORY() {
+        return MEMORY;
+    }
 
     private static final VarHandle sVH = LAYOUT.varHandle(
         MemoryLayout.PathElement.groupElement("s")
@@ -90,8 +95,9 @@ public class StructN {
         return sb.toString();
     }
 
+    @Override
     public void toString(StringBuilder SB, int INDENT, java.util.Set<NativeObjectTuple> VISITED, boolean CORRUPTED_MEMORY) {
-        if (!VISITED.add(new NativeObjectTuple(getClass(), MEMORY.address()))) {
+        if (!VISITED.add(new NativeObjectTuple(this))) {
             SB.append("<...>@").append(Long.toString(MEMORY.address(), 16));
             return;
         }
@@ -180,4 +186,4 @@ public class StructN {
     }
 }
 // metadata.generator-version: pni test
-// sha256:cf61f06a02a85f3041ab9c7f424f02284871f49cd9122c2be5c0ce93b8a94391
+// sha256:571cd03f5d30d01e73987a8d4fe8b1f5f734ec820b2c5ad6bad8951ef3c0a9b2

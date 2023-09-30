@@ -6,13 +6,18 @@ import java.lang.foreign.*;
 import java.lang.invoke.*;
 import java.nio.ByteBuffer;
 
-public class GCCCompatibilityPackedContainNonPacked {
+public class GCCCompatibilityPackedContainNonPacked implements NativeObject {
     public static final MemoryLayout LAYOUT = MemoryLayout.structLayout(
         ValueLayout.JAVA_BYTE.withName("b1"),
         io.vproxy.pni.test.GCCCompatibilityNormal.LAYOUT.withName("normal"),
         ValueLayout.JAVA_INT_UNALIGNED.withName("n2")
     );
     public final MemorySegment MEMORY;
+
+    @Override
+    public MemorySegment MEMORY() {
+        return MEMORY;
+    }
 
     private static final VarHandle b1VH = LAYOUT.varHandle(
         MemoryLayout.PathElement.groupElement("b1")
@@ -96,8 +101,9 @@ public class GCCCompatibilityPackedContainNonPacked {
         return sb.toString();
     }
 
+    @Override
     public void toString(StringBuilder SB, int INDENT, java.util.Set<NativeObjectTuple> VISITED, boolean CORRUPTED_MEMORY) {
-        if (!VISITED.add(new NativeObjectTuple(getClass(), MEMORY.address()))) {
+        if (!VISITED.add(new NativeObjectTuple(this))) {
             SB.append("<...>@").append(Long.toString(MEMORY.address(), 16));
             return;
         }
@@ -109,7 +115,7 @@ public class GCCCompatibilityPackedContainNonPacked {
         SB.append(",\n");
         {
             SB.append(" ".repeat(INDENT + 4)).append("normal => ");
-            getNormal().toString(SB, INDENT + 4, VISITED, CORRUPTED_MEMORY);
+            PanamaUtils.nativeObjectToString(getNormal(), SB, INDENT + 4, VISITED, CORRUPTED_MEMORY);
         }
         SB.append(",\n");
         {
@@ -191,4 +197,4 @@ public class GCCCompatibilityPackedContainNonPacked {
     }
 }
 // metadata.generator-version: pni test
-// sha256:2d64377b014fd0b61c6d645d7a533170e6ee37407779910e46536b45ccb54501
+// sha256:47111cbf81834228e63fd7e5c3cc7b62080178e7773edf91bc2f34084fd2dabf

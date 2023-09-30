@@ -319,7 +319,7 @@ public class TestTypes {
         Utils.checkUnsupported(() -> info.convertExtraToUpcallArgument("a", returnVarOpts(0)));
         assertEquals("return RESULT;\n",
             Utils.sbHelper(sb -> info.convertFromUpcallReturn(sb, 0, returnVarOpts(0))));
-        assertEquals("SB.append(getX());\n",
+        assertEquals("SB.append(PanamaUtils.charToASCIIString(getX()));\n",
             Utils.sbHelper(sb -> info.javaToString(sb, 0, "getX()", fieldVarOpts(0))));
     }
 
@@ -815,9 +815,14 @@ public class TestTypes {
             Utils.sbHelper(sb -> info.convertFromUpcallReturn(sb, 0, returnVarOpts(0))));
         assertEquals("""
                 if (CORRUPTED_MEMORY) SB.append("<?>");
-                else SB.append(getX());
+                else PanamaUtils.nativeObjectToString(getX(), SB, INDENT + 4, VISITED, CORRUPTED_MEMORY);
                 """,
             Utils.sbHelper(sb -> info.javaToString(sb, 0, "getX()", fieldVarOpts(0))));
+        assertEquals("""
+                if (CORRUPTED_MEMORY) SB.append("<?>");
+                else SB.append(getX());
+                """,
+            Utils.sbHelper(sb -> info.javaToString(sb, 0, "getX()", fieldVarOpts(LEN))));
     }
 
     @Test
@@ -1100,16 +1105,11 @@ public class TestTypes {
         assertEquals("new a.b.Cls(a)", info.convertExtraToUpcallArgument("a", returnVarOpts(0)));
         assertEquals("return RESULT == null ? MemorySegment.NULL : RESULT.MEMORY;\n",
             Utils.sbHelper(sb -> info.convertFromUpcallReturn(sb, 0, returnVarOpts(0))));
-        assertEquals("getX().toString(SB, INDENT + 4, VISITED, CORRUPTED_MEMORY);\n",
+        assertEquals("PanamaUtils.nativeObjectToString(getX(), SB, INDENT + 4, VISITED, CORRUPTED_MEMORY);\n",
             Utils.sbHelper(sb -> info.javaToString(sb, 0, "getX()", fieldVarOpts(0))));
         assertEquals("""
-                if (CORRUPTED_MEMORY) {
-                    SB.append("<?>");
-                } else {
-                    var VALUE = getX();
-                    if (VALUE == null) SB.append("null");
-                    else VALUE.toString(SB, INDENT + 4, VISITED, CORRUPTED_MEMORY);
-                }
+                if (CORRUPTED_MEMORY) SB.append("<?>");
+                else PanamaUtils.nativeObjectToString(getX(), SB, INDENT + 4, VISITED, CORRUPTED_MEMORY);
                 """,
             Utils.sbHelper(sb -> info.javaToString(sb, 0, "getX()", fieldVarOpts(POINTER))));
     }
@@ -1359,11 +1359,7 @@ public class TestTypes {
             Utils.sbHelper(sb -> info.convertFromUpcallReturn(sb, 0, returnVarOpts(0))));
         assertEquals("""
                 if (CORRUPTED_MEMORY) SB.append("<?>");
-                else {
-                    var VALUE = getX();
-                    if (VALUE == null) SB.append("null");
-                    else VALUE.toString(SB, INDENT + 4, VISITED, CORRUPTED_MEMORY);
-                }
+                else PanamaUtils.nativeObjectToString(getX(), SB, INDENT + 4, VISITED, CORRUPTED_MEMORY);
                 """,
             Utils.sbHelper(sb -> info.javaToString(sb, 0, "getX()", fieldVarOpts(0))));
     }
@@ -1483,11 +1479,7 @@ public class TestTypes {
             Utils.sbHelper(sb -> info.convertFromUpcallReturn(sb, 0, returnVarOpts(0))));
         assertEquals("""
                 if (CORRUPTED_MEMORY) SB.append("<?>");
-                else {
-                    var VALUE = getX();
-                    if (VALUE == null) SB.append("null");
-                    else VALUE.toString(SB, INDENT + 4, VISITED, CORRUPTED_MEMORY);
-                }
+                else PanamaUtils.nativeObjectToString(getX(), SB, INDENT + 4, VISITED, CORRUPTED_MEMORY);
                 """,
             Utils.sbHelper(sb -> info.javaToString(sb, 0, "getX()", fieldVarOpts(0))));
     }
@@ -1645,11 +1637,7 @@ public class TestTypes {
             """, Utils.sbHelper(sb -> gInfo.generateGetterSetter(sb, 0, "a", fieldVarOpts(0))));
         assertEquals("""
                 if (CORRUPTED_MEMORY) SB.append("<?>");
-                else {
-                    var VALUE = getX();
-                    if (VALUE == null) SB.append("null");
-                    else VALUE.toString(SB, INDENT, VISITED, CORRUPTED_MEMORY);
-                }
+                else PanamaUtils.nativeObjectToString(getX(), SB, INDENT + 4, VISITED, CORRUPTED_MEMORY);
                 """,
             Utils.sbHelper(sb -> info.javaToString(sb, 0, "getX()", fieldVarOpts(0))));
     }
@@ -1882,11 +1870,7 @@ public class TestTypes {
             """, Utils.sbHelper(sb -> rInfo.convertInvokeExactReturnValueToJava(sb, 0, returnVarOpts(CRITICAL))));
         assertEquals("""
                 if (CORRUPTED_MEMORY) SB.append("<?>");
-                else {
-                    var VALUE = getX();
-                    if (VALUE == null) SB.append("null");
-                    else VALUE.toString(SB, INDENT, VISITED, CORRUPTED_MEMORY);
-                }
+                else PanamaUtils.nativeObjectToString(getX(), SB, INDENT + 4, VISITED, CORRUPTED_MEMORY);
                 """,
             Utils.sbHelper(sb -> info.javaToString(sb, 0, "getX()", fieldVarOpts(0))));
     }

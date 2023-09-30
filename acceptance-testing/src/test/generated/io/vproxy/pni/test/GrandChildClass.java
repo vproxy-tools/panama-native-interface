@@ -6,13 +6,18 @@ import java.lang.foreign.*;
 import java.lang.invoke.*;
 import java.nio.ByteBuffer;
 
-public class GrandChildClass extends io.vproxy.pni.test.ChildClass {
+public class GrandChildClass extends io.vproxy.pni.test.ChildClass implements NativeObject {
     public static final MemoryLayout LAYOUT = MemoryLayout.structLayout(
         io.vproxy.pni.test.ChildClass.LAYOUT,
         MemoryLayout.sequenceLayout(4L, ValueLayout.JAVA_BYTE) /* padding */,
         ValueLayout.JAVA_LONG_UNALIGNED.withName("y")
     );
     public final MemorySegment MEMORY;
+
+    @Override
+    public MemorySegment MEMORY() {
+        return MEMORY;
+    }
 
     private static final VarHandle yVH = LAYOUT.varHandle(
         MemoryLayout.PathElement.groupElement("y")
@@ -62,8 +67,9 @@ public class GrandChildClass extends io.vproxy.pni.test.ChildClass {
         return sb.toString();
     }
 
+    @Override
     public void toString(StringBuilder SB, int INDENT, java.util.Set<NativeObjectTuple> VISITED, boolean CORRUPTED_MEMORY) {
-        if (!VISITED.add(new NativeObjectTuple(getClass(), MEMORY.address()))) {
+        if (!VISITED.add(new NativeObjectTuple(this))) {
             SB.append("<...>@").append(Long.toString(MEMORY.address(), 16));
             return;
         }
@@ -147,4 +153,4 @@ public class GrandChildClass extends io.vproxy.pni.test.ChildClass {
     }
 }
 // metadata.generator-version: pni test
-// sha256:4259a800d2a472e888f5cb24eaa640ae1299c4d143ec575771dcb616d5eb9147
+// sha256:8ee9ed0808894b26dc9bf21bd097291ed6776b6747de14a3508d92199f032ea9

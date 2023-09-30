@@ -6,7 +6,7 @@ import java.lang.foreign.*;
 import java.lang.invoke.*;
 import java.nio.ByteBuffer;
 
-public class SizeofEmbed {
+public class SizeofEmbed implements NativeObject {
     private static final MethodHandle __getLayoutByteSizeMH = PanamaUtils.lookupPNICriticalFunction(true, long.class, "JavaCritical_io_vproxy_pni_test_SizeofEmbed___getLayoutByteSize");
 
     private static long __getLayoutByteSize() {
@@ -26,6 +26,11 @@ public class SizeofEmbed {
         io.vproxy.pni.test.SizeofStructExpr.LAYOUT.withName("st")
     );
     public final MemorySegment MEMORY;
+
+    @Override
+    public MemorySegment MEMORY() {
+        return MEMORY;
+    }
 
     private static final VarHandle xVH = LAYOUT.varHandle(
         MemoryLayout.PathElement.groupElement("x")
@@ -85,8 +90,9 @@ public class SizeofEmbed {
         return sb.toString();
     }
 
+    @Override
     public void toString(StringBuilder SB, int INDENT, java.util.Set<NativeObjectTuple> VISITED, boolean CORRUPTED_MEMORY) {
-        if (!VISITED.add(new NativeObjectTuple(getClass(), MEMORY.address()))) {
+        if (!VISITED.add(new NativeObjectTuple(this))) {
             SB.append("<...>@").append(Long.toString(MEMORY.address(), 16));
             return;
         }
@@ -98,18 +104,13 @@ public class SizeofEmbed {
         SB.append(",\n");
         {
             SB.append(" ".repeat(INDENT + 4)).append("un => ");
-            if (CORRUPTED_MEMORY) {
-                SB.append("<?>");
-            } else {
-                var VALUE = getUn();
-                if (VALUE == null) SB.append("null");
-                else VALUE.toString(SB, INDENT + 4, VISITED, CORRUPTED_MEMORY);
-            }
+            if (CORRUPTED_MEMORY) SB.append("<?>");
+            else PanamaUtils.nativeObjectToString(getUn(), SB, INDENT + 4, VISITED, CORRUPTED_MEMORY);
         }
         SB.append(",\n");
         {
             SB.append(" ".repeat(INDENT + 4)).append("st => ");
-            getSt().toString(SB, INDENT + 4, VISITED, CORRUPTED_MEMORY);
+            PanamaUtils.nativeObjectToString(getSt(), SB, INDENT + 4, VISITED, CORRUPTED_MEMORY);
         }
         SB.append("\n");
         SB.append(" ".repeat(INDENT)).append("}@").append(Long.toString(MEMORY.address(), 16));
@@ -186,4 +187,4 @@ public class SizeofEmbed {
     }
 }
 // metadata.generator-version: pni test
-// sha256:cb7a70887d7970dc9867515f954b6f9d67dd1d9c093b7b17dacb02ace0416493
+// sha256:740be804afe4b1037da82445891230e7e026d3aaab75e9ece78966fce7884555

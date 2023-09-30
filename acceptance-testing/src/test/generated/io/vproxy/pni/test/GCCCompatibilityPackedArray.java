@@ -6,7 +6,7 @@ import java.lang.foreign.*;
 import java.lang.invoke.*;
 import java.nio.ByteBuffer;
 
-public class GCCCompatibilityPackedArray {
+public class GCCCompatibilityPackedArray implements NativeObject {
     public static final MemoryLayout LAYOUT = MemoryLayout.structLayout(
         ValueLayout.JAVA_BYTE.withName("b1"),
         MemoryLayout.sequenceLayout(2L, io.vproxy.pni.test.GCCCompatibilityPacked.LAYOUT).withName("array"),
@@ -14,6 +14,11 @@ public class GCCCompatibilityPackedArray {
         ValueLayout.JAVA_INT_UNALIGNED.withName("n2")
     );
     public final MemorySegment MEMORY;
+
+    @Override
+    public MemorySegment MEMORY() {
+        return MEMORY;
+    }
 
     private static final VarHandle b1VH = LAYOUT.varHandle(
         MemoryLayout.PathElement.groupElement("b1")
@@ -98,8 +103,9 @@ public class GCCCompatibilityPackedArray {
         return sb.toString();
     }
 
+    @Override
     public void toString(StringBuilder SB, int INDENT, java.util.Set<NativeObjectTuple> VISITED, boolean CORRUPTED_MEMORY) {
-        if (!VISITED.add(new NativeObjectTuple(getClass(), MEMORY.address()))) {
+        if (!VISITED.add(new NativeObjectTuple(this))) {
             SB.append("<...>@").append(Long.toString(MEMORY.address(), 16));
             return;
         }
@@ -112,11 +118,7 @@ public class GCCCompatibilityPackedArray {
         {
             SB.append(" ".repeat(INDENT + 4)).append("array => ");
             if (CORRUPTED_MEMORY) SB.append("<?>");
-            else {
-                var VALUE = getArray();
-                if (VALUE == null) SB.append("null");
-                else VALUE.toString(SB, INDENT + 4, VISITED, CORRUPTED_MEMORY);
-            }
+            else PanamaUtils.nativeObjectToString(getArray(), SB, INDENT + 4, VISITED, CORRUPTED_MEMORY);
         }
         SB.append(",\n");
         {
@@ -198,4 +200,4 @@ public class GCCCompatibilityPackedArray {
     }
 }
 // metadata.generator-version: pni test
-// sha256:60a23976acc883b613305a23c16da0f2abfa63046367e95fba00c3f1771c3bde
+// sha256:708d4d2d76a07201af71cb2cf8c06f96615a972978fcb38e4c3c2bdcd2b8e1bb

@@ -927,7 +927,7 @@ public class TestPrimitiveStruct {
                          "    aBoolean => true,\n" +
                          "    byteArray => [0b" + " 00".repeat(10) + "]@" + Long.toString(s.getByteArray().address(), 16) + ",\n" +
                          "    unsignedByteArray => [0c" + " 00".repeat(11) + "]@" + Long.toString(s.getUnsignedByteArray().address(), 16) + ",\n" +
-                         "    charArray => CharArray[b" + ", .".repeat(12) + "]@" + Long.toString(s.getCharArray().MEMORY.address(), 16) + ",\n" +
+                         "    charArray => CharArray[b" + ", (0)".repeat(12) + "]@" + Long.toString(s.getCharArray().MEMORY.address(), 16) + ",\n" +
                          "    doubleArray => DoubleArray[13.0" + ", 0.0".repeat(13) + "]@" + Long.toString(s.getDoubleArray().MEMORY.address(), 16) + ",\n" +
                          "    floatArray => FloatArray[14.0" + ", 0.0".repeat(14) + "]@" + Long.toString(s.getFloatArray().MEMORY.address(), 16) + ",\n" +
                          "    intArray => IntArray[15" + ", 0".repeat(15) + "]@" + Long.toString(s.getIntArray().MEMORY.address(), 16) + ",\n" +
@@ -961,6 +961,6 @@ public class TestPrimitiveStruct {
 
         s = Files.readAllLines(Path.of("src", "test", "generated", "io", "vproxy", "pni", "test", "PrimitiveStruct.java"));
         lastLine = s.get(s.size() - 1);
-        assertEquals("// sha256:e334b16038a005f4081f6d7d157bbec373d4bed30bb5aabf172048b966bd0ece", lastLine);
+        assertEquals("// sha256:63ba5290fc6a233c82ff77d9e86bb900f1cb679f9961850e2f765871b2a5a0ac", lastLine);
     }
 }

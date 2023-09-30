@@ -6,7 +6,7 @@ import java.lang.foreign.*;
 import java.lang.invoke.*;
 import java.nio.ByteBuffer;
 
-public class MBuf {
+public class MBuf implements NativeObject {
     public static final MemoryLayout LAYOUT = MemoryLayout.structLayout(
         ValueLayout.ADDRESS.withName("bufAddr"),
         ValueLayout.JAVA_INT.withName("pktLen"),
@@ -16,6 +16,11 @@ public class MBuf {
         io.vproxy.pni.sample.UserData.LAYOUT.withName("userdata")
     );
     public final MemorySegment MEMORY;
+
+    @Override
+    public MemorySegment MEMORY() {
+        return MEMORY;
+    }
 
     private static final VarHandle bufAddrVH = LAYOUT.varHandle(
         MemoryLayout.PathElement.groupElement("bufAddr")
@@ -101,8 +106,9 @@ public class MBuf {
         return sb.toString();
     }
 
+    @Override
     public void toString(StringBuilder SB, int INDENT, java.util.Set<NativeObjectTuple> VISITED, boolean CORRUPTED_MEMORY) {
-        if (!VISITED.add(new NativeObjectTuple(getClass(), MEMORY.address()))) {
+        if (!VISITED.add(new NativeObjectTuple(this))) {
             SB.append("<...>@").append(Long.toString(MEMORY.address(), 16));
             return;
         }
@@ -129,7 +135,7 @@ public class MBuf {
         SB.append(",\n");
         {
             SB.append(" ".repeat(INDENT + 4)).append("userdata => ");
-            getUserdata().toString(SB, INDENT + 4, VISITED, CORRUPTED_MEMORY);
+            PanamaUtils.nativeObjectToString(getUserdata(), SB, INDENT + 4, VISITED, CORRUPTED_MEMORY);
         }
         SB.append("\n");
         SB.append(" ".repeat(INDENT)).append("}@").append(Long.toString(MEMORY.address(), 16));
@@ -206,4 +212,4 @@ public class MBuf {
     }
 }
 // metadata.generator-version: pni test
-// sha256:231e9f07fff2b96255c47175bd33da059c93c895511271b0583bba87941a197a
+// sha256:a95ee1cef0bbfa7d106cffeffeeeff59ee92828b19da67afdf5b2272a0d1e10d

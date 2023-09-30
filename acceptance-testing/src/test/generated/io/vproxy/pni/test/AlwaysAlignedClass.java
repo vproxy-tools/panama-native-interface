@@ -6,7 +6,7 @@ import java.lang.foreign.*;
 import java.lang.invoke.*;
 import java.nio.ByteBuffer;
 
-public class AlwaysAlignedClass {
+public class AlwaysAlignedClass implements NativeObject {
     public static final MemoryLayout LAYOUT = MemoryLayout.structLayout(
         ValueLayout.JAVA_BYTE.withName("a"),
         MemoryLayout.sequenceLayout(1L, ValueLayout.JAVA_BYTE) /* padding */,
@@ -15,6 +15,11 @@ public class AlwaysAlignedClass {
         ValueLayout.JAVA_LONG.withName("c")
     );
     public final MemorySegment MEMORY;
+
+    @Override
+    public MemorySegment MEMORY() {
+        return MEMORY;
+    }
 
     private static final VarHandle aVH = LAYOUT.varHandle(
         MemoryLayout.PathElement.groupElement("a")
@@ -74,8 +79,9 @@ public class AlwaysAlignedClass {
         return sb.toString();
     }
 
+    @Override
     public void toString(StringBuilder SB, int INDENT, java.util.Set<NativeObjectTuple> VISITED, boolean CORRUPTED_MEMORY) {
-        if (!VISITED.add(new NativeObjectTuple(getClass(), MEMORY.address()))) {
+        if (!VISITED.add(new NativeObjectTuple(this))) {
             SB.append("<...>@").append(Long.toString(MEMORY.address(), 16));
             return;
         }
@@ -169,4 +175,4 @@ public class AlwaysAlignedClass {
     }
 }
 // metadata.generator-version: pni test
-// sha256:f3f6dd9f31b01f6be1921b57a7e51401fe4a66c12a9fe46e68f8e04ddb2d4704
+// sha256:7fe05c0bf0d106bc75409f22dfe1abd78f5f449527b50ea09b9d5982831a52d9

@@ -6,7 +6,7 @@ import java.lang.foreign.*;
 import java.lang.invoke.*;
 import java.nio.ByteBuffer;
 
-public class GCCompatibilityStructAlign {
+public class GCCompatibilityStructAlign implements NativeObject {
     public static final MemoryLayout LAYOUT = MemoryLayout.structLayout(
         ValueLayout.JAVA_INT_UNALIGNED.withName("n"),
         MemoryLayout.sequenceLayout(4L, ValueLayout.JAVA_BYTE) /* padding */,
@@ -14,6 +14,11 @@ public class GCCompatibilityStructAlign {
         MemoryLayout.sequenceLayout(16L, ValueLayout.JAVA_BYTE) /* padding */
     );
     public final MemorySegment MEMORY;
+
+    @Override
+    public MemorySegment MEMORY() {
+        return MEMORY;
+    }
 
     private static final VarHandle nVH = LAYOUT.varHandle(
         MemoryLayout.PathElement.groupElement("n")
@@ -91,8 +96,9 @@ public class GCCompatibilityStructAlign {
         return sb.toString();
     }
 
+    @Override
     public void toString(StringBuilder SB, int INDENT, java.util.Set<NativeObjectTuple> VISITED, boolean CORRUPTED_MEMORY) {
-        if (!VISITED.add(new NativeObjectTuple(getClass(), MEMORY.address()))) {
+        if (!VISITED.add(new NativeObjectTuple(this))) {
             SB.append("<...>@").append(Long.toString(MEMORY.address(), 16));
             return;
         }
@@ -181,4 +187,4 @@ public class GCCompatibilityStructAlign {
     }
 }
 // metadata.generator-version: pni test
-// sha256:414e8cb7d4bf383c667794b6650cd813418dc398be4d32c216b630cc4957ff7d
+// sha256:fa551e2bc815b444a35cf509bd4284080cf0ae7ec73a8db12d8a4c64bab89587

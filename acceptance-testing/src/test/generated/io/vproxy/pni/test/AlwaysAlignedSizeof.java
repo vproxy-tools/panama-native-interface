@@ -6,7 +6,7 @@ import java.lang.foreign.*;
 import java.lang.invoke.*;
 import java.nio.ByteBuffer;
 
-public class AlwaysAlignedSizeof {
+public class AlwaysAlignedSizeof implements NativeObject {
     private static final MethodHandle __getLayoutByteSizeMH = PanamaUtils.lookupPNICriticalFunction(true, long.class, "JavaCritical_io_vproxy_pni_test_AlwaysAlignedSizeof___getLayoutByteSize");
 
     private static long __getLayoutByteSize() {
@@ -25,6 +25,11 @@ public class AlwaysAlignedSizeof {
         ValueLayout.JAVA_SHORT.withName("s")
     );
     public final MemorySegment MEMORY;
+
+    @Override
+    public MemorySegment MEMORY() {
+        return MEMORY;
+    }
 
     private static final VarHandle bVH = LAYOUT.varHandle(
         MemoryLayout.PathElement.groupElement("b")
@@ -70,8 +75,9 @@ public class AlwaysAlignedSizeof {
         return sb.toString();
     }
 
+    @Override
     public void toString(StringBuilder SB, int INDENT, java.util.Set<NativeObjectTuple> VISITED, boolean CORRUPTED_MEMORY) {
-        if (!VISITED.add(new NativeObjectTuple(getClass(), MEMORY.address()))) {
+        if (!VISITED.add(new NativeObjectTuple(this))) {
             SB.append("<...>@").append(Long.toString(MEMORY.address(), 16));
             return;
         }
@@ -160,4 +166,4 @@ public class AlwaysAlignedSizeof {
     }
 }
 // metadata.generator-version: pni test
-// sha256:9d64eb9cff72dbf8f48199165fb9abb658f92cfbd631c63d4c38913c36bebb30
+// sha256:6b8a3ea09e4bd9aa64812c273db9283f992499c1dfccba994ee89f65a5c5d664

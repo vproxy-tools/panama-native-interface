@@ -6,7 +6,7 @@ import java.lang.foreign.*;
 import java.lang.invoke.*;
 import java.nio.ByteBuffer;
 
-public class ChildOfPacked extends io.vproxy.pni.test.PackedBaseClass {
+public class ChildOfPacked extends io.vproxy.pni.test.PackedBaseClass implements NativeObject {
     public static final MemoryLayout LAYOUT = MemoryLayout.structLayout(
         io.vproxy.pni.test.PackedBaseClass.LAYOUT,
         MemoryLayout.sequenceLayout(1L, ValueLayout.JAVA_BYTE) /* padding */,
@@ -14,6 +14,11 @@ public class ChildOfPacked extends io.vproxy.pni.test.PackedBaseClass {
         io.vproxy.pni.test.ObjectStruct.LAYOUT.withName("o")
     );
     public final MemorySegment MEMORY;
+
+    @Override
+    public MemorySegment MEMORY() {
+        return MEMORY;
+    }
 
     private static final VarHandle xVH = LAYOUT.varHandle(
         MemoryLayout.PathElement.groupElement("x")
@@ -86,8 +91,9 @@ public class ChildOfPacked extends io.vproxy.pni.test.PackedBaseClass {
         return sb.toString();
     }
 
+    @Override
     public void toString(StringBuilder SB, int INDENT, java.util.Set<NativeObjectTuple> VISITED, boolean CORRUPTED_MEMORY) {
-        if (!VISITED.add(new NativeObjectTuple(getClass(), MEMORY.address()))) {
+        if (!VISITED.add(new NativeObjectTuple(this))) {
             SB.append("<...>@").append(Long.toString(MEMORY.address(), 16));
             return;
         }
@@ -99,7 +105,7 @@ public class ChildOfPacked extends io.vproxy.pni.test.PackedBaseClass {
         SB.append(",\n");
         {
             SB.append(" ".repeat(INDENT + 4)).append("o => ");
-            getO().toString(SB, INDENT + 4, VISITED, CORRUPTED_MEMORY);
+            PanamaUtils.nativeObjectToString(getO(), SB, INDENT + 4, VISITED, CORRUPTED_MEMORY);
         }
         SB.append("\n");
         SB.append(" ".repeat(INDENT)).append("}@").append(Long.toString(MEMORY.address(), 16));
@@ -176,4 +182,4 @@ public class ChildOfPacked extends io.vproxy.pni.test.PackedBaseClass {
     }
 }
 // metadata.generator-version: pni test
-// sha256:9108c3b130be9965f06ae6e0d75bfa549226f5c979471501290ad62e42130c8e
+// sha256:36c114a5f2e00baf09a5f99791b9b5b8f9efa7a0d0f06ce1859fd6e0ea1a89b1

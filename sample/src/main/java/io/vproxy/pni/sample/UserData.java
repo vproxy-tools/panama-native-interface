@@ -6,12 +6,17 @@ import java.lang.foreign.*;
 import java.lang.invoke.*;
 import java.nio.ByteBuffer;
 
-public class UserData {
+public class UserData implements NativeObject {
     public static final MemoryLayout LAYOUT = MemoryLayout.unionLayout(
         ValueLayout.ADDRESS.withName("userdata"),
         ValueLayout.JAVA_LONG.withName("udata64")
     );
     public final MemorySegment MEMORY;
+
+    @Override
+    public MemorySegment MEMORY() {
+        return MEMORY;
+    }
 
     private static final VarHandle userdataVH = LAYOUT.varHandle(
         MemoryLayout.PathElement.groupElement("userdata")
@@ -64,8 +69,9 @@ public class UserData {
         return sb.toString();
     }
 
+    @Override
     public void toString(StringBuilder SB, int INDENT, java.util.Set<NativeObjectTuple> VISITED, boolean CORRUPTED_MEMORY) {
-        if (!VISITED.add(new NativeObjectTuple(getClass(), MEMORY.address()))) {
+        if (!VISITED.add(new NativeObjectTuple(this))) {
             SB.append("<...>@").append(Long.toString(MEMORY.address(), 16));
             return;
         }
@@ -155,4 +161,4 @@ public class UserData {
     }
 }
 // metadata.generator-version: pni test
-// sha256:de3efba06987629ec1cf2c744898966b41811b205273c248bff2bc861a622b7d
+// sha256:0c0bd98ad4dd330e6f9cbd747ef0b2e1e16b6d056b3e87d286cc1536b55dcf1e

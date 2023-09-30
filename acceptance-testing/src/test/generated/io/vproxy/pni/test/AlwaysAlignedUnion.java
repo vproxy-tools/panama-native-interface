@@ -6,13 +6,18 @@ import java.lang.foreign.*;
 import java.lang.invoke.*;
 import java.nio.ByteBuffer;
 
-public class AlwaysAlignedUnion {
+public class AlwaysAlignedUnion implements NativeObject {
     public static final MemoryLayout LAYOUT = MemoryLayout.unionLayout(
         ValueLayout.JAVA_SHORT.withName("a"),
         ValueLayout.JAVA_INT.withName("b"),
         ValueLayout.JAVA_LONG.withName("c")
     );
     public final MemorySegment MEMORY;
+
+    @Override
+    public MemorySegment MEMORY() {
+        return MEMORY;
+    }
 
     private static final VarHandle aVH = LAYOUT.varHandle(
         MemoryLayout.PathElement.groupElement("a")
@@ -73,8 +78,9 @@ public class AlwaysAlignedUnion {
         return sb.toString();
     }
 
+    @Override
     public void toString(StringBuilder SB, int INDENT, java.util.Set<NativeObjectTuple> VISITED, boolean CORRUPTED_MEMORY) {
-        if (!VISITED.add(new NativeObjectTuple(getClass(), MEMORY.address()))) {
+        if (!VISITED.add(new NativeObjectTuple(this))) {
             SB.append("<...>@").append(Long.toString(MEMORY.address(), 16));
             return;
         }
@@ -169,4 +175,4 @@ public class AlwaysAlignedUnion {
     }
 }
 // metadata.generator-version: pni test
-// sha256:a7417c780cb3927f0dc594b23936ca8a47e4dcea2a7d627b973579d251a103d2
+// sha256:26f180a420e9c56d4237cc2207c660bd0ae1f6d4e5c2413996850d5c13ec77c3
