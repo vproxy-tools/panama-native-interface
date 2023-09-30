@@ -905,11 +905,23 @@ public class BitField implements NativeObject {
         {
             SB.append(" ".repeat(INDENT + 4)).append("field01 => ");
             SB.append(getField01());
+            SB.append(" {\n");
+            SB.append(" ".repeat(INDENT + 8)).append("a:1 => ").append(getA());
+            SB.append(",\n");
+            SB.append(" ".repeat(INDENT + 8)).append("b:3 => ").append(getB());
+            SB.append("\n");
+            SB.append(" ".repeat(INDENT + 4)).append("}");
         }
         SB.append(",\n");
         {
             SB.append(" ".repeat(INDENT + 4)).append("field02 => ");
             SB.append(getField02());
+            SB.append(" {\n");
+            SB.append(" ".repeat(INDENT + 8)).append("a2:1 => ").append(getA2());
+            SB.append(",\n");
+            SB.append(" ".repeat(INDENT + 8)).append("b2:3 => ").append(getB2());
+            SB.append("\n");
+            SB.append(" ".repeat(INDENT + 4)).append("}");
         }
         SB.append(",\n");
         {
@@ -920,11 +932,27 @@ public class BitField implements NativeObject {
         {
             SB.append(" ".repeat(INDENT + 4)).append("field03 => ");
             SB.append(getField03());
+            SB.append(" {\n");
+            SB.append(" ".repeat(INDENT + 8)).append("c:2 => ").append(getC());
+            SB.append(",\n");
+            SB.append(" ".repeat(INDENT + 8)).append("d:3 => ").append(getD());
+            SB.append(",\n");
+            SB.append(" ".repeat(INDENT + 8)).append("e:4 => ").append(getE());
+            SB.append("\n");
+            SB.append(" ".repeat(INDENT + 4)).append("}");
         }
         SB.append(",\n");
         {
             SB.append(" ".repeat(INDENT + 4)).append("field04 => ");
             SB.append(getField04());
+            SB.append(" {\n");
+            SB.append(" ".repeat(INDENT + 8)).append("c2:2 => ").append(getC2());
+            SB.append(",\n");
+            SB.append(" ".repeat(INDENT + 8)).append("d2:3 => ").append(getD2());
+            SB.append(",\n");
+            SB.append(" ".repeat(INDENT + 8)).append("e2:4 => ").append(getE2());
+            SB.append("\n");
+            SB.append(" ".repeat(INDENT + 4)).append("}");
         }
         SB.append(",\n");
         {
@@ -935,11 +963,31 @@ public class BitField implements NativeObject {
         {
             SB.append(" ".repeat(INDENT + 4)).append("field05 => ");
             SB.append(getField05());
+            SB.append(" {\n");
+            SB.append(" ".repeat(INDENT + 8)).append("f:5 => ").append(getF());
+            SB.append(",\n");
+            SB.append(" ".repeat(INDENT + 8)).append("g:6 => ").append(getG());
+            SB.append(",\n");
+            SB.append(" ".repeat(INDENT + 8)).append("h:7 => ").append(getH());
+            SB.append(",\n");
+            SB.append(" ".repeat(INDENT + 8)).append("i:8 => ").append(getI());
+            SB.append("\n");
+            SB.append(" ".repeat(INDENT + 4)).append("}");
         }
         SB.append(",\n");
         {
             SB.append(" ".repeat(INDENT + 4)).append("field06 => ");
             SB.append(getField06());
+            SB.append(" {\n");
+            SB.append(" ".repeat(INDENT + 8)).append("f2:5 => ").append(getF2());
+            SB.append(",\n");
+            SB.append(" ".repeat(INDENT + 8)).append("g2:6 => ").append(getG2());
+            SB.append(",\n");
+            SB.append(" ".repeat(INDENT + 8)).append("h2:7 => ").append(getH2());
+            SB.append(",\n");
+            SB.append(" ".repeat(INDENT + 8)).append("i2:8 => ").append(getI2());
+            SB.append("\n");
+            SB.append(" ".repeat(INDENT + 4)).append("}");
         }
         SB.append(",\n");
         {
@@ -950,11 +998,31 @@ public class BitField implements NativeObject {
         {
             SB.append(" ".repeat(INDENT + 4)).append("field07 => ");
             SB.append(getField07());
+            SB.append(" {\n");
+            SB.append(" ".repeat(INDENT + 8)).append("j:1 => ").append(getJ());
+            SB.append(",\n");
+            SB.append(" ".repeat(INDENT + 8)).append("k:2 => ").append(getK());
+            SB.append(",\n");
+            SB.append(" ".repeat(INDENT + 8)).append("l:22 => ").append(getL());
+            SB.append(",\n");
+            SB.append(" ".repeat(INDENT + 8)).append("m:33 => ").append(getM());
+            SB.append("\n");
+            SB.append(" ".repeat(INDENT + 4)).append("}");
         }
         SB.append(",\n");
         {
             SB.append(" ".repeat(INDENT + 4)).append("field08 => ");
             SB.append(getField08());
+            SB.append(" {\n");
+            SB.append(" ".repeat(INDENT + 8)).append("j2:1 => ").append(getJ2());
+            SB.append(",\n");
+            SB.append(" ".repeat(INDENT + 8)).append("k2:2 => ").append(getK2());
+            SB.append(",\n");
+            SB.append(" ".repeat(INDENT + 8)).append("l2:22 => ").append(getL2());
+            SB.append(",\n");
+            SB.append(" ".repeat(INDENT + 8)).append("m2:33 => ").append(getM2());
+            SB.append("\n");
+            SB.append(" ".repeat(INDENT + 4)).append("}");
         }
         SB.append("\n");
         SB.append(" ".repeat(INDENT)).append("}@").append(Long.toString(MEMORY.address(), 16));
@@ -1031,4 +1099,4 @@ public class BitField implements NativeObject {
     }
 }
 // metadata.generator-version: pni test
-// sha256:9b17da0dc8ab6cd2951fe6030e365c796a3d6f542fa7ba1010638e118a3806eb
+// sha256:e9bc0e9dd35fa380d12d2a58cbe03ebb9509c14a722c63b3df741a68a23cd869
