@@ -169,8 +169,14 @@ public class StringTypeInfo extends BuiltInReferenceTypeInfo {
     public void javaToString(StringBuilder sb, int indent, String callGetter, VarOpts opts) {
         Utils.appendIndent(sb, indent)
             .append("if (CORRUPTED_MEMORY) SB.append(\"<?>\");\n");
-        Utils.appendIndent(sb, indent)
-            .append("else SB.append(").append(callGetter).append(");\n");
+        if (opts.isPointerGeneral()) {
+            Utils.appendIndent(sb, indent)
+                .append("else PanamaUtils.nativeObjectToString(").append(callGetter)
+                .append(", SB, INDENT + 4, VISITED, CORRUPTED_MEMORY);\n");
+        } else {
+            Utils.appendIndent(sb, indent)
+                .append("else SB.append(").append(callGetter).append(");\n");
+        }
     }
 
     private static final StringTypeInfo INSTANCE = new StringTypeInfo();

@@ -1,6 +1,7 @@
 package io.vproxy.pni.array;
 
 import io.vproxy.pni.Allocator;
+import io.vproxy.pni.NativeObject;
 import io.vproxy.pni.NativeObjectTuple;
 import io.vproxy.pni.PNIBuf;
 
@@ -9,8 +10,13 @@ import java.lang.foreign.ValueLayout;
 import java.util.HashSet;
 import java.util.Set;
 
-public class LongArray {
+public class LongArray implements NativeObject {
     public final MemorySegment MEMORY;
+
+    @Override
+    public MemorySegment MEMORY() {
+        return MEMORY;
+    }
 
     public LongArray(MemorySegment buf) {
         this.MEMORY = buf;
@@ -48,7 +54,8 @@ public class LongArray {
         return sb.toString();
     }
 
-    @SuppressWarnings({"DuplicatedCode", "unused"})
+    @SuppressWarnings({"DuplicatedCode"})
+    @Override
     public void toString(StringBuilder sb, int indent, Set<NativeObjectTuple> visited, boolean corrupted) {
         sb.append("LongArray[");
         for (long i = 0, len = length(); i < len; ++i) {

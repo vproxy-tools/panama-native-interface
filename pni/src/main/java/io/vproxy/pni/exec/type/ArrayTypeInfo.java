@@ -426,14 +426,9 @@ public class ArrayTypeInfo extends TypeInfo {
             Utils.appendIndent(sb, indent)
                 .append("else SB.append(PanamaUtils.memorySegmentToString(").append(callGetter).append("));\n");
         } else {
-            Utils.appendIndent(sb, indent).append("else {\n");
-            Utils.appendIndent(sb, indent + 4)
-                .append("var VALUE = ").append(callGetter).append(";\n");
-            Utils.appendIndent(sb, indent + 4)
-                .append("if (VALUE == null) SB.append(\"null\");\n");
-            Utils.appendIndent(sb, indent + 4)
-                .append("else VALUE.toString(SB, INDENT + 4, VISITED, CORRUPTED_MEMORY);\n");
-            Utils.appendIndent(sb, indent).append("}\n");
+            Utils.appendIndent(sb, indent)
+                .append("else PanamaUtils.nativeObjectToString(").append(callGetter)
+                .append(", SB, INDENT + 4, VISITED, CORRUPTED_MEMORY);\n");
         }
     }
 }

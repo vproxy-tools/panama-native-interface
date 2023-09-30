@@ -6,8 +6,10 @@ import java.lang.foreign.MemoryLayout;
 import java.lang.foreign.MemorySegment;
 import java.lang.foreign.ValueLayout;
 import java.lang.invoke.VarHandle;
+import java.util.HashSet;
+import java.util.Set;
 
-public class PNIExceptionNativeRepresentation {
+public class PNIExceptionNativeRepresentation implements NativeObject {
     public static final MemoryLayout LAYOUT = MemoryLayout.structLayout(
         ValueLayout.ADDRESS_UNALIGNED.withName("type"),
         MemoryLayout.sequenceLayout(4096, ValueLayout.JAVA_BYTE).withName("message"),
@@ -15,6 +17,11 @@ public class PNIExceptionNativeRepresentation {
         MemoryLayout.sequenceLayout(4L, ValueLayout.JAVA_BYTE) /* padding */
     );
     public final MemorySegment MEMORY;
+
+    @Override
+    public MemorySegment MEMORY() {
+        return MEMORY;
+    }
 
     public PNIExceptionNativeRepresentation(MemorySegment MEMORY) {
         this.MEMORY = MEMORY;
@@ -80,5 +87,30 @@ public class PNIExceptionNativeRepresentation {
         _typeClass = null;
         typeVH.set(MEMORY, MemorySegment.NULL);
         errnoVH.set(MEMORY, 0);
+    }
+
+    @Override
+    public String toString() {
+        var sb = new StringBuilder();
+        toString(sb, 0, new HashSet<>(), false);
+        return sb.toString();
+    }
+
+    @Override
+    public void toString(StringBuilder sb, int indent, Set<NativeObjectTuple> visited, boolean corrupted) {
+        sb.append("PNIException{\n");
+        {
+            sb.append(" ".repeat(indent + 4)).append("type => ").append(type());
+        }
+        sb.append(",\n");
+        {
+            sb.append(" ".repeat(indent + 4)).append("message => ").append(message());
+        }
+        sb.append(",\n");
+        {
+            sb.append(" ".repeat(indent + 4)).append("errno_ => ").append(errno());
+        }
+        sb.append("\n");
+        sb.append(" ".repeat(indent)).append("}@").append(Long.toString(MEMORY.address(), 16));
     }
 }

@@ -12,7 +12,7 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
-public abstract class PNIFunc<T> {
+public abstract class PNIFunc<T> implements NativeObject {
     private static final Arena UPCALL_STUB_ARENA = Arena.ofShared(); // should not be released
     private static final MemorySegment UPCALL_STUB_CALL;
     private static final MemorySegment UPCALL_STUB_RELEASE;
@@ -118,6 +118,11 @@ public abstract class PNIFunc<T> {
 
     public static long currentFuncStorageSize() {
         return holder.size();
+    }
+
+    @Override
+    public MemorySegment MEMORY() {
+        return MEMORY;
     }
 
     private static final VarHandle indexVH = LAYOUT.varHandle(
@@ -227,8 +232,9 @@ public abstract class PNIFunc<T> {
     }
 
     @SuppressWarnings("unused")
+    @Override
     public void toString(StringBuilder sb, int indent, Set<NativeObjectTuple> visited, boolean corrupted) {
-        if (visited.add(new NativeObjectTuple(getClass(), MEMORY.address()))) {
+        if (visited.add(new NativeObjectTuple(this))) {
             sb.append(toStringTypeName()).append("(").append(getCallSite()).append(")");
         } else {
             sb.append("<...>");

@@ -67,6 +67,9 @@ public class JavaFileGenerator {
         if (cls.superTypeRef != null) {
             sb.append(" extends ").append(((ClassTypeInfo) cls.superTypeRef).getClazz().fullName());
         }
+        if (!cls.isInterface) {
+            sb.append(" implements NativeObject");
+        }
         sb.append(" {\n");
         if (cls.isInterface) {
             sb.append("    private ").append(cls.simpleName()).append("() {\n");
@@ -144,6 +147,11 @@ public class JavaFileGenerator {
             }
             sb.append("\n    );\n");
             sb.append("    public final MemorySegment MEMORY;\n");
+            sb.append("\n");
+            sb.append("    @Override\n");
+            sb.append("    public MemorySegment MEMORY() {\n");
+            sb.append("        return MEMORY;\n");
+            sb.append("    }\n");
         }
 
         if (!cls.isInterface) {
@@ -274,9 +282,11 @@ public class JavaFileGenerator {
         Utils.appendIndent(sb, indent).append("}\n");
         sb.append("\n");
         Utils.appendIndent(sb, indent)
+            .append("@Override\n");
+        Utils.appendIndent(sb, indent)
             .append("public void toString(StringBuilder SB, int INDENT, java.util.Set<NativeObjectTuple> VISITED, boolean CORRUPTED_MEMORY) {\n");
         Utils.appendIndent(sb, indent + 4)
-            .append("if (!VISITED.add(new NativeObjectTuple(getClass(), MEMORY.address()))) {\n");
+            .append("if (!VISITED.add(new NativeObjectTuple(this))) {\n");
         Utils.appendIndent(sb, indent + 8)
             .append("SB.append(\"<...>@\").append(Long.toString(MEMORY.address(), 16));\n");
         Utils.appendIndent(sb, indent + 8)

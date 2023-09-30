@@ -5,8 +5,10 @@ import io.vproxy.pni.exception.PNIException;
 import java.lang.foreign.*;
 import java.lang.invoke.VarHandle;
 import java.lang.reflect.InvocationTargetException;
+import java.util.HashSet;
+import java.util.Set;
 
-public class PNIEnv {
+public class PNIEnv implements NativeObject {
     public static final MemoryLayout LAYOUT = MemoryLayout.structLayout(
         PNIExceptionNativeRepresentation.LAYOUT.withName("ex"),
         MemoryLayout.unionLayout(
@@ -24,6 +26,12 @@ public class PNIEnv {
     );
 
     public final MemorySegment MEMORY;
+
+    @Override
+    public MemorySegment MEMORY() {
+        return MEMORY;
+    }
+
     private final PNIExceptionNativeRepresentation ex;
     private final PNIBuf buf;
 
@@ -153,5 +161,73 @@ public class PNIEnv {
     public void throwLast() {
         var msg = ex().message();
         throw new PNIException(msg);
+    }
+
+    @Override
+    public String toString() {
+        var sb = new StringBuilder();
+        toString(sb, 0, new HashSet<>(), false);
+        return sb.toString();
+    }
+
+    @Override
+    public void toString(StringBuilder sb, int indent, Set<NativeObjectTuple> visited, boolean corrupted) {
+        if (corrupted) {
+            sb.append("<?>@").append(Long.toString(MEMORY.address(), 16));
+            return;
+        }
+        sb.append("PNIEnv{\n");
+        {
+            sb.append(" ".repeat(indent + 4)).append("ex => ");
+            ex().toString(sb, indent + 4, visited, corrupted);
+        }
+        sb.append(",\n");
+        {
+            sb.append(" ".repeat(indent + 4)).append("return_ => union {\n");
+            {
+                sb.append(" ".repeat(indent + 8)).append("return_byte => ").append(returnByte());
+            }
+            sb.append(",\n");
+            {
+                sb.append(" ".repeat(indent + 8)).append("return_char => ")
+                    .append(PanamaUtils.charToASCIIString(returnChar()));
+            }
+            sb.append(",\n");
+            {
+                sb.append(" ".repeat(indent + 8)).append("return_double => ").append(returnDouble());
+            }
+            sb.append(",\n");
+            {
+                sb.append(" ".repeat(indent + 8)).append("return_int => ").append(returnInt());
+            }
+            sb.append(",\n");
+            {
+                sb.append(" ".repeat(indent + 8)).append("return_float => ").append(returnFloat());
+            }
+            sb.append(",\n");
+            {
+                sb.append(" ".repeat(indent + 8)).append("return_long => ").append(returnLong());
+            }
+            sb.append(",\n");
+            {
+                sb.append(" ".repeat(indent + 8)).append("return_short => ").append(returnShort());
+            }
+            sb.append(",\n");
+            {
+                sb.append(" ".repeat(indent + 8)).append("return_bool => ").append(returnBool());
+            }
+            sb.append(",\n");
+            {
+                sb.append(" ".repeat(indent + 8)).append("return_pointer => ").append(PanamaUtils.memorySegmentToString(returnPointer()));
+            }
+            sb.append(",\n");
+            {
+                sb.append(" ".repeat(indent + 8)).append("return_buf => ");
+                returnBuf().toString(sb, indent + 8, visited, true);
+            }
+            sb.append("\n");
+            sb.append(" ".repeat(indent + 4)).append("}@").append(Long.toString(MEMORY.address() + PNIExceptionNativeRepresentation.LAYOUT.byteSize(), 16)).append("\n");
+        }
+        sb.append(" ".repeat(indent)).append("}@").append(Long.toString(MEMORY.address(), 16));
     }
 }

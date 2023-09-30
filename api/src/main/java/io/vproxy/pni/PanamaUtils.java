@@ -9,9 +9,8 @@ import java.lang.invoke.MethodType;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.nio.ByteBuffer;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
+import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -155,6 +154,22 @@ public class PanamaUtils {
         var pos = arg.position();
         var seg = MemorySegment.ofBuffer(arg);
         return MemorySegment.ofAddress(seg.address() - pos).reinterpret(arg.capacity());
+    }
+
+    public static void nativeObjectToString(NativeObject o, StringBuilder sb, int indent, Set<NativeObjectTuple> visited, boolean corrupted) {
+        if (o == null) {
+            sb.append("null");
+            return;
+        }
+        o.toString(sb, indent, visited, corrupted);
+    }
+
+    public static String charToASCIIString(char c) {
+        if (c < 33 || c > 126) {
+            return "(" + (int) c + ")";
+        } else {
+            return "" + c;
+        }
     }
 
     public static String memorySegmentToString(MemorySegment seg) {

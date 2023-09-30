@@ -7,14 +7,21 @@ import java.lang.foreign.MemorySegment;
 import java.lang.foreign.ValueLayout;
 import java.lang.invoke.VarHandle;
 import java.nio.ByteBuffer;
+import java.util.HashSet;
+import java.util.Set;
 
-public class PNIBuf {
+public class PNIBuf implements NativeObject {
     public static final MemoryLayout LAYOUT = MemoryLayout.structLayout(
         ValueLayout.ADDRESS_UNALIGNED.withName("buf"),
         ValueLayout.JAVA_LONG_UNALIGNED.withName("len")
     );
 
     public final MemorySegment MEMORY;
+
+    @Override
+    public MemorySegment MEMORY() {
+        return MEMORY;
+    }
 
     public PNIBuf(MemorySegment memory) {
         MEMORY = memory.reinterpret(LAYOUT.byteSize());
@@ -196,5 +203,22 @@ public class PNIBuf {
             return null;
         }
         return seg.asByteBuffer();
+    }
+
+    @Override
+    public String toString() {
+        var sb = new StringBuilder();
+        toString(sb, 0, new HashSet<>(), false);
+        return sb.toString();
+    }
+
+    @Override
+    public void toString(StringBuilder sb, int indent, Set<NativeObjectTuple> visited, boolean corrupted) {
+        if (corrupted) {
+            sb.append("<?>@").append(Long.toString(MEMORY.address(), 16));
+        } else {
+            sb.append("PNIBuf(").append(PanamaUtils.memorySegmentToString(get())).append(")@")
+                .append(Long.toString(MEMORY.address(), 16));
+        }
     }
 }

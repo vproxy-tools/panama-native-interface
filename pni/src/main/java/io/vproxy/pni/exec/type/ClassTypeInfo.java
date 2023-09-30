@@ -209,30 +209,22 @@ public class ClassTypeInfo extends TypeInfo {
     }
 
     @Override
-    public void javaToString(StringBuilder sb, int indent, String callGetter, VarOpts opts) {
-        if (opts.isPointer()) {
-            Utils.appendIndent(sb, indent)
-                .append("if (CORRUPTED_MEMORY) {\n");
-            Utils.appendIndent(sb, indent + 4)
-                .append("SB.append(\"<?>\");\n");
-            Utils.appendIndent(sb, indent)
-                .append("} else {\n");
-            Utils.appendIndent(sb, indent + 4)
-                .append("var VALUE = ").append(callGetter).append(";\n");
-            Utils.appendIndent(sb, indent + 4)
-                .append("if (VALUE == null) SB.append(\"null\");\n");
-            Utils.appendIndent(sb, indent + 4)
-                .append("else VALUE.toString(SB, INDENT + 4, VISITED, CORRUPTED_MEMORY);\n");
-            Utils.appendIndent(sb, indent)
-                .append("}\n");
-        } else {
-            Utils.appendIndent(sb, indent)
-                .append(callGetter).append(".toString(SB, INDENT + 4, VISITED, CORRUPTED_MEMORY);\n");
-        }
+    public String convertToUpcallArgument(String name, VarOpts opts) {
+        return "(" + name + ".address() == 0 ? null : new " + cls.fullName() + "(" + name + "))";
     }
 
     @Override
-    public String convertToUpcallArgument(String name, VarOpts opts) {
-        return "(" + name + ".address() == 0 ? null : new " + cls.fullName() + "(" + name + "))";
+    public void javaToString(StringBuilder sb, int indent, String callGetter, VarOpts opts) {
+        if (opts.isPointer()) {
+            Utils.appendIndent(sb, indent)
+                .append("if (CORRUPTED_MEMORY) SB.append(\"<?>\");\n");
+            Utils.appendIndent(sb, indent)
+                .append("else PanamaUtils.nativeObjectToString(").append(callGetter)
+                .append(", SB, INDENT + 4, VISITED, CORRUPTED_MEMORY);\n");
+        } else {
+            Utils.appendIndent(sb, indent)
+                .append("PanamaUtils.nativeObjectToString(").append(callGetter)
+                .append(", SB, INDENT + 4, VISITED, CORRUPTED_MEMORY);\n");
+        }
     }
 }

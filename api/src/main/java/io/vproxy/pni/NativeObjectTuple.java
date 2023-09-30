@@ -6,10 +6,14 @@ public class NativeObjectTuple {
     public final Class<?> type;
     public final long address;
 
-    public NativeObjectTuple(Class<?> type, long address) {
+    private NativeObjectTuple(Class<?> type, long address) {
         Objects.requireNonNull(type);
         this.type = type;
         this.address = address;
+    }
+
+    public NativeObjectTuple(NativeObject o) {
+        this(o.getClass(), o.MEMORY().address());
     }
 
     @Override

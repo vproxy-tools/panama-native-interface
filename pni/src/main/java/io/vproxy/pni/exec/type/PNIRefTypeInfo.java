@@ -117,15 +117,8 @@ public class PNIRefTypeInfo extends BuiltInReferenceTypeInfo {
         Utils.appendIndent(sb, indent)
             .append("if (CORRUPTED_MEMORY) SB.append(\"<?>\");\n");
         Utils.appendIndent(sb, indent)
-            .append("else {\n");
-        Utils.appendIndent(sb, indent + 4)
-            .append("var VALUE = ").append(callGetter).append(";\n");
-        Utils.appendIndent(sb, indent + 4)
-            .append("if (VALUE == null) SB.append(\"null\");\n");
-        Utils.appendIndent(sb, indent + 4)
-            .append("else VALUE.toString(SB, INDENT, VISITED, CORRUPTED_MEMORY);\n");
-        Utils.appendIndent(sb, indent)
-            .append("}\n");
+            .append("else PanamaUtils.nativeObjectToString(").append(callGetter)
+            .append(", SB, INDENT + 4, VISITED, CORRUPTED_MEMORY);\n");
     }
 
     private static final PNIRefTypeInfo INSTANCE = new PNIRefTypeInfo();

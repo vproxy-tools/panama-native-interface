@@ -1,6 +1,7 @@
 package io.vproxy.pni.array;
 
 import io.vproxy.pni.Allocator;
+import io.vproxy.pni.NativeObject;
 import io.vproxy.pni.NativeObjectTuple;
 import io.vproxy.pni.PNIBuf;
 
@@ -9,8 +10,14 @@ import java.lang.foreign.MemorySegment;
 import java.util.HashSet;
 import java.util.Set;
 
-public abstract class RefArray<T> {
+public abstract class RefArray<T> implements NativeObject {
     public final MemorySegment MEMORY;
+
+    @Override
+    public MemorySegment MEMORY() {
+        return MEMORY;
+    }
+
     public final MemoryLayout LAYOUT;
     private final long length;
 
@@ -56,8 +63,8 @@ public abstract class RefArray<T> {
         return sb.toString();
     }
 
-    @SuppressWarnings("DuplicatedCode")
-    public String toString(StringBuilder sb, int indent, Set<NativeObjectTuple> visited, boolean corrupted) {
+    @Override
+    public void toString(StringBuilder sb, int indent, Set<NativeObjectTuple> visited, boolean corrupted) {
         sb.append(toStringTypeName()).append("[");
         var len = length();
         if (len > 0) {
@@ -76,7 +83,6 @@ public abstract class RefArray<T> {
         }
         sb.append("]");
         sb.append("@").append(Long.toString(MEMORY.address(), 16));
-        return sb.toString();
     }
 
     @SuppressWarnings("unused")
