@@ -513,10 +513,32 @@ public class JavaFileGenerator {
 
         public void generateJavaToString(StringBuilder sb, int indent) {
             Utils.appendIndent(sb, indent).append("{\n");
+            var bits = field.getBitFieldInfo();
             Utils.appendIndent(sb, indent + 4)
                 .append("SB.append(\" \".repeat(INDENT + 4))")
                 .append(".append(\"").append(field.name).append(" => \");\n");
             field.typeRef.javaToString(sb, indent + 4, Utils.getterName(field.name) + "()", field.varOpts());
+            if (bits != null && !bits.isEmpty()) {
+                Utils.appendIndent(sb, indent + 4)
+                    .append("SB.append(\" {\\n\");\n");
+                for (int i = 0; i < bits.size(); i++) {
+                    var b = bits.get(i);
+                    Utils.appendIndent(sb, indent + 4)
+                        .append("SB.append(\" \".repeat(INDENT + 8))")
+                        .append(".append(\"").append(b.name).append(":").append(b.bit).append(" => \")")
+                        .append(".append(").append(Utils.getterName(b.name)).append("());\n");
+                    if (i == bits.size() - 1) {
+                        Utils.appendIndent(sb, indent + 4)
+                            .append("SB.append(\"\\n\");\n");
+                    } else {
+                        Utils.appendIndent(sb, indent + 4)
+                            .append("SB.append(\",\\n\");\n");
+                    }
+                }
+                Utils.appendIndent(sb, indent + 4)
+                    .append("SB.append(\" \".repeat(INDENT + 4))")
+                    .append(".append(\"}\");\n");
+            }
             Utils.appendIndent(sb, indent).append("}\n");
         }
     }
