@@ -207,7 +207,7 @@ public class AstClass {
 
     private void validateDependency(AstClass cls, List<String> errors, String path, HashSet<AstClass> classes) {
         if (cls == this) {
-            errors.add("recursive type dependency: " + path);
+            errors.add(path + ": recursive type dependency");
             return;
         }
         if (!classes.add(cls)) {
@@ -221,6 +221,12 @@ public class AstClass {
                 var classTypeInfo = (ClassTypeInfo) f.typeRef;
                 var c = classTypeInfo.getClazz();
                 validateDependency(c, errors, path + " -> " + f.name, classes);
+            } else if (f.typeRef instanceof ArrayTypeInfo) {
+                var arr = (ArrayTypeInfo) f.typeRef;
+                if (arr.getElementType() instanceof ClassTypeInfo) {
+                    var classTypeInfo = (ClassTypeInfo) arr.getElementType();
+                    validateDependency(classTypeInfo.getClazz(), errors, path + " -> " + f.name, classes);
+                }
             }
         }
     }
