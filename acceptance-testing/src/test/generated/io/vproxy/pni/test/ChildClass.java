@@ -74,6 +74,19 @@ public class ChildClass extends io.vproxy.pni.test.BaseClass implements NativeOb
             return;
         }
         SB.append("ChildClass{\n");
+        SB.append(" ".repeat(INDENT + 4)).append("SUPER => ");
+        {
+            INDENT += 4;
+            SB.append("BaseClass{\n");
+            {
+                SB.append(" ".repeat(INDENT + 4)).append("a => ");
+                SB.append(getA());
+            }
+            SB.append("\n");
+            SB.append(" ".repeat(INDENT)).append("}@").append(Long.toString(MEMORY.address(), 16));
+            INDENT -= 4;
+            SB.append(",\n");
+        }
         {
             SB.append(" ".repeat(INDENT + 4)).append("x => ");
             SB.append(getX());
@@ -153,4 +166,4 @@ public class ChildClass extends io.vproxy.pni.test.BaseClass implements NativeOb
     }
 }
 // metadata.generator-version: pni test
-// sha256:90741c7e48701ac5285e15c353b8c19e5a18cd3f68bc702c6d8a91a4825e4af0
+// sha256:ac1f3aaa67329a93b86e0ab4db1747e1fea1596ae8798d026c03b75736db8a76

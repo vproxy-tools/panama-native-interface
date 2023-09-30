@@ -98,6 +98,24 @@ public class ChildOfPacked extends io.vproxy.pni.test.PackedBaseClass implements
             return;
         }
         SB.append("ChildOfPacked{\n");
+        SB.append(" ".repeat(INDENT + 4)).append("SUPER => ");
+        {
+            INDENT += 4;
+            SB.append("PackedBaseClass{\n");
+            {
+                SB.append(" ".repeat(INDENT + 4)).append("a => ");
+                SB.append(getA());
+            }
+            SB.append(",\n");
+            {
+                SB.append(" ".repeat(INDENT + 4)).append("b => ");
+                SB.append(getB());
+            }
+            SB.append("\n");
+            SB.append(" ".repeat(INDENT)).append("}@").append(Long.toString(MEMORY.address(), 16));
+            INDENT -= 4;
+            SB.append(",\n");
+        }
         {
             SB.append(" ".repeat(INDENT + 4)).append("x => ");
             SB.append(getX());
@@ -182,4 +200,4 @@ public class ChildOfPacked extends io.vproxy.pni.test.PackedBaseClass implements
     }
 }
 // metadata.generator-version: pni test
-// sha256:36c114a5f2e00baf09a5f99791b9b5b8f9efa7a0d0f06ce1859fd6e0ea1a89b1
+// sha256:9c7a2c8748a3ace310a9a081a24d5b39796225c44301bc96d04ba93cc0d299e9

@@ -74,6 +74,32 @@ public class GrandChildClass extends io.vproxy.pni.test.ChildClass implements Na
             return;
         }
         SB.append("GrandChildClass{\n");
+        SB.append(" ".repeat(INDENT + 4)).append("SUPER => ");
+        {
+            INDENT += 4;
+            SB.append("ChildClass{\n");
+            SB.append(" ".repeat(INDENT + 4)).append("SUPER => ");
+            {
+                INDENT += 4;
+                SB.append("BaseClass{\n");
+                {
+                    SB.append(" ".repeat(INDENT + 4)).append("a => ");
+                    SB.append(getA());
+                }
+                SB.append("\n");
+                SB.append(" ".repeat(INDENT)).append("}@").append(Long.toString(MEMORY.address(), 16));
+                INDENT -= 4;
+                SB.append(",\n");
+            }
+            {
+                SB.append(" ".repeat(INDENT + 4)).append("x => ");
+                SB.append(getX());
+            }
+            SB.append("\n");
+            SB.append(" ".repeat(INDENT)).append("}@").append(Long.toString(MEMORY.address(), 16));
+            INDENT -= 4;
+            SB.append(",\n");
+        }
         {
             SB.append(" ".repeat(INDENT + 4)).append("y => ");
             SB.append(getY());
@@ -153,4 +179,4 @@ public class GrandChildClass extends io.vproxy.pni.test.ChildClass implements Na
     }
 }
 // metadata.generator-version: pni test
-// sha256:8ee9ed0808894b26dc9bf21bd097291ed6776b6747de14a3508d92199f032ea9
+// sha256:559d8aa36685d18bb2db552be28fbc6077a5ebd8ca34b503876eaea1c3221054

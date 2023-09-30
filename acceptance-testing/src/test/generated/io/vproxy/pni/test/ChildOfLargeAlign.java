@@ -59,6 +59,19 @@ public class ChildOfLargeAlign extends io.vproxy.pni.test.LargeAlignBase impleme
             return;
         }
         SB.append("ChildOfLargeAlign{\n");
+        SB.append(" ".repeat(INDENT + 4)).append("SUPER => ");
+        {
+            INDENT += 4;
+            SB.append("LargeAlignBase{\n");
+            {
+                SB.append(" ".repeat(INDENT + 4)).append("x => ");
+                SB.append(getX());
+            }
+            SB.append("\n");
+            SB.append(" ".repeat(INDENT)).append("}@").append(Long.toString(MEMORY.address(), 16));
+            INDENT -= 4;
+            SB.append(",\n");
+        }
         {
             SB.append(" ".repeat(INDENT + 4)).append("y => ");
             SB.append(getY());
@@ -138,4 +151,4 @@ public class ChildOfLargeAlign extends io.vproxy.pni.test.LargeAlignBase impleme
     }
 }
 // metadata.generator-version: pni test
-// sha256:041425012a1085f86ff1621802c0eb8e742d6ca75ad86399b95335f4492168d7
+// sha256:2c6812640d15964139c9437aa98a24b7a9cef0fa583109a5c54cfdb10b19b608

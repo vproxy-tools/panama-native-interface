@@ -59,6 +59,19 @@ public class AlwaysAlignedChild extends io.vproxy.pni.test.AlwaysAlignedBase imp
             return;
         }
         SB.append("AlwaysAlignedChild{\n");
+        SB.append(" ".repeat(INDENT + 4)).append("SUPER => ");
+        {
+            INDENT += 4;
+            SB.append("AlwaysAlignedBase{\n");
+            {
+                SB.append(" ".repeat(INDENT + 4)).append("a => ");
+                SB.append(getA());
+            }
+            SB.append("\n");
+            SB.append(" ".repeat(INDENT)).append("}@").append(Long.toString(MEMORY.address(), 16));
+            INDENT -= 4;
+            SB.append(",\n");
+        }
         {
             SB.append(" ".repeat(INDENT + 4)).append("b => ");
             SB.append(getB());
@@ -138,4 +151,4 @@ public class AlwaysAlignedChild extends io.vproxy.pni.test.AlwaysAlignedBase imp
     }
 }
 // metadata.generator-version: pni test
-// sha256:2dbca2418c28770ece06f099e063bba1959ceeb426517dbdee77e18ad69990d8
+// sha256:1aca9a53bbc4fe57a5fae63f3b05c5c2dfcc9708d9e6911e5d4432b4a0b01bc8

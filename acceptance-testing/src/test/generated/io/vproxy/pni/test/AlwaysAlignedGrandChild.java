@@ -59,6 +59,32 @@ public class AlwaysAlignedGrandChild extends io.vproxy.pni.test.AlwaysAlignedChi
             return;
         }
         SB.append("AlwaysAlignedGrandChild{\n");
+        SB.append(" ".repeat(INDENT + 4)).append("SUPER => ");
+        {
+            INDENT += 4;
+            SB.append("AlwaysAlignedChild{\n");
+            SB.append(" ".repeat(INDENT + 4)).append("SUPER => ");
+            {
+                INDENT += 4;
+                SB.append("AlwaysAlignedBase{\n");
+                {
+                    SB.append(" ".repeat(INDENT + 4)).append("a => ");
+                    SB.append(getA());
+                }
+                SB.append("\n");
+                SB.append(" ".repeat(INDENT)).append("}@").append(Long.toString(MEMORY.address(), 16));
+                INDENT -= 4;
+                SB.append(",\n");
+            }
+            {
+                SB.append(" ".repeat(INDENT + 4)).append("b => ");
+                SB.append(getB());
+            }
+            SB.append("\n");
+            SB.append(" ".repeat(INDENT)).append("}@").append(Long.toString(MEMORY.address(), 16));
+            INDENT -= 4;
+            SB.append(",\n");
+        }
         {
             SB.append(" ".repeat(INDENT + 4)).append("c => ");
             SB.append(getC());
@@ -138,4 +164,4 @@ public class AlwaysAlignedGrandChild extends io.vproxy.pni.test.AlwaysAlignedChi
     }
 }
 // metadata.generator-version: pni test
-// sha256:5c993610ea9ae279ddac2cab014384dcbeda7bc4baae78461d7d704e2f8275d3
+// sha256:0dcae1089f06abbe4c811bec5d7ad59ab4c6c618b73102b1ef6176fff459a2d6

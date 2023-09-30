@@ -111,6 +111,19 @@ public class AlignChildClass extends io.vproxy.pni.test.AlignBaseClass implement
             return;
         }
         SB.append("AlignChildClass{\n");
+        SB.append(" ".repeat(INDENT + 4)).append("SUPER => ");
+        {
+            INDENT += 4;
+            SB.append("AlignBaseClass{\n");
+            {
+                SB.append(" ".repeat(INDENT + 4)).append("a => ");
+                SB.append(getA());
+            }
+            SB.append("\n");
+            SB.append(" ".repeat(INDENT)).append("}@").append(Long.toString(MEMORY.address(), 16));
+            INDENT -= 4;
+            SB.append(",\n");
+        }
         {
             SB.append(" ".repeat(INDENT + 4)).append("b => ");
             SB.append(getB());
@@ -195,4 +208,4 @@ public class AlignChildClass extends io.vproxy.pni.test.AlignBaseClass implement
     }
 }
 // metadata.generator-version: pni test
-// sha256:62445033ed591417cf1f9b2d679d1e5352b3ac97d41e493cefbe814573885fd6
+// sha256:032db33c6dfa529b851e95a20f0f876d754f0aca09545f6dc3d75abf89e6730c
