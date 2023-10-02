@@ -66,6 +66,8 @@ public class JavaFileGenerator {
         sb.append("public class ").append(cls.simpleName());
         if (cls.superTypeRef != null) {
             sb.append(" extends ").append(((ClassTypeInfo) cls.superTypeRef).getClazz().fullName());
+        } else if (!cls.isInterface) {
+            sb.append(" extends AbstractNativeObject");
         }
         if (!cls.isInterface) {
             sb.append(" implements NativeObject");
@@ -268,19 +270,6 @@ public class JavaFileGenerator {
     }
 
     private void generateJavaToString(StringBuilder sb, int indent) {
-        Utils.appendIndent(sb, indent).append("@Override\n");
-        Utils.appendIndent(sb, indent)
-            .append("public String toString() {\n");
-        Utils.appendIndent(sb, indent + 4)
-            .append("var sb = new StringBuilder();\n");
-        Utils.appendIndent(sb, indent + 4)
-            .append("toString(sb, 0, new java.util.HashSet<>(), ");
-        sb.append(cls.isUnion());
-        sb.append(");\n");
-        Utils.appendIndent(sb, indent + 4)
-            .append("return sb.toString();\n");
-        Utils.appendIndent(sb, indent).append("}\n");
-        sb.append("\n");
         Utils.appendIndent(sb, indent)
             .append("@Override\n");
         Utils.appendIndent(sb, indent)
