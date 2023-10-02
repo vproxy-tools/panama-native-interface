@@ -6,7 +6,7 @@ import java.lang.foreign.*;
 import java.lang.invoke.*;
 import java.nio.ByteBuffer;
 
-public class BaseClass implements NativeObject {
+public class BaseClass extends AbstractNativeObject implements NativeObject {
     public static final MemoryLayout LAYOUT = MemoryLayout.structLayout(
         ValueLayout.JAVA_BYTE.withName("a")
     );
@@ -53,13 +53,6 @@ public class BaseClass implements NativeObject {
         if (ERR != 0) {
             ENV.throwLast();
         }
-    }
-
-    @Override
-    public String toString() {
-        var sb = new StringBuilder();
-        toString(sb, 0, new java.util.HashSet<>(), false);
-        return sb.toString();
     }
 
     @Override
@@ -148,4 +141,4 @@ public class BaseClass implements NativeObject {
     }
 }
 // metadata.generator-version: pni test
-// sha256:51ea3eb6d02df743e98168c442baccb803dafca9f469b68c50fd8b7332ec52f3
+// sha256:cef73a5dc93b003b2805e847f61f0c178721d8249a2610c96234ea6f39e5ad19

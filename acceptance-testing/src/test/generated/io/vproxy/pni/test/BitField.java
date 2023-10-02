@@ -6,7 +6,7 @@ import java.lang.foreign.*;
 import java.lang.invoke.*;
 import java.nio.ByteBuffer;
 
-public class BitField implements NativeObject {
+public class BitField extends AbstractNativeObject implements NativeObject {
     public static final MemoryLayout LAYOUT = MemoryLayout.structLayout(
         ValueLayout.JAVA_BYTE.withName("field01"),
         ValueLayout.JAVA_BYTE.withName("field02"),
@@ -889,13 +889,6 @@ public class BitField implements NativeObject {
     }
 
     @Override
-    public String toString() {
-        var sb = new StringBuilder();
-        toString(sb, 0, new java.util.HashSet<>(), false);
-        return sb.toString();
-    }
-
-    @Override
     public void toString(StringBuilder SB, int INDENT, java.util.Set<NativeObjectTuple> VISITED, boolean CORRUPTED_MEMORY) {
         if (!VISITED.add(new NativeObjectTuple(this))) {
             SB.append("<...>@").append(Long.toString(MEMORY.address(), 16));
@@ -1099,4 +1092,4 @@ public class BitField implements NativeObject {
     }
 }
 // metadata.generator-version: pni test
-// sha256:e9bc0e9dd35fa380d12d2a58cbe03ebb9509c14a722c63b3df741a68a23cd869
+// sha256:3b7c2671e9de24a9d1d406f587a6a9ffc34ef85cea9ae6554829383a1f685f89

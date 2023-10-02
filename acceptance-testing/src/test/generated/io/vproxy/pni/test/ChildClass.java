@@ -61,13 +61,6 @@ public class ChildClass extends io.vproxy.pni.test.BaseClass implements NativeOb
     }
 
     @Override
-    public String toString() {
-        var sb = new StringBuilder();
-        toString(sb, 0, new java.util.HashSet<>(), false);
-        return sb.toString();
-    }
-
-    @Override
     public void toString(StringBuilder SB, int INDENT, java.util.Set<NativeObjectTuple> VISITED, boolean CORRUPTED_MEMORY) {
         if (!VISITED.add(new NativeObjectTuple(this))) {
             SB.append("<...>@").append(Long.toString(MEMORY.address(), 16));
@@ -166,4 +159,4 @@ public class ChildClass extends io.vproxy.pni.test.BaseClass implements NativeOb
     }
 }
 // metadata.generator-version: pni test
-// sha256:ac1f3aaa67329a93b86e0ab4db1747e1fea1596ae8798d026c03b75736db8a76
+// sha256:5a7c1989fa47b7196bfd1fea5fab0bc76d717bfab1665f0ce0c35082767af404

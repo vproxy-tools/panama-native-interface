@@ -6,7 +6,7 @@ import java.lang.foreign.*;
 import java.lang.invoke.*;
 import java.nio.ByteBuffer;
 
-public class GCCompatibilityStructAlign implements NativeObject {
+public class GCCompatibilityStructAlign extends AbstractNativeObject implements NativeObject {
     public static final MemoryLayout LAYOUT = MemoryLayout.structLayout(
         ValueLayout.JAVA_INT_UNALIGNED.withName("n"),
         MemoryLayout.sequenceLayout(4L, ValueLayout.JAVA_BYTE) /* padding */,
@@ -87,13 +87,6 @@ public class GCCompatibilityStructAlign implements NativeObject {
             ENV.throwLast();
         }
         return ENV.returnLong();
-    }
-
-    @Override
-    public String toString() {
-        var sb = new StringBuilder();
-        toString(sb, 0, new java.util.HashSet<>(), false);
-        return sb.toString();
     }
 
     @Override
@@ -187,4 +180,4 @@ public class GCCompatibilityStructAlign implements NativeObject {
     }
 }
 // metadata.generator-version: pni test
-// sha256:fa551e2bc815b444a35cf509bd4284080cf0ae7ec73a8db12d8a4c64bab89587
+// sha256:2c93580d4cba1ebdebf1308b177d63147dc61d5cdcc0f902eb9b58de9a172733

@@ -46,13 +46,6 @@ public class AlwaysAlignedChild extends io.vproxy.pni.test.AlwaysAlignedBase imp
     }
 
     @Override
-    public String toString() {
-        var sb = new StringBuilder();
-        toString(sb, 0, new java.util.HashSet<>(), false);
-        return sb.toString();
-    }
-
-    @Override
     public void toString(StringBuilder SB, int INDENT, java.util.Set<NativeObjectTuple> VISITED, boolean CORRUPTED_MEMORY) {
         if (!VISITED.add(new NativeObjectTuple(this))) {
             SB.append("<...>@").append(Long.toString(MEMORY.address(), 16));
@@ -151,4 +144,4 @@ public class AlwaysAlignedChild extends io.vproxy.pni.test.AlwaysAlignedBase imp
     }
 }
 // metadata.generator-version: pni test
-// sha256:1aca9a53bbc4fe57a5fae63f3b05c5c2dfcc9708d9e6911e5d4432b4a0b01bc8
+// sha256:30ba614da18aeb07da0ea316df001a6f92f88b6406de31cb24e1cf3c32acf871

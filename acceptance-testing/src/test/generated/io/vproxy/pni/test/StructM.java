@@ -6,7 +6,7 @@ import java.lang.foreign.*;
 import java.lang.invoke.*;
 import java.nio.ByteBuffer;
 
-public class StructM implements NativeObject {
+public class StructM extends AbstractNativeObject implements NativeObject {
     public static final MemoryLayout LAYOUT = MemoryLayout.structLayout(
         io.vproxy.pni.test.StructN.LAYOUT.withName("n")
     );
@@ -48,13 +48,6 @@ public class StructM implements NativeObject {
         if (ERR != 0) {
             ENV.throwLast();
         }
-    }
-
-    @Override
-    public String toString() {
-        var sb = new StringBuilder();
-        toString(sb, 0, new java.util.HashSet<>(), false);
-        return sb.toString();
     }
 
     @Override
@@ -143,4 +136,4 @@ public class StructM implements NativeObject {
     }
 }
 // metadata.generator-version: pni test
-// sha256:6079a7ee80c54e9b97dafbac20cbe905f4c72ec83acad8433919390a9c218c4a
+// sha256:1298405fad63ec0ddf28bc15af3d94e33299bc216268c67018fc9cfed1d553e2

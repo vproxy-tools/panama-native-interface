@@ -6,7 +6,7 @@ import java.lang.foreign.*;
 import java.lang.invoke.*;
 import java.nio.ByteBuffer;
 
-public class AlwaysAlignedBase implements NativeObject {
+public class AlwaysAlignedBase extends AbstractNativeObject implements NativeObject {
     public static final MemoryLayout LAYOUT = MemoryLayout.structLayout(
         ValueLayout.JAVA_BYTE.withName("a")
     );
@@ -38,13 +38,6 @@ public class AlwaysAlignedBase implements NativeObject {
 
     public AlwaysAlignedBase(Allocator ALLOCATOR) {
         this(ALLOCATOR.allocate(LAYOUT.byteSize()));
-    }
-
-    @Override
-    public String toString() {
-        var sb = new StringBuilder();
-        toString(sb, 0, new java.util.HashSet<>(), false);
-        return sb.toString();
     }
 
     @Override
@@ -133,4 +126,4 @@ public class AlwaysAlignedBase implements NativeObject {
     }
 }
 // metadata.generator-version: pni test
-// sha256:52123d7acb2b5d8411669b3af58485700d62b38b6146f887eade54ed24ca4b30
+// sha256:eeb74d90cf6d6887b2191edca28909cea58b185d5d369925fb00cbd07f6f3129

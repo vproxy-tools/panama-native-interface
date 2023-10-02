@@ -6,7 +6,7 @@ import java.lang.foreign.*;
 import java.lang.invoke.*;
 import java.nio.ByteBuffer;
 
-public class AlignField2 implements NativeObject {
+public class AlignField2 extends AbstractNativeObject implements NativeObject {
     public static final MemoryLayout LAYOUT = MemoryLayout.structLayout(
         ValueLayout.JAVA_BYTE.withName("a"),
         MemoryLayout.sequenceLayout(31L, ValueLayout.JAVA_BYTE) /* padding */,
@@ -123,13 +123,6 @@ public class AlignField2 implements NativeObject {
     }
 
     @Override
-    public String toString() {
-        var sb = new StringBuilder();
-        toString(sb, 0, new java.util.HashSet<>(), false);
-        return sb.toString();
-    }
-
-    @Override
     public void toString(StringBuilder SB, int INDENT, java.util.Set<NativeObjectTuple> VISITED, boolean CORRUPTED_MEMORY) {
         if (!VISITED.add(new NativeObjectTuple(this))) {
             SB.append("<...>@").append(Long.toString(MEMORY.address(), 16));
@@ -225,4 +218,4 @@ public class AlignField2 implements NativeObject {
     }
 }
 // metadata.generator-version: pni test
-// sha256:9515512885a152d38f98f66b7201c68526d383a2e530f640db874c3400b22ef4
+// sha256:7b56d600165c0a26cbba1cf8267215b47fafab481031a2adaaba839cd005d2a9

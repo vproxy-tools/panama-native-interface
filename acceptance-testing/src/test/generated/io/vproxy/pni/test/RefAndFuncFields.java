@@ -6,7 +6,7 @@ import java.lang.foreign.*;
 import java.lang.invoke.*;
 import java.nio.ByteBuffer;
 
-public class RefAndFuncFields implements NativeObject {
+public class RefAndFuncFields extends AbstractNativeObject implements NativeObject {
     public static final MemoryLayout LAYOUT = MemoryLayout.structLayout(
         ValueLayout.ADDRESS_UNALIGNED.withName("ref"),
         ValueLayout.ADDRESS_UNALIGNED.withName("ref2"),
@@ -277,13 +277,6 @@ public class RefAndFuncFields implements NativeObject {
     }
 
     @Override
-    public String toString() {
-        var sb = new StringBuilder();
-        toString(sb, 0, new java.util.HashSet<>(), false);
-        return sb.toString();
-    }
-
-    @Override
     public void toString(StringBuilder SB, int INDENT, java.util.Set<NativeObjectTuple> VISITED, boolean CORRUPTED_MEMORY) {
         if (!VISITED.add(new NativeObjectTuple(this))) {
             SB.append("<...>@").append(Long.toString(MEMORY.address(), 16));
@@ -394,4 +387,4 @@ public class RefAndFuncFields implements NativeObject {
     }
 }
 // metadata.generator-version: pni test
-// sha256:db7283999adbfc1c45dfdb409a3109b6fa584fa17a3441faa8a5449ca26284d5
+// sha256:6a6f253deaad0ba63e216fa6a78ccad1cb9b74664a440a1d551a37683696c75d

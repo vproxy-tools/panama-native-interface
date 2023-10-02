@@ -6,7 +6,7 @@ import java.lang.foreign.*;
 import java.lang.invoke.*;
 import java.nio.ByteBuffer;
 
-public class GCCCompatibilityNonPackedContainNonPacked implements NativeObject {
+public class GCCCompatibilityNonPackedContainNonPacked extends AbstractNativeObject implements NativeObject {
     public static final MemoryLayout LAYOUT = MemoryLayout.structLayout(
         ValueLayout.JAVA_BYTE.withName("b1"),
         MemoryLayout.sequenceLayout(7L, ValueLayout.JAVA_BYTE) /* padding */,
@@ -96,13 +96,6 @@ public class GCCCompatibilityNonPackedContainNonPacked implements NativeObject {
             ENV.throwLast();
         }
         return ENV.returnLong();
-    }
-
-    @Override
-    public String toString() {
-        var sb = new StringBuilder();
-        toString(sb, 0, new java.util.HashSet<>(), false);
-        return sb.toString();
     }
 
     @Override
@@ -201,4 +194,4 @@ public class GCCCompatibilityNonPackedContainNonPacked implements NativeObject {
     }
 }
 // metadata.generator-version: pni test
-// sha256:77747d6a9e03c1a51c9f4e42567b3ecf5d07dd2204d820d9c20575f1c4fa0c7a
+// sha256:a16f8f17183c116dab76daf4f6284449c1ce6e5dbaccaa61e8d6b8dddb29edda

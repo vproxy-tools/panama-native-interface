@@ -6,7 +6,7 @@ import java.lang.foreign.*;
 import java.lang.invoke.*;
 import java.nio.ByteBuffer;
 
-public class GCCompatibilityPackedContainUnion implements NativeObject {
+public class GCCompatibilityPackedContainUnion extends AbstractNativeObject implements NativeObject {
     public static final MemoryLayout LAYOUT = MemoryLayout.structLayout(
         ValueLayout.JAVA_BYTE.withName("b1"),
         io.vproxy.pni.test.GCCCompatibilityUnion.LAYOUT.withName("un"),
@@ -170,13 +170,6 @@ public class GCCompatibilityPackedContainUnion implements NativeObject {
     }
 
     @Override
-    public String toString() {
-        var sb = new StringBuilder();
-        toString(sb, 0, new java.util.HashSet<>(), false);
-        return sb.toString();
-    }
-
-    @Override
     public void toString(StringBuilder SB, int INDENT, java.util.Set<NativeObjectTuple> VISITED, boolean CORRUPTED_MEMORY) {
         if (!VISITED.add(new NativeObjectTuple(this))) {
             SB.append("<...>@").append(Long.toString(MEMORY.address(), 16));
@@ -272,4 +265,4 @@ public class GCCompatibilityPackedContainUnion implements NativeObject {
     }
 }
 // metadata.generator-version: pni test
-// sha256:79c9fc2130b86e55cca5384b808a331542bfe3758db4517ed21120035dfe967a
+// sha256:da4308a463aacb4a68a4889a043a96a900c23bd664e15edfe15ba3ccf7942654

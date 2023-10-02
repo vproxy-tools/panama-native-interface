@@ -6,7 +6,7 @@ import java.lang.foreign.*;
 import java.lang.invoke.*;
 import java.nio.ByteBuffer;
 
-public class PackedBaseClass implements NativeObject {
+public class PackedBaseClass extends AbstractNativeObject implements NativeObject {
     public static final MemoryLayout LAYOUT = MemoryLayout.structLayout(
         ValueLayout.JAVA_BYTE.withName("a"),
         ValueLayout.JAVA_SHORT_UNALIGNED.withName("b")
@@ -82,13 +82,6 @@ public class PackedBaseClass implements NativeObject {
         if (ERR != 0) {
             ENV.throwLast();
         }
-    }
-
-    @Override
-    public String toString() {
-        var sb = new StringBuilder();
-        toString(sb, 0, new java.util.HashSet<>(), false);
-        return sb.toString();
     }
 
     @Override
@@ -182,4 +175,4 @@ public class PackedBaseClass implements NativeObject {
     }
 }
 // metadata.generator-version: pni test
-// sha256:38d2faffa8cf3d90d0fb26a5f7c79031d679e0e8539f1e2de4600108ee61a0dd
+// sha256:089e2ddf174b1a69b3324bdfbdfe456a4cdbdb6fd42e13a7d57db50a7aeb176d

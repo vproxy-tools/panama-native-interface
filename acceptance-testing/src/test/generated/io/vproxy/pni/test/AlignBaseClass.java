@@ -6,7 +6,7 @@ import java.lang.foreign.*;
 import java.lang.invoke.*;
 import java.nio.ByteBuffer;
 
-public class AlignBaseClass implements NativeObject {
+public class AlignBaseClass extends AbstractNativeObject implements NativeObject {
     public static final MemoryLayout LAYOUT = MemoryLayout.structLayout(
         ValueLayout.JAVA_SHORT.withName("a")
     );
@@ -62,13 +62,6 @@ public class AlignBaseClass implements NativeObject {
             throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
         return RESULT;
-    }
-
-    @Override
-    public String toString() {
-        var sb = new StringBuilder();
-        toString(sb, 0, new java.util.HashSet<>(), false);
-        return sb.toString();
     }
 
     @Override
@@ -157,4 +150,4 @@ public class AlignBaseClass implements NativeObject {
     }
 }
 // metadata.generator-version: pni test
-// sha256:66995f2ef41931621975cfbc32aac064eb7809b0a6e252c96cc4f48bde1ce0a1
+// sha256:080ff7c84b0e84f1f9e4d8fd7181fb6671df51becdd914cfb3ed3feb9cbcf668

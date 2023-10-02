@@ -6,7 +6,7 @@ import java.lang.foreign.*;
 import java.lang.invoke.*;
 import java.nio.ByteBuffer;
 
-public class ToStringUnion implements NativeObject {
+public class ToStringUnion extends AbstractNativeObject implements NativeObject {
     public static final MemoryLayout LAYOUT = MemoryLayout.unionLayout(
         ValueLayout.JAVA_LONG_UNALIGNED.withName("num"),
         io.vproxy.pni.test.ToStringClass.LAYOUT.withName("c1"),
@@ -135,13 +135,6 @@ public class ToStringUnion implements NativeObject {
     }
 
     @Override
-    public String toString() {
-        var sb = new StringBuilder();
-        toString(sb, 0, new java.util.HashSet<>(), true);
-        return sb.toString();
-    }
-
-    @Override
     public void toString(StringBuilder SB, int INDENT, java.util.Set<NativeObjectTuple> VISITED, boolean CORRUPTED_MEMORY) {
         if (!VISITED.add(new NativeObjectTuple(this))) {
             SB.append("<...>@").append(Long.toString(MEMORY.address(), 16));
@@ -261,4 +254,4 @@ public class ToStringUnion implements NativeObject {
     }
 }
 // metadata.generator-version: pni test
-// sha256:59e8c86e52c2f596eac8ea967a2cff134ecfeee1d9b24ac19af71f0f4ff2d7ce
+// sha256:05abb28727cf814dd993d41298f759b17a1e19aac694cbc7fac46d433d20f627

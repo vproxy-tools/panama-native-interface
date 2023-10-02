@@ -6,7 +6,7 @@ import java.lang.foreign.*;
 import java.lang.invoke.*;
 import java.nio.ByteBuffer;
 
-public class GCCCompatibilityPacked implements NativeObject {
+public class GCCCompatibilityPacked extends AbstractNativeObject implements NativeObject {
     public static final MemoryLayout LAYOUT = MemoryLayout.structLayout(
         ValueLayout.JAVA_BYTE.withName("b"),
         ValueLayout.JAVA_SHORT_UNALIGNED.withName("s"),
@@ -142,13 +142,6 @@ public class GCCCompatibilityPacked implements NativeObject {
     }
 
     @Override
-    public String toString() {
-        var sb = new StringBuilder();
-        toString(sb, 0, new java.util.HashSet<>(), false);
-        return sb.toString();
-    }
-
-    @Override
     public void toString(StringBuilder SB, int INDENT, java.util.Set<NativeObjectTuple> VISITED, boolean CORRUPTED_MEMORY) {
         if (!VISITED.add(new NativeObjectTuple(this))) {
             SB.append("<...>@").append(Long.toString(MEMORY.address(), 16));
@@ -259,4 +252,4 @@ public class GCCCompatibilityPacked implements NativeObject {
     }
 }
 // metadata.generator-version: pni test
-// sha256:9b406b34c9ea5e89383e314326a3e79e744b739a7e6069ed0d2838f8cc02ecad
+// sha256:78c0538e2e1d2f58d69f9825898a06a37065f3a46a6fee81b653efc72dd61632

@@ -6,7 +6,7 @@ import java.lang.foreign.*;
 import java.lang.invoke.*;
 import java.nio.ByteBuffer;
 
-public class StructA implements NativeObject {
+public class StructA extends AbstractNativeObject implements NativeObject {
     public static final MemoryLayout LAYOUT = MemoryLayout.structLayout(
         io.vproxy.pni.test.StructB.LAYOUT.withName("b"),
         io.vproxy.pni.test.UnionC.LAYOUT.withName("c"),
@@ -395,13 +395,6 @@ public class StructA implements NativeObject {
     }
 
     @Override
-    public String toString() {
-        var sb = new StringBuilder();
-        toString(sb, 0, new java.util.HashSet<>(), false);
-        return sb.toString();
-    }
-
-    @Override
     public void toString(StringBuilder SB, int INDENT, java.util.Set<NativeObjectTuple> VISITED, boolean CORRUPTED_MEMORY) {
         if (!VISITED.add(new NativeObjectTuple(this))) {
             SB.append("<...>@").append(Long.toString(MEMORY.address(), 16));
@@ -515,4 +508,4 @@ public class StructA implements NativeObject {
     }
 }
 // metadata.generator-version: pni test
-// sha256:f3bfd0f01c8f5d6237e38c2c9b7c6ccd6f7ed9c7569ba920fb757e0709692088
+// sha256:5d86e6715b5aff6a283ca3fc0dfa61ab25d2360fda96ec58cde620acb9675fae

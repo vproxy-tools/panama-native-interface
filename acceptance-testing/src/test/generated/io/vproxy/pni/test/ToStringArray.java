@@ -6,7 +6,7 @@ import java.lang.foreign.*;
 import java.lang.invoke.*;
 import java.nio.ByteBuffer;
 
-public class ToStringArray implements NativeObject {
+public class ToStringArray extends AbstractNativeObject implements NativeObject {
     public static final MemoryLayout LAYOUT = MemoryLayout.structLayout(
         MemoryLayout.sequenceLayout(0L, io.vproxy.pni.test.ToStringClass.LAYOUT).withName("arrc"),
         MemoryLayout.sequenceLayout(2L, io.vproxy.pni.test.ToStringClass.LAYOUT).withName("arrcLen2"),
@@ -61,13 +61,6 @@ public class ToStringArray implements NativeObject {
 
     public ToStringArray(Allocator ALLOCATOR) {
         this(ALLOCATOR.allocate(LAYOUT.byteSize()));
-    }
-
-    @Override
-    public String toString() {
-        var sb = new StringBuilder();
-        toString(sb, 0, new java.util.HashSet<>(), false);
-        return sb.toString();
     }
 
     @Override
@@ -169,4 +162,4 @@ public class ToStringArray implements NativeObject {
     }
 }
 // metadata.generator-version: pni test
-// sha256:d46b19c8d6c965cd2f2537bae492486062e08421b309209997f7ba44bba45045
+// sha256:3286f67e193fc4d5aedddb369db5529ff9ed0d659d4e6d8e574a68e0f9d64d08

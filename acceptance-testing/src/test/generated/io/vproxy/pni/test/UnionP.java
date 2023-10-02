@@ -6,7 +6,7 @@ import java.lang.foreign.*;
 import java.lang.invoke.*;
 import java.nio.ByteBuffer;
 
-public class UnionP implements NativeObject {
+public class UnionP extends AbstractNativeObject implements NativeObject {
     public static final MemoryLayout LAYOUT = MemoryLayout.unionLayout(
         ValueLayout.JAVA_INT_UNALIGNED.withName("i"),
         ValueLayout.JAVA_LONG_UNALIGNED.withName("l")
@@ -86,13 +86,6 @@ public class UnionP implements NativeObject {
             ENV.throwLast();
         }
         return ENV.returnLong();
-    }
-
-    @Override
-    public String toString() {
-        var sb = new StringBuilder();
-        toString(sb, 0, new java.util.HashSet<>(), true);
-        return sb.toString();
     }
 
     @Override
@@ -187,4 +180,4 @@ public class UnionP implements NativeObject {
     }
 }
 // metadata.generator-version: pni test
-// sha256:93b22df31abbc3414e9986d8a71ffe5e728450e7341b5b760e190ecbed6669bb
+// sha256:930b52e2c0ec5d1e09bbf50c9bf5d93f1cc7d25550066ebfbc6c5210aa84ebaa

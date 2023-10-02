@@ -6,7 +6,7 @@ import java.lang.foreign.*;
 import java.lang.invoke.*;
 import java.nio.ByteBuffer;
 
-public class UnionEmbedded implements NativeObject {
+public class UnionEmbedded extends AbstractNativeObject implements NativeObject {
     public static final MemoryLayout LAYOUT = MemoryLayout.unionLayout(
         ValueLayout.JAVA_INT_UNALIGNED.withName("n"),
         ValueLayout.ADDRESS_UNALIGNED.withName("seg")
@@ -60,13 +60,6 @@ public class UnionEmbedded implements NativeObject {
 
     public UnionEmbedded(Allocator ALLOCATOR) {
         this(ALLOCATOR.allocate(LAYOUT.byteSize()));
-    }
-
-    @Override
-    public String toString() {
-        var sb = new StringBuilder();
-        toString(sb, 0, new java.util.HashSet<>(), true);
-        return sb.toString();
     }
 
     @Override
@@ -161,4 +154,4 @@ public class UnionEmbedded implements NativeObject {
     }
 }
 // metadata.generator-version: pni test
-// sha256:662aefa5fd6e705f6c7162d8f9125df3fcd454bda1776ea6d84768d7a89c351a
+// sha256:5dfb88c542083876aee49bcdc19e46b7d072f9671e4c790f579a9750c9dd5c9b

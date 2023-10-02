@@ -6,7 +6,7 @@ import java.lang.foreign.*;
 import java.lang.invoke.*;
 import java.nio.ByteBuffer;
 
-public class GCCCompatibilityUnion implements NativeObject {
+public class GCCCompatibilityUnion extends AbstractNativeObject implements NativeObject {
     public static final MemoryLayout LAYOUT = MemoryLayout.unionLayout(
         ValueLayout.JAVA_BYTE.withName("b"),
         ValueLayout.JAVA_SHORT_UNALIGNED.withName("s"),
@@ -114,13 +114,6 @@ public class GCCCompatibilityUnion implements NativeObject {
 
     public GCCCompatibilityUnion(Allocator ALLOCATOR) {
         this(ALLOCATOR.allocate(LAYOUT.byteSize()));
-    }
-
-    @Override
-    public String toString() {
-        var sb = new StringBuilder();
-        toString(sb, 0, new java.util.HashSet<>(), true);
-        return sb.toString();
     }
 
     @Override
@@ -235,4 +228,4 @@ public class GCCCompatibilityUnion implements NativeObject {
     }
 }
 // metadata.generator-version: pni test
-// sha256:599a530dd8c2b6e470d8df155d4f7373c654ed7d0128b0ee46d9f1c751bc6c74
+// sha256:812c164407a7fa152dca7e764f69935b0c5174425ddfbfa64411d4386b01d946

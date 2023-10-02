@@ -6,7 +6,7 @@ import java.lang.foreign.*;
 import java.lang.invoke.*;
 import java.nio.ByteBuffer;
 
-public class AlwaysAlignedSizeof implements NativeObject {
+public class AlwaysAlignedSizeof extends AbstractNativeObject implements NativeObject {
     private static final MethodHandle __getLayoutByteSizeMH = PanamaUtils.lookupPNICriticalFunction(true, long.class, "JavaCritical_io_vproxy_pni_test_AlwaysAlignedSizeof___getLayoutByteSize");
 
     private static long __getLayoutByteSize() {
@@ -66,13 +66,6 @@ public class AlwaysAlignedSizeof implements NativeObject {
 
     public AlwaysAlignedSizeof(Allocator ALLOCATOR) {
         this(ALLOCATOR.allocate(LAYOUT.byteSize()));
-    }
-
-    @Override
-    public String toString() {
-        var sb = new StringBuilder();
-        toString(sb, 0, new java.util.HashSet<>(), false);
-        return sb.toString();
     }
 
     @Override
@@ -166,4 +159,4 @@ public class AlwaysAlignedSizeof implements NativeObject {
     }
 }
 // metadata.generator-version: pni test
-// sha256:6b8a3ea09e4bd9aa64812c273db9283f992499c1dfccba994ee89f65a5c5d664
+// sha256:7252fb1229d5b887fa22025d47dbf31acbd1c8aa36dbbfd23447ceea3705a9db

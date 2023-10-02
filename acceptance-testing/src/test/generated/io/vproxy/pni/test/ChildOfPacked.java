@@ -85,13 +85,6 @@ public class ChildOfPacked extends io.vproxy.pni.test.PackedBaseClass implements
     }
 
     @Override
-    public String toString() {
-        var sb = new StringBuilder();
-        toString(sb, 0, new java.util.HashSet<>(), false);
-        return sb.toString();
-    }
-
-    @Override
     public void toString(StringBuilder SB, int INDENT, java.util.Set<NativeObjectTuple> VISITED, boolean CORRUPTED_MEMORY) {
         if (!VISITED.add(new NativeObjectTuple(this))) {
             SB.append("<...>@").append(Long.toString(MEMORY.address(), 16));
@@ -200,4 +193,4 @@ public class ChildOfPacked extends io.vproxy.pni.test.PackedBaseClass implements
     }
 }
 // metadata.generator-version: pni test
-// sha256:9c7a2c8748a3ace310a9a081a24d5b39796225c44301bc96d04ba93cc0d299e9
+// sha256:fb1915bb91e02df5d9d7a14a77e77625a96b5572e886f9765890e04c56560063

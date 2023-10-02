@@ -6,7 +6,7 @@ import java.lang.foreign.*;
 import java.lang.invoke.*;
 import java.nio.ByteBuffer;
 
-public class GCCompatibilityBitField implements NativeObject {
+public class GCCompatibilityBitField extends AbstractNativeObject implements NativeObject {
     public static final MemoryLayout LAYOUT = MemoryLayout.structLayout(
         ValueLayout.JAVA_BYTE.withName("field01"),
         ValueLayout.JAVA_BYTE.withName("field02"),
@@ -889,13 +889,6 @@ public class GCCompatibilityBitField implements NativeObject {
     }
 
     @Override
-    public String toString() {
-        var sb = new StringBuilder();
-        toString(sb, 0, new java.util.HashSet<>(), false);
-        return sb.toString();
-    }
-
-    @Override
     public void toString(StringBuilder SB, int INDENT, java.util.Set<NativeObjectTuple> VISITED, boolean CORRUPTED_MEMORY) {
         if (!VISITED.add(new NativeObjectTuple(this))) {
             SB.append("<...>@").append(Long.toString(MEMORY.address(), 16));
@@ -1099,4 +1092,4 @@ public class GCCompatibilityBitField implements NativeObject {
     }
 }
 // metadata.generator-version: pni test
-// sha256:18ddccc076946e3860087e75ad2b201e93bb9121e70b619917172e22e2cdf3f4
+// sha256:611d481685df0019cfc69a42de47f8a12e50ebcac17f019844ad240f30016f16

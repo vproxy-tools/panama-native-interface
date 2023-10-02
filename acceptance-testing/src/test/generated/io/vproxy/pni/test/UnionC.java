@@ -6,7 +6,7 @@ import java.lang.foreign.*;
 import java.lang.invoke.*;
 import java.nio.ByteBuffer;
 
-public class UnionC implements NativeObject {
+public class UnionC extends AbstractNativeObject implements NativeObject {
     public static final MemoryLayout LAYOUT = MemoryLayout.unionLayout(
         ValueLayout.JAVA_INT_UNALIGNED.withName("n"),
         ValueLayout.JAVA_LONG_UNALIGNED.withName("l")
@@ -54,13 +54,6 @@ public class UnionC implements NativeObject {
 
     public UnionC(Allocator ALLOCATOR) {
         this(ALLOCATOR.allocate(LAYOUT.byteSize()));
-    }
-
-    @Override
-    public String toString() {
-        var sb = new StringBuilder();
-        toString(sb, 0, new java.util.HashSet<>(), true);
-        return sb.toString();
     }
 
     @Override
@@ -155,4 +148,4 @@ public class UnionC implements NativeObject {
     }
 }
 // metadata.generator-version: pni test
-// sha256:96d1c6447e530342bef83b5f599014ead786201cc80250aa917243b3673d6d7b
+// sha256:ab21e974be055cd96af9fd537f959cd842c42284f46f0cef3ae95a15ae6a4f5d

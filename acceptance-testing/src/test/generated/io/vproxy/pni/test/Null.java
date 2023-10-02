@@ -6,7 +6,7 @@ import java.lang.foreign.*;
 import java.lang.invoke.*;
 import java.nio.ByteBuffer;
 
-public class Null implements NativeObject {
+public class Null extends AbstractNativeObject implements NativeObject {
     public static final MemoryLayout LAYOUT = MemoryLayout.structLayout(
         ValueLayout.ADDRESS_UNALIGNED.withName("o"),
         ValueLayout.ADDRESS_UNALIGNED.withName("str"),
@@ -1180,13 +1180,6 @@ public class Null implements NativeObject {
     }
 
     @Override
-    public String toString() {
-        var sb = new StringBuilder();
-        toString(sb, 0, new java.util.HashSet<>(), false);
-        return sb.toString();
-    }
-
-    @Override
     public void toString(StringBuilder SB, int INDENT, java.util.Set<NativeObjectTuple> VISITED, boolean CORRUPTED_MEMORY) {
         if (!VISITED.add(new NativeObjectTuple(this))) {
             SB.append("<...>@").append(Long.toString(MEMORY.address(), 16));
@@ -1368,4 +1361,4 @@ public class Null implements NativeObject {
     }
 }
 // metadata.generator-version: pni test
-// sha256:97ecc3409ee5d5197d1834bd491319ec09daa380e478477c97b23f8644328d08
+// sha256:e99a1df4a77c4f03efd3424be51310a8e119c5b47214bb9b0d77eecce8f6df17

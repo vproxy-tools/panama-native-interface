@@ -6,7 +6,7 @@ import java.lang.foreign.*;
 import java.lang.invoke.*;
 import java.nio.ByteBuffer;
 
-public class ToStringClassRecurse implements NativeObject {
+public class ToStringClassRecurse extends AbstractNativeObject implements NativeObject {
     public static final MemoryLayout LAYOUT = MemoryLayout.structLayout(
         ValueLayout.JAVA_LONG_UNALIGNED.withName("num"),
         ValueLayout.ADDRESS_UNALIGNED.withName("c"),
@@ -67,13 +67,6 @@ public class ToStringClassRecurse implements NativeObject {
 
     public ToStringClassRecurse(Allocator ALLOCATOR) {
         this(ALLOCATOR.allocate(LAYOUT.byteSize()));
-    }
-
-    @Override
-    public String toString() {
-        var sb = new StringBuilder();
-        toString(sb, 0, new java.util.HashSet<>(), false);
-        return sb.toString();
     }
 
     @Override
@@ -174,4 +167,4 @@ public class ToStringClassRecurse implements NativeObject {
     }
 }
 // metadata.generator-version: pni test
-// sha256:33655849f836498d6432511fdb274aec6fff28919fa1bf78fbdaf306078bd7cc
+// sha256:bc0308ce649f360d0d5c4c3d6ef819ee2c87bb582ad4446ee15cc93f6b04ec87

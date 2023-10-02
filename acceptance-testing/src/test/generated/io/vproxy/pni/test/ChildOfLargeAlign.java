@@ -46,13 +46,6 @@ public class ChildOfLargeAlign extends io.vproxy.pni.test.LargeAlignBase impleme
     }
 
     @Override
-    public String toString() {
-        var sb = new StringBuilder();
-        toString(sb, 0, new java.util.HashSet<>(), false);
-        return sb.toString();
-    }
-
-    @Override
     public void toString(StringBuilder SB, int INDENT, java.util.Set<NativeObjectTuple> VISITED, boolean CORRUPTED_MEMORY) {
         if (!VISITED.add(new NativeObjectTuple(this))) {
             SB.append("<...>@").append(Long.toString(MEMORY.address(), 16));
@@ -151,4 +144,4 @@ public class ChildOfLargeAlign extends io.vproxy.pni.test.LargeAlignBase impleme
     }
 }
 // metadata.generator-version: pni test
-// sha256:2c6812640d15964139c9437aa98a24b7a9cef0fa583109a5c54cfdb10b19b608
+// sha256:a6cf897e24c57c23a2c078e000c509fecf4819bd5f23e1385fb5a5fce9f9aeb4

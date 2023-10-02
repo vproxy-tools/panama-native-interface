@@ -6,7 +6,7 @@ import java.lang.foreign.*;
 import java.lang.invoke.*;
 import java.nio.ByteBuffer;
 
-public class StructD implements NativeObject {
+public class StructD extends AbstractNativeObject implements NativeObject {
     public static final MemoryLayout LAYOUT = MemoryLayout.structLayout(
         ValueLayout.JAVA_INT_UNALIGNED.withName("n"),
         MemoryLayout.sequenceLayout(4L, ValueLayout.JAVA_BYTE) /* padding */,
@@ -54,13 +54,6 @@ public class StructD implements NativeObject {
 
     public StructD(Allocator ALLOCATOR) {
         this(ALLOCATOR.allocate(LAYOUT.byteSize()));
-    }
-
-    @Override
-    public String toString() {
-        var sb = new StringBuilder();
-        toString(sb, 0, new java.util.HashSet<>(), false);
-        return sb.toString();
     }
 
     @Override
@@ -154,4 +147,4 @@ public class StructD implements NativeObject {
     }
 }
 // metadata.generator-version: pni test
-// sha256:010590c0a27b228509be6a5e6f05f9c7156a3f0fceb9446da4282321a7c4ef7b
+// sha256:837e98a1b41230c5c552bb6da95518d549ab5468579bc84f069ba0181b7c429e

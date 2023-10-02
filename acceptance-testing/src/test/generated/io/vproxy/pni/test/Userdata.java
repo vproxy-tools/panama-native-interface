@@ -6,7 +6,7 @@ import java.lang.foreign.*;
 import java.lang.invoke.*;
 import java.nio.ByteBuffer;
 
-public class Userdata implements NativeObject {
+public class Userdata extends AbstractNativeObject implements NativeObject {
     public static final MemoryLayout LAYOUT = MemoryLayout.structLayout(
         ValueLayout.JAVA_INT_UNALIGNED.withName("x"),
         MemoryLayout.sequenceLayout(4L, ValueLayout.JAVA_BYTE) /* padding */,
@@ -70,13 +70,6 @@ public class Userdata implements NativeObject {
 
     public Userdata(Allocator ALLOCATOR) {
         this(ALLOCATOR.allocate(LAYOUT.byteSize()));
-    }
-
-    @Override
-    public String toString() {
-        var sb = new StringBuilder();
-        toString(sb, 0, new java.util.HashSet<>(), false);
-        return sb.toString();
     }
 
     @Override
@@ -175,4 +168,4 @@ public class Userdata implements NativeObject {
     }
 }
 // metadata.generator-version: pni test
-// sha256:3ec8348e6110d7f52b1e1981b8e1cec728073064e687769bbaed7edf827a1c44
+// sha256:29aec7cc71d338ce2e5b4cf900cd4558e3191aacb3a0c776e4b0ff52ec916f2d

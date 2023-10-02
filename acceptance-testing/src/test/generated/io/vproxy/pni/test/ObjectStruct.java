@@ -6,7 +6,7 @@ import java.lang.foreign.*;
 import java.lang.invoke.*;
 import java.nio.ByteBuffer;
 
-public class ObjectStruct implements NativeObject {
+public class ObjectStruct extends AbstractNativeObject implements NativeObject {
     public static final MemoryLayout LAYOUT = MemoryLayout.structLayout(
         ValueLayout.ADDRESS_UNALIGNED.withName("str"),
         MemoryLayout.sequenceLayout(16L, ValueLayout.JAVA_BYTE).withName("lenStr"),
@@ -308,13 +308,6 @@ public class ObjectStruct implements NativeObject {
     }
 
     @Override
-    public String toString() {
-        var sb = new StringBuilder();
-        toString(sb, 0, new java.util.HashSet<>(), false);
-        return sb.toString();
-    }
-
-    @Override
     public void toString(StringBuilder SB, int INDENT, java.util.Set<NativeObjectTuple> VISITED, boolean CORRUPTED_MEMORY) {
         if (!VISITED.add(new NativeObjectTuple(this))) {
             SB.append("<...>@").append(Long.toString(MEMORY.address(), 16));
@@ -418,4 +411,4 @@ public class ObjectStruct implements NativeObject {
     }
 }
 // metadata.generator-version: pni test
-// sha256:b2ac8d777ec5ff63afa85a55f47b2432ab36ac40de4c3d91b1819d666ec422b8
+// sha256:ea1ce5b56a43cdcbb135760dfdc3eab5bb9e6fa1ba8b8f6306a2033578714cd0

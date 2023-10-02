@@ -6,7 +6,7 @@ import java.lang.foreign.*;
 import java.lang.invoke.*;
 import java.nio.ByteBuffer;
 
-public class SizeofUnion implements NativeObject {
+public class SizeofUnion extends AbstractNativeObject implements NativeObject {
     private static final MethodHandle __getLayoutByteSizeMH = PanamaUtils.lookupPNICriticalFunction(true, long.class, "JavaCritical_io_vproxy_pni_test_SizeofUnion___getLayoutByteSize");
 
     private static long __getLayoutByteSize() {
@@ -61,13 +61,6 @@ public class SizeofUnion implements NativeObject {
 
     public SizeofUnion(Allocator ALLOCATOR) {
         this(ALLOCATOR.allocate(LAYOUT.byteSize()));
-    }
-
-    @Override
-    public String toString() {
-        var sb = new StringBuilder();
-        toString(sb, 0, new java.util.HashSet<>(), true);
-        return sb.toString();
     }
 
     @Override
@@ -162,4 +155,4 @@ public class SizeofUnion implements NativeObject {
     }
 }
 // metadata.generator-version: pni test
-// sha256:c9d8ec0c756687e96798f2acd284fe7ef6594ba9b14eeaaf56482b4053e7419f
+// sha256:b5967e2fc5488ceb621d6ef444db68e18a3e96026ee7e98ff26df846f145543c

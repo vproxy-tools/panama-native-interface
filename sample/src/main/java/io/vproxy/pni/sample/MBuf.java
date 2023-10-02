@@ -6,7 +6,7 @@ import java.lang.foreign.*;
 import java.lang.invoke.*;
 import java.nio.ByteBuffer;
 
-public class MBuf implements NativeObject {
+public class MBuf extends AbstractNativeObject implements NativeObject {
     public static final MemoryLayout LAYOUT = MemoryLayout.structLayout(
         ValueLayout.ADDRESS.withName("bufAddr"),
         ValueLayout.JAVA_INT.withName("pktLen"),
@@ -97,13 +97,6 @@ public class MBuf implements NativeObject {
 
     public MBuf(Allocator ALLOCATOR) {
         this(ALLOCATOR.allocate(LAYOUT.byteSize()));
-    }
-
-    @Override
-    public String toString() {
-        var sb = new StringBuilder();
-        toString(sb, 0, new java.util.HashSet<>(), false);
-        return sb.toString();
     }
 
     @Override
@@ -212,4 +205,4 @@ public class MBuf implements NativeObject {
     }
 }
 // metadata.generator-version: pni test
-// sha256:a95ee1cef0bbfa7d106cffeffeeeff59ee92828b19da67afdf5b2272a0d1e10d
+// sha256:1483fdca2c6f37054545a04c76a3c9b69eca72df98d57aa0297e66f320d4d2ff

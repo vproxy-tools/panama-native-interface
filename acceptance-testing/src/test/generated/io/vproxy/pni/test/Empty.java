@@ -6,7 +6,7 @@ import java.lang.foreign.*;
 import java.lang.invoke.*;
 import java.nio.ByteBuffer;
 
-public class Empty implements NativeObject {
+public class Empty extends AbstractNativeObject implements NativeObject {
     public static final MemoryLayout LAYOUT = MemoryLayout.structLayout(
 
     );
@@ -25,13 +25,6 @@ public class Empty implements NativeObject {
 
     public Empty(Allocator ALLOCATOR) {
         this(ALLOCATOR.allocate(LAYOUT.byteSize()));
-    }
-
-    @Override
-    public String toString() {
-        var sb = new StringBuilder();
-        toString(sb, 0, new java.util.HashSet<>(), false);
-        return sb.toString();
     }
 
     @Override
@@ -115,4 +108,4 @@ public class Empty implements NativeObject {
     }
 }
 // metadata.generator-version: pni test
-// sha256:73dfcf4a6dbbb778c6ed4ac39effe6e2066ba0002d0b3767209cc4ecad3276b4
+// sha256:44c9d2ec28e7c65eaf00961b5fb019d3303126e9ea31e8d69b5de474677bf4f1

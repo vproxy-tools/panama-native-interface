@@ -6,7 +6,7 @@ import java.lang.foreign.*;
 import java.lang.invoke.*;
 import java.nio.ByteBuffer;
 
-public class ToStringClass implements NativeObject {
+public class ToStringClass extends AbstractNativeObject implements NativeObject {
     public static final MemoryLayout LAYOUT = MemoryLayout.structLayout(
         ValueLayout.JAVA_LONG_UNALIGNED.withName("num"),
         io.vproxy.pni.test.ToStringClassRecurse.LAYOUT.withName("cr")
@@ -47,13 +47,6 @@ public class ToStringClass implements NativeObject {
 
     public ToStringClass(Allocator ALLOCATOR) {
         this(ALLOCATOR.allocate(LAYOUT.byteSize()));
-    }
-
-    @Override
-    public String toString() {
-        var sb = new StringBuilder();
-        toString(sb, 0, new java.util.HashSet<>(), false);
-        return sb.toString();
     }
 
     @Override
@@ -147,4 +140,4 @@ public class ToStringClass implements NativeObject {
     }
 }
 // metadata.generator-version: pni test
-// sha256:cc04b7f28994f77e0a2914696443ddbef4fc0769ba0a10e693f0df4a987965c8
+// sha256:d81997f4471d8a843943656277bae83c1470acdb401c69cb39648da53baee0fb

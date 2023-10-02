@@ -6,7 +6,7 @@ import java.lang.foreign.*;
 import java.lang.invoke.*;
 import java.nio.ByteBuffer;
 
-public class AlwaysAlignedUnion implements NativeObject {
+public class AlwaysAlignedUnion extends AbstractNativeObject implements NativeObject {
     public static final MemoryLayout LAYOUT = MemoryLayout.unionLayout(
         ValueLayout.JAVA_SHORT.withName("a"),
         ValueLayout.JAVA_INT.withName("b"),
@@ -69,13 +69,6 @@ public class AlwaysAlignedUnion implements NativeObject {
 
     public AlwaysAlignedUnion(Allocator ALLOCATOR) {
         this(ALLOCATOR.allocate(LAYOUT.byteSize()));
-    }
-
-    @Override
-    public String toString() {
-        var sb = new StringBuilder();
-        toString(sb, 0, new java.util.HashSet<>(), true);
-        return sb.toString();
     }
 
     @Override
@@ -175,4 +168,4 @@ public class AlwaysAlignedUnion implements NativeObject {
     }
 }
 // metadata.generator-version: pni test
-// sha256:26f180a420e9c56d4237cc2207c660bd0ae1f6d4e5c2413996850d5c13ec77c3
+// sha256:1655e0fc8c6183d544658f82efaef9c5b630e030d9ff0fccbcadd47a413f4ccb
