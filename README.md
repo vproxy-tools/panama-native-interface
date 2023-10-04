@@ -591,6 +591,39 @@ Supporting inheritance can make use of Java's object oriented type system, while
 
 </details>
 
+## Graal Native Image
+
+<details><summary>Click to reveal</summary>
+
+`GraalVM for JDK 21` supports building native image with Panama support.
+
+You can add a flag to the `pni` program to generate a `Feature` implmentation, which is required by the native image generation process.
+
+```shell
+java -jar pni.jar <...> -fgraal-native-image-feature=<feature-class-name>
+```
+
+or programmatically:
+
+```groovy
+new CompilerOptions()
+    .setCompilationFlag(CompilationFlag.GRAAL_NATIVE_IMAGE_FEATURE, "$featureClassName");
+```
+
+To build the native image, you may use the following command:
+
+```shell
+native-image -jar <jar-file> \
+             --features=<feature-class-name> \
+             --enable-preview \
+             --no-fallback \
+             -o <binary-name>
+```
+
+See `sampleNativeImage` task in `build.gradle` for more info.
+
+</details>
+
 ## Call Java from C
 
 <details><summary>Click to reveal</summary>
