@@ -71,3 +71,5 @@ playground/src/main/generated/**/*.java
 playground/src/main/template/**/*.java
 
 *.log
+
+sample/sample.run

@@ -59,6 +59,8 @@ The JDK `21` is used to compile all projects except `pni`, and another JDK is us
 > which was released on `2023-03-21`.  
 > As a result, it's better to run `Gradle` on an older JDK and compile `Panama` projects with a new JDK.
 
+To build the `sample` project, you will need `GraalVM for JDK 21` instead of a traditional JDK.
+
 ### 2. Configure Environment Variables
 
 * Configure `JAVA_HOME` to one of JDK `11-17`.
@@ -77,6 +79,8 @@ You will need `GCC` to compile with the generated headers. Any `GCC` that suppor
 
 ### 4. Build
 
+Copy `misc/modify-gradle-compiler-args-agent.jar` to `~/.gradle/`. This is a java agent as a patch for `Gradle`. The source code can be found [here](https://github.com/vproxy-tools/modify-gradle-compiler-args).
+
 ```shell
 ./gradlew clean shadowJar
 ```
@@ -90,12 +94,20 @@ java -jar build/libs/pni.jar -help
 
 ### 5. Sample
 
+> You will need `GraalVM for JDK 21` to build the `sample` project.
+
 There's a sample program, which is an _http server_ listening on `:80`.
 
 ```shell
 ./gradlew clean runSample
 
 curl 127.0.0.1:80
+```
+
+To run the native image:
+
+```shell
+./gradlew clean runSampleNativeImage
 ```
 
 ### 6. Test

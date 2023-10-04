@@ -10,18 +10,22 @@ public class Main {
     public static final String VERSION;
     public static final String JAVA_GEN_VERSION;
     public static final String C_GEN_VERSION;
+    public static final String GRAAL_GEN_VERSION;
 
     static {
         final String _VERSION = "21.0.0.15-dev"; // _THE_VERSION_
         final String _JAVA_GEN_VERSION = "21.0.0.14";
         final String _C_GEN_VERSION = "21.0.0.14";
+        final String _GRAAL_GEN_VERSION = "21.0.0.15";
         var testing = System.getProperty("io.vproxy.pni.Testing", "false");
         if (testing.equals("true")) {
             JAVA_GEN_VERSION = "test";
             C_GEN_VERSION = "test";
+            GRAAL_GEN_VERSION = "test";
         } else {
             JAVA_GEN_VERSION = _JAVA_GEN_VERSION;
             C_GEN_VERSION = _C_GEN_VERSION;
+            GRAAL_GEN_VERSION = _GRAAL_GEN_VERSION;
         }
         VERSION = _VERSION;
     }
@@ -47,8 +51,10 @@ public class Main {
         "  -Werror=                     Make the specified warning into an error\n" +
         "  -Wno-error=                  Disable error of a warning\n" +
         "\n" +
+        "  -f<flag>[=<value>]           Enable a compilation flag\n" +
+        "\n" +
         "Note:\n" +
-        "  -cp,-F,-M,-W can appear multiple times\n" +
+        "  -cp,-F,-M,-W,-f can appear multiple times\n" +
         ""
     ).trim();
 
@@ -133,6 +139,7 @@ public class Main {
                 System.out.println("pni " + VERSION);
                 System.out.println("gen.java " + JAVA_GEN_VERSION);
                 System.out.println("gen.c " + C_GEN_VERSION);
+                System.out.println("gen.graal " + GRAAL_GEN_VERSION);
                 return;
             } else if (a.equals("-w")) {
                 opts.setWarningFlags(0);
@@ -156,6 +163,26 @@ public class Main {
                     var w = getWarningByNameOrExit(name);
                     opts.setWarningBits(w.flag);
                 }
+            } else if (a.startsWith("-f")) {
+                var name = a.substring("-f".length());
+                String value;
+                if (name.contains("=")) {
+                    value = name.substring(name.indexOf("=") + 1);
+                    name = name.substring(0, name.indexOf("="));
+                } else {
+                    value = null;
+                }
+                var f = getFlagByNameOrExit(name);
+                if (value == null) {
+                    value = f.defaultValue;
+                }
+                if (!f.validate.test(value)) {
+                    System.out.println("invalid value: -f" + f.name + "=" + value);
+                    System.exit(1);
+                    return;
+                }
+                //noinspection unchecked
+                opts.setCompilationFlag((CompilationFlag<Object>) f, f.convert.apply(value));
             } else {
                 System.out.println("unexpected argument " + a);
                 System.exit(1);
@@ -199,5 +226,15 @@ public class Main {
             throw new RuntimeException("should not reach here");
         }
         return w;
+    }
+
+    private static CompilationFlag<?> getFlagByNameOrExit(String name) {
+        var f = CompilationFlag.searchForCompilationFlagByName(name);
+        if (f == null) {
+            System.out.println("unknown flag " + name);
+            System.exit(1);
+            throw new RuntimeException("should not reach here");
+        }
+        return f;
     }
 }

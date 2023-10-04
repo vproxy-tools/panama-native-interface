@@ -10,6 +10,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.nio.ByteBuffer;
 import java.util.Arrays;
+import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -19,12 +20,32 @@ public class PanamaUtils {
     private PanamaUtils() {
     }
 
+    private static boolean nativeLookupSupported = true;
+
+    private static SymbolLookup linkerDefaultLookup(Linker linker) {
+        if (!nativeLookupSupported) {
+            return null;
+        }
+        try {
+            return linker.defaultLookup();
+        } catch (Throwable t) {
+            nativeLookupSupported = false;
+            System.out.println("[PNI][WARN][PanamaUtils#linkerDefaultLookup] " + linker + "#defaultLookup() is not supported");
+            t.printStackTrace(System.out);
+            return null;
+        }
+    }
+
     public static MethodHandle lookupPNIFunction(boolean isTrivial, String functionName, Class... parameterTypes) {
         var nativeLinker = Linker.nativeLinker();
         var loaderLookup = SymbolLookup.loaderLookup();
-        var stdlibLookup = nativeLinker.defaultLookup();
+        var stdlibLookup = linkerDefaultLookup(nativeLinker);
         var h = loaderLookup.find(functionName)
-            .or(() -> stdlibLookup.find(functionName))
+            .or(() -> {
+                if (stdlibLookup != null)
+                    return stdlibLookup.find(functionName);
+                return Optional.empty();
+            })
             .map(m -> {
                 if (isTrivial) {
                     return nativeLinker.downcallHandle(m, buildFunctionDescriptor(parameterTypes), Linker.Option.isTrivial());
@@ -59,7 +80,7 @@ public class PanamaUtils {
         return h;
     }
 
-    private static FunctionDescriptor buildFunctionDescriptor(Class[] parameterTypes) {
+    public static FunctionDescriptor buildFunctionDescriptor(Class... parameterTypes) {
         MemoryLayout[] layouts = new MemoryLayout[parameterTypes.length + 1];
         layouts[0] = ValueLayout.ADDRESS; // JEnv*
         for (int i = 0; i < parameterTypes.length; ++i) {
@@ -68,7 +89,7 @@ public class PanamaUtils {
         return FunctionDescriptor.of(ValueLayout.JAVA_INT, layouts);
     }
 
-    private static FunctionDescriptor buildCriticalFunctionDescriptor(Class returnType, Class[] parameterTypes) {
+    public static FunctionDescriptor buildCriticalFunctionDescriptor(Class returnType, Class... parameterTypes) {
         MemoryLayout[] layouts = new MemoryLayout[parameterTypes.length];
         for (int i = 0; i < parameterTypes.length; ++i) {
             layouts[i] = buildParameterMemoryLayout(parameterTypes[i]);

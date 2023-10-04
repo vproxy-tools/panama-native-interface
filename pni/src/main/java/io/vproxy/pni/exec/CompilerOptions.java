@@ -4,10 +4,7 @@ import io.vproxy.pni.exec.internal.PNILogger;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.jar.JarFile;
 import java.util.regex.Pattern;
 
@@ -19,6 +16,7 @@ public class CompilerOptions {
     private boolean verbose;
     private long warningFlags = WarnType.defaultWarningFlags();
     private long warningAsErrorFlags = WarnType.defaultWarningAsErrorFlags();
+    private final Map<CompilationFlag<?>, Object> compilationFlags = new HashMap<>();
     private final LinkedHashMap<String, String> metadata = new LinkedHashMap<>();
 
     public CompilerOptions() {
@@ -203,6 +201,24 @@ public class CompilerOptions {
     public CompilerOptions unsetWarningAsErrorBits(long bits) {
         warningAsErrorFlags &= ~bits;
         return this;
+    }
+
+    public <T> CompilerOptions setCompilationFlag(CompilationFlag<T> flag, T value) {
+        compilationFlags.put(flag, value);
+        return this;
+    }
+
+    public <T> boolean hasCompilationFlag(CompilationFlag<T> flag) {
+        return compilationFlags.containsKey(flag);
+    }
+
+    public <T> T getCompilationFlag(CompilationFlag<T> flag) {
+        //noinspection unchecked
+        return (T) compilationFlags.get(flag);
+    }
+
+    public Map<CompilationFlag<?>, Object> getCompilationFlags() {
+        return compilationFlags;
     }
 
     public CompilerOptions putMetadata(String key, String value) {

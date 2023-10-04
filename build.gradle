@@ -255,6 +255,17 @@ project(":acceptance-testing") {
 }
 
 project(":sample") {
+    apply plugin: 'com.github.johnrengelman.shadow'
+
+    jar {
+        manifest {
+            attributes 'Main-Class': 'io.vproxy.pni.sample.Main'
+        }
+    }
+    shadowJar {
+        archiveFileName.set('sample.jar')
+    }
+
     compileJava {
         options.compilerArgs += '-parameters'
     }
@@ -267,7 +278,8 @@ project(":sample") {
         mainClass = 'io.vproxy.pni.exec.Main'
         systemProperty("io.vproxy.pni.Testing", "true")
         workingDir project.rootProject.rootDir.getAbsolutePath()
-        args '-cp', 'sample/build/classes/java/main', '-d', 'sample/src/main/java', '-h', 'sample/src/main/c'
+        args '-cp', 'sample/build/classes/java/main', '-d', 'sample/src/main/java', '-h', 'sample/src/main/c',
+                '-fgraal-native-image-feature=io.vproxy.pni.sample.Feature'
 
         dependsOn compileJava
     }
@@ -289,6 +301,19 @@ project(":sample") {
 
         dependsOn compileJava
         dependsOn compilePNISampleLib
+    }
+    task sampleNativeImage(type: Exec) {
+        executable 'native-image'
+        args '-jar', './build/libs/sample.jar', '--features=io.vproxy.pni.sample.Feature', '--enable-preview', '--no-fallback', '-o', 'sample.run'
+
+        dependsOn compilePNISampleLib
+        dependsOn shadowJar
+    }
+    task runSampleNativeImage(type: Exec) {
+        executable './sample.run'
+        args '-Djava.library.path=./src/main/c'
+
+        dependsOn sampleNativeImage
     }
 }
 

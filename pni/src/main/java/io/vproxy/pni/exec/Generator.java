@@ -41,6 +41,7 @@ public class Generator {
             new CExtraFileGenerator(cls, opts).flush(new File(opts.getCOutputDirectory()));
             new CUpcallImplFileGenerator(cls, opts).flush(new File(opts.getCOutputDirectory()));
         }
+        new GraalNativeImageFeatureFileGenerator(classes, opts).flush(new File(opts.getJavaOutputBaseDirectory()));
     }
 
     // only for testing, will use reflect to retrieve

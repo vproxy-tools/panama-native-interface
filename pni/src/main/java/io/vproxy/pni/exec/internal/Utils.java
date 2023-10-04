@@ -279,6 +279,18 @@ public class Utils {
         return isValidNameCharFirst(c) || ('0' <= c && c <= '9');
     }
 
+    public static boolean isValidClassName(String name) {
+        if (name.contains("..") || name.startsWith(".") || name.endsWith("."))
+            return false;
+        var arr = name.split("\\.");
+        for (var s : arr) {
+            if (!isValidName(s, false)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     public static long getLen(List<AstAnno> annos) {
         var lenOpt = annos.stream().filter(a -> a.typeRef != null && a.typeRef.name().equals(LenClassName)).findFirst();
         long len = -1;
