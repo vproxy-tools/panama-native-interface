@@ -38,6 +38,13 @@ shadowJar {
     archiveVersion = ''
 }
 
+task nativeImage(type: Exec) {
+    executable 'native-image'
+    args '-jar', './build/libs/pni.jar', '--no-fallback', '-o', 'pni.run'
+
+    dependsOn shadowJar
+}
+
 subprojects {
     apply plugin: 'java'
     apply plugin: 'maven-publish'
