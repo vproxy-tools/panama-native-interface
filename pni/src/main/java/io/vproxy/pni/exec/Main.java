@@ -40,7 +40,7 @@ public class Main {
         "        Specify where to place generated native header files\n" +
         "  -F <regexp>                  Only generate for selected classes (default .*)\n" +
         "  -M <key>=<value>             Add metadata on generated files\n" +
-        "  --help, -help, -?            Print this help message\n" +
+        "  [-verbose] --help, -help, -? Print this help message\n" +
         "  -verbose                     Output messages about what the compiler is doing\n" +
         "  --version, -version          Version information\n" +
         "\n" +
@@ -76,6 +76,9 @@ public class Main {
             }
             if (a.equals("--help") || a.equals("-help") || a.equals("-?")) {
                 System.out.println(HELP_STR);
+                if (verbose) {
+                    printExtraHelp(opts);
+                }
                 return;
             }
             if (a.equals("-cp")) {
@@ -144,7 +147,11 @@ public class Main {
             } else if (a.equals("-w")) {
                 opts.setWarningFlags(0);
             } else if (a.startsWith("-W")) {
-                if (a.startsWith("-Wno-")) {
+                if (a.startsWith("-Wno-error=")) {
+                    var name = a.substring("-Wno-error=".length()).trim();
+                    var w = getWarningByNameOrExit(name);
+                    opts.unsetWarningAsErrorBits(w.flag);
+                } else if (a.startsWith("-Wno-")) {
                     var name = a.substring("-Wno-".length()).trim();
                     var w = getWarningByNameOrExit(name);
                     opts.unsetWarningBits(w.flag);
@@ -154,10 +161,6 @@ public class Main {
                     var name = a.substring("-Werror=".length()).trim();
                     var w = getWarningByNameOrExit(name);
                     opts.setWarningAsErrorBits(w.flag);
-                } else if (a.startsWith("-Wno-error=")) {
-                    var name = a.substring("-Wno-error=".length()).trim();
-                    var w = getWarningByNameOrExit(name);
-                    opts.unsetWarningAsErrorBits(w.flag);
                 } else {
                     var name = a.substring("-W".length()).trim();
                     var w = getWarningByNameOrExit(name);
@@ -216,6 +219,31 @@ public class Main {
 
         new Generator(opts).generate();
         System.out.println("done");
+    }
+
+    private static void printExtraHelp(CompilerOptions opts) {
+        System.out.println();
+        var sb = new StringBuilder();
+        for (var w : WarnType.values()) {
+            sb.append("-W").append(w.name).append("\t\t");
+            sb.append("enabled=").append((opts.getWarningFlags() & w.flag) == w.flag);
+            sb.append("\t");
+            sb.append("as-error=").append((opts.getWarningAsErrorFlags() & w.flag) == w.flag);
+            sb.append("\n");
+        }
+        sb.append("\n");
+        for (var f : CompilationFlag.values()) {
+            sb.append("-f").append(f.name).append("\t\t");
+            sb.append("enabled=").append(opts.hasCompilationFlag(f));
+            sb.append("\t");
+            if (opts.hasCompilationFlag(f)) {
+                sb.append("value=").append(opts.getCompilationFlag(f));
+            } else {
+                sb.append("value=").append(f.defaultValue);
+            }
+            sb.append("\n");
+        }
+        System.out.println(sb);
     }
 
     private static WarnType getWarningByNameOrExit(String name) {

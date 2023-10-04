@@ -6,8 +6,8 @@ public enum WarnType {
     ;
     public final long flag;
     public final String name;
-    private final boolean defaultEnabled;
-    private final boolean defaultEnabledAsError;
+    public final boolean defaultEnabled;
+    public final boolean defaultEnabledAsError;
 
     WarnType(long flag, String name, boolean defaultEnabled, boolean defaultEnabledAsError) {
         this.flag = flag;
