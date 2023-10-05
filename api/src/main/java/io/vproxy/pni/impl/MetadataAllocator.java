@@ -12,7 +12,7 @@ public class MetadataAllocator implements Allocator {
     private final MetadataAllocationCallback onAllocated;
 
     public MetadataAllocator(Allocator allocator, long extraMemoryByteSize, MetadataAllocationCallback onAllocated) {
-        if (extraMemoryByteSize < 0 || extraMemoryByteSize % 8 != 0)
+        if (extraMemoryByteSize < 0 || !Utils.isPowerOf2(extraMemoryByteSize) || (extraMemoryByteSize > 0 && extraMemoryByteSize < 8))
             throw new IllegalArgumentException();
         this.allocator = allocator;
         this.extraMemoryByteSize = extraMemoryByteSize;
@@ -23,9 +23,29 @@ public class MetadataAllocator implements Allocator {
     public MemorySegment allocate(long size) {
         if (size < 0)
             throw new IllegalArgumentException("size = " + size + " < 0");
-        final long originalSize = size;
-        size += extraMemoryByteSize;
-        var mem = allocator.allocate(size);
+        var mem = allocator.allocate(size + extraMemoryByteSize);
+        return postAllocate(mem, size, extraMemoryByteSize);
+    }
+
+    @Override
+    public MemorySegment allocate(long size, int alignment) {
+        if (alignment < 2) {
+            return allocate(size);
+        }
+        if (size < 0)
+            throw new IllegalArgumentException("size = " + size + " < 0");
+
+        alignment = Utils.smallestPositivePowerOf2GE(alignment);
+        long extraMemoryByteSize = this.extraMemoryByteSize;
+        if (extraMemoryByteSize > 0 && extraMemoryByteSize < alignment) {
+            extraMemoryByteSize = alignment;
+        }
+
+        var mem = allocator.allocate(size + extraMemoryByteSize, alignment);
+        return postAllocate(mem, size, extraMemoryByteSize);
+    }
+
+    private MemorySegment postAllocate(MemorySegment mem, long size, long extraByteSize) {
         if (mem.byteSize() == 0) {
             return mem;
         }
@@ -33,18 +53,18 @@ public class MetadataAllocator implements Allocator {
             onAllocated.allocated(
                 new MetadataAllocationCallback.AllocationInfo(
                     allocator, this,
-                    originalSize, MemorySegment.NULL
+                    size, MemorySegment.NULL
                 )
             );
         } else {
             onAllocated.allocated(
                 new MetadataAllocationCallback.AllocationInfo(
                     allocator, this,
-                    originalSize, mem.asSlice(0, extraMemoryByteSize)
+                    size, mem.asSlice(0, extraMemoryByteSize)
                 )
             );
         }
-        return mem.asSlice(extraMemoryByteSize);
+        return mem.asSlice(extraByteSize);
     }
 
     @Override

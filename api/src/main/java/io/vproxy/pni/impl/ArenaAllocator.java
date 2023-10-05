@@ -18,6 +18,11 @@ public class ArenaAllocator extends AbstractAllocator implements Allocator {
     }
 
     @Override
+    public MemorySegment allocate(long size, int alignment) {
+        return arena.allocate(size, alignment);
+    }
+
+    @Override
     public void close() {
         super.close();
         arena.close();

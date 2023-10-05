@@ -17,5 +17,10 @@ public class NoCloseArenaAllocator extends AbstractAllocator implements Allocato
         return arena.allocate(size);
     }
 
+    @Override
+    public MemorySegment allocate(long size, int alignment) {
+        return arena.allocate(size, alignment);
+    }
+
     public static final NoCloseArenaAllocator GLOBAL = new NoCloseArenaAllocator(Arena.global());
 }

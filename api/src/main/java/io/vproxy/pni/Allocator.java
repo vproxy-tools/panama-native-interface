@@ -3,14 +3,17 @@ package io.vproxy.pni;
 import io.vproxy.pni.impl.*;
 import io.vproxy.pni.unsafe.SunUnsafe;
 
-import java.lang.foreign.Arena;
-import java.lang.foreign.MemorySegment;
-import java.lang.foreign.SegmentAllocator;
-import java.lang.foreign.ValueLayout;
+import java.lang.foreign.*;
 import java.nio.charset.StandardCharsets;
 
 public interface Allocator extends AutoCloseable {
     MemorySegment allocate(long size);
+
+    MemorySegment allocate(long size, int alignment);
+
+    default MemorySegment allocate(MemoryLayout layout) {
+        return allocate(layout.byteSize(), (int) layout.byteAlignment());
+    }
 
     default MemorySegment wrapString(String s) {
         var bytes = s.getBytes(StandardCharsets.UTF_8);

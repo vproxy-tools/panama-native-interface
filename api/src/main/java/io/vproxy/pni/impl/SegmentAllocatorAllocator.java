@@ -16,4 +16,9 @@ public class SegmentAllocatorAllocator extends AbstractAllocator implements Allo
     public MemorySegment allocate(long size) {
         return allocator.allocate(size);
     }
+
+    @Override
+    public MemorySegment allocate(long size, int alignment) {
+        return allocator.allocate(size, alignment);
+    }
 }

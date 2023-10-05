@@ -18,4 +18,9 @@ public class DummyAllocator extends AbstractAllocator implements Allocator {
     public MemorySegment allocate(long size) {
         return MemorySegment.NULL;
     }
+
+    @Override
+    public MemorySegment allocate(long size, int alignment) {
+        return MemorySegment.NULL;
+    }
 }

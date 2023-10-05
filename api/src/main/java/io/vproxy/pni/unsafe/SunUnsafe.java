@@ -8,6 +8,8 @@ import java.lang.reflect.Field;
 public class SunUnsafe {
     private static final Unsafe U;
 
+    private static final int DEFAULT_ALLOCATION_ALIGNMENT;
+
     static {
         try {
             Field field = Unsafe.class.getDeclaredField("theUnsafe");
@@ -16,6 +18,26 @@ public class SunUnsafe {
         } catch (NoSuchFieldException | IllegalAccessException e) {
             throw new RuntimeException("Reflection failure: get unsafe failed", e);
         }
+
+        var addrs = new long[1024];
+        for (int i = 0; i < addrs.length; ++i) {
+            addrs[i] = U.allocateMemory(1);
+        }
+        int assumedAlignment = 1;
+        defaultAlignCheckLoop:
+        while (true) {
+            int foo = assumedAlignment * 2;
+            for (var a : addrs) {
+                if (a % foo != 0) {
+                    break defaultAlignCheckLoop;
+                }
+            }
+            assumedAlignment = foo;
+        }
+        for (var a : addrs) {
+            U.freeMemory(a);
+        }
+        DEFAULT_ALLOCATION_ALIGNMENT = assumedAlignment;
     }
 
     public static MemorySegment allocateMemory(long size) {
@@ -28,5 +50,9 @@ public class SunUnsafe {
 
     public static void freeMemory(long address) {
         U.freeMemory(address);
+    }
+
+    public static int getDefaultAllocationAlignment() {
+        return DEFAULT_ALLOCATION_ALIGNMENT;
     }
 }

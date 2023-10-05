@@ -3,12 +3,14 @@ package io.vproxy.pni.test;
 import io.vproxy.pni.Allocator;
 import io.vproxy.pni.PooledAllocator;
 import io.vproxy.pni.impl.*;
+import io.vproxy.pni.unsafe.SunUnsafe;
 import org.junit.Test;
 
 import java.lang.foreign.Arena;
 import java.lang.foreign.MemorySegment;
 import java.lang.foreign.SegmentAllocator;
 import java.lang.foreign.ValueLayout;
+import java.util.ArrayList;
 
 import static org.junit.Assert.*;
 
@@ -63,6 +65,17 @@ public class TestAllocator {
     }
 
     @Test
+    public void ofArenaAlign() {
+        var arena = Arena.ofConfined();
+        try (var allocator = Allocator.of(arena)) {
+            for (int i = 0; i < 1000; ++i) {
+                var mem = allocator.allocate(1, 128);
+                assertEquals(0, mem.address() % 128);
+            }
+        }
+    }
+
+    @Test
     public void ofConfined() throws Exception {
         try (var allocator = Allocator.ofConfined()) {
             assertTrue(allocator instanceof ArenaAllocator);
@@ -101,6 +114,16 @@ public class TestAllocator {
     }
 
     @Test
+    public void ofAutoAlign() {
+        try (var allocator = Allocator.ofAuto()) {
+            for (var i = 0; i < 1000; ++i) {
+                var mem = allocator.allocate(1, 128);
+                assertEquals(0, mem.address() % 128);
+            }
+        }
+    }
+
+    @Test
     public void global() throws Exception {
         try (var allocator = Allocator.global()) {
             assertTrue(allocator instanceof NoCloseArenaAllocator);
@@ -123,6 +146,18 @@ public class TestAllocator {
     }
 
     @Test
+    public void ofSegmentAllocatorAlign() {
+        try (var allocator = Allocator.ofConfined()) {
+            try (var allocator2 = Allocator.of(SegmentAllocator.slicingAllocator(allocator.allocate(1048576)))) {
+                for (int i = 0; i < 100; ++i) {
+                    var mem = allocator2.allocate(1, 128);
+                    assertEquals(0, mem.address() % 128);
+                }
+            }
+        }
+    }
+
+    @Test
     public void ofPooled() throws Exception {
         try (var allocator = Allocator.ofPooled()) {
             assertTrue(allocator instanceof ArenaAllocator);
@@ -136,6 +171,16 @@ public class TestAllocator {
     public void ofUnsafe() {
         try (var allocator = Allocator.ofUnsafe()) {
             assertTrue(allocator instanceof UnsafeAllocator);
+        }
+    }
+
+    @Test
+    public void ofUnsafeAlign() {
+        try (var allocator = Allocator.ofUnsafe()) {
+            for (int i = 0; i < 1000; ++i) {
+                var mem = allocator.allocate(1, 128);
+                assertEquals(0, mem.address() % 128);
+            }
         }
     }
 
@@ -154,11 +199,32 @@ public class TestAllocator {
     }
 
     @Test
+    public void ofAllocateAndForgetUnsafeAlign() {
+        var addrs = new ArrayList<Long>();
+        try (var allocator = Allocator.ofAllocateAndForgetUnsafe()) {
+            var mem = allocator.allocate(1, 128);
+            addrs.add(mem.address());
+            assertEquals(0, mem.address() % 128);
+        } finally {
+            for (var a : addrs) {
+                SunUnsafe.freeMemory(a);
+            }
+        }
+    }
+
+    @Test
     public void ofDummy() {
         try (var allocator = Allocator.ofDummy()) {
             assertTrue(allocator instanceof DummyAllocator);
             assertEquals(0, allocator.allocate(0).byteSize());
             assertEquals(0, allocator.allocate(123).byteSize());
+        }
+    }
+
+    @Test
+    public void ofDummyAlign() {
+        try (var allocator = Allocator.ofDummy()) {
+            assertEquals(MemorySegment.NULL, allocator.allocate(1, 128));
         }
     }
 
@@ -190,6 +256,32 @@ public class TestAllocator {
 
             m = allocator.allocate(123);
             assertNotEquals(0, m.address());
+        }
+
+        try (var allocator = Allocator.ofConfined().withMetadata(32, info -> info.meta().set(ValueLayout.JAVA_LONG, 16, info.size()))) {
+            var m = allocator.allocate(123);
+            var sz = MemorySegment.ofAddress(m.address() - 16).reinterpret(8).get(ValueLayout.JAVA_LONG, 0);
+            assertEquals(123, sz);
+        }
+    }
+
+    @Test
+    public void metaAlign() {
+        try (var allocator = Allocator.ofConfined().withMetadata(32, info -> info.meta().set(ValueLayout.JAVA_LONG, 16, info.size()))) {
+            for (int i = 0; i < 1000; ++i) {
+                var mem = allocator.allocate(1, 128);
+                var sz = MemorySegment.ofAddress(mem.address() - 128 + 16).reinterpret(8).get(ValueLayout.JAVA_LONG, 0);
+                assertEquals(1, sz);
+                assertEquals(0, mem.address() % 128);
+            }
+        }
+        try (var allocator = Allocator.ofConfined().withMetadata(256, info -> info.meta().set(ValueLayout.JAVA_LONG, 24, info.size()))) {
+            for (int i = 0; i < 1000; ++i) {
+                var m = allocator.allocate(123, 128);
+                var sz = MemorySegment.ofAddress(m.address() - 256 + 24).reinterpret(8).get(ValueLayout.JAVA_LONG, 0);
+                assertEquals(123, sz);
+                assertEquals(0, m.address() % 128);
+            }
         }
     }
 
