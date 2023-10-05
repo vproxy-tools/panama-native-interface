@@ -49,23 +49,13 @@ You can not only define types/functions in Java, but also bring pre-defined type
 
 ### 1. Install JDKs
 
-You need JDK `21` **AND** any one of JDK `11-17` to build the project.  
-The JDK `21` is used to compile all projects except `pni`, and another JDK is used to run `Gradle` and compile project `pni`.
-
-> This is due to the `Gradle` limitation. Everytime a JDK ships a new version,
-> `Gradle` has to wait for all its components to be compatible with the new JDK
-> before it can officially announce a release.  
-> At the time writing this paragraph (`2023-07-27`), `Gradle` doesn't support running on Java 20,
-> which was released on `2023-03-21`.  
-> As a result, it's better to run `Gradle` on an older JDK and compile `Panama` projects with a new JDK.
-
+You need JDK `21` to build the project.  
 To build the `sample` project, you will need `GraalVM for JDK 21` instead of a traditional JDK.
 
 ### 2. Configure Environment Variables
 
-* Configure `JAVA_HOME` to one of JDK `11-17`.
-* Configure `JAVA_HOME_21` to your JDK 21.
-* Configure `PATH` to make sure `javac` points to one of JDK `11-17`
+* Configure `JAVA_HOME` to your JDK 21.
+* Configure `PATH` to make sure `javac` points to JDK 21
 
 > If you are using `Windows`, it's recommended to use `MinGW UCRT64` to work with this project.
 >
@@ -79,8 +69,6 @@ You will need `GCC` to compile with the generated headers. Any `GCC` that suppor
 
 ### 4. Build
 
-Copy `misc/modify-gradle-compiler-args-agent.jar` to `~/.gradle/`. This is a java agent as a patch for `Gradle`. The source code can be found [here](https://github.com/vproxy-tools/modify-gradle-compiler-args).
-
 ```shell
 ./gradlew clean shadowJar
 ```
@@ -91,6 +79,16 @@ You will find an executable jar in `build/libs/pni.jar`
 java -jar build/libs/pni.jar -version
 java -jar build/libs/pni.jar -help
 ```
+
+You can make a native-image for `pni.jar`
+
+```shell
+./gradlew clean nativeImage
+
+./pni.run --help
+```
+
+> You will need `GraalVM for JDK 21` to make the native-image.
 
 ### 5. Sample
 
