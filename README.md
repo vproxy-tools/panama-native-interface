@@ -49,8 +49,7 @@ You can not only define types/functions in Java, but also bring pre-defined type
 
 ### 1. Install JDKs
 
-You need JDK `21` to build the project.  
-To build the `sample` project, you will need `GraalVM for JDK 21` instead of a traditional JDK.
+You need JDK `21` to build the project.
 
 ### 2. Configure Environment Variables
 
@@ -92,8 +91,6 @@ You can make a native-image for `pni.jar`
 
 ### 5. Sample
 
-> You will need `GraalVM for JDK 21` to build the `sample` project.
-
 There's a sample program, which is an _http server_ listening on `:80`.
 
 ```shell
@@ -107,6 +104,8 @@ To run the native image:
 ```shell
 ./gradlew clean runSampleNativeImage
 ```
+
+> You will need `GraalVM for JDK 21` to make the native-image.
 
 ### 6. Test
 
@@ -607,6 +606,9 @@ or programmatically:
 new CompilerOptions()
     .setCompilationFlag(CompilationFlag.GRAAL_NATIVE_IMAGE_FEATURE, "$featureClassName");
 ```
+
+To compile your project with the `Feature` class, you should use `GraalVM for JDK 21` instead of a traditional JDK.  
+Or you could add dependency `io.vproxy:graal-feature-mock:+`, see [this repo](https://github.com/vproxy-tools/graal-feature-mock) for more info.
 
 To build the native image, you may use the following command:
 
