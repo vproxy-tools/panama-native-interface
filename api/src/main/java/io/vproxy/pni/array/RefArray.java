@@ -31,6 +31,10 @@ public abstract class RefArray<T> implements NativeObject {
         this(buf.get(), layout);
     }
 
+    public RefArray(Allocator allocator, MemoryLayout layout, long len) {
+        this(allocator.allocate(layout.byteSize() * len, (int) layout.byteAlignment()), layout);
+    }
+
     public long length() {
         return length;
     }

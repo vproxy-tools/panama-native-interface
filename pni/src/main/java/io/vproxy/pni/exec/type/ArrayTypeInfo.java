@@ -327,7 +327,7 @@ public class ArrayTypeInfo extends TypeInfo {
     @Override
     public AllocationForReturnedValue allocationInfoForReturnValue(VarOpts opts) {
         if (opts.isCritical()) {
-            return AllocationForReturnedValue.ofPooledAllocator("PNIBuf.LAYOUT.byteSize()");
+            return AllocationForReturnedValue.ofPooledAllocator("PNIBuf.LAYOUT");
         }
         return super.allocationInfoForReturnValue(opts);
     }

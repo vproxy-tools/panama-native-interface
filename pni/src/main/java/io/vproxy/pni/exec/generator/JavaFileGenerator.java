@@ -147,7 +147,11 @@ public class JavaFileGenerator {
                 }
                 get(f).generateJavaLayout(sb, 8, cls.isAlwaysAligned());
             }
-            sb.append("\n    );\n");
+            sb.append("\n    )");
+            if (cls.isAlwaysAligned() && cls.largestAlignmentBytes() > 1) {
+                sb.append(".withByteAlignment(").append(cls.largestAlignmentBytes()).append(")");
+            }
+            sb.append(";\n");
             sb.append("    public final MemorySegment MEMORY;\n");
             sb.append("\n");
             sb.append("    @Override\n");
@@ -204,7 +208,7 @@ public class JavaFileGenerator {
             Utils.appendIndent(sb, 4)
                 .append("public ").append(cls.simpleName()).append("(Allocator ALLOCATOR) {\n");
             Utils.appendIndent(sb, 8)
-                .append("this(ALLOCATOR.allocate(LAYOUT.byteSize()));\n");
+                .append("this(ALLOCATOR.allocate(LAYOUT));\n");
             Utils.appendIndent(sb, 4).append("}\n");
         }
 
@@ -223,11 +227,11 @@ public class JavaFileGenerator {
             sb.append("        }\n");
             sb.append("\n");
             sb.append("        public Array(Allocator allocator, long len) {\n");
-            sb.append("            this(allocator.allocate(").append(cls.simpleName()).append(".LAYOUT.byteSize() * len));\n");
+            sb.append("            super(allocator, ").append(cls.simpleName()).append(".LAYOUT, len);\n");
             sb.append("        }\n");
             sb.append("\n");
             sb.append("        public Array(PNIBuf buf) {\n");
-            sb.append("            this(buf.get());\n");
+            sb.append("            super(buf, ").append(cls.simpleName()).append(".LAYOUT);\n");
             sb.append("        }\n");
             sb.append("\n");
             generateJavaArrayToString(sb, 8);
@@ -735,12 +739,12 @@ public class JavaFileGenerator {
                 if (!method.critical() || needSelf || !method.params.isEmpty()) {
                     sb.append(", ");
                 }
-                sb.append("ALLOCATOR.allocate(").append(returnAllocation.byteSize()).append(")");
+                sb.append("ALLOCATOR.allocate(").append(returnAllocation.layout()).append(")");
             } else if (returnAllocation.requirePooledAllocator()) {
                 if (!method.critical() || needSelf || !method.params.isEmpty()) {
                     sb.append(", ");
                 }
-                sb.append("POOLED.allocate(").append(returnAllocation.byteSize()).append(")");
+                sb.append("POOLED.allocate(").append(returnAllocation.layout()).append(")");
             }
             sb.append(");\n");
             Utils.appendIndent(sb, invocationIndent)

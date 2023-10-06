@@ -20,12 +20,12 @@ public class AllocationForReturnedValue {
         this.pooled = pooled;
     }
 
-    public static AllocationForReturnedValue ofExtraAllocator(String byteSize) {
-        return new AllocationForReturnedValue(byteSize, null);
+    public static AllocationForReturnedValue ofExtraAllocator(String layout) {
+        return new AllocationForReturnedValue(layout, null);
     }
 
-    public static AllocationForReturnedValue ofPooledAllocator(String byteSize) {
-        return new AllocationForReturnedValue(null, byteSize);
+    public static AllocationForReturnedValue ofPooledAllocator(String layout) {
+        return new AllocationForReturnedValue(null, layout);
     }
 
     public boolean requireAllocator() {
@@ -40,7 +40,7 @@ public class AllocationForReturnedValue {
         return pooled != null;
     }
 
-    public String byteSize() {
+    public String layout() {
         return extra != null ? extra : pooled;
     }
 
