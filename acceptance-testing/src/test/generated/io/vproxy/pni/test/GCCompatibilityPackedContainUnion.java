@@ -60,7 +60,7 @@ public class GCCompatibilityPackedContainUnion extends AbstractNativeObject impl
     }
 
     public GCCompatibilityPackedContainUnion(Allocator ALLOCATOR) {
-        this(ALLOCATOR.allocate(LAYOUT.byteSize()));
+        this(ALLOCATOR.allocate(LAYOUT));
     }
 
     private static final MethodHandle initBMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_GCCompatibilityPackedContainUnion_initB", MemorySegment.class /* self */);
@@ -200,11 +200,11 @@ public class GCCompatibilityPackedContainUnion extends AbstractNativeObject impl
         }
 
         public Array(Allocator allocator, long len) {
-            this(allocator.allocate(GCCompatibilityPackedContainUnion.LAYOUT.byteSize() * len));
+            super(allocator, GCCompatibilityPackedContainUnion.LAYOUT, len);
         }
 
         public Array(PNIBuf buf) {
-            this(buf.get());
+            super(buf, GCCompatibilityPackedContainUnion.LAYOUT);
         }
 
         @Override
@@ -265,4 +265,4 @@ public class GCCompatibilityPackedContainUnion extends AbstractNativeObject impl
     }
 }
 // metadata.generator-version: pni test
-// sha256:da4308a463aacb4a68a4889a043a96a900c23bd664e15edfe15ba3ccf7942654
+// sha256:5c12833108bcc86ba401d754a2831ac28558572a766b435bb55c0f221f901aca

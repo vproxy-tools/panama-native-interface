@@ -80,7 +80,7 @@ public class SizeofEmbed extends AbstractNativeObject implements NativeObject {
     }
 
     public SizeofEmbed(Allocator ALLOCATOR) {
-        this(ALLOCATOR.allocate(LAYOUT.byteSize()));
+        this(ALLOCATOR.allocate(LAYOUT));
     }
 
     @Override
@@ -115,11 +115,11 @@ public class SizeofEmbed extends AbstractNativeObject implements NativeObject {
         }
 
         public Array(Allocator allocator, long len) {
-            this(allocator.allocate(SizeofEmbed.LAYOUT.byteSize() * len));
+            super(allocator, SizeofEmbed.LAYOUT, len);
         }
 
         public Array(PNIBuf buf) {
-            this(buf.get());
+            super(buf, SizeofEmbed.LAYOUT);
         }
 
         @Override
@@ -180,4 +180,4 @@ public class SizeofEmbed extends AbstractNativeObject implements NativeObject {
     }
 }
 // metadata.generator-version: pni test
-// sha256:0cff6e8d62dfcc059b8f4be9f28ab94c132e5ff9c87c6558fc154ec1cbf33d25
+// sha256:03113e275bf388fcb1841092a7c37af295a526e307933411a8ec501f423bbe2f

@@ -66,7 +66,7 @@ public class ToStringClassRecurse extends AbstractNativeObject implements Native
     }
 
     public ToStringClassRecurse(Allocator ALLOCATOR) {
-        this(ALLOCATOR.allocate(LAYOUT.byteSize()));
+        this(ALLOCATOR.allocate(LAYOUT));
     }
 
     @Override
@@ -102,11 +102,11 @@ public class ToStringClassRecurse extends AbstractNativeObject implements Native
         }
 
         public Array(Allocator allocator, long len) {
-            this(allocator.allocate(ToStringClassRecurse.LAYOUT.byteSize() * len));
+            super(allocator, ToStringClassRecurse.LAYOUT, len);
         }
 
         public Array(PNIBuf buf) {
-            this(buf.get());
+            super(buf, ToStringClassRecurse.LAYOUT);
         }
 
         @Override
@@ -167,4 +167,4 @@ public class ToStringClassRecurse extends AbstractNativeObject implements Native
     }
 }
 // metadata.generator-version: pni test
-// sha256:bc0308ce649f360d0d5c4c3d6ef819ee2c87bb582ad4446ee15cc93f6b04ec87
+// sha256:c0f79a7312b66782fac26466581b921b4658f88ae3327563533b4fdd72374872

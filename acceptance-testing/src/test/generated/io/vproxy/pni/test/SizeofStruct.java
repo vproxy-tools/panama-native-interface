@@ -65,7 +65,7 @@ public class SizeofStruct extends AbstractNativeObject implements NativeObject {
     }
 
     public SizeofStruct(Allocator ALLOCATOR) {
-        this(ALLOCATOR.allocate(LAYOUT.byteSize()));
+        this(ALLOCATOR.allocate(LAYOUT));
     }
 
     @Override
@@ -94,11 +94,11 @@ public class SizeofStruct extends AbstractNativeObject implements NativeObject {
         }
 
         public Array(Allocator allocator, long len) {
-            this(allocator.allocate(SizeofStruct.LAYOUT.byteSize() * len));
+            super(allocator, SizeofStruct.LAYOUT, len);
         }
 
         public Array(PNIBuf buf) {
-            this(buf.get());
+            super(buf, SizeofStruct.LAYOUT);
         }
 
         @Override
@@ -159,4 +159,4 @@ public class SizeofStruct extends AbstractNativeObject implements NativeObject {
     }
 }
 // metadata.generator-version: pni test
-// sha256:1762c9eb48f6ef42fcbe9e8a6b1f3c6309e2882dcf973d691a1d4443fb8ab654
+// sha256:beb0795b6d7f91740981037433c98b218eec723e46f1f5827df516ea449f27bc

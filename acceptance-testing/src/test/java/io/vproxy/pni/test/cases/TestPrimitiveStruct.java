@@ -961,6 +961,6 @@ public class TestPrimitiveStruct {
 
         s = Files.readAllLines(Path.of("src", "test", "generated", "io", "vproxy", "pni", "test", "PrimitiveStruct.java"));
         lastLine = s.get(s.size() - 1);
-        assertEquals("// sha256:0e1c48e4ece055d7fcf9ece2958252dfadcc0fa1a73335abd631f564a1b93454", lastLine);
+        assertEquals("// sha256:439db6a1fd4e27af63f7a1521149215fd2395ac51c560d3b3c3a0b4392b9209c", lastLine);
     }
 }

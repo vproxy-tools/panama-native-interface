@@ -53,7 +53,7 @@ public class StructD extends AbstractNativeObject implements NativeObject {
     }
 
     public StructD(Allocator ALLOCATOR) {
-        this(ALLOCATOR.allocate(LAYOUT.byteSize()));
+        this(ALLOCATOR.allocate(LAYOUT));
     }
 
     @Override
@@ -82,11 +82,11 @@ public class StructD extends AbstractNativeObject implements NativeObject {
         }
 
         public Array(Allocator allocator, long len) {
-            this(allocator.allocate(StructD.LAYOUT.byteSize() * len));
+            super(allocator, StructD.LAYOUT, len);
         }
 
         public Array(PNIBuf buf) {
-            this(buf.get());
+            super(buf, StructD.LAYOUT);
         }
 
         @Override
@@ -147,4 +147,4 @@ public class StructD extends AbstractNativeObject implements NativeObject {
     }
 }
 // metadata.generator-version: pni test
-// sha256:837e98a1b41230c5c552bb6da95518d549ab5468579bc84f069ba0181b7c429e
+// sha256:e69dcea589447839ebfd0567e76fa7c99e981a7510792328266c097715a24d9b

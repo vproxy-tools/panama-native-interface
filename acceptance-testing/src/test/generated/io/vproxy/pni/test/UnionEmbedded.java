@@ -59,7 +59,7 @@ public class UnionEmbedded extends AbstractNativeObject implements NativeObject 
     }
 
     public UnionEmbedded(Allocator ALLOCATOR) {
-        this(ALLOCATOR.allocate(LAYOUT.byteSize()));
+        this(ALLOCATOR.allocate(LAYOUT));
     }
 
     @Override
@@ -89,11 +89,11 @@ public class UnionEmbedded extends AbstractNativeObject implements NativeObject 
         }
 
         public Array(Allocator allocator, long len) {
-            this(allocator.allocate(UnionEmbedded.LAYOUT.byteSize() * len));
+            super(allocator, UnionEmbedded.LAYOUT, len);
         }
 
         public Array(PNIBuf buf) {
-            this(buf.get());
+            super(buf, UnionEmbedded.LAYOUT);
         }
 
         @Override
@@ -154,4 +154,4 @@ public class UnionEmbedded extends AbstractNativeObject implements NativeObject 
     }
 }
 // metadata.generator-version: pni test
-// sha256:5dfb88c542083876aee49bcdc19e46b7d072f9671e4c790f579a9750c9dd5c9b
+// sha256:e6285eba8623f523427fb64e423c3be3fe3c40f0e052120ffed43702067eca16

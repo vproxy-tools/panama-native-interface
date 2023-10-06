@@ -99,7 +99,7 @@ public class ObjectStruct extends AbstractNativeObject implements NativeObject {
     }
 
     public ObjectStruct(Allocator ALLOCATOR) {
-        this(ALLOCATOR.allocate(LAYOUT.byteSize()));
+        this(ALLOCATOR.allocate(LAYOUT));
     }
 
     private static final MethodHandle func1MH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_ObjectStruct_func1", MemorySegment.class /* self */, String.class /* str */, String.class /* str2 */, MemorySegment.class /* seg */, PNIBuf.class /* buf */);
@@ -241,7 +241,7 @@ public class ObjectStruct extends AbstractNativeObject implements NativeObject {
         try (var POOLED = Allocator.ofPooled()) {
             MemorySegment RESULT;
             try {
-                RESULT = (MemorySegment) retrieveBufCriticalMH.invokeExact(MEMORY, POOLED.allocate(PNIBuf.LAYOUT.byteSize()));
+                RESULT = (MemorySegment) retrieveBufCriticalMH.invokeExact(MEMORY, POOLED.allocate(PNIBuf.LAYOUT));
             } catch (Throwable THROWABLE) {
                 throw PanamaUtils.convertInvokeExactException(THROWABLE);
             }
@@ -346,11 +346,11 @@ public class ObjectStruct extends AbstractNativeObject implements NativeObject {
         }
 
         public Array(Allocator allocator, long len) {
-            this(allocator.allocate(ObjectStruct.LAYOUT.byteSize() * len));
+            super(allocator, ObjectStruct.LAYOUT, len);
         }
 
         public Array(PNIBuf buf) {
-            this(buf.get());
+            super(buf, ObjectStruct.LAYOUT);
         }
 
         @Override
@@ -411,4 +411,4 @@ public class ObjectStruct extends AbstractNativeObject implements NativeObject {
     }
 }
 // metadata.generator-version: pni test
-// sha256:ea1ce5b56a43cdcbb135760dfdc3eab5bb9e6fa1ba8b8f6306a2033578714cd0
+// sha256:5676b5622ef7e802d6ede10f4a6356c47d29cf5e1c5c065e21777f2643648473

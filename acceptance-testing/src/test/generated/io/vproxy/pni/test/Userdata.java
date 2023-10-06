@@ -69,7 +69,7 @@ public class Userdata extends AbstractNativeObject implements NativeObject {
     }
 
     public Userdata(Allocator ALLOCATOR) {
-        this(ALLOCATOR.allocate(LAYOUT.byteSize()));
+        this(ALLOCATOR.allocate(LAYOUT));
     }
 
     @Override
@@ -103,11 +103,11 @@ public class Userdata extends AbstractNativeObject implements NativeObject {
         }
 
         public Array(Allocator allocator, long len) {
-            this(allocator.allocate(Userdata.LAYOUT.byteSize() * len));
+            super(allocator, Userdata.LAYOUT, len);
         }
 
         public Array(PNIBuf buf) {
-            this(buf.get());
+            super(buf, Userdata.LAYOUT);
         }
 
         @Override
@@ -168,4 +168,4 @@ public class Userdata extends AbstractNativeObject implements NativeObject {
     }
 }
 // metadata.generator-version: pni test
-// sha256:29aec7cc71d338ce2e5b4cf900cd4558e3191aacb3a0c776e4b0ff52ec916f2d
+// sha256:15f6200131491be3123fe975a9f624c5ba32b57d4f8f407ff31158f8c5fa85d3

@@ -131,7 +131,7 @@ public class ToStringUnion extends AbstractNativeObject implements NativeObject 
     }
 
     public ToStringUnion(Allocator ALLOCATOR) {
-        this(ALLOCATOR.allocate(LAYOUT.byteSize()));
+        this(ALLOCATOR.allocate(LAYOUT));
     }
 
     @Override
@@ -189,11 +189,11 @@ public class ToStringUnion extends AbstractNativeObject implements NativeObject 
         }
 
         public Array(Allocator allocator, long len) {
-            this(allocator.allocate(ToStringUnion.LAYOUT.byteSize() * len));
+            super(allocator, ToStringUnion.LAYOUT, len);
         }
 
         public Array(PNIBuf buf) {
-            this(buf.get());
+            super(buf, ToStringUnion.LAYOUT);
         }
 
         @Override
@@ -254,4 +254,4 @@ public class ToStringUnion extends AbstractNativeObject implements NativeObject 
     }
 }
 // metadata.generator-version: pni test
-// sha256:05abb28727cf814dd993d41298f759b17a1e19aac694cbc7fac46d433d20f627
+// sha256:d734c1d8f78d66698b65f5a67deb06d23960f9e4bfcf1514fa959dbb7da052df

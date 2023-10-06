@@ -53,7 +53,7 @@ public class UnionP extends AbstractNativeObject implements NativeObject {
     }
 
     public UnionP(Allocator ALLOCATOR) {
-        this(ALLOCATOR.allocate(LAYOUT.byteSize()));
+        this(ALLOCATOR.allocate(LAYOUT));
     }
 
     private static final MethodHandle retrieveIMH = PanamaUtils.lookupPNIFunction(true, "UnionP_retrieve_i", MemorySegment.class /* self */);
@@ -115,11 +115,11 @@ public class UnionP extends AbstractNativeObject implements NativeObject {
         }
 
         public Array(Allocator allocator, long len) {
-            this(allocator.allocate(UnionP.LAYOUT.byteSize() * len));
+            super(allocator, UnionP.LAYOUT, len);
         }
 
         public Array(PNIBuf buf) {
-            this(buf.get());
+            super(buf, UnionP.LAYOUT);
         }
 
         @Override
@@ -180,4 +180,4 @@ public class UnionP extends AbstractNativeObject implements NativeObject {
     }
 }
 // metadata.generator-version: pni test
-// sha256:930b52e2c0ec5d1e09bbf50c9bf5d93f1cc7d25550066ebfbc6c5210aa84ebaa
+// sha256:e6452ca82e7ec58d1a29e489972367d544bc7258b94ba86761e018b1dcf3b0ec

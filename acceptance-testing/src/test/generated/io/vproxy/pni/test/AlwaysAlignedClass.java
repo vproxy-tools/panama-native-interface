@@ -13,7 +13,7 @@ public class AlwaysAlignedClass extends AbstractNativeObject implements NativeOb
         ValueLayout.JAVA_SHORT.withName("b"),
         MemoryLayout.sequenceLayout(4L, ValueLayout.JAVA_BYTE) /* padding */,
         ValueLayout.JAVA_LONG.withName("c")
-    );
+    ).withByteAlignment(8);
     public final MemorySegment MEMORY;
 
     @Override
@@ -69,7 +69,7 @@ public class AlwaysAlignedClass extends AbstractNativeObject implements NativeOb
     }
 
     public AlwaysAlignedClass(Allocator ALLOCATOR) {
-        this(ALLOCATOR.allocate(LAYOUT.byteSize()));
+        this(ALLOCATOR.allocate(LAYOUT));
     }
 
     @Override
@@ -103,11 +103,11 @@ public class AlwaysAlignedClass extends AbstractNativeObject implements NativeOb
         }
 
         public Array(Allocator allocator, long len) {
-            this(allocator.allocate(AlwaysAlignedClass.LAYOUT.byteSize() * len));
+            super(allocator, AlwaysAlignedClass.LAYOUT, len);
         }
 
         public Array(PNIBuf buf) {
-            this(buf.get());
+            super(buf, AlwaysAlignedClass.LAYOUT);
         }
 
         @Override
@@ -168,4 +168,4 @@ public class AlwaysAlignedClass extends AbstractNativeObject implements NativeOb
     }
 }
 // metadata.generator-version: pni test
-// sha256:a1dfd58c690e6b230b494dbfb071eec07d84ddfc86ee85d2d3eb4d7bb35919c8
+// sha256:a99ce092c9bb20a08f2e4d22692134ce7e88664ecf6da55bd5f03856ef9e66bf

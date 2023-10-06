@@ -11,7 +11,7 @@ public class AlwaysAlignedChild extends io.vproxy.pni.test.AlwaysAlignedBase imp
         io.vproxy.pni.test.AlwaysAlignedBase.LAYOUT,
         MemoryLayout.sequenceLayout(1L, ValueLayout.JAVA_BYTE) /* padding */,
         ValueLayout.JAVA_SHORT.withName("b")
-    );
+    ).withByteAlignment(2);
     public final MemorySegment MEMORY;
 
     @Override
@@ -42,7 +42,7 @@ public class AlwaysAlignedChild extends io.vproxy.pni.test.AlwaysAlignedBase imp
     }
 
     public AlwaysAlignedChild(Allocator ALLOCATOR) {
-        this(ALLOCATOR.allocate(LAYOUT.byteSize()));
+        this(ALLOCATOR.allocate(LAYOUT));
     }
 
     @Override
@@ -79,11 +79,11 @@ public class AlwaysAlignedChild extends io.vproxy.pni.test.AlwaysAlignedBase imp
         }
 
         public Array(Allocator allocator, long len) {
-            this(allocator.allocate(AlwaysAlignedChild.LAYOUT.byteSize() * len));
+            super(allocator, AlwaysAlignedChild.LAYOUT, len);
         }
 
         public Array(PNIBuf buf) {
-            this(buf.get());
+            super(buf, AlwaysAlignedChild.LAYOUT);
         }
 
         @Override
@@ -144,4 +144,4 @@ public class AlwaysAlignedChild extends io.vproxy.pni.test.AlwaysAlignedBase imp
     }
 }
 // metadata.generator-version: pni test
-// sha256:30ba614da18aeb07da0ea316df001a6f92f88b6406de31cb24e1cf3c32acf871
+// sha256:ee732223b708bc454a7948024d36a1c9a01675dd4992c2bf5a95e2b52cae7593

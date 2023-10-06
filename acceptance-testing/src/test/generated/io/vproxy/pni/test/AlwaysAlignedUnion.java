@@ -11,7 +11,7 @@ public class AlwaysAlignedUnion extends AbstractNativeObject implements NativeOb
         ValueLayout.JAVA_SHORT.withName("a"),
         ValueLayout.JAVA_INT.withName("b"),
         ValueLayout.JAVA_LONG.withName("c")
-    );
+    ).withByteAlignment(8);
     public final MemorySegment MEMORY;
 
     @Override
@@ -68,7 +68,7 @@ public class AlwaysAlignedUnion extends AbstractNativeObject implements NativeOb
     }
 
     public AlwaysAlignedUnion(Allocator ALLOCATOR) {
-        this(ALLOCATOR.allocate(LAYOUT.byteSize()));
+        this(ALLOCATOR.allocate(LAYOUT));
     }
 
     @Override
@@ -103,11 +103,11 @@ public class AlwaysAlignedUnion extends AbstractNativeObject implements NativeOb
         }
 
         public Array(Allocator allocator, long len) {
-            this(allocator.allocate(AlwaysAlignedUnion.LAYOUT.byteSize() * len));
+            super(allocator, AlwaysAlignedUnion.LAYOUT, len);
         }
 
         public Array(PNIBuf buf) {
-            this(buf.get());
+            super(buf, AlwaysAlignedUnion.LAYOUT);
         }
 
         @Override
@@ -168,4 +168,4 @@ public class AlwaysAlignedUnion extends AbstractNativeObject implements NativeOb
     }
 }
 // metadata.generator-version: pni test
-// sha256:1655e0fc8c6183d544658f82efaef9c5b630e030d9ff0fccbcadd47a413f4ccb
+// sha256:46ac67402162c41b4df53e6cc7fc9c199802155e062b7a4dc63b8ecc7cf90596

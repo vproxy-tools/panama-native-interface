@@ -93,7 +93,7 @@ public class AlwaysAlignedField extends AbstractNativeObject implements NativeOb
     }
 
     public AlwaysAlignedField(Allocator ALLOCATOR) {
-        this(ALLOCATOR.allocate(LAYOUT.byteSize()));
+        this(ALLOCATOR.allocate(LAYOUT));
     }
 
     @Override
@@ -137,11 +137,11 @@ public class AlwaysAlignedField extends AbstractNativeObject implements NativeOb
         }
 
         public Array(Allocator allocator, long len) {
-            this(allocator.allocate(AlwaysAlignedField.LAYOUT.byteSize() * len));
+            super(allocator, AlwaysAlignedField.LAYOUT, len);
         }
 
         public Array(PNIBuf buf) {
-            this(buf.get());
+            super(buf, AlwaysAlignedField.LAYOUT);
         }
 
         @Override
@@ -202,4 +202,4 @@ public class AlwaysAlignedField extends AbstractNativeObject implements NativeOb
     }
 }
 // metadata.generator-version: pni test
-// sha256:2a3cffe1f12925e9092fab9b8de3923858f308c8cda3f0463194805f5b3dfc2d
+// sha256:bce8fee6d0a06612d3f89362118a04b09d89656f9fdc3d5486bf3a536d33d741

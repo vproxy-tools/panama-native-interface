@@ -23,7 +23,7 @@ public class AlwaysAlignedSizeof extends AbstractNativeObject implements NativeO
         ValueLayout.JAVA_BYTE.withName("b"),
         MemoryLayout.sequenceLayout(1L, ValueLayout.JAVA_BYTE) /* padding */,
         ValueLayout.JAVA_SHORT.withName("s")
-    );
+    ).withByteAlignment(2);
     public final MemorySegment MEMORY;
 
     @Override
@@ -65,7 +65,7 @@ public class AlwaysAlignedSizeof extends AbstractNativeObject implements NativeO
     }
 
     public AlwaysAlignedSizeof(Allocator ALLOCATOR) {
-        this(ALLOCATOR.allocate(LAYOUT.byteSize()));
+        this(ALLOCATOR.allocate(LAYOUT));
     }
 
     @Override
@@ -94,11 +94,11 @@ public class AlwaysAlignedSizeof extends AbstractNativeObject implements NativeO
         }
 
         public Array(Allocator allocator, long len) {
-            this(allocator.allocate(AlwaysAlignedSizeof.LAYOUT.byteSize() * len));
+            super(allocator, AlwaysAlignedSizeof.LAYOUT, len);
         }
 
         public Array(PNIBuf buf) {
-            this(buf.get());
+            super(buf, AlwaysAlignedSizeof.LAYOUT);
         }
 
         @Override
@@ -159,4 +159,4 @@ public class AlwaysAlignedSizeof extends AbstractNativeObject implements NativeO
     }
 }
 // metadata.generator-version: pni test
-// sha256:7252fb1229d5b887fa22025d47dbf31acbd1c8aa36dbbfd23447ceea3705a9db
+// sha256:a025ec3cbd8ff07ab5cb5e846670106d58fe92f2e4a008d988f3df7a876a7138

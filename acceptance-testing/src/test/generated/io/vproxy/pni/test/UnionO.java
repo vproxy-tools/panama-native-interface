@@ -63,7 +63,7 @@ public class UnionO extends AbstractNativeObject implements NativeObject {
     }
 
     public UnionO(Allocator ALLOCATOR) {
-        this(ALLOCATOR.allocate(LAYOUT.byteSize()));
+        this(ALLOCATOR.allocate(LAYOUT));
     }
 
     @Override
@@ -98,11 +98,11 @@ public class UnionO extends AbstractNativeObject implements NativeObject {
         }
 
         public Array(Allocator allocator, long len) {
-            this(allocator.allocate(UnionO.LAYOUT.byteSize() * len));
+            super(allocator, UnionO.LAYOUT, len);
         }
 
         public Array(PNIBuf buf) {
-            this(buf.get());
+            super(buf, UnionO.LAYOUT);
         }
 
         @Override
@@ -163,4 +163,4 @@ public class UnionO extends AbstractNativeObject implements NativeObject {
     }
 }
 // metadata.generator-version: pni test
-// sha256:c20553cd36bd0999828253fe8e30e297bbe7e00466eb5fbd500228d90ec92583
+// sha256:dc50ba961c133edfe01ece3c7696f58277020e5b2e21d51f497f96f2224bd2a9

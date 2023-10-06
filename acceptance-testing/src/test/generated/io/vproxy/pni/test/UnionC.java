@@ -53,7 +53,7 @@ public class UnionC extends AbstractNativeObject implements NativeObject {
     }
 
     public UnionC(Allocator ALLOCATOR) {
-        this(ALLOCATOR.allocate(LAYOUT.byteSize()));
+        this(ALLOCATOR.allocate(LAYOUT));
     }
 
     @Override
@@ -83,11 +83,11 @@ public class UnionC extends AbstractNativeObject implements NativeObject {
         }
 
         public Array(Allocator allocator, long len) {
-            this(allocator.allocate(UnionC.LAYOUT.byteSize() * len));
+            super(allocator, UnionC.LAYOUT, len);
         }
 
         public Array(PNIBuf buf) {
-            this(buf.get());
+            super(buf, UnionC.LAYOUT);
         }
 
         @Override
@@ -148,4 +148,4 @@ public class UnionC extends AbstractNativeObject implements NativeObject {
     }
 }
 // metadata.generator-version: pni test
-// sha256:ab21e974be055cd96af9fd537f959cd842c42284f46f0cef3ae95a15ae6a4f5d
+// sha256:a2d1fd1e043649839d6e446a0bae458277920e5cb69787bb02f58db81cc8c609

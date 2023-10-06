@@ -140,7 +140,7 @@ public class InvokeUpcall {
         try (var POOLED = Allocator.ofPooled()) {
             MemorySegment RESULT;
             try {
-                RESULT = (MemorySegment) returnByteArrayMH.invokeExact(POOLED.allocate(PNIBuf.LAYOUT.byteSize()));
+                RESULT = (MemorySegment) returnByteArrayMH.invokeExact(POOLED.allocate(PNIBuf.LAYOUT));
             } catch (Throwable THROWABLE) {
                 throw PanamaUtils.convertInvokeExactException(THROWABLE);
             }
@@ -157,7 +157,7 @@ public class InvokeUpcall {
         try (var POOLED = Allocator.ofPooled()) {
             MemorySegment RESULT;
             try {
-                RESULT = (MemorySegment) returnBoolArrayMH.invokeExact(POOLED.allocate(PNIBuf.LAYOUT.byteSize()));
+                RESULT = (MemorySegment) returnBoolArrayMH.invokeExact(POOLED.allocate(PNIBuf.LAYOUT));
             } catch (Throwable THROWABLE) {
                 throw PanamaUtils.convertInvokeExactException(THROWABLE);
             }
@@ -174,7 +174,7 @@ public class InvokeUpcall {
         try (var POOLED = Allocator.ofPooled()) {
             MemorySegment RESULT;
             try {
-                RESULT = (MemorySegment) returnCharArrayMH.invokeExact(POOLED.allocate(PNIBuf.LAYOUT.byteSize()));
+                RESULT = (MemorySegment) returnCharArrayMH.invokeExact(POOLED.allocate(PNIBuf.LAYOUT));
             } catch (Throwable THROWABLE) {
                 throw PanamaUtils.convertInvokeExactException(THROWABLE);
             }
@@ -191,7 +191,7 @@ public class InvokeUpcall {
         try (var POOLED = Allocator.ofPooled()) {
             MemorySegment RESULT;
             try {
-                RESULT = (MemorySegment) returnDoubleArrayMH.invokeExact(POOLED.allocate(PNIBuf.LAYOUT.byteSize()));
+                RESULT = (MemorySegment) returnDoubleArrayMH.invokeExact(POOLED.allocate(PNIBuf.LAYOUT));
             } catch (Throwable THROWABLE) {
                 throw PanamaUtils.convertInvokeExactException(THROWABLE);
             }
@@ -208,7 +208,7 @@ public class InvokeUpcall {
         try (var POOLED = Allocator.ofPooled()) {
             MemorySegment RESULT;
             try {
-                RESULT = (MemorySegment) returnFloatArrayMH.invokeExact(POOLED.allocate(PNIBuf.LAYOUT.byteSize()));
+                RESULT = (MemorySegment) returnFloatArrayMH.invokeExact(POOLED.allocate(PNIBuf.LAYOUT));
             } catch (Throwable THROWABLE) {
                 throw PanamaUtils.convertInvokeExactException(THROWABLE);
             }
@@ -225,7 +225,7 @@ public class InvokeUpcall {
         try (var POOLED = Allocator.ofPooled()) {
             MemorySegment RESULT;
             try {
-                RESULT = (MemorySegment) returnIntArrayMH.invokeExact(POOLED.allocate(PNIBuf.LAYOUT.byteSize()));
+                RESULT = (MemorySegment) returnIntArrayMH.invokeExact(POOLED.allocate(PNIBuf.LAYOUT));
             } catch (Throwable THROWABLE) {
                 throw PanamaUtils.convertInvokeExactException(THROWABLE);
             }
@@ -242,7 +242,7 @@ public class InvokeUpcall {
         try (var POOLED = Allocator.ofPooled()) {
             MemorySegment RESULT;
             try {
-                RESULT = (MemorySegment) returnLongArrayMH.invokeExact(POOLED.allocate(PNIBuf.LAYOUT.byteSize()));
+                RESULT = (MemorySegment) returnLongArrayMH.invokeExact(POOLED.allocate(PNIBuf.LAYOUT));
             } catch (Throwable THROWABLE) {
                 throw PanamaUtils.convertInvokeExactException(THROWABLE);
             }
@@ -259,7 +259,7 @@ public class InvokeUpcall {
         try (var POOLED = Allocator.ofPooled()) {
             MemorySegment RESULT;
             try {
-                RESULT = (MemorySegment) returnShortArrayMH.invokeExact(POOLED.allocate(PNIBuf.LAYOUT.byteSize()));
+                RESULT = (MemorySegment) returnShortArrayMH.invokeExact(POOLED.allocate(PNIBuf.LAYOUT));
             } catch (Throwable THROWABLE) {
                 throw PanamaUtils.convertInvokeExactException(THROWABLE);
             }
@@ -285,7 +285,7 @@ public class InvokeUpcall {
     public io.vproxy.pni.test.ObjectStruct returnObject(Allocator ALLOCATOR) {
         MemorySegment RESULT;
         try {
-            RESULT = (MemorySegment) returnObjectMH.invokeExact(ALLOCATOR.allocate(io.vproxy.pni.test.ObjectStruct.LAYOUT.byteSize()));
+            RESULT = (MemorySegment) returnObjectMH.invokeExact(ALLOCATOR.allocate(io.vproxy.pni.test.ObjectStruct.LAYOUT));
         } catch (Throwable THROWABLE) {
             throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
@@ -311,7 +311,7 @@ public class InvokeUpcall {
         try (var POOLED = Allocator.ofPooled()) {
             MemorySegment RESULT;
             try {
-                RESULT = (MemorySegment) returnObjectArrayMH.invokeExact(POOLED.allocate(PNIBuf.LAYOUT.byteSize()));
+                RESULT = (MemorySegment) returnObjectArrayMH.invokeExact(POOLED.allocate(PNIBuf.LAYOUT));
             } catch (Throwable THROWABLE) {
                 throw PanamaUtils.convertInvokeExactException(THROWABLE);
             }
@@ -340,7 +340,7 @@ public class InvokeUpcall {
         try (var POOLED = Allocator.ofPooled()) {
             MemorySegment RESULT;
             try {
-                RESULT = (MemorySegment) returnBufferMH.invokeExact(POOLED.allocate(PNIBuf.LAYOUT.byteSize()));
+                RESULT = (MemorySegment) returnBufferMH.invokeExact(POOLED.allocate(PNIBuf.LAYOUT));
             } catch (Throwable THROWABLE) {
                 throw PanamaUtils.convertInvokeExactException(THROWABLE);
             }
@@ -440,4 +440,4 @@ public class InvokeUpcall {
     }
 }
 // metadata.generator-version: pni test
-// sha256:ce982efb450ad7fc9905e8cc10e0a34c5017dc78eec4011eb464e33bcb88ddcc
+// sha256:66ead3f91b590d207ef7e8261cf4c64d363363ff3641568343a15a1305984b70

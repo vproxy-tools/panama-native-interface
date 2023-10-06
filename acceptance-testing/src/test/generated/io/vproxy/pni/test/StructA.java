@@ -98,7 +98,7 @@ public class StructA extends AbstractNativeObject implements NativeObject {
     }
 
     public StructA(Allocator ALLOCATOR) {
-        this(ALLOCATOR.allocate(LAYOUT.byteSize()));
+        this(ALLOCATOR.allocate(LAYOUT));
     }
 
     private static final MethodHandle bbbMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_StructA_bbb", MemorySegment.class /* self */, io.vproxy.pni.test.StructB.LAYOUT.getClass() /* b */);
@@ -240,7 +240,7 @@ public class StructA extends AbstractNativeObject implements NativeObject {
         ENV.reset();
         int ERR;
         try {
-            ERR = (int) retrieveBMH.invokeExact(ENV.MEMORY, MEMORY, ALLOCATOR.allocate(io.vproxy.pni.test.StructB.LAYOUT.byteSize()));
+            ERR = (int) retrieveBMH.invokeExact(ENV.MEMORY, MEMORY, ALLOCATOR.allocate(io.vproxy.pni.test.StructB.LAYOUT));
         } catch (Throwable THROWABLE) {
             throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
@@ -256,7 +256,7 @@ public class StructA extends AbstractNativeObject implements NativeObject {
     public io.vproxy.pni.test.StructB retrieveBCritical(Allocator ALLOCATOR) {
         MemorySegment RESULT;
         try {
-            RESULT = (MemorySegment) retrieveBCriticalMH.invokeExact(MEMORY, ALLOCATOR.allocate(io.vproxy.pni.test.StructB.LAYOUT.byteSize()));
+            RESULT = (MemorySegment) retrieveBCriticalMH.invokeExact(MEMORY, ALLOCATOR.allocate(io.vproxy.pni.test.StructB.LAYOUT));
         } catch (Throwable THROWABLE) {
             throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
@@ -270,7 +270,7 @@ public class StructA extends AbstractNativeObject implements NativeObject {
         ENV.reset();
         int ERR;
         try {
-            ERR = (int) retrieveCMH.invokeExact(ENV.MEMORY, MEMORY, ALLOCATOR.allocate(io.vproxy.pni.test.UnionC.LAYOUT.byteSize()));
+            ERR = (int) retrieveCMH.invokeExact(ENV.MEMORY, MEMORY, ALLOCATOR.allocate(io.vproxy.pni.test.UnionC.LAYOUT));
         } catch (Throwable THROWABLE) {
             throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
@@ -286,7 +286,7 @@ public class StructA extends AbstractNativeObject implements NativeObject {
     public io.vproxy.pni.test.UnionC retrieveCCritical(Allocator ALLOCATOR) {
         MemorySegment RESULT;
         try {
-            RESULT = (MemorySegment) retrieveCCriticalMH.invokeExact(MEMORY, ALLOCATOR.allocate(io.vproxy.pni.test.UnionC.LAYOUT.byteSize()));
+            RESULT = (MemorySegment) retrieveCCriticalMH.invokeExact(MEMORY, ALLOCATOR.allocate(io.vproxy.pni.test.UnionC.LAYOUT));
         } catch (Throwable THROWABLE) {
             throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
@@ -300,7 +300,7 @@ public class StructA extends AbstractNativeObject implements NativeObject {
         ENV.reset();
         int ERR;
         try {
-            ERR = (int) retrieveCPointerMH.invokeExact(ENV.MEMORY, MEMORY, ALLOCATOR.allocate(io.vproxy.pni.test.UnionC.LAYOUT.byteSize()));
+            ERR = (int) retrieveCPointerMH.invokeExact(ENV.MEMORY, MEMORY, ALLOCATOR.allocate(io.vproxy.pni.test.UnionC.LAYOUT));
         } catch (Throwable THROWABLE) {
             throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
@@ -316,7 +316,7 @@ public class StructA extends AbstractNativeObject implements NativeObject {
     public io.vproxy.pni.test.UnionC retrieveCPointerCritical(Allocator ALLOCATOR) {
         MemorySegment RESULT;
         try {
-            RESULT = (MemorySegment) retrieveCPointerCriticalMH.invokeExact(MEMORY, ALLOCATOR.allocate(io.vproxy.pni.test.UnionC.LAYOUT.byteSize()));
+            RESULT = (MemorySegment) retrieveCPointerCriticalMH.invokeExact(MEMORY, ALLOCATOR.allocate(io.vproxy.pni.test.UnionC.LAYOUT));
         } catch (Throwable THROWABLE) {
             throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
@@ -348,7 +348,7 @@ public class StructA extends AbstractNativeObject implements NativeObject {
         try (var POOLED = Allocator.ofPooled()) {
             MemorySegment RESULT;
             try {
-                RESULT = (MemorySegment) retrieveBArrayCriticalMH.invokeExact(MEMORY, POOLED.allocate(PNIBuf.LAYOUT.byteSize()));
+                RESULT = (MemorySegment) retrieveBArrayCriticalMH.invokeExact(MEMORY, POOLED.allocate(PNIBuf.LAYOUT));
             } catch (Throwable THROWABLE) {
                 throw PanamaUtils.convertInvokeExactException(THROWABLE);
             }
@@ -383,7 +383,7 @@ public class StructA extends AbstractNativeObject implements NativeObject {
         try (var POOLED = Allocator.ofPooled()) {
             MemorySegment RESULT;
             try {
-                RESULT = (MemorySegment) retrieveBArray2CriticalMH.invokeExact(MEMORY, POOLED.allocate(PNIBuf.LAYOUT.byteSize()));
+                RESULT = (MemorySegment) retrieveBArray2CriticalMH.invokeExact(MEMORY, POOLED.allocate(PNIBuf.LAYOUT));
             } catch (Throwable THROWABLE) {
                 throw PanamaUtils.convertInvokeExactException(THROWABLE);
             }
@@ -443,11 +443,11 @@ public class StructA extends AbstractNativeObject implements NativeObject {
         }
 
         public Array(Allocator allocator, long len) {
-            this(allocator.allocate(StructA.LAYOUT.byteSize() * len));
+            super(allocator, StructA.LAYOUT, len);
         }
 
         public Array(PNIBuf buf) {
-            this(buf.get());
+            super(buf, StructA.LAYOUT);
         }
 
         @Override
@@ -508,4 +508,4 @@ public class StructA extends AbstractNativeObject implements NativeObject {
     }
 }
 // metadata.generator-version: pni test
-// sha256:5d86e6715b5aff6a283ca3fc0dfa61ab25d2360fda96ec58cde620acb9675fae
+// sha256:1317aa0f333e9b6e24c6f99076eb9068a11cddeabe5dc073fd594f60dfe8da12

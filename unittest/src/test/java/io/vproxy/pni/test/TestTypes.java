@@ -962,7 +962,7 @@ public class TestTypes {
             info.convertParamToInvokeExactArgument("a", paramVarOpts(0)));
         assertEquals(AllocationForReturnedValue.noAllocationRequired(),
             info.allocationInfoForReturnValue(returnVarOpts(0)));
-        assertEquals(AllocationForReturnedValue.ofPooledAllocator("PNIBuf.LAYOUT.byteSize()"),
+        assertEquals(AllocationForReturnedValue.ofPooledAllocator("PNIBuf.LAYOUT"),
             info.allocationInfoForReturnValue(returnVarOpts(CRITICAL)));
         assertEquals(AllocationForReturnedValue.noAllocationRequired(),
             info.allocationInfoForUpcallInterfaceReturnValue(returnVarOpts(0)));
@@ -1085,9 +1085,9 @@ public class TestTypes {
         assertEquals("MemorySegment.class", info.methodHandleTypeForUpcall(paramVarOpts(0)));
         assertEquals("(MemorySegment) (a == null ? MemorySegment.NULL : a.MEMORY)",
             info.convertParamToInvokeExactArgument("a", paramVarOpts(0)));
-        assertEquals(AllocationForReturnedValue.ofExtraAllocator("a.b.Cls.LAYOUT.byteSize()"),
+        assertEquals(AllocationForReturnedValue.ofExtraAllocator("a.b.Cls.LAYOUT"),
             info.allocationInfoForReturnValue(returnVarOpts(0)));
-        assertEquals(AllocationForReturnedValue.ofExtraAllocator("a.b.Cls.LAYOUT.byteSize()"),
+        assertEquals(AllocationForReturnedValue.ofExtraAllocator("a.b.Cls.LAYOUT"),
             info.allocationInfoForUpcallInterfaceReturnValue(returnVarOpts(0)));
         assertEquals(
             """
@@ -1210,7 +1210,7 @@ public class TestTypes {
             info.convertParamToInvokeExactArgument("a", paramVarOpts(RAW)));
         assertEquals(AllocationForReturnedValue.noAllocationRequired(),
             info.allocationInfoForReturnValue(returnVarOpts(0)));
-        assertEquals(AllocationForReturnedValue.ofPooledAllocator("PNIBuf.LAYOUT.byteSize()"),
+        assertEquals(AllocationForReturnedValue.ofPooledAllocator("PNIBuf.LAYOUT"),
             info.allocationInfoForReturnValue(returnVarOpts(CRITICAL)));
         assertEquals(AllocationForReturnedValue.noAllocationRequired(),
             info.allocationInfoForUpcallInterfaceReturnValue(returnVarOpts(0)));
@@ -1325,7 +1325,7 @@ public class TestTypes {
             info.convertParamToInvokeExactArgument("a", paramVarOpts(RAW)));
         assertEquals(AllocationForReturnedValue.noAllocationRequired(),
             info.allocationInfoForReturnValue(returnVarOpts(0)));
-        assertEquals(AllocationForReturnedValue.ofPooledAllocator("PNIBuf.LAYOUT.byteSize()"),
+        assertEquals(AllocationForReturnedValue.ofPooledAllocator("PNIBuf.LAYOUT"),
             info.allocationInfoForReturnValue(returnVarOpts(CRITICAL)));
         assertEquals(AllocationForReturnedValue.noAllocationRequired(),
             info.allocationInfoForUpcallInterfaceReturnValue(returnVarOpts(0)));
@@ -1445,7 +1445,7 @@ public class TestTypes {
             info.convertParamToInvokeExactArgument("a", paramVarOpts(RAW)));
         assertEquals(AllocationForReturnedValue.noAllocationRequired(),
             info.allocationInfoForReturnValue(returnVarOpts(0)));
-        assertEquals(AllocationForReturnedValue.ofPooledAllocator("PNIBuf.LAYOUT.byteSize()"),
+        assertEquals(AllocationForReturnedValue.ofPooledAllocator("PNIBuf.LAYOUT"),
             info.allocationInfoForReturnValue(returnVarOpts(CRITICAL)));
         assertEquals(AllocationForReturnedValue.noAllocationRequired(),
             info.allocationInfoForUpcallInterfaceReturnValue(returnVarOpts(0)));

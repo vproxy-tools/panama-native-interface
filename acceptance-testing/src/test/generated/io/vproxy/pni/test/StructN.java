@@ -53,7 +53,7 @@ public class StructN extends AbstractNativeObject implements NativeObject {
     }
 
     public StructN(Allocator ALLOCATOR) {
-        this(ALLOCATOR.allocate(LAYOUT.byteSize()));
+        this(ALLOCATOR.allocate(LAYOUT));
     }
 
     private static final MethodHandle retrieveSMH = PanamaUtils.lookupPNIFunction(true, "Java_io_vproxy_pni_test_StructN_retrieveS", MemorySegment.class /* self */);
@@ -114,11 +114,11 @@ public class StructN extends AbstractNativeObject implements NativeObject {
         }
 
         public Array(Allocator allocator, long len) {
-            this(allocator.allocate(StructN.LAYOUT.byteSize() * len));
+            super(allocator, StructN.LAYOUT, len);
         }
 
         public Array(PNIBuf buf) {
-            this(buf.get());
+            super(buf, StructN.LAYOUT);
         }
 
         @Override
@@ -179,4 +179,4 @@ public class StructN extends AbstractNativeObject implements NativeObject {
     }
 }
 // metadata.generator-version: pni test
-// sha256:e8a469c59a330a197a0d44fedeb7481c8235856d59a5d23a435c286219f83ddc
+// sha256:6f08c030f0fe6fe7344b2f660a81d7ccd97efa65672c4611260bca7dd52cbea1

@@ -60,7 +60,7 @@ public class SizeofUnion extends AbstractNativeObject implements NativeObject {
     }
 
     public SizeofUnion(Allocator ALLOCATOR) {
-        this(ALLOCATOR.allocate(LAYOUT.byteSize()));
+        this(ALLOCATOR.allocate(LAYOUT));
     }
 
     @Override
@@ -90,11 +90,11 @@ public class SizeofUnion extends AbstractNativeObject implements NativeObject {
         }
 
         public Array(Allocator allocator, long len) {
-            this(allocator.allocate(SizeofUnion.LAYOUT.byteSize() * len));
+            super(allocator, SizeofUnion.LAYOUT, len);
         }
 
         public Array(PNIBuf buf) {
-            this(buf.get());
+            super(buf, SizeofUnion.LAYOUT);
         }
 
         @Override
@@ -155,4 +155,4 @@ public class SizeofUnion extends AbstractNativeObject implements NativeObject {
     }
 }
 // metadata.generator-version: pni test
-// sha256:b5967e2fc5488ceb621d6ef444db68e18a3e96026ee7e98ff26df846f145543c
+// sha256:ab03785fbd3a4f4c2bb63632466a5100568978b1999cd25275de9a3d04e4dbec

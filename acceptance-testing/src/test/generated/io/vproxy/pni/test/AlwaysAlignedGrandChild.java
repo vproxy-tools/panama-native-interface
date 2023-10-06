@@ -11,7 +11,7 @@ public class AlwaysAlignedGrandChild extends io.vproxy.pni.test.AlwaysAlignedChi
         io.vproxy.pni.test.AlwaysAlignedChild.LAYOUT,
         MemoryLayout.sequenceLayout(4L, ValueLayout.JAVA_BYTE) /* padding */,
         ValueLayout.JAVA_LONG.withName("c")
-    );
+    ).withByteAlignment(8);
     public final MemorySegment MEMORY;
 
     @Override
@@ -42,7 +42,7 @@ public class AlwaysAlignedGrandChild extends io.vproxy.pni.test.AlwaysAlignedChi
     }
 
     public AlwaysAlignedGrandChild(Allocator ALLOCATOR) {
-        this(ALLOCATOR.allocate(LAYOUT.byteSize()));
+        this(ALLOCATOR.allocate(LAYOUT));
     }
 
     @Override
@@ -92,11 +92,11 @@ public class AlwaysAlignedGrandChild extends io.vproxy.pni.test.AlwaysAlignedChi
         }
 
         public Array(Allocator allocator, long len) {
-            this(allocator.allocate(AlwaysAlignedGrandChild.LAYOUT.byteSize() * len));
+            super(allocator, AlwaysAlignedGrandChild.LAYOUT, len);
         }
 
         public Array(PNIBuf buf) {
-            this(buf.get());
+            super(buf, AlwaysAlignedGrandChild.LAYOUT);
         }
 
         @Override
@@ -157,4 +157,4 @@ public class AlwaysAlignedGrandChild extends io.vproxy.pni.test.AlwaysAlignedChi
     }
 }
 // metadata.generator-version: pni test
-// sha256:6b57dd1b9892017a026e04179a76c03c13cb962e1eff0c60f62d4f3395ef65a4
+// sha256:8d98ba3500a30a449c66cb2737417c43d8f2fcaf434d2ddab57dab38b5b58ef1

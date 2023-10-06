@@ -64,7 +64,7 @@ public class GCCCompatibilityNonPackedContainNonPacked extends AbstractNativeObj
     }
 
     public GCCCompatibilityNonPackedContainNonPacked(Allocator ALLOCATOR) {
-        this(ALLOCATOR.allocate(LAYOUT.byteSize()));
+        this(ALLOCATOR.allocate(LAYOUT));
     }
 
     private static final MethodHandle initMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_GCCCompatibilityNonPackedContainNonPacked_init", MemorySegment.class /* self */);
@@ -129,11 +129,11 @@ public class GCCCompatibilityNonPackedContainNonPacked extends AbstractNativeObj
         }
 
         public Array(Allocator allocator, long len) {
-            this(allocator.allocate(GCCCompatibilityNonPackedContainNonPacked.LAYOUT.byteSize() * len));
+            super(allocator, GCCCompatibilityNonPackedContainNonPacked.LAYOUT, len);
         }
 
         public Array(PNIBuf buf) {
-            this(buf.get());
+            super(buf, GCCCompatibilityNonPackedContainNonPacked.LAYOUT);
         }
 
         @Override
@@ -194,4 +194,4 @@ public class GCCCompatibilityNonPackedContainNonPacked extends AbstractNativeObj
     }
 }
 // metadata.generator-version: pni test
-// sha256:a16f8f17183c116dab76daf4f6284449c1ce6e5dbaccaa61e8d6b8dddb29edda
+// sha256:963af08d9b2acb3739a3707555c20d4111f4247bf3aede89f483c77ef64cb822

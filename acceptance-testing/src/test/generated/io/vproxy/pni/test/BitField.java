@@ -563,7 +563,7 @@ public class BitField extends AbstractNativeObject implements NativeObject {
     }
 
     public BitField(Allocator ALLOCATOR) {
-        this(ALLOCATOR.allocate(LAYOUT.byteSize()));
+        this(ALLOCATOR.allocate(LAYOUT));
     }
 
     private static final MethodHandle setMH = PanamaUtils.lookupPNICriticalFunction(false, void.class, "JavaCritical_io_vproxy_pni_test_BitField_set", MemorySegment.class /* self */, byte.class /* a */, byte.class /* a2 */, byte.class /* b */, byte.class /* b2 */, short.class /* c */, short.class /* c2 */, short.class /* d */, short.class /* d2 */, short.class /* e */, short.class /* e2 */, int.class /* f */, int.class /* f2 */, int.class /* g */, int.class /* g2 */, int.class /* h */, int.class /* h2 */, int.class /* i */, int.class /* i2 */, long.class /* j */, long.class /* j2 */, long.class /* k */, long.class /* k2 */, long.class /* l */, long.class /* l2 */, long.class /* m */, long.class /* m2 */);
@@ -1027,11 +1027,11 @@ public class BitField extends AbstractNativeObject implements NativeObject {
         }
 
         public Array(Allocator allocator, long len) {
-            this(allocator.allocate(BitField.LAYOUT.byteSize() * len));
+            super(allocator, BitField.LAYOUT, len);
         }
 
         public Array(PNIBuf buf) {
-            this(buf.get());
+            super(buf, BitField.LAYOUT);
         }
 
         @Override
@@ -1092,4 +1092,4 @@ public class BitField extends AbstractNativeObject implements NativeObject {
     }
 }
 // metadata.generator-version: pni test
-// sha256:3b7c2671e9de24a9d1d406f587a6a9ffc34ef85cea9ae6554829383a1f685f89
+// sha256:4a0e8aa3fad0c3f72b366d0e9112b4f02c327575e56343a4c7cbeb3f36beb77c

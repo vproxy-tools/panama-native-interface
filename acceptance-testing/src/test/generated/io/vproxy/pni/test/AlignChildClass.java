@@ -13,7 +13,7 @@ public class AlignChildClass extends io.vproxy.pni.test.AlignBaseClass implement
         ValueLayout.JAVA_INT.withName("b"),
         ValueLayout.JAVA_INT.withName("c"),
         MemoryLayout.sequenceLayout(8L, ValueLayout.JAVA_BYTE) /* padding */
-    );
+    ).withByteAlignment(16);
     public final MemorySegment MEMORY;
 
     @Override
@@ -58,7 +58,7 @@ public class AlignChildClass extends io.vproxy.pni.test.AlignBaseClass implement
     }
 
     public AlignChildClass(Allocator ALLOCATOR) {
-        this(ALLOCATOR.allocate(LAYOUT.byteSize()));
+        this(ALLOCATOR.allocate(LAYOUT));
     }
 
     private static final MethodHandle bbbbMH = PanamaUtils.lookupPNICriticalFunction(false, int.class, "JavaCritical_io_vproxy_pni_test_AlignChildClass_bbbb", MemorySegment.class /* self */);
@@ -136,11 +136,11 @@ public class AlignChildClass extends io.vproxy.pni.test.AlignBaseClass implement
         }
 
         public Array(Allocator allocator, long len) {
-            this(allocator.allocate(AlignChildClass.LAYOUT.byteSize() * len));
+            super(allocator, AlignChildClass.LAYOUT, len);
         }
 
         public Array(PNIBuf buf) {
-            this(buf.get());
+            super(buf, AlignChildClass.LAYOUT);
         }
 
         @Override
@@ -201,4 +201,4 @@ public class AlignChildClass extends io.vproxy.pni.test.AlignBaseClass implement
     }
 }
 // metadata.generator-version: pni test
-// sha256:a73c10973fa818dd1dcc3bbcd4862809e88a04e2a599fca159f42e175488536f
+// sha256:d3a261776211dc352ddaca10b9226dbf00dc7ff8636c75c526de11f3efa032f1

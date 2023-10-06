@@ -214,7 +214,7 @@ public class RawArrays {
         ENV.reset();
         int ERR;
         try {
-            ERR = (int) structArrayMH.invokeExact(ENV.MEMORY, (MemorySegment) (array == null ? MemorySegment.NULL : array.MEMORY), off, ALLOCATOR.allocate(io.vproxy.pni.test.ObjectStruct.LAYOUT.byteSize()));
+            ERR = (int) structArrayMH.invokeExact(ENV.MEMORY, (MemorySegment) (array == null ? MemorySegment.NULL : array.MEMORY), off, ALLOCATOR.allocate(io.vproxy.pni.test.ObjectStruct.LAYOUT));
         } catch (Throwable THROWABLE) {
             throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
@@ -232,7 +232,7 @@ public class RawArrays {
         try (var POOLED = Allocator.ofPooled()) {
             int ERR;
             try {
-                ERR = (int) structArrayNotRawMH.invokeExact(ENV.MEMORY, PNIBuf.memoryOf(POOLED, array), off, ALLOCATOR.allocate(io.vproxy.pni.test.ObjectStruct.LAYOUT.byteSize()));
+                ERR = (int) structArrayNotRawMH.invokeExact(ENV.MEMORY, PNIBuf.memoryOf(POOLED, array), off, ALLOCATOR.allocate(io.vproxy.pni.test.ObjectStruct.LAYOUT));
             } catch (Throwable THROWABLE) {
                 throw PanamaUtils.convertInvokeExactException(THROWABLE);
             }
@@ -245,4 +245,4 @@ public class RawArrays {
     }
 }
 // metadata.generator-version: pni test
-// sha256:6d6b4482425c38ffe0cb46da4dfe8742f017bb432314acca25ff2c71b89099ce
+// sha256:def0f87cd522ccb94b4dbd2291d605657adcd7bf5b52b36806e4aa625e03995b

@@ -9,7 +9,7 @@ import java.nio.ByteBuffer;
 public class AlignBaseClass extends AbstractNativeObject implements NativeObject {
     public static final MemoryLayout LAYOUT = MemoryLayout.structLayout(
         ValueLayout.JAVA_SHORT.withName("a")
-    );
+    ).withByteAlignment(2);
     public final MemorySegment MEMORY;
 
     @Override
@@ -37,7 +37,7 @@ public class AlignBaseClass extends AbstractNativeObject implements NativeObject
     }
 
     public AlignBaseClass(Allocator ALLOCATOR) {
-        this(ALLOCATOR.allocate(LAYOUT.byteSize()));
+        this(ALLOCATOR.allocate(LAYOUT));
     }
 
     private static final MethodHandle aaaaMH = PanamaUtils.lookupPNICriticalFunction(false, short.class, "JavaCritical_io_vproxy_pni_test_AlignBaseClass_aaaa", MemorySegment.class /* self */);
@@ -85,11 +85,11 @@ public class AlignBaseClass extends AbstractNativeObject implements NativeObject
         }
 
         public Array(Allocator allocator, long len) {
-            this(allocator.allocate(AlignBaseClass.LAYOUT.byteSize() * len));
+            super(allocator, AlignBaseClass.LAYOUT, len);
         }
 
         public Array(PNIBuf buf) {
-            this(buf.get());
+            super(buf, AlignBaseClass.LAYOUT);
         }
 
         @Override
@@ -150,4 +150,4 @@ public class AlignBaseClass extends AbstractNativeObject implements NativeObject
     }
 }
 // metadata.generator-version: pni test
-// sha256:080ff7c84b0e84f1f9e4d8fd7181fb6671df51becdd914cfb3ed3feb9cbcf668
+// sha256:8db22e9b5439a44c0608ef4e71d1ec9f7e31ff0aa0e9d9a2529af4c79cfa387b

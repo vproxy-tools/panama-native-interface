@@ -14,7 +14,7 @@ public class MBuf extends AbstractNativeObject implements NativeObject {
         ValueLayout.JAVA_INT.withName("bufLen"),
         MemoryLayout.sequenceLayout(4L, ValueLayout.JAVA_BYTE) /* padding */,
         io.vproxy.pni.sample.UserData.LAYOUT.withName("userdata")
-    );
+    ).withByteAlignment(8);
     public final MemorySegment MEMORY;
 
     @Override
@@ -96,7 +96,7 @@ public class MBuf extends AbstractNativeObject implements NativeObject {
     }
 
     public MBuf(Allocator ALLOCATOR) {
-        this(ALLOCATOR.allocate(LAYOUT.byteSize()));
+        this(ALLOCATOR.allocate(LAYOUT));
     }
 
     @Override
@@ -140,11 +140,11 @@ public class MBuf extends AbstractNativeObject implements NativeObject {
         }
 
         public Array(Allocator allocator, long len) {
-            this(allocator.allocate(MBuf.LAYOUT.byteSize() * len));
+            super(allocator, MBuf.LAYOUT, len);
         }
 
         public Array(PNIBuf buf) {
-            this(buf.get());
+            super(buf, MBuf.LAYOUT);
         }
 
         @Override
@@ -205,4 +205,4 @@ public class MBuf extends AbstractNativeObject implements NativeObject {
     }
 }
 // metadata.generator-version: pni test
-// sha256:1483fdca2c6f37054545a04c76a3c9b69eca72df98d57aa0297e66f320d4d2ff
+// sha256:653a0397152337fce36cd1186a223ec432cede27a5e036a71f0da2ee96ddf30f

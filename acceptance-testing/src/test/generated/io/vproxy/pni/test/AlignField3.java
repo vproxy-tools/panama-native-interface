@@ -13,7 +13,7 @@ public class AlignField3 extends AbstractNativeObject implements NativeObject {
         ValueLayout.JAVA_INT.withName("b"),
         ValueLayout.JAVA_INT.withName("c"),
         MemoryLayout.sequenceLayout(24L, ValueLayout.JAVA_BYTE) /* padding */
-    );
+    ).withByteAlignment(32);
     public final MemorySegment MEMORY;
 
     @Override
@@ -69,7 +69,7 @@ public class AlignField3 extends AbstractNativeObject implements NativeObject {
     }
 
     public AlignField3(Allocator ALLOCATOR) {
-        this(ALLOCATOR.allocate(LAYOUT.byteSize()));
+        this(ALLOCATOR.allocate(LAYOUT));
     }
 
     private static final MethodHandle aaaaMH = PanamaUtils.lookupPNICriticalFunction(false, short.class, "JavaCritical_io_vproxy_pni_test_AlignField3_aaaa", MemorySegment.class /* self */);
@@ -151,11 +151,11 @@ public class AlignField3 extends AbstractNativeObject implements NativeObject {
         }
 
         public Array(Allocator allocator, long len) {
-            this(allocator.allocate(AlignField3.LAYOUT.byteSize() * len));
+            super(allocator, AlignField3.LAYOUT, len);
         }
 
         public Array(PNIBuf buf) {
-            this(buf.get());
+            super(buf, AlignField3.LAYOUT);
         }
 
         @Override
@@ -216,4 +216,4 @@ public class AlignField3 extends AbstractNativeObject implements NativeObject {
     }
 }
 // metadata.generator-version: pni test
-// sha256:bb077627bec5c7dbcc00507a0f1f5f01060ca56540ee5bb2939cfe96d1d0cd2a
+// sha256:ff92f62b15a9497bf606c9d0e989b54486db7a4e0bbaec3634be1e29a231cb09

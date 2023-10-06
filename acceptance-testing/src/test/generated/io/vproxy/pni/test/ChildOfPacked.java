@@ -51,7 +51,7 @@ public class ChildOfPacked extends io.vproxy.pni.test.PackedBaseClass implements
     }
 
     public ChildOfPacked(Allocator ALLOCATOR) {
-        this(ALLOCATOR.allocate(LAYOUT.byteSize()));
+        this(ALLOCATOR.allocate(LAYOUT));
     }
 
     private static final MethodHandle xxxMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_ChildOfPacked_xxx", MemorySegment.class /* self */, int.class /* x */);
@@ -128,11 +128,11 @@ public class ChildOfPacked extends io.vproxy.pni.test.PackedBaseClass implements
         }
 
         public Array(Allocator allocator, long len) {
-            this(allocator.allocate(ChildOfPacked.LAYOUT.byteSize() * len));
+            super(allocator, ChildOfPacked.LAYOUT, len);
         }
 
         public Array(PNIBuf buf) {
-            this(buf.get());
+            super(buf, ChildOfPacked.LAYOUT);
         }
 
         @Override
@@ -193,4 +193,4 @@ public class ChildOfPacked extends io.vproxy.pni.test.PackedBaseClass implements
     }
 }
 // metadata.generator-version: pni test
-// sha256:fb1915bb91e02df5d9d7a14a77e77625a96b5572e886f9765890e04c56560063
+// sha256:75c75433123ef6a0d4f0659c2d1aa64e5629c9aba8129844278d4f42f401b008

@@ -96,7 +96,7 @@ public class ToStringClass2 extends AbstractNativeObject implements NativeObject
     }
 
     public ToStringClass2(Allocator ALLOCATOR) {
-        this(ALLOCATOR.allocate(LAYOUT.byteSize()));
+        this(ALLOCATOR.allocate(LAYOUT));
     }
 
     @Override
@@ -138,11 +138,11 @@ public class ToStringClass2 extends AbstractNativeObject implements NativeObject
         }
 
         public Array(Allocator allocator, long len) {
-            this(allocator.allocate(ToStringClass2.LAYOUT.byteSize() * len));
+            super(allocator, ToStringClass2.LAYOUT, len);
         }
 
         public Array(PNIBuf buf) {
-            this(buf.get());
+            super(buf, ToStringClass2.LAYOUT);
         }
 
         @Override
@@ -203,4 +203,4 @@ public class ToStringClass2 extends AbstractNativeObject implements NativeObject
     }
 }
 // metadata.generator-version: pni test
-// sha256:dac23bdaaf765b5bd76cf5fc964ff10c226aa4aa3d66a4b25590925269bd2f9e
+// sha256:afd35a484be9bccd503d5c1944b3e17ee5434cfffeea1ed92ba0f221a899b638

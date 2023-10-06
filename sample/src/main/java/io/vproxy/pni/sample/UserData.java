@@ -10,7 +10,7 @@ public class UserData extends AbstractNativeObject implements NativeObject {
     public static final MemoryLayout LAYOUT = MemoryLayout.unionLayout(
         ValueLayout.ADDRESS.withName("userdata"),
         ValueLayout.JAVA_LONG.withName("udata64")
-    );
+    ).withByteAlignment(8);
     public final MemorySegment MEMORY;
 
     @Override
@@ -59,7 +59,7 @@ public class UserData extends AbstractNativeObject implements NativeObject {
     }
 
     public UserData(Allocator ALLOCATOR) {
-        this(ALLOCATOR.allocate(LAYOUT.byteSize()));
+        this(ALLOCATOR.allocate(LAYOUT));
     }
 
     @Override
@@ -89,11 +89,11 @@ public class UserData extends AbstractNativeObject implements NativeObject {
         }
 
         public Array(Allocator allocator, long len) {
-            this(allocator.allocate(UserData.LAYOUT.byteSize() * len));
+            super(allocator, UserData.LAYOUT, len);
         }
 
         public Array(PNIBuf buf) {
-            this(buf.get());
+            super(buf, UserData.LAYOUT);
         }
 
         @Override
@@ -154,4 +154,4 @@ public class UserData extends AbstractNativeObject implements NativeObject {
     }
 }
 // metadata.generator-version: pni test
-// sha256:681af2963663c88439eb3af9a5cf0f4269f512ae21f06e9395675fb271fe4f3e
+// sha256:c8a4c312f33c33a296cef69094e663ff5d9cdaa4f26c9b5812dabc2d21461fe8

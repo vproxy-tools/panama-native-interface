@@ -24,7 +24,7 @@ public class Empty extends AbstractNativeObject implements NativeObject {
     }
 
     public Empty(Allocator ALLOCATOR) {
-        this(ALLOCATOR.allocate(LAYOUT.byteSize()));
+        this(ALLOCATOR.allocate(LAYOUT));
     }
 
     @Override
@@ -43,11 +43,11 @@ public class Empty extends AbstractNativeObject implements NativeObject {
         }
 
         public Array(Allocator allocator, long len) {
-            this(allocator.allocate(Empty.LAYOUT.byteSize() * len));
+            super(allocator, Empty.LAYOUT, len);
         }
 
         public Array(PNIBuf buf) {
-            this(buf.get());
+            super(buf, Empty.LAYOUT);
         }
 
         @Override
@@ -108,4 +108,4 @@ public class Empty extends AbstractNativeObject implements NativeObject {
     }
 }
 // metadata.generator-version: pni test
-// sha256:44c9d2ec28e7c65eaf00961b5fb019d3303126e9ea31e8d69b5de474677bf4f1
+// sha256:0969a18cd5c68cef06e02e5bd77d50410eebc167211ee6593cefe29d4462f5a9

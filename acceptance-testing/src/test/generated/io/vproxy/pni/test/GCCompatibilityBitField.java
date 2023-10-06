@@ -563,7 +563,7 @@ public class GCCompatibilityBitField extends AbstractNativeObject implements Nat
     }
 
     public GCCompatibilityBitField(Allocator ALLOCATOR) {
-        this(ALLOCATOR.allocate(LAYOUT.byteSize()));
+        this(ALLOCATOR.allocate(LAYOUT));
     }
 
     private static final MethodHandle setMH = PanamaUtils.lookupPNICriticalFunction(false, void.class, "JavaCritical_io_vproxy_pni_test_GCCompatibilityBitField_set", MemorySegment.class /* self */, byte.class /* a */, byte.class /* a2 */, byte.class /* b */, byte.class /* b2 */, short.class /* c */, short.class /* c2 */, short.class /* d */, short.class /* d2 */, short.class /* e */, short.class /* e2 */, int.class /* f */, int.class /* f2 */, int.class /* g */, int.class /* g2 */, int.class /* h */, int.class /* h2 */, int.class /* i */, int.class /* i2 */, long.class /* j */, long.class /* j2 */, long.class /* k */, long.class /* k2 */, long.class /* l */, long.class /* l2 */, long.class /* m */, long.class /* m2 */);
@@ -1027,11 +1027,11 @@ public class GCCompatibilityBitField extends AbstractNativeObject implements Nat
         }
 
         public Array(Allocator allocator, long len) {
-            this(allocator.allocate(GCCompatibilityBitField.LAYOUT.byteSize() * len));
+            super(allocator, GCCompatibilityBitField.LAYOUT, len);
         }
 
         public Array(PNIBuf buf) {
-            this(buf.get());
+            super(buf, GCCompatibilityBitField.LAYOUT);
         }
 
         @Override
@@ -1092,4 +1092,4 @@ public class GCCompatibilityBitField extends AbstractNativeObject implements Nat
     }
 }
 // metadata.generator-version: pni test
-// sha256:611d481685df0019cfc69a42de47f8a12e50ebcac17f019844ad240f30016f16
+// sha256:15b9bd9737389047db7900b406454e3765fd5df26ccf99b27ddcf3ebda278e77

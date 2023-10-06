@@ -42,7 +42,7 @@ public class ChildOfLargeAlign extends io.vproxy.pni.test.LargeAlignBase impleme
     }
 
     public ChildOfLargeAlign(Allocator ALLOCATOR) {
-        this(ALLOCATOR.allocate(LAYOUT.byteSize()));
+        this(ALLOCATOR.allocate(LAYOUT));
     }
 
     @Override
@@ -79,11 +79,11 @@ public class ChildOfLargeAlign extends io.vproxy.pni.test.LargeAlignBase impleme
         }
 
         public Array(Allocator allocator, long len) {
-            this(allocator.allocate(ChildOfLargeAlign.LAYOUT.byteSize() * len));
+            super(allocator, ChildOfLargeAlign.LAYOUT, len);
         }
 
         public Array(PNIBuf buf) {
-            this(buf.get());
+            super(buf, ChildOfLargeAlign.LAYOUT);
         }
 
         @Override
@@ -144,4 +144,4 @@ public class ChildOfLargeAlign extends io.vproxy.pni.test.LargeAlignBase impleme
     }
 }
 // metadata.generator-version: pni test
-// sha256:a6cf897e24c57c23a2c078e000c509fecf4819bd5f23e1385fb5a5fce9f9aeb4
+// sha256:c697a3c93e6d1ed90e601b7431a2c26a3c1c0f67c26da8ff5acde410c54b0e1f

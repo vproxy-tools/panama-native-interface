@@ -113,7 +113,7 @@ public class GCCCompatibilityUnion extends AbstractNativeObject implements Nativ
     }
 
     public GCCCompatibilityUnion(Allocator ALLOCATOR) {
-        this(ALLOCATOR.allocate(LAYOUT.byteSize()));
+        this(ALLOCATOR.allocate(LAYOUT));
     }
 
     @Override
@@ -163,11 +163,11 @@ public class GCCCompatibilityUnion extends AbstractNativeObject implements Nativ
         }
 
         public Array(Allocator allocator, long len) {
-            this(allocator.allocate(GCCCompatibilityUnion.LAYOUT.byteSize() * len));
+            super(allocator, GCCCompatibilityUnion.LAYOUT, len);
         }
 
         public Array(PNIBuf buf) {
-            this(buf.get());
+            super(buf, GCCCompatibilityUnion.LAYOUT);
         }
 
         @Override
@@ -228,4 +228,4 @@ public class GCCCompatibilityUnion extends AbstractNativeObject implements Nativ
     }
 }
 // metadata.generator-version: pni test
-// sha256:812c164407a7fa152dca7e764f69935b0c5174425ddfbfa64411d4386b01d946
+// sha256:c1f053838c936b8048d94c409d14cc3612d0c3b36d4853b177953db4ddc41333

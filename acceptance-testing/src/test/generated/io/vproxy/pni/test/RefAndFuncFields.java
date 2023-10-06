@@ -123,7 +123,7 @@ public class RefAndFuncFields extends AbstractNativeObject implements NativeObje
     }
 
     public RefAndFuncFields(Allocator ALLOCATOR) {
-        this(ALLOCATOR.allocate(LAYOUT.byteSize()));
+        this(ALLOCATOR.allocate(LAYOUT));
     }
 
     private static final MethodHandle callMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_RefAndFuncFields_call", MemorySegment.class /* self */);
@@ -322,11 +322,11 @@ public class RefAndFuncFields extends AbstractNativeObject implements NativeObje
         }
 
         public Array(Allocator allocator, long len) {
-            this(allocator.allocate(RefAndFuncFields.LAYOUT.byteSize() * len));
+            super(allocator, RefAndFuncFields.LAYOUT, len);
         }
 
         public Array(PNIBuf buf) {
-            this(buf.get());
+            super(buf, RefAndFuncFields.LAYOUT);
         }
 
         @Override
@@ -387,4 +387,4 @@ public class RefAndFuncFields extends AbstractNativeObject implements NativeObje
     }
 }
 // metadata.generator-version: pni test
-// sha256:6a6f253deaad0ba63e216fa6a78ccad1cb9b74664a440a1d551a37683696c75d
+// sha256:8627309de8b1811bfa7d3ecdf060a94b86d6a92f0f70a10111d6f8e659ef87b1

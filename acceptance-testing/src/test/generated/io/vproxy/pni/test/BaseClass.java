@@ -37,7 +37,7 @@ public class BaseClass extends AbstractNativeObject implements NativeObject {
     }
 
     public BaseClass(Allocator ALLOCATOR) {
-        this(ALLOCATOR.allocate(LAYOUT.byteSize()));
+        this(ALLOCATOR.allocate(LAYOUT));
     }
 
     private static final MethodHandle aaaMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_BaseClass_aaa", MemorySegment.class /* self */, byte.class /* a */);
@@ -76,11 +76,11 @@ public class BaseClass extends AbstractNativeObject implements NativeObject {
         }
 
         public Array(Allocator allocator, long len) {
-            this(allocator.allocate(BaseClass.LAYOUT.byteSize() * len));
+            super(allocator, BaseClass.LAYOUT, len);
         }
 
         public Array(PNIBuf buf) {
-            this(buf.get());
+            super(buf, BaseClass.LAYOUT);
         }
 
         @Override
@@ -141,4 +141,4 @@ public class BaseClass extends AbstractNativeObject implements NativeObject {
     }
 }
 // metadata.generator-version: pni test
-// sha256:cef73a5dc93b003b2805e847f61f0c178721d8249a2610c96234ea6f39e5ad19
+// sha256:78889e4b1f477e90607f88df02ba0974f24cc993fc1a22b863cdb66cf0e4ae24

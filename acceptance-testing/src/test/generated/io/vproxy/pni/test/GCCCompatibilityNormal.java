@@ -111,7 +111,7 @@ public class GCCCompatibilityNormal extends AbstractNativeObject implements Nati
     }
 
     public GCCCompatibilityNormal(Allocator ALLOCATOR) {
-        this(ALLOCATOR.allocate(LAYOUT.byteSize()));
+        this(ALLOCATOR.allocate(LAYOUT));
     }
 
     private static final MethodHandle initMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_GCCCompatibilityNormal_init", MemorySegment.class /* self */);
@@ -191,11 +191,11 @@ public class GCCCompatibilityNormal extends AbstractNativeObject implements Nati
         }
 
         public Array(Allocator allocator, long len) {
-            this(allocator.allocate(GCCCompatibilityNormal.LAYOUT.byteSize() * len));
+            super(allocator, GCCCompatibilityNormal.LAYOUT, len);
         }
 
         public Array(PNIBuf buf) {
-            this(buf.get());
+            super(buf, GCCCompatibilityNormal.LAYOUT);
         }
 
         @Override
@@ -256,4 +256,4 @@ public class GCCCompatibilityNormal extends AbstractNativeObject implements Nati
     }
 }
 // metadata.generator-version: pni test
-// sha256:f1b011af97a4dacf5c5979acd5e5d277e3bb3614f63b936237768d4ed00a9871
+// sha256:d2ddfaa2a14c80c78e76618d87b125e6e784fea6b3c2a40fdbe89b4ce670a4ad

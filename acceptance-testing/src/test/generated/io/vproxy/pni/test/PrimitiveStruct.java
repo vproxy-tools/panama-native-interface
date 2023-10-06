@@ -533,7 +533,7 @@ public class PrimitiveStruct extends AbstractNativeObject implements NativeObjec
     }
 
     public PrimitiveStruct(Allocator ALLOCATOR) {
-        this(ALLOCATOR.allocate(LAYOUT.byteSize()));
+        this(ALLOCATOR.allocate(LAYOUT));
     }
 
     private static final MethodHandle func1MH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_PrimitiveStruct_func1", MemorySegment.class /* self */, byte.class /* aByte */, byte.class /* unsignedByte */, int.class /* aInt */, int.class /* unsignedInt */, long.class /* aLong */, long.class /* unsignedLong */, short.class /* aShort */, short.class /* unsignedShort */);
@@ -1004,7 +1004,7 @@ public class PrimitiveStruct extends AbstractNativeObject implements NativeObjec
         try (var POOLED = Allocator.ofPooled()) {
             MemorySegment RESULT;
             try {
-                RESULT = (MemorySegment) retrieveByteArrayCriticalMH.invokeExact(MEMORY, POOLED.allocate(PNIBuf.LAYOUT.byteSize()));
+                RESULT = (MemorySegment) retrieveByteArrayCriticalMH.invokeExact(MEMORY, POOLED.allocate(PNIBuf.LAYOUT));
             } catch (Throwable THROWABLE) {
                 throw PanamaUtils.convertInvokeExactException(THROWABLE);
             }
@@ -1039,7 +1039,7 @@ public class PrimitiveStruct extends AbstractNativeObject implements NativeObjec
         try (var POOLED = Allocator.ofPooled()) {
             MemorySegment RESULT;
             try {
-                RESULT = (MemorySegment) retrieveUnsignedByteArrayCriticalMH.invokeExact(MEMORY, POOLED.allocate(PNIBuf.LAYOUT.byteSize()));
+                RESULT = (MemorySegment) retrieveUnsignedByteArrayCriticalMH.invokeExact(MEMORY, POOLED.allocate(PNIBuf.LAYOUT));
             } catch (Throwable THROWABLE) {
                 throw PanamaUtils.convertInvokeExactException(THROWABLE);
             }
@@ -1074,7 +1074,7 @@ public class PrimitiveStruct extends AbstractNativeObject implements NativeObjec
         try (var POOLED = Allocator.ofPooled()) {
             MemorySegment RESULT;
             try {
-                RESULT = (MemorySegment) retrieveCharArrayCriticalMH.invokeExact(MEMORY, POOLED.allocate(PNIBuf.LAYOUT.byteSize()));
+                RESULT = (MemorySegment) retrieveCharArrayCriticalMH.invokeExact(MEMORY, POOLED.allocate(PNIBuf.LAYOUT));
             } catch (Throwable THROWABLE) {
                 throw PanamaUtils.convertInvokeExactException(THROWABLE);
             }
@@ -1109,7 +1109,7 @@ public class PrimitiveStruct extends AbstractNativeObject implements NativeObjec
         try (var POOLED = Allocator.ofPooled()) {
             MemorySegment RESULT;
             try {
-                RESULT = (MemorySegment) retrieveDoubleArrayCriticalMH.invokeExact(MEMORY, POOLED.allocate(PNIBuf.LAYOUT.byteSize()));
+                RESULT = (MemorySegment) retrieveDoubleArrayCriticalMH.invokeExact(MEMORY, POOLED.allocate(PNIBuf.LAYOUT));
             } catch (Throwable THROWABLE) {
                 throw PanamaUtils.convertInvokeExactException(THROWABLE);
             }
@@ -1144,7 +1144,7 @@ public class PrimitiveStruct extends AbstractNativeObject implements NativeObjec
         try (var POOLED = Allocator.ofPooled()) {
             MemorySegment RESULT;
             try {
-                RESULT = (MemorySegment) retrieveFloatArrayCriticalMH.invokeExact(MEMORY, POOLED.allocate(PNIBuf.LAYOUT.byteSize()));
+                RESULT = (MemorySegment) retrieveFloatArrayCriticalMH.invokeExact(MEMORY, POOLED.allocate(PNIBuf.LAYOUT));
             } catch (Throwable THROWABLE) {
                 throw PanamaUtils.convertInvokeExactException(THROWABLE);
             }
@@ -1179,7 +1179,7 @@ public class PrimitiveStruct extends AbstractNativeObject implements NativeObjec
         try (var POOLED = Allocator.ofPooled()) {
             MemorySegment RESULT;
             try {
-                RESULT = (MemorySegment) retrieveIntArrayCriticalMH.invokeExact(MEMORY, POOLED.allocate(PNIBuf.LAYOUT.byteSize()));
+                RESULT = (MemorySegment) retrieveIntArrayCriticalMH.invokeExact(MEMORY, POOLED.allocate(PNIBuf.LAYOUT));
             } catch (Throwable THROWABLE) {
                 throw PanamaUtils.convertInvokeExactException(THROWABLE);
             }
@@ -1214,7 +1214,7 @@ public class PrimitiveStruct extends AbstractNativeObject implements NativeObjec
         try (var POOLED = Allocator.ofPooled()) {
             MemorySegment RESULT;
             try {
-                RESULT = (MemorySegment) retrieveUnsignedIntArrayCriticalMH.invokeExact(MEMORY, POOLED.allocate(PNIBuf.LAYOUT.byteSize()));
+                RESULT = (MemorySegment) retrieveUnsignedIntArrayCriticalMH.invokeExact(MEMORY, POOLED.allocate(PNIBuf.LAYOUT));
             } catch (Throwable THROWABLE) {
                 throw PanamaUtils.convertInvokeExactException(THROWABLE);
             }
@@ -1249,7 +1249,7 @@ public class PrimitiveStruct extends AbstractNativeObject implements NativeObjec
         try (var POOLED = Allocator.ofPooled()) {
             MemorySegment RESULT;
             try {
-                RESULT = (MemorySegment) retrieveLongArrayCriticalMH.invokeExact(MEMORY, POOLED.allocate(PNIBuf.LAYOUT.byteSize()));
+                RESULT = (MemorySegment) retrieveLongArrayCriticalMH.invokeExact(MEMORY, POOLED.allocate(PNIBuf.LAYOUT));
             } catch (Throwable THROWABLE) {
                 throw PanamaUtils.convertInvokeExactException(THROWABLE);
             }
@@ -1284,7 +1284,7 @@ public class PrimitiveStruct extends AbstractNativeObject implements NativeObjec
         try (var POOLED = Allocator.ofPooled()) {
             MemorySegment RESULT;
             try {
-                RESULT = (MemorySegment) retrieveUnsignedLongArrayCriticalMH.invokeExact(MEMORY, POOLED.allocate(PNIBuf.LAYOUT.byteSize()));
+                RESULT = (MemorySegment) retrieveUnsignedLongArrayCriticalMH.invokeExact(MEMORY, POOLED.allocate(PNIBuf.LAYOUT));
             } catch (Throwable THROWABLE) {
                 throw PanamaUtils.convertInvokeExactException(THROWABLE);
             }
@@ -1319,7 +1319,7 @@ public class PrimitiveStruct extends AbstractNativeObject implements NativeObjec
         try (var POOLED = Allocator.ofPooled()) {
             MemorySegment RESULT;
             try {
-                RESULT = (MemorySegment) retrieveShortArrayCriticalMH.invokeExact(MEMORY, POOLED.allocate(PNIBuf.LAYOUT.byteSize()));
+                RESULT = (MemorySegment) retrieveShortArrayCriticalMH.invokeExact(MEMORY, POOLED.allocate(PNIBuf.LAYOUT));
             } catch (Throwable THROWABLE) {
                 throw PanamaUtils.convertInvokeExactException(THROWABLE);
             }
@@ -1354,7 +1354,7 @@ public class PrimitiveStruct extends AbstractNativeObject implements NativeObjec
         try (var POOLED = Allocator.ofPooled()) {
             MemorySegment RESULT;
             try {
-                RESULT = (MemorySegment) retrieveUnsignedShortArrayCriticalMH.invokeExact(MEMORY, POOLED.allocate(PNIBuf.LAYOUT.byteSize()));
+                RESULT = (MemorySegment) retrieveUnsignedShortArrayCriticalMH.invokeExact(MEMORY, POOLED.allocate(PNIBuf.LAYOUT));
             } catch (Throwable THROWABLE) {
                 throw PanamaUtils.convertInvokeExactException(THROWABLE);
             }
@@ -1389,7 +1389,7 @@ public class PrimitiveStruct extends AbstractNativeObject implements NativeObjec
         try (var POOLED = Allocator.ofPooled()) {
             MemorySegment RESULT;
             try {
-                RESULT = (MemorySegment) retrieveBooleanArrayCriticalMH.invokeExact(MEMORY, POOLED.allocate(PNIBuf.LAYOUT.byteSize()));
+                RESULT = (MemorySegment) retrieveBooleanArrayCriticalMH.invokeExact(MEMORY, POOLED.allocate(PNIBuf.LAYOUT));
             } catch (Throwable THROWABLE) {
                 throw PanamaUtils.convertInvokeExactException(THROWABLE);
             }
@@ -1424,7 +1424,7 @@ public class PrimitiveStruct extends AbstractNativeObject implements NativeObjec
         try (var POOLED = Allocator.ofPooled()) {
             MemorySegment RESULT;
             try {
-                RESULT = (MemorySegment) retrieveByteArrayPointerCriticalMH.invokeExact(MEMORY, POOLED.allocate(PNIBuf.LAYOUT.byteSize()));
+                RESULT = (MemorySegment) retrieveByteArrayPointerCriticalMH.invokeExact(MEMORY, POOLED.allocate(PNIBuf.LAYOUT));
             } catch (Throwable THROWABLE) {
                 throw PanamaUtils.convertInvokeExactException(THROWABLE);
             }
@@ -1459,7 +1459,7 @@ public class PrimitiveStruct extends AbstractNativeObject implements NativeObjec
         try (var POOLED = Allocator.ofPooled()) {
             MemorySegment RESULT;
             try {
-                RESULT = (MemorySegment) retrieveUnsignedByteArrayPointerCriticalMH.invokeExact(MEMORY, POOLED.allocate(PNIBuf.LAYOUT.byteSize()));
+                RESULT = (MemorySegment) retrieveUnsignedByteArrayPointerCriticalMH.invokeExact(MEMORY, POOLED.allocate(PNIBuf.LAYOUT));
             } catch (Throwable THROWABLE) {
                 throw PanamaUtils.convertInvokeExactException(THROWABLE);
             }
@@ -1494,7 +1494,7 @@ public class PrimitiveStruct extends AbstractNativeObject implements NativeObjec
         try (var POOLED = Allocator.ofPooled()) {
             MemorySegment RESULT;
             try {
-                RESULT = (MemorySegment) retrieveCharArrayPointerCriticalMH.invokeExact(MEMORY, POOLED.allocate(PNIBuf.LAYOUT.byteSize()));
+                RESULT = (MemorySegment) retrieveCharArrayPointerCriticalMH.invokeExact(MEMORY, POOLED.allocate(PNIBuf.LAYOUT));
             } catch (Throwable THROWABLE) {
                 throw PanamaUtils.convertInvokeExactException(THROWABLE);
             }
@@ -1529,7 +1529,7 @@ public class PrimitiveStruct extends AbstractNativeObject implements NativeObjec
         try (var POOLED = Allocator.ofPooled()) {
             MemorySegment RESULT;
             try {
-                RESULT = (MemorySegment) retrieveDoubleArrayPointerCriticalMH.invokeExact(MEMORY, POOLED.allocate(PNIBuf.LAYOUT.byteSize()));
+                RESULT = (MemorySegment) retrieveDoubleArrayPointerCriticalMH.invokeExact(MEMORY, POOLED.allocate(PNIBuf.LAYOUT));
             } catch (Throwable THROWABLE) {
                 throw PanamaUtils.convertInvokeExactException(THROWABLE);
             }
@@ -1564,7 +1564,7 @@ public class PrimitiveStruct extends AbstractNativeObject implements NativeObjec
         try (var POOLED = Allocator.ofPooled()) {
             MemorySegment RESULT;
             try {
-                RESULT = (MemorySegment) retrieveFloatArrayPointerCriticalMH.invokeExact(MEMORY, POOLED.allocate(PNIBuf.LAYOUT.byteSize()));
+                RESULT = (MemorySegment) retrieveFloatArrayPointerCriticalMH.invokeExact(MEMORY, POOLED.allocate(PNIBuf.LAYOUT));
             } catch (Throwable THROWABLE) {
                 throw PanamaUtils.convertInvokeExactException(THROWABLE);
             }
@@ -1599,7 +1599,7 @@ public class PrimitiveStruct extends AbstractNativeObject implements NativeObjec
         try (var POOLED = Allocator.ofPooled()) {
             MemorySegment RESULT;
             try {
-                RESULT = (MemorySegment) retrieveIntArrayPointerCriticalMH.invokeExact(MEMORY, POOLED.allocate(PNIBuf.LAYOUT.byteSize()));
+                RESULT = (MemorySegment) retrieveIntArrayPointerCriticalMH.invokeExact(MEMORY, POOLED.allocate(PNIBuf.LAYOUT));
             } catch (Throwable THROWABLE) {
                 throw PanamaUtils.convertInvokeExactException(THROWABLE);
             }
@@ -1634,7 +1634,7 @@ public class PrimitiveStruct extends AbstractNativeObject implements NativeObjec
         try (var POOLED = Allocator.ofPooled()) {
             MemorySegment RESULT;
             try {
-                RESULT = (MemorySegment) retrieveUnsignedIntArrayPointerCriticalMH.invokeExact(MEMORY, POOLED.allocate(PNIBuf.LAYOUT.byteSize()));
+                RESULT = (MemorySegment) retrieveUnsignedIntArrayPointerCriticalMH.invokeExact(MEMORY, POOLED.allocate(PNIBuf.LAYOUT));
             } catch (Throwable THROWABLE) {
                 throw PanamaUtils.convertInvokeExactException(THROWABLE);
             }
@@ -1669,7 +1669,7 @@ public class PrimitiveStruct extends AbstractNativeObject implements NativeObjec
         try (var POOLED = Allocator.ofPooled()) {
             MemorySegment RESULT;
             try {
-                RESULT = (MemorySegment) retrieveLongArrayPointerCriticalMH.invokeExact(MEMORY, POOLED.allocate(PNIBuf.LAYOUT.byteSize()));
+                RESULT = (MemorySegment) retrieveLongArrayPointerCriticalMH.invokeExact(MEMORY, POOLED.allocate(PNIBuf.LAYOUT));
             } catch (Throwable THROWABLE) {
                 throw PanamaUtils.convertInvokeExactException(THROWABLE);
             }
@@ -1704,7 +1704,7 @@ public class PrimitiveStruct extends AbstractNativeObject implements NativeObjec
         try (var POOLED = Allocator.ofPooled()) {
             MemorySegment RESULT;
             try {
-                RESULT = (MemorySegment) retrieveUnsignedLongArrayPointerCriticalMH.invokeExact(MEMORY, POOLED.allocate(PNIBuf.LAYOUT.byteSize()));
+                RESULT = (MemorySegment) retrieveUnsignedLongArrayPointerCriticalMH.invokeExact(MEMORY, POOLED.allocate(PNIBuf.LAYOUT));
             } catch (Throwable THROWABLE) {
                 throw PanamaUtils.convertInvokeExactException(THROWABLE);
             }
@@ -1739,7 +1739,7 @@ public class PrimitiveStruct extends AbstractNativeObject implements NativeObjec
         try (var POOLED = Allocator.ofPooled()) {
             MemorySegment RESULT;
             try {
-                RESULT = (MemorySegment) retrieveShortArrayPointerCriticalMH.invokeExact(MEMORY, POOLED.allocate(PNIBuf.LAYOUT.byteSize()));
+                RESULT = (MemorySegment) retrieveShortArrayPointerCriticalMH.invokeExact(MEMORY, POOLED.allocate(PNIBuf.LAYOUT));
             } catch (Throwable THROWABLE) {
                 throw PanamaUtils.convertInvokeExactException(THROWABLE);
             }
@@ -1774,7 +1774,7 @@ public class PrimitiveStruct extends AbstractNativeObject implements NativeObjec
         try (var POOLED = Allocator.ofPooled()) {
             MemorySegment RESULT;
             try {
-                RESULT = (MemorySegment) retrieveUnsignedShortArrayPointerCriticalMH.invokeExact(MEMORY, POOLED.allocate(PNIBuf.LAYOUT.byteSize()));
+                RESULT = (MemorySegment) retrieveUnsignedShortArrayPointerCriticalMH.invokeExact(MEMORY, POOLED.allocate(PNIBuf.LAYOUT));
             } catch (Throwable THROWABLE) {
                 throw PanamaUtils.convertInvokeExactException(THROWABLE);
             }
@@ -1809,7 +1809,7 @@ public class PrimitiveStruct extends AbstractNativeObject implements NativeObjec
         try (var POOLED = Allocator.ofPooled()) {
             MemorySegment RESULT;
             try {
-                RESULT = (MemorySegment) retrieveBooleanArrayPointerCriticalMH.invokeExact(MEMORY, POOLED.allocate(PNIBuf.LAYOUT.byteSize()));
+                RESULT = (MemorySegment) retrieveBooleanArrayPointerCriticalMH.invokeExact(MEMORY, POOLED.allocate(PNIBuf.LAYOUT));
             } catch (Throwable THROWABLE) {
                 throw PanamaUtils.convertInvokeExactException(THROWABLE);
             }
@@ -2096,11 +2096,11 @@ public class PrimitiveStruct extends AbstractNativeObject implements NativeObjec
         }
 
         public Array(Allocator allocator, long len) {
-            this(allocator.allocate(PrimitiveStruct.LAYOUT.byteSize() * len));
+            super(allocator, PrimitiveStruct.LAYOUT, len);
         }
 
         public Array(PNIBuf buf) {
-            this(buf.get());
+            super(buf, PrimitiveStruct.LAYOUT);
         }
 
         @Override
@@ -2161,4 +2161,4 @@ public class PrimitiveStruct extends AbstractNativeObject implements NativeObjec
     }
 }
 // metadata.generator-version: pni test
-// sha256:0e1c48e4ece055d7fcf9ece2958252dfadcc0fa1a73335abd631f564a1b93454
+// sha256:439db6a1fd4e27af63f7a1521149215fd2395ac51c560d3b3c3a0b4392b9209c
