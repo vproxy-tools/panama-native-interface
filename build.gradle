@@ -55,9 +55,8 @@ subprojects {
 
     if (project.name == 'pni') {
         java {
-            toolchain {
-                languageVersion = JavaLanguageVersion.of(11)
-            }
+            sourceCompatibility = '11'
+            targetCompatibility = '11'
         }
     } else {
         java {
@@ -77,7 +76,6 @@ subprojects {
         if (project.name != 'pni') {
             jvmArgs += '--enable-preview'
             jvmArgs += '--enable-native-access=ALL-UNNAMED'
-            javaLauncher.set(javaToolchains.launcherFor(java.toolchain))
         }
     }
     tasks.withType(Test) {
