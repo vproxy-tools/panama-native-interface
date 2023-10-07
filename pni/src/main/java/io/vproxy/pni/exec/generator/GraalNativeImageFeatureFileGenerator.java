@@ -14,9 +14,7 @@ import io.vproxy.pni.exec.internal.Utils;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @SuppressWarnings("SameParameterValue")
 public class GraalNativeImageFeatureFileGenerator {
@@ -89,6 +87,8 @@ public class GraalNativeImageFeatureFileGenerator {
         sb.append("    public void duringSetup(DuringSetupAccess access) {\n");
 
         boolean isFirst = true;
+        var classes = new ArrayList<>(this.classes);
+        classes.sort(Comparator.comparing(a -> a.name));
         for (var cls : classes) {
             if (cls.isUpcall()) {
                 continue;
