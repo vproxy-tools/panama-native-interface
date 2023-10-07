@@ -73,4 +73,6 @@ playground/src/main/template/**/*.java
 *.log
 
 sample/sample.run
+sample/sample.exe
 pni.run
+pni.exe

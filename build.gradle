@@ -1,4 +1,11 @@
 import org.gradle.api.tasks.testing.logging.TestLogEvent
+import io.vproxy.base.util.OS
+
+buildscript {
+    dependencies {
+        classpath group: 'io.vproxy', name: 'commons', version: '1.1.3'
+    }
+}
 
 plugins {
     id 'java'
@@ -39,8 +46,16 @@ shadowJar {
 }
 
 task nativeImage(type: Exec) {
-    executable 'native-image'
-    args '-jar', './build/libs/pni.jar', '--no-fallback', '-o', 'pni.run'
+    if (OS.isWindows()) {
+        executable 'native-image.cmd'
+    } else {
+        executable 'native-image'
+    }
+    def output = 'pni'
+    if (!OS.isWindows()) {
+        output += '.run'
+    }
+    args '-jar', './build/libs/pni.jar', '--no-fallback', '-o', output
 
     dependsOn shadowJar
 }
@@ -310,14 +325,26 @@ project(":sample") {
         dependsOn compilePNISampleLib
     }
     task sampleNativeImage(type: Exec) {
-        executable 'native-image'
-        args '-jar', './build/libs/sample.jar', '--features=io.vproxy.pni.sample.Feature', '--enable-preview', '--no-fallback', '-o', 'sample.run'
+        if (OS.isWindows()) {
+            executable 'native-image.cmd'
+        } else {
+            executable 'native-image'
+        }
+        def output = 'sample'
+        if (!OS.isWindows()) {
+            output += '.run'
+        }
+        args '-jar', './build/libs/sample.jar', '--features=io.vproxy.pni.sample.Feature', '--enable-preview', '--no-fallback', '-o', output
 
         dependsOn compilePNISampleLib
         dependsOn shadowJar
     }
     task runSampleNativeImage(type: Exec) {
-        executable './sample.run'
+        if (OS.isWindows()) {
+            executable project.projectDir.getAbsolutePath() + '/sample.exe'
+        } else {
+            executable './sample.run'
+        }
         args '-Djava.library.path=./src/main/c'
 
         dependsOn sampleNativeImage
