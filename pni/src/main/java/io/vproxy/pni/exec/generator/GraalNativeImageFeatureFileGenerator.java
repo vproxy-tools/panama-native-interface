@@ -163,6 +163,12 @@ public class GraalNativeImageFeatureFileGenerator {
                 sb.append(", Linker.Option.isTrivial()");
             }
             sb.append(");\n");
+
+            for (var t : method.throwTypeRefs) {
+                var name = t.name();
+                Utils.appendIndent(sb, indent)
+                    .append("RuntimeReflection.registerAllConstructors(").append(name).append(".class").append(");\n");
+            }
         }
 
         private final Map<AstParam, ParamGenerator> paramGenerators = new HashMap<>();
