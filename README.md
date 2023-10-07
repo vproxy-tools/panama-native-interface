@@ -144,17 +144,10 @@ Here's the tutorial for `Gradle`:
 Please follow the steps in chapter `How to build`. Installing JDKs, configuring environment variables, installing compiling tools, etc.  
 If you are able to run the sample program, then you are ready to go!
 
-In your Gradle project, add a `gradle.properties` file, and enter the following lines:
-
-```properties
-org.gradle.java.installations.auto-detect=false
-org.gradle.java.installations.auto-download=false
-org.gradle.java.installations.fromEnv=JAVA_HOME_21
-```
-
-This will enforce Gradle to use `$JAVA_HOME_21` as the JDK home for building when setting `toolchain` to `21`.
-
 ---
+
+You will need to make sure you `Gradle` version is at least `8.3`.  
+Check and modify `distributionUrl` in `gradle/wrapper/gradle-wrapper.properties` properly.
 
 In your `build.gradle`, add the following snippet:
 
@@ -163,9 +156,8 @@ allprojects {
     apply plugin: 'java'
 
     java {
-        toolchain {
-            languageVersion = JavaLanguageVersion.of(21)
-        }
+        sourceCompatibility = '21'
+        targetCompatibility = '21'
     }
 
     tasks.withType(JavaCompile) {
@@ -174,7 +166,6 @@ allprojects {
     tasks.withType(JavaExec) {
         jvmArgs += '--enable-preview'
         jvmArgs += '--enable-native-access=ALL-UNNAMED'
-        javaLauncher.set(javaToolchains.launcherFor(java.toolchain))
     }
     tasks.withType(Test) {
         jvmArgs += '--enable-preview'
@@ -199,6 +190,8 @@ The version will appear multiple times in `build.gradle`, so you can define a va
 buildscript {
     def PNI_VERSION = '21.0.0.15'
     ext.set("PNI_VERSION", PNI_VERSION)
+
+    // more configuration later ...
 }
 
 plugins {
