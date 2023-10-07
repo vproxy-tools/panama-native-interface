@@ -71,7 +71,7 @@ public class Utils {
             var pb = new ProcessBuilder();
             var arr = new String[5 + files.size()];
             var idx = 0;
-            arr[idx++] = Path.of(System.getenv("JAVA_HOME_21"), "bin", "javac").toString();
+            arr[idx++] = Path.of(System.getenv("JAVA_HOME"), "bin", "javac").toString();
             arr[idx++] = "-cp";
             arr[idx++] = "../api/build/classes/java/main";
             arr[idx++] = "-d";

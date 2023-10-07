@@ -4,6 +4,7 @@ import io.vproxy.pni.exec.CompilerOptions;
 import io.vproxy.pni.exec.WarnType;
 import org.junit.Test;
 
+import java.io.File;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -37,7 +38,8 @@ public class TestWarningFlags {
                     int a;
                 }
                 """;
-        var cp = "/wfjioaweofiaweoifjaoiwejfoijoijwov";
+        var cp = "wfjioaweofiaweoifjaoiwejfoijoijwov";
+        cp = File.separator + cp;
 
         var asts = Utils.load(List.of(
                 new JavaFile()
