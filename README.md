@@ -59,6 +59,11 @@ You need JDK `21` to build the project.
 > If you are using `Windows`, it's recommended to use `MinGW UCRT64` to work with this project.
 >
 > * Configure `MINGW_BASH` to the path to `bash.exe` in your `MinGW` directory, usually it's `C:\msys64\usr\bin\bash.exe`
+> * Install Visual Studio 2022, and at least install the following components:
+>   * MSVC v143 - VS 2022 C++ x64/x86 生成工具(最新)
+>   * Windows 通用 CRT SDK
+>   * Windows 通用 C 运行时
+>   * Windows 10 SDK (10.0.20348.0)
 
 After configuring the environment variables, you might need to restart your terminal/ide, and stop current Gradle daemons using `./gradlew --stop`
 
