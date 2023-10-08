@@ -8,7 +8,7 @@ buildscript {
 }
 
 plugins {
-    id 'java'
+    id 'java-library'
     id 'maven-publish'
     id 'signing'
     id 'com.github.johnrengelman.shadow' version '7.1.2'
@@ -61,7 +61,7 @@ task nativeImage(type: Exec) {
 }
 
 subprojects {
-    apply plugin: 'java'
+    apply plugin: 'java-library'
     apply plugin: 'maven-publish'
     apply plugin: 'signing'
 
@@ -208,6 +208,7 @@ project(":api") {
 
 project(":graal") {
     dependencies {
+        api project(':api')
         compileOnly group: 'org.graalvm.truffle', name: 'truffle-api', version: '23.1.0'
     }
 }
@@ -254,7 +255,7 @@ project(":acceptance-testing-template") {
         args '-cp', 'acceptance-testing-template/build/classes/java/main', '-d', 'acceptance-testing/src/test/generated', '-h', 'acceptance-testing/src/test/c-generated'
 
         dependsOn cleanAcceptanceTesting
-        dependsOn compileTestJava
+        dependsOn compileJava
     }
 }
 
@@ -317,7 +318,7 @@ project(":graal-test-template") {
                 '-fgraal-native-image-feature=io.vproxy.pni.graal.test.Feature'
 
         dependsOn cleanGraalTesting
-        dependsOn compileTestJava
+        dependsOn compileJava
     }
 }
 
@@ -407,6 +408,7 @@ project(":sample") {
     }
     dependencies {
         implementation project(":api")
+        implementation project(":graal")
         compileOnly 'io.vproxy:graal-feature-mock:1.1.0'
     }
 

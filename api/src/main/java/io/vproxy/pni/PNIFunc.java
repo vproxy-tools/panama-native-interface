@@ -14,8 +14,6 @@ import java.util.Set;
 
 public abstract class PNIFunc<T> implements NativeObject {
     private static final Arena UPCALL_STUB_ARENA = Arena.ofShared(); // should not be released
-    private static final MemorySegment UPCALL_STUB_CALL;
-    private static final MemorySegment UPCALL_STUB_RELEASE;
 
     static {
         MethodHandle callMethodHandle;
@@ -33,14 +31,25 @@ public abstract class PNIFunc<T> implements NativeObject {
             throw new RuntimeException(e); // should not happen
         }
 
-        UPCALL_STUB_CALL = Linker.nativeLinker().upcallStub(
-            callMethodHandle,
-            FunctionDescriptor.of(ValueLayout.JAVA_INT, ValueLayout.JAVA_LONG, ValueLayout.ADDRESS),
-            UPCALL_STUB_ARENA);
-        UPCALL_STUB_RELEASE = Linker.nativeLinker().upcallStub(
-            releaseMethodHandle,
-            FunctionDescriptor.ofVoid(ValueLayout.JAVA_LONG),
-            UPCALL_STUB_ARENA);
+        MemorySegment UPCALL_STUB_CALL;
+        MemorySegment UPCALL_STUB_RELEASE;
+
+        if (GraalHelper.getInvokeFunc() != null) {
+            UPCALL_STUB_CALL = GraalHelper.getInvokeFunc();
+        } else {
+            UPCALL_STUB_CALL = Linker.nativeLinker().upcallStub(
+                callMethodHandle,
+                FunctionDescriptor.of(ValueLayout.JAVA_INT, ValueLayout.JAVA_LONG, ValueLayout.ADDRESS),
+                UPCALL_STUB_ARENA);
+        }
+        if (GraalHelper.getReleaseFunc() != null) {
+            UPCALL_STUB_RELEASE = GraalHelper.getReleaseFunc();
+        } else {
+            UPCALL_STUB_RELEASE = Linker.nativeLinker().upcallStub(
+                releaseMethodHandle,
+                FunctionDescriptor.ofVoid(ValueLayout.JAVA_LONG),
+                UPCALL_STUB_ARENA);
+        }
 
         PanamaUtils.loadLib();
 
@@ -179,7 +188,7 @@ public abstract class PNIFunc<T> implements NativeObject {
         return (CallSite<T>) func.func;
     }
 
-    private static int call(long index, MemorySegment data) {
+    public static int call(long index, MemorySegment data) {
         PNIFunc<?> func = holder.get(index);
         if (func == null) {
             System.out.println("[PNI][WARN][PNIFunc#call] PNIFunc not found: index: " + index + ", data: " + data.address());
@@ -211,7 +220,7 @@ public abstract class PNIFunc<T> implements NativeObject {
         }
     }
 
-    private static void release(long index) {
+    public static void release(long index) {
         var func = holder.remove(index);
         if (func == null) {
             System.out.println("[PNI][WARN][PNIFunc#release] PNIFunc not found: index: " + index);

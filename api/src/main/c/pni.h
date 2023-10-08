@@ -89,6 +89,12 @@ static inline void PNIStoreErrno(void* _env) {
     env->ex.errno_ = errno;
 }
 
+#if PNI_GRAAL
+JNIEXPORT void  JNICALL PNISetGraalThread(void* thread);
+JNIEXPORT void* JNICALL PNIGetGraalThread(void);
+JNIEXPORT int   JNICALL PNIHasGraalThread(void);
+#endif // PNI_GRAAL
+
 typedef PNI_PACK(struct, PNIFunc, {
     int64_t   index;
     union {
@@ -102,20 +108,36 @@ PNIEnvExpand(func, PNIFunc*)
 #define PNIFuncInvokeExceptionCaught ((int32_t) 0x800000f1)
 #define PNIFuncInvokeNoSuchFunction  ((int32_t) 0x800000f2)
 
+#if PNI_GRAAL
+typedef int32_t (*PNIFuncInvokeFunc)(void*,int64_t,void*);
+#else
 typedef int32_t (*PNIFuncInvokeFunc)(int64_t,void*);
+#endif // PNI_GRAAL
 JNIEXPORT PNIFuncInvokeFunc JNICALL GetPNIFuncInvokeFunc(void);
 JNIEXPORT void JNICALL SetPNIFuncInvokeFunc(PNIFuncInvokeFunc f);
 
 static inline int32_t PNIFuncInvoke(PNIFunc* f, void* data) {
+#if PNI_GRAAL
+    return GetPNIFuncInvokeFunc()(PNIGetGraalThread(), f->index, data);
+#else
     return GetPNIFuncInvokeFunc()(f->index, data);
+#endif // PNI_GRAAL
 }
 
+#if PNI_GRAAL
+typedef void (*PNIFuncReleaseFunc)(void*,int64_t);
+#else
 typedef void (*PNIFuncReleaseFunc)(int64_t);
+#endif // PNI_GRAAL
 JNIEXPORT PNIFuncReleaseFunc JNICALL GetPNIFuncReleaseFunc(void);
 JNIEXPORT void JNICALL SetPNIFuncReleaseFunc(PNIFuncReleaseFunc f);
 
 static inline void PNIFuncRelease(PNIFunc* f) {
+#if PNI_GRAAL
+    GetPNIFuncReleaseFunc()(PNIGetGraalThread(), f->index);
+#else
     GetPNIFuncReleaseFunc()(f->index);
+#endif // PNI_GRAAL
 }
 
 typedef PNI_PACK(struct, PNIRef, {
@@ -128,12 +150,20 @@ typedef PNI_PACK(struct, PNIRef, {
 
 PNIEnvExpand(ref, PNIRef*)
 
+#if PNI_GRAAL
+typedef void (*PNIRefReleaseFunc)(void*,int64_t);
+#else
 typedef void (*PNIRefReleaseFunc)(int64_t);
+#endif // PNI_GRAAL
 JNIEXPORT PNIRefReleaseFunc JNICALL GetPNIRefReleaseFunc(void);
 JNIEXPORT void JNICALL SetPNIRefReleaseFunc(PNIRefReleaseFunc f);
 
 static inline void PNIRefRelease(PNIRef* ref) {
+#if PNI_GRAAL
+    GetPNIRefReleaseFunc()(PNIGetGraalThread(), ref->index);
+#else
     GetPNIRefReleaseFunc()(ref->index);
+#endif // PNI_GRAAL
 }
 
 #define PNIBufExpand(BufType, ValueType, Size) \

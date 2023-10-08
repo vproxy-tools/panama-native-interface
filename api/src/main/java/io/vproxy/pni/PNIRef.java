@@ -14,7 +14,6 @@ import java.util.Set;
 
 public class PNIRef<T> implements NativeObject {
     private static final Arena UPCALL_STUB_ARENA = Arena.ofShared(); // should not be released
-    private static final MemorySegment UPCALL_STUB_RELEASE;
 
     static {
         MethodHandle releaseMethodHandle;
@@ -27,10 +26,15 @@ public class PNIRef<T> implements NativeObject {
             throw new RuntimeException(e); // should not happen
         }
 
-        UPCALL_STUB_RELEASE = Linker.nativeLinker().upcallStub(
-            releaseMethodHandle,
-            FunctionDescriptor.ofVoid(ValueLayout.JAVA_LONG),
-            UPCALL_STUB_ARENA);
+        MemorySegment UPCALL_STUB_RELEASE;
+        if (GraalHelper.getReleaseRef() != null) {
+            UPCALL_STUB_RELEASE = GraalHelper.getReleaseRef();
+        } else {
+            UPCALL_STUB_RELEASE = Linker.nativeLinker().upcallStub(
+                releaseMethodHandle,
+                FunctionDescriptor.ofVoid(ValueLayout.JAVA_LONG),
+                UPCALL_STUB_ARENA);
+        }
 
         PanamaUtils.loadLib();
 
@@ -175,7 +179,7 @@ public class PNIRef<T> implements NativeObject {
         return (T) ref.ref;
     }
 
-    private static void release(long index) {
+    public static void release(long index) {
         var removed = holder.remove(index);
         if (removed == null) {
             System.out.println("[PNI][WARN][PNIRef#release] PNIRef not found: index: " + index);

@@ -27,6 +27,7 @@ gcc -std=gnu99 -O2 \
     -I "../../../../api/src/main/c/jnimock" \
     -I "../c-generated" \
     -shared -Werror -fPIC \
+    -DPNI_GRAAL=1 \
     ../../../../api/src/main/c/pni.c \
     graal-test.c \
     -o "$target"

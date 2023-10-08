@@ -1,5 +1,25 @@
 #include "pni.h"
 
+#if PNI_GRAAL
+
+static __thread void* _graalThread;
+static int _PNIHasGraalThread;
+
+JNIEXPORT void JNICALL PNISetGraalThread(void* thread) {
+    _PNIHasGraalThread = 1;
+    _graalThread = thread;
+}
+
+JNIEXPORT void* JNICALL PNIGetGraalThread(void) {
+    return _graalThread;
+}
+
+JNIEXPORT int JNICALL PNIHasGraalThread(void) {
+    return _PNIHasGraalThread;
+}
+
+#endif // PNI_GRAAL
+
 static PNIFuncInvokeFunc _PNIFuncInvokeFunc;
 
 JNIEXPORT PNIFuncInvokeFunc JNICALL GetPNIFuncInvokeFunc(void) {

@@ -1,15 +1,50 @@
 package io.vproxy.pni.graal;
 
+import io.vproxy.pni.GraalHelper;
+import io.vproxy.pni.PanamaUtils;
+import org.graalvm.nativeimage.CurrentIsolate;
 import org.graalvm.nativeimage.IsolateThread;
 import org.graalvm.nativeimage.c.function.CEntryPointLiteral;
 import org.graalvm.nativeimage.c.function.CFunctionPointer;
 import org.graalvm.nativeimage.c.type.VoidPointer;
 
+import java.lang.foreign.MemorySegment;
+import java.lang.invoke.MethodHandle;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 
 public class GraalUtils {
     private GraalUtils() {
+    }
+
+    public static void setThread() {
+        init();
+
+        var thread = CurrentIsolate.getCurrentThread();
+        var mem = MemorySegment.ofAddress(thread.rawValue());
+
+        try {
+            PNISetGraalThread.invokeExact(mem);
+        } catch (Throwable e) {
+            throw new RuntimeException("should not happen", e);
+        }
+    }
+
+    private static volatile MethodHandle PNISetGraalThread = null;
+
+    public static void init() {
+        if (PNISetGraalThread == null) {
+            synchronized (GraalUtils.class) {
+                if (PNISetGraalThread == null) {
+                    PanamaUtils.loadLib();
+                    PNISetGraalThread = PanamaUtils.lookupPNICriticalFunction(true, void.class, "PNISetGraalThread", MemorySegment.class);
+                }
+            }
+        }
+
+        GraalHelper.setInvokeFunc(GraalPNIFunc.getInvokeFunctionPointer());
+        GraalHelper.setReleaseFunc(GraalPNIFunc.getReleaseFunctionPointer());
+        GraalHelper.setReleaseRef(GraalPNIRef.getReleaseFunctionPointer());
     }
 
     public static CEntryPointLiteral<CFunctionPointer> defineCFunctionByName(Class<?> declaringClass, String name) {

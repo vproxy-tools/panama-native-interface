@@ -14,8 +14,18 @@ JNIEXPORT void JNICALL JavaCritical_io_vproxy_pni_graal_test_Invoke_invokePtr(vo
     return f(thread, a, p);
 }
 
+JNIEXPORT void JNICALL JavaCritical_io_vproxy_pni_graal_test_Invoke_releaseRef(PNIRef * ref) {
+    PNIRefRelease(ref);
+}
+
+JNIEXPORT int32_t JNICALL JavaCritical_io_vproxy_pni_graal_test_Invoke_callFunc(PNIFunc * func) {
+    int res = PNIFuncInvoke(func, NULL);
+    PNIFuncRelease(func);
+    return res;
+}
+
 #ifdef __cplusplus
 }
 #endif
 // metadata.generator-version: pni test
-// sha256:a698299c2d8389769f5182f1160c90e44949efe7c5f8351d0cd38f40b4434c66
+// sha256:85d6ce503db140177c54ea0d7f4bd3587e2e78b206eb61091c4390ec41c9e300

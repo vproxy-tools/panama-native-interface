@@ -73,6 +73,7 @@ public class GraalNativeImageFeatureFileGenerator {
         }
 
         sb.append("import io.vproxy.pni.*;\n" +
+                  "import io.vproxy.pni.graal.*;\n" +
                   "import java.lang.foreign.*;\n" +
                   "import java.nio.ByteBuffer;\n" +
                   "import org.graalvm.nativeimage.hosted.*;\n");
@@ -86,8 +87,10 @@ public class GraalNativeImageFeatureFileGenerator {
         sb.append("    @Override\n");
         sb.append("    public void duringSetup(DuringSetupAccess access) {\n");
 
-        sb.append("        /* PNIFunc & PNIRef */\n");
-        sb.append("        RuntimeForeignAccess.registerForDowncall(PanamaUtils.buildCriticalFunctionDescriptor(void.class, MemorySegment.class));\n");
+        sb.append("        /* PNIFunc & PNIRef & GraalThread */\n");
+        sb.append("        RuntimeForeignAccess.registerForDowncall(PanamaUtils.buildCriticalFunctionDescriptor(void.class, MemorySegment.class), Linker.Option.isTrivial());\n");
+        sb.append("        RuntimeClassInitialization.initializeAtBuildTime(GraalPNIFunc.class);\n");
+        sb.append("        RuntimeClassInitialization.initializeAtBuildTime(GraalPNIRef.class);\n");
 
         var classes = new ArrayList<>(this.classes);
         classes.sort(Comparator.comparing(a -> a.name));

@@ -13,6 +13,7 @@ public class Feature2 implements Feature {
             org.junit.runners.Suite.class,
             Suite.class,
             TestFunctionPointer.class,
+            TestRefAndFunc.class,
         };
 
         for (var c : classes) {

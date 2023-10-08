@@ -37,6 +37,28 @@ public class Invoke {
             throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
     }
+
+    private static final MethodHandle releaseRefMH = PanamaUtils.lookupPNICriticalFunction(false, void.class, "JavaCritical_io_vproxy_pni_graal_test_Invoke_releaseRef", PNIRef.class /* ref */);
+
+    public void releaseRef(PNIRef<java.lang.Integer> ref) {
+        try {
+            releaseRefMH.invokeExact((MemorySegment) (ref == null ? MemorySegment.NULL : ref.MEMORY));
+        } catch (Throwable THROWABLE) {
+            throw PanamaUtils.convertInvokeExactException(THROWABLE);
+        }
+    }
+
+    private static final MethodHandle callFuncMH = PanamaUtils.lookupPNICriticalFunction(false, int.class, "JavaCritical_io_vproxy_pni_graal_test_Invoke_callFunc", io.vproxy.pni.CallSite.class /* func */);
+
+    public int callFunc(io.vproxy.pni.CallSite<Void> func) {
+        int RESULT;
+        try {
+            RESULT = (int) callFuncMH.invokeExact((MemorySegment) (func == null ? MemorySegment.NULL : PNIFunc.VoidFunc.of(func).MEMORY));
+        } catch (Throwable THROWABLE) {
+            throw PanamaUtils.convertInvokeExactException(THROWABLE);
+        }
+        return RESULT;
+    }
 }
 // metadata.generator-version: pni test
-// sha256:74ad34f3a257769f973101370b8a99a331176c638f70d3ed07414a52ea52eea2
+// sha256:88ea0b2e013956ecad1d4e2d9016ec7f07b8db4bd7b4f6e1c34a4a12a3d83b9f
