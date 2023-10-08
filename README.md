@@ -117,6 +117,8 @@ To run the native image:
 ```shell
 ./gradlew clean runAcceptanceTest
 ./gradlew clean runUnitTest
+# for native image tests:
+./gradlew clean runGraalTest
 ```
 
 </details>
