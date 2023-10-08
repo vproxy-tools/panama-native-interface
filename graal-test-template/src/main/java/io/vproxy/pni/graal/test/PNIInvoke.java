@@ -17,4 +17,14 @@ public interface PNIInvoke {
     )
     @Critical
     int invokeSum(MemorySegment func, MemorySegment thread, int a, int b);
+
+    @Impl(
+        // language="c"
+        c = """
+            void (*f)(void*,int,void*) = func;
+            return f(thread, a, p);
+            """
+    )
+    @Critical
+    void invokePtr(MemorySegment func, MemorySegment thread, int a, MemorySegment p);
 }

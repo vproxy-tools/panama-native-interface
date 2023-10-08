@@ -9,8 +9,13 @@ JNIEXPORT int32_t JNICALL JavaCritical_io_vproxy_pni_graal_test_Invoke_invokeSum
     return f(thread, a, b);
 }
 
+JNIEXPORT void JNICALL JavaCritical_io_vproxy_pni_graal_test_Invoke_invokePtr(void * func, void * thread, int32_t a, void * p) {
+    void (*f)(void*,int,void*) = func;
+    return f(thread, a, p);
+}
+
 #ifdef __cplusplus
 }
 #endif
 // metadata.generator-version: pni test
-// sha256:d774fe2f72ac5e1e11b4720623308bda958765749fb5b459ebecbb02ed108072
+// sha256:a698299c2d8389769f5182f1160c90e44949efe7c5f8351d0cd38f40b4434c66

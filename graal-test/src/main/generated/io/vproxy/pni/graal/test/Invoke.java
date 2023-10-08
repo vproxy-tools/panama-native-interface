@@ -27,6 +27,16 @@ public class Invoke {
         }
         return RESULT;
     }
+
+    private static final MethodHandle invokePtrMH = PanamaUtils.lookupPNICriticalFunction(false, void.class, "JavaCritical_io_vproxy_pni_graal_test_Invoke_invokePtr", MemorySegment.class /* func */, MemorySegment.class /* thread */, int.class /* a */, MemorySegment.class /* p */);
+
+    public void invokePtr(MemorySegment func, MemorySegment thread, int a, MemorySegment p) {
+        try {
+            invokePtrMH.invokeExact((MemorySegment) (func == null ? MemorySegment.NULL : func), (MemorySegment) (thread == null ? MemorySegment.NULL : thread), a, (MemorySegment) (p == null ? MemorySegment.NULL : p));
+        } catch (Throwable THROWABLE) {
+            throw PanamaUtils.convertInvokeExactException(THROWABLE);
+        }
+    }
 }
 // metadata.generator-version: pni test
-// sha256:183488a3db148093f559d2bb40b2959009713855dbf76fb28f9fa38ef8cb4e69
+// sha256:74ad34f3a257769f973101370b8a99a331176c638f70d3ed07414a52ea52eea2

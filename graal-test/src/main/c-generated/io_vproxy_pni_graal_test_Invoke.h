@@ -18,10 +18,11 @@ extern "C" {
 #endif
 
 JNIEXPORT int32_t JNICALL JavaCritical_io_vproxy_pni_graal_test_Invoke_invokeSum(void * func, void * thread, int32_t a, int32_t b);
+JNIEXPORT void JNICALL JavaCritical_io_vproxy_pni_graal_test_Invoke_invokePtr(void * func, void * thread, int32_t a, void * p);
 
 #ifdef __cplusplus
 }
 #endif
 #endif // _Included_io_vproxy_pni_graal_test_Invoke
 // metadata.generator-version: pni test
-// sha256:85c6e28c614b552bfbf3e5baeb0b4ef7f90d31804c870498637dcac48794b680
+// sha256:29239d0677a13662ab76eae20aaab36898dc586246db63abdd166e430e32ce25
