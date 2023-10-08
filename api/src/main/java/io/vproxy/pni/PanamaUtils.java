@@ -63,9 +63,13 @@ public class PanamaUtils {
     public static MethodHandle lookupPNICriticalFunction(boolean isTrivial, Class returnType, String functionName, Class... parameterTypes) {
         var nativeLinker = Linker.nativeLinker();
         var loaderLookup = SymbolLookup.loaderLookup();
-        var stdlibLookup = nativeLinker.defaultLookup();
+        var stdlibLookup = linkerDefaultLookup(nativeLinker);
         var h = loaderLookup.find(functionName)
-            .or(() -> stdlibLookup.find(functionName))
+            .or(() -> {
+                if (stdlibLookup != null)
+                    return stdlibLookup.find(functionName);
+                return Optional.empty();
+            })
             .map(m -> {
                 if (isTrivial) {
                     return nativeLinker.downcallHandle(m, buildCriticalFunctionDescriptor(returnType, parameterTypes), Linker.Option.isTrivial());
