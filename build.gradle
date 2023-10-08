@@ -196,6 +196,14 @@ subprojects {
 }
 
 project(":api") {
+    task compileLib(type: Exec) {
+        workingDir project.rootProject.rootDir.getAbsolutePath() + '/api/src/main/c'
+        def bashPath = System.getenv("MINGW_BASH")
+        if (bashPath == null)
+            bashPath = '/bin/bash'
+        executable bashPath
+        args './make.sh'
+    }
 }
 
 project(":graal") {
@@ -220,6 +228,8 @@ project(":unittest") {
         testImplementation 'junit:junit:4.13.2'
     }
     task runUnitTest(type: Test) {
+        jvmArgs += '-Djava.library.path=' +
+                project.rootProject.rootDir.getAbsolutePath() + '/api/src/main/c'
         include '**/Suite.class'
     }
 }
@@ -274,7 +284,9 @@ project(":acceptance-testing") {
     }
     task runAcceptanceTest(type: Test) {
         jvmArgs += '-Djava.library.path=' +
-                project.rootProject.rootDir.getAbsolutePath() + '/acceptance-testing/src/test/c'
+                project.rootProject.rootDir.getAbsolutePath() + '/acceptance-testing/src/test/c' +
+                File.pathSeparator +
+                project.rootProject.rootDir.getAbsolutePath() + '/api/src/main/c'
         jvmArgs += '--add-opens'
         jvmArgs += 'java.base/java.io=ALL-UNNAMED'
         include '**/Suite.class'
@@ -369,7 +381,9 @@ project(":graal-test") {
         } else {
             executable './graal-test.run'
         }
-        args '-Djava.library.path=./src/main/c'
+        args '-Djava.library.path=./src/main/c' +
+                File.pathSeparator +
+                project.rootProject.rootDir.getAbsolutePath() + '/api/src/main/c'
 
         dependsOn compileGraalTest
         dependsOn compileGraalTestLib
@@ -420,7 +434,9 @@ project(":sample") {
         classpath = sourceSets.main.runtimeClasspath
         mainClass = 'io.vproxy.pni.sample.Main'
         jvmArgs += '-Djava.library.path=' +
-                project.rootProject.rootDir.getAbsolutePath() + '/sample/src/main/c'
+                project.rootProject.rootDir.getAbsolutePath() + '/sample/src/main/c' +
+                File.pathSeparator +
+                project.rootProject.rootDir.getAbsolutePath() + '/api/src/main/c'
 
         dependsOn compileJava
         dependsOn compilePNISampleLib
@@ -446,7 +462,9 @@ project(":sample") {
         } else {
             executable './sample.run'
         }
-        args '-Djava.library.path=./src/main/c'
+        args '-Djava.library.path=./src/main/c' +
+                File.pathSeparator +
+                project.rootProject.rootDir.getAbsolutePath() + '/api/src/main/c'
 
         dependsOn sampleNativeImage
     }
@@ -489,7 +507,9 @@ project(":playground") {
         classpath = sourceSets.main.runtimeClasspath
         mainClass = 'io.vproxy.pni.playground.Main'
         jvmArgs += '-Djava.library.path=' +
-                project.rootProject.rootDir.getAbsolutePath() + '/playground/src/main/c'
+                project.rootProject.rootDir.getAbsolutePath() + '/playground/src/main/c' +
+                File.pathSeparator +
+                project.rootProject.rootDir.getAbsolutePath() + '/api/src/main/c'
 
         dependsOn compileJava
         dependsOn compilePNIPlaygroundLib

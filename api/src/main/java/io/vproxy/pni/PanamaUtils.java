@@ -20,6 +20,28 @@ public class PanamaUtils {
     private PanamaUtils() {
     }
 
+    private static boolean libpniLoaded = false;
+
+    public static void loadLib() {
+        if (libpniLoaded) {
+            return;
+        }
+        synchronized (PanamaUtils.class) {
+            if (libpniLoaded) {
+                return;
+            }
+
+            // check whether it's already loaded (pni.c might have already been compiled into the user library)
+            try {
+                lookupPNICriticalFunction(true, void.class, "SetPNIRefReleaseFunc", MemorySegment.class);
+            } catch (Throwable t) {
+                // it's not loaded yet, do loading ...
+                System.loadLibrary("pni");
+            }
+            libpniLoaded = true;
+        }
+    }
+
     private static boolean nativeLookupSupported = true;
 
     private static SymbolLookup linkerDefaultLookup(Linker linker) {
@@ -30,8 +52,7 @@ public class PanamaUtils {
             return linker.defaultLookup();
         } catch (Throwable t) {
             nativeLookupSupported = false;
-            System.out.println("[PNI][WARN][PanamaUtils#linkerDefaultLookup] " + linker + "#defaultLookup() is not supported");
-            t.printStackTrace(System.out);
+            System.out.println("[PNI][WARN][PanamaUtils#linkerDefaultLookup] " + linker + "#defaultLookup() is not supported: " + t);
             return null;
         }
     }

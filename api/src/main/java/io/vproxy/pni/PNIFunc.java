@@ -41,12 +41,21 @@ public abstract class PNIFunc<T> implements NativeObject {
             releaseMethodHandle,
             FunctionDescriptor.ofVoid(ValueLayout.JAVA_LONG),
             UPCALL_STUB_ARENA);
+
+        PanamaUtils.loadLib();
+
+        var SetPNIFuncInvokeFunc = PanamaUtils.lookupPNICriticalFunction(true, void.class, "SetPNIFuncInvokeFunc", MemorySegment.class);
+        var SetPNIFuncReleaseFunc = PanamaUtils.lookupPNICriticalFunction(true, void.class, "SetPNIFuncReleaseFunc", MemorySegment.class);
+        try {
+            SetPNIFuncInvokeFunc.invokeExact(UPCALL_STUB_CALL);
+            SetPNIFuncReleaseFunc.invokeExact(UPCALL_STUB_RELEASE);
+        } catch (Throwable e) {
+            throw new RuntimeException("should not happen", e);
+        }
     }
 
     public static final MemoryLayout LAYOUT = MemoryLayout.structLayout(
         ValueLayout.JAVA_LONG_UNALIGNED.withName("index"),
-        ValueLayout.ADDRESS_UNALIGNED.withName("func"),
-        ValueLayout.ADDRESS_UNALIGNED.withName("release"),
         MemoryLayout.unionLayout(
             ValueLayout.ADDRESS_UNALIGNED.withName("userdata"),
             ValueLayout.JAVA_LONG_UNALIGNED.withName("udata64")
@@ -74,9 +83,6 @@ public abstract class PNIFunc<T> implements NativeObject {
 
         var index = holder.store(this);
         indexVH.set(MEMORY, index);
-
-        funcVH.set(MEMORY, UPCALL_STUB_CALL);
-        releaseVH.set(MEMORY, UPCALL_STUB_RELEASE);
     }
 
     public static class Options {
@@ -127,12 +133,6 @@ public abstract class PNIFunc<T> implements NativeObject {
 
     private static final VarHandle indexVH = LAYOUT.varHandle(
         MemoryLayout.PathElement.groupElement("index")
-    );
-    private static final VarHandle funcVH = LAYOUT.varHandle(
-        MemoryLayout.PathElement.groupElement("func")
-    );
-    private static final VarHandle releaseVH = LAYOUT.varHandle(
-        MemoryLayout.PathElement.groupElement("release")
     );
     private static final VarHandle userdataVH = LAYOUT.varHandle(
         MemoryLayout.PathElement.groupElement("union0"),

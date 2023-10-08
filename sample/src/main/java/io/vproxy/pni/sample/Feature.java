@@ -8,6 +8,9 @@ import org.graalvm.nativeimage.hosted.*;
 public class Feature implements org.graalvm.nativeimage.hosted.Feature {
     @Override
     public void duringSetup(DuringSetupAccess access) {
+        /* PNIFunc & PNIRef */
+        RuntimeForeignAccess.registerForDowncall(PanamaUtils.buildCriticalFunctionDescriptor(void.class, MemorySegment.class));
+
         /* Java_io_vproxy_pni_sample_NativeFunctions_openIPv4TcpSocket */
         RuntimeForeignAccess.registerForDowncall(PanamaUtils.buildFunctionDescriptor(), Linker.Option.isTrivial());
         RuntimeReflection.registerAllConstructors(java.io.IOException.class);
@@ -41,4 +44,4 @@ public class Feature implements org.graalvm.nativeimage.hosted.Feature {
     }
 }
 // metadata.generator-version: pni test
-// sha256:d69784d8964ff5cd83b137c0ecebc4bc424d50e74356f32ad65e7ff37ad9e7b3
+// sha256:49de1bd62070ce70defc38a5dfd9aa9055f80000682608da38c4b5b43338cee4

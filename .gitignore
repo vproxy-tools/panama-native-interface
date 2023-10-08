@@ -43,6 +43,9 @@ bin/
 .DS_Store
 
 ### native files
+api/src/main/c/libpni.so
+api/src/main/c/libpni.dylib
+api/src/main/c/pni.dll
 acceptance-testing/src/test/c/libpnitest.so
 acceptance-testing/src/test/c/libpnitest.dylib
 acceptance-testing/src/test/c/pnitest.dll

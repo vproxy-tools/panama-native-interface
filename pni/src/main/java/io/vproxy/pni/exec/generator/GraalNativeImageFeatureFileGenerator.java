@@ -86,7 +86,9 @@ public class GraalNativeImageFeatureFileGenerator {
         sb.append("    @Override\n");
         sb.append("    public void duringSetup(DuringSetupAccess access) {\n");
 
-        boolean isFirst = true;
+        sb.append("        /* PNIFunc & PNIRef */\n");
+        sb.append("        RuntimeForeignAccess.registerForDowncall(PanamaUtils.buildCriticalFunctionDescriptor(void.class, MemorySegment.class));\n");
+
         var classes = new ArrayList<>(this.classes);
         classes.sort(Comparator.comparing(a -> a.name));
         for (var cls : classes) {
@@ -94,11 +96,7 @@ public class GraalNativeImageFeatureFileGenerator {
                 continue;
             }
             for (var m : cls.methods) {
-                if (isFirst) {
-                    isFirst = false;
-                } else {
-                    sb.append("\n");
-                }
+                sb.append("\n");
                 get(m).generateJava(sb, 8, cls.underlinedName(), !cls.isInterface);
             }
         }

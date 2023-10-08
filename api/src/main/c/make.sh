@@ -2,7 +2,7 @@
 
 os=`uname`
 
-target="pniplayground"
+target="pni"
 include_platform_dir=""
 
 if [[ "Linux" == "$os" ]]
@@ -23,10 +23,7 @@ rm -f "$target"
 gcc -std=gnu99 -O2 \
     $GCC_OPTS \
     -I "./" \
-    -I "../c-generated" \
-    -I "../../../../api/src/main/c" \
-    -I "../../../../api/src/main/c/jnimock" \
-    -shared -Werror -lc -lpthread -fPIC \
-    ../../../../api/src/main/c/pni.c \
-    playground.c \
+    -I "./jnimock/" \
+    -shared -Werror -fPIC \
+    pni.c \
     -o "$target"

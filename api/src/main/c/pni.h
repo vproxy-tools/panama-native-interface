@@ -91,9 +91,6 @@ static inline void PNIStoreErrno(void* _env) {
 
 typedef PNI_PACK(struct, PNIFunc, {
     int64_t   index;
-    int32_t (*func)(int64_t,void*);
-    void    (*release)(int64_t);
-
     union {
         void*    userdata;
         uint64_t udata64;
@@ -105,18 +102,24 @@ PNIEnvExpand(func, PNIFunc*)
 #define PNIFuncInvokeExceptionCaught ((int32_t) 0x800000f1)
 #define PNIFuncInvokeNoSuchFunction  ((int32_t) 0x800000f2)
 
-static inline int PNIFuncInvoke(PNIFunc* f, void* data) {
-    return f->func(f->index, data);
+typedef int32_t (*PNIFuncInvokeFunc)(int64_t,void*);
+JNIEXPORT PNIFuncInvokeFunc JNICALL GetPNIFuncInvokeFunc(void);
+JNIEXPORT void JNICALL SetPNIFuncInvokeFunc(PNIFuncInvokeFunc f);
+
+static inline int32_t PNIFuncInvoke(PNIFunc* f, void* data) {
+    return GetPNIFuncInvokeFunc()(f->index, data);
 }
 
+typedef void (*PNIFuncReleaseFunc)(int64_t);
+JNIEXPORT PNIFuncReleaseFunc JNICALL GetPNIFuncReleaseFunc(void);
+JNIEXPORT void JNICALL SetPNIFuncReleaseFunc(PNIFuncReleaseFunc f);
+
 static inline void PNIFuncRelease(PNIFunc* f) {
-    f->release(f->index);
+    GetPNIFuncReleaseFunc()(f->index);
 }
 
 typedef PNI_PACK(struct, PNIRef, {
     int64_t index;
-    void  (*release)(int64_t);
-
     union {
         void*    userdata;
         uint64_t udata64;
@@ -125,8 +128,12 @@ typedef PNI_PACK(struct, PNIRef, {
 
 PNIEnvExpand(ref, PNIRef*)
 
+typedef void (*PNIRefReleaseFunc)(int64_t);
+JNIEXPORT PNIRefReleaseFunc JNICALL GetPNIRefReleaseFunc(void);
+JNIEXPORT void JNICALL SetPNIRefReleaseFunc(PNIRefReleaseFunc f);
+
 static inline void PNIRefRelease(PNIRef* ref) {
-    ref->release(ref->index);
+    GetPNIRefReleaseFunc()(ref->index);
 }
 
 #define PNIBufExpand(BufType, ValueType, Size) \

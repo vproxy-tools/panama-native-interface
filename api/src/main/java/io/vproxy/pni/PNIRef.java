@@ -31,11 +31,19 @@ public class PNIRef<T> implements NativeObject {
             releaseMethodHandle,
             FunctionDescriptor.ofVoid(ValueLayout.JAVA_LONG),
             UPCALL_STUB_ARENA);
+
+        PanamaUtils.loadLib();
+
+        var SetPNIFuncReleaseFunc = PanamaUtils.lookupPNICriticalFunction(true, void.class, "SetPNIRefReleaseFunc", MemorySegment.class);
+        try {
+            SetPNIFuncReleaseFunc.invokeExact(UPCALL_STUB_RELEASE);
+        } catch (Throwable e) {
+            throw new RuntimeException("should not happen", e);
+        }
     }
 
     public static final MemoryLayout LAYOUT = MemoryLayout.structLayout(
         ValueLayout.JAVA_LONG_UNALIGNED.withName("index"),
-        ValueLayout.ADDRESS_UNALIGNED.withName("release"),
         MemoryLayout.unionLayout(
             ValueLayout.ADDRESS_UNALIGNED.withName("userdata"),
             ValueLayout.JAVA_LONG_UNALIGNED.withName("udata64")
@@ -60,8 +68,6 @@ public class PNIRef<T> implements NativeObject {
 
         long index = holder.store(this);
         indexVH.set(MEMORY, index);
-
-        releaseVH.set(MEMORY, UPCALL_STUB_RELEASE);
     }
 
     public static class Options {
@@ -124,9 +130,6 @@ public class PNIRef<T> implements NativeObject {
 
     private static final VarHandle indexVH = LAYOUT.varHandle(
         MemoryLayout.PathElement.groupElement("index")
-    );
-    private static final VarHandle releaseVH = LAYOUT.varHandle(
-        MemoryLayout.PathElement.groupElement("release")
     );
     private static final VarHandle userdataVH = LAYOUT.varHandle(
         MemoryLayout.PathElement.groupElement("union0"),
