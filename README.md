@@ -380,6 +380,9 @@ You can find `pni.h` [here](https://github.com/vproxy-tools/panama-native-interf
 and you can use the mocked `jni.h` [here](https://github.com/vproxy-tools/panama-native-interface/tree/master/api/src/main/c/jnimock),
 or you can add `"$JAVA_HOME/include"` and `"$JAVA_HOME/include/$your_platform"` in your include search path instead, which is the traditional way when using `JNI`.
 
+Normally you will need to add [`pni.c`](https://github.com/vproxy-tools/panama-native-interface/tree/master/api/src/main/c/pni.c) to the c file list and compile it into you library.  
+You could also build `pni.c` into a standalone library `libpni.so|libpni.dylib|pni.dll`, and call `PanamaUtils.loadLib()` before loading your own library.
+
 You may refer to [make-sample.sh](https://github.com/vproxy-tools/panama-native-interface/blob/master/sample/src/main/c/make-sample.sh) for more info.
 
 ### 14. Load the shared library in Java
