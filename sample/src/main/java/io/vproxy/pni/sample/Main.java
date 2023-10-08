@@ -104,6 +104,21 @@ public class Main {
                                   "\r\n";
                     byteBuffer.put(headers.getBytes(StandardCharsets.UTF_8));
                     byteBuffer.put(page);
+                } else if (str.startsWith("POST /shutdown ")) {
+                    var page = """
+                        <html>
+                        <head></head>
+                        <body>
+                        <center><h1>Shutdown</h1></center>
+                        </body>
+                        </html>
+                        """.getBytes(StandardCharsets.UTF_8);
+                    var headers = "HTTP/1.1 200 OK\r\n" +
+                                  "Content-Length: " + page.length + "\r\n" +
+                                  "Server: panama-native-interface\r\n" +
+                                  "\r\n";
+                    byteBuffer.put(headers.getBytes(StandardCharsets.UTF_8));
+                    byteBuffer.put(page);
                 } else {
                     var page = """
                         <html>
@@ -131,6 +146,10 @@ public class Main {
                     break;
                 }
                 System.out.println("wrote " + n + " bytes to " + fd);
+
+                if (str.startsWith("POST /shutdown ")) {
+                    System.exit(0);
+                }
             }
         }
     }
