@@ -7,4 +7,7 @@ include 'acceptance-testing-template'
 include 'playground'
 include 'unittest'
 include 'performance'
+include 'graal'
+include 'graal-test'
+include 'graal-test-template'
 

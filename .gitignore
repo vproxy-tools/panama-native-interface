@@ -49,6 +49,9 @@ acceptance-testing/src/test/c/pnitest.dll
 sample/src/main/c/libpnisample.so
 sample/src/main/c/libpnisample.dylib
 sample/src/main/c/pnisample.dll
+graal-test/src/main/c/libgraaltest.so
+graal-test/src/main/c/libgraaltest.dylib
+graal-test/src/main/c/graaltest.dll
 
 playground/src/*
 !playground/src/main
@@ -76,3 +79,5 @@ sample/sample.run
 sample/sample.exe
 pni.run
 pni.exe
+graal-test/graal-test.run
+graal-test/graal-test.exe

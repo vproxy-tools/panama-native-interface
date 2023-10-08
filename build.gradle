@@ -128,12 +128,15 @@ subprojects {
         withSourcesJar()
     }
 
-    if (['api', 'pni'].contains(project.name)) {
+    if (['api', 'graal', 'pni'].contains(project.name)) {
         def releaseName = ""
         def pomName = ""
         if (project.name == 'api') {
             releaseName = 'pni-api-jdk21'
             pomName = "pni"
+        } else if (project.name == 'graal') {
+            releaseName = 'pni-api-graal'
+            pomName = 'pni.graal'
         } else {
             releaseName = 'pni-exec'
             pomName = "pni.exec"
@@ -193,6 +196,12 @@ subprojects {
 }
 
 project(":api") {
+}
+
+project(":graal") {
+    dependencies {
+        compileOnly group: 'org.graalvm.truffle', name: 'truffle-api', version: '23.1.0'
+    }
 }
 
 project(":pni") {
@@ -272,6 +281,98 @@ project(":acceptance-testing") {
 
         dependsOn compileTestJava
         dependsOn compilePNITestLib
+    }
+}
+
+project(":graal-test-template") {
+    compileJava {
+        options.compilerArgs += '-parameters'
+    }
+    dependencies {
+        implementation project(":api")
+    }
+
+    task cleanGraalTesting(type: Exec) {
+        workingDir project.rootProject.rootDir.getAbsolutePath() + '/graal-test/src/main/'
+        commandLine 'bash', '-c', 'rm -f c/libgraaltest.dylib && rm -f c/libgraaltest.so && rm -f c/graaltest.dll && rm -rf c-generated/* && rm -rf generated/*'
+    }
+    task generateGraalTesting(type: JavaExec) {
+        classpath = project(":pni").sourceSets.main.runtimeClasspath
+        mainClass = 'io.vproxy.pni.exec.Main'
+        systemProperty("io.vproxy.pni.Testing", "true")
+        workingDir project.rootProject.rootDir.getAbsolutePath()
+        args '-cp', 'graal-test-template/build/classes/java/main', '-d', 'graal-test/src/main/generated', '-h', 'graal-test/src/main/c-generated',
+                '-fgraal-native-image-feature=io.vproxy.pni.graal.test.Feature'
+
+        dependsOn cleanGraalTesting
+        dependsOn compileTestJava
+    }
+}
+
+project(":graal-test") {
+    apply plugin: 'com.github.johnrengelman.shadow'
+
+    sourceSets {
+        main {
+            java {
+                srcDirs = ['src/main/java', 'src/main/generated']
+            }
+        }
+    }
+    dependencies {
+        implementation project(":api")
+        implementation project(":graal")
+        implementation 'junit:junit:4.13.2'
+        compileOnly group: 'org.graalvm.truffle', name: 'truffle-api', version: '23.1.0'
+    }
+    shadowJar {
+        archiveFileName.set('graal-test.jar')
+    }
+    jar {
+        manifest {
+            attributes 'Main-Class': 'io.vproxy.pni.graal.test.Main'
+        }
+    }
+
+    task compileGraalTestLib(type: Exec) {
+        workingDir project.rootProject.rootDir.getAbsolutePath() + '/graal-test/src/main/c'
+        def bashPath = System.getenv("MINGW_BASH")
+        if (bashPath == null)
+            bashPath = '/bin/bash'
+        executable bashPath
+        args './make-graal-test.sh'
+
+        dependsOn project(':graal-test-template').tasks.generateGraalTesting
+    }
+    task compileGraalTest(type: Exec) {
+        if (OS.isWindows()) {
+            executable 'native-image.cmd'
+        } else {
+            executable 'native-image'
+        }
+        def output = 'graal-test'
+        if (!OS.isWindows()) {
+            output += '.run'
+        }
+        args '-jar', './build/libs/graal-test.jar',
+                '--features=io.vproxy.pni.graal.test.Feature2,io.vproxy.pni.graal.test.Feature',
+                '--enable-preview', '-ea',
+                '-Ob', '--no-fallback',
+                '-o', output
+
+        dependsOn project(':graal-test-template').tasks.generateGraalTesting
+        dependsOn shadowJar
+    }
+    task runGraalTest(type: Exec) {
+        if (OS.isWindows()) {
+            executable project.projectDir.getAbsolutePath() + '/graal-test.exe'
+        } else {
+            executable './graal-test.run'
+        }
+        args '-Djava.library.path=./src/main/c'
+
+        dependsOn compileGraalTest
+        dependsOn compileGraalTestLib
     }
 }
 
