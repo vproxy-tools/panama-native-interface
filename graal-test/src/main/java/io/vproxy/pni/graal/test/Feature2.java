@@ -25,6 +25,7 @@ public class Feature2 implements Feature {
             io.vproxy.pni.test.cases.TestGCCCompatibility.class,
             io.vproxy.pni.test.cases.TestGeneratedFileFormat.class,
             io.vproxy.pni.test.cases.TestGeneric.class,
+            io.vproxy.pni.test.cases.TestGraalRuntime.class,
             io.vproxy.pni.test.cases.TestNull.class,
             io.vproxy.pni.test.cases.TestObjectStruct.class,
             io.vproxy.pni.test.cases.TestPrimitiveStruct.class,

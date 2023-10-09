@@ -1,7 +1,8 @@
 package io.vproxy.pni.graal.test;
 
+import io.vproxy.base.util.LogType;
+import io.vproxy.base.util.Logger;
 import io.vproxy.pni.graal.GraalUtils;
-import org.junit.internal.TextListener;
 import org.junit.runner.Description;
 import org.junit.runner.JUnitCore;
 import org.junit.runner.notification.RunListener;
@@ -11,11 +12,24 @@ public class Main {
         System.loadLibrary("graaltest");
 
         var core = new JUnitCore();
-        core.addListener(new TextListener(System.out));
         core.addListener(new RunListener() {
             @Override
-            public void testRunStarted(Description description) {
+            public void testStarted(Description description) {
+                var clsName = description.getClassName();
+                if (clsName.contains(".")) {
+                    clsName = clsName.substring(clsName.lastIndexOf(".") + 1);
+                }
+                Logger.warn(LogType.ALERT, clsName + "::" + description.getMethodName() + " START");
                 GraalUtils.setThread();
+            }
+
+            @Override
+            public void testFinished(Description description) {
+                var clsName = description.getClassName();
+                if (clsName.contains(".")) {
+                    clsName = clsName.substring(clsName.lastIndexOf(".") + 1);
+                }
+                Logger.alert(clsName + "::" + description.getMethodName() + " FINISH");
             }
         });
         var res = core.run(Suite.class);

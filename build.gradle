@@ -213,7 +213,7 @@ project(":api") {
 project(":graal") {
     dependencies {
         api project(':api')
-        compileOnly group: 'org.graalvm.sdk', name: 'nativeimage', version: '23.1.0'
+        compileOnly group: 'io.vproxy', name: 'graal-sdk-mock-nativeimage', version: '1.0.0'
     }
 }
 
@@ -301,9 +301,10 @@ project(":acceptance-testing") {
     }
     dependencies {
         implementation project(":api")
+        implementation project(":graal")
         testImplementation 'io.vproxy:commons:1.1.3'
         testImplementation 'junit:junit:4.13.2'
-        testImplementation group: 'org.graalvm.sdk', name: 'nativeimage', version: '23.1.0'
+        testImplementation group: 'io.vproxy', name: 'graal-sdk-mock-runtime', version: '1.0.0'
     }
 
     task compilePNITestLib(type: Exec) {
@@ -368,7 +369,7 @@ project(":graal-test") {
         implementation project(":graal")
         implementation 'io.vproxy:commons:1.1.3'
         implementation 'junit:junit:4.13.2'
-        compileOnly group: 'org.graalvm.sdk', name: 'nativeimage', version: '23.1.0'
+        compileOnly group: 'io.vproxy', name: 'graal-sdk-mock-nativeimage', version: '1.0.0'
     }
     shadowJar {
         archiveFileName.set('graal-test.jar')
@@ -453,7 +454,7 @@ project(":sample") {
     dependencies {
         implementation project(":api")
         implementation project(":graal")
-        compileOnly group: 'org.graalvm.sdk', name: 'nativeimage', version: '23.1.0'
+        compileOnly group: 'io.vproxy', name: 'graal-sdk-mock-nativeimage', version: '1.0.0'
     }
 
     task generateSample(type: JavaExec) {
@@ -494,7 +495,10 @@ project(":sample") {
         if (!OS.isWindows()) {
             output += '.run'
         }
-        args '-jar', './build/libs/sample.jar', '--features=io.vproxy.pni.sample.Feature', '--enable-preview', '--enable-native-access=ALL-UNNAMED', '--no-fallback', '-o', output
+        args '-jar', './build/libs/sample.jar', '--features=io.vproxy.pni.sample.Feature',
+                '--enable-preview', '--enable-native-access=ALL-UNNAMED',
+                '-Ob', '--no-fallback',
+                '-o', output
 
         dependsOn compilePNISampleLib
         dependsOn shadowJar

@@ -24,6 +24,7 @@ import org.junit.runner.RunWith;
     TestAlwaysAligned.class,
     TestAlign.class,
     TestToString.class,
+    TestGraalRuntime.class,
 })
 public class Suite {
 }
