@@ -243,19 +243,45 @@ project(":acceptance-testing-template") {
         implementation project(":api")
     }
 
-    task cleanAcceptanceTesting(type: Exec) {
+    task cleanAcceptanceTesting1(type: Exec) {
         workingDir project.rootProject.rootDir.getAbsolutePath() + '/acceptance-testing/src/test/'
         commandLine 'bash', '-c', 'rm -f c/libpnitest.dylib && rm -f c/libpnitest.so && rm -f c/pnitest.dll && rm -rf c-generated/* && rm -rf generated/*'
     }
-    task generateAcceptanceTesting(type: JavaExec) {
+    task cleanAcceptanceTesting2(type: Exec) {
+        workingDir project.rootProject.rootDir.getAbsolutePath() + '/graal-test/src/main/'
+        commandLine 'bash', '-c', 'rm -rf c-generated-2/* && rm -rf generated-2/* && rm -rf java-2/*'
+    }
+    task cleanAcceptanceTesting {
+        dependsOn cleanAcceptanceTesting1
+        dependsOn cleanAcceptanceTesting2
+    }
+    task generateAcceptanceTesting1(type: JavaExec) {
         classpath = project(":pni").sourceSets.main.runtimeClasspath
         mainClass = 'io.vproxy.pni.exec.Main'
         systemProperty("io.vproxy.pni.Testing", "true")
         workingDir project.rootProject.rootDir.getAbsolutePath()
         args '-cp', 'acceptance-testing-template/build/classes/java/main', '-d', 'acceptance-testing/src/test/generated', '-h', 'acceptance-testing/src/test/c-generated'
 
-        dependsOn cleanAcceptanceTesting
+        dependsOn cleanAcceptanceTesting1
         dependsOn compileJava
+    }
+    task generateAcceptanceTesting2(type: JavaExec) {
+        classpath = project(":pni").sourceSets.main.runtimeClasspath
+        mainClass = 'io.vproxy.pni.exec.Main'
+        systemProperty("io.vproxy.pni.Testing", "true")
+        workingDir project.rootProject.rootDir.getAbsolutePath()
+        args '-cp', 'acceptance-testing-template/build/classes/java/main',
+                '-d', 'graal-test/src/main/generated-2',
+                '-h', 'graal-test/src/main/c-generated-2',
+                '-fgraal-native-image-feature=io.vproxy.pni.test.Feature',
+                '-fgraal-c-entrypoint-literal-upcall'
+
+        dependsOn cleanAcceptanceTesting2
+        dependsOn compileJava
+    }
+    task generateAcceptanceTesting {
+        dependsOn generateAcceptanceTesting1
+        dependsOn generateAcceptanceTesting2
     }
 }
 
@@ -271,6 +297,7 @@ project(":acceptance-testing") {
         implementation project(":api")
         testImplementation 'io.vproxy:commons:1.1.3'
         testImplementation 'junit:junit:4.13.2'
+        testImplementation group: 'org.graalvm.sdk', name: 'nativeimage', version: '23.1.0'
     }
 
     task compilePNITestLib(type: Exec) {
@@ -329,13 +356,14 @@ project(":graal-test") {
     sourceSets {
         main {
             java {
-                srcDirs = ['src/main/java', 'src/main/generated']
+                srcDirs = ['src/main/java', 'src/main/generated', 'src/main/java-2', 'src/main/generated-2']
             }
         }
     }
     dependencies {
         implementation project(":api")
         implementation project(":graal")
+        implementation 'io.vproxy:commons:1.1.3'
         implementation 'junit:junit:4.13.2'
         compileOnly group: 'org.graalvm.sdk', name: 'nativeimage', version: '23.1.0'
     }
@@ -348,6 +376,12 @@ project(":graal-test") {
         }
     }
 
+    task copyAcceptanceTestingToGraal(type: Copy) {
+        from project.rootProject.rootDir.getAbsolutePath() + '/acceptance-testing/src/test/java'
+        into project.rootProject.rootDir.getAbsolutePath() + '/graal-test/src/main/java-2'
+
+        compileJava.mustRunAfter(copyAcceptanceTestingToGraal)
+    }
     task compileGraalTestLib(type: Exec) {
         workingDir project.rootProject.rootDir.getAbsolutePath() + '/graal-test/src/main/c'
         def bashPath = System.getenv("MINGW_BASH")
@@ -356,7 +390,10 @@ project(":graal-test") {
         executable bashPath
         args './make-graal-test.sh'
 
+        dependsOn project(':acceptance-testing-template').tasks.generateAcceptanceTesting
         dependsOn project(':graal-test-template').tasks.generateGraalTesting
+
+        compileGraalTestLib.mustRunAfter(project(':acceptance-testing-template').tasks.cleanAcceptanceTesting)
     }
     task compileGraalTest(type: Exec) {
         if (OS.isWindows()) {
@@ -369,11 +406,14 @@ project(":graal-test") {
             output += '.run'
         }
         args '-jar', './build/libs/graal-test.jar',
-                '--features=io.vproxy.pni.graal.test.Feature2,io.vproxy.pni.graal.test.Feature',
+                '--features=io.vproxy.pni.graal.test.Feature2,io.vproxy.pni.test.Feature,io.vproxy.pni.graal.test.Feature',
+                '--add-opens', 'java.base/java.io=ALL-UNNAMED',
                 '--enable-preview', '--enable-native-access=ALL-UNNAMED', '-ea',
                 '-Ob', '--no-fallback',
                 '-o', output
 
+        dependsOn copyAcceptanceTestingToGraal
+        dependsOn compileGraalTestLib
         dependsOn project(':graal-test-template').tasks.generateGraalTesting
         dependsOn shadowJar
 
@@ -381,11 +421,12 @@ project(":graal-test") {
     }
     task runGraalTest(type: Exec) {
         if (OS.isWindows()) {
-            executable project.projectDir.getAbsolutePath() + '/graal-test.exe'
+            executable project.rootProject.projectDir.getAbsolutePath() + '/graal-test/graal-test.exe'
         } else {
-            executable './graal-test.run'
+            executable project.rootProject.projectDir.getAbsolutePath() + '/graal-test/graal-test.run'
         }
-        args '-Djava.library.path=./src/main/c' +
+        workingDir project.rootProject.projectDir.getAbsolutePath() + '/acceptance-testing'
+        args '-Djava.library.path=' + project.rootProject.projectDir.getAbsolutePath() + '/graal-test/src/main/c' +
                 File.pathSeparator +
                 project.rootProject.rootDir.getAbsolutePath() + '/api/src/main/c'
 

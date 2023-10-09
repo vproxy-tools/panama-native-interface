@@ -56,6 +56,10 @@ graal-test/src/main/c/libgraaltest.so
 graal-test/src/main/c/libgraaltest.dylib
 graal-test/src/main/c/graaltest.dll
 
+!graal-test/src/main/java-2
+graal-test/src/main/java-2/*
+!graal-test/src/main/java-2/.gitkeep
+
 playground/src/*
 !playground/src/main
 playground/src/main/*
