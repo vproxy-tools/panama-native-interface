@@ -6,70 +6,70 @@
 extern "C" {
 #endif
 
-static void (*_primaryParams)(void*,int8_t,uint8_t,uint8_t,uint16_t,double,float,int32_t,uint32_t,int64_t,uint64_t,int16_t,uint16_t);
-static int8_t (*_returnByte)(void*);
-static uint8_t (*_returnBool)(void*);
-static uint16_t (*_returnChar)(void*);
-static double (*_returnDouble)(void*);
-static float (*_returnFloat)(void*);
-static int32_t (*_returnInt)(void*);
-static int64_t (*_returnLong)(void*);
-static int16_t (*_returnShort)(void*);
-static void (*_primaryArrayParams)(void*,PNIBuf_byte *,PNIBuf_ubyte *,PNIBuf_bool *,PNIBuf_char *,PNIBuf_double *,PNIBuf_float *,PNIBuf_int *,PNIBuf_uint *,PNIBuf_long *,PNIBuf_ulong *,PNIBuf_short *,PNIBuf_ushort *);
-static PNIBuf_byte * (*_returnByteArray)(void*,PNIBuf_byte *);
-static PNIBuf_bool * (*_returnBoolArray)(void*,PNIBuf_bool *);
-static PNIBuf_char * (*_returnCharArray)(void*,PNIBuf_char *);
-static PNIBuf_double * (*_returnDoubleArray)(void*,PNIBuf_double *);
-static PNIBuf_float * (*_returnFloatArray)(void*,PNIBuf_float *);
-static PNIBuf_int * (*_returnIntArray)(void*,PNIBuf_int *);
-static PNIBuf_long * (*_returnLongArray)(void*,PNIBuf_long *);
-static PNIBuf_short * (*_returnShortArray)(void*,PNIBuf_short *);
-static void (*_objectParams)(void*,ObjectStruct *);
-static ObjectStruct * (*_returnObject)(void*,ObjectStruct *);
-static void (*_objectArrayParams)(void*,PNIBuf_ObjectStruct *);
-static PNIBuf_ObjectStruct * (*_returnObjectArray)(void*,PNIBuf_ObjectStruct *);
-static void (*_otherParams)(void*,PNIBuf *,PNIFunc *,PNIFunc *,PNIFunc *,void *,PNIFunc *,PNIFunc *,PNIFunc *,PNIRef *,PNIRef *,char *);
-static PNIBuf * (*_returnBuffer)(void*,PNIBuf *);
-static void * (*_returnMem)(void*);
-static PNIFunc * (*_returnVoidFunc)(void*);
-static PNIFunc * (*_returnObjFunc)(void*);
-static PNIFunc * (*_returnRefFunc)(void*);
-static PNIRef * (*_returnRef)(void*);
-static char * (*_returnStr)(void*);
-static int32_t (*_sum)(void*,int32_t,int32_t);
+static void (*_primaryParams)(void *,int8_t,uint8_t,uint8_t,uint16_t,double,float,int32_t,uint32_t,int64_t,uint64_t,int16_t,uint16_t);
+static int8_t (*_returnByte)(void *);
+static uint8_t (*_returnBool)(void *);
+static uint16_t (*_returnChar)(void *);
+static double (*_returnDouble)(void *);
+static float (*_returnFloat)(void *);
+static int32_t (*_returnInt)(void *);
+static int64_t (*_returnLong)(void *);
+static int16_t (*_returnShort)(void *);
+static void (*_primaryArrayParams)(void *,PNIBuf_byte *,PNIBuf_ubyte *,PNIBuf_bool *,PNIBuf_char *,PNIBuf_double *,PNIBuf_float *,PNIBuf_int *,PNIBuf_uint *,PNIBuf_long *,PNIBuf_ulong *,PNIBuf_short *,PNIBuf_ushort *);
+static PNIBuf_byte * (*_returnByteArray)(void *,PNIBuf_byte *);
+static PNIBuf_bool * (*_returnBoolArray)(void *,PNIBuf_bool *);
+static PNIBuf_char * (*_returnCharArray)(void *,PNIBuf_char *);
+static PNIBuf_double * (*_returnDoubleArray)(void *,PNIBuf_double *);
+static PNIBuf_float * (*_returnFloatArray)(void *,PNIBuf_float *);
+static PNIBuf_int * (*_returnIntArray)(void *,PNIBuf_int *);
+static PNIBuf_long * (*_returnLongArray)(void *,PNIBuf_long *);
+static PNIBuf_short * (*_returnShortArray)(void *,PNIBuf_short *);
+static void (*_objectParams)(void *,ObjectStruct *);
+static ObjectStruct * (*_returnObject)(void *,ObjectStruct *);
+static void (*_objectArrayParams)(void *,PNIBuf_ObjectStruct *);
+static PNIBuf_ObjectStruct * (*_returnObjectArray)(void *,PNIBuf_ObjectStruct *);
+static void (*_otherParams)(void *,PNIBuf *,PNIFunc *,PNIFunc *,PNIFunc *,void *,PNIFunc *,PNIFunc *,PNIFunc *,PNIRef *,PNIRef *,char *);
+static PNIBuf * (*_returnBuffer)(void *,PNIBuf *);
+static void * (*_returnMem)(void *);
+static PNIFunc * (*_returnVoidFunc)(void *);
+static PNIFunc * (*_returnObjFunc)(void *);
+static PNIFunc * (*_returnRefFunc)(void *);
+static PNIRef * (*_returnRef)(void *);
+static char * (*_returnStr)(void *);
+static int32_t (*_sum)(void *,int32_t,int32_t);
 
 JNIEXPORT void JNICALL JavaCritical_io_vproxy_pni_test_Upcall_INIT(
-    void (*primaryParams)(void*,int8_t,uint8_t,uint8_t,uint16_t,double,float,int32_t,uint32_t,int64_t,uint64_t,int16_t,uint16_t),
-    int8_t (*returnByte)(void*),
-    uint8_t (*returnBool)(void*),
-    uint16_t (*returnChar)(void*),
-    double (*returnDouble)(void*),
-    float (*returnFloat)(void*),
-    int32_t (*returnInt)(void*),
-    int64_t (*returnLong)(void*),
-    int16_t (*returnShort)(void*),
-    void (*primaryArrayParams)(void*,PNIBuf_byte *,PNIBuf_ubyte *,PNIBuf_bool *,PNIBuf_char *,PNIBuf_double *,PNIBuf_float *,PNIBuf_int *,PNIBuf_uint *,PNIBuf_long *,PNIBuf_ulong *,PNIBuf_short *,PNIBuf_ushort *),
-    PNIBuf_byte * (*returnByteArray)(void*,PNIBuf_byte *),
-    PNIBuf_bool * (*returnBoolArray)(void*,PNIBuf_bool *),
-    PNIBuf_char * (*returnCharArray)(void*,PNIBuf_char *),
-    PNIBuf_double * (*returnDoubleArray)(void*,PNIBuf_double *),
-    PNIBuf_float * (*returnFloatArray)(void*,PNIBuf_float *),
-    PNIBuf_int * (*returnIntArray)(void*,PNIBuf_int *),
-    PNIBuf_long * (*returnLongArray)(void*,PNIBuf_long *),
-    PNIBuf_short * (*returnShortArray)(void*,PNIBuf_short *),
-    void (*objectParams)(void*,ObjectStruct *),
-    ObjectStruct * (*returnObject)(void*,ObjectStruct *),
-    void (*objectArrayParams)(void*,PNIBuf_ObjectStruct *),
-    PNIBuf_ObjectStruct * (*returnObjectArray)(void*,PNIBuf_ObjectStruct *),
-    void (*otherParams)(void*,PNIBuf *,PNIFunc *,PNIFunc *,PNIFunc *,void *,PNIFunc *,PNIFunc *,PNIFunc *,PNIRef *,PNIRef *,char *),
-    PNIBuf * (*returnBuffer)(void*,PNIBuf *),
-    void * (*returnMem)(void*),
-    PNIFunc * (*returnVoidFunc)(void*),
-    PNIFunc * (*returnObjFunc)(void*),
-    PNIFunc * (*returnRefFunc)(void*),
-    PNIRef * (*returnRef)(void*),
-    char * (*returnStr)(void*),
-    int32_t (*sum)(void*,int32_t,int32_t)
+    void (*primaryParams)(void *,int8_t,uint8_t,uint8_t,uint16_t,double,float,int32_t,uint32_t,int64_t,uint64_t,int16_t,uint16_t),
+    int8_t (*returnByte)(void *),
+    uint8_t (*returnBool)(void *),
+    uint16_t (*returnChar)(void *),
+    double (*returnDouble)(void *),
+    float (*returnFloat)(void *),
+    int32_t (*returnInt)(void *),
+    int64_t (*returnLong)(void *),
+    int16_t (*returnShort)(void *),
+    void (*primaryArrayParams)(void *,PNIBuf_byte *,PNIBuf_ubyte *,PNIBuf_bool *,PNIBuf_char *,PNIBuf_double *,PNIBuf_float *,PNIBuf_int *,PNIBuf_uint *,PNIBuf_long *,PNIBuf_ulong *,PNIBuf_short *,PNIBuf_ushort *),
+    PNIBuf_byte * (*returnByteArray)(void *,PNIBuf_byte *),
+    PNIBuf_bool * (*returnBoolArray)(void *,PNIBuf_bool *),
+    PNIBuf_char * (*returnCharArray)(void *,PNIBuf_char *),
+    PNIBuf_double * (*returnDoubleArray)(void *,PNIBuf_double *),
+    PNIBuf_float * (*returnFloatArray)(void *,PNIBuf_float *),
+    PNIBuf_int * (*returnIntArray)(void *,PNIBuf_int *),
+    PNIBuf_long * (*returnLongArray)(void *,PNIBuf_long *),
+    PNIBuf_short * (*returnShortArray)(void *,PNIBuf_short *),
+    void (*objectParams)(void *,ObjectStruct *),
+    ObjectStruct * (*returnObject)(void *,ObjectStruct *),
+    void (*objectArrayParams)(void *,PNIBuf_ObjectStruct *),
+    PNIBuf_ObjectStruct * (*returnObjectArray)(void *,PNIBuf_ObjectStruct *),
+    void (*otherParams)(void *,PNIBuf *,PNIFunc *,PNIFunc *,PNIFunc *,void *,PNIFunc *,PNIFunc *,PNIFunc *,PNIRef *,PNIRef *,char *),
+    PNIBuf * (*returnBuffer)(void *,PNIBuf *),
+    void * (*returnMem)(void *),
+    PNIFunc * (*returnVoidFunc)(void *),
+    PNIFunc * (*returnObjFunc)(void *),
+    PNIFunc * (*returnRefFunc)(void *),
+    PNIRef * (*returnRef)(void *),
+    char * (*returnStr)(void *),
+    int32_t (*sum)(void *,int32_t,int32_t)
 ) {
     _primaryParams = primaryParams;
     _returnByte = returnByte;
@@ -387,4 +387,4 @@ JNIEXPORT int32_t JNICALL pni_sum(int32_t a, int32_t b) {
 }
 #endif
 // metadata.generator-version: pni test
-// sha256:1191efe80125a5c84d3f52322501f427f61261cbf664c3cf2739b797e87e9c2c
+// sha256:2ce8853bbdceae78697ab3deaa6b9bdec14dbb29045dcb90758a2e45715bd50d

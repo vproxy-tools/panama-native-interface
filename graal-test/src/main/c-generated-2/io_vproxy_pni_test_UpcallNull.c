@@ -6,46 +6,46 @@
 extern "C" {
 #endif
 
-static uint8_t (*_testParam)(void*,ObjectStruct *,char *,void *,PNIBuf *,PNIBuf_byte *,PNIBuf_bool *,PNIBuf_char *,PNIBuf_float *,PNIBuf_double *,PNIBuf_int *,PNIBuf_long *,PNIBuf_short *,PNIBuf_ObjectStruct *,PNIRef *,PNIFunc *,PNIFunc *,PNIFunc *);
-static uint8_t (*_testParamRaw)(void*,PNIRef *,PNIFunc *,PNIFunc *,PNIFunc *);
-static ObjectStruct * (*_returnO)(void*,ObjectStruct *);
-static char * (*_returnStr)(void*);
-static void * (*_returnSeg)(void*);
-static PNIBuf * (*_returnBuf)(void*,PNIBuf *);
-static PNIBuf_byte * (*_returnByteArr)(void*,PNIBuf_byte *);
-static PNIBuf_bool * (*_returnBoolArr)(void*,PNIBuf_bool *);
-static PNIBuf_char * (*_returnCharArr)(void*,PNIBuf_char *);
-static PNIBuf_float * (*_returnFloatArr)(void*,PNIBuf_float *);
-static PNIBuf_double * (*_returnDoubleArr)(void*,PNIBuf_double *);
-static PNIBuf_int * (*_returnIntArr)(void*,PNIBuf_int *);
-static PNIBuf_long * (*_returnLongArr)(void*,PNIBuf_long *);
-static PNIBuf_short * (*_returnShortArr)(void*,PNIBuf_short *);
-static PNIBuf_ObjectStruct * (*_returnOArr)(void*,PNIBuf_ObjectStruct *);
-static PNIRef * (*_returnRef)(void*);
-static PNIFunc * (*_returnFunc)(void*);
-static PNIFunc * (*_returnFuncVoid)(void*);
-static PNIFunc * (*_returnFuncRef)(void*);
+static uint8_t (*_testParam)(void *,ObjectStruct *,char *,void *,PNIBuf *,PNIBuf_byte *,PNIBuf_bool *,PNIBuf_char *,PNIBuf_float *,PNIBuf_double *,PNIBuf_int *,PNIBuf_long *,PNIBuf_short *,PNIBuf_ObjectStruct *,PNIRef *,PNIFunc *,PNIFunc *,PNIFunc *);
+static uint8_t (*_testParamRaw)(void *,PNIRef *,PNIFunc *,PNIFunc *,PNIFunc *);
+static ObjectStruct * (*_returnO)(void *,ObjectStruct *);
+static char * (*_returnStr)(void *);
+static void * (*_returnSeg)(void *);
+static PNIBuf * (*_returnBuf)(void *,PNIBuf *);
+static PNIBuf_byte * (*_returnByteArr)(void *,PNIBuf_byte *);
+static PNIBuf_bool * (*_returnBoolArr)(void *,PNIBuf_bool *);
+static PNIBuf_char * (*_returnCharArr)(void *,PNIBuf_char *);
+static PNIBuf_float * (*_returnFloatArr)(void *,PNIBuf_float *);
+static PNIBuf_double * (*_returnDoubleArr)(void *,PNIBuf_double *);
+static PNIBuf_int * (*_returnIntArr)(void *,PNIBuf_int *);
+static PNIBuf_long * (*_returnLongArr)(void *,PNIBuf_long *);
+static PNIBuf_short * (*_returnShortArr)(void *,PNIBuf_short *);
+static PNIBuf_ObjectStruct * (*_returnOArr)(void *,PNIBuf_ObjectStruct *);
+static PNIRef * (*_returnRef)(void *);
+static PNIFunc * (*_returnFunc)(void *);
+static PNIFunc * (*_returnFuncVoid)(void *);
+static PNIFunc * (*_returnFuncRef)(void *);
 
 JNIEXPORT void JNICALL JavaCritical_io_vproxy_pni_test_UpcallNull_INIT(
-    uint8_t (*testParam)(void*,ObjectStruct *,char *,void *,PNIBuf *,PNIBuf_byte *,PNIBuf_bool *,PNIBuf_char *,PNIBuf_float *,PNIBuf_double *,PNIBuf_int *,PNIBuf_long *,PNIBuf_short *,PNIBuf_ObjectStruct *,PNIRef *,PNIFunc *,PNIFunc *,PNIFunc *),
-    uint8_t (*testParamRaw)(void*,PNIRef *,PNIFunc *,PNIFunc *,PNIFunc *),
-    ObjectStruct * (*returnO)(void*,ObjectStruct *),
-    char * (*returnStr)(void*),
-    void * (*returnSeg)(void*),
-    PNIBuf * (*returnBuf)(void*,PNIBuf *),
-    PNIBuf_byte * (*returnByteArr)(void*,PNIBuf_byte *),
-    PNIBuf_bool * (*returnBoolArr)(void*,PNIBuf_bool *),
-    PNIBuf_char * (*returnCharArr)(void*,PNIBuf_char *),
-    PNIBuf_float * (*returnFloatArr)(void*,PNIBuf_float *),
-    PNIBuf_double * (*returnDoubleArr)(void*,PNIBuf_double *),
-    PNIBuf_int * (*returnIntArr)(void*,PNIBuf_int *),
-    PNIBuf_long * (*returnLongArr)(void*,PNIBuf_long *),
-    PNIBuf_short * (*returnShortArr)(void*,PNIBuf_short *),
-    PNIBuf_ObjectStruct * (*returnOArr)(void*,PNIBuf_ObjectStruct *),
-    PNIRef * (*returnRef)(void*),
-    PNIFunc * (*returnFunc)(void*),
-    PNIFunc * (*returnFuncVoid)(void*),
-    PNIFunc * (*returnFuncRef)(void*)
+    uint8_t (*testParam)(void *,ObjectStruct *,char *,void *,PNIBuf *,PNIBuf_byte *,PNIBuf_bool *,PNIBuf_char *,PNIBuf_float *,PNIBuf_double *,PNIBuf_int *,PNIBuf_long *,PNIBuf_short *,PNIBuf_ObjectStruct *,PNIRef *,PNIFunc *,PNIFunc *,PNIFunc *),
+    uint8_t (*testParamRaw)(void *,PNIRef *,PNIFunc *,PNIFunc *,PNIFunc *),
+    ObjectStruct * (*returnO)(void *,ObjectStruct *),
+    char * (*returnStr)(void *),
+    void * (*returnSeg)(void *),
+    PNIBuf * (*returnBuf)(void *,PNIBuf *),
+    PNIBuf_byte * (*returnByteArr)(void *,PNIBuf_byte *),
+    PNIBuf_bool * (*returnBoolArr)(void *,PNIBuf_bool *),
+    PNIBuf_char * (*returnCharArr)(void *,PNIBuf_char *),
+    PNIBuf_float * (*returnFloatArr)(void *,PNIBuf_float *),
+    PNIBuf_double * (*returnDoubleArr)(void *,PNIBuf_double *),
+    PNIBuf_int * (*returnIntArr)(void *,PNIBuf_int *),
+    PNIBuf_long * (*returnLongArr)(void *,PNIBuf_long *),
+    PNIBuf_short * (*returnShortArr)(void *,PNIBuf_short *),
+    PNIBuf_ObjectStruct * (*returnOArr)(void *,PNIBuf_ObjectStruct *),
+    PNIRef * (*returnRef)(void *),
+    PNIFunc * (*returnFunc)(void *),
+    PNIFunc * (*returnFuncVoid)(void *),
+    PNIFunc * (*returnFuncRef)(void *)
 ) {
     _testParam = testParam;
     _testParamRaw = testParamRaw;
@@ -243,4 +243,4 @@ JNIEXPORT PNIFunc * JNICALL JavaCritical_io_vproxy_pni_test_UpcallNull_returnFun
 }
 #endif
 // metadata.generator-version: pni test
-// sha256:de3e8dd1fbe4ac267df254ff34b94169418e47c263ff3fa9fa72ea0fe384b561
+// sha256:7886725a0b4e176932da144df3de2db070d96d469ce5736f7d696ff27d0ec103

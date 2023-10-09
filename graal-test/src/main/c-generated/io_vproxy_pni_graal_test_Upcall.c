@@ -6,18 +6,18 @@
 extern "C" {
 #endif
 
-static void (*_doNothingUpcall)(void*);
-static int32_t (*_intUpcall)(void*,int32_t);
-static int32_t (*_refUpcall)(void*,PNIRef *);
-static int32_t (*_funcUpcall)(void*,PNIFunc *);
-static void * (*_returnSegUpcall)(void*);
+static void (*_doNothingUpcall)(void *);
+static int32_t (*_intUpcall)(void *,int32_t);
+static int32_t (*_refUpcall)(void *,PNIRef *);
+static int32_t (*_funcUpcall)(void *,PNIFunc *);
+static void * (*_returnSegUpcall)(void *);
 
 JNIEXPORT void JNICALL JavaCritical_io_vproxy_pni_graal_test_Upcall_INIT(
-    void (*doNothingUpcall)(void*),
-    int32_t (*intUpcall)(void*,int32_t),
-    int32_t (*refUpcall)(void*,PNIRef *),
-    int32_t (*funcUpcall)(void*,PNIFunc *),
-    void * (*returnSegUpcall)(void*)
+    void (*doNothingUpcall)(void *),
+    int32_t (*intUpcall)(void *,int32_t),
+    int32_t (*refUpcall)(void *,PNIRef *),
+    int32_t (*funcUpcall)(void *,PNIFunc *),
+    void * (*returnSegUpcall)(void *)
 ) {
     _doNothingUpcall = doNothingUpcall;
     _intUpcall = intUpcall;
@@ -75,4 +75,4 @@ JNIEXPORT void * JNICALL JavaCritical_io_vproxy_pni_graal_test_Upcall_returnSegU
 }
 #endif
 // metadata.generator-version: pni test
-// sha256:6866501c3077ad146982779a6943b54fac7e23f6c4e40853f48dd2a6ff001131
+// sha256:2a72d0e28761a63af818686365cfee2902c4b731c8f44599a3081b80ab213039
