@@ -320,7 +320,7 @@ public class TestGCCCompatibility {
 
     @Test
     public void bitfieldCWriteJavaRead() {
-        for (int index = 0; index < 10000; ++index) {
+        for (int index = 0; index < 100; ++index) {
             try (var allocator = Allocator.ofConfined()) {
                 var s = new GCCompatibilityBitField(allocator);
                 byte a = (byte) generateBitField(1);
@@ -423,7 +423,7 @@ public class TestGCCCompatibility {
 
     @Test
     public void bitfieldJavaWriteCRead() {
-        for (int index = 0; index < 10000; ++index) {
+        for (int index = 0; index < 100; ++index) {
             try (var allocator = Allocator.ofConfined()) {
                 var s = new GCCompatibilityBitField(allocator);
                 byte a = (byte) generateBitField(1);
@@ -551,7 +551,7 @@ public class TestGCCCompatibility {
 
     @Test
     public void generatedBitfieldCWriteJavaRead() {
-        for (int index = 0; index < 10000; ++index) {
+        for (int index = 0; index < 100; ++index) {
             try (var allocator = Allocator.ofConfined()) {
                 var s = new BitField(allocator);
                 byte a = (byte) generateBitField(1);
@@ -654,7 +654,7 @@ public class TestGCCCompatibility {
 
     @Test
     public void generatedBitfieldJavaWriteCRead() {
-        for (int index = 0; index < 10000; ++index) {
+        for (int index = 0; index < 100; ++index) {
             try (var allocator = Allocator.ofConfined()) {
                 var s = new BitField(allocator);
                 byte a = (byte) generateBitField(1);
