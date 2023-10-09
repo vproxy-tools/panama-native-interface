@@ -7,6 +7,7 @@ import org.junit.runner.RunWith;
     TestFunctionPointer.class,
     TestRefAndFunc.class,
     TestUpcall.class,
+    io.vproxy.pni.test.cases.Suite.class,
 })
 public class Suite {
 }
