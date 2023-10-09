@@ -370,7 +370,7 @@ project(":graal-test") {
         }
         args '-jar', './build/libs/graal-test.jar',
                 '--features=io.vproxy.pni.graal.test.Feature2,io.vproxy.pni.graal.test.Feature',
-                '--enable-preview', '-ea',
+                '--enable-preview', '--enable-native-access=ALL-UNNAMED', '-ea',
                 '-Ob', '--no-fallback',
                 '-o', output
 
@@ -456,7 +456,7 @@ project(":sample") {
         if (!OS.isWindows()) {
             output += '.run'
         }
-        args '-jar', './build/libs/sample.jar', '--features=io.vproxy.pni.sample.Feature', '--enable-preview', '--no-fallback', '-o', output
+        args '-jar', './build/libs/sample.jar', '--features=io.vproxy.pni.sample.Feature', '--enable-preview', '--enable-native-access=ALL-UNNAMED', '--no-fallback', '-o', output
 
         dependsOn compilePNISampleLib
         dependsOn shadowJar
