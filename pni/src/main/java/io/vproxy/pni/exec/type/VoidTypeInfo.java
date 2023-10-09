@@ -94,6 +94,11 @@ public class VoidTypeInfo extends TypeInfo {
     }
 
     @Override
+    public void convertFromUpcallReturnGraal(StringBuilder sb, int indent, VarOpts opts) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
     public void javaToString(StringBuilder sb, int indent, String callGetter, VarOpts opts) {
         throw new UnsupportedOperationException();
     }

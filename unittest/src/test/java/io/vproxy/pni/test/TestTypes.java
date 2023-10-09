@@ -185,6 +185,8 @@ public class TestTypes {
         Utils.checkUnsupported(() -> info.convertExtraToUpcallArgument("a", returnVarOpts(0)));
         assertEquals("return RESULT;\n",
             Utils.sbHelper(sb -> info.convertFromUpcallReturn(sb, 0, returnVarOpts(0))));
+        assertEquals("return RESULT;\n",
+            Utils.sbHelper(sb -> info.convertFromUpcallReturnGraal(sb, 0, returnVarOpts(0))));
         assertEquals("SB.append(getX());\n",
             Utils.sbHelper(sb -> info.javaToString(sb, 0, "getX()", fieldVarOpts(0))));
     }
@@ -252,6 +254,8 @@ public class TestTypes {
         Utils.checkUnsupported(() -> info.convertExtraToUpcallArgument("a", returnVarOpts(0)));
         assertEquals("return RESULT;\n",
             Utils.sbHelper(sb -> info.convertFromUpcallReturn(sb, 0, returnVarOpts(0))));
+        assertEquals("return RESULT;\n",
+            Utils.sbHelper(sb -> info.convertFromUpcallReturnGraal(sb, 0, returnVarOpts(0))));
         assertEquals("SB.append(getX());\n",
             Utils.sbHelper(sb -> info.javaToString(sb, 0, "getX()", fieldVarOpts(0))));
     }
@@ -319,6 +323,8 @@ public class TestTypes {
         Utils.checkUnsupported(() -> info.convertExtraToUpcallArgument("a", returnVarOpts(0)));
         assertEquals("return RESULT;\n",
             Utils.sbHelper(sb -> info.convertFromUpcallReturn(sb, 0, returnVarOpts(0))));
+        assertEquals("return RESULT;\n",
+            Utils.sbHelper(sb -> info.convertFromUpcallReturnGraal(sb, 0, returnVarOpts(0))));
         assertEquals("SB.append(PanamaUtils.charToASCIIString(getX()));\n",
             Utils.sbHelper(sb -> info.javaToString(sb, 0, "getX()", fieldVarOpts(0))));
     }
@@ -386,6 +392,8 @@ public class TestTypes {
         Utils.checkUnsupported(() -> info.convertExtraToUpcallArgument("a", returnVarOpts(0)));
         assertEquals("return RESULT;\n",
             Utils.sbHelper(sb -> info.convertFromUpcallReturn(sb, 0, returnVarOpts(0))));
+        assertEquals("return RESULT;\n",
+            Utils.sbHelper(sb -> info.convertFromUpcallReturnGraal(sb, 0, returnVarOpts(0))));
         assertEquals("SB.append(getX());\n",
             Utils.sbHelper(sb -> info.javaToString(sb, 0, "getX()", fieldVarOpts(0))));
     }
@@ -453,6 +461,8 @@ public class TestTypes {
         Utils.checkUnsupported(() -> info.convertExtraToUpcallArgument("a", returnVarOpts(0)));
         assertEquals("return RESULT;\n",
             Utils.sbHelper(sb -> info.convertFromUpcallReturn(sb, 0, returnVarOpts(0))));
+        assertEquals("return RESULT;\n",
+            Utils.sbHelper(sb -> info.convertFromUpcallReturnGraal(sb, 0, returnVarOpts(0))));
         assertEquals("SB.append(getX());\n",
             Utils.sbHelper(sb -> info.javaToString(sb, 0, "getX()", fieldVarOpts(0))));
     }
@@ -522,6 +532,8 @@ public class TestTypes {
         Utils.checkUnsupported(() -> info.convertExtraToUpcallArgument("a", returnVarOpts(0)));
         assertEquals("return RESULT;\n",
             Utils.sbHelper(sb -> info.convertFromUpcallReturn(sb, 0, returnVarOpts(0))));
+        assertEquals("return RESULT;\n",
+            Utils.sbHelper(sb -> info.convertFromUpcallReturnGraal(sb, 0, returnVarOpts(0))));
         assertEquals("SB.append(getX());\n",
             Utils.sbHelper(sb -> info.javaToString(sb, 0, "getX()", fieldVarOpts(0))));
     }
@@ -591,6 +603,8 @@ public class TestTypes {
         Utils.checkUnsupported(() -> info.convertExtraToUpcallArgument("a", returnVarOpts(0)));
         assertEquals("return RESULT;\n",
             Utils.sbHelper(sb -> info.convertFromUpcallReturn(sb, 0, returnVarOpts(0))));
+        assertEquals("return RESULT;\n",
+            Utils.sbHelper(sb -> info.convertFromUpcallReturnGraal(sb, 0, returnVarOpts(0))));
         assertEquals("SB.append(getX());\n",
             Utils.sbHelper(sb -> info.javaToString(sb, 0, "getX()", fieldVarOpts(0))));
     }
@@ -660,6 +674,8 @@ public class TestTypes {
         Utils.checkUnsupported(() -> info.convertExtraToUpcallArgument("a", returnVarOpts(0)));
         assertEquals("return RESULT;\n",
             Utils.sbHelper(sb -> info.convertFromUpcallReturn(sb, 0, returnVarOpts(0))));
+        assertEquals("return RESULT;\n",
+            Utils.sbHelper(sb -> info.convertFromUpcallReturnGraal(sb, 0, returnVarOpts(0))));
     }
 
     @Test
@@ -813,6 +829,8 @@ public class TestTypes {
         Utils.checkUnsupported(() -> info.convertExtraToUpcallArgument("a", returnVarOpts(0)));
         assertEquals("return RESULT == null ? MemorySegment.NULL : RESULT.MEMORY;\n",
             Utils.sbHelper(sb -> info.convertFromUpcallReturn(sb, 0, returnVarOpts(0))));
+        assertEquals("return WordFactory.pointer(RESULT == null ? 0 : RESULT.MEMORY.address());\n",
+            Utils.sbHelper(sb -> info.convertFromUpcallReturnGraal(sb, 0, returnVarOpts(0))));
         assertEquals("""
                 if (CORRUPTED_MEMORY) SB.append("<?>");
                 else PanamaUtils.nativeObjectToString(getX(), SB, INDENT + 4, VISITED, CORRUPTED_MEMORY);
@@ -896,6 +914,8 @@ public class TestTypes {
         Utils.checkUnsupported(() -> info.convertExtraToUpcallArgument("a", returnVarOpts(0)));
         assertEquals("return RESULT == null ? MemorySegment.NULL : RESULT;\n",
             Utils.sbHelper(sb -> info.convertFromUpcallReturn(sb, 0, returnVarOpts(0))));
+        assertEquals("return WordFactory.pointer(RESULT == null ? 0 : RESULT.address());\n",
+            Utils.sbHelper(sb -> info.convertFromUpcallReturnGraal(sb, 0, returnVarOpts(0))));
         assertEquals("SB.append(PanamaUtils.memorySegmentToString(getX()));\n",
             Utils.sbHelper(sb -> info.javaToString(sb, 0, "getX()", fieldVarOpts(0))));
     }
@@ -992,6 +1012,13 @@ public class TestTypes {
                 return return_;
                 """,
             Utils.sbHelper(sb -> info.convertFromUpcallReturn(sb, 0, returnVarOpts(0))));
+        assertEquals("""
+                if (RESULT == null) return WordFactory.pointer(0);
+                var RETURN = new PNIBuf(return_);
+                RETURN.set(RESULT);
+                return WordFactory.pointer(return_.address());
+                """,
+            Utils.sbHelper(sb -> info.convertFromUpcallReturnGraal(sb, 0, returnVarOpts(0))));
         assertEquals("""
                 if (CORRUPTED_MEMORY) SB.append("<?>");
                 else SB.append(PanamaUtils.byteBufferToString(getX()));
@@ -1105,6 +1132,8 @@ public class TestTypes {
         assertEquals("new a.b.Cls(a)", info.convertExtraToUpcallArgument("a", returnVarOpts(0)));
         assertEquals("return RESULT == null ? MemorySegment.NULL : RESULT.MEMORY;\n",
             Utils.sbHelper(sb -> info.convertFromUpcallReturn(sb, 0, returnVarOpts(0))));
+        assertEquals("return WordFactory.pointer(RESULT == null ? 0 : RESULT.MEMORY.address());\n",
+            Utils.sbHelper(sb -> info.convertFromUpcallReturnGraal(sb, 0, returnVarOpts(0))));
         assertEquals("PanamaUtils.nativeObjectToString(getX(), SB, INDENT + 4, VISITED, CORRUPTED_MEMORY);\n",
             Utils.sbHelper(sb -> info.javaToString(sb, 0, "getX()", fieldVarOpts(0))));
         assertEquals("""
@@ -1243,6 +1272,13 @@ public class TestTypes {
                 """,
             Utils.sbHelper(sb -> info.convertFromUpcallReturn(sb, 0, returnVarOpts(0))));
         assertEquals("""
+                if (RESULT == null) return WordFactory.pointer(0);
+                var RETURN = new PNIBuf(return_);
+                RETURN.set(RESULT);
+                return WordFactory.pointer(return_.address());
+                """,
+            Utils.sbHelper(sb -> info.convertFromUpcallReturnGraal(sb, 0, returnVarOpts(0))));
+        assertEquals("""
                 if (CORRUPTED_MEMORY) SB.append("<?>");
                 else SB.append(PanamaUtils.memorySegmentToString(getX()));
                 """,
@@ -1357,6 +1393,13 @@ public class TestTypes {
                 return return_;
                 """,
             Utils.sbHelper(sb -> info.convertFromUpcallReturn(sb, 0, returnVarOpts(0))));
+        assertEquals("""
+                if (RESULT == null) return WordFactory.pointer(0);
+                var RETURN = new PNIBuf(return_);
+                RETURN.set(RESULT.MEMORY);
+                return WordFactory.pointer(return_.address());
+                """,
+            Utils.sbHelper(sb -> info.convertFromUpcallReturnGraal(sb, 0, returnVarOpts(0))));
         assertEquals("""
                 if (CORRUPTED_MEMORY) SB.append("<?>");
                 else PanamaUtils.nativeObjectToString(getX(), SB, INDENT + 4, VISITED, CORRUPTED_MEMORY);
@@ -1477,6 +1520,13 @@ public class TestTypes {
                 return return_;
                 """,
             Utils.sbHelper(sb -> info.convertFromUpcallReturn(sb, 0, returnVarOpts(0))));
+        assertEquals("""
+                if (RESULT == null) return WordFactory.pointer(0);
+                var RETURN = new PNIBuf(return_);
+                RETURN.set(RESULT.MEMORY);
+                return WordFactory.pointer(return_.address());
+                """,
+            Utils.sbHelper(sb -> info.convertFromUpcallReturnGraal(sb, 0, returnVarOpts(0))));
         assertEquals("""
                 if (CORRUPTED_MEMORY) SB.append("<?>");
                 else PanamaUtils.nativeObjectToString(getX(), SB, INDENT + 4, VISITED, CORRUPTED_MEMORY);

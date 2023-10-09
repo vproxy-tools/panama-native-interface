@@ -315,7 +315,8 @@ project(":graal-test-template") {
         systemProperty("io.vproxy.pni.Testing", "true")
         workingDir project.rootProject.rootDir.getAbsolutePath()
         args '-cp', 'graal-test-template/build/classes/java/main', '-d', 'graal-test/src/main/generated', '-h', 'graal-test/src/main/c-generated',
-                '-fgraal-native-image-feature=io.vproxy.pni.graal.test.Feature'
+                '-fgraal-native-image-feature=io.vproxy.pni.graal.test.Feature',
+                '-fgraal-c-entrypoint-literal-upcall'
 
         dependsOn cleanGraalTesting
         dependsOn compileJava
@@ -375,6 +376,8 @@ project(":graal-test") {
 
         dependsOn project(':graal-test-template').tasks.generateGraalTesting
         dependsOn shadowJar
+
+        shadowJar.mustRunAfter(project(':graal-test-template').tasks.generateGraalTesting)
     }
     task runGraalTest(type: Exec) {
         if (OS.isWindows()) {

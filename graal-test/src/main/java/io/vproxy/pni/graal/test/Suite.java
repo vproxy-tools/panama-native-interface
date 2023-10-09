@@ -6,6 +6,7 @@ import org.junit.runner.RunWith;
 @org.junit.runners.Suite.SuiteClasses({
     TestFunctionPointer.class,
     TestRefAndFunc.class,
+    TestUpcall.class,
 })
 public class Suite {
 }

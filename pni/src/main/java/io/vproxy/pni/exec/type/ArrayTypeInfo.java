@@ -419,6 +419,23 @@ public class ArrayTypeInfo extends TypeInfo {
     }
 
     @Override
+    public void convertFromUpcallReturnGraal(StringBuilder sb, int indent, VarOpts opts) {
+        Utils.appendIndent(sb, indent)
+            .append("if (RESULT == null) return WordFactory.pointer(0);\n");
+        Utils.appendIndent(sb, indent)
+            .append("var RETURN = new PNIBuf(return_);\n");
+        if (elementType instanceof ByteTypeInfo) {
+            Utils.appendIndent(sb, indent)
+                .append("RETURN.set(RESULT);\n");
+        } else {
+            Utils.appendIndent(sb, indent)
+                .append("RETURN.set(RESULT.MEMORY);\n");
+        }
+        Utils.appendIndent(sb, indent)
+            .append("return WordFactory.pointer(return_.address());\n");
+    }
+
+    @Override
     public void javaToString(StringBuilder sb, int indent, String callGetter, VarOpts opts) {
         Utils.appendIndent(sb, indent)
             .append("if (CORRUPTED_MEMORY) SB.append(\"<?>\");\n");

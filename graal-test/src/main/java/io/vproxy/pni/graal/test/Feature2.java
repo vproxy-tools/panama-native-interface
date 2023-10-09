@@ -14,6 +14,7 @@ public class Feature2 implements Feature {
             Suite.class,
             TestFunctionPointer.class,
             TestRefAndFunc.class,
+            TestUpcall.class,
         };
 
         for (var c : classes) {

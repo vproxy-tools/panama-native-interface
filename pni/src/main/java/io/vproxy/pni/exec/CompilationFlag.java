@@ -9,6 +9,9 @@ public class CompilationFlag<T> {
     public static final CompilationFlag<String> GRAAL_NATIVE_IMAGE_FEATURE = new CompilationFlag<>(
         "graal-native-image-feature", "GraalNativeImageFeature",
         Utils::isValidClassName, s -> s);
+    public static final CompilationFlag<Void> GRAAL_C_ENTRYPOINT_LITERAL_UPCALL = new CompilationFlag<>(
+        "graal-c-entrypoint-literal-upcall", "",
+        String::isBlank, s -> null);
 
     public final String name;
     public final String defaultValue;
@@ -33,6 +36,7 @@ public class CompilationFlag<T> {
 
     private static final CompilationFlag<?>[] VALUES = new CompilationFlag[]{
         GRAAL_NATIVE_IMAGE_FEATURE,
+        GRAAL_C_ENTRYPOINT_LITERAL_UPCALL,
     };
 
     public static CompilationFlag<?>[] values() {

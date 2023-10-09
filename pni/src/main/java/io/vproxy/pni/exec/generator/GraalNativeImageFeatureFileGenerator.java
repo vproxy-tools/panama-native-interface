@@ -96,16 +96,36 @@ public class GraalNativeImageFeatureFileGenerator {
         classes.sort(Comparator.comparing(a -> a.name));
         for (var cls : classes) {
             if (cls.isUpcall()) {
-                continue;
-            }
-            for (var m : cls.methods) {
-                sb.append("\n");
-                get(m).generateJava(sb, 8, cls.underlinedName(), !cls.isInterface);
+                if (opts.hasCompilationFlag(CompilationFlag.GRAAL_C_ENTRYPOINT_LITERAL_UPCALL)) {
+                    sb.append("\n");
+                    generateGraalUpcallJava(cls, sb, 8);
+                }
+            } else {
+                if (cls.getSizeof() != null) {
+                    sb.append("\n");
+                    sb.append("/* JavaCritical_").append(cls.underlinedName()).append("___getLayoutByteSize */\n");
+                    Utils.appendIndent(sb, 8).append("RuntimeForeignAccess.registerForDowncall(")
+                        .append("PanamaUtils.buildCriticalFunctionDescriptor(long.class), Linker.Option.isTrivial());\n");
+                }
+                for (var m : cls.methods) {
+                    sb.append("\n");
+                    get(m).generateJava(sb, 8, cls.underlinedName(), !cls.isInterface);
+                }
             }
         }
 
         sb.append("    }\n");
         sb.append("}\n");
+    }
+
+    public void generateGraalUpcallJava(AstClass cls, StringBuilder sb, int indent) {
+        Utils.appendIndent(sb, indent).append("/* graal upcall for ").append(cls.fullName()).append(" */\n");
+        Utils.appendIndent(sb, indent).append("RuntimeClassInitialization.initializeAtBuildTime(").append(cls.fullName()).append(".class);\n");
+        Utils.appendIndent(sb, indent).append("RuntimeForeignAccess.registerForDowncall(PanamaUtils.buildCriticalFunctionDescriptor(void.class");
+        for (var ignored : cls.methods) {
+            sb.append(", MemorySegment.class");
+        }
+        sb.append("), Linker.Option.isTrivial());\n");
     }
 
     private final Map<AstMethod, MethodGenerator> methodGenerators = new HashMap<>();
@@ -133,7 +153,12 @@ public class GraalNativeImageFeatureFileGenerator {
             boolean needComma = false;
             if (method.critical()) {
                 needComma = true;
-                sb.append(method.returnTypeRef.methodHandleTypeForReturn(method.varOptsForReturn()));
+                var type = method.returnTypeRef.methodHandleTypeForReturnForGraalFeature(method.varOptsForReturn());
+                var origType = method.returnTypeRef.methodHandleTypeForReturn(method.varOptsForReturn());
+                sb.append(type);
+                if (!type.equals(origType)) {
+                    sb.append(" /* ").append(origType).append(" */");
+                }
             }
             if (needSelf) {
                 if (needComma) {
@@ -169,6 +194,11 @@ public class GraalNativeImageFeatureFileGenerator {
                 var name = t.name();
                 Utils.appendIndent(sb, indent)
                     .append("RuntimeReflection.registerAllConstructors(").append(name).append(".class").append(");\n");
+                Utils.appendIndent(sb, indent)
+                    .append("for (var CONS : ").append(name).append(".class.getConstructors()) {\n");
+                Utils.appendIndent(sb, indent + 4)
+                    .append("RuntimeReflection.register(CONS);\n");
+                Utils.appendIndent(sb, indent).append("}\n");
             }
         }
 
@@ -187,7 +217,12 @@ public class GraalNativeImageFeatureFileGenerator {
 
             private void generateMethodHandle(StringBuilder sb, int indent) {
                 Utils.appendIndent(sb, indent);
-                sb.append(param.typeRef.methodHandleType(param.varOpts()));
+                var type = param.typeRef.methodHandleTypeForGraalFeature(param.varOpts());
+                var origType = param.typeRef.methodHandleType(param.varOpts());
+                sb.append(type);
+                if (!type.equals(origType)) {
+                    sb.append(" /* ").append(origType).append(" */");
+                }
             }
         }
     }

@@ -1,5 +1,6 @@
 package io.vproxy.pni.exec.generator;
 
+import io.vproxy.pni.exec.CompilationFlag;
 import io.vproxy.pni.exec.CompilerOptions;
 import io.vproxy.pni.exec.Main;
 import io.vproxy.pni.exec.ast.*;
@@ -11,6 +12,7 @@ import io.vproxy.pni.exec.type.*;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -53,6 +55,13 @@ public class JavaFileGenerator {
                   "import java.lang.foreign.*;\n" +
                   "import java.lang.invoke.*;\n" +
                   "import java.nio.ByteBuffer;\n");
+        if (opts.hasCompilationFlag(CompilationFlag.GRAAL_C_ENTRYPOINT_LITERAL_UPCALL)) {
+            sb.append("import io.vproxy.pni.graal.*;\n");
+            sb.append("import org.graalvm.nativeimage.*;\n");
+            sb.append("import org.graalvm.nativeimage.c.function.*;\n");
+            sb.append("import org.graalvm.nativeimage.c.type.VoidPointer;\n");
+            sb.append("import org.graalvm.word.WordFactory;\n");
+        }
         sb.append("\n");
         if (cls.isUpcall()) {
             generateJavaUpcall(sb);
@@ -399,8 +408,12 @@ public class JavaFileGenerator {
         }
 
         sb.append("\n");
-        sb.append("    static {\n");
-        generateUpcallStatic(sb, 8);
+        if (opts.hasCompilationFlag(CompilationFlag.GRAAL_C_ENTRYPOINT_LITERAL_UPCALL)) {
+            sb.append("    private static void setNativeImpl() {\n");
+        } else {
+            sb.append("    static {\n");
+        }
+        generateUpcallSetNativeImpl(sb, 8);
         sb.append("    }\n");
 
         sb.append("\n");
@@ -409,6 +422,9 @@ public class JavaFileGenerator {
         sb.append("    public static void setImpl(Interface impl) {\n");
         sb.append("        java.util.Objects.requireNonNull(impl);\n");
         sb.append("        IMPL = impl;\n");
+        if (opts.hasCompilationFlag(CompilationFlag.GRAAL_C_ENTRYPOINT_LITERAL_UPCALL)) {
+            sb.append("        setNativeImpl();\n");
+        }
         sb.append("    }\n");
 
         sb.append("\n");
@@ -430,7 +446,7 @@ public class JavaFileGenerator {
         sb.append("}\n");
     }
 
-    private void generateUpcallStatic(StringBuilder sb, @SuppressWarnings("SameParameterValue") int indent) {
+    private void generateUpcallSetNativeImplMethodHandles(StringBuilder sb, int indent) {
         for (var m : cls.methods) {
             Utils.appendIndent(sb, indent)
                 .append("MethodHandle ").append(m.name).append("MH;\n");
@@ -448,12 +464,24 @@ public class JavaFileGenerator {
         Utils.appendIndent(sb, indent + 4)
             .append("throw new RuntimeException(t);\n");
         Utils.appendIndent(sb, indent).append("}\n");
+    }
+
+    private void generateUpcallSetNativeImpl(StringBuilder sb, @SuppressWarnings("SameParameterValue") int indent) {
+        if (!opts.hasCompilationFlag(CompilationFlag.GRAAL_C_ENTRYPOINT_LITERAL_UPCALL)) {
+            generateUpcallSetNativeImplMethodHandles(sb, indent);
+        }
 
         for (var m : cls.methods) {
-            Utils.appendIndent(sb, indent)
-                .append(m.name).append(" = ");
-            get(m).generateUpcallStub(sb);
-            sb.append(";\n");
+            if (opts.hasCompilationFlag(CompilationFlag.GRAAL_C_ENTRYPOINT_LITERAL_UPCALL)) {
+                Utils.appendIndent(sb, indent)
+                    .append(m.name).append(" = MemorySegment.ofAddress(")
+                    .append(m.name).append("CEPL").append(".getFunctionPointer().rawValue());\n");
+            } else {
+                Utils.appendIndent(sb, indent)
+                    .append(m.name).append(" = ");
+                get(m).generateUpcallStub(sb);
+                sb.append(";\n");
+            }
         }
 
         sb.append("\n");
@@ -485,6 +513,21 @@ public class JavaFileGenerator {
             .append("throw new RuntimeException(t);\n");
         Utils.appendIndent(sb, indent)
             .append("}\n");
+
+        if (opts.hasCompilationFlag(CompilationFlag.GRAAL_C_ENTRYPOINT_LITERAL_UPCALL)) {
+            generateGraalUpcallSetNativeImpl(sb, indent);
+        }
+    }
+
+    private void generateGraalUpcallSetNativeImpl(StringBuilder sb, int indent) {
+        for (var m : cls.methods) {
+            Utils.appendIndent(sb, indent)
+                .append(m.name).append(" = PanamaUtils.lookupFunctionPointer(\"")
+                .append(m.nativeName(cls.underlinedName(), true))
+                .append("\").orElseThrow(() -> new NullPointerException(\"")
+                .append(m.nativeName(cls.underlinedName(), true))
+                .append("\"));\n");
+        }
     }
 
     private final Map<AstField, FieldGenerator> fieldGenerators = new HashMap<>();
@@ -569,7 +612,7 @@ public class JavaFileGenerator {
         return methodGenerators.computeIfAbsent(m, MethodGenerator::new);
     }
 
-    private static class MethodGenerator {
+    private class MethodGenerator {
         private final AstMethod method;
 
         private MethodGenerator(AstMethod method) {
@@ -772,27 +815,62 @@ public class JavaFileGenerator {
 
         private void generateJavaUpcall(StringBuilder sb, int indent, String classFullName) {
             sb.append("\n");
-            Utils.appendIndent(sb, indent).append("public static final MemorySegment ").append(method.name).append(";\n");
+            Utils.appendIndent(sb, indent).append("public static");
+            if (!opts.hasCompilationFlag(CompilationFlag.GRAAL_C_ENTRYPOINT_LITERAL_UPCALL)) {
+                sb.append(" final");
+            }
+            sb.append(" MemorySegment ").append(method.name).append(";\n");
+            if (opts.hasCompilationFlag(CompilationFlag.GRAAL_C_ENTRYPOINT_LITERAL_UPCALL)) {
+                Utils.appendIndent(sb, indent).append("public static final CEntryPointLiteral<CFunctionPointer> ")
+                    .append(method.name).append("CEPL = GraalUtils.defineCFunctionByName(")
+                    .append(cls.fullName()).append(".class, \"").append(method.name).append("\");\n");
+            }
             sb.append("\n");
-            Utils.appendIndent(sb, indent).append("private static ");
-            sb.append(method.returnTypeRef.javaTypeForUpcallReturn(method.varOptsForReturn(true)))
-                .append(" ").append(method.name).append("(");
+
+            if (opts.hasCompilationFlag(CompilationFlag.GRAAL_C_ENTRYPOINT_LITERAL_UPCALL)) {
+                Utils.appendIndent(sb, indent).append("@CEntryPoint\n");
+                Utils.appendIndent(sb, indent).append("public static ");
+            } else {
+                Utils.appendIndent(sb, indent).append("private static ");
+            }
+            var returnType = method.returnTypeRef.javaTypeForUpcallReturn(method.varOptsForReturn(true));
+            if (opts.hasCompilationFlag(CompilationFlag.GRAAL_C_ENTRYPOINT_LITERAL_UPCALL) && returnType.equals("MemorySegment")) {
+                returnType = "VoidPointer";
+            }
+            sb.append(returnType).append(" ").append(method.name).append("(");
+
+            var voidPointerParams = new ArrayList<String>();
+
             var isFirst = true;
+            if (opts.hasCompilationFlag(CompilationFlag.GRAAL_C_ENTRYPOINT_LITERAL_UPCALL)) {
+                isFirst = false;
+                sb.append("IsolateThread THREAD");
+            }
             for (var p : method.params) {
                 if (isFirst) {
                     isFirst = false;
                 } else {
                     sb.append(", ");
                 }
-                get(p).generateUpcallParam(sb, 0);
+                var isVoidPointer = get(p).generateUpcallParam(sb, 0);
+                if (isVoidPointer) {
+                    voidPointerParams.add(p.name);
+                }
             }
             var returnAllocation = method.returnTypeRef.allocationInfoForReturnValue(method.varOptsForReturn(true));
             var interfaceReturnAllocation = method.returnTypeRef.allocationInfoForUpcallInterfaceReturnValue(method.varOptsForReturn(true));
             if (returnAllocation.requireAllocator()) {
-                if (!method.params.isEmpty()) {
+                if (isFirst) {
+                    isFirst = false;
+                } else {
                     sb.append(", ");
                 }
-                sb.append("MemorySegment return_");
+                if (opts.hasCompilationFlag(CompilationFlag.GRAAL_C_ENTRYPOINT_LITERAL_UPCALL)) {
+                    sb.append("VoidPointer return_PTR");
+                    voidPointerParams.add("return_");
+                } else {
+                    sb.append("MemorySegment return_");
+                }
             }
             sb.append(") {\n");
             Utils.appendIndent(sb, indent + 4)
@@ -802,6 +880,15 @@ public class JavaFileGenerator {
             Utils.appendIndent(sb, indent + 8)
                 .append("System.exit(1);\n");
             Utils.appendIndent(sb, indent + 4).append("}\n");
+
+            if (opts.hasCompilationFlag(CompilationFlag.GRAAL_C_ENTRYPOINT_LITERAL_UPCALL)) {
+                for (var p : voidPointerParams) {
+                    Utils.appendIndent(sb, indent + 4)
+                        .append("var ").append(p).append(" = MemorySegment.ofAddress(")
+                        .append(p).append("PTR").append(".rawValue());\n");
+                }
+            }
+
             Utils.appendIndent(sb, indent + 4);
             if (!(method.returnTypeRef instanceof VoidTypeInfo)) {
                 sb.append("var RESULT = ");
@@ -831,7 +918,11 @@ public class JavaFileGenerator {
                 sb.append(");\n");
             }
             if (!(method.returnTypeRef instanceof VoidTypeInfo)) {
-                method.returnTypeRef.convertFromUpcallReturn(sb, indent + 4, method.varOptsForReturn(true));
+                if (opts.hasCompilationFlag(CompilationFlag.GRAAL_C_ENTRYPOINT_LITERAL_UPCALL)) {
+                    method.returnTypeRef.convertFromUpcallReturnGraal(sb, indent + 4, method.varOptsForReturn(true));
+                } else {
+                    method.returnTypeRef.convertFromUpcallReturn(sb, indent + 4, method.varOptsForReturn(true));
+                }
             }
             Utils.appendIndent(sb, indent).append("}\n");
         }
@@ -916,7 +1007,7 @@ public class JavaFileGenerator {
             return paramGenerators.computeIfAbsent(p, ParamGenerator::new);
         }
 
-        private static class ParamGenerator {
+        private class ParamGenerator {
             private final AstParam param;
 
             private ParamGenerator(AstParam param) {
@@ -928,9 +1019,21 @@ public class JavaFileGenerator {
                 sb.append(param.typeRef.javaTypeForParam(param.varOpts())).append(" ").append(param.name);
             }
 
-            private void generateUpcallParam(StringBuilder sb, int indent) {
+            /**
+             * @return true if it's using the Graal VoidPointer, which requires further transformation
+             */
+            private boolean generateUpcallParam(StringBuilder sb, int indent) {
                 Utils.appendIndent(sb, indent);
-                sb.append(param.typeRef.javaTypeForUpcallParam(param.varOpts())).append(" ").append(param.name);
+                var type = param.typeRef.javaTypeForUpcallParam(param.varOpts());
+                var name = param.name;
+                var isVoidPointer = false;
+                if (opts.hasCompilationFlag(CompilationFlag.GRAAL_C_ENTRYPOINT_LITERAL_UPCALL) && type.equals("MemorySegment")) {
+                    type = "VoidPointer";
+                    name = name + "PTR";
+                    isVoidPointer = true;
+                }
+                sb.append(type).append(" ").append(name);
+                return isVoidPointer;
             }
 
             private void generateUpcallParamClass(StringBuilder sb, int indent) {

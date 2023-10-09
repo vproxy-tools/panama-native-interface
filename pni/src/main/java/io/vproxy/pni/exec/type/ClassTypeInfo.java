@@ -171,6 +171,16 @@ public class ClassTypeInfo extends TypeInfo {
     }
 
     @Override
+    public String methodHandleTypeForGraalFeature(VarOpts opts) {
+        return "MemoryLayout.class";
+    }
+
+    @Override
+    public String methodHandleTypeForReturnForGraalFeature(VarOpts opts) {
+        return "MemoryLayout.class";
+    }
+
+    @Override
     public String methodHandleTypeForUpcall(VarOpts opts) {
         return "MemorySegment.class";
     }

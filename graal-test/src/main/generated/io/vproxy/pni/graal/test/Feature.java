@@ -25,7 +25,26 @@ public class Feature implements org.graalvm.nativeimage.hosted.Feature {
 
         /* JavaCritical_io_vproxy_pni_graal_test_Invoke_callFunc */
         RuntimeForeignAccess.registerForDowncall(PanamaUtils.buildCriticalFunctionDescriptor(int.class, io.vproxy.pni.CallSite.class /* func */));
+
+        /* JavaCritical_io_vproxy_pni_graal_test_Invoke_invokeDoNothingUpcall */
+        RuntimeForeignAccess.registerForDowncall(PanamaUtils.buildCriticalFunctionDescriptor(void.class, MemorySegment.class /* func */));
+
+        /* JavaCritical_io_vproxy_pni_graal_test_Invoke_invokeIntUpcall */
+        RuntimeForeignAccess.registerForDowncall(PanamaUtils.buildCriticalFunctionDescriptor(int.class, MemorySegment.class /* func */, int.class /* a */));
+
+        /* JavaCritical_io_vproxy_pni_graal_test_Invoke_invokeRefUpcall */
+        RuntimeForeignAccess.registerForDowncall(PanamaUtils.buildCriticalFunctionDescriptor(int.class, MemorySegment.class /* func */, PNIRef.class /* ref */));
+
+        /* JavaCritical_io_vproxy_pni_graal_test_Invoke_invokeFuncUpcall */
+        RuntimeForeignAccess.registerForDowncall(PanamaUtils.buildCriticalFunctionDescriptor(int.class, MemorySegment.class /* func */, io.vproxy.pni.CallSite.class /* ff */));
+
+        /* JavaCritical_io_vproxy_pni_graal_test_Invoke_invokeReturnSegUpcall */
+        RuntimeForeignAccess.registerForDowncall(PanamaUtils.buildCriticalFunctionDescriptor(MemorySegment.class, MemorySegment.class /* func */));
+
+        /* graal upcall for io.vproxy.pni.graal.test.Upcall */
+        RuntimeClassInitialization.initializeAtBuildTime(io.vproxy.pni.graal.test.Upcall.class);
+        RuntimeForeignAccess.registerForDowncall(PanamaUtils.buildCriticalFunctionDescriptor(void.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class), Linker.Option.isTrivial());
     }
 }
 // metadata.generator-version: pni test
-// sha256:81266a47c00153ed76aa79beb1917681ed486d083727c79e77f83b0653c10b55
+// sha256:fe9efaa3354b08a20bee5790453c9db09881f149a650a95065852425eb0b19c5

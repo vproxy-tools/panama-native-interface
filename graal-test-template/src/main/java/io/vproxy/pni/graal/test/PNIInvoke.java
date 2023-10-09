@@ -50,4 +50,58 @@ public interface PNIInvoke {
     )
     @Critical
     int callFunc(PNIFunc<Void> func);
+
+    @Impl(
+        // language="c"
+        c = """
+            void (*f)(void) = func;
+            f();
+            """
+    )
+    @Critical
+    void invokeDoNothingUpcall(MemorySegment func);
+
+    @Impl(
+        // language="c"
+        c = """
+            int (*f)(int) = func;
+            return f(a);
+            """
+    )
+    @Critical
+    int invokeIntUpcall(MemorySegment func, int a);
+
+    @Impl(
+        // language="c"
+        c = """
+            int (*f)(PNIRef*) = func;
+            int res = f(ref);
+            PNIRefRelease(ref);
+            return res;
+            """
+    )
+    @Critical
+    int invokeRefUpcall(MemorySegment func, PNIRef<Integer> ref);
+
+    @Impl(
+        // language="c"
+        c = """
+            int (*f)(PNIFunc*) = func;
+            int res = f(ff);
+            PNIFuncRelease(ff);
+            return res;
+            """
+    )
+    @Critical
+    int invokeFuncUpcall(MemorySegment func, PNIFunc<Void> ff);
+
+    @Impl(
+        // language="c"
+        c = """
+            void* (*f)() = func;
+            return f();
+            """
+    )
+    @Critical
+    MemorySegment invokeReturnSegUpcall(MemorySegment func);
 }

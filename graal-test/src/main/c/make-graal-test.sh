@@ -30,4 +30,5 @@ gcc -std=gnu99 -O2 \
     -DPNI_GRAAL=1 \
     ../../../../api/src/main/c/pni.c \
     graal-test.c \
+    ../c-generated/io_vproxy_pni_graal_test_Upcall.c \
     -o "$target"

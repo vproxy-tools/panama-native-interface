@@ -1,5 +1,6 @@
 package io.vproxy.pni.exec.generator;
 
+import io.vproxy.pni.exec.CompilationFlag;
 import io.vproxy.pni.exec.CompilerOptions;
 import io.vproxy.pni.exec.ast.AstClass;
 import io.vproxy.pni.exec.ast.AstMethod;
@@ -80,7 +81,7 @@ public class CUpcallImplFileGenerator extends CFileGenerator {
         return methodGenerators.computeIfAbsent(m, MethodGenerator::new);
     }
 
-    private static class MethodGenerator extends CFileGenerator.MethodGenerator {
+    private class MethodGenerator extends CFileGenerator.MethodGenerator {
         private MethodGenerator(AstMethod method) {
             super(method);
         }
@@ -95,6 +96,12 @@ public class CUpcallImplFileGenerator extends CFileGenerator {
             sb.append(method.name);
             sb.append(")(");
             boolean isFirst = true;
+
+            if (opts.hasCompilationFlag(CompilationFlag.GRAAL_C_ENTRYPOINT_LITERAL_UPCALL)) {
+                sb.append("void*"); // thread
+                isFirst = false;
+            }
+
             for (var p : method.params) {
                 if (isFirst) {
                     isFirst = false;
@@ -109,13 +116,14 @@ public class CUpcallImplFileGenerator extends CFileGenerator {
                 returnTypeExtraType = method.returnTypeRef.nativeParamType(null, method.varOptsForReturn(true));
             }
             if (returnTypeExtraType != null) {
-                if (!method.params.isEmpty()) {
+                if (isFirst) {
+                    isFirst = false;
+                } else {
                     sb.append(",");
                 }
                 sb.append(returnTypeExtraType);
             }
-            if (method.params.isEmpty()
-                && returnTypeExtraType == null) {
+            if (isFirst) {
                 sb.append("void");
             }
             sb.append(")");
@@ -140,6 +148,12 @@ public class CUpcallImplFileGenerator extends CFileGenerator {
             }
             sb.append("_").append(method.name).append("(");
             boolean isFirst = true;
+
+            if (opts.hasCompilationFlag(CompilationFlag.GRAAL_C_ENTRYPOINT_LITERAL_UPCALL)) {
+                sb.append("PNIGetGraalThread()");
+                isFirst = false;
+            }
+
             for (var p : method.params) {
                 if (isFirst) {
                     isFirst = false;
@@ -149,7 +163,9 @@ public class CUpcallImplFileGenerator extends CFileGenerator {
                 sb.append(p.name);
             }
             if (method.returnTypeRef.allocationInfoForReturnValue(method.varOptsForReturn(true)).requireAllocator()) {
-                if (!method.params.isEmpty()) {
+                if (isFirst) {
+                    isFirst = false;
+                } else {
                     sb.append(", ");
                 }
                 sb.append("return_");

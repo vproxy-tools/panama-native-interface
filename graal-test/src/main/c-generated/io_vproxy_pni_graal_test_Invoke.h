@@ -21,10 +21,15 @@ JNIEXPORT int32_t JNICALL JavaCritical_io_vproxy_pni_graal_test_Invoke_invokeSum
 JNIEXPORT void JNICALL JavaCritical_io_vproxy_pni_graal_test_Invoke_invokePtr(void * func, void * thread, int32_t a, void * p);
 JNIEXPORT void JNICALL JavaCritical_io_vproxy_pni_graal_test_Invoke_releaseRef(PNIRef * ref);
 JNIEXPORT int32_t JNICALL JavaCritical_io_vproxy_pni_graal_test_Invoke_callFunc(PNIFunc * func);
+JNIEXPORT void JNICALL JavaCritical_io_vproxy_pni_graal_test_Invoke_invokeDoNothingUpcall(void * func);
+JNIEXPORT int32_t JNICALL JavaCritical_io_vproxy_pni_graal_test_Invoke_invokeIntUpcall(void * func, int32_t a);
+JNIEXPORT int32_t JNICALL JavaCritical_io_vproxy_pni_graal_test_Invoke_invokeRefUpcall(void * func, PNIRef * ref);
+JNIEXPORT int32_t JNICALL JavaCritical_io_vproxy_pni_graal_test_Invoke_invokeFuncUpcall(void * func, PNIFunc * ff);
+JNIEXPORT void * JNICALL JavaCritical_io_vproxy_pni_graal_test_Invoke_invokeReturnSegUpcall(void * func);
 
 #ifdef __cplusplus
 }
 #endif
 #endif // _Included_io_vproxy_pni_graal_test_Invoke
 // metadata.generator-version: pni test
-// sha256:af8545a86dc459868e68de000b1256fc017fd05e44a8ad4566168e84a7d3a7f0
+// sha256:178a384903221bc51895b8062f188cb5ad3a81a406dccb2a154f02f169cee6e6

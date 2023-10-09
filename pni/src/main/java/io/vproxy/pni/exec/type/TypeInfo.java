@@ -115,8 +115,16 @@ public abstract class TypeInfo {
 
     abstract public String methodHandleType(VarOpts opts);
 
+    public String methodHandleTypeForGraalFeature(VarOpts opts) {
+        return methodHandleType(opts);
+    }
+
     public String methodHandleTypeForReturn(VarOpts opts) {
         return methodHandleType(opts);
+    }
+
+    public String methodHandleTypeForReturnForGraalFeature(VarOpts opts) {
+        return methodHandleTypeForReturn(opts);
     }
 
     public abstract String methodHandleTypeForUpcall(VarOpts opts);
@@ -151,6 +159,11 @@ public abstract class TypeInfo {
     public void convertFromUpcallReturn(StringBuilder sb, int indent, VarOpts opts) {
         Utils.appendIndent(sb, indent)
             .append("return RESULT == null ? MemorySegment.NULL : RESULT.MEMORY;\n");
+    }
+
+    public void convertFromUpcallReturnGraal(StringBuilder sb, int indent, VarOpts opts) {
+        Utils.appendIndent(sb, indent)
+            .append("return WordFactory.pointer(RESULT == null ? 0 : RESULT.MEMORY.address());\n");
     }
 
     public abstract void javaToString(StringBuilder sb, int indent, String callGetter, VarOpts opts);

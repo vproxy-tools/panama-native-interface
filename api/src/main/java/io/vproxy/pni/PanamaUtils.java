@@ -57,16 +57,23 @@ public class PanamaUtils {
         }
     }
 
-    public static MethodHandle lookupPNIFunction(boolean isTrivial, String functionName, Class... parameterTypes) {
+    public static Optional<MemorySegment> lookupFunctionPointer(String functionName) {
         var nativeLinker = Linker.nativeLinker();
         var loaderLookup = SymbolLookup.loaderLookup();
         var stdlibLookup = linkerDefaultLookup(nativeLinker);
-        var h = loaderLookup.find(functionName)
+        //noinspection UnnecessaryLocalVariable
+        var p = loaderLookup.find(functionName)
             .or(() -> {
                 if (stdlibLookup != null)
                     return stdlibLookup.find(functionName);
                 return Optional.empty();
-            })
+            });
+        return p;
+    }
+
+    public static MethodHandle lookupPNIFunction(boolean isTrivial, String functionName, Class... parameterTypes) {
+        var nativeLinker = Linker.nativeLinker();
+        var h = lookupFunctionPointer(functionName)
             .map(m -> {
                 if (isTrivial) {
                     return nativeLinker.downcallHandle(m, buildFunctionDescriptor(parameterTypes), Linker.Option.isTrivial());
@@ -83,14 +90,7 @@ public class PanamaUtils {
 
     public static MethodHandle lookupPNICriticalFunction(boolean isTrivial, Class returnType, String functionName, Class... parameterTypes) {
         var nativeLinker = Linker.nativeLinker();
-        var loaderLookup = SymbolLookup.loaderLookup();
-        var stdlibLookup = linkerDefaultLookup(nativeLinker);
-        var h = loaderLookup.find(functionName)
-            .or(() -> {
-                if (stdlibLookup != null)
-                    return stdlibLookup.find(functionName);
-                return Optional.empty();
-            })
+        var h = lookupFunctionPointer(functionName)
             .map(m -> {
                 if (isTrivial) {
                     return nativeLinker.downcallHandle(m, buildCriticalFunctionDescriptor(returnType, parameterTypes), Linker.Option.isTrivial());

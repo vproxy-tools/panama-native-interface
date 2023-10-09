@@ -73,6 +73,12 @@ public abstract class PrimitiveTypeInfo extends TypeInfo {
     }
 
     @Override
+    public void convertFromUpcallReturnGraal(StringBuilder sb, int indent, VarOpts opts) {
+        Utils.appendIndent(sb, indent)
+            .append("return RESULT;\n");
+    }
+
+    @Override
     public void javaToString(StringBuilder sb, int indent, String callGetter, VarOpts opts) {
         Utils.appendIndent(sb, indent)
             .append("SB.append(").append(callGetter).append(");\n");

@@ -5,6 +5,11 @@ import io.vproxy.pni.array.*;
 import java.lang.foreign.*;
 import java.lang.invoke.*;
 import java.nio.ByteBuffer;
+import io.vproxy.pni.graal.*;
+import org.graalvm.nativeimage.*;
+import org.graalvm.nativeimage.c.function.*;
+import org.graalvm.nativeimage.c.type.VoidPointer;
+import org.graalvm.word.WordFactory;
 
 public class Invoke {
     private Invoke() {
@@ -59,6 +64,65 @@ public class Invoke {
         }
         return RESULT;
     }
+
+    private static final MethodHandle invokeDoNothingUpcallMH = PanamaUtils.lookupPNICriticalFunction(false, void.class, "JavaCritical_io_vproxy_pni_graal_test_Invoke_invokeDoNothingUpcall", MemorySegment.class /* func */);
+
+    public void invokeDoNothingUpcall(MemorySegment func) {
+        try {
+            invokeDoNothingUpcallMH.invokeExact((MemorySegment) (func == null ? MemorySegment.NULL : func));
+        } catch (Throwable THROWABLE) {
+            throw PanamaUtils.convertInvokeExactException(THROWABLE);
+        }
+    }
+
+    private static final MethodHandle invokeIntUpcallMH = PanamaUtils.lookupPNICriticalFunction(false, int.class, "JavaCritical_io_vproxy_pni_graal_test_Invoke_invokeIntUpcall", MemorySegment.class /* func */, int.class /* a */);
+
+    public int invokeIntUpcall(MemorySegment func, int a) {
+        int RESULT;
+        try {
+            RESULT = (int) invokeIntUpcallMH.invokeExact((MemorySegment) (func == null ? MemorySegment.NULL : func), a);
+        } catch (Throwable THROWABLE) {
+            throw PanamaUtils.convertInvokeExactException(THROWABLE);
+        }
+        return RESULT;
+    }
+
+    private static final MethodHandle invokeRefUpcallMH = PanamaUtils.lookupPNICriticalFunction(false, int.class, "JavaCritical_io_vproxy_pni_graal_test_Invoke_invokeRefUpcall", MemorySegment.class /* func */, PNIRef.class /* ref */);
+
+    public int invokeRefUpcall(MemorySegment func, java.lang.Integer ref) {
+        int RESULT;
+        try {
+            RESULT = (int) invokeRefUpcallMH.invokeExact((MemorySegment) (func == null ? MemorySegment.NULL : func), (MemorySegment) (ref == null ? MemorySegment.NULL : PNIRef.of(ref).MEMORY));
+        } catch (Throwable THROWABLE) {
+            throw PanamaUtils.convertInvokeExactException(THROWABLE);
+        }
+        return RESULT;
+    }
+
+    private static final MethodHandle invokeFuncUpcallMH = PanamaUtils.lookupPNICriticalFunction(false, int.class, "JavaCritical_io_vproxy_pni_graal_test_Invoke_invokeFuncUpcall", MemorySegment.class /* func */, io.vproxy.pni.CallSite.class /* ff */);
+
+    public int invokeFuncUpcall(MemorySegment func, io.vproxy.pni.CallSite<Void> ff) {
+        int RESULT;
+        try {
+            RESULT = (int) invokeFuncUpcallMH.invokeExact((MemorySegment) (func == null ? MemorySegment.NULL : func), (MemorySegment) (ff == null ? MemorySegment.NULL : PNIFunc.VoidFunc.of(ff).MEMORY));
+        } catch (Throwable THROWABLE) {
+            throw PanamaUtils.convertInvokeExactException(THROWABLE);
+        }
+        return RESULT;
+    }
+
+    private static final MethodHandle invokeReturnSegUpcallMH = PanamaUtils.lookupPNICriticalFunction(false, MemorySegment.class, "JavaCritical_io_vproxy_pni_graal_test_Invoke_invokeReturnSegUpcall", MemorySegment.class /* func */);
+
+    public MemorySegment invokeReturnSegUpcall(MemorySegment func) {
+        MemorySegment RESULT;
+        try {
+            RESULT = (MemorySegment) invokeReturnSegUpcallMH.invokeExact((MemorySegment) (func == null ? MemorySegment.NULL : func));
+        } catch (Throwable THROWABLE) {
+            throw PanamaUtils.convertInvokeExactException(THROWABLE);
+        }
+        if (RESULT.address() == 0) return null;
+        return RESULT;
+    }
 }
 // metadata.generator-version: pni test
-// sha256:88ea0b2e013956ecad1d4e2d9016ec7f07b8db4bd7b4f6e1c34a4a12a3d83b9f
+// sha256:858a0978a61117f6d9022f8c4244c10c679f993015739ae67b12532a086c3fc3

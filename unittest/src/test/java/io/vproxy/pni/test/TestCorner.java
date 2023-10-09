@@ -56,6 +56,7 @@ public class TestCorner {
         }
         Utils.checkUnsupported(() -> v.convertToUpcallArgument("a", emptyParamVarOpts()));
         Utils.checkUnsupported(() -> v.convertFromUpcallReturn(new StringBuilder(), 0, emptyParamVarOpts()));
+        Utils.checkUnsupported(() -> v.convertFromUpcallReturnGraal(new StringBuilder(), 0, emptyParamVarOpts()));
         Utils.checkUnsupported(() -> v.javaToString(new StringBuilder(), 0, "", fieldVarOptsWithLen(-1)));
     }
 
