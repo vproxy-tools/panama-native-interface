@@ -460,6 +460,8 @@ project(":sample") {
 
         dependsOn compilePNISampleLib
         dependsOn shadowJar
+
+        shadowJar.mustRunAfter(compilePNISampleLib)
     }
     task runSampleNativeImage(type: Exec) {
         if (OS.isWindows()) {
