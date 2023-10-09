@@ -165,6 +165,8 @@ public class TestTypes {
                 """, Utils.sbHelper(sb -> info.generateConstructor(sb, 0, "a", fieldVarOpts(0))));
         assertEquals("byte.class", info.methodHandleType(paramVarOpts(0)));
         assertEquals("byte.class", info.methodHandleTypeForReturn(returnVarOpts(0)));
+        assertEquals("byte.class", info.methodHandleTypeForGraalFeature(paramVarOpts(0)));
+        assertEquals("byte.class", info.methodHandleTypeForReturnForGraalFeature(returnVarOpts(0)));
         assertEquals("byte.class", info.methodHandleTypeForUpcall(paramVarOpts(0)));
         assertEquals("a", info.convertParamToInvokeExactArgument("a", paramVarOpts(0)));
         assertEquals(AllocationForReturnedValue.noAllocationRequired(),
@@ -234,6 +236,8 @@ public class TestTypes {
                 """, Utils.sbHelper(sb -> info.generateConstructor(sb, 0, "a", fieldVarOpts(0))));
         assertEquals("boolean.class", info.methodHandleType(paramVarOpts(0)));
         assertEquals("boolean.class", info.methodHandleTypeForReturn(returnVarOpts(0)));
+        assertEquals("boolean.class", info.methodHandleTypeForGraalFeature(paramVarOpts(0)));
+        assertEquals("boolean.class", info.methodHandleTypeForReturnForGraalFeature(returnVarOpts(0)));
         assertEquals("boolean.class", info.methodHandleTypeForUpcall(paramVarOpts(0)));
         assertEquals("a", info.convertParamToInvokeExactArgument("a", paramVarOpts(0)));
         assertEquals(AllocationForReturnedValue.noAllocationRequired(),
@@ -303,6 +307,8 @@ public class TestTypes {
                 """, Utils.sbHelper(sb -> info.generateConstructor(sb, 0, "a", fieldVarOpts(0))));
         assertEquals("char.class", info.methodHandleType(paramVarOpts(0)));
         assertEquals("char.class", info.methodHandleTypeForReturn(returnVarOpts(0)));
+        assertEquals("char.class", info.methodHandleTypeForGraalFeature(paramVarOpts(0)));
+        assertEquals("char.class", info.methodHandleTypeForReturnForGraalFeature(returnVarOpts(0)));
         assertEquals("char.class", info.methodHandleTypeForUpcall(paramVarOpts(0)));
         assertEquals("a", info.convertParamToInvokeExactArgument("a", paramVarOpts(0)));
         assertEquals(AllocationForReturnedValue.noAllocationRequired(),
@@ -372,6 +378,8 @@ public class TestTypes {
                 """, Utils.sbHelper(sb -> info.generateConstructor(sb, 0, "a", fieldVarOpts(0))));
         assertEquals("double.class", info.methodHandleType(paramVarOpts(0)));
         assertEquals("double.class", info.methodHandleTypeForReturn(returnVarOpts(0)));
+        assertEquals("double.class", info.methodHandleTypeForGraalFeature(paramVarOpts(0)));
+        assertEquals("double.class", info.methodHandleTypeForReturnForGraalFeature(returnVarOpts(0)));
         assertEquals("double.class", info.methodHandleTypeForUpcall(paramVarOpts(0)));
         assertEquals("a", info.convertParamToInvokeExactArgument("a", paramVarOpts(0)));
         assertEquals(AllocationForReturnedValue.noAllocationRequired(),
@@ -441,6 +449,8 @@ public class TestTypes {
                 """, Utils.sbHelper(sb -> info.generateConstructor(sb, 0, "a", fieldVarOpts(0))));
         assertEquals("float.class", info.methodHandleType(paramVarOpts(0)));
         assertEquals("float.class", info.methodHandleTypeForReturn(returnVarOpts(0)));
+        assertEquals("float.class", info.methodHandleTypeForGraalFeature(paramVarOpts(0)));
+        assertEquals("float.class", info.methodHandleTypeForReturnForGraalFeature(returnVarOpts(0)));
         assertEquals("float.class", info.methodHandleTypeForUpcall(paramVarOpts(0)));
         assertEquals("a", info.convertParamToInvokeExactArgument("a", paramVarOpts(0)));
         assertEquals(AllocationForReturnedValue.noAllocationRequired(),
@@ -512,6 +522,8 @@ public class TestTypes {
                 """, Utils.sbHelper(sb -> info.generateConstructor(sb, 0, "a", fieldVarOpts(0))));
         assertEquals("int.class", info.methodHandleType(paramVarOpts(0)));
         assertEquals("int.class", info.methodHandleTypeForReturn(returnVarOpts(0)));
+        assertEquals("int.class", info.methodHandleTypeForGraalFeature(paramVarOpts(0)));
+        assertEquals("int.class", info.methodHandleTypeForReturnForGraalFeature(returnVarOpts(0)));
         assertEquals("int.class", info.methodHandleTypeForUpcall(paramVarOpts(0)));
         assertEquals("a", info.convertParamToInvokeExactArgument("a", paramVarOpts(0)));
         assertEquals(AllocationForReturnedValue.noAllocationRequired(),
@@ -583,6 +595,8 @@ public class TestTypes {
                 """, Utils.sbHelper(sb -> info.generateConstructor(sb, 0, "a", fieldVarOpts(0))));
         assertEquals("long.class", info.methodHandleType(paramVarOpts(0)));
         assertEquals("long.class", info.methodHandleTypeForReturn(returnVarOpts(0)));
+        assertEquals("long.class", info.methodHandleTypeForGraalFeature(paramVarOpts(0)));
+        assertEquals("long.class", info.methodHandleTypeForReturnForGraalFeature(returnVarOpts(0)));
         assertEquals("long.class", info.methodHandleTypeForUpcall(paramVarOpts(0)));
         assertEquals("a", info.convertParamToInvokeExactArgument("a", paramVarOpts(0)));
         assertEquals(AllocationForReturnedValue.noAllocationRequired(),
@@ -654,6 +668,8 @@ public class TestTypes {
                 """, Utils.sbHelper(sb -> info.generateConstructor(sb, 0, "a", fieldVarOpts(0))));
         assertEquals("short.class", info.methodHandleType(paramVarOpts(0)));
         assertEquals("short.class", info.methodHandleTypeForReturn(returnVarOpts(0)));
+        assertEquals("short.class", info.methodHandleTypeForGraalFeature(paramVarOpts(0)));
+        assertEquals("short.class", info.methodHandleTypeForReturnForGraalFeature(returnVarOpts(0)));
         assertEquals("short.class", info.methodHandleTypeForUpcall(paramVarOpts(0)));
         assertEquals("a", info.convertParamToInvokeExactArgument("a", paramVarOpts(0)));
         assertEquals(AllocationForReturnedValue.noAllocationRequired(),
@@ -807,6 +823,8 @@ public class TestTypes {
                 """, Utils.sbHelper(sb -> info.generateConstructor(sb, 0, "a", fieldVarOpts(LEN))));
         assertEquals("String.class", info.methodHandleType(paramVarOpts(0)));
         assertEquals("String.class", info.methodHandleTypeForReturn(returnVarOpts(0)));
+        assertEquals("String.class", info.methodHandleTypeForGraalFeature(paramVarOpts(0)));
+        assertEquals("String.class", info.methodHandleTypeForReturnForGraalFeature(returnVarOpts(0)));
         assertEquals("MemorySegment.class", info.methodHandleTypeForUpcall(paramVarOpts(0)));
         assertEquals("(MemorySegment) (a == null ? MemorySegment.NULL : a.MEMORY)",
             info.convertParamToInvokeExactArgument("a", paramVarOpts(0)));
@@ -892,6 +910,8 @@ public class TestTypes {
                 """, Utils.sbHelper(sb -> info.generateConstructor(sb, 0, "a", fieldVarOpts(0))));
         assertEquals("MemorySegment.class", info.methodHandleType(paramVarOpts(0)));
         assertEquals("MemorySegment.class", info.methodHandleTypeForReturn(returnVarOpts(0)));
+        assertEquals("MemorySegment.class", info.methodHandleTypeForGraalFeature(paramVarOpts(0)));
+        assertEquals("MemorySegment.class", info.methodHandleTypeForReturnForGraalFeature(returnVarOpts(0)));
         assertEquals("MemorySegment.class", info.methodHandleTypeForUpcall(paramVarOpts(0)));
         assertEquals("(MemorySegment) (a == null ? MemorySegment.NULL : a)",
             info.convertParamToInvokeExactArgument("a", paramVarOpts(0)));
@@ -975,6 +995,8 @@ public class TestTypes {
         assertEquals("PNIBuf.class", info.methodHandleType(paramVarOpts(0)));
         assertEquals("ByteBuffer.class", info.methodHandleType(paramVarOpts(RAW)));
         assertEquals("PNIBuf.class", info.methodHandleTypeForReturn(paramVarOpts(0)));
+        assertEquals("ByteBuffer.class", info.methodHandleTypeForGraalFeature(paramVarOpts(RAW)));
+        assertEquals("PNIBuf.class", info.methodHandleTypeForReturnForGraalFeature(paramVarOpts(0)));
         assertEquals("MemorySegment.class", info.methodHandleTypeForUpcall(paramVarOpts(0)));
         assertEquals("PanamaUtils.format(a)",
             info.convertParamToInvokeExactArgument("a", paramVarOpts(RAW)));
@@ -1109,6 +1131,8 @@ public class TestTypes {
                 """, Utils.sbHelper(sb -> info.generateConstructor(sb, 0, "a", fieldVarOpts(POINTER))));
         assertEquals("a.b.Cls.LAYOUT.getClass()", info.methodHandleType(paramVarOpts(0)));
         assertEquals("a.b.Cls.LAYOUT.getClass()", info.methodHandleTypeForReturn(returnVarOpts(0)));
+        assertEquals("MemoryLayout.class", info.methodHandleTypeForGraalFeature(paramVarOpts(0)));
+        assertEquals("MemoryLayout.class", info.methodHandleTypeForReturnForGraalFeature(returnVarOpts(0)));
         assertEquals("MemorySegment.class", info.methodHandleTypeForUpcall(paramVarOpts(0)));
         assertEquals("(MemorySegment) (a == null ? MemorySegment.NULL : a.MEMORY)",
             info.convertParamToInvokeExactArgument("a", paramVarOpts(0)));
@@ -1232,6 +1256,8 @@ public class TestTypes {
         assertEquals("PNIBuf.class", info.methodHandleType(paramVarOpts(0)));
         assertEquals("MemorySegment.class", info.methodHandleType(paramVarOpts(RAW)));
         assertEquals("PNIBuf.class", info.methodHandleTypeForReturn(returnVarOpts(0)));
+        assertEquals("MemorySegment.class", info.methodHandleTypeForGraalFeature(paramVarOpts(RAW)));
+        assertEquals("PNIBuf.class", info.methodHandleTypeForReturnForGraalFeature(returnVarOpts(0)));
         assertEquals("MemorySegment.class", info.methodHandleTypeForUpcall(paramVarOpts(0)));
         assertEquals("PNIBuf.memoryOf(POOLED, a)",
             info.convertParamToInvokeExactArgument("a", paramVarOpts(0)));
@@ -1354,6 +1380,8 @@ public class TestTypes {
         assertEquals("PNIBuf.class", info.methodHandleType(paramVarOpts(0)));
         assertEquals("MemorySegment.class", info.methodHandleType(paramVarOpts(RAW)));
         assertEquals("PNIBuf.class", info.methodHandleTypeForReturn(returnVarOpts(0)));
+        assertEquals("MemorySegment.class", info.methodHandleTypeForGraalFeature(paramVarOpts(RAW)));
+        assertEquals("PNIBuf.class", info.methodHandleTypeForReturnForGraalFeature(returnVarOpts(0)));
         assertEquals("MemorySegment.class", info.methodHandleTypeForUpcall(paramVarOpts(0)));
         assertEquals("PNIBuf.memoryOf(POOLED, a)",
             info.convertParamToInvokeExactArgument("a", paramVarOpts(0)));
@@ -1481,6 +1509,8 @@ public class TestTypes {
         assertEquals("PNIBuf.class", info.methodHandleType(paramVarOpts(0)));
         assertEquals("MemorySegment.class", info.methodHandleType(paramVarOpts(RAW)));
         assertEquals("PNIBuf.class", info.methodHandleTypeForReturn(returnVarOpts(0)));
+        assertEquals("MemorySegment.class", info.methodHandleTypeForGraalFeature(paramVarOpts(RAW)));
+        assertEquals("PNIBuf.class", info.methodHandleTypeForReturnForGraalFeature(returnVarOpts(0)));
         assertEquals("MemorySegment.class", info.methodHandleTypeForUpcall(paramVarOpts(0)));
         assertEquals("PNIBuf.memoryOf(POOLED, a)",
             info.convertParamToInvokeExactArgument("a", paramVarOpts(0)));
@@ -1618,6 +1648,8 @@ public class TestTypes {
         assertEquals("PNIRef.class", info.methodHandleType(paramVarOpts(0)));
         assertEquals("PNIRef.class", info.methodHandleType(paramVarOpts(RAW)));
         assertEquals("PNIRef.class", info.methodHandleTypeForReturn(returnVarOpts(0)));
+        assertEquals("PNIRef.class", info.methodHandleTypeForGraalFeature(paramVarOpts(RAW)));
+        assertEquals("PNIRef.class", info.methodHandleTypeForReturnForGraalFeature(returnVarOpts(0)));
         assertEquals("MemorySegment.class", info.methodHandleTypeForUpcall(paramVarOpts(0)));
         assertEquals("(MemorySegment) (a == null ? MemorySegment.NULL : PNIRef.of(a).MEMORY)",
             info.convertParamToInvokeExactArgument("a", paramVarOpts(0)));
@@ -1713,6 +1745,8 @@ public class TestTypes {
         assertEquals("io.vproxy.pni.CallSite.class", info.methodHandleType(paramVarOpts(0)));
         assertEquals("PNIFunc.class", info.methodHandleType(paramVarOpts(RAW)));
         assertEquals("PNIFunc.class", info.methodHandleTypeForReturn(returnVarOpts(0)));
+        assertEquals("PNIFunc.class", info.methodHandleTypeForGraalFeature(paramVarOpts(RAW)));
+        assertEquals("PNIFunc.class", info.methodHandleTypeForReturnForGraalFeature(returnVarOpts(0)));
         assertEquals("MemorySegment.class", info.methodHandleTypeForUpcall(paramVarOpts(0)));
         checkUnsupported(() -> info.convertParamToInvokeExactArgument("a", paramVarOpts(0)), "implemented in subclass");
         checkUnsupported(() -> info.convertToUpcallArgument("a", paramVarOpts(0)), "implemented in subclass");
