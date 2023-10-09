@@ -601,17 +601,30 @@ You can add a flag to the `pni` program to generate a `Feature` implmentation, w
 
 ```shell
 java -jar pni.jar <...> -fgraal-native-image-feature=<feature-class-name>
+# you might also add argument -fgraal-c-entrypoint-literal-upcall, see below descriptions for more info
 ```
 
 or programmatically:
 
 ```groovy
 new CompilerOptions()
-    .setCompilationFlag(CompilationFlag.GRAAL_NATIVE_IMAGE_FEATURE, "$featureClassName");
+    .setCompilationFlag(CompilationFlag.GRAAL_NATIVE_IMAGE_FEATURE, "$featureClassName")
+ // you migh also add the flag:
+ // .setCompilationFlag(CompilationFlag.GRAAL_C_ENTRYPOINT_LITERAL_UPCALL, null)
+ // see below descriptions for more info
 ```
 
 To compile your project with the `Feature` class, you should use `GraalVM for JDK 21` instead of a traditional JDK.  
-Or you could add dependency `io.vproxy:graal-feature-mock:+`, see [this repo](https://github.com/vproxy-tools/graal-feature-mock) for more info.
+You could also use the native image sdk: `org.graalvm.sdk:nativeimage:+` instead of changing the JDK.
+
+Or you could add dependency `io.vproxy:graal-feature-mock:+`, see [this repo](https://github.com/vproxy-tools/graal-feature-mock) for more info.  
+This mock library **ony** provides **selected** type signatures for **hosted** types.  
+Note: Use the real sdk if you do not know which one to use.
+
+As for now `(2023-10-09)` the graal native-image doesn't support Panama upcall yet. But `Panama Native Interface` provides the upcall support
+based on graal c native features:  
+Add compilation flag `-fgraal-c-entrypoint-literal-upcall` on the command line, or call
+`.setCompilationFlag(CompilationFlag.GRAAL_C_ENTRYPOINT_LITERAL_UPCALL, null)` programmatically to enable this feature.
 
 To build the native image, you may use the following command:
 
@@ -619,6 +632,7 @@ To build the native image, you may use the following command:
 native-image -jar <jar-file> \
              --features=<feature-class-name> \
              --enable-preview \
+             --enable-native-access=ALL-UNNAMED \
              --no-fallback \
              -o <binary-name>
 ```
