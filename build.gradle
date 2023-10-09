@@ -209,7 +209,7 @@ project(":api") {
 project(":graal") {
     dependencies {
         api project(':api')
-        compileOnly group: 'org.graalvm.truffle', name: 'truffle-api', version: '23.1.0'
+        compileOnly group: 'org.graalvm.sdk', name: 'nativeimage', version: '23.1.0'
     }
 }
 
@@ -337,7 +337,7 @@ project(":graal-test") {
         implementation project(":api")
         implementation project(":graal")
         implementation 'junit:junit:4.13.2'
-        compileOnly group: 'org.graalvm.truffle', name: 'truffle-api', version: '23.1.0'
+        compileOnly group: 'org.graalvm.sdk', name: 'nativeimage', version: '23.1.0'
     }
     shadowJar {
         archiveFileName.set('graal-test.jar')
