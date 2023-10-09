@@ -195,13 +195,17 @@ subprojects {
     }
 }
 
+static def bashPath() {
+    def bashPath = System.getenv("MINGW_BASH")
+    if (bashPath == null)
+        return "/bin/bash"
+    return bashPath
+}
+
 project(":api") {
     task compileLib(type: Exec) {
         workingDir project.rootProject.rootDir.getAbsolutePath() + '/api/src/main/c'
-        def bashPath = System.getenv("MINGW_BASH")
-        if (bashPath == null)
-            bashPath = '/bin/bash'
-        executable bashPath
+        executable bashPath()
         args './make.sh'
     }
 }
@@ -232,6 +236,8 @@ project(":unittest") {
         jvmArgs += '-Djava.library.path=' +
                 project.rootProject.rootDir.getAbsolutePath() + '/api/src/main/c'
         include '**/Suite.class'
+
+        dependsOn project(':api').tasks.compileLib
     }
 }
 
@@ -245,11 +251,11 @@ project(":acceptance-testing-template") {
 
     task cleanAcceptanceTesting1(type: Exec) {
         workingDir project.rootProject.rootDir.getAbsolutePath() + '/acceptance-testing/src/test/'
-        commandLine 'bash', '-c', 'rm -f c/libpnitest.dylib && rm -f c/libpnitest.so && rm -f c/pnitest.dll && rm -rf c-generated/* && rm -rf generated/*'
+        commandLine bashPath(), '-c', 'rm -f c/libpnitest.dylib && rm -f c/libpnitest.so && rm -f c/pnitest.dll && rm -rf c-generated/* && rm -rf generated/*'
     }
     task cleanAcceptanceTesting2(type: Exec) {
         workingDir project.rootProject.rootDir.getAbsolutePath() + '/graal-test/src/main/'
-        commandLine 'bash', '-c', 'rm -rf c-generated-2/* && rm -rf generated-2/* && rm -rf java-2/*'
+        commandLine bashPath(), '-c', 'rm -rf c-generated-2/* && rm -rf generated-2/* && rm -rf java-2/*'
     }
     task cleanAcceptanceTesting {
         dependsOn cleanAcceptanceTesting1
@@ -302,10 +308,7 @@ project(":acceptance-testing") {
 
     task compilePNITestLib(type: Exec) {
         workingDir project.rootProject.rootDir.getAbsolutePath() + '/acceptance-testing/src/test/c'
-        def bashPath = System.getenv("MINGW_BASH")
-        if (bashPath == null)
-            bashPath = '/bin/bash'
-        executable bashPath
+        executable bashPath()
         args './make-test.sh'
 
         dependsOn project(':acceptance-testing-template').tasks.generateAcceptanceTesting
@@ -334,7 +337,7 @@ project(":graal-test-template") {
 
     task cleanGraalTesting(type: Exec) {
         workingDir project.rootProject.rootDir.getAbsolutePath() + '/graal-test/src/main/'
-        commandLine 'bash', '-c', 'rm -f c/libgraaltest.dylib && rm -f c/libgraaltest.so && rm -f c/graaltest.dll && rm -rf c-generated/* && rm -rf generated/*'
+        commandLine bashPath(), '-c', 'rm -f c/libgraaltest.dylib && rm -f c/libgraaltest.so && rm -f c/graaltest.dll && rm -rf c-generated/* && rm -rf generated/*'
     }
     task generateGraalTesting(type: JavaExec) {
         classpath = project(":pni").sourceSets.main.runtimeClasspath
@@ -384,10 +387,7 @@ project(":graal-test") {
     }
     task compileGraalTestLib(type: Exec) {
         workingDir project.rootProject.rootDir.getAbsolutePath() + '/graal-test/src/main/c'
-        def bashPath = System.getenv("MINGW_BASH")
-        if (bashPath == null)
-            bashPath = '/bin/bash'
-        executable bashPath
+        executable bashPath()
         args './make-graal-test.sh'
 
         dependsOn project(':acceptance-testing-template').tasks.generateAcceptanceTesting
@@ -468,10 +468,7 @@ project(":sample") {
     }
     task compilePNISampleLib(type: Exec) {
         workingDir project.rootProject.rootDir.getAbsolutePath() + '/sample/src/main/c'
-        def bashPath = System.getenv("MINGW_BASH")
-        if (bashPath == null)
-            bashPath = '/bin/bash'
-        executable bashPath
+        executable bashPath()
         args './make-sample.sh'
 
         dependsOn generateSample
@@ -543,10 +540,7 @@ project(":playground") {
     }
     task compilePNIPlaygroundLib(type: Exec) {
         workingDir project.rootProject.rootDir.getAbsolutePath() + '/playground/src/main/c'
-        def bashPath = System.getenv("MINGW_BASH")
-        if (bashPath != null)
-            bashPath = '/bin/bash'
-        executable bashPath
+        executable bashPath()
         args './make-playground.sh'
 
         dependsOn generatePlayground
