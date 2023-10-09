@@ -453,7 +453,7 @@ project(":sample") {
     dependencies {
         implementation project(":api")
         implementation project(":graal")
-        compileOnly 'io.vproxy:graal-feature-mock:1.1.0'
+        compileOnly group: 'org.graalvm.sdk', name: 'nativeimage', version: '23.1.0'
     }
 
     task generateSample(type: JavaExec) {
