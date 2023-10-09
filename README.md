@@ -617,6 +617,14 @@ new CompilerOptions()
 To compile your project with the `Feature` class, you should use `GraalVM for JDK 21` instead of a traditional JDK.  
 You could also use the native image sdk: `org.graalvm.sdk:nativeimage:+` instead of changing the JDK.
 
+Another (maybe better) way of managing the dependencies is to use [the mock version graal sdk](https://github.com/vproxy-tools/graal-sdk-mock):
+
+* for compiling, add dependency `compileOnly 'io.vproxy:graal-sdk-mock-nativeimage:+'`
+* for running, add dependency `runtimeOnly 'io.vproxy:graal-sdk-mock-runtime:+'`
+
+The mock library provides all necessary types and members for `Panama Native Interface` generated graal related classes.  
+Detailed information can be found in [the repo](https://github.com/vproxy-tools/graal-sdk-mock).
+
 As for now `(2023-10-09)` the graal native-image doesn't support Panama upcall yet. But `Panama Native Interface` provides the upcall support
 based on graal c native features:  
 Add compilation flag `-fgraal-c-entrypoint-literal-upcall` on the command line, or call
@@ -630,6 +638,7 @@ native-image -jar <jar-file> \
              --enable-preview \
              --enable-native-access=ALL-UNNAMED \
              --no-fallback \
+             -O3 -march=native \
              -o <binary-name>
 ```
 
