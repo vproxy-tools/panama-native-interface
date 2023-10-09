@@ -10,7 +10,7 @@ import org.junit.Test;
 public class TestBeforeAll {
     @BeforeClass
     public static void beforeClass() {
-        System.loadLibrary("pnitest");
+        TestUtils.loadLib();
         Upcall.setImpl(UpcallImpl.get());
         UpcallNull.setImpl(UpcallNullImpl.get());
     }

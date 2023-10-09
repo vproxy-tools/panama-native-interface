@@ -17,7 +17,7 @@ import static org.junit.Assert.*;
 public class TestObjectStruct {
     @BeforeClass
     public static void beforeClass() {
-        System.loadLibrary("pnitest");
+        TestUtils.loadLib();
     }
 
     @Test

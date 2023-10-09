@@ -18,7 +18,7 @@ import static org.junit.Assert.assertNull;
 public class TestStructUnion {
     @BeforeClass
     public static void beforeClass() {
-        System.loadLibrary("pnitest");
+        TestUtils.loadLib();
     }
 
     @Test

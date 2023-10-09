@@ -16,7 +16,7 @@ import static org.junit.Assert.assertEquals;
 public class TestStructUnionAnnotation {
     @BeforeClass
     public static void beforeClass() {
-        System.loadLibrary("pnitest");
+        TestUtils.loadLib();
     }
 
     @Test

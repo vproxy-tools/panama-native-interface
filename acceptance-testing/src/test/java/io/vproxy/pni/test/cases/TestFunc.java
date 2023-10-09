@@ -23,7 +23,7 @@ import static org.junit.Assert.fail;
 public class TestFunc {
     @BeforeClass
     public static void beforeClass() {
-        System.loadLibrary("pnitest");
+        TestUtils.loadLib();
     }
 
     @Test
@@ -226,6 +226,10 @@ public class TestFunc {
     }
 
     private void callJavaMethodWithRefFromC(int round) {
+        if (TestUtils.skipCase()) {
+            return;
+        }
+
         long holderSizeBefore = PNIRef.currentRefStorageSize();
         try (var arena = Arena.ofConfined()) {
             var method = PanamaUtils.defineCFunctionByName(arena,
