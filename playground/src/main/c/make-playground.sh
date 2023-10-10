@@ -24,9 +24,7 @@ gcc -std=gnu99 -O2 \
     $GCC_OPTS \
     -I "./" \
     -I "../c-generated" \
-    -I "../../../../api/src/main/c" \
-    -I "../../../../api/src/main/c/jnimock" \
     -shared -Werror -lc -lpthread -fPIC \
-    ../../../../api/src/main/c/pni.c \
+    ../c-generated/pni.c \
     playground.c \
     -o "$target"

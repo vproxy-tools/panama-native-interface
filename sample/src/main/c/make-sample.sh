@@ -25,10 +25,8 @@ rm -f "$target"
 gcc -std=gnu99 -O2 \
     $GCC_OPTS \
     -I "./" \
-    -I "../../../../api/src/main/c" \
-    -I "../../../../api/src/main/c/jnimock" \
     -shared -Werror -fPIC \
-    ../../../../api/src/main/c/pni.c \
+    pni.c \
     io_vproxy_pni_sample_NativeFunctions.c \
     $extra_ld \
     -o "$target"

@@ -23,11 +23,9 @@ rm -f "$target"
 gcc -std=gnu99 -O2 \
     $GCC_OPTS \
     -I "./" \
-    -I "../../../../api/src/main/c" \
-    -I "../../../../api/src/main/c/jnimock" \
     -I "../c-generated" \
     -shared -Werror -fPIC \
-    ../../../../api/src/main/c/pni.c \
+    ../c-generated/pni.c \
     io_vproxy_pni_test_PrimitiveStruct.c \
     io_vproxy_pni_test_ObjectStruct.c \
     io_vproxy_pni_test_StructA.c \

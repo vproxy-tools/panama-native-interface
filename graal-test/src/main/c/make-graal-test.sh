@@ -23,14 +23,12 @@ rm -f "$target"
 gcc -std=gnu99 -O2 \
     $GCC_OPTS \
     -I "./" \
-    -I "../../../../api/src/main/c" \
-    -I "../../../../api/src/main/c/jnimock" \
     -I "../c-generated" \
     -I "../c-generated-2" \
     -I "../../../../acceptance-testing/src/test/c" \
     -shared -Werror -fPIC \
     -DPNI_GRAAL=1 \
-    ../../../../api/src/main/c/pni.c \
+    ../c-generated/pni.c \
     graal-test.c \
     ../c-generated-2/*.c \
     -o "$target"

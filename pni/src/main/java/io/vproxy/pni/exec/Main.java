@@ -179,8 +179,12 @@ public class Main {
                 if (value == null) {
                     value = f.defaultValue;
                 }
-                if (!f.validate.test(value)) {
-                    System.out.println("invalid value: -f" + f.name + "=" + value);
+                var validateErr = f.validate.apply(value);
+                if (validateErr != null) {
+                    if (!validateErr.isEmpty()) {
+                        validateErr = ", " + validateErr;
+                    }
+                    System.out.println("invalid value: -f" + f.name + "=" + value + validateErr);
                     System.exit(1);
                     return;
                 }

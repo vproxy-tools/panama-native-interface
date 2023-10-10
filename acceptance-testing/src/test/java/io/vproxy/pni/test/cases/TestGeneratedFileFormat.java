@@ -19,7 +19,10 @@ public class TestGeneratedFileFormat {
         if (lines.isEmpty()) {
             return;
         }
-        if (!file.endsWith(".java") && !file.endsWith(".h")) {
+        if (!file.endsWith(".java") && !file.endsWith(".h") && !file.endsWith(".c")) {
+            return;
+        }
+        if (file.endsWith("pni.h") || file.endsWith("pni.c") || file.endsWith("jni.h")) {
             return;
         }
         for (int i = 0; i < lines.size(); ++i) {

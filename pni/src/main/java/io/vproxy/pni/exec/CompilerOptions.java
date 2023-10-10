@@ -9,10 +9,10 @@ import java.util.jar.JarFile;
 import java.util.regex.Pattern;
 
 public class CompilerOptions {
-    public List<String> classpath;
+    public List<File> classpath;
     public List<Pattern> filters;
-    public String javaOutputBaseDirectory;
-    public String cOutputDirectory;
+    public File javaOutputBaseDirectory;
+    public File cOutputDirectory;
     private boolean verbose;
     private long warningFlags = WarnType.defaultWarningFlags();
     private long warningAsErrorFlags = WarnType.defaultWarningAsErrorFlags();
@@ -53,8 +53,7 @@ public class CompilerOptions {
         }
 
         if (classpath != null) {
-            for (var c : classpath) {
-                var f = new File(c);
+            for (var f : classpath) {
                 if (!f.exists()) {
                     PNILogger.warn(errors, null, this, WarnType.INVALID_CLASSPATH_FILE, "classpath file not found: " + f);
                 }
@@ -76,7 +75,7 @@ public class CompilerOptions {
             }
         }
         if (javaOutputBaseDirectory != null) {
-            var f = new File(javaOutputBaseDirectory);
+            var f = javaOutputBaseDirectory;
             if (!f.exists()) {
                 var err = "javaOutputBaseDirectory (" + javaOutputBaseDirectory + ") does not exist";
                 if (errors == null) {
@@ -94,7 +93,7 @@ public class CompilerOptions {
             }
         }
         if (cOutputDirectory != null) {
-            var f = new File(cOutputDirectory);
+            var f = cOutputDirectory;
             if (!f.exists()) {
                 var err = "cOutputDirectory (" + cOutputDirectory + ") does not exist";
                 if (errors == null) {
@@ -121,11 +120,19 @@ public class CompilerOptions {
     }
 
     public CompilerOptions setClasspath(List<String> classpath) {
+        var cp = new ArrayList<File>(classpath.size());
+        for (var c : classpath) {
+            cp.add(new File(c));
+        }
+        return setClasspathFileList(cp);
+    }
+
+    public CompilerOptions setClasspathFileList(List<File> classpath) {
         this.classpath = classpath;
         return this;
     }
 
-    public List<String> getClasspath() {
+    public List<File> getClasspath() {
         return classpath;
     }
 
@@ -139,20 +146,28 @@ public class CompilerOptions {
     }
 
     public CompilerOptions setJavaOutputBaseDirectory(String javaOutputBaseDirectory) {
+        return setJavaOutputBaseDirectory(new File(javaOutputBaseDirectory));
+    }
+
+    public CompilerOptions setJavaOutputBaseDirectory(File javaOutputBaseDirectory) {
         this.javaOutputBaseDirectory = javaOutputBaseDirectory;
         return this;
     }
 
-    public String getJavaOutputBaseDirectory() {
+    public File getJavaOutputBaseDirectory() {
         return javaOutputBaseDirectory;
     }
 
     public CompilerOptions setCOutputDirectory(String cOutputDirectory) {
+        return setCOutputDirectory(new File(cOutputDirectory));
+    }
+
+    public CompilerOptions setCOutputDirectory(File cOutputDirectory) {
         this.cOutputDirectory = cOutputDirectory;
         return this;
     }
 
-    public String getCOutputDirectory() {
+    public File getCOutputDirectory() {
         return cOutputDirectory;
     }
 

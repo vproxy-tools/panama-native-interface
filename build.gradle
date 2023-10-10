@@ -266,7 +266,10 @@ project(":acceptance-testing-template") {
         mainClass = 'io.vproxy.pni.exec.Main'
         systemProperty("io.vproxy.pni.Testing", "true")
         workingDir project.rootProject.rootDir.getAbsolutePath()
-        args '-cp', 'acceptance-testing-template/build/classes/java/main', '-d', 'acceptance-testing/src/test/generated', '-h', 'acceptance-testing/src/test/c-generated'
+        args '-cp', 'acceptance-testing-template/build/classes/java/main', '-d', 'acceptance-testing/src/test/generated', '-h', 'acceptance-testing/src/test/c-generated',
+                '-frelease-pni-h-file',
+                '-frelease-pni-c-file',
+                '-frelease-jni-h-mock-file'
 
         dependsOn cleanAcceptanceTesting1
         dependsOn compileJava
@@ -280,7 +283,10 @@ project(":acceptance-testing-template") {
                 '-d', 'graal-test/src/main/generated-2',
                 '-h', 'graal-test/src/main/c-generated-2',
                 '-fgraal-native-image-feature=io.vproxy.pni.test.Feature',
-                '-fgraal-c-entrypoint-literal-upcall'
+                '-fgraal-c-entrypoint-literal-upcall',
+                '-frelease-pni-h-file=graal-test/src/main/c-generated',
+                '-frelease-pni-c-file=graal-test/src/main/c-generated',
+                '-frelease-jni-h-mock-file=graal-test/src/main/c-generated'
 
         dependsOn cleanAcceptanceTesting2
         dependsOn compileJava
@@ -347,7 +353,10 @@ project(":graal-test-template") {
         workingDir project.rootProject.rootDir.getAbsolutePath()
         args '-cp', 'graal-test-template/build/classes/java/main', '-d', 'graal-test/src/main/generated', '-h', 'graal-test/src/main/c-generated',
                 '-fgraal-native-image-feature=io.vproxy.pni.graal.test.Feature',
-                '-fgraal-c-entrypoint-literal-upcall'
+                '-fgraal-c-entrypoint-literal-upcall',
+                '-frelease-pni-h-file',
+                '-frelease-pni-c-file',
+                '-frelease-jni-h-mock-file'
 
         dependsOn cleanGraalTesting
         dependsOn compileJava
@@ -463,7 +472,10 @@ project(":sample") {
         systemProperty("io.vproxy.pni.Testing", "true")
         workingDir project.rootProject.rootDir.getAbsolutePath()
         args '-cp', 'sample/build/classes/java/main', '-d', 'sample/src/main/java', '-h', 'sample/src/main/c',
-                '-fgraal-native-image-feature=io.vproxy.pni.sample.Feature'
+                '-fgraal-native-image-feature=io.vproxy.pni.sample.Feature',
+                '-frelease-pni-h-file',
+                '-frelease-pni-c-file',
+                '-frelease-jni-h-mock-file'
 
         dependsOn compileJava
     }
@@ -538,7 +550,10 @@ project(":playground") {
         classpath = project(":pni").sourceSets.main.runtimeClasspath
         mainClass = 'io.vproxy.pni.exec.Main'
         workingDir project.rootProject.rootDir.getAbsolutePath()
-        args '-cp', 'playground/build/classes/java/main', '-d', 'playground/src/main/generated', '-h', 'playground/src/main/c-generated'
+        args '-cp', 'playground/build/classes/java/main', '-d', 'playground/src/main/generated', '-h', 'playground/src/main/c-generated',
+                '-frelease-pni-h-file',
+                '-frelease-pni-c-file',
+                '-frelease-jni-h-mock-file'
 
         dependsOn compileJava
     }

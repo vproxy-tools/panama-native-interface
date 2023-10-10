@@ -9,18 +9,17 @@ import java.util.List;
 import java.util.jar.JarFile;
 
 public class JavaReader {
-    private final List<String> classpath;
+    private final List<File> classpath;
     private final CompilerOptions opts;
     private final List<ClassReader> classes = new ArrayList<>();
 
-    public JavaReader(List<String> classpath, CompilerOptions opts) {
+    public JavaReader(List<File> classpath, CompilerOptions opts) {
         this.classpath = classpath;
         this.opts = opts;
     }
 
     public List<ClassReader> read() {
-        for (var cp : classpath) {
-            var f = new File(cp);
+        for (var f : classpath) {
             if (!f.exists()) {
                 continue;
             }

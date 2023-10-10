@@ -35,13 +35,14 @@ public class Generator {
                 continue;
             }
 
-            new JavaFileGenerator(cls, opts).flush(new File(opts.getJavaOutputBaseDirectory()));
-            new CFileGenerator(cls, opts).flush(new File(opts.getCOutputDirectory()));
-            new CImplFileGenerator(cls, opts).flush(new File(opts.getCOutputDirectory()));
-            new CExtraFileGenerator(cls, opts).flush(new File(opts.getCOutputDirectory()));
-            new CUpcallImplFileGenerator(cls, opts).flush(new File(opts.getCOutputDirectory()));
+            new JavaFileGenerator(cls, opts).flush(opts.getJavaOutputBaseDirectory());
+            new CFileGenerator(cls, opts).flush(opts.getCOutputDirectory());
+            new CImplFileGenerator(cls, opts).flush(opts.getCOutputDirectory());
+            new CExtraFileGenerator(cls, opts).flush(opts.getCOutputDirectory());
+            new CUpcallImplFileGenerator(cls, opts).flush(opts.getCOutputDirectory());
+            new StaticFileGenerator(opts).flush();
         }
-        new GraalNativeImageFeatureFileGenerator(classes, opts).flush(new File(opts.getJavaOutputBaseDirectory()));
+        new GraalNativeImageFeatureFileGenerator(classes, opts).flush(opts.getJavaOutputBaseDirectory());
     }
 
     // only for testing, will use reflect to retrieve

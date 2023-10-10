@@ -8,6 +8,7 @@ import io.vproxy.pni.exec.ast.AstClass;
 import io.vproxy.pni.exec.ast.AstField;
 import io.vproxy.pni.exec.type.*;
 
+import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -99,12 +100,12 @@ public class Utils {
 
             opts.setCOutputDirectory(gen.toString());
             opts.setJavaOutputBaseDirectory(gen.toString());
-            var cp = new ArrayList<String>();
+            var cp = new ArrayList<File>();
             if (opts.getClasspath() != null) {
                 cp.addAll(opts.getClasspath());
             }
-            cp.add(compile.toString());
-            opts.setClasspath(cp);
+            cp.add(compile.toFile());
+            opts.setClasspathFileList(cp);
             var generator = new Generator(opts);
             generator.generate();
 
