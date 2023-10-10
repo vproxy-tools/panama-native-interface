@@ -22,7 +22,7 @@ Using `macro`s or `static inline` functions to define user friendly APIs, is ver
 It would be much messier when you are trying to adapt to a cross platform library, or a bunch of different versions of libraries of the same origin.  
 In this situation, you will have to ask `jextract` to generate code for each version, and you will have to write adaptors for all versions because these generated types are different.\[3\]
 
-After all, **C** libraries are written for **C** users. The users are happly as long as the code compiles with a **C** compiler.\[4\]
+After all, **C** libraries are written for **C** users. The users are happy as long as the code compiles with a **C** compiler.\[4\]
 
 Yes, the real world is much more complex than a simple poc.
 
@@ -38,7 +38,7 @@ You can not only define types/functions in Java, but also bring pre-defined type
 > \[1\]: For example, a very common _variable_: `errno` is defined using macro, actually you are calling a function. The macro is platform specific, but `errno` is cross platform.  
 > \[2\]: For example, in Lua, a lot of `documented` APIs are defined using `macro`s.  
 > \[3\]: For example, the `msquic` supports multiple platforms, each platform has some specific `typedef`s.  
-> \[4\]: For example, the Lua 5.1-5.4 exposes their APIs in different ways, however if you are writing C you are likely to compile properly across all platforms (only a few deprecated functions need be modified).  
+> \[4\]: For example, the Lua 5.1-5.4 exposes their APIs in different ways, however if you are writing C you are likely to compile properly across all platforms (only a few deprecated functions need to be modified).  
 > BTW, `jextract` cannot handle some commonly used syntax for now (2023-09-24), e.g. `align or packed` attributes, `bit fields`, ...
 
 </details>
@@ -59,7 +59,7 @@ You need JDK `21` to build the project.
 > If you are using `Windows`, it's recommended to use `MinGW UCRT64` to work with this project.
 >
 > * Configure `MINGW_BASH` to the path to `bash.exe` in your `MinGW` directory, usually it's `C:\msys64\usr\bin\bash.exe`
-> * Install Visual Studio 2022, and at least install the following components:
+> * If you need to build Graal native-image on Windows, you will need to install Visual Studio 2022, and at least install the following components:
 >   * MSVC v143 - VS 2022 C++ x64/x86 生成工具(最新)
 >   * Windows 通用 CRT SDK
 >   * Windows 通用 C 运行时
@@ -228,6 +228,7 @@ Now the project has two folders for java source files: `java` and `generated`.
 You will still need to create the folders manually:
 
 ```shell
+mkdir -p src/main/java
 mkdir -p src/main/generated
 ```
 
@@ -253,7 +254,7 @@ and also contains useful classes for you to interact with the native world.
 
 ### 6. Add a Gradle subproject for template classes
 
-The subproject is used to hold template classes, you may name it as `pni-template`.  
+The subproject is used to hold `template classes`, you may name it as `pni-template`.  
 If you want to use a different subproject name, make sure you change all names accordingly during this tutorial.
 
 If you are using `IDEA`, it's easy to create a subproject simply by adding a new module.  
@@ -328,6 +329,9 @@ task pniGenerate() {
             .setClasspath(List.of(workingDir + '/pni-template/build/classes/java/main'))
             .setJavaOutputBaseDirectory(workingDir + '/src/main/generated')
             .setCOutputDirectory(workingDir + '/src/main/c-generated')
+            .setCompilationFlag(io.vproxy.pni.exec.CompilationFlag.RELEASE_PNI_H_FILE, null)
+            .setCompilationFlag(io.vproxy.pni.exec.CompilationFlag.RELEASE_PNI_C_FILE, null)
+            .setCompilationFlag(io.vproxy.pni.exec.CompilationFlag.RELEASE_JNI_H_MOCK_FILE, null)
     )
 
     doLast {
@@ -374,7 +378,28 @@ Go to `src/main/c`, write C implementation here.
 
 ### 13. Compile
 
-To compile the C files, you will need `pni.h` and `jni.h` in your include search path (`-I` option).
+To compile the C files, you will need `pni.h` and `jni.h` in your include search path (`-I` option), and normally you will need to compile with `pni.c`.
+
+It's recommended to use the following compiler flags to release these files:
+
+* `-frelease-pni-h-file[=<output-directory>]`
+* `-frelease-pni-c-file[=<output-directory>]`
+* `-frelease-jni-h-mock-file[=<output-directory>]`
+
+or programmatically:
+
+```
+new CompilerOptions()
+    .setCompilationFlag(CompilationFlag.RELEASE_PNI_H_FILE, null /* or new File(...) */)
+    .setCompilationFlag(CompilationFlag.RELEASE_PNI_C_FILE, null /* or new File(...) */)
+    .setCompilationFlag(CompilationFlag.RELEASE_JNI_H_MOCK_FILE, null /* or new File(...) */)
+```
+
+> The `output-directory` defaults to the c output directory (`-h` option).
+
+---
+
+Or you can include these files manually:
 
 You can find `pni.h` [here](https://github.com/vproxy-tools/panama-native-interface/tree/master/api/src/main/c).  
 and you can use the mocked `jni.h` [here](https://github.com/vproxy-tools/panama-native-interface/tree/master/api/src/main/c/jnimock),
@@ -454,6 +479,8 @@ java -jar pni.jar \
     -cp 'path1:path2:jar3' \
     -d java_output_base_directory \
     -h c_headers_output_directory
+ // -frelease-pni-h-file -frelease-pni-c-file -frelease-jni-h-mock-file
+ // see -verbose --help for more info
 ```
 
 The pni program will scan all classes in classpath then generate Java and C codes.
@@ -466,14 +493,14 @@ template files of `A`, you can add both projects' classpath to `-cp`, and specif
 class needs to be generated.  
 The regexp matches the full name of the **generated** Java class, for example `io\.vproxy\.luajn\.n\..*`.
 
+Some compilation flags can be provided via `-f<flag-name>[=<value>]`. See `-verbose --help` for more info.
+
 ---
 
 You may also use the `Generator` class programmatically to achieve the same effect as using the command line tool.  
 You may refer to: chapter `How to bundle into a Gradle project`, section `Add a Gradle task to run the code generator`.
 
 ### 4. Write native implementation
-
-All native functions are in the same pattern.
 
 **if `@Critical` is NOT annotated**: (`JNI` Style Function)
 
@@ -542,8 +569,10 @@ You can release the memory by closing the allocator.
 
 ---
 
-It's recommended to use `Allocator.ofPooled()` or `Allocator.ofConcurrentPooled()` whenever possible. You can define your own memory pool by providing your allocator via
-`Allocator.setPooledAllocatorProvider(...)`.  
+It's recommended to use `PooledAllocator.ofPooled()` or `PooledAllocator.ofConcurrentPooled()` whenever possible.
+You could also use `PooledAllocator.ofUnsafePooled()` if really needed.  
+You can define your own memory pool via `PooledAllocator.setXxxProvider(...)`.
+
 The default behavior for `Pooled` allocators when custom allocator is not present, is the same as `Confined` allocators.  
 The default behavior for `ConcurrentPooled` allocators is the same as `Shared` allocators.
 
@@ -554,7 +583,8 @@ The default behavior for `ConcurrentPooled` allocators is the same as `Shared` a
 <details><summary>Click to reveal</summary>
 
 `Panama Native Interface` supports inheritance. You can use Java `extends` keyword in template classes.  
-Only a `struct` can extend from another `struct`, `union`s are not allowed to inherit nor to be inherited.  
+Only a `struct` can extend from another `struct`.  
+`union`s are not allowed to inherit nor to be inherited.  
 For example:
 
 ```java
@@ -601,16 +631,16 @@ You can add a flag to the `pni` program to generate a `Feature` implmentation, w
 
 ```shell
 java -jar pni.jar <...> -fgraal-native-image-feature=<feature-class-name>
-# you might also add argument -fgraal-c-entrypoint-literal-upcall, see below descriptions for more info
+# you might also want to add argument -fgraal-c-entrypoint-literal-upcall, see below descriptions for more info
 ```
 
 or programmatically:
 
 ```groovy
 new CompilerOptions()
-    .setCompilationFlag(CompilationFlag.GRAAL_NATIVE_IMAGE_FEATURE, "$featureClassName")
- // you migh also add the flag:
- // .setCompilationFlag(CompilationFlag.GRAAL_C_ENTRYPOINT_LITERAL_UPCALL, null)
+    .setCompilationFlag(io.vproxy.pni.exec.CompilationFlag.GRAAL_NATIVE_IMAGE_FEATURE, "$featureClassName")
+ // you migh also want to add the flag:
+ // .setCompilationFlag(io.vproxy.pni.exec.CompilationFlag.GRAAL_C_ENTRYPOINT_LITERAL_UPCALL, null)
  // see below descriptions for more info
 ```
 
@@ -624,6 +654,12 @@ Another (maybe better) way of managing the dependencies is to use [the mock vers
 
 The mock library provides all necessary types and members for `Panama Native Interface` generated graal related classes.  
 Detailed information can be found in [the repo](https://github.com/vproxy-tools/graal-sdk-mock).
+
+</details>
+
+## Graal Native Image Upcall
+
+<details><summary>Click to reveal</summary>
 
 As for now `(2023-10-09)` the graal native-image doesn't support Panama upcall yet. But `Panama Native Interface` provides the upcall support
 based on graal c native features:  
@@ -682,6 +718,9 @@ You can use `PanamaUtils.defineCFunction` or `PanamaUtils.defineCFunctionByName`
 Done!
 
 Note: only `primitive types` and `MemorySegment` are allowed to be used as the method parameter types and return types.
+
+For `native-image`s, you should use `GraalUtils.defineCFunctionXxx` methods, and store the `CFunctionLiteral` in a `static final` field, and the class which stores `static final` fields must be initialized at build time.  
+It would be better to use `@Upcall` template interface instead, which had managed everything for you.
 
 ### CallSite and PNIFunc
 
