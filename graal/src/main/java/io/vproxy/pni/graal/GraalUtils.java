@@ -29,24 +29,24 @@ public class GraalUtils {
         var mem = MemorySegment.ofAddress(thread.rawValue());
 
         try {
-            PNISetGraalThread.invokeExact(mem);
+            SetPNIGraalThread.invokeExact(mem);
         } catch (Throwable e) {
             throw new RuntimeException("should not happen", e);
         }
     }
 
-    private static volatile MethodHandle PNISetGraalThread = null;
+    private static volatile MethodHandle SetPNIGraalThread = null;
 
     public static void init() {
         if (!ImageInfo.inImageCode()) {
             return;
         }
 
-        if (PNISetGraalThread == null) {
+        if (SetPNIGraalThread == null) {
             synchronized (GraalUtils.class) {
-                if (PNISetGraalThread == null) {
+                if (SetPNIGraalThread == null) {
                     PanamaUtils.loadLib();
-                    PNISetGraalThread = PanamaUtils.lookupPNICriticalFunction(true, void.class, "PNISetGraalThread", MemorySegment.class);
+                    SetPNIGraalThread = PanamaUtils.lookupPNICriticalFunction(true, void.class, "SetPNIGraalThread", MemorySegment.class);
                 }
             }
         }

@@ -74,7 +74,7 @@ JNIEXPORT uint8_t JNICALL JavaCritical_io_vproxy_pni_test_UpcallNull_testParam(O
         fflush(stdout);
         exit(1);
     }
-    return _testParam(PNIGetGraalThread(), o, str, seg, buf, byteArr, boolArr, charArr, floatArr, doubleArr, intArr, longArr, shortArr, oArr, ref, func, funcVoid, funcRef);
+    return _testParam(GetPNIGraalThread(), o, str, seg, buf, byteArr, boolArr, charArr, floatArr, doubleArr, intArr, longArr, shortArr, oArr, ref, func, funcVoid, funcRef);
 }
 
 JNIEXPORT uint8_t JNICALL JavaCritical_io_vproxy_pni_test_UpcallNull_testParamRaw(PNIRef * ref, PNIFunc * func, PNIFunc * funcVoid, PNIFunc * funcRef) {
@@ -83,7 +83,7 @@ JNIEXPORT uint8_t JNICALL JavaCritical_io_vproxy_pni_test_UpcallNull_testParamRa
         fflush(stdout);
         exit(1);
     }
-    return _testParamRaw(PNIGetGraalThread(), ref, func, funcVoid, funcRef);
+    return _testParamRaw(GetPNIGraalThread(), ref, func, funcVoid, funcRef);
 }
 
 JNIEXPORT ObjectStruct * JNICALL JavaCritical_io_vproxy_pni_test_UpcallNull_returnO(ObjectStruct * return_) {
@@ -92,7 +92,7 @@ JNIEXPORT ObjectStruct * JNICALL JavaCritical_io_vproxy_pni_test_UpcallNull_retu
         fflush(stdout);
         exit(1);
     }
-    return _returnO(PNIGetGraalThread(), return_);
+    return _returnO(GetPNIGraalThread(), return_);
 }
 
 JNIEXPORT char * JNICALL JavaCritical_io_vproxy_pni_test_UpcallNull_returnStr(void) {
@@ -101,7 +101,7 @@ JNIEXPORT char * JNICALL JavaCritical_io_vproxy_pni_test_UpcallNull_returnStr(vo
         fflush(stdout);
         exit(1);
     }
-    return _returnStr(PNIGetGraalThread());
+    return _returnStr(GetPNIGraalThread());
 }
 
 JNIEXPORT void * JNICALL JavaCritical_io_vproxy_pni_test_UpcallNull_returnSeg(void) {
@@ -110,7 +110,7 @@ JNIEXPORT void * JNICALL JavaCritical_io_vproxy_pni_test_UpcallNull_returnSeg(vo
         fflush(stdout);
         exit(1);
     }
-    return _returnSeg(PNIGetGraalThread());
+    return _returnSeg(GetPNIGraalThread());
 }
 
 JNIEXPORT PNIBuf * JNICALL JavaCritical_io_vproxy_pni_test_UpcallNull_returnBuf(PNIBuf * return_) {
@@ -119,7 +119,7 @@ JNIEXPORT PNIBuf * JNICALL JavaCritical_io_vproxy_pni_test_UpcallNull_returnBuf(
         fflush(stdout);
         exit(1);
     }
-    return _returnBuf(PNIGetGraalThread(), return_);
+    return _returnBuf(GetPNIGraalThread(), return_);
 }
 
 JNIEXPORT PNIBuf_byte * JNICALL JavaCritical_io_vproxy_pni_test_UpcallNull_returnByteArr(PNIBuf_byte * return_) {
@@ -128,7 +128,7 @@ JNIEXPORT PNIBuf_byte * JNICALL JavaCritical_io_vproxy_pni_test_UpcallNull_retur
         fflush(stdout);
         exit(1);
     }
-    return _returnByteArr(PNIGetGraalThread(), return_);
+    return _returnByteArr(GetPNIGraalThread(), return_);
 }
 
 JNIEXPORT PNIBuf_bool * JNICALL JavaCritical_io_vproxy_pni_test_UpcallNull_returnBoolArr(PNIBuf_bool * return_) {
@@ -137,7 +137,7 @@ JNIEXPORT PNIBuf_bool * JNICALL JavaCritical_io_vproxy_pni_test_UpcallNull_retur
         fflush(stdout);
         exit(1);
     }
-    return _returnBoolArr(PNIGetGraalThread(), return_);
+    return _returnBoolArr(GetPNIGraalThread(), return_);
 }
 
 JNIEXPORT PNIBuf_char * JNICALL JavaCritical_io_vproxy_pni_test_UpcallNull_returnCharArr(PNIBuf_char * return_) {
@@ -146,7 +146,7 @@ JNIEXPORT PNIBuf_char * JNICALL JavaCritical_io_vproxy_pni_test_UpcallNull_retur
         fflush(stdout);
         exit(1);
     }
-    return _returnCharArr(PNIGetGraalThread(), return_);
+    return _returnCharArr(GetPNIGraalThread(), return_);
 }
 
 JNIEXPORT PNIBuf_float * JNICALL JavaCritical_io_vproxy_pni_test_UpcallNull_returnFloatArr(PNIBuf_float * return_) {
@@ -155,7 +155,7 @@ JNIEXPORT PNIBuf_float * JNICALL JavaCritical_io_vproxy_pni_test_UpcallNull_retu
         fflush(stdout);
         exit(1);
     }
-    return _returnFloatArr(PNIGetGraalThread(), return_);
+    return _returnFloatArr(GetPNIGraalThread(), return_);
 }
 
 JNIEXPORT PNIBuf_double * JNICALL JavaCritical_io_vproxy_pni_test_UpcallNull_returnDoubleArr(PNIBuf_double * return_) {
@@ -164,7 +164,7 @@ JNIEXPORT PNIBuf_double * JNICALL JavaCritical_io_vproxy_pni_test_UpcallNull_ret
         fflush(stdout);
         exit(1);
     }
-    return _returnDoubleArr(PNIGetGraalThread(), return_);
+    return _returnDoubleArr(GetPNIGraalThread(), return_);
 }
 
 JNIEXPORT PNIBuf_int * JNICALL JavaCritical_io_vproxy_pni_test_UpcallNull_returnIntArr(PNIBuf_int * return_) {
@@ -173,7 +173,7 @@ JNIEXPORT PNIBuf_int * JNICALL JavaCritical_io_vproxy_pni_test_UpcallNull_return
         fflush(stdout);
         exit(1);
     }
-    return _returnIntArr(PNIGetGraalThread(), return_);
+    return _returnIntArr(GetPNIGraalThread(), return_);
 }
 
 JNIEXPORT PNIBuf_long * JNICALL JavaCritical_io_vproxy_pni_test_UpcallNull_returnLongArr(PNIBuf_long * return_) {
@@ -182,7 +182,7 @@ JNIEXPORT PNIBuf_long * JNICALL JavaCritical_io_vproxy_pni_test_UpcallNull_retur
         fflush(stdout);
         exit(1);
     }
-    return _returnLongArr(PNIGetGraalThread(), return_);
+    return _returnLongArr(GetPNIGraalThread(), return_);
 }
 
 JNIEXPORT PNIBuf_short * JNICALL JavaCritical_io_vproxy_pni_test_UpcallNull_returnShortArr(PNIBuf_short * return_) {
@@ -191,7 +191,7 @@ JNIEXPORT PNIBuf_short * JNICALL JavaCritical_io_vproxy_pni_test_UpcallNull_retu
         fflush(stdout);
         exit(1);
     }
-    return _returnShortArr(PNIGetGraalThread(), return_);
+    return _returnShortArr(GetPNIGraalThread(), return_);
 }
 
 JNIEXPORT PNIBuf_ObjectStruct * JNICALL JavaCritical_io_vproxy_pni_test_UpcallNull_returnOArr(PNIBuf_ObjectStruct * return_) {
@@ -200,7 +200,7 @@ JNIEXPORT PNIBuf_ObjectStruct * JNICALL JavaCritical_io_vproxy_pni_test_UpcallNu
         fflush(stdout);
         exit(1);
     }
-    return _returnOArr(PNIGetGraalThread(), return_);
+    return _returnOArr(GetPNIGraalThread(), return_);
 }
 
 JNIEXPORT PNIRef * JNICALL JavaCritical_io_vproxy_pni_test_UpcallNull_returnRef(void) {
@@ -209,7 +209,7 @@ JNIEXPORT PNIRef * JNICALL JavaCritical_io_vproxy_pni_test_UpcallNull_returnRef(
         fflush(stdout);
         exit(1);
     }
-    return _returnRef(PNIGetGraalThread());
+    return _returnRef(GetPNIGraalThread());
 }
 
 JNIEXPORT PNIFunc * JNICALL JavaCritical_io_vproxy_pni_test_UpcallNull_returnFunc(void) {
@@ -218,7 +218,7 @@ JNIEXPORT PNIFunc * JNICALL JavaCritical_io_vproxy_pni_test_UpcallNull_returnFun
         fflush(stdout);
         exit(1);
     }
-    return _returnFunc(PNIGetGraalThread());
+    return _returnFunc(GetPNIGraalThread());
 }
 
 JNIEXPORT PNIFunc * JNICALL JavaCritical_io_vproxy_pni_test_UpcallNull_returnFuncVoid(void) {
@@ -227,7 +227,7 @@ JNIEXPORT PNIFunc * JNICALL JavaCritical_io_vproxy_pni_test_UpcallNull_returnFun
         fflush(stdout);
         exit(1);
     }
-    return _returnFuncVoid(PNIGetGraalThread());
+    return _returnFuncVoid(GetPNIGraalThread());
 }
 
 JNIEXPORT PNIFunc * JNICALL JavaCritical_io_vproxy_pni_test_UpcallNull_returnFuncRef(void) {
@@ -236,11 +236,11 @@ JNIEXPORT PNIFunc * JNICALL JavaCritical_io_vproxy_pni_test_UpcallNull_returnFun
         fflush(stdout);
         exit(1);
     }
-    return _returnFuncRef(PNIGetGraalThread());
+    return _returnFuncRef(GetPNIGraalThread());
 }
 
 #ifdef __cplusplus
 }
 #endif
 // metadata.generator-version: pni test
-// sha256:7886725a0b4e176932da144df3de2db070d96d469ce5736f7d696ff27d0ec103
+// sha256:b7f1dd1f1003ec854e1f015cbfb23e86f5ee3d2bddd84ac75e74474abbe444fa
