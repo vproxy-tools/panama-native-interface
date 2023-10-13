@@ -90,9 +90,8 @@ static inline void PNIStoreErrno(void* _env) {
 }
 
 #if PNI_GRAAL
-JNIEXPORT void  JNICALL PNISetGraalThread(void* thread);
-JNIEXPORT void* JNICALL PNIGetGraalThread(void);
-JNIEXPORT int   JNICALL PNIHasGraalThread(void);
+JNIEXPORT void  JNICALL SetPNIGraalThread(void* thread);
+JNIEXPORT void* JNICALL GetPNIGraalThread(void);
 #endif // PNI_GRAAL
 
 typedef PNI_PACK(struct, PNIFunc, {
@@ -118,7 +117,7 @@ JNIEXPORT void JNICALL SetPNIFuncInvokeFunc(PNIFuncInvokeFunc f);
 
 static inline int32_t PNIFuncInvoke(PNIFunc* f, void* data) {
 #if PNI_GRAAL
-    return GetPNIFuncInvokeFunc()(PNIGetGraalThread(), f->index, data);
+    return GetPNIFuncInvokeFunc()(GetPNIGraalThread(), f->index, data);
 #else
     return GetPNIFuncInvokeFunc()(f->index, data);
 #endif // PNI_GRAAL
@@ -134,7 +133,7 @@ JNIEXPORT void JNICALL SetPNIFuncReleaseFunc(PNIFuncReleaseFunc f);
 
 static inline void PNIFuncRelease(PNIFunc* f) {
 #if PNI_GRAAL
-    GetPNIFuncReleaseFunc()(PNIGetGraalThread(), f->index);
+    GetPNIFuncReleaseFunc()(GetPNIGraalThread(), f->index);
 #else
     GetPNIFuncReleaseFunc()(f->index);
 #endif // PNI_GRAAL
@@ -160,7 +159,7 @@ JNIEXPORT void JNICALL SetPNIRefReleaseFunc(PNIRefReleaseFunc f);
 
 static inline void PNIRefRelease(PNIRef* ref) {
 #if PNI_GRAAL
-    GetPNIRefReleaseFunc()(PNIGetGraalThread(), ref->index);
+    GetPNIRefReleaseFunc()(GetPNIGraalThread(), ref->index);
 #else
     GetPNIRefReleaseFunc()(ref->index);
 #endif // PNI_GRAAL

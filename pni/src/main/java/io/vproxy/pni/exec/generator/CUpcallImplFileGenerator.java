@@ -150,7 +150,7 @@ public class CUpcallImplFileGenerator extends CFileGenerator {
             boolean isFirst = true;
 
             if (opts.hasCompilationFlag(CompilationFlag.GRAAL_C_ENTRYPOINT_LITERAL_UPCALL)) {
-                sb.append("PNIGetGraalThread()");
+                sb.append("GetPNIGraalThread()");
                 isFirst = false;
             }
 

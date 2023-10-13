@@ -135,9 +135,8 @@ public class StaticFileGenerator {
         "}\n" +
         "\n" +
         "#if PNI_GRAAL\n" +
-        "JNIEXPORT void  JNICALL PNISetGraalThread(void* thread);\n" +
-        "JNIEXPORT void* JNICALL PNIGetGraalThread(void);\n" +
-        "JNIEXPORT int   JNICALL PNIHasGraalThread(void);\n" +
+        "JNIEXPORT void  JNICALL SetPNIGraalThread(void* thread);\n" +
+        "JNIEXPORT void* JNICALL GetPNIGraalThread(void);\n" +
         "#endif // PNI_GRAAL\n" +
         "\n" +
         "typedef PNI_PACK(struct, PNIFunc, {\n" +
@@ -163,7 +162,7 @@ public class StaticFileGenerator {
         "\n" +
         "static inline int32_t PNIFuncInvoke(PNIFunc* f, void* data) {\n" +
         "#if PNI_GRAAL\n" +
-        "    return GetPNIFuncInvokeFunc()(PNIGetGraalThread(), f->index, data);\n" +
+        "    return GetPNIFuncInvokeFunc()(GetPNIGraalThread(), f->index, data);\n" +
         "#else\n" +
         "    return GetPNIFuncInvokeFunc()(f->index, data);\n" +
         "#endif // PNI_GRAAL\n" +
@@ -179,7 +178,7 @@ public class StaticFileGenerator {
         "\n" +
         "static inline void PNIFuncRelease(PNIFunc* f) {\n" +
         "#if PNI_GRAAL\n" +
-        "    GetPNIFuncReleaseFunc()(PNIGetGraalThread(), f->index);\n" +
+        "    GetPNIFuncReleaseFunc()(GetPNIGraalThread(), f->index);\n" +
         "#else\n" +
         "    GetPNIFuncReleaseFunc()(f->index);\n" +
         "#endif // PNI_GRAAL\n" +
@@ -205,7 +204,7 @@ public class StaticFileGenerator {
         "\n" +
         "static inline void PNIRefRelease(PNIRef* ref) {\n" +
         "#if PNI_GRAAL\n" +
-        "    GetPNIRefReleaseFunc()(PNIGetGraalThread(), ref->index);\n" +
+        "    GetPNIRefReleaseFunc()(GetPNIGraalThread(), ref->index);\n" +
         "#else\n" +
         "    GetPNIRefReleaseFunc()(ref->index);\n" +
         "#endif // PNI_GRAAL\n" +
@@ -249,19 +248,13 @@ public class StaticFileGenerator {
         "#if PNI_GRAAL\n" +
         "\n" +
         "static __thread void* _graalThread;\n" +
-        "static int _PNIHasGraalThread;\n" +
         "\n" +
-        "JNIEXPORT void JNICALL PNISetGraalThread(void* thread) {\n" +
-        "    _PNIHasGraalThread = 1;\n" +
+        "JNIEXPORT void JNICALL SetPNIGraalThread(void* thread) {\n" +
         "    _graalThread = thread;\n" +
         "}\n" +
         "\n" +
-        "JNIEXPORT void* JNICALL PNIGetGraalThread(void) {\n" +
+        "JNIEXPORT void* JNICALL GetPNIGraalThread(void) {\n" +
         "    return _graalThread;\n" +
-        "}\n" +
-        "\n" +
-        "JNIEXPORT int JNICALL PNIHasGraalThread(void) {\n" +
-        "    return _PNIHasGraalThread;\n" +
         "}\n" +
         "\n" +
         "#endif // PNI_GRAAL\n" +
