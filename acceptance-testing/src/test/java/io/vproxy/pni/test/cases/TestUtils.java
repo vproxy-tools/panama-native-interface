@@ -1,13 +1,13 @@
 package io.vproxy.pni.test.cases;
 
-import org.graalvm.nativeimage.ImageInfo;
+import io.vproxy.r.org.graalvm.nativeimage.ImageInfoDelegate;
 
 public class TestUtils {
     private TestUtils() {
     }
 
     public static boolean skipCase() {
-        if (ImageInfo.inImageCode()) {
+        if (ImageInfoDelegate.inImageCode()) {
             System.out.println("TEST SKIPPED -- native image");
             printStack();
             return true;

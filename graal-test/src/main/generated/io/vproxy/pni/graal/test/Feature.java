@@ -2,8 +2,10 @@ package io.vproxy.pni.graal.test;
 
 import io.vproxy.pni.*;
 import io.vproxy.pni.graal.*;
+import io.vproxy.r.org.graalvm.nativeimage.*;
 import java.lang.foreign.*;
 import java.nio.ByteBuffer;
+import org.graalvm.nativeimage.*;
 import org.graalvm.nativeimage.hosted.*;
 
 public class Feature implements org.graalvm.nativeimage.hosted.Feature {
@@ -13,6 +15,11 @@ public class Feature implements org.graalvm.nativeimage.hosted.Feature {
         RuntimeForeignAccess.registerForDowncall(PanamaUtils.buildCriticalFunctionDescriptor(void.class, MemorySegment.class), Linker.Option.isTrivial());
         RuntimeClassInitialization.initializeAtBuildTime(GraalPNIFunc.class);
         RuntimeClassInitialization.initializeAtBuildTime(GraalPNIRef.class);
+        /* ImageInfo */
+        RuntimeClassInitialization.initializeAtRunTime(ImageInfoDelegate.class);
+        for (var m : ImageInfo.class.getMethods()) {
+            RuntimeReflection.register(m);
+        }
 
         /* JavaCritical_io_vproxy_pni_graal_test_Invoke_invokeSum */
         RuntimeForeignAccess.registerForDowncall(PanamaUtils.buildCriticalFunctionDescriptor(int.class, MemorySegment.class /* func */, MemorySegment.class /* thread */, int.class /* a */, int.class /* b */));
@@ -47,4 +54,4 @@ public class Feature implements org.graalvm.nativeimage.hosted.Feature {
     }
 }
 // metadata.generator-version: pni test
-// sha256:fe9efaa3354b08a20bee5790453c9db09881f149a650a95065852425eb0b19c5
+// sha256:323bd52c0e9e828b26c76fa22cfddfa3804d476c148e0e044d406f0337eeecb1

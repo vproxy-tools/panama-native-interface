@@ -1,7 +1,7 @@
 package io.vproxy.pni.test.cases;
 
 import io.vproxy.pni.graal.GraalUtils;
-import org.graalvm.nativeimage.ImageInfo;
+import io.vproxy.r.org.graalvm.nativeimage.ImageInfoDelegate;
 import org.junit.Test;
 
 public class TestGraalRuntime {
@@ -17,10 +17,10 @@ public class TestGraalRuntime {
 
     @Test
     public void imageInfo() {
-        System.out.println("inImageCode = " + ImageInfo.inImageCode());
-        System.out.println("inImageRuntimeCode = " + ImageInfo.inImageRuntimeCode());
-        System.out.println("inImageBuildtimeCode = " + ImageInfo.inImageBuildtimeCode());
-        System.out.println("isExecutable = " + ImageInfo.isExecutable());
-        System.out.println("isSharedLibrary = " + ImageInfo.isSharedLibrary());
+        System.out.println("inImageCode = " + ImageInfoDelegate.inImageCode());
+        System.out.println("inImageRuntimeCode = " + ImageInfoDelegate.inImageRuntimeCode());
+        System.out.println("inImageBuildtimeCode = " + ImageInfoDelegate.inImageBuildtimeCode());
+        System.out.println("isExecutable = " + ImageInfoDelegate.isExecutable());
+        System.out.println("isSharedLibrary = " + ImageInfoDelegate.isSharedLibrary());
     }
 }

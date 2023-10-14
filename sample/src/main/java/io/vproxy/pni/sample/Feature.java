@@ -2,8 +2,10 @@ package io.vproxy.pni.sample;
 
 import io.vproxy.pni.*;
 import io.vproxy.pni.graal.*;
+import io.vproxy.r.org.graalvm.nativeimage.*;
 import java.lang.foreign.*;
 import java.nio.ByteBuffer;
+import org.graalvm.nativeimage.*;
 import org.graalvm.nativeimage.hosted.*;
 
 public class Feature implements org.graalvm.nativeimage.hosted.Feature {
@@ -13,6 +15,11 @@ public class Feature implements org.graalvm.nativeimage.hosted.Feature {
         RuntimeForeignAccess.registerForDowncall(PanamaUtils.buildCriticalFunctionDescriptor(void.class, MemorySegment.class), Linker.Option.isTrivial());
         RuntimeClassInitialization.initializeAtBuildTime(GraalPNIFunc.class);
         RuntimeClassInitialization.initializeAtBuildTime(GraalPNIRef.class);
+        /* ImageInfo */
+        RuntimeClassInitialization.initializeAtRunTime(ImageInfoDelegate.class);
+        for (var m : ImageInfo.class.getMethods()) {
+            RuntimeReflection.register(m);
+        }
 
         /* Java_io_vproxy_pni_sample_NativeFunctions_openIPv4TcpSocket */
         RuntimeForeignAccess.registerForDowncall(PanamaUtils.buildFunctionDescriptor(), Linker.Option.isTrivial());
@@ -68,4 +75,4 @@ public class Feature implements org.graalvm.nativeimage.hosted.Feature {
     }
 }
 // metadata.generator-version: pni test
-// sha256:087eb3423d7f1431688754f14a066d27a409cb23d424f643ed323d5346382b3f
+// sha256:2cc0a3d1b130bf58d1f7879be0e8855e7f027d6b214e894bb87917c3c6818e84

@@ -74,8 +74,10 @@ public class GraalNativeImageFeatureFileGenerator {
 
         sb.append("import io.vproxy.pni.*;\n" +
                   "import io.vproxy.pni.graal.*;\n" +
+                  "import io.vproxy.r.org.graalvm.nativeimage.*;\n" +
                   "import java.lang.foreign.*;\n" +
                   "import java.nio.ByteBuffer;\n" +
+                  "import org.graalvm.nativeimage.*;\n" +
                   "import org.graalvm.nativeimage.hosted.*;\n");
         sb.append("\n");
         generateJava(sb, simpleName);
@@ -91,6 +93,11 @@ public class GraalNativeImageFeatureFileGenerator {
         sb.append("        RuntimeForeignAccess.registerForDowncall(PanamaUtils.buildCriticalFunctionDescriptor(void.class, MemorySegment.class), Linker.Option.isTrivial());\n");
         sb.append("        RuntimeClassInitialization.initializeAtBuildTime(GraalPNIFunc.class);\n");
         sb.append("        RuntimeClassInitialization.initializeAtBuildTime(GraalPNIRef.class);\n");
+        sb.append("        /* ImageInfo */\n");
+        sb.append("        RuntimeClassInitialization.initializeAtRunTime(ImageInfoDelegate.class);\n");
+        sb.append("        for (var m : ImageInfo.class.getMethods()) {\n");
+        sb.append("            RuntimeReflection.register(m);\n");
+        sb.append("        }\n");
 
         var classes = new ArrayList<>(this.classes);
         classes.sort(Comparator.comparing(a -> a.name));

@@ -3,7 +3,7 @@ package io.vproxy.pni.graal;
 import io.vproxy.pni.GraalHelper;
 import io.vproxy.pni.PanamaUtils;
 import org.graalvm.nativeimage.CurrentIsolate;
-import org.graalvm.nativeimage.ImageInfo;
+import io.vproxy.r.org.graalvm.nativeimage.ImageInfoDelegate;
 import org.graalvm.nativeimage.IsolateThread;
 import org.graalvm.nativeimage.c.function.CEntryPointLiteral;
 import org.graalvm.nativeimage.c.function.CFunctionPointer;
@@ -19,7 +19,7 @@ public class GraalUtils {
     }
 
     public static void setThread() {
-        if (!ImageInfo.inImageCode()) {
+        if (!ImageInfoDelegate.inImageCode()) {
             return;
         }
 
@@ -38,7 +38,7 @@ public class GraalUtils {
     private static volatile MethodHandle SetPNIGraalThread = null;
 
     public static void init() {
-        if (!ImageInfo.inImageCode()) {
+        if (!ImageInfoDelegate.inImageCode()) {
             return;
         }
 
