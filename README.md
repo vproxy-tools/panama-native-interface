@@ -680,6 +680,9 @@ native-image -jar <jar-file> \
 
 See `sampleNativeImage` task in `build.gradle` for more info.
 
+You will also need to define `PNI_GRAAL=1` when compiling, which will enable Graal related functions.  
+Note that some functions are defined using `static inline`, so you must compile all related files with `PNI_GRAAL=1`.
+
 </details>
 
 ## Call Java from C
