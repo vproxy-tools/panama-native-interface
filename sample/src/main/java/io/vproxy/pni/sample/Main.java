@@ -23,6 +23,7 @@ public class Main {
             NativeFunctions.get().bindIPv4(env, serverFD, 0, port);
             NativeFunctions.get().listen(env, serverFD, 128);
             System.out.println("bind 0.0.0.0:" + port + " succeeded");
+            System.out.println("http://127.0.0.1:" + port + "/");
 
             System.out.println("begin to accept connections ...");
 
@@ -95,6 +96,9 @@ public class Main {
                         <a href="https://github.com/vproxy-tools/panama-native-interface">panama-native-interface</a>.</p>
                                                 
                         <p><em>Thank you for using Panama Native Interface.</em></p>
+                                                
+                        <p><form action="/shutdown" method="POST">
+                        <button type="submit">Shutdown</button></form></p>
                         </body>
                         </html>
                         """.getBytes(StandardCharsets.UTF_8);
