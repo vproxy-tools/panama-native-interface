@@ -198,12 +198,12 @@ This tells Gradle to build all projects (including subprojects) with JDK 21 and 
 
 ### 2. Choose a pni version to use
 
-The latest `Panama Native Interface` version is `21.0.0.15`  
+The latest `Panama Native Interface` version is `21.0.0.16`  
 The version will appear multiple times in `build.gradle`, so you can define a variable at the beginning of the file:
 
 ```groovy
 buildscript {
-    def PNI_VERSION = '21.0.0.15'
+    def PNI_VERSION = '21.0.0.16'
     ext.set("PNI_VERSION", PNI_VERSION)
 
     // more configuration later ...
