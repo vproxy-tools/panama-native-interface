@@ -15,7 +15,7 @@ plugins {
     id 'me.champeau.jmh' version "0.7.1" apply false
 }
 
-group = 'org.example'
+group = 'io.vproxy'
 version = loadVersion()
 
 repositories {
