@@ -223,6 +223,10 @@ public class CompilerOptions {
         return this;
     }
 
+    public <T> CompilerOptions setCompilationFlag(CompilationFlag<T> flag) {
+        return setCompilationFlag(flag, null);
+    }
+
     public <T> boolean hasCompilationFlag(CompilationFlag<T> flag) {
         return compilationFlags.containsKey(flag);
     }

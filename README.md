@@ -329,9 +329,9 @@ task pniGenerate() {
             .setClasspath(List.of(workingDir + '/pni-template/build/classes/java/main'))
             .setJavaOutputBaseDirectory(workingDir + '/src/main/generated')
             .setCOutputDirectory(workingDir + '/src/main/c-generated')
-            .setCompilationFlag(io.vproxy.pni.exec.CompilationFlag.RELEASE_PNI_H_FILE, null)
-            .setCompilationFlag(io.vproxy.pni.exec.CompilationFlag.RELEASE_PNI_C_FILE, null)
-            .setCompilationFlag(io.vproxy.pni.exec.CompilationFlag.RELEASE_JNI_H_MOCK_FILE, null)
+            .setCompilationFlag(io.vproxy.pni.exec.CompilationFlag.RELEASE_PNI_H_FILE)
+            .setCompilationFlag(io.vproxy.pni.exec.CompilationFlag.RELEASE_PNI_C_FILE)
+            .setCompilationFlag(io.vproxy.pni.exec.CompilationFlag.RELEASE_JNI_H_MOCK_FILE)
     )
 
     doLast {
@@ -390,9 +390,9 @@ or programmatically:
 
 ```
 new CompilerOptions()
-    .setCompilationFlag(CompilationFlag.RELEASE_PNI_H_FILE, null /* or new File(...) */)
-    .setCompilationFlag(CompilationFlag.RELEASE_PNI_C_FILE, null /* or new File(...) */)
-    .setCompilationFlag(CompilationFlag.RELEASE_JNI_H_MOCK_FILE, null /* or new File(...) */)
+    .setCompilationFlag(CompilationFlag.RELEASE_PNI_H_FILE /* , new File(...) */)
+    .setCompilationFlag(CompilationFlag.RELEASE_PNI_C_FILE /* , new File(...) */)
+    .setCompilationFlag(CompilationFlag.RELEASE_JNI_H_MOCK_FILE /* , new File(...) */)
 ```
 
 > The `output-directory` defaults to the c output directory (`-h` option).
@@ -640,7 +640,7 @@ or programmatically:
 new CompilerOptions()
     .setCompilationFlag(io.vproxy.pni.exec.CompilationFlag.GRAAL_NATIVE_IMAGE_FEATURE, "$featureClassName")
  // you migh also want to add the flag:
- // .setCompilationFlag(io.vproxy.pni.exec.CompilationFlag.GRAAL_C_ENTRYPOINT_LITERAL_UPCALL, null)
+ // .setCompilationFlag(io.vproxy.pni.exec.CompilationFlag.GRAAL_C_ENTRYPOINT_LITERAL_UPCALL)
  // see below descriptions for more info
 ```
 
@@ -664,7 +664,7 @@ Detailed information can be found in [the repo](https://github.com/vproxy-tools/
 As for now `(2023-10-09)` the graal native-image doesn't support Panama upcall yet. But `Panama Native Interface` provides the upcall support
 based on graal c native features:  
 Add compilation flag `-fgraal-c-entrypoint-literal-upcall` on the command line, or call
-`.setCompilationFlag(CompilationFlag.GRAAL_C_ENTRYPOINT_LITERAL_UPCALL, null)` programmatically to enable this feature.
+`.setCompilationFlag(CompilationFlag.GRAAL_C_ENTRYPOINT_LITERAL_UPCALL)` programmatically to enable this feature.
 
 To build the native image, you may use the following command:
 
