@@ -37,6 +37,11 @@ public class Main {
         if (res.wasSuccessful()) {
             System.exit(0);
         } else {
+            Logger.error(LogType.ALERT, "failures:");
+            for (var f : res.getFailures()) {
+                Logger.error(LogType.ALERT, f.getTestHeader(), f.getException());
+                System.out.println("--------");
+            }
             System.exit(1);
         }
     }

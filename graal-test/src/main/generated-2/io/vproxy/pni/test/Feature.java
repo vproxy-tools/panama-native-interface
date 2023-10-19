@@ -180,6 +180,19 @@ public class Feature implements org.graalvm.nativeimage.hosted.Feature {
         /* Java_io_vproxy_pni_test_ChildOfPacked_ooo */
         RuntimeForeignAccess.registerForDowncall(PanamaUtils.buildFunctionDescriptor(MemorySegment.class /* self */, MemoryLayout.class /* io.vproxy.pni.test.ObjectStruct.LAYOUT.getClass() */ /* o */));
 
+        /* JavaCritical_io_vproxy_pni_test_CustomNativeTypeFunc_exec */
+        RuntimeForeignAccess.registerForDowncall(PanamaUtils.buildCriticalFunctionDescriptor(MemorySegment.class, MemorySegment.class /* o */));
+
+        /* JavaCritical_io_vproxy_pni_test_CustomNativeTypeFunc_invoke */
+        RuntimeForeignAccess.registerForDowncall(PanamaUtils.buildCriticalFunctionDescriptor(MemorySegment.class, MemoryLayout.class /* io.vproxy.pni.test.SizeofStructExpr.LAYOUT.getClass() */ /* s */));
+
+        /* Java_io_vproxy_pni_test_CustomNativeTypeStruct_getP1 */
+        RuntimeForeignAccess.registerForDowncall(PanamaUtils.buildFunctionDescriptor(MemorySegment.class /* self */));
+
+        /* graal upcall for io.vproxy.pni.test.CustomNativeTypeUpcall */
+        RuntimeClassInitialization.initializeAtBuildTime(io.vproxy.pni.test.CustomNativeTypeUpcall.class);
+        RuntimeForeignAccess.registerForDowncall(PanamaUtils.buildCriticalFunctionDescriptor(void.class, MemorySegment.class), Linker.Option.isTrivial());
+
         /* Java_io_vproxy_pni_test_DefiningCFunction_upcallVoidNoParam */
         RuntimeForeignAccess.registerForDowncall(PanamaUtils.buildFunctionDescriptor(MemorySegment.class /* func */));
 
@@ -1429,4 +1442,4 @@ public class Feature implements org.graalvm.nativeimage.hosted.Feature {
     }
 }
 // metadata.generator-version: pni test
-// sha256:20c4d94e3a20cb798cf4eb394ebdc2a0653d7f60ce6512acbc23c91a5ec05c35
+// sha256:d015d005a97daf3f43286c7342f1592f39ead006eec6fef6ff5664f00d35db51

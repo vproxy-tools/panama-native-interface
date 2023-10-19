@@ -38,6 +38,7 @@ public class Feature2 implements Feature {
             io.vproxy.pni.test.cases.TestToString.class,
             io.vproxy.pni.test.cases.TestUpcall.class,
             io.vproxy.pni.test.cases.TestUpcallNull.class,
+            io.vproxy.pni.test.cases.TestCustomNativeType.class,
         };
 
         for (var c : classes) {

@@ -20,3 +20,4 @@
 #include "io_vproxy_pni_test_UnionP.c"
 #include "sizeof.c"
 #include "super_class.c"
+#include "io_vproxy_pni_test_CustomNativeType.c"

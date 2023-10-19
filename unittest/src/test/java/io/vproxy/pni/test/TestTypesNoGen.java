@@ -81,6 +81,22 @@ public class TestTypesNoGen {
     }
 
     @Test
+    public void AnnoNativeReturnType() {
+        var t = AnnoNativeReturnTypeTypeInfo.get();
+        assertEquals("io.vproxy.pni.annotation.NativeReturnType", t.name());
+        assertEquals("io/vproxy/pni/annotation/NativeReturnType", t.internalName());
+        assertEquals("Lio/vproxy/pni/annotation/NativeReturnType;", t.desc());
+    }
+
+    @Test
+    public void AnnoNativeType() {
+        var t = AnnoNativeTypeTypeInfo.get();
+        assertEquals("io.vproxy.pni.annotation.NativeType", t.name());
+        assertEquals("io/vproxy/pni/annotation/NativeType", t.internalName());
+        assertEquals("Lio/vproxy/pni/annotation/NativeType;", t.desc());
+    }
+
+    @Test
     public void AnnoPointerOnly() {
         var t = AnnoPointerOnlyTypeInfo.get();
         assertEquals("io.vproxy.pni.annotation.PointerOnly", t.name());

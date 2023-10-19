@@ -50,4 +50,6 @@ gcc -std=gnu99 -O2 \
     super_class.c \
     ../c-generated/io_vproxy_pni_test_AlwaysAlignedSizeof.extra.c \
     align.c \
+    io_vproxy_pni_test_CustomNativeType.c \
+    ../c-generated/io_vproxy_pni_test_CustomNativeTypeUpcall.c \
     -o "$target"
