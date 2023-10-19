@@ -790,7 +790,6 @@ You can call `PNIRef.of(obj, new Options().setUserdataByteSize(...))`, the behav
 * `@Trivial`: make a MethodHandle `trivial`. See `Linker.Option#isTrivial()` for more info.
 * `@Align`: define the minimum alignment bytes. You can set `@Align(packed=true)` to disable padding.
   This annotation has the same effect as setting `__attribute__((aligned(N)))` or `__attribute__((packed))` in `GCC`.
-* `@Critical`: generate native functions without `PNIEnv`. You can directly use `return` to return values to Java. However, since the `PNIEnv` is absent, you will not be able to use any functionality associated with it, for example, throwing exceptions from the C code.
 * `@AlwaysAligned`: assumes that the annotated class or field to be always aligned. This will result in a Java `ValueLayout` without `_UNALIGNED` suffix. A jmh benchmark shows that accessing "manually aligned" fields has the same performance as accessing "unaligned" fields, and is a little bit slower than "aligned" fields in Panama.  
   This annotation is not the default behavior because adding it means that you will not be allowed to put the type on a random memory location.  
   The generated C code will not be affected by this annotation. The generator calculates the paddings only based on type info and `@Align` annotation, and decide to generate packed or non-packed structs, with or without explicit paddings.
@@ -825,6 +824,8 @@ You can call `PNIRef.of(obj, new Options().setUserdataByteSize(...))`, the behav
 ### Convention
 
 * `@Name`: define the native name.
+* `@Critical`: generate native functions without `PNIEnv`. You can directly use `return` to return values to Java. However, since the `PNIEnv` is absent, you will not be able to use any functionality associated with it, for example, throwing exceptions from the C code.
+* `@NoAlloc`: generate functions without `Allocator`, even if the return type might require one.
 
 ### Other
 
