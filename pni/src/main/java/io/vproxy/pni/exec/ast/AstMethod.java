@@ -212,4 +212,8 @@ public class AstMethod {
     public List<String> getImplInclude() {
         return Utils.getStringListFromAnno(annos, ImplClassName, "include");
     }
+
+    public String getNativeReturnTypeAnno() {
+        return Utils.getNativeReturnType(annos);
+    }
 }

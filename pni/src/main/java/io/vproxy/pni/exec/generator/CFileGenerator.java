@@ -295,7 +295,13 @@ public class CFileGenerator {
             var bitfields = field.getBitFieldInfo();
             if (bitfields == null) {
                 Utils.appendIndent(sb, indent);
-                sb.append(field.typeRef.nativeType(field.nativeName(), field.varOpts())).append(";");
+                var type = field.getNativeTypeAnno();
+                if (type == null) {
+                    sb.append(field.typeRef.nativeType(field.nativeName(), field.varOpts()));
+                } else {
+                    sb.append(type).append(" ").append(field.nativeName());
+                }
+                sb.append(";");
             } else {
                 var tname = field.typeRef.nativeType(null, field.varOpts());
                 for (var b : bitfields) {
@@ -349,7 +355,12 @@ public class CFileGenerator {
             Utils.appendIndent(sb, indent)
                 .append("JNIEXPORT ");
             if (method.critical() || upcall) {
-                sb.append(method.returnTypeRef.nativeReturnType(method.varOptsForReturn(upcall)));
+                var returnType = method.getNativeReturnTypeAnno();
+                if (returnType == null) {
+                    sb.append(method.returnTypeRef.nativeReturnType(method.varOptsForReturn(upcall)));
+                } else {
+                    sb.append(returnType);
+                }
             } else {
                 sb.append("int");
             }
@@ -411,7 +422,12 @@ public class CFileGenerator {
 
             private void generateC(StringBuilder sb, int indent) {
                 Utils.appendIndent(sb, indent);
-                sb.append(param.typeRef.nativeParamType(param.nativeName(), param.varOpts()));
+                var type = param.getNativeTypeAnno();
+                if (type == null) {
+                    sb.append(param.typeRef.nativeParamType(param.nativeName(), param.varOpts()));
+                } else {
+                    sb.append(type).append(" ").append(param.nativeName());
+                }
             }
         }
     }

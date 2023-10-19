@@ -88,7 +88,12 @@ public class CUpcallImplFileGenerator extends CFileGenerator {
 
         private String generateNativeUpcallFunctionPointer(boolean isParam) {
             var sb = new StringBuilder();
-            sb.append(method.returnTypeRef.nativeReturnType(method.varOptsForReturn(true)));
+            var customReturnType = method.getNativeReturnTypeAnno();
+            if (customReturnType == null) {
+                sb.append(method.returnTypeRef.nativeReturnType(method.varOptsForReturn(true)));
+            } else {
+                sb.append(customReturnType);
+            }
             sb.append(" (*");
             if (!isParam) {
                 sb.append("_");
@@ -108,7 +113,12 @@ public class CUpcallImplFileGenerator extends CFileGenerator {
                 } else {
                     sb.append(",");
                 }
-                sb.append(p.typeRef.nativeParamType(null, p.varOpts()));
+                var nativeType = p.getNativeTypeAnno();
+                if (nativeType == null) {
+                    sb.append(p.typeRef.nativeParamType(null, p.varOpts()));
+                } else {
+                    sb.append(nativeType);
+                }
             }
             var returnAllocation = method.returnTypeRef.allocationInfoForReturnValue(method.varOptsForReturn(true));
             String returnTypeExtraType = null;

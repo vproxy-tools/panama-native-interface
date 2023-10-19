@@ -87,6 +87,10 @@ public class AstParam {
         return annos.stream().anyMatch(a -> a.typeRef != null && a.typeRef.name().equals(RawClassName));
     }
 
+    public String getNativeTypeAnno() {
+        return Utils.getNativeType(annos);
+    }
+
     public VarOpts varOpts() {
         return VarOpts.of(isUnsigned(), isPointer(), -1, isRaw());
     }

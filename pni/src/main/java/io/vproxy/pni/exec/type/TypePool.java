@@ -31,6 +31,8 @@ public class TypePool {
         record(AnnoIncludeTypeInfo.get());
         record(AnnoLenTypeInfo.get());
         record(AnnoNameTypeInfo.get());
+        record(AnnoNativeReturnTypeTypeInfo.get());
+        record(AnnoNativeTypeTypeInfo.get());
         record(AnnoPointerOnlyTypeInfo.get());
         record(AnnoPointerTypeInfo.get());
         record(AnnoRawTypeInfo.get());

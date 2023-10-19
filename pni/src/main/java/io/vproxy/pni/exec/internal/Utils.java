@@ -4,6 +4,9 @@ import io.vproxy.pni.exec.CompilerOptions;
 import io.vproxy.pni.exec.ast.AstAnno;
 import io.vproxy.pni.exec.ast.AstGenericDef;
 import io.vproxy.pni.exec.ast.AstTypeDesc;
+import io.vproxy.pni.exec.type.AnnoNativeReturnTypeTypeInfo;
+import io.vproxy.pni.exec.type.AnnoNativeTypeTypeInfo;
+import io.vproxy.pni.exec.type.TypeInfo;
 import org.objectweb.asm.tree.AnnotationNode;
 
 import java.io.File;
@@ -12,6 +15,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.security.MessageDigest;
 import java.util.*;
+import java.util.function.Predicate;
 
 import static io.vproxy.pni.exec.internal.Consts.*;
 
@@ -411,6 +415,31 @@ public class Utils {
             return (Boolean) v;
         }
         return false;
+    }
+
+    public static String getNativeType(List<AstAnno> annos) {
+        return getNativeType(annos, v -> v instanceof AnnoNativeTypeTypeInfo);
+    }
+
+    public static String getNativeReturnType(List<AstAnno> annos) {
+        return getNativeType(annos, v -> v instanceof AnnoNativeReturnTypeTypeInfo);
+    }
+
+    private static String getNativeType(List<AstAnno> annos, Predicate<TypeInfo> filter) {
+        var opt = annos.stream().filter(a -> a.typeRef != null && filter.test(a.typeRef)).findFirst();
+        if (opt.isEmpty()) {
+            return null;
+        }
+        var anno = opt.get();
+        var vOpt = anno.values.stream().filter(v -> v.name.equals("value")).findFirst();
+        if (vOpt.isEmpty()) {
+            return null;
+        }
+        var v = vOpt.get().value;
+        if (v instanceof String) {
+            return (String) v;
+        }
+        return null;
     }
 
     public static List<String> getStringListFromAnno(List<AstAnno> annos, String typename, String fieldName) {

@@ -209,6 +209,11 @@ public class AstField {
             ret.add(new BitFieldInfo(names.get(i), total, b));
             total += b;
         }
+        // check native type
+        if (getNativeTypeAnno() != null) {
+            errors.add(path + ": cannot customize native type for bit fields");
+            return null;
+        }
         return ret;
     }
 
@@ -217,6 +222,10 @@ public class AstField {
             return false;
         var cls = ((ClassTypeInfo) typeRef).getClazz();
         return cls.getSizeof() != null;
+    }
+
+    public String getNativeTypeAnno() {
+        return Utils.getNativeType(annos);
     }
 
     public long getAlignmentBytes(boolean packed) {
