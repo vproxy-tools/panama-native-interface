@@ -818,6 +818,9 @@ You can call `PNIRef.of(obj, new Options().setUserdataByteSize(...))`, the behav
   With the help of `@Sizeof`, you can allocate memory for `QuicAddr` from Java and pass it to native.  
   Note: You CANNOT use a `@Sizeof` class for a non-pointer field unless it's in a union or is the last field in a struct.  
   Also, the `@Sizeof` annotation is infectious, if `class A` has a non-pointer field whose class is annotated with `@Sizeof`, then `class A` must be annotated with `Sizeof` as well.
+* `@NativeType`: specify the native type of the field or parameter.
+* `@NativeReturnType`: specify the native return type of the method.  
+  The `@NativeType` and `@NativeReturnType` are useful for defining the real type for a `void*` pointer.
 
 ### Convention
 
