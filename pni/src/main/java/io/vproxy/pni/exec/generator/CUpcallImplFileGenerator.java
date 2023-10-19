@@ -121,16 +121,13 @@ public class CUpcallImplFileGenerator extends CFileGenerator {
                 }
             }
             var returnAllocation = method.returnTypeRef.allocationInfoForReturnValue(method.varOptsForReturn(true));
-            String returnTypeExtraType = null;
-            if (returnAllocation.requireAllocator()) {
-                returnTypeExtraType = method.returnTypeRef.nativeParamType(null, method.varOptsForReturn(true));
-            }
-            if (returnTypeExtraType != null) {
+            if (returnAllocation.requireAllocator() && !method.noAlloc()) {
                 if (isFirst) {
                     isFirst = false;
                 } else {
                     sb.append(",");
                 }
+                var returnTypeExtraType = method.returnTypeRef.nativeParamType(null, method.varOptsForReturn(true));
                 sb.append(returnTypeExtraType);
             }
             if (isFirst) {
@@ -172,7 +169,8 @@ public class CUpcallImplFileGenerator extends CFileGenerator {
                 }
                 sb.append(p.name);
             }
-            if (method.returnTypeRef.allocationInfoForReturnValue(method.varOptsForReturn(true)).requireAllocator()) {
+            if (method.returnTypeRef.allocationInfoForReturnValue(method.varOptsForReturn(true)).requireAllocator()
+                && !method.noAlloc()) {
                 if (isFirst) {
                     isFirst = false;
                 } else {

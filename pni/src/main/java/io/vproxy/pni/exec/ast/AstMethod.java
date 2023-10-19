@@ -216,4 +216,8 @@ public class AstMethod {
     public String getNativeReturnTypeAnno() {
         return Utils.getNativeReturnType(annos);
     }
+
+    public boolean noAlloc() {
+        return annos.stream().anyMatch(a -> a.typeRef instanceof AnnoNoAllocTypeInfo);
+    }
 }

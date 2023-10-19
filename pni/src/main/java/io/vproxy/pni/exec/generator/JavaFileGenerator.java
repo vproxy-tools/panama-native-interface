@@ -649,7 +649,7 @@ public class JavaFileGenerator {
                 sb.append(" /* ").append(p.name).append(" */");
             }
             var returnAllocation = method.returnTypeRef.allocationInfoForReturnValue(method.varOptsForReturn());
-            if (returnAllocation.requireAllocator()) {
+            if (returnAllocation.requireAllocator() && !method.noAlloc()) {
                 sb.append(", MemorySegment.class /* return */");
             }
             sb.append(");\n");
@@ -679,14 +679,12 @@ public class JavaFileGenerator {
             }
             sb.append(method.returnTypeRef.javaTypeForReturn(method.varOptsForReturn()))
                 .append(" ").append(method.name).append("(");
+            var isFirst = true;
             if (!method.critical()) {
+                isFirst = false;
                 sb.append("PNIEnv ENV");
-                if (!method.params.isEmpty()) {
-                    sb.append(", ");
-                }
             }
             var paramNeedsAllocator = returnAllocation.requirePooledAllocator();
-            var isFirst = true;
             for (var p : method.params) {
                 if (isFirst) {
                     isFirst = false;
@@ -699,10 +697,11 @@ public class JavaFileGenerator {
                     paramNeedsAllocator = true;
                 }
             }
-            if (returnAllocation.requireExtraParameter()) {
-                if (!method.critical() || !method.params.isEmpty()) {
+            if (returnAllocation.requireExtraParameterForJavaDowncall() && !method.noAlloc()) {
+                if (!isFirst) {
                     sb.append(", ");
                 }
+                isFirst = false;
                 sb.append("Allocator ALLOCATOR");
             }
             sb.append(")");
@@ -757,19 +756,18 @@ public class JavaFileGenerator {
                 sb.append("ERR = (int) ");
             }
             sb.append(method.name).append("MH").append(".invokeExact(");
+            isFirst = true;
             if (!method.critical()) {
+                isFirst = false;
                 sb.append("ENV.MEMORY");
-                if (!method.params.isEmpty() || needSelf) {
-                    sb.append(", ");
-                }
             }
             if (needSelf) {
-                sb.append("MEMORY");
-                if (!method.params.isEmpty()) {
+                if (!isFirst) {
                     sb.append(", ");
                 }
+                isFirst = false;
+                sb.append("MEMORY");
             }
-            isFirst = true;
             for (var p : method.params) {
                 if (isFirst) {
                     isFirst = false;
@@ -778,15 +776,17 @@ public class JavaFileGenerator {
                 }
                 get(p).generateConvert(sb, 0);
             }
-            if (returnAllocation.requireExtraParameter()) {
-                if (!method.critical() || needSelf || !method.params.isEmpty()) {
+            if (returnAllocation.requireExtraParameterForJavaDowncall() && !method.noAlloc()) {
+                if (!isFirst) {
                     sb.append(", ");
                 }
+                isFirst = false;
                 sb.append("ALLOCATOR.allocate(").append(returnAllocation.layout()).append(")");
             } else if (returnAllocation.requirePooledAllocator()) {
-                if (!method.critical() || needSelf || !method.params.isEmpty()) {
+                if (!isFirst) {
                     sb.append(", ");
                 }
+                isFirst = false;
                 sb.append("POOLED.allocate(").append(returnAllocation.layout()).append(")");
             }
             sb.append(");\n");
@@ -859,7 +859,7 @@ public class JavaFileGenerator {
             }
             var returnAllocation = method.returnTypeRef.allocationInfoForReturnValue(method.varOptsForReturn(true));
             var interfaceReturnAllocation = method.returnTypeRef.allocationInfoForUpcallInterfaceReturnValue(method.varOptsForReturn(true));
-            if (returnAllocation.requireAllocator()) {
+            if (returnAllocation.requireAllocator() && !method.noAlloc()) {
                 if (isFirst) {
                     isFirst = false;
                 } else {
@@ -894,18 +894,22 @@ public class JavaFileGenerator {
                 sb.append("var RESULT = ");
             }
             sb.append("IMPL.").append(method.name).append("(");
+            isFirst = true;
             for (int i = 0; i < method.params.size(); i++) {
-                var p = method.params.get(i);
+                if (isFirst) {
+                    isFirst = false;
+                } else {
+                    sb.append(",");
+                }
                 sb.append("\n");
+                var p = method.params.get(i);
                 get(p).generateUpcallConvert(sb, indent + 8);
-                if (i < method.params.size() - 1) {
-                    sb.append(",");
-                }
             }
-            if (interfaceReturnAllocation.requireAllocator()) {
-                if (!method.params.isEmpty()) {
+            if (interfaceReturnAllocation.requireAllocator() && !method.noAlloc()) {
+                if (!isFirst) {
                     sb.append(",");
                 }
+                isFirst = false;
                 sb.append("\n");
                 Utils.appendIndent(sb, indent + 8)
                     .append(method.returnTypeRef.convertExtraToUpcallArgument("return_", method.varOptsForReturn(true)))
@@ -953,10 +957,11 @@ public class JavaFileGenerator {
                 get(p).generateUpcallInterfaceParam(sb, 0);
             }
             var returnAllocation = method.returnTypeRef.allocationInfoForUpcallInterfaceReturnValue(method.varOptsForReturn(true));
-            if (returnAllocation.requireAllocator()) {
-                if (!method.params.isEmpty()) {
+            if (returnAllocation.requireAllocator() && !method.noAlloc()) {
+                if (!isFirst) {
                     sb.append(", ");
                 }
+                isFirst = false;
                 sb.append(method.returnTypeRef.javaTypeForExtraUpcallInterfaceParam(VarOpts.paramDefault())).append(" ").append("return_");
             }
             sb.append(");\n");
@@ -975,7 +980,8 @@ public class JavaFileGenerator {
                 sb.append(", ");
                 get(p).generateUpcallParamClass(sb, 0);
             }
-            if (method.returnTypeRef.allocationInfoForReturnValue(method.varOptsForReturn(true)).requireAllocator()) {
+            if (method.returnTypeRef.allocationInfoForReturnValue(method.varOptsForReturn(true)).requireAllocator()
+                && !method.noAlloc()) {
                 sb.append(", ");
                 sb.append("MemorySegment.class");
             }
@@ -994,7 +1000,8 @@ public class JavaFileGenerator {
                 sb.append(", ");
                 get(p).generateMethodHandleForUpcall(sb, 0);
             }
-            if (method.returnTypeRef.allocationInfoForReturnValue(method.varOptsForReturn(true)).requireAllocator()) {
+            if (method.returnTypeRef.allocationInfoForReturnValue(method.varOptsForReturn(true)).requireAllocator()
+                && !method.noAlloc()) {
                 sb.append(", ");
                 sb.append("MemorySegment.class");
             }

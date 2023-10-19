@@ -183,7 +183,7 @@ public class GraalNativeImageFeatureFileGenerator {
                 sb.append(" /* ").append(p.name).append(" */");
             }
             var returnAllocation = method.returnTypeRef.allocationInfoForReturnValue(method.varOptsForReturn());
-            if (returnAllocation.requireAllocator()) {
+            if (returnAllocation.requireAllocator() && !method.noAlloc()) {
                 if (needComma) {
                     sb.append(", ");
                 }

@@ -365,25 +365,19 @@ public class CFileGenerator {
                 sb.append("int");
             }
             sb.append(" JNICALL ").append(method.nativeName(classUnderlinedName, upcall)).append("(");
+            var isFirst = true;
             if (!method.critical() && !upcall) {
                 sb.append("PNIEnv_").append(method.returnTypeRef.nativeEnvType(method.varOptsForReturn()));
                 sb.append(" * env");
-                if (classNativeTypeName != null || !method.params.isEmpty()) {
-                    sb.append(", ");
-                }
+                isFirst = false;
             }
             if (classNativeTypeName != null) {
-                sb.append(classNativeTypeName).append(" * self");
-                if (!method.params.isEmpty()) {
+                if (!isFirst) {
                     sb.append(", ");
                 }
+                isFirst = false;
+                sb.append(classNativeTypeName).append(" * self");
             }
-            var returnAllocation = method.returnTypeRef.allocationInfoForReturnValue(method.varOptsForReturn(upcall));
-            String returnTypeExtraType = null;
-            if (returnAllocation.requireAllocator()) {
-                returnTypeExtraType = method.returnTypeRef.nativeParamType(null, method.varOptsForReturn(upcall));
-            }
-            var isFirst = true;
             for (var p : method.params) {
                 if (isFirst) {
                     isFirst = false;
@@ -392,16 +386,16 @@ public class CFileGenerator {
                 }
                 get(p).generateC(sb, 0);
             }
-            if (returnTypeExtraType != null) {
-                if ((!method.critical() && !upcall) || (classNativeTypeName != null || !method.params.isEmpty())) {
+            var returnAllocation = method.returnTypeRef.allocationInfoForReturnValue(method.varOptsForReturn(upcall));
+            if (returnAllocation.requireAllocator() && !method.noAlloc()) {
+                if (!isFirst) {
                     sb.append(", ");
                 }
+                isFirst = false;
+                var returnTypeExtraType = method.returnTypeRef.nativeParamType(null, method.varOptsForReturn(upcall));
                 sb.append(returnTypeExtraType).append(" return_");
             }
-            if ((method.critical() || upcall)
-                && classNativeTypeName == null
-                && method.params.isEmpty()
-                && returnTypeExtraType == null) {
+            if (isFirst) {
                 sb.append("void");
             }
             sb.append(")");

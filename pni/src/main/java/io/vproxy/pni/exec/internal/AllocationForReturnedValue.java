@@ -32,7 +32,7 @@ public class AllocationForReturnedValue {
         return extra != null || pooled != null;
     }
 
-    public boolean requireExtraParameter() {
+    public boolean requireExtraParameterForJavaDowncall() {
         return extra != null;
     }
 
