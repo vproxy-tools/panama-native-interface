@@ -826,6 +826,16 @@ public class Feature implements org.graalvm.nativeimage.hosted.Feature {
         /* Java_io_vproxy_pni_test_NativeCheck_checkUserdataForFunc */
         RuntimeForeignAccess.registerForDowncall(PanamaUtils.buildFunctionDescriptor(PNIFunc.class /* func */, MemorySegment.class /* x */, MemorySegment.class /* y */, MemorySegment.class /* z */));
 
+        /* Java_io_vproxy_pni_test_NoAlloc_execNoAlloc */
+        RuntimeForeignAccess.registerForDowncall(PanamaUtils.buildFunctionDescriptor());
+
+        /* Java_io_vproxy_pni_test_NoAlloc_invokeUpcall */
+        RuntimeForeignAccess.registerForDowncall(PanamaUtils.buildFunctionDescriptor());
+
+        /* graal upcall for io.vproxy.pni.test.NoAllocUpcall */
+        RuntimeClassInitialization.initializeAtBuildTime(io.vproxy.pni.test.NoAllocUpcall.class);
+        RuntimeForeignAccess.registerForDowncall(PanamaUtils.buildCriticalFunctionDescriptor(void.class, MemorySegment.class), Linker.Option.isTrivial());
+
         /* Java_io_vproxy_pni_test_Null_testParam */
         RuntimeForeignAccess.registerForDowncall(PanamaUtils.buildFunctionDescriptor(MemorySegment.class /* self */, MemoryLayout.class /* io.vproxy.pni.test.ObjectStruct.LAYOUT.getClass() */ /* o */, String.class /* str */, MemorySegment.class /* seg */, PNIBuf.class /* buf */, PNIBuf.class /* byteArr */, PNIBuf.class /* boolArr */, PNIBuf.class /* charArr */, PNIBuf.class /* floatArr */, PNIBuf.class /* doubleArr */, PNIBuf.class /* intArr */, PNIBuf.class /* longArr */, PNIBuf.class /* shortArr */, PNIBuf.class /* oArr */, PNIRef.class /* ref */, io.vproxy.pni.CallSite.class /* func */, io.vproxy.pni.CallSite.class /* funcVoid */, io.vproxy.pni.CallSite.class /* funcRef */));
 
@@ -1442,4 +1452,4 @@ public class Feature implements org.graalvm.nativeimage.hosted.Feature {
     }
 }
 // metadata.generator-version: pni test
-// sha256:d015d005a97daf3f43286c7342f1592f39ead006eec6fef6ff5664f00d35db51
+// sha256:448d32ff96d15fdf825070330be5b00a15763ce6186b262eac5e23bfebc6367b

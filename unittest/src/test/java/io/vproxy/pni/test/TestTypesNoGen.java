@@ -97,6 +97,14 @@ public class TestTypesNoGen {
     }
 
     @Test
+    public void AnnoNoAllocType() {
+        var t = AnnoNoAllocTypeInfo.get();
+        assertEquals("io.vproxy.pni.annotation.NoAlloc", t.name());
+        assertEquals("io/vproxy/pni/annotation/NoAlloc", t.internalName());
+        assertEquals("Lio/vproxy/pni/annotation/NoAlloc;", t.desc());
+    }
+
+    @Test
     public void AnnoPointerOnly() {
         var t = AnnoPointerOnlyTypeInfo.get();
         assertEquals("io.vproxy.pni.annotation.PointerOnly", t.name());

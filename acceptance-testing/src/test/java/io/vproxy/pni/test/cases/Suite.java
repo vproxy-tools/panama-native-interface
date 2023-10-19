@@ -26,6 +26,7 @@ import org.junit.runner.RunWith;
     TestToString.class,
     TestGraalRuntime.class,
     TestCustomNativeType.class,
+    TestNoAlloc.class,
 })
 public class Suite {
 }
