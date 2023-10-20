@@ -116,6 +116,16 @@ public class PNIBuf implements NativeObject {
         return of(allocator, v).MEMORY;
     }
 
+    public static PNIBuf of(Allocator allocator, PointerArray v) {
+        if (v == null) return null;
+        return new PNIBuf(allocator, v.MEMORY);
+    }
+
+    public static MemorySegment memoryOf(Allocator allocator, PointerArray v) {
+        if (v == null) return MemorySegment.NULL;
+        return of(allocator, v).MEMORY;
+    }
+
     public static PNIBuf of(Allocator allocator, RefArray<?> v) {
         if (v == null) return null;
         return new PNIBuf(allocator, v.MEMORY);
@@ -195,6 +205,11 @@ public class PNIBuf implements NativeObject {
     public ShortArray toShortArray() {
         var seg = get();
         return seg == null ? null : new ShortArray(seg);
+    }
+
+    public PointerArray toPointerArray() {
+        var seg = get();
+        return seg == null ? null : new PointerArray(seg);
     }
 
     public ByteBuffer toByteBuffer() {

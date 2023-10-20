@@ -36,7 +36,9 @@ public class ArrayTypeInfo extends TypeInfo {
     @Override
     public void checkType(List<String> errors, String path, VarOpts opts, boolean upcall) {
         super.checkType(errors, path, opts, upcall);
-        if (elementType instanceof PrimitiveTypeInfo || elementType instanceof ClassTypeInfo) {
+        if (elementType instanceof PrimitiveTypeInfo
+            || elementType instanceof MemorySegmentTypeInfo
+            || elementType instanceof ClassTypeInfo) {
             if (elementType.nativeMemorySize(opts) == 0) {
                 errors.add(path + ": " + name() + " is not supported because the element type byteSize is 0");
             }
@@ -94,6 +96,8 @@ public class ArrayTypeInfo extends TypeInfo {
             return "short";
         } else if (elementType instanceof BooleanTypeInfo) {
             return "bool";
+        } else if (elementType instanceof MemorySegmentTypeInfo) {
+            return "ptr";
         } else {
             assert elementType instanceof ClassTypeInfo;
             return ((ClassTypeInfo) elementType).getClazz().nativeName();
@@ -137,6 +141,8 @@ public class ArrayTypeInfo extends TypeInfo {
                 ret = "int64_t *";
             } else if (elementType instanceof ShortTypeInfo) {
                 ret = "int16_t *";
+            } else if (elementType instanceof MemorySegmentTypeInfo) {
+                ret = "void **";
             } else {
                 assert elementType instanceof ClassTypeInfo;
                 var classTypeInfo = (ClassTypeInfo) elementType;
@@ -200,6 +206,8 @@ public class ArrayTypeInfo extends TypeInfo {
             return "BoolArray";
         } else if (elementType instanceof CharTypeInfo) {
             return "CharArray";
+        } else if (elementType instanceof MemorySegmentTypeInfo) {
+            return "PointerArray";
         } else if (elementType instanceof ClassTypeInfo) {
             var classTypeInfo = (ClassTypeInfo) elementType;
             return classTypeInfo.getClazz().fullName() + ".Array";
@@ -276,7 +284,7 @@ public class ArrayTypeInfo extends TypeInfo {
                     .append("this.").append(fieldName).append(" = MEMORY.asSlice(OFFSET, ")
                     .append(opts.getLen()).append(");\n");
                 Utils.appendIndent(sb, indent).append("OFFSET += ").append(opts.getLen()).append(";\n");
-            } else if (elementType instanceof PrimitiveTypeInfo) {
+            } else if (elementType instanceof PrimitiveTypeInfo || elementType instanceof MemorySegmentTypeInfo) {
                 Utils.appendIndent(sb, indent)
                     .append("this.").append(fieldName).append(" = new ").append(javaTypeForField(opts)).append("(MEMORY.asSlice(OFFSET, ")
                     .append(opts.getLen()).append(" * ").append(elementType.memoryLayoutForField(opts)).append(".byteSize()")
@@ -378,23 +386,7 @@ public class ArrayTypeInfo extends TypeInfo {
             sb.append("new ").append(classTypeInfo.getClazz().fullName()).append(".Array(new PNIBuf(").append(name).append(").get())");
         } else {
             sb.append("new PNIBuf(").append(name).append(").to");
-            if (elementType instanceof BooleanTypeInfo) {
-                sb.append("BoolArray");
-            } else if (elementType instanceof CharTypeInfo) {
-                sb.append("CharArray");
-            } else if (elementType instanceof DoubleTypeInfo) {
-                sb.append("DoubleArray");
-            } else if (elementType instanceof FloatTypeInfo) {
-                sb.append("FloatArray");
-            } else if (elementType instanceof IntTypeInfo) {
-                sb.append("IntArray");
-            } else if (elementType instanceof LongTypeInfo) {
-                sb.append("LongArray");
-            } else if (elementType instanceof ShortTypeInfo) {
-                sb.append("ShortArray");
-            } else {
-                throw new RuntimeException("unable to handle array with element type " + elementType);
-            }
+            sb.append(javaTypeForField(VarOpts.fieldDefault()));
             sb.append("()");
         }
         sb.append(")");

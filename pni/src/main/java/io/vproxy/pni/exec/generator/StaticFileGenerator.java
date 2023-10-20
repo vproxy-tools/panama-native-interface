@@ -239,6 +239,7 @@ public class StaticFileGenerator {
         "PNIBufExpand(short, int16_t, 2)\n" +
         "PNIBufExpand(ushort, uint16_t, 2)\n" +
         "PNIBufExpand(bool, uint8_t, 1)\n" +
+        "PNIBufExpand(ptr, void *, 8)\n" +
         "\n" +
         "#endif // PNIENV_H\n";
     // language="c"
