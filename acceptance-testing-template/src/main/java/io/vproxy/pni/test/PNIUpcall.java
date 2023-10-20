@@ -67,6 +67,10 @@ public interface PNIUpcall {
 
     PNIObjectStruct returnObject();
 
+    void pointerArrayParams(MemorySegment[] p);
+
+    MemorySegment[] returnPointerArray();
+
     void objectArrayParams(PNIObjectStruct[] o);
 
     PNIObjectStruct[] returnObjectArray();

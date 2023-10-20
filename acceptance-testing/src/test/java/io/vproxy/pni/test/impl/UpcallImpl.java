@@ -267,6 +267,24 @@ public class UpcallImpl implements Upcall.Interface {
         return return_;
     }
 
+    public PointerArray parr;
+
+    @Override
+    public void pointerArrayParams(PointerArray p) {
+        parr = p;
+    }
+
+    private final PointerArray pointerArray = new PointerArray(allocator, 3) {{
+        set(0, new PNIString(allocator, "hello").MEMORY);
+        set(1, new PNIString(allocator, "world").MEMORY);
+        set(2, new PNIString(allocator, "hello world").MEMORY);
+    }};
+
+    @Override
+    public PointerArray returnPointerArray() {
+        return pointerArray;
+    }
+
     public String[] objectRawArray;
 
     @Override

@@ -77,6 +77,11 @@ public class TestUpcallNull {
     }
 
     @Test
+    public void returnPArr() {
+        assertTrue(InvokeUpcallNull.get().returnPArr());
+    }
+
+    @Test
     public void returnOArr() {
         assertTrue(InvokeUpcallNull.get().returnOArr());
     }

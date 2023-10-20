@@ -293,6 +293,35 @@ public class InvokeUpcall {
         return RESULT == null ? null : new io.vproxy.pni.test.ObjectStruct(RESULT);
     }
 
+    private static final MethodHandle pointerArrayParamsMH = PanamaUtils.lookupPNICriticalFunction(false, void.class, "JavaCritical_io_vproxy_pni_test_InvokeUpcall_pointerArrayParams", PNIBuf.class /* o */);
+
+    public void pointerArrayParams(PointerArray o) {
+        try (var POOLED = Allocator.ofPooled()) {
+            try {
+                pointerArrayParamsMH.invokeExact(PNIBuf.memoryOf(POOLED, o));
+            } catch (Throwable THROWABLE) {
+                throw PanamaUtils.convertInvokeExactException(THROWABLE);
+            }
+        }
+    }
+
+    private static final MethodHandle returnPointerArrayMH = PanamaUtils.lookupPNICriticalFunction(false, PNIBuf.class, "JavaCritical_io_vproxy_pni_test_InvokeUpcall_returnPointerArray", MemorySegment.class /* return */);
+
+    public PointerArray returnPointerArray() {
+        try (var POOLED = Allocator.ofPooled()) {
+            MemorySegment RESULT;
+            try {
+                RESULT = (MemorySegment) returnPointerArrayMH.invokeExact(POOLED.allocate(PNIBuf.LAYOUT));
+            } catch (Throwable THROWABLE) {
+                throw PanamaUtils.convertInvokeExactException(THROWABLE);
+            }
+            if (RESULT.address() == 0) return null;
+            var RES_SEG = new PNIBuf(RESULT);
+            if (RES_SEG.isNull()) return null;
+            return new PointerArray(RES_SEG);
+        }
+    }
+
     private static final MethodHandle objectArrayParamsMH = PanamaUtils.lookupPNICriticalFunction(false, void.class, "JavaCritical_io_vproxy_pni_test_InvokeUpcall_objectArrayParams", PNIBuf.class /* o */);
 
     public void objectArrayParams(io.vproxy.pni.test.ObjectStruct.Array o) {
@@ -440,4 +469,4 @@ public class InvokeUpcall {
     }
 }
 // metadata.generator-version: pni test
-// sha256:66ead3f91b590d207ef7e8261cf4c64d363363ff3641568343a15a1305984b70
+// sha256:275028ab917ec0f1189c2e449b1ac17a409f2b2d9b06408d6c03cf6b505befc3

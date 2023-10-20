@@ -22,3 +22,4 @@
 #include "super_class.c"
 #include "io_vproxy_pni_test_CustomNativeType.c"
 #include "noalloc.c"
+#include "io_vproxy_pni_test_PointerArrayField.c"

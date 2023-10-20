@@ -18,9 +18,9 @@ public class TestNull {
             var env = new PNIEnv(allocator);
             var n = new Null(allocator);
 
-            var b = n.testParam(env, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+            var b = n.testParam(env, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
             assertTrue(b);
-            b = n.testParamCritical(null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+            b = n.testParamCritical(null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
             assertTrue(b);
         }
     }
@@ -31,9 +31,9 @@ public class TestNull {
             var env = new PNIEnv(allocator);
             var n = new Null(allocator);
 
-            var b = n.testParamRaw(env, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+            var b = n.testParamRaw(env, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
             assertTrue(b);
-            b = n.testParamRawCritical(null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+            b = n.testParamRawCritical(null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
             assertTrue(b);
         }
     }
@@ -304,6 +304,7 @@ public class TestNull {
                          "    intArr => null,\n" +
                          "    longArr => null,\n" +
                          "    shortArr => null,\n" +
+                         "    pArr => null,\n" +
                          "    oArr => null,\n" +
                          "    ref => null,\n" +
                          "    func => null,\n" +

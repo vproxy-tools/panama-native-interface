@@ -21,6 +21,7 @@ abstract class PNINull {
     int[] intArr;
     long[] longArr;
     short[] shortArr;
+    MemorySegment[] pArr;
     PNIObjectStruct[] oArr;
     PNIRef<Object> ref;
     PNIFunc<PNINull> func;
@@ -33,7 +34,7 @@ abstract class PNINull {
             env->return_= o == NULL && str == NULL && seg == NULL && buf == NULL &&
                           byteArr == NULL && boolArr == NULL && charArr == NULL &&
                           floatArr == NULL && doubleArr == NULL && intArr == NULL &&
-                          longArr == NULL && shortArr == NULL && oArr == NULL &&
+                          longArr == NULL && shortArr == NULL && pArr == NULL && oArr == NULL &&
                           ref == NULL && func == NULL && funcVoid == NULL && funcRef == NULL;
             return 0;
             """
@@ -51,6 +52,7 @@ abstract class PNINull {
         int[] intArr,
         long[] longArr,
         short[] shortArr,
+        MemorySegment[] pArr,
         PNIObjectStruct[] oArr,
         PNIRef<Object> ref,
         PNIFunc<PNINull> func,
@@ -65,7 +67,7 @@ abstract class PNINull {
             return o == NULL && str == NULL && seg == NULL && buf == NULL &&
                    byteArr == NULL && boolArr == NULL && charArr == NULL &&
                    floatArr == NULL && doubleArr == NULL && intArr == NULL &&
-                   longArr == NULL && shortArr == NULL && oArr == NULL &&
+                   longArr == NULL && shortArr == NULL && pArr == NULL && oArr == NULL &&
                    ref == NULL && func == NULL && funcVoid == NULL && funcRef == NULL;
             """
     )
@@ -82,6 +84,7 @@ abstract class PNINull {
         int[] intArr,
         long[] longArr,
         short[] shortArr,
+        MemorySegment[] pArr,
         PNIObjectStruct[] oArr,
         PNIRef<Object> ref,
         PNIFunc<PNINull> func,
@@ -95,7 +98,7 @@ abstract class PNINull {
             env->return_= buf == NULL &&
                           byteArr == NULL && boolArr == NULL && charArr == NULL &&
                           floatArr == NULL && doubleArr == NULL && intArr == NULL &&
-                          longArr == NULL && shortArr == NULL && oArr == NULL &&
+                          longArr == NULL && shortArr == NULL && pArr == NULL && oArr == NULL &&
                           ref == NULL && func == NULL && funcVoid == NULL && funcRef == NULL;
             return 0;
             """
@@ -110,6 +113,7 @@ abstract class PNINull {
         @Raw int[] intArr,
         @Raw long[] longArr,
         @Raw short[] shortArr,
+        @Raw MemorySegment[] pArr,
         @Raw PNIObjectStruct[] oArr,
         @Raw PNIRef<Object> ref,
         @Raw PNIFunc<PNINull> func,
@@ -124,7 +128,7 @@ abstract class PNINull {
             return buf == NULL &&
                    byteArr == NULL && boolArr == NULL && charArr == NULL &&
                    floatArr == NULL && doubleArr == NULL && intArr == NULL &&
-                   longArr == NULL && shortArr == NULL && oArr == NULL &&
+                   longArr == NULL && shortArr == NULL && pArr == NULL && oArr == NULL &&
                    ref == NULL && func == NULL && funcVoid == NULL && funcRef == NULL;
             """
     )
@@ -138,6 +142,7 @@ abstract class PNINull {
         @Raw int[] intArr,
         @Raw long[] longArr,
         @Raw short[] shortArr,
+        @Raw MemorySegment[] pArr,
         @Raw PNIObjectStruct[] oArr,
         @Raw PNIRef<Object> ref,
         @Raw PNIFunc<PNINull> func,
@@ -415,6 +420,31 @@ abstract class PNINull {
     )
     @Critical
     abstract short[] returnShortArrCritical2();
+
+    @Impl(
+        c = """
+            env->return_.buf = NULL;
+            return 0;
+            """
+    )
+    abstract MemorySegment[] returnPArr();
+
+    @Impl(
+        c = """
+            return NULL;
+            """
+    )
+    @Critical
+    abstract MemorySegment[] returnPArrCritical();
+
+    @Impl(
+        c = """
+            return_->buf = NULL;
+            return return_;
+            """
+    )
+    @Critical
+    abstract MemorySegment[] returnPArrCritical2();
 
     @Impl(
         c = """

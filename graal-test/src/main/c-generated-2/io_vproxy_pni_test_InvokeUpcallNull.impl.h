@@ -8,7 +8,7 @@ JNIEXPORT uint8_t JNICALL JavaCritical_io_vproxy_pni_test_InvokeUpcallNull_testP
     return JavaCritical_io_vproxy_pni_test_UpcallNull_testParam(
         NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL,
         NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL,
-        NULL);
+        NULL, NULL);
 }
 
 JNIEXPORT uint8_t JNICALL JavaCritical_io_vproxy_pni_test_InvokeUpcallNull_testParamRaw(void) {
@@ -73,6 +73,11 @@ JNIEXPORT uint8_t JNICALL JavaCritical_io_vproxy_pni_test_InvokeUpcallNull_retur
     return JavaCritical_io_vproxy_pni_test_UpcallNull_returnShortArr(&b) == NULL;
 }
 
+JNIEXPORT uint8_t JNICALL JavaCritical_io_vproxy_pni_test_InvokeUpcallNull_returnPArr(void) {
+    PNIBuf_ptr b;
+    return JavaCritical_io_vproxy_pni_test_UpcallNull_returnPArr(&b) == NULL;
+}
+
 JNIEXPORT uint8_t JNICALL JavaCritical_io_vproxy_pni_test_InvokeUpcallNull_returnOArr(void) {
     PNIBuf_ObjectStruct b;
     return JavaCritical_io_vproxy_pni_test_UpcallNull_returnOArr(&b) == NULL;
@@ -98,4 +103,4 @@ JNIEXPORT uint8_t JNICALL JavaCritical_io_vproxy_pni_test_InvokeUpcallNull_retur
 }
 #endif
 // metadata.generator-version: pni test
-// sha256:4da23a6d7a230c80dcd8ca1a52bdab5dd442133319d703f555c48c5364e8ba8d
+// sha256:cd5d905cd41366f23acbdf502871b6073532cc603f617d796dd52baade2f413b

@@ -23,8 +23,8 @@ public class UpcallNullImpl implements UpcallNull.Interface {
     }
 
     @Override
-    public boolean testParam(ObjectStruct o, PNIString str, MemorySegment seg, ByteBuffer buf, MemorySegment byteArr, BoolArray boolArr, CharArray charArr, FloatArray floatArr, DoubleArray doubleArr, IntArray intArr, LongArray longArr, ShortArray shortArr, ObjectStruct.Array oArr, Object ref, CallSite<Null> func, CallSite<Void> funcVoid, CallSite<Object> funcRef) {
-        return o == null && str == null && seg == null && buf == null && byteArr == null && boolArr == null && charArr == null && floatArr == null && doubleArr == null && intArr == null && longArr == null && shortArr == null && oArr == null && ref == null && func == null && funcVoid == null && funcRef == null;
+    public boolean testParam(ObjectStruct o, PNIString str, MemorySegment seg, ByteBuffer buf, MemorySegment byteArr, BoolArray boolArr, CharArray charArr, FloatArray floatArr, DoubleArray doubleArr, IntArray intArr, LongArray longArr, ShortArray shortArr, PointerArray pArr, ObjectStruct.Array oArr, Object ref, CallSite<Null> func, CallSite<Void> funcVoid, CallSite<Object> funcRef) {
+        return o == null && str == null && seg == null && buf == null && byteArr == null && boolArr == null && charArr == null && floatArr == null && doubleArr == null && intArr == null && longArr == null && shortArr == null && pArr == null && oArr == null && ref == null && func == null && funcVoid == null && funcRef == null;
     }
 
     @Override
@@ -89,6 +89,11 @@ public class UpcallNullImpl implements UpcallNull.Interface {
 
     @Override
     public ShortArray returnShortArr() {
+        return null;
+    }
+
+    @Override
+    public PointerArray returnPArr() {
         return null;
     }
 

@@ -10,7 +10,7 @@ public interface PNIInvokeUpcallNull {
             return JavaCritical_io_vproxy_pni_test_UpcallNull_testParam(
                 NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL,
                 NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL,
-                NULL);
+                NULL, NULL);
             """
     )
     @Critical
@@ -129,6 +129,15 @@ public interface PNIInvokeUpcallNull {
     )
     @Critical
     boolean returnShortArr();
+
+    @Impl(
+        c = """
+            PNIBuf_ptr b;
+            return JavaCritical_io_vproxy_pni_test_UpcallNull_returnPArr(&b) == NULL;
+            """
+    )
+    @Critical
+    boolean returnPArr();
 
     @Impl(
         c = """

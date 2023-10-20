@@ -18,7 +18,7 @@ public class UpcallNull {
     public static final CEntryPointLiteral<CFunctionPointer> testParamCEPL = GraalUtils.defineCFunctionByName(io.vproxy.pni.test.UpcallNull.class, "testParam");
 
     @CEntryPoint
-    public static boolean testParam(IsolateThread THREAD, VoidPointer oPTR, VoidPointer strPTR, VoidPointer segPTR, VoidPointer bufPTR, VoidPointer byteArrPTR, VoidPointer boolArrPTR, VoidPointer charArrPTR, VoidPointer floatArrPTR, VoidPointer doubleArrPTR, VoidPointer intArrPTR, VoidPointer longArrPTR, VoidPointer shortArrPTR, VoidPointer oArrPTR, VoidPointer refPTR, VoidPointer funcPTR, VoidPointer funcVoidPTR, VoidPointer funcRefPTR) {
+    public static boolean testParam(IsolateThread THREAD, VoidPointer oPTR, VoidPointer strPTR, VoidPointer segPTR, VoidPointer bufPTR, VoidPointer byteArrPTR, VoidPointer boolArrPTR, VoidPointer charArrPTR, VoidPointer floatArrPTR, VoidPointer doubleArrPTR, VoidPointer intArrPTR, VoidPointer longArrPTR, VoidPointer shortArrPTR, VoidPointer pArrPTR, VoidPointer oArrPTR, VoidPointer refPTR, VoidPointer funcPTR, VoidPointer funcVoidPTR, VoidPointer funcRefPTR) {
         if (IMPL == null) {
             System.out.println("io.vproxy.pni.test.UpcallNull#testParam");
             System.exit(1);
@@ -35,6 +35,7 @@ public class UpcallNull {
         var intArr = MemorySegment.ofAddress(intArrPTR.rawValue());
         var longArr = MemorySegment.ofAddress(longArrPTR.rawValue());
         var shortArr = MemorySegment.ofAddress(shortArrPTR.rawValue());
+        var pArr = MemorySegment.ofAddress(pArrPTR.rawValue());
         var oArr = MemorySegment.ofAddress(oArrPTR.rawValue());
         var ref = MemorySegment.ofAddress(refPTR.rawValue());
         var func = MemorySegment.ofAddress(funcPTR.rawValue());
@@ -53,6 +54,7 @@ public class UpcallNull {
             (intArr.address() == 0 ? null : new PNIBuf(intArr).toIntArray()),
             (longArr.address() == 0 ? null : new PNIBuf(longArr).toLongArray()),
             (shortArr.address() == 0 ? null : new PNIBuf(shortArr).toShortArray()),
+            (pArr.address() == 0 ? null : new PNIBuf(pArr).toPointerArray()),
             (oArr.address() == 0 ? null : new io.vproxy.pni.test.ObjectStruct.Array(new PNIBuf(oArr).get())),
             (ref.address() == 0 ? null : PNIRef.getRef(ref)),
             (func.address() == 0 ? null : io.vproxy.pni.test.Null.Func.of(func).getCallSite()),
@@ -279,6 +281,23 @@ public class UpcallNull {
         return WordFactory.pointer(return_.address());
     }
 
+    public static MemorySegment returnPArr;
+    public static final CEntryPointLiteral<CFunctionPointer> returnPArrCEPL = GraalUtils.defineCFunctionByName(io.vproxy.pni.test.UpcallNull.class, "returnPArr");
+
+    @CEntryPoint
+    public static VoidPointer returnPArr(IsolateThread THREAD, VoidPointer return_PTR) {
+        if (IMPL == null) {
+            System.out.println("io.vproxy.pni.test.UpcallNull#returnPArr");
+            System.exit(1);
+        }
+        var return_ = MemorySegment.ofAddress(return_PTR.rawValue());
+        var RESULT = IMPL.returnPArr();
+        if (RESULT == null) return WordFactory.pointer(0);
+        var RETURN = new PNIBuf(return_);
+        RETURN.set(RESULT.MEMORY);
+        return WordFactory.pointer(return_.address());
+    }
+
     public static MemorySegment returnOArr;
     public static final CEntryPointLiteral<CFunctionPointer> returnOArrCEPL = GraalUtils.defineCFunctionByName(io.vproxy.pni.test.UpcallNull.class, "returnOArr");
 
@@ -363,15 +382,16 @@ public class UpcallNull {
         returnIntArr = MemorySegment.ofAddress(returnIntArrCEPL.getFunctionPointer().rawValue());
         returnLongArr = MemorySegment.ofAddress(returnLongArrCEPL.getFunctionPointer().rawValue());
         returnShortArr = MemorySegment.ofAddress(returnShortArrCEPL.getFunctionPointer().rawValue());
+        returnPArr = MemorySegment.ofAddress(returnPArrCEPL.getFunctionPointer().rawValue());
         returnOArr = MemorySegment.ofAddress(returnOArrCEPL.getFunctionPointer().rawValue());
         returnRef = MemorySegment.ofAddress(returnRefCEPL.getFunctionPointer().rawValue());
         returnFunc = MemorySegment.ofAddress(returnFuncCEPL.getFunctionPointer().rawValue());
         returnFuncVoid = MemorySegment.ofAddress(returnFuncVoidCEPL.getFunctionPointer().rawValue());
         returnFuncRef = MemorySegment.ofAddress(returnFuncRefCEPL.getFunctionPointer().rawValue());
 
-        var initMH = PanamaUtils.lookupPNICriticalFunction(true, void.class, "JavaCritical_io_vproxy_pni_test_UpcallNull_INIT", MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class);
+        var initMH = PanamaUtils.lookupPNICriticalFunction(true, void.class, "JavaCritical_io_vproxy_pni_test_UpcallNull_INIT", MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class);
         try {
-            initMH.invoke(testParam, testParamRaw, returnO, returnStr, returnSeg, returnBuf, returnByteArr, returnBoolArr, returnCharArr, returnFloatArr, returnDoubleArr, returnIntArr, returnLongArr, returnShortArr, returnOArr, returnRef, returnFunc, returnFuncVoid, returnFuncRef);
+            initMH.invoke(testParam, testParamRaw, returnO, returnStr, returnSeg, returnBuf, returnByteArr, returnBoolArr, returnCharArr, returnFloatArr, returnDoubleArr, returnIntArr, returnLongArr, returnShortArr, returnPArr, returnOArr, returnRef, returnFunc, returnFuncVoid, returnFuncRef);
         } catch (Throwable t) {
             throw new RuntimeException(t);
         }
@@ -389,6 +409,7 @@ public class UpcallNull {
         returnIntArr = PanamaUtils.lookupFunctionPointer("JavaCritical_io_vproxy_pni_test_UpcallNull_returnIntArr").orElseThrow(() -> new NullPointerException("JavaCritical_io_vproxy_pni_test_UpcallNull_returnIntArr"));
         returnLongArr = PanamaUtils.lookupFunctionPointer("JavaCritical_io_vproxy_pni_test_UpcallNull_returnLongArr").orElseThrow(() -> new NullPointerException("JavaCritical_io_vproxy_pni_test_UpcallNull_returnLongArr"));
         returnShortArr = PanamaUtils.lookupFunctionPointer("JavaCritical_io_vproxy_pni_test_UpcallNull_returnShortArr").orElseThrow(() -> new NullPointerException("JavaCritical_io_vproxy_pni_test_UpcallNull_returnShortArr"));
+        returnPArr = PanamaUtils.lookupFunctionPointer("JavaCritical_io_vproxy_pni_test_UpcallNull_returnPArr").orElseThrow(() -> new NullPointerException("JavaCritical_io_vproxy_pni_test_UpcallNull_returnPArr"));
         returnOArr = PanamaUtils.lookupFunctionPointer("JavaCritical_io_vproxy_pni_test_UpcallNull_returnOArr").orElseThrow(() -> new NullPointerException("JavaCritical_io_vproxy_pni_test_UpcallNull_returnOArr"));
         returnRef = PanamaUtils.lookupFunctionPointer("JavaCritical_io_vproxy_pni_test_UpcallNull_returnRef").orElseThrow(() -> new NullPointerException("JavaCritical_io_vproxy_pni_test_UpcallNull_returnRef"));
         returnFunc = PanamaUtils.lookupFunctionPointer("JavaCritical_io_vproxy_pni_test_UpcallNull_returnFunc").orElseThrow(() -> new NullPointerException("JavaCritical_io_vproxy_pni_test_UpcallNull_returnFunc"));
@@ -405,7 +426,7 @@ public class UpcallNull {
     }
 
     public interface Interface {
-        boolean testParam(io.vproxy.pni.test.ObjectStruct o, PNIString str, MemorySegment seg, ByteBuffer buf, MemorySegment byteArr, BoolArray boolArr, CharArray charArr, FloatArray floatArr, DoubleArray doubleArr, IntArray intArr, LongArray longArr, ShortArray shortArr, io.vproxy.pni.test.ObjectStruct.Array oArr, java.lang.Object ref, io.vproxy.pni.CallSite<io.vproxy.pni.test.Null> func, io.vproxy.pni.CallSite<Void> funcVoid, io.vproxy.pni.CallSite<java.lang.Object> funcRef);
+        boolean testParam(io.vproxy.pni.test.ObjectStruct o, PNIString str, MemorySegment seg, ByteBuffer buf, MemorySegment byteArr, BoolArray boolArr, CharArray charArr, FloatArray floatArr, DoubleArray doubleArr, IntArray intArr, LongArray longArr, ShortArray shortArr, PointerArray pArr, io.vproxy.pni.test.ObjectStruct.Array oArr, java.lang.Object ref, io.vproxy.pni.CallSite<io.vproxy.pni.test.Null> func, io.vproxy.pni.CallSite<Void> funcVoid, io.vproxy.pni.CallSite<java.lang.Object> funcRef);
 
         boolean testParamRaw(PNIRef<java.lang.Object> ref, PNIFunc<io.vproxy.pni.test.Null> func, PNIFunc<Void> funcVoid, PNIFunc<java.lang.Object> funcRef);
 
@@ -433,6 +454,8 @@ public class UpcallNull {
 
         ShortArray returnShortArr();
 
+        PointerArray returnPArr();
+
         io.vproxy.pni.test.ObjectStruct.Array returnOArr();
 
         PNIRef<java.lang.Object> returnRef();
@@ -445,4 +468,4 @@ public class UpcallNull {
     }
 }
 // metadata.generator-version: pni test
-// sha256:68dfa59547bf5f99ddd8ae95198e5e4b21a487085ff5933cb121334c043805e0
+// sha256:5bef21d34fce2c1575672be7cdd78b7019840cef841683349d15f66ddca8d5ac

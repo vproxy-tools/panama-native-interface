@@ -139,6 +139,18 @@ public interface PNIInvokeUpcall {
     PNIObjectStruct returnObject();
 
     @Impl(
+        c = "JavaCritical_io_vproxy_pni_test_Upcall_pointerArrayParams(o);"
+    )
+    @Critical
+    void pointerArrayParams(MemorySegment[] o);
+
+    @Impl(
+        c = "return JavaCritical_io_vproxy_pni_test_Upcall_returnPointerArray(return_);"
+    )
+    @Critical
+    MemorySegment[] returnPointerArray();
+
+    @Impl(
         c = "JavaCritical_io_vproxy_pni_test_Upcall_objectArrayParams(o);"
     )
     @Critical

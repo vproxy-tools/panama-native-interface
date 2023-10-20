@@ -194,5 +194,6 @@ PNIBufExpand(double, double, 8)
 PNIBufExpand(short, int16_t, 2)
 PNIBufExpand(ushort, uint16_t, 2)
 PNIBufExpand(bool, uint8_t, 1)
+PNIBufExpand(ptr, void *, 8)
 
 #endif // PNIENV_H

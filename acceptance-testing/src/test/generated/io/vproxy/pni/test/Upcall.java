@@ -280,6 +280,32 @@ public class Upcall {
         return RESULT == null ? MemorySegment.NULL : RESULT.MEMORY;
     }
 
+    public static final MemorySegment pointerArrayParams;
+
+    private static void pointerArrayParams(MemorySegment p) {
+        if (IMPL == null) {
+            System.out.println("io.vproxy.pni.test.Upcall#pointerArrayParams");
+            System.exit(1);
+        }
+        IMPL.pointerArrayParams(
+            (p.address() == 0 ? null : new PNIBuf(p).toPointerArray())
+        );
+    }
+
+    public static final MemorySegment returnPointerArray;
+
+    private static MemorySegment returnPointerArray(MemorySegment return_) {
+        if (IMPL == null) {
+            System.out.println("io.vproxy.pni.test.Upcall#returnPointerArray");
+            System.exit(1);
+        }
+        var RESULT = IMPL.returnPointerArray();
+        if (RESULT == null) return MemorySegment.NULL;
+        var RETURN = new PNIBuf(return_);
+        RETURN.set(RESULT.MEMORY);
+        return return_;
+    }
+
     public static final MemorySegment objectArrayParams;
 
     private static void objectArrayParams(MemorySegment o) {
@@ -443,6 +469,8 @@ public class Upcall {
         MethodHandle returnShortArrayMH;
         MethodHandle objectParamsMH;
         MethodHandle returnObjectMH;
+        MethodHandle pointerArrayParamsMH;
+        MethodHandle returnPointerArrayMH;
         MethodHandle objectArrayParamsMH;
         MethodHandle returnObjectArrayMH;
         MethodHandle otherParamsMH;
@@ -475,6 +503,8 @@ public class Upcall {
             returnShortArrayMH = MethodHandles.lookup().findStatic(io.vproxy.pni.test.Upcall.class, "returnShortArray", MethodType.methodType(MemorySegment.class, MemorySegment.class));
             objectParamsMH = MethodHandles.lookup().findStatic(io.vproxy.pni.test.Upcall.class, "objectParams", MethodType.methodType(void.class, MemorySegment.class));
             returnObjectMH = MethodHandles.lookup().findStatic(io.vproxy.pni.test.Upcall.class, "returnObject", MethodType.methodType(MemorySegment.class, MemorySegment.class));
+            pointerArrayParamsMH = MethodHandles.lookup().findStatic(io.vproxy.pni.test.Upcall.class, "pointerArrayParams", MethodType.methodType(void.class, MemorySegment.class));
+            returnPointerArrayMH = MethodHandles.lookup().findStatic(io.vproxy.pni.test.Upcall.class, "returnPointerArray", MethodType.methodType(MemorySegment.class, MemorySegment.class));
             objectArrayParamsMH = MethodHandles.lookup().findStatic(io.vproxy.pni.test.Upcall.class, "objectArrayParams", MethodType.methodType(void.class, MemorySegment.class));
             returnObjectArrayMH = MethodHandles.lookup().findStatic(io.vproxy.pni.test.Upcall.class, "returnObjectArray", MethodType.methodType(MemorySegment.class, MemorySegment.class));
             otherParamsMH = MethodHandles.lookup().findStatic(io.vproxy.pni.test.Upcall.class, "otherParams", MethodType.methodType(void.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class));
@@ -509,6 +539,8 @@ public class Upcall {
         returnShortArray = PanamaUtils.defineCFunction(ARENA, returnShortArrayMH, MemorySegment.class, MemorySegment.class);
         objectParams = PanamaUtils.defineCFunction(ARENA, objectParamsMH, void.class, MemorySegment.class);
         returnObject = PanamaUtils.defineCFunction(ARENA, returnObjectMH, MemorySegment.class, MemorySegment.class);
+        pointerArrayParams = PanamaUtils.defineCFunction(ARENA, pointerArrayParamsMH, void.class, MemorySegment.class);
+        returnPointerArray = PanamaUtils.defineCFunction(ARENA, returnPointerArrayMH, MemorySegment.class, MemorySegment.class);
         objectArrayParams = PanamaUtils.defineCFunction(ARENA, objectArrayParamsMH, void.class, MemorySegment.class);
         returnObjectArray = PanamaUtils.defineCFunction(ARENA, returnObjectArrayMH, MemorySegment.class, MemorySegment.class);
         otherParams = PanamaUtils.defineCFunction(ARENA, otherParamsMH, void.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class);
@@ -521,9 +553,9 @@ public class Upcall {
         returnStr = PanamaUtils.defineCFunction(ARENA, returnStrMH, MemorySegment.class);
         sum = PanamaUtils.defineCFunction(ARENA, sumMH, int.class, int.class, int.class);
 
-        var initMH = PanamaUtils.lookupPNICriticalFunction(true, void.class, "JavaCritical_io_vproxy_pni_test_Upcall_INIT", MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class);
+        var initMH = PanamaUtils.lookupPNICriticalFunction(true, void.class, "JavaCritical_io_vproxy_pni_test_Upcall_INIT", MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class);
         try {
-            initMH.invoke(primaryParams, returnByte, returnBool, returnChar, returnDouble, returnFloat, returnInt, returnLong, returnShort, primaryArrayParams, returnByteArray, returnBoolArray, returnCharArray, returnDoubleArray, returnFloatArray, returnIntArray, returnLongArray, returnShortArray, objectParams, returnObject, objectArrayParams, returnObjectArray, otherParams, returnBuffer, returnMem, returnVoidFunc, returnObjFunc, returnRefFunc, returnRef, returnStr, sum);
+            initMH.invoke(primaryParams, returnByte, returnBool, returnChar, returnDouble, returnFloat, returnInt, returnLong, returnShort, primaryArrayParams, returnByteArray, returnBoolArray, returnCharArray, returnDoubleArray, returnFloatArray, returnIntArray, returnLongArray, returnShortArray, objectParams, returnObject, pointerArrayParams, returnPointerArray, objectArrayParams, returnObjectArray, otherParams, returnBuffer, returnMem, returnVoidFunc, returnObjFunc, returnRefFunc, returnRef, returnStr, sum);
         } catch (Throwable t) {
             throw new RuntimeException(t);
         }
@@ -577,6 +609,10 @@ public class Upcall {
 
         io.vproxy.pni.test.ObjectStruct returnObject(io.vproxy.pni.test.ObjectStruct return_);
 
+        void pointerArrayParams(PointerArray p);
+
+        PointerArray returnPointerArray();
+
         void objectArrayParams(io.vproxy.pni.test.ObjectStruct.Array o);
 
         io.vproxy.pni.test.ObjectStruct.Array returnObjectArray();
@@ -601,4 +637,4 @@ public class Upcall {
     }
 }
 // metadata.generator-version: pni test
-// sha256:4aa604eb0876e1654cb4e1feec4360c2513054828096b82ec5360de0768ba1ee
+// sha256:a66a593f272336199a1ccff4b746068b41d97266d3e1e3544fa5108c1ef9f717

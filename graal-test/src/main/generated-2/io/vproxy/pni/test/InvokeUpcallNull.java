@@ -189,6 +189,18 @@ public class InvokeUpcallNull {
         return RESULT;
     }
 
+    private static final MethodHandle returnPArrMH = PanamaUtils.lookupPNICriticalFunction(false, boolean.class, "JavaCritical_io_vproxy_pni_test_InvokeUpcallNull_returnPArr");
+
+    public boolean returnPArr() {
+        boolean RESULT;
+        try {
+            RESULT = (boolean) returnPArrMH.invokeExact();
+        } catch (Throwable THROWABLE) {
+            throw PanamaUtils.convertInvokeExactException(THROWABLE);
+        }
+        return RESULT;
+    }
+
     private static final MethodHandle returnOArrMH = PanamaUtils.lookupPNICriticalFunction(false, boolean.class, "JavaCritical_io_vproxy_pni_test_InvokeUpcallNull_returnOArr");
 
     public boolean returnOArr() {
@@ -250,4 +262,4 @@ public class InvokeUpcallNull {
     }
 }
 // metadata.generator-version: pni test
-// sha256:1d53793bf0c56a782eab2007de2154d64af9f46c767ac62eaeb4595276380537
+// sha256:83652ec652194de93227b9afdc79decad2d592273ffa4f11356aedef68f8d180

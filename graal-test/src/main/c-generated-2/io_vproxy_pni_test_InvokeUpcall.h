@@ -39,6 +39,8 @@ JNIEXPORT PNIBuf_long * JNICALL JavaCritical_io_vproxy_pni_test_InvokeUpcall_ret
 JNIEXPORT PNIBuf_short * JNICALL JavaCritical_io_vproxy_pni_test_InvokeUpcall_returnShortArray(PNIBuf_short * return_);
 JNIEXPORT void JNICALL JavaCritical_io_vproxy_pni_test_InvokeUpcall_objectParams(ObjectStruct * o);
 JNIEXPORT ObjectStruct * JNICALL JavaCritical_io_vproxy_pni_test_InvokeUpcall_returnObject(ObjectStruct * return_);
+JNIEXPORT void JNICALL JavaCritical_io_vproxy_pni_test_InvokeUpcall_pointerArrayParams(PNIBuf_ptr * o);
+JNIEXPORT PNIBuf_ptr * JNICALL JavaCritical_io_vproxy_pni_test_InvokeUpcall_returnPointerArray(PNIBuf_ptr * return_);
 JNIEXPORT void JNICALL JavaCritical_io_vproxy_pni_test_InvokeUpcall_objectArrayParams(PNIBuf_ObjectStruct * o);
 JNIEXPORT PNIBuf_ObjectStruct * JNICALL JavaCritical_io_vproxy_pni_test_InvokeUpcall_returnObjectArray(PNIBuf_ObjectStruct * return_);
 JNIEXPORT void JNICALL JavaCritical_io_vproxy_pni_test_InvokeUpcall_otherParams(PNIBuf * buffer, PNIFunc * voidCallSite, PNIFunc * objCallSite, PNIFunc * refCallSite, void * mem, PNIFunc * voidFunc, PNIFunc * objFunc, PNIFunc * refFunc, PNIRef * ref, PNIRef * rawRef, char * str);
@@ -56,4 +58,4 @@ JNIEXPORT int32_t JNICALL JavaCritical_io_vproxy_pni_test_InvokeUpcall_sum(int32
 #endif
 #endif // _Included_io_vproxy_pni_test_InvokeUpcall
 // metadata.generator-version: pni test
-// sha256:0170ec5464d2fa8af8559b239e644a8a7b0214862ec1e5393f340aef12389984
+// sha256:70579a0408c80d1662bedbd7c4567c2a403947aa8b129b5cb4a574a0e480c09e

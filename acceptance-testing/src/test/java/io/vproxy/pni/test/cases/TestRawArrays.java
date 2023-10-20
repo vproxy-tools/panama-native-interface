@@ -2,11 +2,13 @@ package io.vproxy.pni.test.cases;
 
 import io.vproxy.pni.Allocator;
 import io.vproxy.pni.PNIEnv;
+import io.vproxy.pni.PNIString;
 import io.vproxy.pni.array.*;
 import io.vproxy.pni.test.ObjectStruct;
 import io.vproxy.pni.test.RawArrays;
 import org.junit.Test;
 
+import java.lang.foreign.MemorySegment;
 import java.lang.foreign.ValueLayout;
 
 import static org.junit.Assert.*;
@@ -236,6 +238,27 @@ public class TestRawArrays {
 
                 o = RawArrays.get().structArrayNotRaw(env, array, i, allocator);
                 assertEquals(String.valueOf('A' + i), o.getLenStr());
+            }
+        }
+    }
+
+    @Test
+    public void pointerArray() {
+        try (var allocator = Allocator.ofConfined()) {
+            var env = new PNIEnv(allocator);
+
+            var array = new PointerArray(allocator, 18);
+            for (int i = 0; i < array.length(); ++i) {
+                var str = new PNIString(allocator, String.valueOf((char) ('A' + i)));
+                array.set(i, str.MEMORY);
+            }
+
+            for (int i = 0; i < 18; ++i) {
+                MemorySegment p = RawArrays.get().pointerArray(env, array, i);
+                assertEquals(String.valueOf((char) ('A' + i)), p.reinterpret(2).getUtf8String(0));
+
+                p = RawArrays.get().pointerArrayNotRaw(env, array, i);
+                assertEquals(String.valueOf((char) ('A' + i)), p.reinterpret(2).getUtf8String(0));
             }
         }
     }

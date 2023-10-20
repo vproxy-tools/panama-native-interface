@@ -213,6 +213,40 @@ public class RawArrays {
         return ENV.returnShort();
     }
 
+    private static final MethodHandle pointerArrayMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_RawArrays_pointerArray", MemorySegment.class /* array */, int.class /* off */);
+
+    public MemorySegment pointerArray(PNIEnv ENV, PointerArray array, int off) {
+        ENV.reset();
+        int ERR;
+        try {
+            ERR = (int) pointerArrayMH.invokeExact(ENV.MEMORY, (MemorySegment) (array == null ? MemorySegment.NULL : array.MEMORY), off);
+        } catch (Throwable THROWABLE) {
+            throw PanamaUtils.convertInvokeExactException(THROWABLE);
+        }
+        if (ERR != 0) {
+            ENV.throwLast();
+        }
+        return ENV.returnPointer();
+    }
+
+    private static final MethodHandle pointerArrayNotRawMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_RawArrays_pointerArrayNotRaw", PNIBuf.class /* array */, int.class /* off */);
+
+    public MemorySegment pointerArrayNotRaw(PNIEnv ENV, PointerArray array, int off) {
+        ENV.reset();
+        try (var POOLED = Allocator.ofPooled()) {
+            int ERR;
+            try {
+                ERR = (int) pointerArrayNotRawMH.invokeExact(ENV.MEMORY, PNIBuf.memoryOf(POOLED, array), off);
+            } catch (Throwable THROWABLE) {
+                throw PanamaUtils.convertInvokeExactException(THROWABLE);
+            }
+            if (ERR != 0) {
+                ENV.throwLast();
+            }
+            return ENV.returnPointer();
+        }
+    }
+
     private static final MethodHandle structArrayMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_RawArrays_structArray", MemorySegment.class /* array */, int.class /* off */, MemorySegment.class /* return */);
 
     public io.vproxy.pni.test.ObjectStruct structArray(PNIEnv ENV, io.vproxy.pni.test.ObjectStruct.Array array, int off, Allocator ALLOCATOR) {
@@ -250,4 +284,4 @@ public class RawArrays {
     }
 }
 // metadata.generator-version: pni test
-// sha256:5028148844d495d8c97b251fc005972e7f5e9aa17f133489ce94c1ef4153368c
+// sha256:9732a7e8d4ec1b6cf7eba3229b009354099d7713d145e3d7b753ed00301286ed

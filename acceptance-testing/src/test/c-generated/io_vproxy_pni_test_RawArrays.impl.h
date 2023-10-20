@@ -64,6 +64,17 @@ JNIEXPORT int JNICALL Java_io_vproxy_pni_test_RawArrays_unsignedShortArray(PNIEn
     return 0;
 }
 
+JNIEXPORT int JNICALL Java_io_vproxy_pni_test_RawArrays_pointerArray(PNIEnv_pointer * env, void ** array, int32_t off) {
+    env->return_ = array[off];
+    return 0;
+}
+
+JNIEXPORT int JNICALL Java_io_vproxy_pni_test_RawArrays_pointerArrayNotRaw(PNIEnv_pointer * env, PNIBuf_ptr * array, int32_t off) {
+    void ** arr = array->buf;
+    env->return_ = arr[off];
+    return 0;
+}
+
 JNIEXPORT int JNICALL Java_io_vproxy_pni_test_RawArrays_structArray(PNIEnv_ObjectStruct * env, ObjectStruct * array, int32_t off, ObjectStruct * return_) {
     env->return_ = &array[off];
     return 0;
@@ -79,4 +90,4 @@ JNIEXPORT int JNICALL Java_io_vproxy_pni_test_RawArrays_structArrayNotRaw(PNIEnv
 }
 #endif
 // metadata.generator-version: pni test
-// sha256:bf681487dffbae9f8c7f0a9ea1cb62e0e0ea0f4cf393e42a17ab2a6363fe47ab
+// sha256:ae1eb3407217c9ea0fb84e57fb3364579296e40f396872f7a76fba27c1d3f0a5

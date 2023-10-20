@@ -289,6 +289,30 @@ public class TestUpcall {
     }
 
     @Test
+    public void pointerArrayParams() {
+        try (var allocator = Allocator.ofConfined()) {
+            var res = new PointerArray(allocator, 3);
+            res.set(0, allocator.allocate(2));
+            res.set(1, allocator.allocate(3));
+            res.set(2, allocator.allocate(5));
+            InvokeUpcall.get().pointerArrayParams(res);
+
+            var parr = UpcallImpl.get().parr;
+            for (int i = 0; i < 3; ++i) {
+                assertEquals(res.get(i).address(), parr.get(i).address());
+            }
+        }
+    }
+
+    @Test
+    public void returnPointerArray() {
+        var res = InvokeUpcall.get().returnPointerArray();
+        assertEquals("hello", res.get(0).reinterpret(10).getUtf8String(0));
+        assertEquals("world", res.get(1).reinterpret(10).getUtf8String(0));
+        assertEquals("hello world", res.get(2).reinterpret(20).getUtf8String(0));
+    }
+
+    @Test
     public void objectArrayParams() {
         try (var allocator = Allocator.ofConfined()) {
             var res = new ObjectStruct.Array(allocator, 3);

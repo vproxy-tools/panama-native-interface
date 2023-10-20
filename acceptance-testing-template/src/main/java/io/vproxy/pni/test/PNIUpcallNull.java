@@ -23,6 +23,7 @@ public interface PNIUpcallNull {
         int[] intArr,
         long[] longArr,
         short[] shortArr,
+        MemorySegment[] pArr,
         PNIObjectStruct[] oArr,
         PNIRef<Object> ref,
         PNIFunc<PNINull> func,
@@ -60,6 +61,8 @@ public interface PNIUpcallNull {
     long[] returnLongArr();
 
     short[] returnShortArr();
+
+    MemorySegment[] returnPArr();
 
     PNIObjectStruct[] returnOArr();
 

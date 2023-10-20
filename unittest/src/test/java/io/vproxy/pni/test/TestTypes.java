@@ -1436,6 +1436,130 @@ public class TestTypes {
     }
 
     @Test
+    public void pointerArray() {
+        var info = new ArrayTypeInfo(MemorySegmentTypeInfo.get());
+        assertEquals(MemorySegmentTypeInfo.get(), info.getElementType());
+        assertEquals("java.lang.foreign.MemorySegment[]", info.name());
+        assertEquals("java/lang/foreign/MemorySegment[]", info.internalName());
+        assertEquals("[Ljava/lang/foreign/MemorySegment;", info.desc());
+        checkTypeField(info, POINTER | LEN);
+        checkTypeParam(info, POINTER | LEN | RAW);
+        assertEquals("buf_ptr", info.nativeEnvType(returnVarOpts(0)));
+        assertEquals("PNIBuf_ptr a", info.nativeType("a", fieldVarOpts(0)));
+        assertEquals("PNIBuf_ptr", info.nativeType(null, fieldVarOpts(0)));
+        assertEquals("void * a[3]", info.nativeType("a", fieldVarOpts(LEN)));
+        assertEquals("PNIBuf_ptr * a", info.nativeParamType("a", paramVarOpts(0)));
+        assertEquals("void ** a", info.nativeParamType("a", paramVarOpts(RAW)));
+        assertEquals("PNIBuf_ptr *", info.nativeReturnType(returnVarOpts(0)));
+        assertEquals(16, info.nativeMemorySize(fieldVarOpts(0)));
+        assertEquals(24, info.nativeMemorySize(fieldVarOpts(LEN)));
+        assertEquals(8, info.nativeMemoryAlign(fieldVarOpts(0)));
+        assertEquals(8, info.nativeMemoryAlign(fieldVarOpts(LEN)));
+        assertEquals("PNIBuf.LAYOUT", info.memoryLayoutForField(fieldVarOpts(0)));
+        assertEquals("MemoryLayout.sequenceLayout(3L, ValueLayout.ADDRESS_UNALIGNED)", info.memoryLayoutForField(fieldVarOpts(LEN)));
+        assertEquals("PointerArray", info.javaTypeForField(fieldVarOpts(0)));
+        assertEquals("PointerArray", info.javaTypeForParam(paramVarOpts(0)));
+        assertEquals("PointerArray", info.javaTypeForReturn(returnVarOpts(0)));
+        assertEquals("MemorySegment", info.javaTypeForUpcallParam(paramVarOpts(0)));
+        assertEquals("MemorySegment", info.javaTypeForUpcallReturn(returnVarOpts(0)));
+        assertEquals("PointerArray", info.javaTypeForUpcallInterfaceParam(paramVarOpts(0)));
+        assertEquals("PointerArray", info.javaTypeForExtraUpcallInterfaceParam(returnVarOpts(0)));
+        assertEquals("PointerArray", info.javaTypeForUpcallInterfaceReturn(returnVarOpts(0)));
+        assertEquals(
+            """
+                private final PNIBuf a;
+                                
+                public PointerArray getA() {
+                    var SEG = this.a.get();
+                    if (SEG == null) return null;
+                    return new PointerArray(SEG);
+                }
+                                
+                public void setA(PointerArray a) {
+                    if (a == null) {
+                        this.a.setToNull();
+                    } else {
+                        this.a.set(a.MEMORY);
+                    }
+                }
+                """, Utils.sbHelper(sb -> info.generateGetterSetter(sb, 0, "a", fieldVarOpts(0))));
+        assertEquals(
+            """
+                private final PointerArray a;
+                                
+                public PointerArray getA() {
+                    return this.a;
+                }
+                """, Utils.sbHelper(sb -> info.generateGetterSetter(sb, 0, "a", fieldVarOpts(LEN))));
+        assertEquals(
+            """
+                this.a = new PNIBuf(MEMORY.asSlice(OFFSET, PNIBuf.LAYOUT.byteSize()));
+                OFFSET += PNIBuf.LAYOUT.byteSize();
+                """, Utils.sbHelper(sb -> info.generateConstructor(sb, 0, "a", fieldVarOpts(0))));
+        assertEquals(
+            """
+                this.a = new PointerArray(MEMORY.asSlice(OFFSET, 3 * ValueLayout.ADDRESS_UNALIGNED.byteSize()));
+                OFFSET += 3 * ValueLayout.ADDRESS_UNALIGNED.byteSize();
+                """, Utils.sbHelper(sb -> info.generateConstructor(sb, 0, "a", fieldVarOpts(LEN))));
+        assertEquals("PNIBuf.class", info.methodHandleType(paramVarOpts(0)));
+        assertEquals("MemorySegment.class", info.methodHandleType(paramVarOpts(RAW)));
+        assertEquals("PNIBuf.class", info.methodHandleTypeForReturn(returnVarOpts(0)));
+        assertEquals("MemorySegment.class", info.methodHandleTypeForGraalFeature(paramVarOpts(RAW)));
+        assertEquals("PNIBuf.class", info.methodHandleTypeForReturnForGraalFeature(returnVarOpts(0)));
+        assertEquals("MemorySegment.class", info.methodHandleTypeForUpcall(paramVarOpts(0)));
+        assertEquals("PNIBuf.memoryOf(POOLED, a)",
+            info.convertParamToInvokeExactArgument("a", paramVarOpts(0)));
+        assertEquals("(MemorySegment) (a == null ? MemorySegment.NULL : a.MEMORY)",
+            info.convertParamToInvokeExactArgument("a", paramVarOpts(RAW)));
+        assertEquals(AllocationForReturnedValue.noAllocationRequired(),
+            info.allocationInfoForReturnValue(returnVarOpts(0)));
+        assertEquals(AllocationForReturnedValue.ofPooledAllocator("PNIBuf.LAYOUT"),
+            info.allocationInfoForReturnValue(returnVarOpts(CRITICAL)));
+        assertEquals(AllocationForReturnedValue.noAllocationRequired(),
+            info.allocationInfoForUpcallInterfaceReturnValue(returnVarOpts(0)));
+        assertEquals(
+            """
+                var RES_SEG = ENV.returnBuf();
+                if (RES_SEG.isNull()) return null;
+                return new PointerArray(RES_SEG);
+                """, Utils.sbHelper(sb -> info.convertInvokeExactReturnValueToJava(sb, 0, returnVarOpts(0))));
+        assertEquals(
+            """
+                if (RESULT.address() == 0) return null;
+                var RES_SEG = new PNIBuf(RESULT);
+                if (RES_SEG.isNull()) return null;
+                return new PointerArray(RES_SEG);
+                """, Utils.sbHelper(sb -> info.convertInvokeExactReturnValueToJava(sb, 0, returnVarOpts(CRITICAL))));
+        assertEquals(AllocationForParam.noAllocationRequired(),
+            info.allocationInfoForParam(paramVarOpts(RAW)));
+        assertEquals(AllocationForParam.ofPooledAllocator(),
+            info.allocationInfoForParam(paramVarOpts(0)));
+        assertEquals(AllocationForParam.noAllocationRequired(),
+            info.allocationInfoForParam(fieldVarOpts(LEN)));
+        assertEquals("(a.address() == 0 ? null : new PNIBuf(a).toPointerArray())", info.convertToUpcallArgument("a", paramVarOpts(0)));
+        Utils.checkUnsupported(() -> info.convertExtraToUpcallArgument("a", returnVarOpts(0)));
+        assertEquals("""
+                if (RESULT == null) return MemorySegment.NULL;
+                var RETURN = new PNIBuf(return_);
+                RETURN.set(RESULT.MEMORY);
+                return return_;
+                """,
+            Utils.sbHelper(sb -> info.convertFromUpcallReturn(sb, 0, returnVarOpts(0))));
+        assertEquals("""
+                if (RESULT == null) return WordFactory.pointer(0);
+                var RETURN = new PNIBuf(return_);
+                RETURN.set(RESULT.MEMORY);
+                return WordFactory.pointer(return_.address());
+                """,
+            Utils.sbHelper(sb -> info.convertFromUpcallReturnGraal(sb, 0, returnVarOpts(0))));
+        assertEquals("""
+                if (CORRUPTED_MEMORY) SB.append("<?>");
+                else PanamaUtils.nativeObjectToString(getX(), SB, INDENT + 4, VISITED, CORRUPTED_MEMORY);
+                """,
+            Utils.sbHelper(sb -> info.javaToString(sb, 0, "getX()", fieldVarOpts(0))));
+    }
+
+    @Test
     public void classArray() {
         var cls = Utils.generalClsTypeInfo();
         var info = new ArrayTypeInfo(cls);

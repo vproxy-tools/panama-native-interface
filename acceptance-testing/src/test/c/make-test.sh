@@ -54,4 +54,5 @@ gcc -std=gnu99 -O2 \
     ../c-generated/io_vproxy_pni_test_CustomNativeTypeUpcall.c \
     noalloc.c \
     ../c-generated/io_vproxy_pni_test_NoAllocUpcall.c \
+    io_vproxy_pni_test_PointerArrayField.c \
     -o "$target"

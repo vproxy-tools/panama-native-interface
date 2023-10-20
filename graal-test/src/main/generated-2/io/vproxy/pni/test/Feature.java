@@ -730,6 +730,12 @@ public class Feature implements org.graalvm.nativeimage.hosted.Feature {
         /* JavaCritical_io_vproxy_pni_test_InvokeUpcall_returnObject */
         RuntimeForeignAccess.registerForDowncall(PanamaUtils.buildCriticalFunctionDescriptor(MemoryLayout.class /* io.vproxy.pni.test.ObjectStruct.LAYOUT.getClass() */, MemorySegment.class /* return */));
 
+        /* JavaCritical_io_vproxy_pni_test_InvokeUpcall_pointerArrayParams */
+        RuntimeForeignAccess.registerForDowncall(PanamaUtils.buildCriticalFunctionDescriptor(void.class, PNIBuf.class /* o */));
+
+        /* JavaCritical_io_vproxy_pni_test_InvokeUpcall_returnPointerArray */
+        RuntimeForeignAccess.registerForDowncall(PanamaUtils.buildCriticalFunctionDescriptor(PNIBuf.class, MemorySegment.class /* return */));
+
         /* JavaCritical_io_vproxy_pni_test_InvokeUpcall_objectArrayParams */
         RuntimeForeignAccess.registerForDowncall(PanamaUtils.buildCriticalFunctionDescriptor(void.class, PNIBuf.class /* o */));
 
@@ -805,6 +811,9 @@ public class Feature implements org.graalvm.nativeimage.hosted.Feature {
         /* JavaCritical_io_vproxy_pni_test_InvokeUpcallNull_returnShortArr */
         RuntimeForeignAccess.registerForDowncall(PanamaUtils.buildCriticalFunctionDescriptor(boolean.class));
 
+        /* JavaCritical_io_vproxy_pni_test_InvokeUpcallNull_returnPArr */
+        RuntimeForeignAccess.registerForDowncall(PanamaUtils.buildCriticalFunctionDescriptor(boolean.class));
+
         /* JavaCritical_io_vproxy_pni_test_InvokeUpcallNull_returnOArr */
         RuntimeForeignAccess.registerForDowncall(PanamaUtils.buildCriticalFunctionDescriptor(boolean.class));
 
@@ -837,16 +846,16 @@ public class Feature implements org.graalvm.nativeimage.hosted.Feature {
         RuntimeForeignAccess.registerForDowncall(PanamaUtils.buildCriticalFunctionDescriptor(void.class, MemorySegment.class), Linker.Option.isTrivial());
 
         /* Java_io_vproxy_pni_test_Null_testParam */
-        RuntimeForeignAccess.registerForDowncall(PanamaUtils.buildFunctionDescriptor(MemorySegment.class /* self */, MemoryLayout.class /* io.vproxy.pni.test.ObjectStruct.LAYOUT.getClass() */ /* o */, String.class /* str */, MemorySegment.class /* seg */, PNIBuf.class /* buf */, PNIBuf.class /* byteArr */, PNIBuf.class /* boolArr */, PNIBuf.class /* charArr */, PNIBuf.class /* floatArr */, PNIBuf.class /* doubleArr */, PNIBuf.class /* intArr */, PNIBuf.class /* longArr */, PNIBuf.class /* shortArr */, PNIBuf.class /* oArr */, PNIRef.class /* ref */, io.vproxy.pni.CallSite.class /* func */, io.vproxy.pni.CallSite.class /* funcVoid */, io.vproxy.pni.CallSite.class /* funcRef */));
+        RuntimeForeignAccess.registerForDowncall(PanamaUtils.buildFunctionDescriptor(MemorySegment.class /* self */, MemoryLayout.class /* io.vproxy.pni.test.ObjectStruct.LAYOUT.getClass() */ /* o */, String.class /* str */, MemorySegment.class /* seg */, PNIBuf.class /* buf */, PNIBuf.class /* byteArr */, PNIBuf.class /* boolArr */, PNIBuf.class /* charArr */, PNIBuf.class /* floatArr */, PNIBuf.class /* doubleArr */, PNIBuf.class /* intArr */, PNIBuf.class /* longArr */, PNIBuf.class /* shortArr */, PNIBuf.class /* pArr */, PNIBuf.class /* oArr */, PNIRef.class /* ref */, io.vproxy.pni.CallSite.class /* func */, io.vproxy.pni.CallSite.class /* funcVoid */, io.vproxy.pni.CallSite.class /* funcRef */));
 
         /* JavaCritical_io_vproxy_pni_test_Null_testParamCritical */
-        RuntimeForeignAccess.registerForDowncall(PanamaUtils.buildCriticalFunctionDescriptor(boolean.class, MemorySegment.class /* self */, MemoryLayout.class /* io.vproxy.pni.test.ObjectStruct.LAYOUT.getClass() */ /* o */, String.class /* str */, MemorySegment.class /* seg */, PNIBuf.class /* buf */, PNIBuf.class /* byteArr */, PNIBuf.class /* boolArr */, PNIBuf.class /* charArr */, PNIBuf.class /* floatArr */, PNIBuf.class /* doubleArr */, PNIBuf.class /* intArr */, PNIBuf.class /* longArr */, PNIBuf.class /* shortArr */, PNIBuf.class /* oArr */, PNIRef.class /* ref */, io.vproxy.pni.CallSite.class /* func */, io.vproxy.pni.CallSite.class /* funcVoid */, io.vproxy.pni.CallSite.class /* funcRef */));
+        RuntimeForeignAccess.registerForDowncall(PanamaUtils.buildCriticalFunctionDescriptor(boolean.class, MemorySegment.class /* self */, MemoryLayout.class /* io.vproxy.pni.test.ObjectStruct.LAYOUT.getClass() */ /* o */, String.class /* str */, MemorySegment.class /* seg */, PNIBuf.class /* buf */, PNIBuf.class /* byteArr */, PNIBuf.class /* boolArr */, PNIBuf.class /* charArr */, PNIBuf.class /* floatArr */, PNIBuf.class /* doubleArr */, PNIBuf.class /* intArr */, PNIBuf.class /* longArr */, PNIBuf.class /* shortArr */, PNIBuf.class /* pArr */, PNIBuf.class /* oArr */, PNIRef.class /* ref */, io.vproxy.pni.CallSite.class /* func */, io.vproxy.pni.CallSite.class /* funcVoid */, io.vproxy.pni.CallSite.class /* funcRef */));
 
         /* Java_io_vproxy_pni_test_Null_testParamRaw */
-        RuntimeForeignAccess.registerForDowncall(PanamaUtils.buildFunctionDescriptor(MemorySegment.class /* self */, ByteBuffer.class /* buf */, MemorySegment.class /* byteArr */, MemorySegment.class /* boolArr */, MemorySegment.class /* charArr */, MemorySegment.class /* floatArr */, MemorySegment.class /* doubleArr */, MemorySegment.class /* intArr */, MemorySegment.class /* longArr */, MemorySegment.class /* shortArr */, MemorySegment.class /* oArr */, PNIRef.class /* ref */, PNIFunc.class /* func */, PNIFunc.class /* funcVoid */, PNIFunc.class /* funcRef */));
+        RuntimeForeignAccess.registerForDowncall(PanamaUtils.buildFunctionDescriptor(MemorySegment.class /* self */, ByteBuffer.class /* buf */, MemorySegment.class /* byteArr */, MemorySegment.class /* boolArr */, MemorySegment.class /* charArr */, MemorySegment.class /* floatArr */, MemorySegment.class /* doubleArr */, MemorySegment.class /* intArr */, MemorySegment.class /* longArr */, MemorySegment.class /* shortArr */, MemorySegment.class /* pArr */, MemorySegment.class /* oArr */, PNIRef.class /* ref */, PNIFunc.class /* func */, PNIFunc.class /* funcVoid */, PNIFunc.class /* funcRef */));
 
         /* JavaCritical_io_vproxy_pni_test_Null_testParamRawCritical */
-        RuntimeForeignAccess.registerForDowncall(PanamaUtils.buildCriticalFunctionDescriptor(boolean.class, MemorySegment.class /* self */, ByteBuffer.class /* buf */, MemorySegment.class /* byteArr */, MemorySegment.class /* boolArr */, MemorySegment.class /* charArr */, MemorySegment.class /* floatArr */, MemorySegment.class /* doubleArr */, MemorySegment.class /* intArr */, MemorySegment.class /* longArr */, MemorySegment.class /* shortArr */, MemorySegment.class /* oArr */, PNIRef.class /* ref */, PNIFunc.class /* func */, PNIFunc.class /* funcVoid */, PNIFunc.class /* funcRef */));
+        RuntimeForeignAccess.registerForDowncall(PanamaUtils.buildCriticalFunctionDescriptor(boolean.class, MemorySegment.class /* self */, ByteBuffer.class /* buf */, MemorySegment.class /* byteArr */, MemorySegment.class /* boolArr */, MemorySegment.class /* charArr */, MemorySegment.class /* floatArr */, MemorySegment.class /* doubleArr */, MemorySegment.class /* intArr */, MemorySegment.class /* longArr */, MemorySegment.class /* shortArr */, MemorySegment.class /* pArr */, MemorySegment.class /* oArr */, PNIRef.class /* ref */, PNIFunc.class /* func */, PNIFunc.class /* funcVoid */, PNIFunc.class /* funcRef */));
 
         /* Java_io_vproxy_pni_test_Null_returnO */
         RuntimeForeignAccess.registerForDowncall(PanamaUtils.buildFunctionDescriptor(MemorySegment.class /* self */, MemorySegment.class /* return */));
@@ -947,6 +956,15 @@ public class Feature implements org.graalvm.nativeimage.hosted.Feature {
         /* JavaCritical_io_vproxy_pni_test_Null_returnShortArrCritical2 */
         RuntimeForeignAccess.registerForDowncall(PanamaUtils.buildCriticalFunctionDescriptor(PNIBuf.class, MemorySegment.class /* self */, MemorySegment.class /* return */));
 
+        /* Java_io_vproxy_pni_test_Null_returnPArr */
+        RuntimeForeignAccess.registerForDowncall(PanamaUtils.buildFunctionDescriptor(MemorySegment.class /* self */));
+
+        /* JavaCritical_io_vproxy_pni_test_Null_returnPArrCritical */
+        RuntimeForeignAccess.registerForDowncall(PanamaUtils.buildCriticalFunctionDescriptor(PNIBuf.class, MemorySegment.class /* self */, MemorySegment.class /* return */));
+
+        /* JavaCritical_io_vproxy_pni_test_Null_returnPArrCritical2 */
+        RuntimeForeignAccess.registerForDowncall(PanamaUtils.buildCriticalFunctionDescriptor(PNIBuf.class, MemorySegment.class /* self */, MemorySegment.class /* return */));
+
         /* Java_io_vproxy_pni_test_Null_returnOArr */
         RuntimeForeignAccess.registerForDowncall(PanamaUtils.buildFunctionDescriptor(MemorySegment.class /* self */));
 
@@ -1033,6 +1051,15 @@ public class Feature implements org.graalvm.nativeimage.hosted.Feature {
 
         /* Java_io_vproxy_pni_test_PackedBaseClass_bbb */
         RuntimeForeignAccess.registerForDowncall(PanamaUtils.buildFunctionDescriptor(MemorySegment.class /* self */, short.class /* b */));
+
+        /* Java_io_vproxy_pni_test_PointerArrayField_set */
+        RuntimeForeignAccess.registerForDowncall(PanamaUtils.buildFunctionDescriptor(MemorySegment.class /* self */, PNIBuf.class /* a */));
+
+        /* Java_io_vproxy_pni_test_PointerArrayField_getPtrField */
+        RuntimeForeignAccess.registerForDowncall(PanamaUtils.buildFunctionDescriptor(MemorySegment.class /* self */));
+
+        /* Java_io_vproxy_pni_test_PointerArrayField_getLenField */
+        RuntimeForeignAccess.registerForDowncall(PanamaUtils.buildFunctionDescriptor(MemorySegment.class /* self */));
 
         /* Java_io_vproxy_pni_test_PrimitiveStruct_func1 */
         RuntimeForeignAccess.registerForDowncall(PanamaUtils.buildFunctionDescriptor(MemorySegment.class /* self */, byte.class /* aByte */, byte.class /* unsignedByte */, int.class /* aInt */, int.class /* unsignedInt */, long.class /* aLong */, long.class /* unsignedLong */, short.class /* aShort */, short.class /* unsignedShort */));
@@ -1322,6 +1349,12 @@ public class Feature implements org.graalvm.nativeimage.hosted.Feature {
         /* Java_io_vproxy_pni_test_RawArrays_unsignedShortArray */
         RuntimeForeignAccess.registerForDowncall(PanamaUtils.buildFunctionDescriptor(MemorySegment.class /* array */, int.class /* off */));
 
+        /* Java_io_vproxy_pni_test_RawArrays_pointerArray */
+        RuntimeForeignAccess.registerForDowncall(PanamaUtils.buildFunctionDescriptor(MemorySegment.class /* array */, int.class /* off */));
+
+        /* Java_io_vproxy_pni_test_RawArrays_pointerArrayNotRaw */
+        RuntimeForeignAccess.registerForDowncall(PanamaUtils.buildFunctionDescriptor(PNIBuf.class /* array */, int.class /* off */));
+
         /* Java_io_vproxy_pni_test_RawArrays_structArray */
         RuntimeForeignAccess.registerForDowncall(PanamaUtils.buildFunctionDescriptor(MemorySegment.class /* array */, int.class /* off */, MemorySegment.class /* return */));
 
@@ -1444,12 +1477,12 @@ public class Feature implements org.graalvm.nativeimage.hosted.Feature {
 
         /* graal upcall for io.vproxy.pni.test.Upcall */
         RuntimeClassInitialization.initializeAtBuildTime(io.vproxy.pni.test.Upcall.class);
-        RuntimeForeignAccess.registerForDowncall(PanamaUtils.buildCriticalFunctionDescriptor(void.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class), Linker.Option.isTrivial());
+        RuntimeForeignAccess.registerForDowncall(PanamaUtils.buildCriticalFunctionDescriptor(void.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class), Linker.Option.isTrivial());
 
         /* graal upcall for io.vproxy.pni.test.UpcallNull */
         RuntimeClassInitialization.initializeAtBuildTime(io.vproxy.pni.test.UpcallNull.class);
-        RuntimeForeignAccess.registerForDowncall(PanamaUtils.buildCriticalFunctionDescriptor(void.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class), Linker.Option.isTrivial());
+        RuntimeForeignAccess.registerForDowncall(PanamaUtils.buildCriticalFunctionDescriptor(void.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class), Linker.Option.isTrivial());
     }
 }
 // metadata.generator-version: pni test
-// sha256:448d32ff96d15fdf825070330be5b00a15763ce6186b262eac5e23bfebc6367b
+// sha256:3a0a2d2d15b7765f3fa11c96b309c8c69df39b0d13b245b295d07b18f158c42b

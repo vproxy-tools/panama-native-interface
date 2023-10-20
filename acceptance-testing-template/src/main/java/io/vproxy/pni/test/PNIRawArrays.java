@@ -5,6 +5,8 @@ import io.vproxy.pni.annotation.Impl;
 import io.vproxy.pni.annotation.Raw;
 import io.vproxy.pni.annotation.Unsigned;
 
+import java.lang.foreign.MemorySegment;
+
 @Function
 public interface PNIRawArrays {
     @Impl(
@@ -114,6 +116,25 @@ public interface PNIRawArrays {
             """
     )
     short unsignedShortArray(@Raw @Unsigned short[] array, int off);
+
+    @Impl(
+        // language="c"
+        c = """
+            env->return_ = array[off];
+            return 0;
+            """
+    )
+    MemorySegment pointerArray(@Raw MemorySegment[] array, int off);
+
+    @Impl(
+        // language="c"
+        c = """
+            void ** arr = array->buf;
+            env->return_ = arr[off];
+            return 0;
+            """
+    )
+    MemorySegment pointerArrayNotRaw(MemorySegment[] array, int off);
 
     @Impl(
         // language="c"
