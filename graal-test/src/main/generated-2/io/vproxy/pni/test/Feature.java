@@ -189,6 +189,9 @@ public class Feature implements org.graalvm.nativeimage.hosted.Feature {
         /* Java_io_vproxy_pni_test_CustomNativeTypeStruct_getP1 */
         RuntimeForeignAccess.registerForDowncall(PanamaUtils.buildFunctionDescriptor(MemorySegment.class /* self */));
 
+        /* Java_io_vproxy_pni_test_CustomNativeTypeStruct_getArr */
+        RuntimeForeignAccess.registerForDowncall(PanamaUtils.buildFunctionDescriptor(MemorySegment.class /* self */));
+
         /* graal upcall for io.vproxy.pni.test.CustomNativeTypeUpcall */
         RuntimeClassInitialization.initializeAtBuildTime(io.vproxy.pni.test.CustomNativeTypeUpcall.class);
         RuntimeForeignAccess.registerForDowncall(PanamaUtils.buildCriticalFunctionDescriptor(void.class, MemorySegment.class), Linker.Option.isTrivial());
@@ -1485,4 +1488,4 @@ public class Feature implements org.graalvm.nativeimage.hosted.Feature {
     }
 }
 // metadata.generator-version: pni test
-// sha256:3a0a2d2d15b7765f3fa11c96b309c8c69df39b0d13b245b295d07b18f158c42b
+// sha256:d26ba21067210e4c22f8926602f8128ea08382b35c20b778508120b1d5a5d376

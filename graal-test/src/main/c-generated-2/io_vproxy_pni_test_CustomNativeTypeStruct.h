@@ -22,17 +22,19 @@ extern "C" {
 #endif
 
 PNIEnvExpand(CustomNativeTypeStruct, CustomNativeTypeStruct *)
-PNIBufExpand(CustomNativeTypeStruct, CustomNativeTypeStruct, 8)
+PNIBufExpand(CustomNativeTypeStruct, CustomNativeTypeStruct, 32)
 
 struct CustomNativeTypeStruct {
     SizeofStructExpr* field;
+    SizeofStructExpr* array[3];
 };
 
 JNIEXPORT int JNICALL Java_io_vproxy_pni_test_CustomNativeTypeStruct_getP1(PNIEnv_long * env, CustomNativeTypeStruct * self);
+JNIEXPORT int JNICALL Java_io_vproxy_pni_test_CustomNativeTypeStruct_getArr(PNIEnv_buf_ptr * env, CustomNativeTypeStruct * self);
 
 #ifdef __cplusplus
 }
 #endif
 #endif // _Included_io_vproxy_pni_test_CustomNativeTypeStruct
 // metadata.generator-version: pni test
-// sha256:cc504dec2ca3f225d5f30b87125415d60de8bc3535b44afd9d948d344341a24f
+// sha256:685b91aa6222210de424b5a5ed7ebededbb003089f412bb1812c7e96c09c3901

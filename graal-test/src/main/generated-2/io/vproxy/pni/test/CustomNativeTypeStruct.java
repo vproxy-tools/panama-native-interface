@@ -13,7 +13,8 @@ import org.graalvm.word.WordFactory;
 
 public class CustomNativeTypeStruct extends AbstractNativeObject implements NativeObject {
     public static final MemoryLayout LAYOUT = MemoryLayout.structLayout(
-        ValueLayout.ADDRESS_UNALIGNED.withName("field")
+        ValueLayout.ADDRESS_UNALIGNED.withName("field"),
+        MemoryLayout.sequenceLayout(3L, ValueLayout.ADDRESS_UNALIGNED).withName("array")
     );
     public final MemorySegment MEMORY;
 
@@ -40,11 +41,19 @@ public class CustomNativeTypeStruct extends AbstractNativeObject implements Nati
         }
     }
 
+    private final PointerArray array;
+
+    public PointerArray getArray() {
+        return this.array;
+    }
+
     public CustomNativeTypeStruct(MemorySegment MEMORY) {
         MEMORY = MEMORY.reinterpret(LAYOUT.byteSize());
         this.MEMORY = MEMORY;
         long OFFSET = 0;
         OFFSET += ValueLayout.ADDRESS_UNALIGNED.byteSize();
+        this.array = new PointerArray(MEMORY.asSlice(OFFSET, 3 * ValueLayout.ADDRESS_UNALIGNED.byteSize()));
+        OFFSET += 3 * ValueLayout.ADDRESS_UNALIGNED.byteSize();
     }
 
     public CustomNativeTypeStruct(Allocator ALLOCATOR) {
@@ -67,6 +76,24 @@ public class CustomNativeTypeStruct extends AbstractNativeObject implements Nati
         return ENV.returnLong();
     }
 
+    private static final MethodHandle getArrMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_CustomNativeTypeStruct_getArr", MemorySegment.class /* self */);
+
+    public PointerArray getArr(PNIEnv ENV) {
+        ENV.reset();
+        int ERR;
+        try {
+            ERR = (int) getArrMH.invokeExact(ENV.MEMORY, MEMORY);
+        } catch (Throwable THROWABLE) {
+            throw PanamaUtils.convertInvokeExactException(THROWABLE);
+        }
+        if (ERR != 0) {
+            ENV.throwLast();
+        }
+        var RES_SEG = ENV.returnBuf();
+        if (RES_SEG.isNull()) return null;
+        return new PointerArray(RES_SEG);
+    }
+
     @Override
     public void toString(StringBuilder SB, int INDENT, java.util.Set<NativeObjectTuple> VISITED, boolean CORRUPTED_MEMORY) {
         if (!VISITED.add(new NativeObjectTuple(this))) {
@@ -77,6 +104,12 @@ public class CustomNativeTypeStruct extends AbstractNativeObject implements Nati
         {
             SB.append(" ".repeat(INDENT + 4)).append("field => ");
             SB.append(PanamaUtils.memorySegmentToString(getField()));
+        }
+        SB.append(",\n");
+        {
+            SB.append(" ".repeat(INDENT + 4)).append("array => ");
+            if (CORRUPTED_MEMORY) SB.append("<?>");
+            else PanamaUtils.nativeObjectToString(getArray(), SB, INDENT + 4, VISITED, CORRUPTED_MEMORY);
         }
         SB.append("\n");
         SB.append(" ".repeat(INDENT)).append("}@").append(Long.toString(MEMORY.address(), 16));
@@ -153,4 +186,4 @@ public class CustomNativeTypeStruct extends AbstractNativeObject implements Nati
     }
 }
 // metadata.generator-version: pni test
-// sha256:8550dd287be418d87f020348f607c9d62b6b0fce83f5d8671b3f2797ae5034ba
+// sha256:3c3d3162590640fa2e789a19e5338e4e6ef464d69ca6028d9f6356c435c8ca1b

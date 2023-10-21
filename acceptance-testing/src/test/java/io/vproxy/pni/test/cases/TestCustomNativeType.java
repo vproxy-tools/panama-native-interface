@@ -2,6 +2,7 @@ package io.vproxy.pni.test.cases;
 
 import io.vproxy.pni.Allocator;
 import io.vproxy.pni.PNIEnv;
+import io.vproxy.pni.PNIString;
 import io.vproxy.pni.test.CustomNativeTypeFunc;
 import io.vproxy.pni.test.CustomNativeTypeStruct;
 import io.vproxy.pni.test.CustomNativeTypeUpcall;
@@ -16,6 +17,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 public class TestCustomNativeType {
     @BeforeClass
@@ -41,6 +43,15 @@ public class TestCustomNativeType {
 
             var p1 = s.getP1(env);
             assertEquals(0x0101010101010101L, p1);
+
+            s.getArray().set(0, new PNIString(allocator, "hello").MEMORY);
+            s.getArray().set(1, new PNIString(allocator, "world").MEMORY);
+
+            var arr = s.getArr(env);
+            assertEquals(3, arr.length());
+            assertEquals("hello", arr.get(0).reinterpret(10).getUtf8String(0));
+            assertEquals("world", arr.get(1).reinterpret(10).getUtf8String(0));
+            assertNull(arr.get(2));
         }
     }
 
@@ -95,11 +106,11 @@ public class TestCustomNativeType {
 
         s = Files.readAllLines(Path.of("src", "test", "c-generated", "io_vproxy_pni_test_CustomNativeTypeStruct.h"));
         lastLine = s.get(s.size() - 1);
-        assertEquals("// sha256:cc504dec2ca3f225d5f30b87125415d60de8bc3535b44afd9d948d344341a24f", lastLine);
+        assertEquals("// sha256:685b91aa6222210de424b5a5ed7ebededbb003089f412bb1812c7e96c09c3901", lastLine);
 
         s = Files.readAllLines(Path.of("src", "test", "c-generated", "io_vproxy_pni_test_CustomNativeTypeStruct.impl.h"));
         lastLine = s.get(s.size() - 1);
-        assertEquals("// sha256:15094ebc88c6c4b8346ae150ee3b24806739f089b43702bb77a6f3a65442d2c4", lastLine);
+        assertEquals("// sha256:7958fa6bb6109a91c404703fce933e13cde931e60a3e8bb0a0385d78958b8005", lastLine);
 
         s = Files.readAllLines(Path.of("src", "test", "c-generated", "io_vproxy_pni_test_CustomNativeTypeUpcall.c"));
         lastLine = s.get(s.size() - 1);

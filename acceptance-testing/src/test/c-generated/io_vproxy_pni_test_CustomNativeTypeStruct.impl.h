@@ -9,8 +9,14 @@ JNIEXPORT int JNICALL Java_io_vproxy_pni_test_CustomNativeTypeStruct_getP1(PNIEn
     return 0;
 }
 
+JNIEXPORT int JNICALL Java_io_vproxy_pni_test_CustomNativeTypeStruct_getArr(PNIEnv_buf_ptr * env, CustomNativeTypeStruct * self) {
+    env->return_.bufLen = ptrPNIBufLen(3);
+    env->return_.buf = &self->array;
+    return 0;
+}
+
 #ifdef __cplusplus
 }
 #endif
 // metadata.generator-version: pni test
-// sha256:15094ebc88c6c4b8346ae150ee3b24806739f089b43702bb77a6f3a65442d2c4
+// sha256:7958fa6bb6109a91c404703fce933e13cde931e60a3e8bb0a0385d78958b8005

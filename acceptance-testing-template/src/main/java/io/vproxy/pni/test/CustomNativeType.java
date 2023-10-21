@@ -9,6 +9,7 @@ import java.lang.foreign.MemorySegment;
 abstract class PNICustomNativeTypeStruct {
     @NativeType("SizeofStructExpr*")
     MemorySegment field;
+    @NativeType("SizeofStructExpr*") @Len(3) MemorySegment[] array;
 
     @Impl(
         // language="c"
@@ -18,6 +19,17 @@ abstract class PNICustomNativeTypeStruct {
             """
     )
     abstract long getP1();
+
+    @Impl(
+        // language="c"
+        c = """
+            env->return_.bufLen = ptrPNIBufLen(3);
+            env->return_.buf = &self->array;
+            return 0;
+            """
+    )
+    @NativeReturnType("SizeofStructExpr*")
+    abstract MemorySegment[] getArr();
 }
 
 @Function
