@@ -10,7 +10,9 @@ public class AlwaysAlignedGrandChild extends io.vproxy.pni.test.AlwaysAlignedChi
     public static final MemoryLayout LAYOUT = MemoryLayout.structLayout(
         io.vproxy.pni.test.AlwaysAlignedChild.LAYOUT,
         MemoryLayout.sequenceLayout(4L, ValueLayout.JAVA_BYTE) /* padding */,
-        ValueLayout.JAVA_LONG.withName("c")
+        ValueLayout.JAVA_LONG.withName("c"),
+        MemoryLayout.sequenceLayout(3L, ValueLayout.JAVA_INT).withName("array"),
+        MemoryLayout.sequenceLayout(4L, ValueLayout.JAVA_BYTE) /* padding */
     ).withByteAlignment(8);
     public final MemorySegment MEMORY;
 
@@ -31,6 +33,12 @@ public class AlwaysAlignedGrandChild extends io.vproxy.pni.test.AlwaysAlignedChi
         cVH.set(MEMORY, c);
     }
 
+    private final IntArray array;
+
+    public IntArray getArray() {
+        return this.array;
+    }
+
     public AlwaysAlignedGrandChild(MemorySegment MEMORY) {
         super(MEMORY);
         MEMORY = MEMORY.reinterpret(LAYOUT.byteSize());
@@ -39,6 +47,9 @@ public class AlwaysAlignedGrandChild extends io.vproxy.pni.test.AlwaysAlignedChi
         OFFSET += io.vproxy.pni.test.AlwaysAlignedChild.LAYOUT.byteSize();
         OFFSET += 4; // head padding
         OFFSET += ValueLayout.JAVA_LONG_UNALIGNED.byteSize();
+        this.array = new IntArray(MEMORY.asSlice(OFFSET, 3 * ValueLayout.JAVA_INT_UNALIGNED.byteSize()));
+        OFFSET += 3 * ValueLayout.JAVA_INT_UNALIGNED.byteSize();
+        OFFSET += 4; /* padding */
     }
 
     public AlwaysAlignedGrandChild(Allocator ALLOCATOR) {
@@ -81,6 +92,12 @@ public class AlwaysAlignedGrandChild extends io.vproxy.pni.test.AlwaysAlignedChi
         {
             SB.append(" ".repeat(INDENT + 4)).append("c => ");
             SB.append(getC());
+        }
+        SB.append(",\n");
+        {
+            SB.append(" ".repeat(INDENT + 4)).append("array => ");
+            if (CORRUPTED_MEMORY) SB.append("<?>");
+            else PanamaUtils.nativeObjectToString(getArray(), SB, INDENT + 4, VISITED, CORRUPTED_MEMORY);
         }
         SB.append("\n");
         SB.append(" ".repeat(INDENT)).append("}@").append(Long.toString(MEMORY.address(), 16));
@@ -157,4 +174,4 @@ public class AlwaysAlignedGrandChild extends io.vproxy.pni.test.AlwaysAlignedChi
     }
 }
 // metadata.generator-version: pni test
-// sha256:8d98ba3500a30a449c66cb2737417c43d8f2fcaf434d2ddab57dab38b5b58ef1
+// sha256:33fa1b84e1ad30dfe6b719cdccd0d423d9f4fe1a3607586d7e06bcd4cee3f164

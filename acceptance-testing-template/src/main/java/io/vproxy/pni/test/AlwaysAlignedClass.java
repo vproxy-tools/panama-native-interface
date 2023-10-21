@@ -36,6 +36,7 @@ class PNIAlwaysAlignedChild extends PNIAlwaysAlignedBase {
 @AlwaysAligned
 class PNIAlwaysAlignedGrandChild extends PNIAlwaysAlignedChild {
     long c;
+    @Len(3) int[] array;
 }
 
 @Struct(skip = true)

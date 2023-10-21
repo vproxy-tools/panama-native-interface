@@ -22,11 +22,12 @@ extern "C" {
 #endif
 
 PNIEnvExpand(AlwaysAlignedGrandChild, AlwaysAlignedGrandChild *)
-PNIBufExpand(AlwaysAlignedGrandChild, AlwaysAlignedGrandChild, 16)
+PNIBufExpand(AlwaysAlignedGrandChild, AlwaysAlignedGrandChild, 32)
 
 struct AlwaysAlignedGrandChild {
     AlwaysAlignedChild SUPER;
     int64_t c;
+    int32_t array[3];
 };
 
 #ifdef __cplusplus
@@ -34,4 +35,4 @@ struct AlwaysAlignedGrandChild {
 #endif
 #endif // _Included_io_vproxy_pni_test_AlwaysAlignedGrandChild
 // metadata.generator-version: pni test
-// sha256:9555eda45bfe7a6dafbe79a8d2bec8c5a6428e3785fc3187e343cf17af96d1c7
+// sha256:8e0c9b596a6239b852d18bc988252aaac6463e37543b1ef2c0d46bfce2973239

@@ -49,10 +49,17 @@ public class TestAlwaysAligned {
             s.setA((byte) 1);
             s.setB((short) 2);
             s.setC(3L);
+            s.getArray().set(0, 22);
+            s.getArray().set(1, 33);
+            s.getArray().set(2, 55);
 
             assertEquals((byte) 1, s.getA());
             assertEquals((short) 2, s.getB());
             assertEquals(3L, s.getC());
+
+            assertEquals(22, s.getArray().get(0));
+            assertEquals(33, s.getArray().get(1));
+            assertEquals(55, s.getArray().get(2));
         }
     }
 
@@ -102,7 +109,7 @@ public class TestAlwaysAligned {
 
         s = Files.readAllLines(Path.of("src", "test", "generated", "io", "vproxy", "pni", "test", "AlwaysAlignedGrandChild.java"));
         lastLine = s.get(s.size() - 1);
-        assertEquals("// sha256:8d98ba3500a30a449c66cb2737417c43d8f2fcaf434d2ddab57dab38b5b58ef1", lastLine);
+        assertEquals("// sha256:33fa1b84e1ad30dfe6b719cdccd0d423d9f4fe1a3607586d7e06bcd4cee3f164", lastLine);
 
         s = Files.readAllLines(Path.of("src", "test", "generated", "io", "vproxy", "pni", "test", "AlwaysAlignedSizeof.java"));
         lastLine = s.get(s.size() - 1);
