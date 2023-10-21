@@ -546,9 +546,9 @@ public class JavaFileGenerator {
         private void generateJavaLayout(StringBuilder sb, int indent, boolean alwaysAligned) {
             Utils.appendIndent(sb, indent);
             var layout = field.typeRef.memoryLayoutForField(field.varOpts());
-            if (layout.endsWith("_UNALIGNED")) {
+            if (layout.contains("_UNALIGNED")) {
                 if (alwaysAligned || field.isAlwaysAligned()) {
-                    layout = layout.substring(0, layout.length() - "_UNALIGNED".length());
+                    layout = layout.replace("_UNALIGNED", "");
                 }
             }
             sb.append(layout)
