@@ -82,7 +82,6 @@ subprojects {
 
     tasks.withType(JavaCompile) {
         options.encoding = "UTF-8"
-        options.incremental = false
         if (project.name != 'pni') {
             options.compilerArgs += '--enable-preview'
         }
