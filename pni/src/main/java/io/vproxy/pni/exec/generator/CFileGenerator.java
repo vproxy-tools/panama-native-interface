@@ -300,6 +300,9 @@ public class CFileGenerator {
                     sb.append(field.typeRef.nativeType(field.nativeName(), field.varOpts()));
                 } else {
                     sb.append(type).append(" ").append(field.nativeName());
+                    if (!field.varOpts().isPointerGeneral()) {
+                        sb.append("[").append(field.varOpts().getLen()).append("]");
+                    }
                 }
                 sb.append(";");
             } else {
