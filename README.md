@@ -895,15 +895,20 @@ Annotate the data type to be converted to its raw form. You can only mark method
 | ByteBuffer (`@Raw`)                 | -           | -          | -      | -                 | `char *`         | -                    | -                  | ByteBuffer          | -                                   |
 | Struct/Union                        | -           | No         | -      | `Type`            | -                | -                    | -                  | Type                | `Type.LAYOUT`                       |
 | Struct/Union                        | -           | Yes        | -      | `Type *`          | `Type *`         | `Type *`             | `pointer`          | Type                | `ADDRESS`                           |
-| int[]                               | `*`         | `*`        | No     | `PNIBuf`          | `PNIBuf *`       | `PNIBuf *`           | `buf`              | IntArray            | `PNIBuf.LAYOUT`                     |
-| long[]                              | `*`         | `*`        | No     | `PNIBuf`          | `PNIBuf *`       | `PNIBuf *`           | `buf`              | LongArray           | `PNIBuf.LAYOUT`                     |
-| short[]                             | `*`         | `*`        | No     | `PNIBuf`          | `PNIBuf *`       | `PNIBuf *`           | `buf`              | ShortArray          | `PNIBuf.LAYOUT`                     |
-| byte[]                              | `*`         | `*`        | No     | `PNIBuf`          | `PNIBuf *`       | `PNIBuf *`           | `buf`              | MemorySegment       | `PNIBuf.LAYOUT`                     |
-| float[]                             | -           | `*`        | No     | `PNIBuf`          | `PNIBuf *`       | `PNIBuf *`           | `buf`              | FloatArray          | `PNIBuf.LAYOUT`                     |
-| double[]                            | -           | `*`        | No     | `PNIBuf`          | `PNIBuf *`       | `PNIBuf *`           | `buf`              | DoubleArray         | `PNIBuf.LAYOUT`                     |
-| boolean[]                           | -           | `*`        | No     | `PNIBuf`          | `PNIBuf *`       | `PNIBuf *`           | `buf`              | BoolArray           | `PNIBuf.LAYOUT`                     |
-| char[]                              | -           | `*`        | No     | `PNIBuf`          | `PNIBuf *`       | `PNIBuf *`           | `buf`              | CharArray           | `PNIBuf.LAYOUT`                     |
-| Type[]                              | -           | `*`        | No     | `PNIBuf`          | `PNIBuf *`       | `PNIBuf *`           | `buf`              | Type.Array          | `PNIBuf.LAYOUT`                     |
+| int[]                               | No          | `*`        | No     | `PNIBuf_int`      | `PNIBuf_int *`   | `PNIBuf_int *`       | `buf_int`          | IntArray            | `PNIBuf.LAYOUT`                     |
+| int[]                               | Yes         | `*`        | No     | `PNIBuf_uint`     | `PNIBuf_uint *`  | `PNIBuf_uint *`      | `buf_uint`         | IntArray            | `PNIBuf.LAYOUT`                     |
+| long[]                              | No          | `*`        | No     | `PNIBuf_long`     | `PNIBuf_long *`  | `PNIBuf_long *`      | `buf_long`         | LongArray           | `PNIBuf.LAYOUT`                     |
+| long[]                              | Yes         | `*`        | No     | `PNIBuf_ulong`    | `PNIBuf_ulong *` | `PNIBuf_ulong *`     | `buf_ulong`        | LongArray           | `PNIBuf.LAYOUT`                     |
+| short[]                             | No          | `*`        | No     | `PNIBuf_short`    | `PNIBuf_short *` | `PNIBuf_short *`     | `buf_short`        | ShortArray          | `PNIBuf.LAYOUT`                     |
+| short[]                             | Yes         | `*`        | No     | `PNIBuf_ushort`   | `PNIBuf_ushort *`| `PNIBuf_ushort *`    | `buf_ushort`       | ShortArray          | `PNIBuf.LAYOUT`                     |
+| byte[]                              | No          | `*`        | No     | `PNIBuf_byte`     | `PNIBuf_byte *`  | `PNIBuf_byte *`      | `buf_byte`         | MemorySegment       | `PNIBuf.LAYOUT`                     |
+| byte[]                              | Yes         | `*`        | No     | `PNIBuf_ubyte`    | `PNIBuf_ubyte *` | `PNIBuf_ubyte *`     | `buf_ubyte`        | MemorySegment       | `PNIBuf.LAYOUT`                     |
+| float[]                             | -           | `*`        | No     | `PNIBuf_float`    | `PNIBuf_float *` | `PNIBuf_float *`     | `buf_float`        | FloatArray          | `PNIBuf.LAYOUT`                     |
+| double[]                            | -           | `*`        | No     | `PNIBuf_double`   | `PNIBuf_double *`| `PNIBuf_double *`    | `buf_double`       | DoubleArray         | `PNIBuf.LAYOUT`                     |
+| boolean[]                           | -           | `*`        | No     | `PNIBuf_bool`     | `PNIBuf_bool *`  | `PNIBuf_bool *`      | `buf_bool`         | BoolArray           | `PNIBuf.LAYOUT`                     |
+| char[]                              | -           | `*`        | No     | `PNIBuf_char`     | `PNIBuf_char *`  | `PNIBuf_char *`      | `buf_char`         | CharArray           | `PNIBuf.LAYOUT`                     |
+| MemorySegment[]                     | -           | `*`        | No     | `PNIBuf_ptr`      | `PNIBuf_ptr *`   | `PNIBuf_ptr *`       | `buf_ptr`          | PointerArray        | `PNIBuf.LAYOUT`                     |
+| Type[]                              | -           | `*`        | No     | `PNIBuf_Type`     | `PNIBuf_Type *`  | `PNIBuf_Type *`      | `buf_Type`         | Type.Array          | `PNIBuf.LAYOUT`                     |
 | int[]     (`@Raw`)                  | No          | `*`        | No     | -                 | `int32_t *`      | -                    | -                  | IntArray            | -                                   |
 | int[]     (`@Raw`)                  | Yes         | `*`        | No     | -                 | `uint32_t *`     | -                    | -                  | IntArray            | -                                   |
 | long[]    (`@Raw`)                  | No          | `*`        | No     | -                 | `int64_t *`      | -                    | -                  | LongArray           | -                                   |
@@ -916,6 +921,7 @@ Annotate the data type to be converted to its raw form. You can only mark method
 | double[]  (`@Raw`)                  | -           | `*`        | No     | -                 | `double *`       | -                    | -                  | DoubleArray         | -                                   |
 | boolean[] (`@Raw`)                  | -           | `*`        | No     | -                 | `uint8_t *`      | -                    | -                  | BoolArray           | -                                   |
 | char[]    (`@Raw`)                  | -           | `*`        | No     | -                 | `uint16_t *`     | -                    | -                  | CharArray           | -                                   |
+| MemorySegment[] (`@Raw`)            | -           | `*`        | No     | -                 | `void **`        | -                    | -                  | PointerArray        | -                                   |
 | Type[]    (`@Raw`)                  | -           | `*`        | No     | -                 | `Type *`         | -                    | -                  | Type.Array          | -                                   |
 | int[]                               | No          | -          | Yes    | `int32_t  x[len]` | -                | -                    | -                  | IntArray            | `sequenceLayout(len, JAVA_INT)`     |
 | int[]                               | Yes         | -          | Yes    | `uint32_t x[len]` | -                | -                    | -                  | IntArray            | `sequenceLayout(len, JAVA_INT)`     |
@@ -929,6 +935,7 @@ Annotate the data type to be converted to its raw form. You can only mark method
 | double[]                            | -           | -          | Yes    | `double   x[len]` | -                | -                    | -                  | DoubleArray         | `sequenceLayout(len, JAVA_DOUBLE)`  |
 | boolean[]                           | -           | -          | Yes    | `uint8_t  x[len]` | -                | -                    | -                  | BoolArray           | `sequenceLayout(len, JAVA_BOOLEAN)` |
 | char[]                              | -           | -          | Yes    | `uint16_t x[len]` | -                | -                    | -                  | CharArray           | `sequenceLayout(len, JAVA_CHAR)`    |
+| MemorySegment[]                     | -           | -          | Yes    | `void *   x[len]` | -                | -                    | -                  | PointerArray        | `sequenceLayout(len, ADDRESS)`      |
 | Type[]                              | -           | -          | Yes    | `Type     x[len]` | -                | -                    | -                  | Type.Array          | `sequenceLayout(len, Type.LAYOUT)`  |
 | `PNIFunc<T>` (field or return)      | -           | -          | -      | `PNIFunc *`       | `PNIFunc *`      | -                    | `func`             | `PNIFunc<T>`        | `ADDRESS`                           |
 | `PNIFunc<T>` (param)                | -           | -          | -      | -                 | `PNIFunc *`      | -                    | -                  | `CallSite<T>`       | -                                   |
@@ -977,7 +984,7 @@ You can register you implementation via `PooledAllocator.setXxxProvider`:
   This shouldn't be a problem because there's very rare chance that you would run Java on a 32bit platform.
 * When you throw an exception from native code, you should ensure that the
   exception type name char array does not require releasing.
-* Only primitive types or custom types can be used to generate arrays,
+* Only primitive types or `MemorySegment` or custom types can be used to generate arrays,
   and the arrays can only be 1 dimension. To use 2 or more dimension arrays,
   the only way to achieve this is to calculate the array length and use
   1 dimension array instead.
