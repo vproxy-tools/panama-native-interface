@@ -40,14 +40,14 @@ public class CompilationFlag<T> {
     public final Function<String, String> validate;
     public final Function<String, T> convert;
 
-    private CompilationFlag(String name, String defaultValue, Predicate<String> validate, Function<String, T> convert) {
+    public CompilationFlag(String name, String defaultValue, Predicate<String> validate, Function<String, T> convert) {
         this(name, defaultValue, (Function<String, String>) s -> {
             if (validate.test(s)) return null; // means no error
             else return ""; // means empty error message
         }, convert);
     }
 
-    private CompilationFlag(String name, String defaultValue, Function<String, String> validate, Function<String, T> convert) {
+    public CompilationFlag(String name, String defaultValue, Function<String, String> validate, Function<String, T> convert) {
         this.name = name;
         this.defaultValue = defaultValue;
         this.validate = validate;
