@@ -57,19 +57,19 @@ public class StaticFileGenerator {
         "  #define PNI_PACK( __t__, __n__, __Declaration__ ) __pragma(pack(push, 1)) __t__ __n__ __Declaration__ __pragma(pack(pop))\n" +
         "#endif\n" +
         "\n" +
-        "typedef PNI_PACK(struct, PNIException, {\n" +
+        "typedef struct PNIException {\n" +
         "    char* type;\n" +
         "#define PNIExceptionMessageLen (4096)\n" +
         "    char  message[PNIExceptionMessageLen];\n" +
-        "    int32_t errno_; /* padding */ uint32_t : 32;\n" +
-        "}) PNIException;\n" +
+        "    int32_t errno_; /* padding uint32_t : 32; */\n" +
+        "} PNIException;\n" +
         "\n" +
-        "typedef PNI_PACK(struct, PNIBuf, {\n" +
+        "typedef struct PNIBuf {\n" +
         "    void*    buf;\n" +
         "    uint64_t len;\n" +
-        "}) PNIBuf;\n" +
+        "} PNIBuf;\n" +
         "\n" +
-        "typedef PNI_PACK(struct, PNIEnv, {\n" +
+        "typedef struct PNIEnv {\n" +
         "    PNIException ex;\n" +
         "    union {\n" +
         "        int8_t   return_byte;\n" +
@@ -83,21 +83,21 @@ public class StaticFileGenerator {
         "        void*    return_pointer;\n" +
         "        PNIBuf   return_buf;\n" +
         "    };\n" +
-        "}) PNIEnv;\n" +
+        "} PNIEnv;\n" +
         "\n" +
-        "typedef PNI_PACK(struct, PNIEnvUnionPlaceHolder, {\n" +
+        "typedef struct PNIEnvUnionPlaceHolder {\n" +
         "    uint64_t : 64;\n" +
         "    uint64_t : 64;\n" +
-        "}) PNIEnvUnionPlaceHolder;\n" +
+        "} PNIEnvUnionPlaceHolder;\n" +
         "\n" +
         "#define PNIEnvExpand(EnvType, ValueType) \\\n" +
-        "typedef PNI_PACK(struct, PNIEnv_##EnvType, { \\\n" +
+        "typedef struct PNIEnv_##EnvType { \\\n" +
         "    PNIException ex; \\\n" +
         "    union { \\\n" +
         "        ValueType return_; \\\n" +
         "        PNIEnvUnionPlaceHolder __placeholder__; \\\n" +
         "    }; \\\n" +
-        "}) PNIEnv_##EnvType;\n" +
+        "} PNIEnv_##EnvType;\n" +
         "// end #define PNIEnvExpand\n" +
         "\n" +
         "PNIEnvExpand(byte, int8_t)\n" +
@@ -112,10 +112,10 @@ public class StaticFileGenerator {
         "PNIEnvExpand(string, char*)\n" +
         "PNIEnvExpand(buf, PNIBuf)\n" +
         "\n" +
-        "typedef PNI_PACK(struct, PNIEnv_void, {\n" +
+        "typedef struct PNIEnv_void {\n" +
         "    PNIException ex;\n" +
         "    PNIEnvUnionPlaceHolder __placeholder__;\n" +
-        "}) PNIEnv_void;\n" +
+        "} PNIEnv_void;\n" +
         "\n" +
         "static inline int PNIThrowException(void* _env, const char* extype, char* message) {\n" +
         "    PNIEnv* env = _env;\n" +
@@ -139,13 +139,13 @@ public class StaticFileGenerator {
         "JNIEXPORT void* JNICALL GetPNIGraalThread(void);\n" +
         "#endif // PNI_GRAAL\n" +
         "\n" +
-        "typedef PNI_PACK(struct, PNIFunc, {\n" +
+        "typedef struct PNIFunc {\n" +
         "    int64_t   index;\n" +
         "    union {\n" +
         "        void*    userdata;\n" +
         "        uint64_t udata64;\n" +
         "    };\n" +
-        "}) PNIFunc;\n" +
+        "} PNIFunc;\n" +
         "\n" +
         "PNIEnvExpand(func, PNIFunc*)\n" +
         "\n" +
@@ -184,13 +184,13 @@ public class StaticFileGenerator {
         "#endif // PNI_GRAAL\n" +
         "}\n" +
         "\n" +
-        "typedef PNI_PACK(struct, PNIRef, {\n" +
+        "typedef struct PNIRef {\n" +
         "    int64_t index;\n" +
         "    union {\n" +
         "        void*    userdata;\n" +
         "        uint64_t udata64;\n" +
         "    };\n" +
-        "}) PNIRef;\n" +
+        "} PNIRef;\n" +
         "\n" +
         "PNIEnvExpand(ref, PNIRef*)\n" +
         "\n" +
@@ -211,13 +211,13 @@ public class StaticFileGenerator {
         "}\n" +
         "\n" +
         "#define PNIBufExpand(BufType, ValueType, Size) \\\n" +
-        "typedef PNI_PACK(struct, PNIBuf_##BufType, { \\\n" +
+        "typedef struct PNIBuf_##BufType { \\\n" +
         "    union { \\\n" +
         "        ValueType* array; \\\n" +
         "        void*      buf; \\\n" +
         "    }; \\\n" +
         "    uint64_t bufLen; \\\n" +
-        "}) PNIBuf_##BufType; \\\n" +
+        "} PNIBuf_##BufType; \\\n" +
         "static inline uint64_t BufType##PNIArrayLen(PNIBuf_##BufType* buf) { \\\n" +
         "    return buf->bufLen / (Size == 0 ? 1 : Size); \\\n" +
         "} \\\n" +

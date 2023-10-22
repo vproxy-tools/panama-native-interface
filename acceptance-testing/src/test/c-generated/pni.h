@@ -12,19 +12,19 @@
   #define PNI_PACK( __t__, __n__, __Declaration__ ) __pragma(pack(push, 1)) __t__ __n__ __Declaration__ __pragma(pack(pop))
 #endif
 
-typedef PNI_PACK(struct, PNIException, {
+typedef struct PNIException {
     char* type;
 #define PNIExceptionMessageLen (4096)
     char  message[PNIExceptionMessageLen];
-    int32_t errno_; /* padding */ uint32_t : 32;
-}) PNIException;
+    int32_t errno_; /* padding uint32_t : 32; */
+} PNIException;
 
-typedef PNI_PACK(struct, PNIBuf, {
+typedef struct PNIBuf {
     void*    buf;
     uint64_t len;
-}) PNIBuf;
+} PNIBuf;
 
-typedef PNI_PACK(struct, PNIEnv, {
+typedef struct PNIEnv {
     PNIException ex;
     union {
         int8_t   return_byte;
@@ -38,21 +38,21 @@ typedef PNI_PACK(struct, PNIEnv, {
         void*    return_pointer;
         PNIBuf   return_buf;
     };
-}) PNIEnv;
+} PNIEnv;
 
-typedef PNI_PACK(struct, PNIEnvUnionPlaceHolder, {
+typedef struct PNIEnvUnionPlaceHolder {
     uint64_t : 64;
     uint64_t : 64;
-}) PNIEnvUnionPlaceHolder;
+} PNIEnvUnionPlaceHolder;
 
 #define PNIEnvExpand(EnvType, ValueType) \
-typedef PNI_PACK(struct, PNIEnv_##EnvType, { \
+typedef struct PNIEnv_##EnvType { \
     PNIException ex; \
     union { \
         ValueType return_; \
         PNIEnvUnionPlaceHolder __placeholder__; \
     }; \
-}) PNIEnv_##EnvType;
+} PNIEnv_##EnvType;
 // end #define PNIEnvExpand
 
 PNIEnvExpand(byte, int8_t)
@@ -67,10 +67,10 @@ PNIEnvExpand(pointer, void*)
 PNIEnvExpand(string, char*)
 PNIEnvExpand(buf, PNIBuf)
 
-typedef PNI_PACK(struct, PNIEnv_void, {
+typedef struct PNIEnv_void {
     PNIException ex;
     PNIEnvUnionPlaceHolder __placeholder__;
-}) PNIEnv_void;
+} PNIEnv_void;
 
 static inline int PNIThrowException(void* _env, const char* extype, char* message) {
     PNIEnv* env = _env;
@@ -94,13 +94,13 @@ JNIEXPORT void  JNICALL SetPNIGraalThread(void* thread);
 JNIEXPORT void* JNICALL GetPNIGraalThread(void);
 #endif // PNI_GRAAL
 
-typedef PNI_PACK(struct, PNIFunc, {
+typedef struct PNIFunc {
     int64_t   index;
     union {
         void*    userdata;
         uint64_t udata64;
     };
-}) PNIFunc;
+} PNIFunc;
 
 PNIEnvExpand(func, PNIFunc*)
 
@@ -139,13 +139,13 @@ static inline void PNIFuncRelease(PNIFunc* f) {
 #endif // PNI_GRAAL
 }
 
-typedef PNI_PACK(struct, PNIRef, {
+typedef struct PNIRef {
     int64_t index;
     union {
         void*    userdata;
         uint64_t udata64;
     };
-}) PNIRef;
+} PNIRef;
 
 PNIEnvExpand(ref, PNIRef*)
 
@@ -166,13 +166,13 @@ static inline void PNIRefRelease(PNIRef* ref) {
 }
 
 #define PNIBufExpand(BufType, ValueType, Size) \
-typedef PNI_PACK(struct, PNIBuf_##BufType, { \
+typedef struct PNIBuf_##BufType { \
     union { \
         ValueType* array; \
         void*      buf; \
     }; \
     uint64_t bufLen; \
-}) PNIBuf_##BufType; \
+} PNIBuf_##BufType; \
 static inline uint64_t BufType##PNIArrayLen(PNIBuf_##BufType* buf) { \
     return buf->bufLen / (Size == 0 ? 1 : Size); \
 } \
