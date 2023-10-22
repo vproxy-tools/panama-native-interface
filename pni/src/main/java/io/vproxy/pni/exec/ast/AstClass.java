@@ -1,5 +1,6 @@
 package io.vproxy.pni.exec.ast;
 
+import io.vproxy.pni.exec.CompilationFlag;
 import io.vproxy.pni.exec.CompilerOptions;
 import io.vproxy.pni.exec.WarnType;
 import io.vproxy.pni.exec.internal.PNILogger;
@@ -16,6 +17,7 @@ import java.util.function.Consumer;
 import static io.vproxy.pni.exec.internal.Consts.*;
 
 public class AstClass {
+    public final CompilerOptions opts;
     public boolean isInterface;
     public String name;
     public String superName;
@@ -27,7 +29,8 @@ public class AstClass {
     public long headPadding = 0;
     public long extraHeadPadding = 0;
 
-    public AstClass(ClassNode classNode) {
+    public AstClass(ClassNode classNode, CompilerOptions opts) {
+        this.opts = opts;
         isInterface = (classNode.access & Opcodes.ACC_INTERFACE) == Opcodes.ACC_INTERFACE;
         this.name = classNode.name;
         this.superName = classNode.superName;
@@ -52,8 +55,9 @@ public class AstClass {
         }
     }
 
-    public AstClass() {
-        // for unit testing only
+    // for unit testing only
+    public AstClass(CompilerOptions opts) {
+        this.opts = opts;
     }
 
     public void ref(TypePool pool) {
@@ -589,10 +593,16 @@ public class AstClass {
         } else {
             n = name;
         }
-        if (n.startsWith("PNI")) {
-            n = n.substring("PNI".length());
-        } else {
-            n = "PNI" + n;
+        var prefix = opts.getCompilationFlag(CompilationFlag.TYPE_NAME_PREFIX);
+        if (prefix == null) {
+            prefix = "";
+        }
+        if (!prefix.isEmpty()) {
+            if (n.startsWith(prefix)) {
+                n = n.substring(prefix.length());
+            } else {
+                n = prefix + n;
+            }
         }
         return n;
     }

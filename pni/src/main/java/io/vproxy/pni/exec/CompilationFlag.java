@@ -34,6 +34,10 @@ public class CompilationFlag<T> {
             if (new File(s).isDirectory()) return null;
             else return s + " does not exist or is not a directory";
         }), s -> s.isEmpty() ? null : new File(s));
+    public static final CompilationFlag<String> TYPE_NAME_PREFIX = new CompilationFlag<>(
+        "type-name-prefix", "",
+        pred(s -> Utils.isValidName(s, false)), s -> s
+    );
 
     public final String name;
     public final String defaultValue;
@@ -69,6 +73,7 @@ public class CompilationFlag<T> {
         RELEASE_PNI_H_FILE,
         RELEASE_PNI_C_FILE,
         RELEASE_JNI_H_MOCK_FILE,
+        TYPE_NAME_PREFIX,
     };
 
     public static CompilationFlag<?>[] values() {

@@ -13,7 +13,7 @@ import static org.junit.Assert.fail;
 public class TestWarningFlags {
     @Test
     public void defaultOpts() {
-        var opts = new CompilerOptions();
+        var opts = new Utils.CompilerOptions();
         //noinspection PointlessBitwiseExpression
         long warn = 0
                     | WarnType.INVALID_CLASSPATH_FILE.flag
@@ -45,7 +45,7 @@ public class TestWarningFlags {
                 new JavaFile()
                     .setName("test/A.java")
                     .setContent(content)
-            ), new CompilerOptions()
+            ), new Utils.CompilerOptions()
                 .setClasspath(List.of(cp))
                 .unsetWarningAsErrorBits(WarnType.INVALID_CLASSPATH_FILE.flag)
         );
@@ -57,7 +57,7 @@ public class TestWarningFlags {
                 new JavaFile()
                     .setName("test/A.java")
                     .setContent(content)
-            ), new CompilerOptions().setClasspath(List.of(cp)));
+            ), new Utils.CompilerOptions().setClasspath(List.of(cp)));
             fail();
         } catch (Exception e) {
             assertEquals("classpath file not found: " + cp, e.getMessage());
@@ -82,7 +82,7 @@ public class TestWarningFlags {
                 new JavaFile()
                     .setName("test/A.java")
                     .setContent(content)
-            ), new CompilerOptions()
+            ), new Utils.CompilerOptions()
         );
         assertEquals(1, asts.size());
         assertEquals("test/PNIA", asts.get(0).name);
@@ -92,7 +92,7 @@ public class TestWarningFlags {
                     new JavaFile()
                         .setName("test/A.java")
                         .setContent(content)
-                ), new CompilerOptions()
+                ), new Utils.CompilerOptions()
                     .setWarningAsErrorBits(WarnType.ALIGNMENT_NOT_POWER_OF_2.flag)
             );
             fail();

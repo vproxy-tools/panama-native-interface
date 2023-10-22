@@ -14,7 +14,7 @@ import static org.junit.Assert.assertEquals;
 public class TestValidation {
     @Test
     public void pointerOnly() {
-        var astClass = new AstClass();
+        var astClass = new AstClass(new Utils.CompilerOptions());
         astClass.name = "a/b/PNICls";
         astClass.annos.add(new AstAnno() {{
             typeRef = AnnoStructTypeInfo.get();
@@ -26,7 +26,7 @@ public class TestValidation {
             typeRef = CharTypeInfo.get();
         }});
         var errors = new ArrayList<String>();
-        astClass.validate(new CompilerOptions(), errors);
+        astClass.validate(new Utils.CompilerOptions(), errors);
 
         assertEquals(1, errors.size());
         assertEquals("class(a/b/PNICls): cannot define fields in this type because it is marked with @PointerOnly", errors.get(0));
@@ -34,9 +34,9 @@ public class TestValidation {
 
     @Test
     public void recursive() {
-        var cls = new AstClass();
+        var cls = new AstClass(new Utils.CompilerOptions());
         cls.name = "a/b/PNICls";
-        var cls2 = new AstClass();
+        var cls2 = new AstClass(new Utils.CompilerOptions());
         cls2.name = "a/b/PNICls2";
         cls.fields.add(new AstField() {{
             name = "x";
@@ -55,9 +55,9 @@ public class TestValidation {
 
     @Test
     public void recursiveArray() {
-        var cls = new AstClass();
+        var cls = new AstClass(new Utils.CompilerOptions());
         cls.name = "a/b/PNICls";
-        var cls2 = new AstClass();
+        var cls2 = new AstClass(new Utils.CompilerOptions());
         cls2.name = "a/b/PNICls2";
         cls.fields.add(new AstField() {{
             name = "x";

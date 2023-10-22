@@ -1,7 +1,7 @@
 package io.vproxy.pni.test;
 
 import io.vproxy.commons.util.IOUtils;
-import io.vproxy.pni.exec.CompilerOptions;
+import io.vproxy.pni.exec.CompilationFlag;
 import io.vproxy.pni.exec.Generator;
 import io.vproxy.pni.exec.ast.AstAnno;
 import io.vproxy.pni.exec.ast.AstClass;
@@ -36,7 +36,7 @@ public class Utils {
     }
 
     public static ClassTypeInfo generalClsTypeInfo() {
-        var astClass = new AstClass();
+        var astClass = new AstClass(new CompilerOptions());
         astClass.name = "a/b/PNICls";
         astClass.annos.add(new AstAnno() {{
             typeRef = AnnoStructTypeInfo.get();
@@ -51,7 +51,7 @@ public class Utils {
     }
 
     public static ClassTypeInfo emptyClsTypeInfo() {
-        var astClass = new AstClass();
+        var astClass = new AstClass(new CompilerOptions());
         astClass.name = "a/b/PNIEmptyCls";
         astClass.annos.add(new AstAnno() {{
             typeRef = AnnoStructTypeInfo.get();
@@ -59,7 +59,7 @@ public class Utils {
         return new ClassTypeInfo(astClass);
     }
 
-    public static List<AstClass> load(List<JavaFile> files, CompilerOptions opts) throws Exception {
+    public static List<AstClass> load(List<JavaFile> files, io.vproxy.pni.exec.CompilerOptions opts) throws Exception {
         var template = Files.createTempDirectory("test-template");
         var compile = Files.createTempDirectory("test-compile");
         var gen = Files.createTempDirectory("test-gen");
@@ -117,6 +117,12 @@ public class Utils {
             IOUtils.deleteDirectory(template.toFile());
             IOUtils.deleteDirectory(compile.toFile());
             IOUtils.deleteDirectory(gen.toFile());
+        }
+    }
+
+    public static class CompilerOptions extends io.vproxy.pni.exec.CompilerOptions {
+        public CompilerOptions() {
+            setCompilationFlag(CompilationFlag.TYPE_NAME_PREFIX, "PNI");
         }
     }
 }

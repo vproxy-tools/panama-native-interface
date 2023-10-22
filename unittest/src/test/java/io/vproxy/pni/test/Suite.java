@@ -13,6 +13,7 @@ import org.junit.runner.RunWith;
     TestWarningFlags.class,
     TestRef.class,
     TestUtils.class,
+    TestCompilationFlags.class,
 })
 @RunWith(org.junit.runners.Suite.class)
 public class Suite {

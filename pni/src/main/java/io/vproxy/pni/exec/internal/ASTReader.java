@@ -26,7 +26,7 @@ public class ASTReader {
         for (var r : classReaders) {
             var classNode = new ClassNode();
             r.accept(classNode, ClassReader.SKIP_FRAMES | ClassReader.SKIP_CODE);
-            var astClass = new AstClass(classNode);
+            var astClass = new AstClass(classNode, opts);
             if (!requiresHandling(astClass)) {
                 PNILogger.debug(opts, "skipping " + astClass.name);
                 continue;

@@ -266,6 +266,7 @@ project(":acceptance-testing-template") {
         systemProperty("io.vproxy.pni.Testing", "true")
         workingDir project.rootProject.rootDir.getAbsolutePath()
         args '-cp', 'acceptance-testing-template/build/classes/java/main', '-d', 'acceptance-testing/src/test/generated', '-h', 'acceptance-testing/src/test/c-generated',
+                '-ftype-name-prefix=PNI',
                 '-frelease-pni-h-file',
                 '-frelease-pni-c-file',
                 '-frelease-jni-h-mock-file'
@@ -283,6 +284,7 @@ project(":acceptance-testing-template") {
                 '-h', 'graal-test/src/main/c-generated-2',
                 '-fgraal-native-image-feature=io.vproxy.pni.test.Feature',
                 '-fgraal-c-entrypoint-literal-upcall',
+                '-ftype-name-prefix=PNI',
                 '-frelease-pni-h-file=graal-test/src/main/c-generated',
                 '-frelease-pni-c-file=graal-test/src/main/c-generated',
                 '-frelease-jni-h-mock-file=graal-test/src/main/c-generated'
@@ -353,6 +355,7 @@ project(":graal-test-template") {
         args '-cp', 'graal-test-template/build/classes/java/main', '-d', 'graal-test/src/main/generated', '-h', 'graal-test/src/main/c-generated',
                 '-fgraal-native-image-feature=io.vproxy.pni.graal.test.Feature',
                 '-fgraal-c-entrypoint-literal-upcall',
+                '-ftype-name-prefix=PNI',
                 '-frelease-pni-h-file',
                 '-frelease-pni-c-file',
                 '-frelease-jni-h-mock-file'
@@ -474,6 +477,7 @@ project(":sample") {
         workingDir project.rootProject.rootDir.getAbsolutePath()
         args '-cp', 'sample/build/classes/java/main', '-d', 'sample/src/main/java', '-h', 'sample/src/main/c',
                 '-fgraal-native-image-feature=io.vproxy.pni.sample.Feature',
+                '-ftype-name-prefix=PNI',
                 '-frelease-pni-h-file',
                 '-frelease-pni-c-file',
                 '-frelease-jni-h-mock-file'
@@ -552,6 +556,7 @@ project(":playground") {
         mainClass = 'io.vproxy.pni.exec.Main'
         workingDir project.rootProject.rootDir.getAbsolutePath()
         args '-cp', 'playground/build/classes/java/main', '-d', 'playground/src/main/generated', '-h', 'playground/src/main/c-generated',
+                '-ftype-name-prefix=PNI',
                 '-frelease-pni-h-file',
                 '-frelease-pni-c-file',
                 '-frelease-jni-h-mock-file'
