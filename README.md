@@ -437,12 +437,12 @@ You may define all template classes inside one single Java file, they don't have
 @Struct
 @Name("mbuf_t")
 @AlwaysAligned
-abstract class PNIMBuf {     // typedef struct mbuf_t {
+abstract class MBuf {        // typedef struct mbuf_t {
     MemorySegment bufAddr;   //     void*    bufAddr;
     @Unsigned int pktLen;    //     uint32_t pktLen;
     @Unsigned int pktOff;    //     uint32_t pktOff;
     @Unsigned int bufLen;    //     uint32_t bufLen;
-    PNIUserData userdata;    //     union {
+    UserData userdata;       //     union {
                              //         void*  userdata;
                              //         uint64 udata64;
                              //     };
@@ -450,14 +450,14 @@ abstract class PNIMBuf {     // typedef struct mbuf_t {
 
 @Union(embedded = true)
 @AlwaysAligned
-abstract class PNIUserData {
+abstract class UserData {
     MemorySegment userdata;
     @Unsigned long udata64;
 }
 
 @Function
-interface PNISampleFunctions {
-    int read(int fd, PNIMBuf buf) throws IOException;
+interface SampleFunctions {
+    int read(int fd, MBuf buf) throws IOException;
         // int Java_package_name_SampleFunctions_read(PNIEnv_int * env, int32_t fd, mbuf_t * buf);
 }
 ```
@@ -561,8 +561,8 @@ as well as methods defined in the templates.
 Template interfaces will generated singleton classes.  
 All generated classes will NOT extend/implement template classes/interfaces.
 
-The generated Java types have similar names to their templates.  
-If the template type name starts with `PNI`, then the generated type will remove `PNI` prefix, otherwise adding the `PNI` prefix.
+The generated Java types have the same names to their templates.  
+You can customize name prefix of template or generated types using `-ftype-name-prefix="..."` or `setCompilationFlag(TYPE_NAME_PREFIX, "...")`. If the template types have the specified prefix, then the generated types will discard the prefix. If template types do not have the prefix, then the generated types will prepend the prefix.
 
 If the method's return type requires memory allocation, an extra parameter `Allocator ALLOCATOR` will be added to the last of the arguments list.  
 You can release the memory by closing the allocator.
@@ -590,19 +590,19 @@ For example:
 ```java
 @Struct
 @AlwaysAligned
-abstract class PNIBaseClass {
+abstract class BaseClass {
     byte a;
 }
 
 @Struct
 @AlwaysAligned
-abstract class PNIChildClass extends PNIBaseClass {
+abstract class ChildClass extends BaseClass {
     short x;
 }
 
 @Struct
 @AlwaysAligned
-abstract class PNIGrandChildClass extends PNIChildClass {
+abstract class GrandChildClass extends ChildClass {
     long y;
 }
 ```
@@ -811,7 +811,7 @@ You can call `PNIRef.of(obj, new Options().setUserdataByteSize(...))`, the behav
   @Name("QUIC_ADDR")
   @PointerOnly
   @Sizeof("QUIC_ADDR") // you may also write multi-line statements here, and you can include header files as well
-  public abstract class PNIQuicAddr {
+  public abstract class QuicAddr {
   }
   ```  
   With the help of `@Sizeof`, you can allocate memory for `QuicAddr` from Java and pass it to native.  
