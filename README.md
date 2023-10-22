@@ -1,5 +1,13 @@
 # Panama Native Interface
 
+All documentations are contained in this single README file.
+
+This page is very long.  
+On Github, you may click ![toc-icon](https://raw.githubusercontent.com/vproxy-tools/panama-native-interface/master/doc/toc-icon.png) to open the Github Table of Contents, and redirect to the section you are interested in.  
+It's recommended to go [here](https://github.com/vproxy-tools/panama-native-interface/blob/master/README.md) to read this page.
+
+[[_TOC_]]
+
 ## Abstract
 
 A way of using `Project Panama` that is completely different from using `jextract`.
@@ -10,7 +18,7 @@ This approach is similar to how `JNI(Java Native Interface)` works, so this proj
 
 ## Why using `Panama Native Interface` instead of `jextract`
 
-<details><summary>Click to reveal</summary>
+<details open><summary>Click to reveal/hide</summary>
 
 The `jextract` tool can automatically generate Java types from C headers. This seems great at first, you can create structs and call functions in Java just like writing C code.
 
@@ -45,7 +53,7 @@ You can not only define types/functions in Java, but also bring pre-defined type
 
 ## How to build
 
-<details><summary>Click to reveal</summary>
+<details open><summary>Click to reveal/hide</summary>
 
 ### 1. Install JDKs
 
@@ -125,7 +133,7 @@ To run the native image:
 
 ## How to bundle into a Gradle project
 
-<details><summary>Click to reveal</summary>
+<details open><summary>Click to reveal/hide</summary>
 
 It's recommended to use `Gradle` as the building system, otherwise you will have to manually generate files using the `pni` command line tool.
 
@@ -424,7 +432,7 @@ The shared library file must be placed in `-Djava.library.path` for Java to load
 
 ## How to use
 
-<details><summary>Click to reveal</summary>
+<details open><summary>Click to reveal/hide</summary>
 
 ### 1. Define template classes
 
@@ -580,7 +588,7 @@ The default behavior for `ConcurrentPooled` allocators is the same as `Shared` a
 
 ## Type Inheritance
 
-<details><summary>Click to reveal</summary>
+<details open><summary>Click to reveal/hide</summary>
 
 `Panama Native Interface` supports inheritance. You can use Java `extends` keyword in template classes.  
 Only a `struct` can extend from another `struct`.  
@@ -623,7 +631,7 @@ Supporting inheritance can make use of Java's object oriented type system, while
 
 ## Graal Native Image
 
-<details><summary>Click to reveal</summary>
+<details open><summary>Click to reveal/hide</summary>
 
 `GraalVM for JDK 21` supports building native image with Panama support.
 
@@ -659,7 +667,7 @@ Detailed information can be found in [the repo](https://github.com/vproxy-tools/
 
 ## Graal Native Image Upcall
 
-<details><summary>Click to reveal</summary>
+<details open><summary>Click to reveal/hide</summary>
 
 As for now `(2023-10-09)` the graal native-image doesn't support Panama upcall yet. But `Panama Native Interface` provides the upcall support
 based on graal c native features:  
@@ -687,7 +695,7 @@ Note that some functions are defined using `static inline`, so you must compile 
 
 ## Call Java from C
 
-<details><summary>Click to reveal</summary>
+<details open><summary>Click to reveal/hide</summary>
 
 Panama provides a way for C to invoke Java methods. `Panama Native Interface` provides multiple ways to simplify this process.
 
@@ -773,7 +781,7 @@ You can call `PNIRef.of(obj, new Options().setUserdataByteSize(...))`, the behav
 
 ## Annotations
 
-<details><summary>Click to reveal</summary>
+<details open><summary>Click to reveal/hide</summary>
 
 ### Entrypoint
 
@@ -855,7 +863,7 @@ You can call `PNIRef.of(obj, new Options().setUserdataByteSize(...))`, the behav
 
 ## `@Raw` Annotation
 
-<details><summary>Click to reveal</summary>
+<details open><summary>Click to reveal/hide</summary>
 
 Annotate the data type to be converted to its raw form. You can only mark method parameters with this annotation.
 
@@ -872,7 +880,7 @@ Annotate the data type to be converted to its raw form. You can only mark method
 
 ## Type correspondence
 
-<details><summary>Click to reveal</summary>
+<details open><summary>Click to reveal/hide</summary>
 
 | Java                                | `@Unsigned` | `@Pointer` | `@Len` | C Field           | C Function Param | C Extra Return Param | C `PNIEnv_${type}` | Generated Java Type | Generated Layout                    |
 |-------------------------------------|-------------|------------|--------|-------------------|------------------|----------------------|--------------------|---------------------|-------------------------------------|
@@ -957,7 +965,7 @@ Any other combination except the above table is disallowed.
 
 ## Pooled Allocators
 
-<details><summary>Click to reveal</summary>
+<details open><summary>Click to reveal/hide</summary>
 
 `Panama Native Interface` does not provide built-in pooled allocators implementation, but allow you to register your own impl into the framework. You can use `PooledAllocator.ofXxx` functions to retrieve a pooled allocator.
 
@@ -977,7 +985,7 @@ You can register you implementation via `PooledAllocator.setXxxProvider`:
 
 ## Limitations
 
-<details><summary>Click to reveal</summary>
+<details open><summary>Click to reveal/hide</summary>
 
 * This project has a pre assumption: `sizeof(void*)` is 8 bytes.
   In other words, you can only use this project on a 64bit processor.
@@ -1007,7 +1015,7 @@ You can register you implementation via `PooledAllocator.setXxxProvider`:
 
 ## Real World Examples
 
-<details><summary>Click to reveal</summary>
+<details open><summary>Click to reveal/hide</summary>
 
 * [vproxy](http://github.com/wkgcass/vproxy): LoadBalancer and virtual networking on Java, migrated from the old `JNI` to `PNI`, using the `JNI` style C functions.
 * [luajn](https://github.com/vproxy-tools/luajn): A Lua/C/Java binding, built upon `PNI`, using the `Critical` style C functions.
