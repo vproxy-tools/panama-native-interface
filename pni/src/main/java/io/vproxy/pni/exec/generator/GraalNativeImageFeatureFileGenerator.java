@@ -111,7 +111,8 @@ public class GraalNativeImageFeatureFileGenerator {
             } else {
                 if (cls.getSizeof() != null) {
                     sb.append("\n");
-                    sb.append("/* JavaCritical_").append(cls.underlinedName()).append("___getLayoutByteSize */\n");
+                    Utils.appendIndent(sb, 8)
+                        .append("/* JavaCritical_").append(cls.underlinedName()).append("___getLayoutByteSize */\n");
                     Utils.appendIndent(sb, 8).append("RuntimeForeignAccess.registerForDowncall(")
                         .append("PanamaUtils.buildCriticalFunctionDescriptor(long.class), PanamaHack.getCriticalOption());\n");
                 }

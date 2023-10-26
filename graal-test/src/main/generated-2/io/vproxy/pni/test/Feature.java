@@ -85,7 +85,7 @@ public class Feature implements org.graalvm.nativeimage.hosted.Feature {
         /* JavaCritical_io_vproxy_pni_test_AlignField3_size */
         RuntimeForeignAccess.registerForDowncall(PanamaUtils.buildCriticalFunctionDescriptor(long.class, MemorySegment.class /* self */));
 
-/* JavaCritical_io_vproxy_pni_test_AlwaysAlignedSizeof___getLayoutByteSize */
+        /* JavaCritical_io_vproxy_pni_test_AlwaysAlignedSizeof___getLayoutByteSize */
         RuntimeForeignAccess.registerForDowncall(PanamaUtils.buildCriticalFunctionDescriptor(long.class), PanamaHack.getCriticalOption());
 
         /* Java_io_vproxy_pni_test_BaseClass_aaa */
@@ -1087,7 +1087,7 @@ public class Feature implements org.graalvm.nativeimage.hosted.Feature {
         /* JavaCritical_io_vproxy_pni_test_PointerOnlyStruct_retrieve */
         RuntimeForeignAccess.registerForDowncall(PanamaUtils.buildCriticalFunctionDescriptor(long.class, MemorySegment.class /* self */));
 
-/* JavaCritical_io_vproxy_pni_test_PointerOnlyStructWithLen___getLayoutByteSize */
+        /* JavaCritical_io_vproxy_pni_test_PointerOnlyStructWithLen___getLayoutByteSize */
         RuntimeForeignAccess.registerForDowncall(PanamaUtils.buildCriticalFunctionDescriptor(long.class), PanamaHack.getCriticalOption());
 
         /* Java_io_vproxy_pni_test_PrimitiveStruct_func1 */
@@ -1417,16 +1417,16 @@ public class Feature implements org.graalvm.nativeimage.hosted.Feature {
         /* Java_io_vproxy_pni_test_RefAndFuncFields_retrieveFunc2 */
         RuntimeForeignAccess.registerForDowncall(PanamaUtils.buildFunctionDescriptor(MemorySegment.class /* self */));
 
-/* JavaCritical_io_vproxy_pni_test_SizeofEmbed___getLayoutByteSize */
+        /* JavaCritical_io_vproxy_pni_test_SizeofEmbed___getLayoutByteSize */
         RuntimeForeignAccess.registerForDowncall(PanamaUtils.buildCriticalFunctionDescriptor(long.class), PanamaHack.getCriticalOption());
 
-/* JavaCritical_io_vproxy_pni_test_SizeofStruct___getLayoutByteSize */
+        /* JavaCritical_io_vproxy_pni_test_SizeofStruct___getLayoutByteSize */
         RuntimeForeignAccess.registerForDowncall(PanamaUtils.buildCriticalFunctionDescriptor(long.class), PanamaHack.getCriticalOption());
 
-/* JavaCritical_io_vproxy_pni_test_SizeofStructExpr___getLayoutByteSize */
+        /* JavaCritical_io_vproxy_pni_test_SizeofStructExpr___getLayoutByteSize */
         RuntimeForeignAccess.registerForDowncall(PanamaUtils.buildCriticalFunctionDescriptor(long.class), PanamaHack.getCriticalOption());
 
-/* JavaCritical_io_vproxy_pni_test_SizeofUnion___getLayoutByteSize */
+        /* JavaCritical_io_vproxy_pni_test_SizeofUnion___getLayoutByteSize */
         RuntimeForeignAccess.registerForDowncall(PanamaUtils.buildCriticalFunctionDescriptor(long.class), PanamaHack.getCriticalOption());
 
         /* Java_io_vproxy_pni_test_StructA_bbb */
@@ -1514,4 +1514,4 @@ public class Feature implements org.graalvm.nativeimage.hosted.Feature {
     }
 }
 // metadata.generator-version: pni test
-// sha256:918dce304795be6fe9b8467bfb7c44be07959754d219faa7400f59b117408d1e
+// sha256:386a107e5b66ee8d6b0930283cc693b862a7694c53ddf4e02aff54470db88171
