@@ -4,6 +4,7 @@ import io.vproxy.pni.exec.CompilerOptions;
 import io.vproxy.pni.exec.ast.AstClass;
 import io.vproxy.pni.exec.type.TypePool;
 import org.objectweb.asm.ClassReader;
+import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.tree.ClassNode;
 
 import java.util.ArrayList;
@@ -26,6 +27,10 @@ public class ASTReader {
         for (var r : classReaders) {
             var classNode = new ClassNode();
             r.accept(classNode, ClassReader.SKIP_FRAMES | ClassReader.SKIP_CODE);
+            if ((classNode.access & Opcodes.ACC_SYNTHETIC) == Opcodes.ACC_SYNTHETIC) {
+                continue;
+            }
+
             var astClass = new AstClass(classNode, opts);
             if (!requiresHandling(astClass)) {
                 PNILogger.debug(opts, "skipping " + astClass.name);

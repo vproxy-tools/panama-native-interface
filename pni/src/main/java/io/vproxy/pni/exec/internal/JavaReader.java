@@ -61,7 +61,7 @@ public class JavaReader {
             for (var ff : files) {
                 readFile(ff);
             }
-        } else {
+        } else if (f.getName().endsWith(".class")) {
             try {
                 readClass(f.getAbsolutePath(), new FileInputStream(f));
             } catch (FileNotFoundException e) {

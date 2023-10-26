@@ -36,11 +36,21 @@ public class AstClass {
             this.superName = null;
         }
         Utils.readAnnotations(annos, classNode.visibleAnnotations);
+        boolean hasSpecifyGenMembersAnno = annos.stream()
+            .anyMatch(a -> a.type.desc.equals("Lio/vproxy/pni/annotation/SpecifyGeneratedMembers;"));
         for (var f : classNode.fields) {
             if ((f.access & Opcodes.ACC_STATIC) == Opcodes.ACC_STATIC) {
                 continue;
             }
-            this.fields.add(new AstField(f));
+            if ((f.access & Opcodes.ACC_SYNTHETIC) == Opcodes.ACC_SYNTHETIC) {
+                continue;
+            }
+            var ff = new AstField(f);
+            if (hasSpecifyGenMembersAnno && ff.annos.stream()
+                .noneMatch(a -> a.type.desc.equals("Lio/vproxy/pni/annotation/GenerateMember;"))) {
+                continue;
+            }
+            this.fields.add(ff);
         }
         for (var m : classNode.methods) {
             if (m.name.equals("<init>") || m.name.equals("<cinit>")) {
@@ -49,7 +59,15 @@ public class AstClass {
             if ((m.access & Opcodes.ACC_STATIC) == Opcodes.ACC_STATIC) {
                 continue;
             }
-            this.methods.add(new AstMethod(m));
+            if ((m.access & Opcodes.ACC_SYNTHETIC) == Opcodes.ACC_SYNTHETIC) {
+                continue;
+            }
+            var mm = new AstMethod(m);
+            if (hasSpecifyGenMembersAnno && mm.annos.stream()
+                .noneMatch(a -> a.type.desc.equals("Lio/vproxy/pni/annotation/GenerateMember;"))) {
+                continue;
+            }
+            this.methods.add(mm);
         }
     }
 

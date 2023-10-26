@@ -14,6 +14,7 @@ import java.nio.file.Files;
 import java.security.MessageDigest;
 import java.util.*;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 public class Utils {
     private Utils() {
@@ -48,7 +49,9 @@ public class Utils {
     public static void readAnnotations(List<AstAnno> annos, List<AnnotationNode> nodes) {
         if (nodes != null) {
             for (var a : nodes) {
-                annos.add(new AstAnno(a));
+                if (a.desc.startsWith("Lio/vproxy/pni/annotation/")) {
+                    annos.add(new AstAnno(a));
+                }
             }
         }
     }
@@ -464,16 +467,38 @@ public class Utils {
     }
 
     public static void generateCFunctionImpl(StringBuilder sb, int indent, String impl) {
-        Arrays.stream(impl.replace("\r", "").split("\n")).map(line -> {
+        var lines = Arrays.stream(impl.replace("\r", "").split("\n")).map(line -> {
             if (line.isBlank()) return "";
             return line;
-        }).forEach(line -> {
-            if (line.isEmpty()) {
-                sb.append("\n");
+        }).collect(Collectors.toList());
+        int strIndent = -1;
+        for (var line : lines) {
+            if (line.isBlank())
+                continue;
+            var chars = line.toCharArray();
+            for (int i = 0; i < chars.length; ++i) {
+                if (chars[i] == ' ') {
+                    continue;
+                }
+                if (strIndent == -1 || i < strIndent) {
+                    strIndent = i;
+                }
+                break;
+            }
+        }
+        for (int i = 0; i < lines.size(); ++i) {
+            var line = lines.get(i);
+            if (line.isBlank()) {
+                if (i != 0 && i != lines.size() - 1) {
+                    sb.append("\n");
+                }
             } else {
+                if (strIndent > 0) {
+                    line = line.substring(strIndent);
+                }
                 Utils.appendIndent(sb, indent).append(line).append("\n");
             }
-        });
+        }
     }
 
     @SuppressWarnings("UnusedReturnValue")
