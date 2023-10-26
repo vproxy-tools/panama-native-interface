@@ -24,3 +24,4 @@
 #include "noalloc.c"
 #include "io_vproxy_pni_test_PointerArrayField.c"
 #include "io_vproxy_pni_test_Kt.c"
+#include "io_vproxy_pni_test_PointerOnlyStruct.c"

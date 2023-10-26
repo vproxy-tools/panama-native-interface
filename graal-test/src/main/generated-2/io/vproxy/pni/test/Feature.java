@@ -1084,6 +1084,12 @@ public class Feature implements org.graalvm.nativeimage.hosted.Feature {
         /* Java_io_vproxy_pni_test_PointerArrayField_getLenField */
         RuntimeForeignAccess.registerForDowncall(PanamaUtils.buildFunctionDescriptor(MemorySegment.class /* self */));
 
+        /* JavaCritical_io_vproxy_pni_test_PointerOnlyStruct_retrieve */
+        RuntimeForeignAccess.registerForDowncall(PanamaUtils.buildCriticalFunctionDescriptor(long.class, MemorySegment.class /* self */));
+
+/* JavaCritical_io_vproxy_pni_test_PointerOnlyStructWithLen___getLayoutByteSize */
+        RuntimeForeignAccess.registerForDowncall(PanamaUtils.buildCriticalFunctionDescriptor(long.class), PanamaHack.getCriticalOption());
+
         /* Java_io_vproxy_pni_test_PrimitiveStruct_func1 */
         RuntimeForeignAccess.registerForDowncall(PanamaUtils.buildFunctionDescriptor(MemorySegment.class /* self */, byte.class /* aByte */, byte.class /* unsignedByte */, int.class /* aInt */, int.class /* unsignedInt */, long.class /* aLong */, long.class /* unsignedLong */, short.class /* aShort */, short.class /* unsignedShort */));
 
@@ -1508,4 +1514,4 @@ public class Feature implements org.graalvm.nativeimage.hosted.Feature {
     }
 }
 // metadata.generator-version: pni test
-// sha256:21c33102b870ae0975e21ee78f9dadb8bd4338dda2bd6d7662dceb4206264a61
+// sha256:918dce304795be6fe9b8467bfb7c44be07959754d219faa7400f59b117408d1e

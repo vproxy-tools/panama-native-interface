@@ -29,6 +29,7 @@ import org.junit.runner.RunWith;
     TestNoAlloc.class,
     TestPointerArray.class,
     TestKt.class,
+    TestPointerOnly.class,
 })
 public class Suite {
 }
