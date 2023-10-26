@@ -1309,6 +1309,10 @@ public class TestTypes {
                 else SB.append(PanamaUtils.memorySegmentToString(getX()));
                 """,
             Utils.sbHelper(sb -> info.javaToString(sb, 0, "getX()", fieldVarOpts(0))));
+        assertEquals("""
+                SB.append(PanamaUtils.memorySegmentToString(getX()));
+                """,
+            Utils.sbHelper(sb -> info.javaToString(sb, 0, "getX()", fieldVarOpts(LEN))));
     }
 
     @Test
@@ -1433,6 +1437,10 @@ public class TestTypes {
                 else PanamaUtils.nativeObjectToString(getX(), SB, INDENT + 4, VISITED, CORRUPTED_MEMORY);
                 """,
             Utils.sbHelper(sb -> info.javaToString(sb, 0, "getX()", fieldVarOpts(0))));
+        assertEquals("""
+                PanamaUtils.nativeObjectToString(getX(), SB, INDENT + 4, VISITED, CORRUPTED_MEMORY);
+                """,
+            Utils.sbHelper(sb -> info.javaToString(sb, 0, "getX()", fieldVarOpts(LEN))));
     }
 
     @Test
@@ -1557,6 +1565,10 @@ public class TestTypes {
                 else PanamaUtils.nativeObjectToString(getX(), SB, INDENT + 4, VISITED, CORRUPTED_MEMORY);
                 """,
             Utils.sbHelper(sb -> info.javaToString(sb, 0, "getX()", fieldVarOpts(0))));
+        assertEquals("""
+                PanamaUtils.nativeObjectToString(getX(), SB, INDENT + 4, VISITED, CORRUPTED_MEMORY);
+                """,
+            Utils.sbHelper(sb -> info.javaToString(sb, 0, "getX()", fieldVarOpts(LEN))));
     }
 
     @Test
@@ -1686,6 +1698,10 @@ public class TestTypes {
                 else PanamaUtils.nativeObjectToString(getX(), SB, INDENT + 4, VISITED, CORRUPTED_MEMORY);
                 """,
             Utils.sbHelper(sb -> info.javaToString(sb, 0, "getX()", fieldVarOpts(0))));
+        assertEquals("""
+                PanamaUtils.nativeObjectToString(getX(), SB, INDENT + 4, VISITED, CORRUPTED_MEMORY);
+                """,
+            Utils.sbHelper(sb -> info.javaToString(sb, 0, "getX()", fieldVarOpts(LEN))));
     }
 
     @Test

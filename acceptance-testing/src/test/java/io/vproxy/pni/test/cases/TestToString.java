@@ -130,7 +130,7 @@ public class TestToString {
                          "        cr => ToStringClassRecurse{\n" +
                          "            num => 0,\n" +
                          "            c => <?>,\n" +
-                         "            arri => <?>\n" +
+                         "            arri => IntArray[]@" + Long.toString(u.getC1().getCr().getArri().MEMORY.address(), 16) + "\n" +
                          "        }@" + Long.toString(u.getC1().getCr().MEMORY.address(), 16) + "\n" +
                          "    }@" + Long.toString(u.getC1().MEMORY.address(), 16) + ",\n" +
                          "    c2 => ToStringClass2{\n" +
@@ -142,7 +142,7 @@ public class TestToString {
                          "    cr => ToStringClassRecurse{\n" +
                          "        num => 123,\n" +
                          "        c => <?>,\n" +
-                         "        arri => <?>\n" +
+                         "        arri => IntArray[]@" + Long.toString(u.getCr().getArri().MEMORY.address(), 16) + "\n" +
                          "    }@" + Long.toString(u.getCr().MEMORY.address(), 16) + ",\n" +
                          "    pc1 => <?>,\n" +
                          "    pc2 => <?>,\n" +

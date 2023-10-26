@@ -101,8 +101,7 @@ public class AlwaysAlignedGrandChild extends io.vproxy.pni.test.AlwaysAlignedChi
         SB.append(",\n");
         {
             SB.append(" ".repeat(INDENT + 4)).append("array => ");
-            if (CORRUPTED_MEMORY) SB.append("<?>");
-            else PanamaUtils.nativeObjectToString(getArray(), SB, INDENT + 4, VISITED, CORRUPTED_MEMORY);
+            PanamaUtils.nativeObjectToString(getArray(), SB, INDENT + 4, VISITED, CORRUPTED_MEMORY);
         }
         SB.append("\n");
         SB.append(" ".repeat(INDENT)).append("}@").append(Long.toString(MEMORY.address(), 16));
@@ -179,4 +178,4 @@ public class AlwaysAlignedGrandChild extends io.vproxy.pni.test.AlwaysAlignedChi
     }
 }
 // metadata.generator-version: pni test
-// sha256:942e1ce0e9eefca8ea0d091bfcba9838e66020ae8c300a5a7acae1f41968b13c
+// sha256:8d95550a45809d01414fbebb0af1c0d4959f6064b7fee2e4f687e7ae501a5bc1

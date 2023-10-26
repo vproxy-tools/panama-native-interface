@@ -116,8 +116,7 @@ public class PointerArrayField extends AbstractNativeObject implements NativeObj
         SB.append("PointerArrayField{\n");
         {
             SB.append(" ".repeat(INDENT + 4)).append("pointerArray => ");
-            if (CORRUPTED_MEMORY) SB.append("<?>");
-            else PanamaUtils.nativeObjectToString(getPointerArray(), SB, INDENT + 4, VISITED, CORRUPTED_MEMORY);
+            PanamaUtils.nativeObjectToString(getPointerArray(), SB, INDENT + 4, VISITED, CORRUPTED_MEMORY);
         }
         SB.append(",\n");
         {
@@ -200,4 +199,4 @@ public class PointerArrayField extends AbstractNativeObject implements NativeObj
     }
 }
 // metadata.generator-version: pni test
-// sha256:5fbb217e8a8da586afc571af9552556fc107d7ac84e6f5fca4d86e14db925dfe
+// sha256:54da93998c6f83da42900794277f4683255c5fd7de6c336aaae857ab5dae53e6

@@ -72,14 +72,12 @@ public class ToStringArray extends AbstractNativeObject implements NativeObject 
         SB.append("ToStringArray{\n");
         {
             SB.append(" ".repeat(INDENT + 4)).append("arrc => ");
-            if (CORRUPTED_MEMORY) SB.append("<?>");
-            else PanamaUtils.nativeObjectToString(getArrc(), SB, INDENT + 4, VISITED, CORRUPTED_MEMORY);
+            PanamaUtils.nativeObjectToString(getArrc(), SB, INDENT + 4, VISITED, CORRUPTED_MEMORY);
         }
         SB.append(",\n");
         {
             SB.append(" ".repeat(INDENT + 4)).append("arrcLen2 => ");
-            if (CORRUPTED_MEMORY) SB.append("<?>");
-            else PanamaUtils.nativeObjectToString(getArrcLen2(), SB, INDENT + 4, VISITED, CORRUPTED_MEMORY);
+            PanamaUtils.nativeObjectToString(getArrcLen2(), SB, INDENT + 4, VISITED, CORRUPTED_MEMORY);
         }
         SB.append(",\n");
         {
@@ -162,4 +160,4 @@ public class ToStringArray extends AbstractNativeObject implements NativeObject 
     }
 }
 // metadata.generator-version: pni test
-// sha256:e80a5271fef2c3e920cdb2a24c6301798e5d9933d2de3bd85aef97a7885c2511
+// sha256:bdb9e4f67db0ed86a94d936716d8f5224413f1f12289b3aee2fa4e993059c1fe

@@ -108,8 +108,7 @@ public class CustomNativeTypeStruct extends AbstractNativeObject implements Nati
         SB.append(",\n");
         {
             SB.append(" ".repeat(INDENT + 4)).append("array => ");
-            if (CORRUPTED_MEMORY) SB.append("<?>");
-            else PanamaUtils.nativeObjectToString(getArray(), SB, INDENT + 4, VISITED, CORRUPTED_MEMORY);
+            PanamaUtils.nativeObjectToString(getArray(), SB, INDENT + 4, VISITED, CORRUPTED_MEMORY);
         }
         SB.append("\n");
         SB.append(" ".repeat(INDENT)).append("}@").append(Long.toString(MEMORY.address(), 16));
@@ -186,4 +185,4 @@ public class CustomNativeTypeStruct extends AbstractNativeObject implements Nati
     }
 }
 // metadata.generator-version: pni test
-// sha256:3c3d3162590640fa2e789a19e5338e4e6ef464d69ca6028d9f6356c435c8ca1b
+// sha256:ad463ccf805727a83a931fe55d5b7434571717a0fbd2456e4cc43766c35479df

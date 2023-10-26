@@ -89,8 +89,7 @@ public class ToStringClassRecurse extends AbstractNativeObject implements Native
         SB.append(",\n");
         {
             SB.append(" ".repeat(INDENT + 4)).append("arri => ");
-            if (CORRUPTED_MEMORY) SB.append("<?>");
-            else PanamaUtils.nativeObjectToString(getArri(), SB, INDENT + 4, VISITED, CORRUPTED_MEMORY);
+            PanamaUtils.nativeObjectToString(getArri(), SB, INDENT + 4, VISITED, CORRUPTED_MEMORY);
         }
         SB.append("\n");
         SB.append(" ".repeat(INDENT)).append("}@").append(Long.toString(MEMORY.address(), 16));
@@ -167,4 +166,4 @@ public class ToStringClassRecurse extends AbstractNativeObject implements Native
     }
 }
 // metadata.generator-version: pni test
-// sha256:c0f79a7312b66782fac26466581b921b4658f88ae3327563533b4fdd72374872
+// sha256:c7def08b57e52b3d1a8fcf7ff750ca12f01664f79a7c3ecb530a39519e86cb34

@@ -117,8 +117,7 @@ public class GCCCompatibilityArrayZero extends AbstractNativeObject implements N
         SB.append(",\n");
         {
             SB.append(" ".repeat(INDENT + 4)).append("array => ");
-            if (CORRUPTED_MEMORY) SB.append("<?>");
-            else PanamaUtils.nativeObjectToString(getArray(), SB, INDENT + 4, VISITED, CORRUPTED_MEMORY);
+            PanamaUtils.nativeObjectToString(getArray(), SB, INDENT + 4, VISITED, CORRUPTED_MEMORY);
         }
         SB.append(",\n");
         {
@@ -200,4 +199,4 @@ public class GCCCompatibilityArrayZero extends AbstractNativeObject implements N
     }
 }
 // metadata.generator-version: pni test
-// sha256:8aac5a012cab9f8ceef5d93e515c581bf9a18e7636cea2d91eacd27237bcabae
+// sha256:039924935aaa4bc6e540083f91c3fbe80fc06b2b88d1a95dd897c02824630c5d

@@ -430,8 +430,7 @@ public class StructA extends AbstractNativeObject implements NativeObject {
         SB.append(",\n");
         {
             SB.append(" ".repeat(INDENT + 4)).append("bArray2 => ");
-            if (CORRUPTED_MEMORY) SB.append("<?>");
-            else PanamaUtils.nativeObjectToString(getBArray2(), SB, INDENT + 4, VISITED, CORRUPTED_MEMORY);
+            PanamaUtils.nativeObjectToString(getBArray2(), SB, INDENT + 4, VISITED, CORRUPTED_MEMORY);
         }
         SB.append("\n");
         SB.append(" ".repeat(INDENT)).append("}@").append(Long.toString(MEMORY.address(), 16));
@@ -508,4 +507,4 @@ public class StructA extends AbstractNativeObject implements NativeObject {
     }
 }
 // metadata.generator-version: pni test
-// sha256:1317aa0f333e9b6e24c6f99076eb9068a11cddeabe5dc073fd594f60dfe8da12
+// sha256:2d620a2d7cba2ad35c0c50958df13260254fcc35c82f7ad3252a13ff2d694580
