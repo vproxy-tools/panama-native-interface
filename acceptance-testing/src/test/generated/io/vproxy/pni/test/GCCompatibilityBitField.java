@@ -566,7 +566,7 @@ public class GCCompatibilityBitField extends AbstractNativeObject implements Nat
         this(ALLOCATOR.allocate(LAYOUT));
     }
 
-    private static final MethodHandle setMH = PanamaUtils.lookupPNICriticalFunction(false, void.class, "JavaCritical_io_vproxy_pni_test_GCCompatibilityBitField_set", MemorySegment.class /* self */, byte.class /* a */, byte.class /* a2 */, byte.class /* b */, byte.class /* b2 */, short.class /* c */, short.class /* c2 */, short.class /* d */, short.class /* d2 */, short.class /* e */, short.class /* e2 */, int.class /* f */, int.class /* f2 */, int.class /* g */, int.class /* g2 */, int.class /* h */, int.class /* h2 */, int.class /* i */, int.class /* i2 */, long.class /* j */, long.class /* j2 */, long.class /* k */, long.class /* k2 */, long.class /* l */, long.class /* l2 */, long.class /* m */, long.class /* m2 */);
+    private static final MethodHandle setMH = PanamaUtils.lookupPNICriticalFunction(new PNILinkOptions(), void.class, "JavaCritical_io_vproxy_pni_test_GCCompatibilityBitField_set", MemorySegment.class /* self */, byte.class /* a */, byte.class /* a2 */, byte.class /* b */, byte.class /* b2 */, short.class /* c */, short.class /* c2 */, short.class /* d */, short.class /* d2 */, short.class /* e */, short.class /* e2 */, int.class /* f */, int.class /* f2 */, int.class /* g */, int.class /* g2 */, int.class /* h */, int.class /* h2 */, int.class /* i */, int.class /* i2 */, long.class /* j */, long.class /* j2 */, long.class /* k */, long.class /* k2 */, long.class /* l */, long.class /* l2 */, long.class /* m */, long.class /* m2 */);
 
     public void set(byte a, byte a2, byte b, byte b2, short c, short c2, short d, short d2, short e, short e2, int f, int f2, int g, int g2, int h, int h2, int i, int i2, long j, long j2, long k, long k2, long l, long l2, long m, long m2) {
         try {
@@ -576,7 +576,7 @@ public class GCCompatibilityBitField extends AbstractNativeObject implements Nat
         }
     }
 
-    private static final MethodHandle aMH = PanamaUtils.lookupPNICriticalFunction(false, byte.class, "JavaCritical_io_vproxy_pni_test_GCCompatibilityBitField_a", MemorySegment.class /* self */);
+    private static final MethodHandle aMH = PanamaUtils.lookupPNICriticalFunction(new PNILinkOptions(), byte.class, "JavaCritical_io_vproxy_pni_test_GCCompatibilityBitField_a", MemorySegment.class /* self */);
 
     public byte a() {
         byte RESULT;
@@ -588,7 +588,7 @@ public class GCCompatibilityBitField extends AbstractNativeObject implements Nat
         return RESULT;
     }
 
-    private static final MethodHandle a2MH = PanamaUtils.lookupPNICriticalFunction(false, byte.class, "JavaCritical_io_vproxy_pni_test_GCCompatibilityBitField_a2", MemorySegment.class /* self */);
+    private static final MethodHandle a2MH = PanamaUtils.lookupPNICriticalFunction(new PNILinkOptions(), byte.class, "JavaCritical_io_vproxy_pni_test_GCCompatibilityBitField_a2", MemorySegment.class /* self */);
 
     public byte a2() {
         byte RESULT;
@@ -600,7 +600,7 @@ public class GCCompatibilityBitField extends AbstractNativeObject implements Nat
         return RESULT;
     }
 
-    private static final MethodHandle bMH = PanamaUtils.lookupPNICriticalFunction(false, byte.class, "JavaCritical_io_vproxy_pni_test_GCCompatibilityBitField_b", MemorySegment.class /* self */);
+    private static final MethodHandle bMH = PanamaUtils.lookupPNICriticalFunction(new PNILinkOptions(), byte.class, "JavaCritical_io_vproxy_pni_test_GCCompatibilityBitField_b", MemorySegment.class /* self */);
 
     public byte b() {
         byte RESULT;
@@ -612,7 +612,7 @@ public class GCCompatibilityBitField extends AbstractNativeObject implements Nat
         return RESULT;
     }
 
-    private static final MethodHandle b2MH = PanamaUtils.lookupPNICriticalFunction(false, byte.class, "JavaCritical_io_vproxy_pni_test_GCCompatibilityBitField_b2", MemorySegment.class /* self */);
+    private static final MethodHandle b2MH = PanamaUtils.lookupPNICriticalFunction(new PNILinkOptions(), byte.class, "JavaCritical_io_vproxy_pni_test_GCCompatibilityBitField_b2", MemorySegment.class /* self */);
 
     public byte b2() {
         byte RESULT;
@@ -624,7 +624,7 @@ public class GCCompatibilityBitField extends AbstractNativeObject implements Nat
         return RESULT;
     }
 
-    private static final MethodHandle cMH = PanamaUtils.lookupPNICriticalFunction(false, short.class, "JavaCritical_io_vproxy_pni_test_GCCompatibilityBitField_c", MemorySegment.class /* self */);
+    private static final MethodHandle cMH = PanamaUtils.lookupPNICriticalFunction(new PNILinkOptions(), short.class, "JavaCritical_io_vproxy_pni_test_GCCompatibilityBitField_c", MemorySegment.class /* self */);
 
     public short c() {
         short RESULT;
@@ -636,7 +636,7 @@ public class GCCompatibilityBitField extends AbstractNativeObject implements Nat
         return RESULT;
     }
 
-    private static final MethodHandle c2MH = PanamaUtils.lookupPNICriticalFunction(false, short.class, "JavaCritical_io_vproxy_pni_test_GCCompatibilityBitField_c2", MemorySegment.class /* self */);
+    private static final MethodHandle c2MH = PanamaUtils.lookupPNICriticalFunction(new PNILinkOptions(), short.class, "JavaCritical_io_vproxy_pni_test_GCCompatibilityBitField_c2", MemorySegment.class /* self */);
 
     public short c2() {
         short RESULT;
@@ -648,7 +648,7 @@ public class GCCompatibilityBitField extends AbstractNativeObject implements Nat
         return RESULT;
     }
 
-    private static final MethodHandle dMH = PanamaUtils.lookupPNICriticalFunction(false, short.class, "JavaCritical_io_vproxy_pni_test_GCCompatibilityBitField_d", MemorySegment.class /* self */);
+    private static final MethodHandle dMH = PanamaUtils.lookupPNICriticalFunction(new PNILinkOptions(), short.class, "JavaCritical_io_vproxy_pni_test_GCCompatibilityBitField_d", MemorySegment.class /* self */);
 
     public short d() {
         short RESULT;
@@ -660,7 +660,7 @@ public class GCCompatibilityBitField extends AbstractNativeObject implements Nat
         return RESULT;
     }
 
-    private static final MethodHandle d2MH = PanamaUtils.lookupPNICriticalFunction(false, short.class, "JavaCritical_io_vproxy_pni_test_GCCompatibilityBitField_d2", MemorySegment.class /* self */);
+    private static final MethodHandle d2MH = PanamaUtils.lookupPNICriticalFunction(new PNILinkOptions(), short.class, "JavaCritical_io_vproxy_pni_test_GCCompatibilityBitField_d2", MemorySegment.class /* self */);
 
     public short d2() {
         short RESULT;
@@ -672,7 +672,7 @@ public class GCCompatibilityBitField extends AbstractNativeObject implements Nat
         return RESULT;
     }
 
-    private static final MethodHandle eMH = PanamaUtils.lookupPNICriticalFunction(false, short.class, "JavaCritical_io_vproxy_pni_test_GCCompatibilityBitField_e", MemorySegment.class /* self */);
+    private static final MethodHandle eMH = PanamaUtils.lookupPNICriticalFunction(new PNILinkOptions(), short.class, "JavaCritical_io_vproxy_pni_test_GCCompatibilityBitField_e", MemorySegment.class /* self */);
 
     public short e() {
         short RESULT;
@@ -684,7 +684,7 @@ public class GCCompatibilityBitField extends AbstractNativeObject implements Nat
         return RESULT;
     }
 
-    private static final MethodHandle e2MH = PanamaUtils.lookupPNICriticalFunction(false, short.class, "JavaCritical_io_vproxy_pni_test_GCCompatibilityBitField_e2", MemorySegment.class /* self */);
+    private static final MethodHandle e2MH = PanamaUtils.lookupPNICriticalFunction(new PNILinkOptions(), short.class, "JavaCritical_io_vproxy_pni_test_GCCompatibilityBitField_e2", MemorySegment.class /* self */);
 
     public short e2() {
         short RESULT;
@@ -696,7 +696,7 @@ public class GCCompatibilityBitField extends AbstractNativeObject implements Nat
         return RESULT;
     }
 
-    private static final MethodHandle fMH = PanamaUtils.lookupPNICriticalFunction(false, int.class, "JavaCritical_io_vproxy_pni_test_GCCompatibilityBitField_f", MemorySegment.class /* self */);
+    private static final MethodHandle fMH = PanamaUtils.lookupPNICriticalFunction(new PNILinkOptions(), int.class, "JavaCritical_io_vproxy_pni_test_GCCompatibilityBitField_f", MemorySegment.class /* self */);
 
     public int f() {
         int RESULT;
@@ -708,7 +708,7 @@ public class GCCompatibilityBitField extends AbstractNativeObject implements Nat
         return RESULT;
     }
 
-    private static final MethodHandle f2MH = PanamaUtils.lookupPNICriticalFunction(false, int.class, "JavaCritical_io_vproxy_pni_test_GCCompatibilityBitField_f2", MemorySegment.class /* self */);
+    private static final MethodHandle f2MH = PanamaUtils.lookupPNICriticalFunction(new PNILinkOptions(), int.class, "JavaCritical_io_vproxy_pni_test_GCCompatibilityBitField_f2", MemorySegment.class /* self */);
 
     public int f2() {
         int RESULT;
@@ -720,7 +720,7 @@ public class GCCompatibilityBitField extends AbstractNativeObject implements Nat
         return RESULT;
     }
 
-    private static final MethodHandle gMH = PanamaUtils.lookupPNICriticalFunction(false, int.class, "JavaCritical_io_vproxy_pni_test_GCCompatibilityBitField_g", MemorySegment.class /* self */);
+    private static final MethodHandle gMH = PanamaUtils.lookupPNICriticalFunction(new PNILinkOptions(), int.class, "JavaCritical_io_vproxy_pni_test_GCCompatibilityBitField_g", MemorySegment.class /* self */);
 
     public int g() {
         int RESULT;
@@ -732,7 +732,7 @@ public class GCCompatibilityBitField extends AbstractNativeObject implements Nat
         return RESULT;
     }
 
-    private static final MethodHandle g2MH = PanamaUtils.lookupPNICriticalFunction(false, int.class, "JavaCritical_io_vproxy_pni_test_GCCompatibilityBitField_g2", MemorySegment.class /* self */);
+    private static final MethodHandle g2MH = PanamaUtils.lookupPNICriticalFunction(new PNILinkOptions(), int.class, "JavaCritical_io_vproxy_pni_test_GCCompatibilityBitField_g2", MemorySegment.class /* self */);
 
     public int g2() {
         int RESULT;
@@ -744,7 +744,7 @@ public class GCCompatibilityBitField extends AbstractNativeObject implements Nat
         return RESULT;
     }
 
-    private static final MethodHandle hMH = PanamaUtils.lookupPNICriticalFunction(false, int.class, "JavaCritical_io_vproxy_pni_test_GCCompatibilityBitField_h", MemorySegment.class /* self */);
+    private static final MethodHandle hMH = PanamaUtils.lookupPNICriticalFunction(new PNILinkOptions(), int.class, "JavaCritical_io_vproxy_pni_test_GCCompatibilityBitField_h", MemorySegment.class /* self */);
 
     public int h() {
         int RESULT;
@@ -756,7 +756,7 @@ public class GCCompatibilityBitField extends AbstractNativeObject implements Nat
         return RESULT;
     }
 
-    private static final MethodHandle h2MH = PanamaUtils.lookupPNICriticalFunction(false, int.class, "JavaCritical_io_vproxy_pni_test_GCCompatibilityBitField_h2", MemorySegment.class /* self */);
+    private static final MethodHandle h2MH = PanamaUtils.lookupPNICriticalFunction(new PNILinkOptions(), int.class, "JavaCritical_io_vproxy_pni_test_GCCompatibilityBitField_h2", MemorySegment.class /* self */);
 
     public int h2() {
         int RESULT;
@@ -768,7 +768,7 @@ public class GCCompatibilityBitField extends AbstractNativeObject implements Nat
         return RESULT;
     }
 
-    private static final MethodHandle iMH = PanamaUtils.lookupPNICriticalFunction(false, int.class, "JavaCritical_io_vproxy_pni_test_GCCompatibilityBitField_i", MemorySegment.class /* self */);
+    private static final MethodHandle iMH = PanamaUtils.lookupPNICriticalFunction(new PNILinkOptions(), int.class, "JavaCritical_io_vproxy_pni_test_GCCompatibilityBitField_i", MemorySegment.class /* self */);
 
     public int i() {
         int RESULT;
@@ -780,7 +780,7 @@ public class GCCompatibilityBitField extends AbstractNativeObject implements Nat
         return RESULT;
     }
 
-    private static final MethodHandle i2MH = PanamaUtils.lookupPNICriticalFunction(false, int.class, "JavaCritical_io_vproxy_pni_test_GCCompatibilityBitField_i2", MemorySegment.class /* self */);
+    private static final MethodHandle i2MH = PanamaUtils.lookupPNICriticalFunction(new PNILinkOptions(), int.class, "JavaCritical_io_vproxy_pni_test_GCCompatibilityBitField_i2", MemorySegment.class /* self */);
 
     public int i2() {
         int RESULT;
@@ -792,7 +792,7 @@ public class GCCompatibilityBitField extends AbstractNativeObject implements Nat
         return RESULT;
     }
 
-    private static final MethodHandle jMH = PanamaUtils.lookupPNICriticalFunction(false, long.class, "JavaCritical_io_vproxy_pni_test_GCCompatibilityBitField_j", MemorySegment.class /* self */);
+    private static final MethodHandle jMH = PanamaUtils.lookupPNICriticalFunction(new PNILinkOptions(), long.class, "JavaCritical_io_vproxy_pni_test_GCCompatibilityBitField_j", MemorySegment.class /* self */);
 
     public long j() {
         long RESULT;
@@ -804,7 +804,7 @@ public class GCCompatibilityBitField extends AbstractNativeObject implements Nat
         return RESULT;
     }
 
-    private static final MethodHandle j2MH = PanamaUtils.lookupPNICriticalFunction(false, long.class, "JavaCritical_io_vproxy_pni_test_GCCompatibilityBitField_j2", MemorySegment.class /* self */);
+    private static final MethodHandle j2MH = PanamaUtils.lookupPNICriticalFunction(new PNILinkOptions(), long.class, "JavaCritical_io_vproxy_pni_test_GCCompatibilityBitField_j2", MemorySegment.class /* self */);
 
     public long j2() {
         long RESULT;
@@ -816,7 +816,7 @@ public class GCCompatibilityBitField extends AbstractNativeObject implements Nat
         return RESULT;
     }
 
-    private static final MethodHandle kMH = PanamaUtils.lookupPNICriticalFunction(false, long.class, "JavaCritical_io_vproxy_pni_test_GCCompatibilityBitField_k", MemorySegment.class /* self */);
+    private static final MethodHandle kMH = PanamaUtils.lookupPNICriticalFunction(new PNILinkOptions(), long.class, "JavaCritical_io_vproxy_pni_test_GCCompatibilityBitField_k", MemorySegment.class /* self */);
 
     public long k() {
         long RESULT;
@@ -828,7 +828,7 @@ public class GCCompatibilityBitField extends AbstractNativeObject implements Nat
         return RESULT;
     }
 
-    private static final MethodHandle k2MH = PanamaUtils.lookupPNICriticalFunction(false, long.class, "JavaCritical_io_vproxy_pni_test_GCCompatibilityBitField_k2", MemorySegment.class /* self */);
+    private static final MethodHandle k2MH = PanamaUtils.lookupPNICriticalFunction(new PNILinkOptions(), long.class, "JavaCritical_io_vproxy_pni_test_GCCompatibilityBitField_k2", MemorySegment.class /* self */);
 
     public long k2() {
         long RESULT;
@@ -840,7 +840,7 @@ public class GCCompatibilityBitField extends AbstractNativeObject implements Nat
         return RESULT;
     }
 
-    private static final MethodHandle lMH = PanamaUtils.lookupPNICriticalFunction(false, long.class, "JavaCritical_io_vproxy_pni_test_GCCompatibilityBitField_l", MemorySegment.class /* self */);
+    private static final MethodHandle lMH = PanamaUtils.lookupPNICriticalFunction(new PNILinkOptions(), long.class, "JavaCritical_io_vproxy_pni_test_GCCompatibilityBitField_l", MemorySegment.class /* self */);
 
     public long l() {
         long RESULT;
@@ -852,7 +852,7 @@ public class GCCompatibilityBitField extends AbstractNativeObject implements Nat
         return RESULT;
     }
 
-    private static final MethodHandle l2MH = PanamaUtils.lookupPNICriticalFunction(false, long.class, "JavaCritical_io_vproxy_pni_test_GCCompatibilityBitField_l2", MemorySegment.class /* self */);
+    private static final MethodHandle l2MH = PanamaUtils.lookupPNICriticalFunction(new PNILinkOptions(), long.class, "JavaCritical_io_vproxy_pni_test_GCCompatibilityBitField_l2", MemorySegment.class /* self */);
 
     public long l2() {
         long RESULT;
@@ -864,7 +864,7 @@ public class GCCompatibilityBitField extends AbstractNativeObject implements Nat
         return RESULT;
     }
 
-    private static final MethodHandle mMH = PanamaUtils.lookupPNICriticalFunction(false, long.class, "JavaCritical_io_vproxy_pni_test_GCCompatibilityBitField_m", MemorySegment.class /* self */);
+    private static final MethodHandle mMH = PanamaUtils.lookupPNICriticalFunction(new PNILinkOptions(), long.class, "JavaCritical_io_vproxy_pni_test_GCCompatibilityBitField_m", MemorySegment.class /* self */);
 
     public long m() {
         long RESULT;
@@ -876,7 +876,7 @@ public class GCCompatibilityBitField extends AbstractNativeObject implements Nat
         return RESULT;
     }
 
-    private static final MethodHandle m2MH = PanamaUtils.lookupPNICriticalFunction(false, long.class, "JavaCritical_io_vproxy_pni_test_GCCompatibilityBitField_m2", MemorySegment.class /* self */);
+    private static final MethodHandle m2MH = PanamaUtils.lookupPNICriticalFunction(new PNILinkOptions(), long.class, "JavaCritical_io_vproxy_pni_test_GCCompatibilityBitField_m2", MemorySegment.class /* self */);
 
     public long m2() {
         long RESULT;
@@ -1092,4 +1092,4 @@ public class GCCompatibilityBitField extends AbstractNativeObject implements Nat
     }
 }
 // metadata.generator-version: pni test
-// sha256:15b9bd9737389047db7900b406454e3765fd5df26ccf99b27ddcf3ebda278e77
+// sha256:9c816baac2fc8c720bc8d63892aaa120662c5cbf6f49f6602057431bf55d810f

@@ -54,7 +54,7 @@ public class PointerArrayField extends AbstractNativeObject implements NativeObj
         this(ALLOCATOR.allocate(LAYOUT));
     }
 
-    private static final MethodHandle setMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_PointerArrayField_set", MemorySegment.class /* self */, PNIBuf.class /* a */);
+    private static final MethodHandle setMH = PanamaUtils.lookupPNIFunction(new PNILinkOptions(), "Java_io_vproxy_pni_test_PointerArrayField_set", MemorySegment.class /* self */, PNIBuf.class /* a */);
 
     public void set(PNIEnv ENV, PointerArray a) {
         ENV.reset();
@@ -71,7 +71,7 @@ public class PointerArrayField extends AbstractNativeObject implements NativeObj
         }
     }
 
-    private static final MethodHandle getPtrFieldMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_PointerArrayField_getPtrField", MemorySegment.class /* self */);
+    private static final MethodHandle getPtrFieldMH = PanamaUtils.lookupPNIFunction(new PNILinkOptions(), "Java_io_vproxy_pni_test_PointerArrayField_getPtrField", MemorySegment.class /* self */);
 
     public PointerArray getPtrField(PNIEnv ENV) {
         ENV.reset();
@@ -89,7 +89,7 @@ public class PointerArrayField extends AbstractNativeObject implements NativeObj
         return new PointerArray(RES_SEG);
     }
 
-    private static final MethodHandle getLenFieldMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_PointerArrayField_getLenField", MemorySegment.class /* self */);
+    private static final MethodHandle getLenFieldMH = PanamaUtils.lookupPNIFunction(new PNILinkOptions(), "Java_io_vproxy_pni_test_PointerArrayField_getLenField", MemorySegment.class /* self */);
 
     public PointerArray getLenField(PNIEnv ENV) {
         ENV.reset();
@@ -199,4 +199,4 @@ public class PointerArrayField extends AbstractNativeObject implements NativeObj
     }
 }
 // metadata.generator-version: pni test
-// sha256:54da93998c6f83da42900794277f4683255c5fd7de6c336aaae857ab5dae53e6
+// sha256:621dab297ea1f1430631a90c9326915864647467cedf8d491b5415653c5eae84

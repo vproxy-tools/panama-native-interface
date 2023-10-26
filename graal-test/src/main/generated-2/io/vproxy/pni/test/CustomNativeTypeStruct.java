@@ -60,7 +60,7 @@ public class CustomNativeTypeStruct extends AbstractNativeObject implements Nati
         this(ALLOCATOR.allocate(LAYOUT));
     }
 
-    private static final MethodHandle getP1MH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_CustomNativeTypeStruct_getP1", MemorySegment.class /* self */);
+    private static final MethodHandle getP1MH = PanamaUtils.lookupPNIFunction(new PNILinkOptions(), "Java_io_vproxy_pni_test_CustomNativeTypeStruct_getP1", MemorySegment.class /* self */);
 
     public long getP1(PNIEnv ENV) {
         ENV.reset();
@@ -76,7 +76,7 @@ public class CustomNativeTypeStruct extends AbstractNativeObject implements Nati
         return ENV.returnLong();
     }
 
-    private static final MethodHandle getArrMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_CustomNativeTypeStruct_getArr", MemorySegment.class /* self */);
+    private static final MethodHandle getArrMH = PanamaUtils.lookupPNIFunction(new PNILinkOptions(), "Java_io_vproxy_pni_test_CustomNativeTypeStruct_getArr", MemorySegment.class /* self */);
 
     public PointerArray getArr(PNIEnv ENV) {
         ENV.reset();
@@ -185,4 +185,4 @@ public class CustomNativeTypeStruct extends AbstractNativeObject implements Nati
     }
 }
 // metadata.generator-version: pni test
-// sha256:ad463ccf805727a83a931fe55d5b7434571717a0fbd2456e4cc43766c35479df
+// sha256:ad457a8a06e6646ae4f1d2730861cce3bcd8688b7faa1dd1f90bfb553a48ad4d

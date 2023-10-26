@@ -519,41 +519,41 @@ public class Upcall {
         } catch (Throwable t) {
             throw new RuntimeException(t);
         }
-        primaryParams = PanamaUtils.defineCFunction(ARENA, primaryParamsMH, void.class, byte.class, byte.class, boolean.class, char.class, double.class, float.class, int.class, int.class, long.class, long.class, short.class, short.class);
-        returnByte = PanamaUtils.defineCFunction(ARENA, returnByteMH, byte.class);
-        returnBool = PanamaUtils.defineCFunction(ARENA, returnBoolMH, boolean.class);
-        returnChar = PanamaUtils.defineCFunction(ARENA, returnCharMH, char.class);
-        returnDouble = PanamaUtils.defineCFunction(ARENA, returnDoubleMH, double.class);
-        returnFloat = PanamaUtils.defineCFunction(ARENA, returnFloatMH, float.class);
-        returnInt = PanamaUtils.defineCFunction(ARENA, returnIntMH, int.class);
-        returnLong = PanamaUtils.defineCFunction(ARENA, returnLongMH, long.class);
-        returnShort = PanamaUtils.defineCFunction(ARENA, returnShortMH, short.class);
-        primaryArrayParams = PanamaUtils.defineCFunction(ARENA, primaryArrayParamsMH, void.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class);
-        returnByteArray = PanamaUtils.defineCFunction(ARENA, returnByteArrayMH, MemorySegment.class, MemorySegment.class);
-        returnBoolArray = PanamaUtils.defineCFunction(ARENA, returnBoolArrayMH, MemorySegment.class, MemorySegment.class);
-        returnCharArray = PanamaUtils.defineCFunction(ARENA, returnCharArrayMH, MemorySegment.class, MemorySegment.class);
-        returnDoubleArray = PanamaUtils.defineCFunction(ARENA, returnDoubleArrayMH, MemorySegment.class, MemorySegment.class);
-        returnFloatArray = PanamaUtils.defineCFunction(ARENA, returnFloatArrayMH, MemorySegment.class, MemorySegment.class);
-        returnIntArray = PanamaUtils.defineCFunction(ARENA, returnIntArrayMH, MemorySegment.class, MemorySegment.class);
-        returnLongArray = PanamaUtils.defineCFunction(ARENA, returnLongArrayMH, MemorySegment.class, MemorySegment.class);
-        returnShortArray = PanamaUtils.defineCFunction(ARENA, returnShortArrayMH, MemorySegment.class, MemorySegment.class);
-        objectParams = PanamaUtils.defineCFunction(ARENA, objectParamsMH, void.class, MemorySegment.class);
-        returnObject = PanamaUtils.defineCFunction(ARENA, returnObjectMH, MemorySegment.class, MemorySegment.class);
-        pointerArrayParams = PanamaUtils.defineCFunction(ARENA, pointerArrayParamsMH, void.class, MemorySegment.class);
-        returnPointerArray = PanamaUtils.defineCFunction(ARENA, returnPointerArrayMH, MemorySegment.class, MemorySegment.class);
-        objectArrayParams = PanamaUtils.defineCFunction(ARENA, objectArrayParamsMH, void.class, MemorySegment.class);
-        returnObjectArray = PanamaUtils.defineCFunction(ARENA, returnObjectArrayMH, MemorySegment.class, MemorySegment.class);
-        otherParams = PanamaUtils.defineCFunction(ARENA, otherParamsMH, void.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class);
-        returnBuffer = PanamaUtils.defineCFunction(ARENA, returnBufferMH, MemorySegment.class, MemorySegment.class);
-        returnMem = PanamaUtils.defineCFunction(ARENA, returnMemMH, MemorySegment.class);
-        returnVoidFunc = PanamaUtils.defineCFunction(ARENA, returnVoidFuncMH, MemorySegment.class);
-        returnObjFunc = PanamaUtils.defineCFunction(ARENA, returnObjFuncMH, MemorySegment.class);
-        returnRefFunc = PanamaUtils.defineCFunction(ARENA, returnRefFuncMH, MemorySegment.class);
-        returnRef = PanamaUtils.defineCFunction(ARENA, returnRefMH, MemorySegment.class);
-        returnStr = PanamaUtils.defineCFunction(ARENA, returnStrMH, MemorySegment.class);
-        sum = PanamaUtils.defineCFunction(ARENA, sumMH, int.class, int.class, int.class);
+        primaryParams = PanamaUtils.defineCFunction(new PNILinkOptions(), ARENA, primaryParamsMH, void.class, byte.class, byte.class, boolean.class, char.class, double.class, float.class, int.class, int.class, long.class, long.class, short.class, short.class);
+        returnByte = PanamaUtils.defineCFunction(new PNILinkOptions(), ARENA, returnByteMH, byte.class);
+        returnBool = PanamaUtils.defineCFunction(new PNILinkOptions(), ARENA, returnBoolMH, boolean.class);
+        returnChar = PanamaUtils.defineCFunction(new PNILinkOptions(), ARENA, returnCharMH, char.class);
+        returnDouble = PanamaUtils.defineCFunction(new PNILinkOptions(), ARENA, returnDoubleMH, double.class);
+        returnFloat = PanamaUtils.defineCFunction(new PNILinkOptions(), ARENA, returnFloatMH, float.class);
+        returnInt = PanamaUtils.defineCFunction(new PNILinkOptions(), ARENA, returnIntMH, int.class);
+        returnLong = PanamaUtils.defineCFunction(new PNILinkOptions(), ARENA, returnLongMH, long.class);
+        returnShort = PanamaUtils.defineCFunction(new PNILinkOptions(), ARENA, returnShortMH, short.class);
+        primaryArrayParams = PanamaUtils.defineCFunction(new PNILinkOptions(), ARENA, primaryArrayParamsMH, void.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class);
+        returnByteArray = PanamaUtils.defineCFunction(new PNILinkOptions(), ARENA, returnByteArrayMH, MemorySegment.class, MemorySegment.class);
+        returnBoolArray = PanamaUtils.defineCFunction(new PNILinkOptions(), ARENA, returnBoolArrayMH, MemorySegment.class, MemorySegment.class);
+        returnCharArray = PanamaUtils.defineCFunction(new PNILinkOptions(), ARENA, returnCharArrayMH, MemorySegment.class, MemorySegment.class);
+        returnDoubleArray = PanamaUtils.defineCFunction(new PNILinkOptions(), ARENA, returnDoubleArrayMH, MemorySegment.class, MemorySegment.class);
+        returnFloatArray = PanamaUtils.defineCFunction(new PNILinkOptions(), ARENA, returnFloatArrayMH, MemorySegment.class, MemorySegment.class);
+        returnIntArray = PanamaUtils.defineCFunction(new PNILinkOptions(), ARENA, returnIntArrayMH, MemorySegment.class, MemorySegment.class);
+        returnLongArray = PanamaUtils.defineCFunction(new PNILinkOptions(), ARENA, returnLongArrayMH, MemorySegment.class, MemorySegment.class);
+        returnShortArray = PanamaUtils.defineCFunction(new PNILinkOptions(), ARENA, returnShortArrayMH, MemorySegment.class, MemorySegment.class);
+        objectParams = PanamaUtils.defineCFunction(new PNILinkOptions(), ARENA, objectParamsMH, void.class, MemorySegment.class);
+        returnObject = PanamaUtils.defineCFunction(new PNILinkOptions(), ARENA, returnObjectMH, MemorySegment.class, MemorySegment.class);
+        pointerArrayParams = PanamaUtils.defineCFunction(new PNILinkOptions(), ARENA, pointerArrayParamsMH, void.class, MemorySegment.class);
+        returnPointerArray = PanamaUtils.defineCFunction(new PNILinkOptions(), ARENA, returnPointerArrayMH, MemorySegment.class, MemorySegment.class);
+        objectArrayParams = PanamaUtils.defineCFunction(new PNILinkOptions(), ARENA, objectArrayParamsMH, void.class, MemorySegment.class);
+        returnObjectArray = PanamaUtils.defineCFunction(new PNILinkOptions(), ARENA, returnObjectArrayMH, MemorySegment.class, MemorySegment.class);
+        otherParams = PanamaUtils.defineCFunction(new PNILinkOptions(), ARENA, otherParamsMH, void.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class);
+        returnBuffer = PanamaUtils.defineCFunction(new PNILinkOptions(), ARENA, returnBufferMH, MemorySegment.class, MemorySegment.class);
+        returnMem = PanamaUtils.defineCFunction(new PNILinkOptions(), ARENA, returnMemMH, MemorySegment.class);
+        returnVoidFunc = PanamaUtils.defineCFunction(new PNILinkOptions(), ARENA, returnVoidFuncMH, MemorySegment.class);
+        returnObjFunc = PanamaUtils.defineCFunction(new PNILinkOptions(), ARENA, returnObjFuncMH, MemorySegment.class);
+        returnRefFunc = PanamaUtils.defineCFunction(new PNILinkOptions(), ARENA, returnRefFuncMH, MemorySegment.class);
+        returnRef = PanamaUtils.defineCFunction(new PNILinkOptions(), ARENA, returnRefMH, MemorySegment.class);
+        returnStr = PanamaUtils.defineCFunction(new PNILinkOptions(), ARENA, returnStrMH, MemorySegment.class);
+        sum = PanamaUtils.defineCFunction(new PNILinkOptions(), ARENA, sumMH, int.class, int.class, int.class);
 
-        var initMH = PanamaUtils.lookupPNICriticalFunction(true, void.class, "JavaCritical_io_vproxy_pni_test_Upcall_INIT", MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class);
+        var initMH = PanamaUtils.lookupPNICriticalFunction(new PNILinkOptions().setCritical(true), void.class, "JavaCritical_io_vproxy_pni_test_Upcall_INIT", MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class);
         try {
             initMH.invoke(primaryParams, returnByte, returnBool, returnChar, returnDouble, returnFloat, returnInt, returnLong, returnShort, primaryArrayParams, returnByteArray, returnBoolArray, returnCharArray, returnDoubleArray, returnFloatArray, returnIntArray, returnLongArray, returnShortArray, objectParams, returnObject, pointerArrayParams, returnPointerArray, objectArrayParams, returnObjectArray, otherParams, returnBuffer, returnMem, returnVoidFunc, returnObjFunc, returnRefFunc, returnRef, returnStr, sum);
         } catch (Throwable t) {
@@ -637,4 +637,4 @@ public class Upcall {
     }
 }
 // metadata.generator-version: pni test
-// sha256:a66a593f272336199a1ccff4b746068b41d97266d3e1e3544fa5108c1ef9f717
+// sha256:15adc1d1aab2a86dddf766a113c456f903a922c16c3b3582b440886af56de38d

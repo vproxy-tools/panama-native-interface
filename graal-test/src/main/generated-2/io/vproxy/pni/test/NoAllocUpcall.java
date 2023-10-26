@@ -15,7 +15,7 @@ public class NoAllocUpcall {
     private static final Arena ARENA = Arena.ofShared();
 
     public static MemorySegment execNoAlloc;
-    public static final CEntryPointLiteral<CFunctionPointer> execNoAllocCEPL = GraalUtils.defineCFunctionByName(io.vproxy.pni.test.NoAllocUpcall.class, "execNoAlloc");
+    public static final CEntryPointLiteral<CFunctionPointer> execNoAllocCEPL = GraalUtils.defineCFunctionByName(new PNILinkOptions(), io.vproxy.pni.test.NoAllocUpcall.class, "execNoAlloc");
 
     @CEntryPoint
     public static VoidPointer execNoAlloc(IsolateThread THREAD) {
@@ -30,13 +30,13 @@ public class NoAllocUpcall {
     private static void setNativeImpl() {
         execNoAlloc = MemorySegment.ofAddress(execNoAllocCEPL.getFunctionPointer().rawValue());
 
-        var initMH = PanamaUtils.lookupPNICriticalFunction(true, void.class, "JavaCritical_io_vproxy_pni_test_NoAllocUpcall_INIT", MemorySegment.class);
+        var initMH = PanamaUtils.lookupPNICriticalFunction(new PNILinkOptions().setCritical(true), void.class, "JavaCritical_io_vproxy_pni_test_NoAllocUpcall_INIT", MemorySegment.class);
         try {
             initMH.invoke(execNoAlloc);
         } catch (Throwable t) {
             throw new RuntimeException(t);
         }
-        execNoAlloc = PanamaUtils.lookupFunctionPointer("JavaCritical_io_vproxy_pni_test_NoAllocUpcall_execNoAlloc").orElseThrow(() -> new NullPointerException("JavaCritical_io_vproxy_pni_test_NoAllocUpcall_execNoAlloc"));
+        execNoAlloc = PanamaUtils.lookupFunctionPointer(new PNILookupOptions(), "JavaCritical_io_vproxy_pni_test_NoAllocUpcall_execNoAlloc").orElseThrow(() -> new NullPointerException("JavaCritical_io_vproxy_pni_test_NoAllocUpcall_execNoAlloc"));
     }
 
     private static Interface IMPL = null;
@@ -52,4 +52,4 @@ public class NoAllocUpcall {
     }
 }
 // metadata.generator-version: pni test
-// sha256:1318d58fc92b4931ed550a11ae70e3d22c159a21edce7f44d006c34f2ac4c624
+// sha256:2423b84c6f34f4731fff8677186b392bd1233bd05cad6394c7608fe7b2148051

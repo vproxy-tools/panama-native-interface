@@ -72,7 +72,7 @@ public class GCCCompatibilityArrayZero extends AbstractNativeObject implements N
         this(ALLOCATOR.allocate(LAYOUT));
     }
 
-    private static final MethodHandle initMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_GCCCompatibilityArrayZero_init", MemorySegment.class /* self */);
+    private static final MethodHandle initMH = PanamaUtils.lookupPNIFunction(new PNILinkOptions(), "Java_io_vproxy_pni_test_GCCCompatibilityArrayZero_init", MemorySegment.class /* self */);
 
     public void init(PNIEnv ENV) {
         ENV.reset();
@@ -87,7 +87,7 @@ public class GCCCompatibilityArrayZero extends AbstractNativeObject implements N
         }
     }
 
-    private static final MethodHandle sizeMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_GCCCompatibilityArrayZero_size", MemorySegment.class /* self */);
+    private static final MethodHandle sizeMH = PanamaUtils.lookupPNIFunction(new PNILinkOptions(), "Java_io_vproxy_pni_test_GCCCompatibilityArrayZero_size", MemorySegment.class /* self */);
 
     public long size(PNIEnv ENV) {
         ENV.reset();
@@ -199,4 +199,4 @@ public class GCCCompatibilityArrayZero extends AbstractNativeObject implements N
     }
 }
 // metadata.generator-version: pni test
-// sha256:039924935aaa4bc6e540083f91c3fbe80fc06b2b88d1a95dd897c02824630c5d
+// sha256:c539a28c0a1c43651c2860d77733ccc1032408016835b9e2a1d26b9f7a21544b

@@ -59,7 +59,7 @@ public class PointerArrayField extends AbstractNativeObject implements NativeObj
         this(ALLOCATOR.allocate(LAYOUT));
     }
 
-    private static final MethodHandle setMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_PointerArrayField_set", MemorySegment.class /* self */, PNIBuf.class /* a */);
+    private static final MethodHandle setMH = PanamaUtils.lookupPNIFunction(new PNILinkOptions(), "Java_io_vproxy_pni_test_PointerArrayField_set", MemorySegment.class /* self */, PNIBuf.class /* a */);
 
     public void set(PNIEnv ENV, PointerArray a) {
         ENV.reset();
@@ -76,7 +76,7 @@ public class PointerArrayField extends AbstractNativeObject implements NativeObj
         }
     }
 
-    private static final MethodHandle getPtrFieldMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_PointerArrayField_getPtrField", MemorySegment.class /* self */);
+    private static final MethodHandle getPtrFieldMH = PanamaUtils.lookupPNIFunction(new PNILinkOptions(), "Java_io_vproxy_pni_test_PointerArrayField_getPtrField", MemorySegment.class /* self */);
 
     public PointerArray getPtrField(PNIEnv ENV) {
         ENV.reset();
@@ -94,7 +94,7 @@ public class PointerArrayField extends AbstractNativeObject implements NativeObj
         return new PointerArray(RES_SEG);
     }
 
-    private static final MethodHandle getLenFieldMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_PointerArrayField_getLenField", MemorySegment.class /* self */);
+    private static final MethodHandle getLenFieldMH = PanamaUtils.lookupPNIFunction(new PNILinkOptions(), "Java_io_vproxy_pni_test_PointerArrayField_getLenField", MemorySegment.class /* self */);
 
     public PointerArray getLenField(PNIEnv ENV) {
         ENV.reset();
@@ -204,4 +204,4 @@ public class PointerArrayField extends AbstractNativeObject implements NativeObj
     }
 }
 // metadata.generator-version: pni test
-// sha256:72cebc7d5ec2746f9d5826dc0f9f31683f91981be97a2da873dcf3fe8aefd89f
+// sha256:d6df8e7f658e61c70a3fc8d2e7ed3ce0368f172d9ef31bdd6e42840bbdbe6342

@@ -384,7 +384,7 @@ public class Null extends AbstractNativeObject implements NativeObject {
         this(ALLOCATOR.allocate(LAYOUT));
     }
 
-    private static final MethodHandle testParamMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_Null_testParam", MemorySegment.class /* self */, io.vproxy.pni.test.ObjectStruct.LAYOUT.getClass() /* o */, String.class /* str */, MemorySegment.class /* seg */, PNIBuf.class /* buf */, PNIBuf.class /* byteArr */, PNIBuf.class /* boolArr */, PNIBuf.class /* charArr */, PNIBuf.class /* floatArr */, PNIBuf.class /* doubleArr */, PNIBuf.class /* intArr */, PNIBuf.class /* longArr */, PNIBuf.class /* shortArr */, PNIBuf.class /* pArr */, PNIBuf.class /* oArr */, PNIRef.class /* ref */, io.vproxy.pni.CallSite.class /* func */, io.vproxy.pni.CallSite.class /* funcVoid */, io.vproxy.pni.CallSite.class /* funcRef */);
+    private static final MethodHandle testParamMH = PanamaUtils.lookupPNIFunction(new PNILinkOptions(), "Java_io_vproxy_pni_test_Null_testParam", MemorySegment.class /* self */, io.vproxy.pni.test.ObjectStruct.LAYOUT.getClass() /* o */, String.class /* str */, MemorySegment.class /* seg */, PNIBuf.class /* buf */, PNIBuf.class /* byteArr */, PNIBuf.class /* boolArr */, PNIBuf.class /* charArr */, PNIBuf.class /* floatArr */, PNIBuf.class /* doubleArr */, PNIBuf.class /* intArr */, PNIBuf.class /* longArr */, PNIBuf.class /* shortArr */, PNIBuf.class /* pArr */, PNIBuf.class /* oArr */, PNIRef.class /* ref */, io.vproxy.pni.CallSite.class /* func */, io.vproxy.pni.CallSite.class /* funcVoid */, io.vproxy.pni.CallSite.class /* funcRef */);
 
     public boolean testParam(PNIEnv ENV, io.vproxy.pni.test.ObjectStruct o, PNIString str, MemorySegment seg, ByteBuffer buf, MemorySegment byteArr, BoolArray boolArr, CharArray charArr, FloatArray floatArr, DoubleArray doubleArr, IntArray intArr, LongArray longArr, ShortArray shortArr, PointerArray pArr, io.vproxy.pni.test.ObjectStruct.Array oArr, java.lang.Object ref, io.vproxy.pni.CallSite<io.vproxy.pni.test.Null> func, io.vproxy.pni.CallSite<Void> funcVoid, io.vproxy.pni.CallSite<java.lang.Object> funcRef) {
         ENV.reset();
@@ -402,7 +402,7 @@ public class Null extends AbstractNativeObject implements NativeObject {
         }
     }
 
-    private static final MethodHandle testParamCriticalMH = PanamaUtils.lookupPNICriticalFunction(false, boolean.class, "JavaCritical_io_vproxy_pni_test_Null_testParamCritical", MemorySegment.class /* self */, io.vproxy.pni.test.ObjectStruct.LAYOUT.getClass() /* o */, String.class /* str */, MemorySegment.class /* seg */, PNIBuf.class /* buf */, PNIBuf.class /* byteArr */, PNIBuf.class /* boolArr */, PNIBuf.class /* charArr */, PNIBuf.class /* floatArr */, PNIBuf.class /* doubleArr */, PNIBuf.class /* intArr */, PNIBuf.class /* longArr */, PNIBuf.class /* shortArr */, PNIBuf.class /* pArr */, PNIBuf.class /* oArr */, PNIRef.class /* ref */, io.vproxy.pni.CallSite.class /* func */, io.vproxy.pni.CallSite.class /* funcVoid */, io.vproxy.pni.CallSite.class /* funcRef */);
+    private static final MethodHandle testParamCriticalMH = PanamaUtils.lookupPNICriticalFunction(new PNILinkOptions(), boolean.class, "JavaCritical_io_vproxy_pni_test_Null_testParamCritical", MemorySegment.class /* self */, io.vproxy.pni.test.ObjectStruct.LAYOUT.getClass() /* o */, String.class /* str */, MemorySegment.class /* seg */, PNIBuf.class /* buf */, PNIBuf.class /* byteArr */, PNIBuf.class /* boolArr */, PNIBuf.class /* charArr */, PNIBuf.class /* floatArr */, PNIBuf.class /* doubleArr */, PNIBuf.class /* intArr */, PNIBuf.class /* longArr */, PNIBuf.class /* shortArr */, PNIBuf.class /* pArr */, PNIBuf.class /* oArr */, PNIRef.class /* ref */, io.vproxy.pni.CallSite.class /* func */, io.vproxy.pni.CallSite.class /* funcVoid */, io.vproxy.pni.CallSite.class /* funcRef */);
 
     public boolean testParamCritical(io.vproxy.pni.test.ObjectStruct o, PNIString str, MemorySegment seg, ByteBuffer buf, MemorySegment byteArr, BoolArray boolArr, CharArray charArr, FloatArray floatArr, DoubleArray doubleArr, IntArray intArr, LongArray longArr, ShortArray shortArr, PointerArray pArr, io.vproxy.pni.test.ObjectStruct.Array oArr, java.lang.Object ref, io.vproxy.pni.CallSite<io.vproxy.pni.test.Null> func, io.vproxy.pni.CallSite<Void> funcVoid, io.vproxy.pni.CallSite<java.lang.Object> funcRef) {
         try (var POOLED = Allocator.ofPooled()) {
@@ -416,7 +416,7 @@ public class Null extends AbstractNativeObject implements NativeObject {
         }
     }
 
-    private static final MethodHandle testParamRawMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_Null_testParamRaw", MemorySegment.class /* self */, ByteBuffer.class /* buf */, MemorySegment.class /* byteArr */, MemorySegment.class /* boolArr */, MemorySegment.class /* charArr */, MemorySegment.class /* floatArr */, MemorySegment.class /* doubleArr */, MemorySegment.class /* intArr */, MemorySegment.class /* longArr */, MemorySegment.class /* shortArr */, MemorySegment.class /* pArr */, MemorySegment.class /* oArr */, PNIRef.class /* ref */, PNIFunc.class /* func */, PNIFunc.class /* funcVoid */, PNIFunc.class /* funcRef */);
+    private static final MethodHandle testParamRawMH = PanamaUtils.lookupPNIFunction(new PNILinkOptions(), "Java_io_vproxy_pni_test_Null_testParamRaw", MemorySegment.class /* self */, ByteBuffer.class /* buf */, MemorySegment.class /* byteArr */, MemorySegment.class /* boolArr */, MemorySegment.class /* charArr */, MemorySegment.class /* floatArr */, MemorySegment.class /* doubleArr */, MemorySegment.class /* intArr */, MemorySegment.class /* longArr */, MemorySegment.class /* shortArr */, MemorySegment.class /* pArr */, MemorySegment.class /* oArr */, PNIRef.class /* ref */, PNIFunc.class /* func */, PNIFunc.class /* funcVoid */, PNIFunc.class /* funcRef */);
 
     public boolean testParamRaw(PNIEnv ENV, ByteBuffer buf, MemorySegment byteArr, BoolArray boolArr, CharArray charArr, FloatArray floatArr, DoubleArray doubleArr, IntArray intArr, LongArray longArr, ShortArray shortArr, PointerArray pArr, io.vproxy.pni.test.ObjectStruct.Array oArr, PNIRef<java.lang.Object> ref, PNIFunc<io.vproxy.pni.test.Null> func, PNIFunc<Void> funcVoid, PNIFunc<java.lang.Object> funcRef) {
         ENV.reset();
@@ -432,7 +432,7 @@ public class Null extends AbstractNativeObject implements NativeObject {
         return ENV.returnBool();
     }
 
-    private static final MethodHandle testParamRawCriticalMH = PanamaUtils.lookupPNICriticalFunction(false, boolean.class, "JavaCritical_io_vproxy_pni_test_Null_testParamRawCritical", MemorySegment.class /* self */, ByteBuffer.class /* buf */, MemorySegment.class /* byteArr */, MemorySegment.class /* boolArr */, MemorySegment.class /* charArr */, MemorySegment.class /* floatArr */, MemorySegment.class /* doubleArr */, MemorySegment.class /* intArr */, MemorySegment.class /* longArr */, MemorySegment.class /* shortArr */, MemorySegment.class /* pArr */, MemorySegment.class /* oArr */, PNIRef.class /* ref */, PNIFunc.class /* func */, PNIFunc.class /* funcVoid */, PNIFunc.class /* funcRef */);
+    private static final MethodHandle testParamRawCriticalMH = PanamaUtils.lookupPNICriticalFunction(new PNILinkOptions(), boolean.class, "JavaCritical_io_vproxy_pni_test_Null_testParamRawCritical", MemorySegment.class /* self */, ByteBuffer.class /* buf */, MemorySegment.class /* byteArr */, MemorySegment.class /* boolArr */, MemorySegment.class /* charArr */, MemorySegment.class /* floatArr */, MemorySegment.class /* doubleArr */, MemorySegment.class /* intArr */, MemorySegment.class /* longArr */, MemorySegment.class /* shortArr */, MemorySegment.class /* pArr */, MemorySegment.class /* oArr */, PNIRef.class /* ref */, PNIFunc.class /* func */, PNIFunc.class /* funcVoid */, PNIFunc.class /* funcRef */);
 
     public boolean testParamRawCritical(ByteBuffer buf, MemorySegment byteArr, BoolArray boolArr, CharArray charArr, FloatArray floatArr, DoubleArray doubleArr, IntArray intArr, LongArray longArr, ShortArray shortArr, PointerArray pArr, io.vproxy.pni.test.ObjectStruct.Array oArr, PNIRef<java.lang.Object> ref, PNIFunc<io.vproxy.pni.test.Null> func, PNIFunc<Void> funcVoid, PNIFunc<java.lang.Object> funcRef) {
         boolean RESULT;
@@ -444,7 +444,7 @@ public class Null extends AbstractNativeObject implements NativeObject {
         return RESULT;
     }
 
-    private static final MethodHandle returnOMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_Null_returnO", MemorySegment.class /* self */, MemorySegment.class /* return */);
+    private static final MethodHandle returnOMH = PanamaUtils.lookupPNIFunction(new PNILinkOptions(), "Java_io_vproxy_pni_test_Null_returnO", MemorySegment.class /* self */, MemorySegment.class /* return */);
 
     public io.vproxy.pni.test.ObjectStruct returnO(PNIEnv ENV, Allocator ALLOCATOR) {
         ENV.reset();
@@ -461,7 +461,7 @@ public class Null extends AbstractNativeObject implements NativeObject {
         return RESULT == null ? null : new io.vproxy.pni.test.ObjectStruct(RESULT);
     }
 
-    private static final MethodHandle returnOCriticalMH = PanamaUtils.lookupPNICriticalFunction(false, io.vproxy.pni.test.ObjectStruct.LAYOUT.getClass(), "JavaCritical_io_vproxy_pni_test_Null_returnOCritical", MemorySegment.class /* self */, MemorySegment.class /* return */);
+    private static final MethodHandle returnOCriticalMH = PanamaUtils.lookupPNICriticalFunction(new PNILinkOptions(), io.vproxy.pni.test.ObjectStruct.LAYOUT.getClass(), "JavaCritical_io_vproxy_pni_test_Null_returnOCritical", MemorySegment.class /* self */, MemorySegment.class /* return */);
 
     public io.vproxy.pni.test.ObjectStruct returnOCritical(Allocator ALLOCATOR) {
         MemorySegment RESULT;
@@ -474,7 +474,7 @@ public class Null extends AbstractNativeObject implements NativeObject {
         return RESULT == null ? null : new io.vproxy.pni.test.ObjectStruct(RESULT);
     }
 
-    private static final MethodHandle returnStrMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_Null_returnStr", MemorySegment.class /* self */);
+    private static final MethodHandle returnStrMH = PanamaUtils.lookupPNIFunction(new PNILinkOptions(), "Java_io_vproxy_pni_test_Null_returnStr", MemorySegment.class /* self */);
 
     public PNIString returnStr(PNIEnv ENV) {
         ENV.reset();
@@ -491,7 +491,7 @@ public class Null extends AbstractNativeObject implements NativeObject {
         return RESULT == null ? null : new PNIString(RESULT);
     }
 
-    private static final MethodHandle returnStrCriticalMH = PanamaUtils.lookupPNICriticalFunction(false, String.class, "JavaCritical_io_vproxy_pni_test_Null_returnStrCritical", MemorySegment.class /* self */);
+    private static final MethodHandle returnStrCriticalMH = PanamaUtils.lookupPNICriticalFunction(new PNILinkOptions(), String.class, "JavaCritical_io_vproxy_pni_test_Null_returnStrCritical", MemorySegment.class /* self */);
 
     public PNIString returnStrCritical() {
         MemorySegment RESULT;
@@ -503,7 +503,7 @@ public class Null extends AbstractNativeObject implements NativeObject {
         return RESULT.address() == 0 ? null : new PNIString(RESULT);
     }
 
-    private static final MethodHandle returnSegMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_Null_returnSeg", MemorySegment.class /* self */);
+    private static final MethodHandle returnSegMH = PanamaUtils.lookupPNIFunction(new PNILinkOptions(), "Java_io_vproxy_pni_test_Null_returnSeg", MemorySegment.class /* self */);
 
     public MemorySegment returnSeg(PNIEnv ENV) {
         ENV.reset();
@@ -519,7 +519,7 @@ public class Null extends AbstractNativeObject implements NativeObject {
         return ENV.returnPointer();
     }
 
-    private static final MethodHandle returnSegCriticalMH = PanamaUtils.lookupPNICriticalFunction(false, MemorySegment.class, "JavaCritical_io_vproxy_pni_test_Null_returnSegCritical", MemorySegment.class /* self */);
+    private static final MethodHandle returnSegCriticalMH = PanamaUtils.lookupPNICriticalFunction(new PNILinkOptions(), MemorySegment.class, "JavaCritical_io_vproxy_pni_test_Null_returnSegCritical", MemorySegment.class /* self */);
 
     public MemorySegment returnSegCritical() {
         MemorySegment RESULT;
@@ -532,7 +532,7 @@ public class Null extends AbstractNativeObject implements NativeObject {
         return RESULT;
     }
 
-    private static final MethodHandle returnBufMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_Null_returnBuf", MemorySegment.class /* self */);
+    private static final MethodHandle returnBufMH = PanamaUtils.lookupPNIFunction(new PNILinkOptions(), "Java_io_vproxy_pni_test_Null_returnBuf", MemorySegment.class /* self */);
 
     public ByteBuffer returnBuf(PNIEnv ENV) {
         ENV.reset();
@@ -549,7 +549,7 @@ public class Null extends AbstractNativeObject implements NativeObject {
         return RES_SEG.toByteBuffer();
     }
 
-    private static final MethodHandle returnBufCriticalMH = PanamaUtils.lookupPNICriticalFunction(false, PNIBuf.class, "JavaCritical_io_vproxy_pni_test_Null_returnBufCritical", MemorySegment.class /* self */, MemorySegment.class /* return */);
+    private static final MethodHandle returnBufCriticalMH = PanamaUtils.lookupPNICriticalFunction(new PNILinkOptions(), PNIBuf.class, "JavaCritical_io_vproxy_pni_test_Null_returnBufCritical", MemorySegment.class /* self */, MemorySegment.class /* return */);
 
     public ByteBuffer returnBufCritical() {
         try (var POOLED = Allocator.ofPooled()) {
@@ -565,7 +565,7 @@ public class Null extends AbstractNativeObject implements NativeObject {
         }
     }
 
-    private static final MethodHandle returnBufCritical2MH = PanamaUtils.lookupPNICriticalFunction(false, PNIBuf.class, "JavaCritical_io_vproxy_pni_test_Null_returnBufCritical2", MemorySegment.class /* self */, MemorySegment.class /* return */);
+    private static final MethodHandle returnBufCritical2MH = PanamaUtils.lookupPNICriticalFunction(new PNILinkOptions(), PNIBuf.class, "JavaCritical_io_vproxy_pni_test_Null_returnBufCritical2", MemorySegment.class /* self */, MemorySegment.class /* return */);
 
     public ByteBuffer returnBufCritical2() {
         try (var POOLED = Allocator.ofPooled()) {
@@ -581,7 +581,7 @@ public class Null extends AbstractNativeObject implements NativeObject {
         }
     }
 
-    private static final MethodHandle returnByteArrMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_Null_returnByteArr", MemorySegment.class /* self */);
+    private static final MethodHandle returnByteArrMH = PanamaUtils.lookupPNIFunction(new PNILinkOptions(), "Java_io_vproxy_pni_test_Null_returnByteArr", MemorySegment.class /* self */);
 
     public MemorySegment returnByteArr(PNIEnv ENV) {
         ENV.reset();
@@ -599,7 +599,7 @@ public class Null extends AbstractNativeObject implements NativeObject {
         return RES_SEG.get();
     }
 
-    private static final MethodHandle returnByteArrCriticalMH = PanamaUtils.lookupPNICriticalFunction(false, PNIBuf.class, "JavaCritical_io_vproxy_pni_test_Null_returnByteArrCritical", MemorySegment.class /* self */, MemorySegment.class /* return */);
+    private static final MethodHandle returnByteArrCriticalMH = PanamaUtils.lookupPNICriticalFunction(new PNILinkOptions(), PNIBuf.class, "JavaCritical_io_vproxy_pni_test_Null_returnByteArrCritical", MemorySegment.class /* self */, MemorySegment.class /* return */);
 
     public MemorySegment returnByteArrCritical() {
         try (var POOLED = Allocator.ofPooled()) {
@@ -616,7 +616,7 @@ public class Null extends AbstractNativeObject implements NativeObject {
         }
     }
 
-    private static final MethodHandle returnByteArrCritical2MH = PanamaUtils.lookupPNICriticalFunction(false, PNIBuf.class, "JavaCritical_io_vproxy_pni_test_Null_returnByteArrCritical2", MemorySegment.class /* self */, MemorySegment.class /* return */);
+    private static final MethodHandle returnByteArrCritical2MH = PanamaUtils.lookupPNICriticalFunction(new PNILinkOptions(), PNIBuf.class, "JavaCritical_io_vproxy_pni_test_Null_returnByteArrCritical2", MemorySegment.class /* self */, MemorySegment.class /* return */);
 
     public MemorySegment returnByteArrCritical2() {
         try (var POOLED = Allocator.ofPooled()) {
@@ -633,7 +633,7 @@ public class Null extends AbstractNativeObject implements NativeObject {
         }
     }
 
-    private static final MethodHandle returnBoolArrMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_Null_returnBoolArr", MemorySegment.class /* self */);
+    private static final MethodHandle returnBoolArrMH = PanamaUtils.lookupPNIFunction(new PNILinkOptions(), "Java_io_vproxy_pni_test_Null_returnBoolArr", MemorySegment.class /* self */);
 
     public BoolArray returnBoolArr(PNIEnv ENV) {
         ENV.reset();
@@ -651,7 +651,7 @@ public class Null extends AbstractNativeObject implements NativeObject {
         return new BoolArray(RES_SEG);
     }
 
-    private static final MethodHandle returnBoolArrCriticalMH = PanamaUtils.lookupPNICriticalFunction(false, PNIBuf.class, "JavaCritical_io_vproxy_pni_test_Null_returnBoolArrCritical", MemorySegment.class /* self */, MemorySegment.class /* return */);
+    private static final MethodHandle returnBoolArrCriticalMH = PanamaUtils.lookupPNICriticalFunction(new PNILinkOptions(), PNIBuf.class, "JavaCritical_io_vproxy_pni_test_Null_returnBoolArrCritical", MemorySegment.class /* self */, MemorySegment.class /* return */);
 
     public BoolArray returnBoolArrCritical() {
         try (var POOLED = Allocator.ofPooled()) {
@@ -668,7 +668,7 @@ public class Null extends AbstractNativeObject implements NativeObject {
         }
     }
 
-    private static final MethodHandle returnBoolArrCritical2MH = PanamaUtils.lookupPNICriticalFunction(false, PNIBuf.class, "JavaCritical_io_vproxy_pni_test_Null_returnBoolArrCritical2", MemorySegment.class /* self */, MemorySegment.class /* return */);
+    private static final MethodHandle returnBoolArrCritical2MH = PanamaUtils.lookupPNICriticalFunction(new PNILinkOptions(), PNIBuf.class, "JavaCritical_io_vproxy_pni_test_Null_returnBoolArrCritical2", MemorySegment.class /* self */, MemorySegment.class /* return */);
 
     public BoolArray returnBoolArrCritical2() {
         try (var POOLED = Allocator.ofPooled()) {
@@ -685,7 +685,7 @@ public class Null extends AbstractNativeObject implements NativeObject {
         }
     }
 
-    private static final MethodHandle returnCharArrMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_Null_returnCharArr", MemorySegment.class /* self */);
+    private static final MethodHandle returnCharArrMH = PanamaUtils.lookupPNIFunction(new PNILinkOptions(), "Java_io_vproxy_pni_test_Null_returnCharArr", MemorySegment.class /* self */);
 
     public CharArray returnCharArr(PNIEnv ENV) {
         ENV.reset();
@@ -703,7 +703,7 @@ public class Null extends AbstractNativeObject implements NativeObject {
         return new CharArray(RES_SEG);
     }
 
-    private static final MethodHandle returnCharArrCriticalMH = PanamaUtils.lookupPNICriticalFunction(false, PNIBuf.class, "JavaCritical_io_vproxy_pni_test_Null_returnCharArrCritical", MemorySegment.class /* self */, MemorySegment.class /* return */);
+    private static final MethodHandle returnCharArrCriticalMH = PanamaUtils.lookupPNICriticalFunction(new PNILinkOptions(), PNIBuf.class, "JavaCritical_io_vproxy_pni_test_Null_returnCharArrCritical", MemorySegment.class /* self */, MemorySegment.class /* return */);
 
     public CharArray returnCharArrCritical() {
         try (var POOLED = Allocator.ofPooled()) {
@@ -720,7 +720,7 @@ public class Null extends AbstractNativeObject implements NativeObject {
         }
     }
 
-    private static final MethodHandle returnCharArrCritical2MH = PanamaUtils.lookupPNICriticalFunction(false, PNIBuf.class, "JavaCritical_io_vproxy_pni_test_Null_returnCharArrCritical2", MemorySegment.class /* self */, MemorySegment.class /* return */);
+    private static final MethodHandle returnCharArrCritical2MH = PanamaUtils.lookupPNICriticalFunction(new PNILinkOptions(), PNIBuf.class, "JavaCritical_io_vproxy_pni_test_Null_returnCharArrCritical2", MemorySegment.class /* self */, MemorySegment.class /* return */);
 
     public CharArray returnCharArrCritical2() {
         try (var POOLED = Allocator.ofPooled()) {
@@ -737,7 +737,7 @@ public class Null extends AbstractNativeObject implements NativeObject {
         }
     }
 
-    private static final MethodHandle returnFloatArrMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_Null_returnFloatArr", MemorySegment.class /* self */);
+    private static final MethodHandle returnFloatArrMH = PanamaUtils.lookupPNIFunction(new PNILinkOptions(), "Java_io_vproxy_pni_test_Null_returnFloatArr", MemorySegment.class /* self */);
 
     public FloatArray returnFloatArr(PNIEnv ENV) {
         ENV.reset();
@@ -755,7 +755,7 @@ public class Null extends AbstractNativeObject implements NativeObject {
         return new FloatArray(RES_SEG);
     }
 
-    private static final MethodHandle returnFloatArrCriticalMH = PanamaUtils.lookupPNICriticalFunction(false, PNIBuf.class, "JavaCritical_io_vproxy_pni_test_Null_returnFloatArrCritical", MemorySegment.class /* self */, MemorySegment.class /* return */);
+    private static final MethodHandle returnFloatArrCriticalMH = PanamaUtils.lookupPNICriticalFunction(new PNILinkOptions(), PNIBuf.class, "JavaCritical_io_vproxy_pni_test_Null_returnFloatArrCritical", MemorySegment.class /* self */, MemorySegment.class /* return */);
 
     public FloatArray returnFloatArrCritical() {
         try (var POOLED = Allocator.ofPooled()) {
@@ -772,7 +772,7 @@ public class Null extends AbstractNativeObject implements NativeObject {
         }
     }
 
-    private static final MethodHandle returnFloatArrCritical2MH = PanamaUtils.lookupPNICriticalFunction(false, PNIBuf.class, "JavaCritical_io_vproxy_pni_test_Null_returnFloatArrCritical2", MemorySegment.class /* self */, MemorySegment.class /* return */);
+    private static final MethodHandle returnFloatArrCritical2MH = PanamaUtils.lookupPNICriticalFunction(new PNILinkOptions(), PNIBuf.class, "JavaCritical_io_vproxy_pni_test_Null_returnFloatArrCritical2", MemorySegment.class /* self */, MemorySegment.class /* return */);
 
     public FloatArray returnFloatArrCritical2() {
         try (var POOLED = Allocator.ofPooled()) {
@@ -789,7 +789,7 @@ public class Null extends AbstractNativeObject implements NativeObject {
         }
     }
 
-    private static final MethodHandle returnDoubleArrMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_Null_returnDoubleArr", MemorySegment.class /* self */);
+    private static final MethodHandle returnDoubleArrMH = PanamaUtils.lookupPNIFunction(new PNILinkOptions(), "Java_io_vproxy_pni_test_Null_returnDoubleArr", MemorySegment.class /* self */);
 
     public DoubleArray returnDoubleArr(PNIEnv ENV) {
         ENV.reset();
@@ -807,7 +807,7 @@ public class Null extends AbstractNativeObject implements NativeObject {
         return new DoubleArray(RES_SEG);
     }
 
-    private static final MethodHandle returnDoubleArrCriticalMH = PanamaUtils.lookupPNICriticalFunction(false, PNIBuf.class, "JavaCritical_io_vproxy_pni_test_Null_returnDoubleArrCritical", MemorySegment.class /* self */, MemorySegment.class /* return */);
+    private static final MethodHandle returnDoubleArrCriticalMH = PanamaUtils.lookupPNICriticalFunction(new PNILinkOptions(), PNIBuf.class, "JavaCritical_io_vproxy_pni_test_Null_returnDoubleArrCritical", MemorySegment.class /* self */, MemorySegment.class /* return */);
 
     public DoubleArray returnDoubleArrCritical() {
         try (var POOLED = Allocator.ofPooled()) {
@@ -824,7 +824,7 @@ public class Null extends AbstractNativeObject implements NativeObject {
         }
     }
 
-    private static final MethodHandle returnDoubleArrCritical2MH = PanamaUtils.lookupPNICriticalFunction(false, PNIBuf.class, "JavaCritical_io_vproxy_pni_test_Null_returnDoubleArrCritical2", MemorySegment.class /* self */, MemorySegment.class /* return */);
+    private static final MethodHandle returnDoubleArrCritical2MH = PanamaUtils.lookupPNICriticalFunction(new PNILinkOptions(), PNIBuf.class, "JavaCritical_io_vproxy_pni_test_Null_returnDoubleArrCritical2", MemorySegment.class /* self */, MemorySegment.class /* return */);
 
     public DoubleArray returnDoubleArrCritical2() {
         try (var POOLED = Allocator.ofPooled()) {
@@ -841,7 +841,7 @@ public class Null extends AbstractNativeObject implements NativeObject {
         }
     }
 
-    private static final MethodHandle returnIntArrMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_Null_returnIntArr", MemorySegment.class /* self */);
+    private static final MethodHandle returnIntArrMH = PanamaUtils.lookupPNIFunction(new PNILinkOptions(), "Java_io_vproxy_pni_test_Null_returnIntArr", MemorySegment.class /* self */);
 
     public IntArray returnIntArr(PNIEnv ENV) {
         ENV.reset();
@@ -859,7 +859,7 @@ public class Null extends AbstractNativeObject implements NativeObject {
         return new IntArray(RES_SEG);
     }
 
-    private static final MethodHandle returnIntArrCriticalMH = PanamaUtils.lookupPNICriticalFunction(false, PNIBuf.class, "JavaCritical_io_vproxy_pni_test_Null_returnIntArrCritical", MemorySegment.class /* self */, MemorySegment.class /* return */);
+    private static final MethodHandle returnIntArrCriticalMH = PanamaUtils.lookupPNICriticalFunction(new PNILinkOptions(), PNIBuf.class, "JavaCritical_io_vproxy_pni_test_Null_returnIntArrCritical", MemorySegment.class /* self */, MemorySegment.class /* return */);
 
     public IntArray returnIntArrCritical() {
         try (var POOLED = Allocator.ofPooled()) {
@@ -876,7 +876,7 @@ public class Null extends AbstractNativeObject implements NativeObject {
         }
     }
 
-    private static final MethodHandle returnIntArrCritical2MH = PanamaUtils.lookupPNICriticalFunction(false, PNIBuf.class, "JavaCritical_io_vproxy_pni_test_Null_returnIntArrCritical2", MemorySegment.class /* self */, MemorySegment.class /* return */);
+    private static final MethodHandle returnIntArrCritical2MH = PanamaUtils.lookupPNICriticalFunction(new PNILinkOptions(), PNIBuf.class, "JavaCritical_io_vproxy_pni_test_Null_returnIntArrCritical2", MemorySegment.class /* self */, MemorySegment.class /* return */);
 
     public IntArray returnIntArrCritical2() {
         try (var POOLED = Allocator.ofPooled()) {
@@ -893,7 +893,7 @@ public class Null extends AbstractNativeObject implements NativeObject {
         }
     }
 
-    private static final MethodHandle returnLongArrMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_Null_returnLongArr", MemorySegment.class /* self */);
+    private static final MethodHandle returnLongArrMH = PanamaUtils.lookupPNIFunction(new PNILinkOptions(), "Java_io_vproxy_pni_test_Null_returnLongArr", MemorySegment.class /* self */);
 
     public LongArray returnLongArr(PNIEnv ENV) {
         ENV.reset();
@@ -911,7 +911,7 @@ public class Null extends AbstractNativeObject implements NativeObject {
         return new LongArray(RES_SEG);
     }
 
-    private static final MethodHandle returnLongArrCriticalMH = PanamaUtils.lookupPNICriticalFunction(false, PNIBuf.class, "JavaCritical_io_vproxy_pni_test_Null_returnLongArrCritical", MemorySegment.class /* self */, MemorySegment.class /* return */);
+    private static final MethodHandle returnLongArrCriticalMH = PanamaUtils.lookupPNICriticalFunction(new PNILinkOptions(), PNIBuf.class, "JavaCritical_io_vproxy_pni_test_Null_returnLongArrCritical", MemorySegment.class /* self */, MemorySegment.class /* return */);
 
     public LongArray returnLongArrCritical() {
         try (var POOLED = Allocator.ofPooled()) {
@@ -928,7 +928,7 @@ public class Null extends AbstractNativeObject implements NativeObject {
         }
     }
 
-    private static final MethodHandle returnLongArrCritical2MH = PanamaUtils.lookupPNICriticalFunction(false, PNIBuf.class, "JavaCritical_io_vproxy_pni_test_Null_returnLongArrCritical2", MemorySegment.class /* self */, MemorySegment.class /* return */);
+    private static final MethodHandle returnLongArrCritical2MH = PanamaUtils.lookupPNICriticalFunction(new PNILinkOptions(), PNIBuf.class, "JavaCritical_io_vproxy_pni_test_Null_returnLongArrCritical2", MemorySegment.class /* self */, MemorySegment.class /* return */);
 
     public LongArray returnLongArrCritical2() {
         try (var POOLED = Allocator.ofPooled()) {
@@ -945,7 +945,7 @@ public class Null extends AbstractNativeObject implements NativeObject {
         }
     }
 
-    private static final MethodHandle returnShortArrMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_Null_returnShortArr", MemorySegment.class /* self */);
+    private static final MethodHandle returnShortArrMH = PanamaUtils.lookupPNIFunction(new PNILinkOptions(), "Java_io_vproxy_pni_test_Null_returnShortArr", MemorySegment.class /* self */);
 
     public ShortArray returnShortArr(PNIEnv ENV) {
         ENV.reset();
@@ -963,7 +963,7 @@ public class Null extends AbstractNativeObject implements NativeObject {
         return new ShortArray(RES_SEG);
     }
 
-    private static final MethodHandle returnShortArrCriticalMH = PanamaUtils.lookupPNICriticalFunction(false, PNIBuf.class, "JavaCritical_io_vproxy_pni_test_Null_returnShortArrCritical", MemorySegment.class /* self */, MemorySegment.class /* return */);
+    private static final MethodHandle returnShortArrCriticalMH = PanamaUtils.lookupPNICriticalFunction(new PNILinkOptions(), PNIBuf.class, "JavaCritical_io_vproxy_pni_test_Null_returnShortArrCritical", MemorySegment.class /* self */, MemorySegment.class /* return */);
 
     public ShortArray returnShortArrCritical() {
         try (var POOLED = Allocator.ofPooled()) {
@@ -980,7 +980,7 @@ public class Null extends AbstractNativeObject implements NativeObject {
         }
     }
 
-    private static final MethodHandle returnShortArrCritical2MH = PanamaUtils.lookupPNICriticalFunction(false, PNIBuf.class, "JavaCritical_io_vproxy_pni_test_Null_returnShortArrCritical2", MemorySegment.class /* self */, MemorySegment.class /* return */);
+    private static final MethodHandle returnShortArrCritical2MH = PanamaUtils.lookupPNICriticalFunction(new PNILinkOptions(), PNIBuf.class, "JavaCritical_io_vproxy_pni_test_Null_returnShortArrCritical2", MemorySegment.class /* self */, MemorySegment.class /* return */);
 
     public ShortArray returnShortArrCritical2() {
         try (var POOLED = Allocator.ofPooled()) {
@@ -997,7 +997,7 @@ public class Null extends AbstractNativeObject implements NativeObject {
         }
     }
 
-    private static final MethodHandle returnPArrMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_Null_returnPArr", MemorySegment.class /* self */);
+    private static final MethodHandle returnPArrMH = PanamaUtils.lookupPNIFunction(new PNILinkOptions(), "Java_io_vproxy_pni_test_Null_returnPArr", MemorySegment.class /* self */);
 
     public PointerArray returnPArr(PNIEnv ENV) {
         ENV.reset();
@@ -1015,7 +1015,7 @@ public class Null extends AbstractNativeObject implements NativeObject {
         return new PointerArray(RES_SEG);
     }
 
-    private static final MethodHandle returnPArrCriticalMH = PanamaUtils.lookupPNICriticalFunction(false, PNIBuf.class, "JavaCritical_io_vproxy_pni_test_Null_returnPArrCritical", MemorySegment.class /* self */, MemorySegment.class /* return */);
+    private static final MethodHandle returnPArrCriticalMH = PanamaUtils.lookupPNICriticalFunction(new PNILinkOptions(), PNIBuf.class, "JavaCritical_io_vproxy_pni_test_Null_returnPArrCritical", MemorySegment.class /* self */, MemorySegment.class /* return */);
 
     public PointerArray returnPArrCritical() {
         try (var POOLED = Allocator.ofPooled()) {
@@ -1032,7 +1032,7 @@ public class Null extends AbstractNativeObject implements NativeObject {
         }
     }
 
-    private static final MethodHandle returnPArrCritical2MH = PanamaUtils.lookupPNICriticalFunction(false, PNIBuf.class, "JavaCritical_io_vproxy_pni_test_Null_returnPArrCritical2", MemorySegment.class /* self */, MemorySegment.class /* return */);
+    private static final MethodHandle returnPArrCritical2MH = PanamaUtils.lookupPNICriticalFunction(new PNILinkOptions(), PNIBuf.class, "JavaCritical_io_vproxy_pni_test_Null_returnPArrCritical2", MemorySegment.class /* self */, MemorySegment.class /* return */);
 
     public PointerArray returnPArrCritical2() {
         try (var POOLED = Allocator.ofPooled()) {
@@ -1049,7 +1049,7 @@ public class Null extends AbstractNativeObject implements NativeObject {
         }
     }
 
-    private static final MethodHandle returnOArrMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_Null_returnOArr", MemorySegment.class /* self */);
+    private static final MethodHandle returnOArrMH = PanamaUtils.lookupPNIFunction(new PNILinkOptions(), "Java_io_vproxy_pni_test_Null_returnOArr", MemorySegment.class /* self */);
 
     public io.vproxy.pni.test.ObjectStruct.Array returnOArr(PNIEnv ENV) {
         ENV.reset();
@@ -1067,7 +1067,7 @@ public class Null extends AbstractNativeObject implements NativeObject {
         return new io.vproxy.pni.test.ObjectStruct.Array(RES_SEG);
     }
 
-    private static final MethodHandle returnOArrCriticalMH = PanamaUtils.lookupPNICriticalFunction(false, PNIBuf.class, "JavaCritical_io_vproxy_pni_test_Null_returnOArrCritical", MemorySegment.class /* self */, MemorySegment.class /* return */);
+    private static final MethodHandle returnOArrCriticalMH = PanamaUtils.lookupPNICriticalFunction(new PNILinkOptions(), PNIBuf.class, "JavaCritical_io_vproxy_pni_test_Null_returnOArrCritical", MemorySegment.class /* self */, MemorySegment.class /* return */);
 
     public io.vproxy.pni.test.ObjectStruct.Array returnOArrCritical() {
         try (var POOLED = Allocator.ofPooled()) {
@@ -1084,7 +1084,7 @@ public class Null extends AbstractNativeObject implements NativeObject {
         }
     }
 
-    private static final MethodHandle returnOArrCritical2MH = PanamaUtils.lookupPNICriticalFunction(false, PNIBuf.class, "JavaCritical_io_vproxy_pni_test_Null_returnOArrCritical2", MemorySegment.class /* self */, MemorySegment.class /* return */);
+    private static final MethodHandle returnOArrCritical2MH = PanamaUtils.lookupPNICriticalFunction(new PNILinkOptions(), PNIBuf.class, "JavaCritical_io_vproxy_pni_test_Null_returnOArrCritical2", MemorySegment.class /* self */, MemorySegment.class /* return */);
 
     public io.vproxy.pni.test.ObjectStruct.Array returnOArrCritical2() {
         try (var POOLED = Allocator.ofPooled()) {
@@ -1101,7 +1101,7 @@ public class Null extends AbstractNativeObject implements NativeObject {
         }
     }
 
-    private static final MethodHandle returnRefMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_Null_returnRef", MemorySegment.class /* self */);
+    private static final MethodHandle returnRefMH = PanamaUtils.lookupPNIFunction(new PNILinkOptions(), "Java_io_vproxy_pni_test_Null_returnRef", MemorySegment.class /* self */);
 
     public PNIRef<java.lang.Object> returnRef(PNIEnv ENV) {
         ENV.reset();
@@ -1119,7 +1119,7 @@ public class Null extends AbstractNativeObject implements NativeObject {
         return PNIRef.of(RESULT);
     }
 
-    private static final MethodHandle returnRefCriticalMH = PanamaUtils.lookupPNICriticalFunction(false, PNIRef.class, "JavaCritical_io_vproxy_pni_test_Null_returnRefCritical", MemorySegment.class /* self */);
+    private static final MethodHandle returnRefCriticalMH = PanamaUtils.lookupPNICriticalFunction(new PNILinkOptions(), PNIRef.class, "JavaCritical_io_vproxy_pni_test_Null_returnRefCritical", MemorySegment.class /* self */);
 
     public PNIRef<java.lang.Object> returnRefCritical() {
         MemorySegment RESULT;
@@ -1132,7 +1132,7 @@ public class Null extends AbstractNativeObject implements NativeObject {
         return PNIRef.of(RESULT);
     }
 
-    private static final MethodHandle returnFuncMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_Null_returnFunc", MemorySegment.class /* self */);
+    private static final MethodHandle returnFuncMH = PanamaUtils.lookupPNIFunction(new PNILinkOptions(), "Java_io_vproxy_pni_test_Null_returnFunc", MemorySegment.class /* self */);
 
     public PNIFunc<io.vproxy.pni.test.Null> returnFunc(PNIEnv ENV) {
         ENV.reset();
@@ -1150,7 +1150,7 @@ public class Null extends AbstractNativeObject implements NativeObject {
         return io.vproxy.pni.test.Null.Func.of(RESULT);
     }
 
-    private static final MethodHandle returnFuncCriticalMH = PanamaUtils.lookupPNICriticalFunction(false, PNIFunc.class, "JavaCritical_io_vproxy_pni_test_Null_returnFuncCritical", MemorySegment.class /* self */);
+    private static final MethodHandle returnFuncCriticalMH = PanamaUtils.lookupPNICriticalFunction(new PNILinkOptions(), PNIFunc.class, "JavaCritical_io_vproxy_pni_test_Null_returnFuncCritical", MemorySegment.class /* self */);
 
     public PNIFunc<io.vproxy.pni.test.Null> returnFuncCritical() {
         MemorySegment RESULT;
@@ -1163,7 +1163,7 @@ public class Null extends AbstractNativeObject implements NativeObject {
         return io.vproxy.pni.test.Null.Func.of(RESULT);
     }
 
-    private static final MethodHandle returnFuncVoidMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_Null_returnFuncVoid", MemorySegment.class /* self */);
+    private static final MethodHandle returnFuncVoidMH = PanamaUtils.lookupPNIFunction(new PNILinkOptions(), "Java_io_vproxy_pni_test_Null_returnFuncVoid", MemorySegment.class /* self */);
 
     public PNIFunc<Void> returnFuncVoid(PNIEnv ENV) {
         ENV.reset();
@@ -1181,7 +1181,7 @@ public class Null extends AbstractNativeObject implements NativeObject {
         return PNIFunc.VoidFunc.of(RESULT);
     }
 
-    private static final MethodHandle returnFuncVoidCriticalMH = PanamaUtils.lookupPNICriticalFunction(false, PNIFunc.class, "JavaCritical_io_vproxy_pni_test_Null_returnFuncVoidCritical", MemorySegment.class /* self */);
+    private static final MethodHandle returnFuncVoidCriticalMH = PanamaUtils.lookupPNICriticalFunction(new PNILinkOptions(), PNIFunc.class, "JavaCritical_io_vproxy_pni_test_Null_returnFuncVoidCritical", MemorySegment.class /* self */);
 
     public PNIFunc<Void> returnFuncVoidCritical() {
         MemorySegment RESULT;
@@ -1194,7 +1194,7 @@ public class Null extends AbstractNativeObject implements NativeObject {
         return PNIFunc.VoidFunc.of(RESULT);
     }
 
-    private static final MethodHandle returnFuncRefMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_Null_returnFuncRef", MemorySegment.class /* self */);
+    private static final MethodHandle returnFuncRefMH = PanamaUtils.lookupPNIFunction(new PNILinkOptions(), "Java_io_vproxy_pni_test_Null_returnFuncRef", MemorySegment.class /* self */);
 
     public PNIFunc<java.lang.Object> returnFuncRef(PNIEnv ENV) {
         ENV.reset();
@@ -1212,7 +1212,7 @@ public class Null extends AbstractNativeObject implements NativeObject {
         return PNIRef.Func.of(RESULT);
     }
 
-    private static final MethodHandle returnFuncRefCriticalMH = PanamaUtils.lookupPNICriticalFunction(false, PNIFunc.class, "JavaCritical_io_vproxy_pni_test_Null_returnFuncRefCritical", MemorySegment.class /* self */);
+    private static final MethodHandle returnFuncRefCriticalMH = PanamaUtils.lookupPNICriticalFunction(new PNILinkOptions(), PNIFunc.class, "JavaCritical_io_vproxy_pni_test_Null_returnFuncRefCritical", MemorySegment.class /* self */);
 
     public PNIFunc<java.lang.Object> returnFuncRefCritical() {
         MemorySegment RESULT;
@@ -1225,7 +1225,7 @@ public class Null extends AbstractNativeObject implements NativeObject {
         return PNIRef.Func.of(RESULT);
     }
 
-    private static final MethodHandle emptyPassThroughMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_Null_emptyPassThrough", MemorySegment.class /* self */, io.vproxy.pni.test.Empty.LAYOUT.getClass() /* empty */, MemorySegment.class /* return */);
+    private static final MethodHandle emptyPassThroughMH = PanamaUtils.lookupPNIFunction(new PNILinkOptions(), "Java_io_vproxy_pni_test_Null_emptyPassThrough", MemorySegment.class /* self */, io.vproxy.pni.test.Empty.LAYOUT.getClass() /* empty */, MemorySegment.class /* return */);
 
     public io.vproxy.pni.test.Empty emptyPassThrough(PNIEnv ENV, io.vproxy.pni.test.Empty empty, Allocator ALLOCATOR) {
         ENV.reset();
@@ -1242,7 +1242,7 @@ public class Null extends AbstractNativeObject implements NativeObject {
         return RESULT == null ? null : new io.vproxy.pni.test.Empty(RESULT);
     }
 
-    private static final MethodHandle emptyPassThroughCriticalMH = PanamaUtils.lookupPNICriticalFunction(false, io.vproxy.pni.test.Empty.LAYOUT.getClass(), "JavaCritical_io_vproxy_pni_test_Null_emptyPassThroughCritical", MemorySegment.class /* self */, io.vproxy.pni.test.Empty.LAYOUT.getClass() /* empty */, MemorySegment.class /* return */);
+    private static final MethodHandle emptyPassThroughCriticalMH = PanamaUtils.lookupPNICriticalFunction(new PNILinkOptions(), io.vproxy.pni.test.Empty.LAYOUT.getClass(), "JavaCritical_io_vproxy_pni_test_Null_emptyPassThroughCritical", MemorySegment.class /* self */, io.vproxy.pni.test.Empty.LAYOUT.getClass() /* empty */, MemorySegment.class /* return */);
 
     public io.vproxy.pni.test.Empty emptyPassThroughCritical(io.vproxy.pni.test.Empty empty, Allocator ALLOCATOR) {
         MemorySegment RESULT;
@@ -1443,4 +1443,4 @@ public class Null extends AbstractNativeObject implements NativeObject {
     }
 }
 // metadata.generator-version: pni test
-// sha256:7c60d95618ba677eb83007eb015bfe0bcf695159c3c646008fe750e93b776906
+// sha256:4f7d4f6d78a39da3bd087dcff55b2bb29f44fdddff1c3e22b1fc9433c3b512d6

@@ -61,7 +61,7 @@ public class UnionP extends AbstractNativeObject implements NativeObject {
         this(ALLOCATOR.allocate(LAYOUT));
     }
 
-    private static final MethodHandle retrieveIMH = PanamaUtils.lookupPNIFunction(true, "UnionP_retrieve_i", MemorySegment.class /* self */);
+    private static final MethodHandle retrieveIMH = PanamaUtils.lookupPNIFunction(new PNILinkOptions().setCritical(true), "UnionP_retrieve_i", MemorySegment.class /* self */);
 
     public int retrieveI(PNIEnv ENV) {
         ENV.reset();
@@ -77,7 +77,7 @@ public class UnionP extends AbstractNativeObject implements NativeObject {
         return ENV.returnInt();
     }
 
-    private static final MethodHandle retrieveLMH = PanamaUtils.lookupPNIFunction(true, "UnionP_retrieve_l", MemorySegment.class /* self */);
+    private static final MethodHandle retrieveLMH = PanamaUtils.lookupPNIFunction(new PNILinkOptions().setCritical(true), "UnionP_retrieve_l", MemorySegment.class /* self */);
 
     public long retrieveL(PNIEnv ENV) {
         ENV.reset();
@@ -185,4 +185,4 @@ public class UnionP extends AbstractNativeObject implements NativeObject {
     }
 }
 // metadata.generator-version: pni test
-// sha256:4ac715f2dd9eeaf05c0966815b04fc98427df1904c597800ca96b40f8e5189e7
+// sha256:ce73b43b7aad589999a60f33b335c3f5974bbaf0288e9cccc043012f35e1ecdb

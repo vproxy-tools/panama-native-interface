@@ -16,7 +16,7 @@ public class NoAlloc {
         return INSTANCE;
     }
 
-    private static final MethodHandle execNoAllocMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_NoAlloc_execNoAlloc");
+    private static final MethodHandle execNoAllocMH = PanamaUtils.lookupPNIFunction(new PNILinkOptions(), "Java_io_vproxy_pni_test_NoAlloc_execNoAlloc");
 
     public io.vproxy.pni.test.ObjectStruct execNoAlloc(PNIEnv ENV) {
         ENV.reset();
@@ -33,7 +33,7 @@ public class NoAlloc {
         return RESULT == null ? null : new io.vproxy.pni.test.ObjectStruct(RESULT);
     }
 
-    private static final MethodHandle invokeUpcallMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_NoAlloc_invokeUpcall");
+    private static final MethodHandle invokeUpcallMH = PanamaUtils.lookupPNIFunction(new PNILinkOptions(), "Java_io_vproxy_pni_test_NoAlloc_invokeUpcall");
 
     public io.vproxy.pni.test.ObjectStruct invokeUpcall(PNIEnv ENV) {
         ENV.reset();
@@ -51,4 +51,4 @@ public class NoAlloc {
     }
 }
 // metadata.generator-version: pni test
-// sha256:abe9afb6fb37b09af7db08cb16468ce1092ad8995fd66f7949ebaeee55f674f5
+// sha256:ca9f0efa31e3cdc46b3c045230f8dcc86bd5a8a2a5702738746a9681837ae8f2

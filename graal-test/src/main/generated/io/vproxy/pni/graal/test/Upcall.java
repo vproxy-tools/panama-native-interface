@@ -15,7 +15,7 @@ public class Upcall {
     private static final Arena ARENA = Arena.ofShared();
 
     public static MemorySegment doNothingUpcall;
-    public static final CEntryPointLiteral<CFunctionPointer> doNothingUpcallCEPL = GraalUtils.defineCFunctionByName(io.vproxy.pni.graal.test.Upcall.class, "doNothingUpcall");
+    public static final CEntryPointLiteral<CFunctionPointer> doNothingUpcallCEPL = GraalUtils.defineCFunctionByName(new PNILinkOptions(), io.vproxy.pni.graal.test.Upcall.class, "doNothingUpcall");
 
     @CEntryPoint
     public static void doNothingUpcall(IsolateThread THREAD) {
@@ -27,7 +27,7 @@ public class Upcall {
     }
 
     public static MemorySegment intUpcall;
-    public static final CEntryPointLiteral<CFunctionPointer> intUpcallCEPL = GraalUtils.defineCFunctionByName(io.vproxy.pni.graal.test.Upcall.class, "intUpcall");
+    public static final CEntryPointLiteral<CFunctionPointer> intUpcallCEPL = GraalUtils.defineCFunctionByName(new PNILinkOptions(), io.vproxy.pni.graal.test.Upcall.class, "intUpcall");
 
     @CEntryPoint
     public static int intUpcall(IsolateThread THREAD, int a) {
@@ -42,7 +42,7 @@ public class Upcall {
     }
 
     public static MemorySegment refUpcall;
-    public static final CEntryPointLiteral<CFunctionPointer> refUpcallCEPL = GraalUtils.defineCFunctionByName(io.vproxy.pni.graal.test.Upcall.class, "refUpcall");
+    public static final CEntryPointLiteral<CFunctionPointer> refUpcallCEPL = GraalUtils.defineCFunctionByName(new PNILinkOptions(), io.vproxy.pni.graal.test.Upcall.class, "refUpcall");
 
     @CEntryPoint
     public static int refUpcall(IsolateThread THREAD, VoidPointer refPTR) {
@@ -58,7 +58,7 @@ public class Upcall {
     }
 
     public static MemorySegment funcUpcall;
-    public static final CEntryPointLiteral<CFunctionPointer> funcUpcallCEPL = GraalUtils.defineCFunctionByName(io.vproxy.pni.graal.test.Upcall.class, "funcUpcall");
+    public static final CEntryPointLiteral<CFunctionPointer> funcUpcallCEPL = GraalUtils.defineCFunctionByName(new PNILinkOptions(), io.vproxy.pni.graal.test.Upcall.class, "funcUpcall");
 
     @CEntryPoint
     public static int funcUpcall(IsolateThread THREAD, VoidPointer funcPTR) {
@@ -74,7 +74,7 @@ public class Upcall {
     }
 
     public static MemorySegment returnSegUpcall;
-    public static final CEntryPointLiteral<CFunctionPointer> returnSegUpcallCEPL = GraalUtils.defineCFunctionByName(io.vproxy.pni.graal.test.Upcall.class, "returnSegUpcall");
+    public static final CEntryPointLiteral<CFunctionPointer> returnSegUpcallCEPL = GraalUtils.defineCFunctionByName(new PNILinkOptions(), io.vproxy.pni.graal.test.Upcall.class, "returnSegUpcall");
 
     @CEntryPoint
     public static VoidPointer returnSegUpcall(IsolateThread THREAD) {
@@ -93,17 +93,17 @@ public class Upcall {
         funcUpcall = MemorySegment.ofAddress(funcUpcallCEPL.getFunctionPointer().rawValue());
         returnSegUpcall = MemorySegment.ofAddress(returnSegUpcallCEPL.getFunctionPointer().rawValue());
 
-        var initMH = PanamaUtils.lookupPNICriticalFunction(true, void.class, "JavaCritical_io_vproxy_pni_graal_test_Upcall_INIT", MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class);
+        var initMH = PanamaUtils.lookupPNICriticalFunction(new PNILinkOptions().setCritical(true), void.class, "JavaCritical_io_vproxy_pni_graal_test_Upcall_INIT", MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class);
         try {
             initMH.invoke(doNothingUpcall, intUpcall, refUpcall, funcUpcall, returnSegUpcall);
         } catch (Throwable t) {
             throw new RuntimeException(t);
         }
-        doNothingUpcall = PanamaUtils.lookupFunctionPointer("JavaCritical_io_vproxy_pni_graal_test_Upcall_doNothingUpcall").orElseThrow(() -> new NullPointerException("JavaCritical_io_vproxy_pni_graal_test_Upcall_doNothingUpcall"));
-        intUpcall = PanamaUtils.lookupFunctionPointer("JavaCritical_io_vproxy_pni_graal_test_Upcall_intUpcall").orElseThrow(() -> new NullPointerException("JavaCritical_io_vproxy_pni_graal_test_Upcall_intUpcall"));
-        refUpcall = PanamaUtils.lookupFunctionPointer("JavaCritical_io_vproxy_pni_graal_test_Upcall_refUpcall").orElseThrow(() -> new NullPointerException("JavaCritical_io_vproxy_pni_graal_test_Upcall_refUpcall"));
-        funcUpcall = PanamaUtils.lookupFunctionPointer("JavaCritical_io_vproxy_pni_graal_test_Upcall_funcUpcall").orElseThrow(() -> new NullPointerException("JavaCritical_io_vproxy_pni_graal_test_Upcall_funcUpcall"));
-        returnSegUpcall = PanamaUtils.lookupFunctionPointer("JavaCritical_io_vproxy_pni_graal_test_Upcall_returnSegUpcall").orElseThrow(() -> new NullPointerException("JavaCritical_io_vproxy_pni_graal_test_Upcall_returnSegUpcall"));
+        doNothingUpcall = PanamaUtils.lookupFunctionPointer(new PNILookupOptions(), "JavaCritical_io_vproxy_pni_graal_test_Upcall_doNothingUpcall").orElseThrow(() -> new NullPointerException("JavaCritical_io_vproxy_pni_graal_test_Upcall_doNothingUpcall"));
+        intUpcall = PanamaUtils.lookupFunctionPointer(new PNILookupOptions(), "JavaCritical_io_vproxy_pni_graal_test_Upcall_intUpcall").orElseThrow(() -> new NullPointerException("JavaCritical_io_vproxy_pni_graal_test_Upcall_intUpcall"));
+        refUpcall = PanamaUtils.lookupFunctionPointer(new PNILookupOptions(), "JavaCritical_io_vproxy_pni_graal_test_Upcall_refUpcall").orElseThrow(() -> new NullPointerException("JavaCritical_io_vproxy_pni_graal_test_Upcall_refUpcall"));
+        funcUpcall = PanamaUtils.lookupFunctionPointer(new PNILookupOptions(), "JavaCritical_io_vproxy_pni_graal_test_Upcall_funcUpcall").orElseThrow(() -> new NullPointerException("JavaCritical_io_vproxy_pni_graal_test_Upcall_funcUpcall"));
+        returnSegUpcall = PanamaUtils.lookupFunctionPointer(new PNILookupOptions(), "JavaCritical_io_vproxy_pni_graal_test_Upcall_returnSegUpcall").orElseThrow(() -> new NullPointerException("JavaCritical_io_vproxy_pni_graal_test_Upcall_returnSegUpcall"));
     }
 
     private static Interface IMPL = null;
@@ -127,4 +127,4 @@ public class Upcall {
     }
 }
 // metadata.generator-version: pni test
-// sha256:1933812f86b08225b83e2303e56630d1f6db5015f2cf5630816446a7e128c3ed
+// sha256:d17d09b7e8e7903970017135005ae28bb2cb9c75f39586f16414e4d9ac193098

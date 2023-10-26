@@ -21,7 +21,7 @@ public class CustomNativeTypeFunc {
         return INSTANCE;
     }
 
-    private static final MethodHandle execMH = PanamaUtils.lookupPNICriticalFunction(false, MemorySegment.class, "JavaCritical_io_vproxy_pni_test_CustomNativeTypeFunc_exec", MemorySegment.class /* o */);
+    private static final MethodHandle execMH = PanamaUtils.lookupPNICriticalFunction(new PNILinkOptions(), MemorySegment.class, "JavaCritical_io_vproxy_pni_test_CustomNativeTypeFunc_exec", MemorySegment.class /* o */);
 
     public MemorySegment exec(MemorySegment o) {
         MemorySegment RESULT;
@@ -34,7 +34,7 @@ public class CustomNativeTypeFunc {
         return RESULT;
     }
 
-    private static final MethodHandle invokeMH = PanamaUtils.lookupPNICriticalFunction(false, MemorySegment.class, "JavaCritical_io_vproxy_pni_test_CustomNativeTypeFunc_invoke", io.vproxy.pni.test.SizeofStructExpr.LAYOUT.getClass() /* s */);
+    private static final MethodHandle invokeMH = PanamaUtils.lookupPNICriticalFunction(new PNILinkOptions(), MemorySegment.class, "JavaCritical_io_vproxy_pni_test_CustomNativeTypeFunc_invoke", io.vproxy.pni.test.SizeofStructExpr.LAYOUT.getClass() /* s */);
 
     public MemorySegment invoke(io.vproxy.pni.test.SizeofStructExpr s) {
         MemorySegment RESULT;
@@ -48,4 +48,4 @@ public class CustomNativeTypeFunc {
     }
 }
 // metadata.generator-version: pni test
-// sha256:f659c71343a2f2d26925f516a28b72bcb24d832508800d41bbbb6e0c0c24233c
+// sha256:d787e952ab0238cef3264df6642ad84df30c806b01778c6492fb3bc4a6ab798e

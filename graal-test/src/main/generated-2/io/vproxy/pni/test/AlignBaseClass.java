@@ -45,7 +45,7 @@ public class AlignBaseClass extends AbstractNativeObject implements NativeObject
         this(ALLOCATOR.allocate(LAYOUT));
     }
 
-    private static final MethodHandle aaaaMH = PanamaUtils.lookupPNICriticalFunction(false, short.class, "JavaCritical_io_vproxy_pni_test_AlignBaseClass_aaaa", MemorySegment.class /* self */);
+    private static final MethodHandle aaaaMH = PanamaUtils.lookupPNICriticalFunction(new PNILinkOptions(), short.class, "JavaCritical_io_vproxy_pni_test_AlignBaseClass_aaaa", MemorySegment.class /* self */);
 
     public short aaaa() {
         short RESULT;
@@ -57,7 +57,7 @@ public class AlignBaseClass extends AbstractNativeObject implements NativeObject
         return RESULT;
     }
 
-    private static final MethodHandle size0MH = PanamaUtils.lookupPNICriticalFunction(false, long.class, "JavaCritical_io_vproxy_pni_test_AlignBaseClass_size0", MemorySegment.class /* self */);
+    private static final MethodHandle size0MH = PanamaUtils.lookupPNICriticalFunction(new PNILinkOptions(), long.class, "JavaCritical_io_vproxy_pni_test_AlignBaseClass_size0", MemorySegment.class /* self */);
 
     public long size0() {
         long RESULT;
@@ -155,4 +155,4 @@ public class AlignBaseClass extends AbstractNativeObject implements NativeObject
     }
 }
 // metadata.generator-version: pni test
-// sha256:b9a1a0360353e28f69f6f3d2453b4423540c726be8431341246232934b9af265
+// sha256:d12b7501400213cf08bf14498c60997c6670362f5a133e0aca0fa97b2b8f39f2

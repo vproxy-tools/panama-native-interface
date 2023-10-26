@@ -59,7 +59,7 @@ public class ChildOfPacked extends io.vproxy.pni.test.PackedBaseClass implements
         this(ALLOCATOR.allocate(LAYOUT));
     }
 
-    private static final MethodHandle xxxMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_ChildOfPacked_xxx", MemorySegment.class /* self */, int.class /* x */);
+    private static final MethodHandle xxxMH = PanamaUtils.lookupPNIFunction(new PNILinkOptions(), "Java_io_vproxy_pni_test_ChildOfPacked_xxx", MemorySegment.class /* self */, int.class /* x */);
 
     public void xxx(PNIEnv ENV, int x) {
         ENV.reset();
@@ -74,7 +74,7 @@ public class ChildOfPacked extends io.vproxy.pni.test.PackedBaseClass implements
         }
     }
 
-    private static final MethodHandle oooMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_ChildOfPacked_ooo", MemorySegment.class /* self */, io.vproxy.pni.test.ObjectStruct.LAYOUT.getClass() /* o */);
+    private static final MethodHandle oooMH = PanamaUtils.lookupPNIFunction(new PNILinkOptions(), "Java_io_vproxy_pni_test_ChildOfPacked_ooo", MemorySegment.class /* self */, io.vproxy.pni.test.ObjectStruct.LAYOUT.getClass() /* o */);
 
     public void ooo(PNIEnv ENV, io.vproxy.pni.test.ObjectStruct o) {
         ENV.reset();
@@ -198,4 +198,4 @@ public class ChildOfPacked extends io.vproxy.pni.test.PackedBaseClass implements
     }
 }
 // metadata.generator-version: pni test
-// sha256:03935a2f634586b9df1a2cb999794d5e6aae6285c9c9173601026f2922c99b14
+// sha256:13356f30f6ec532d7deac9ce8f7305c4515afdb02b270b445cad3421d64bfce4

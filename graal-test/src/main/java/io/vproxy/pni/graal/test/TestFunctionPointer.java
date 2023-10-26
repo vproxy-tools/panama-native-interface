@@ -1,6 +1,7 @@
 package io.vproxy.pni.graal.test;
 
 import io.vproxy.pni.Allocator;
+import io.vproxy.pni.PNILinkOptions;
 import io.vproxy.pni.graal.GraalUtils;
 import org.graalvm.nativeimage.CurrentIsolate;
 import org.graalvm.nativeimage.IsolateThread;
@@ -23,7 +24,9 @@ public class TestFunctionPointer {
         return a + b;
     }
 
-    private static final CEntryPointLiteral<CFunctionPointer> p_f_sum = GraalUtils.defineCFunctionByName(TestFunctionPointer.class, "f_sum");
+    private static final CEntryPointLiteral<CFunctionPointer> p_f_sum = GraalUtils.defineCFunctionByName(
+        new PNILinkOptions(),
+        TestFunctionPointer.class, "f_sum");
 
     @Test
     public void sum() {
@@ -45,7 +48,9 @@ public class TestFunctionPointer {
         p.set(ValueLayout.JAVA_INT, 0, a);
     }
 
-    private static final CEntryPointLiteral<CFunctionPointer> p_f_ptr = GraalUtils.defineCFunction(TestFunctionPointer.class, "f_ptr",
+    private static final CEntryPointLiteral<CFunctionPointer> p_f_ptr = GraalUtils.defineCFunction(
+        new PNILinkOptions(),
+        TestFunctionPointer.class, "f_ptr",
         IsolateThread.class, int.class, VoidPointer.class);
 
     @Test

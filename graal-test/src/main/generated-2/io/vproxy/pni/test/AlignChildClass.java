@@ -66,7 +66,7 @@ public class AlignChildClass extends io.vproxy.pni.test.AlignBaseClass implement
         this(ALLOCATOR.allocate(LAYOUT));
     }
 
-    private static final MethodHandle bbbbMH = PanamaUtils.lookupPNICriticalFunction(false, int.class, "JavaCritical_io_vproxy_pni_test_AlignChildClass_bbbb", MemorySegment.class /* self */);
+    private static final MethodHandle bbbbMH = PanamaUtils.lookupPNICriticalFunction(new PNILinkOptions(), int.class, "JavaCritical_io_vproxy_pni_test_AlignChildClass_bbbb", MemorySegment.class /* self */);
 
     public int bbbb() {
         int RESULT;
@@ -78,7 +78,7 @@ public class AlignChildClass extends io.vproxy.pni.test.AlignBaseClass implement
         return RESULT;
     }
 
-    private static final MethodHandle ccccMH = PanamaUtils.lookupPNICriticalFunction(false, int.class, "JavaCritical_io_vproxy_pni_test_AlignChildClass_cccc", MemorySegment.class /* self */);
+    private static final MethodHandle ccccMH = PanamaUtils.lookupPNICriticalFunction(new PNILinkOptions(), int.class, "JavaCritical_io_vproxy_pni_test_AlignChildClass_cccc", MemorySegment.class /* self */);
 
     public int cccc() {
         int RESULT;
@@ -90,7 +90,7 @@ public class AlignChildClass extends io.vproxy.pni.test.AlignBaseClass implement
         return RESULT;
     }
 
-    private static final MethodHandle sizeMH = PanamaUtils.lookupPNICriticalFunction(false, long.class, "JavaCritical_io_vproxy_pni_test_AlignChildClass_size", MemorySegment.class /* self */);
+    private static final MethodHandle sizeMH = PanamaUtils.lookupPNICriticalFunction(new PNILinkOptions(), long.class, "JavaCritical_io_vproxy_pni_test_AlignChildClass_size", MemorySegment.class /* self */);
 
     public long size() {
         long RESULT;
@@ -206,4 +206,4 @@ public class AlignChildClass extends io.vproxy.pni.test.AlignBaseClass implement
     }
 }
 // metadata.generator-version: pni test
-// sha256:e4493a86eca46507a9ab6847f089bbcd6374ccf07f7a74f7d8a3930c01488441
+// sha256:4b65fc9188047fdef401990516290565ff2a9b579e64dd5984dc306787274a1e

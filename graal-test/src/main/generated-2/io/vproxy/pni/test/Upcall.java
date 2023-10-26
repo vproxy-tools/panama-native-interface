@@ -15,7 +15,7 @@ public class Upcall {
     private static final Arena ARENA = Arena.ofShared();
 
     public static MemorySegment primaryParams;
-    public static final CEntryPointLiteral<CFunctionPointer> primaryParamsCEPL = GraalUtils.defineCFunctionByName(io.vproxy.pni.test.Upcall.class, "primaryParams");
+    public static final CEntryPointLiteral<CFunctionPointer> primaryParamsCEPL = GraalUtils.defineCFunctionByName(new PNILinkOptions(), io.vproxy.pni.test.Upcall.class, "primaryParams");
 
     @CEntryPoint
     public static void primaryParams(IsolateThread THREAD, byte b, byte ub, boolean z, char c, double d, float f, int i, int ui, long j, long uj, short s, short us) {
@@ -40,7 +40,7 @@ public class Upcall {
     }
 
     public static MemorySegment returnByte;
-    public static final CEntryPointLiteral<CFunctionPointer> returnByteCEPL = GraalUtils.defineCFunctionByName(io.vproxy.pni.test.Upcall.class, "returnByte");
+    public static final CEntryPointLiteral<CFunctionPointer> returnByteCEPL = GraalUtils.defineCFunctionByName(new PNILinkOptions(), io.vproxy.pni.test.Upcall.class, "returnByte");
 
     @CEntryPoint
     public static byte returnByte(IsolateThread THREAD) {
@@ -53,7 +53,7 @@ public class Upcall {
     }
 
     public static MemorySegment returnBool;
-    public static final CEntryPointLiteral<CFunctionPointer> returnBoolCEPL = GraalUtils.defineCFunctionByName(io.vproxy.pni.test.Upcall.class, "returnBool");
+    public static final CEntryPointLiteral<CFunctionPointer> returnBoolCEPL = GraalUtils.defineCFunctionByName(new PNILinkOptions(), io.vproxy.pni.test.Upcall.class, "returnBool");
 
     @CEntryPoint
     public static boolean returnBool(IsolateThread THREAD) {
@@ -66,7 +66,7 @@ public class Upcall {
     }
 
     public static MemorySegment returnChar;
-    public static final CEntryPointLiteral<CFunctionPointer> returnCharCEPL = GraalUtils.defineCFunctionByName(io.vproxy.pni.test.Upcall.class, "returnChar");
+    public static final CEntryPointLiteral<CFunctionPointer> returnCharCEPL = GraalUtils.defineCFunctionByName(new PNILinkOptions(), io.vproxy.pni.test.Upcall.class, "returnChar");
 
     @CEntryPoint
     public static char returnChar(IsolateThread THREAD) {
@@ -79,7 +79,7 @@ public class Upcall {
     }
 
     public static MemorySegment returnDouble;
-    public static final CEntryPointLiteral<CFunctionPointer> returnDoubleCEPL = GraalUtils.defineCFunctionByName(io.vproxy.pni.test.Upcall.class, "returnDouble");
+    public static final CEntryPointLiteral<CFunctionPointer> returnDoubleCEPL = GraalUtils.defineCFunctionByName(new PNILinkOptions(), io.vproxy.pni.test.Upcall.class, "returnDouble");
 
     @CEntryPoint
     public static double returnDouble(IsolateThread THREAD) {
@@ -92,7 +92,7 @@ public class Upcall {
     }
 
     public static MemorySegment returnFloat;
-    public static final CEntryPointLiteral<CFunctionPointer> returnFloatCEPL = GraalUtils.defineCFunctionByName(io.vproxy.pni.test.Upcall.class, "returnFloat");
+    public static final CEntryPointLiteral<CFunctionPointer> returnFloatCEPL = GraalUtils.defineCFunctionByName(new PNILinkOptions(), io.vproxy.pni.test.Upcall.class, "returnFloat");
 
     @CEntryPoint
     public static float returnFloat(IsolateThread THREAD) {
@@ -105,7 +105,7 @@ public class Upcall {
     }
 
     public static MemorySegment returnInt;
-    public static final CEntryPointLiteral<CFunctionPointer> returnIntCEPL = GraalUtils.defineCFunctionByName(io.vproxy.pni.test.Upcall.class, "returnInt");
+    public static final CEntryPointLiteral<CFunctionPointer> returnIntCEPL = GraalUtils.defineCFunctionByName(new PNILinkOptions(), io.vproxy.pni.test.Upcall.class, "returnInt");
 
     @CEntryPoint
     public static int returnInt(IsolateThread THREAD) {
@@ -118,7 +118,7 @@ public class Upcall {
     }
 
     public static MemorySegment returnLong;
-    public static final CEntryPointLiteral<CFunctionPointer> returnLongCEPL = GraalUtils.defineCFunctionByName(io.vproxy.pni.test.Upcall.class, "returnLong");
+    public static final CEntryPointLiteral<CFunctionPointer> returnLongCEPL = GraalUtils.defineCFunctionByName(new PNILinkOptions(), io.vproxy.pni.test.Upcall.class, "returnLong");
 
     @CEntryPoint
     public static long returnLong(IsolateThread THREAD) {
@@ -131,7 +131,7 @@ public class Upcall {
     }
 
     public static MemorySegment returnShort;
-    public static final CEntryPointLiteral<CFunctionPointer> returnShortCEPL = GraalUtils.defineCFunctionByName(io.vproxy.pni.test.Upcall.class, "returnShort");
+    public static final CEntryPointLiteral<CFunctionPointer> returnShortCEPL = GraalUtils.defineCFunctionByName(new PNILinkOptions(), io.vproxy.pni.test.Upcall.class, "returnShort");
 
     @CEntryPoint
     public static short returnShort(IsolateThread THREAD) {
@@ -144,7 +144,7 @@ public class Upcall {
     }
 
     public static MemorySegment primaryArrayParams;
-    public static final CEntryPointLiteral<CFunctionPointer> primaryArrayParamsCEPL = GraalUtils.defineCFunctionByName(io.vproxy.pni.test.Upcall.class, "primaryArrayParams");
+    public static final CEntryPointLiteral<CFunctionPointer> primaryArrayParamsCEPL = GraalUtils.defineCFunctionByName(new PNILinkOptions(), io.vproxy.pni.test.Upcall.class, "primaryArrayParams");
 
     @CEntryPoint
     public static void primaryArrayParams(IsolateThread THREAD, VoidPointer bPTR, VoidPointer ubPTR, VoidPointer zPTR, VoidPointer cPTR, VoidPointer dPTR, VoidPointer fPTR, VoidPointer iPTR, VoidPointer uiPTR, VoidPointer jPTR, VoidPointer ujPTR, VoidPointer sPTR, VoidPointer usPTR) {
@@ -181,7 +181,7 @@ public class Upcall {
     }
 
     public static MemorySegment returnByteArray;
-    public static final CEntryPointLiteral<CFunctionPointer> returnByteArrayCEPL = GraalUtils.defineCFunctionByName(io.vproxy.pni.test.Upcall.class, "returnByteArray");
+    public static final CEntryPointLiteral<CFunctionPointer> returnByteArrayCEPL = GraalUtils.defineCFunctionByName(new PNILinkOptions(), io.vproxy.pni.test.Upcall.class, "returnByteArray");
 
     @CEntryPoint
     public static VoidPointer returnByteArray(IsolateThread THREAD, VoidPointer return_PTR) {
@@ -198,7 +198,7 @@ public class Upcall {
     }
 
     public static MemorySegment returnBoolArray;
-    public static final CEntryPointLiteral<CFunctionPointer> returnBoolArrayCEPL = GraalUtils.defineCFunctionByName(io.vproxy.pni.test.Upcall.class, "returnBoolArray");
+    public static final CEntryPointLiteral<CFunctionPointer> returnBoolArrayCEPL = GraalUtils.defineCFunctionByName(new PNILinkOptions(), io.vproxy.pni.test.Upcall.class, "returnBoolArray");
 
     @CEntryPoint
     public static VoidPointer returnBoolArray(IsolateThread THREAD, VoidPointer return_PTR) {
@@ -215,7 +215,7 @@ public class Upcall {
     }
 
     public static MemorySegment returnCharArray;
-    public static final CEntryPointLiteral<CFunctionPointer> returnCharArrayCEPL = GraalUtils.defineCFunctionByName(io.vproxy.pni.test.Upcall.class, "returnCharArray");
+    public static final CEntryPointLiteral<CFunctionPointer> returnCharArrayCEPL = GraalUtils.defineCFunctionByName(new PNILinkOptions(), io.vproxy.pni.test.Upcall.class, "returnCharArray");
 
     @CEntryPoint
     public static VoidPointer returnCharArray(IsolateThread THREAD, VoidPointer return_PTR) {
@@ -232,7 +232,7 @@ public class Upcall {
     }
 
     public static MemorySegment returnDoubleArray;
-    public static final CEntryPointLiteral<CFunctionPointer> returnDoubleArrayCEPL = GraalUtils.defineCFunctionByName(io.vproxy.pni.test.Upcall.class, "returnDoubleArray");
+    public static final CEntryPointLiteral<CFunctionPointer> returnDoubleArrayCEPL = GraalUtils.defineCFunctionByName(new PNILinkOptions(), io.vproxy.pni.test.Upcall.class, "returnDoubleArray");
 
     @CEntryPoint
     public static VoidPointer returnDoubleArray(IsolateThread THREAD, VoidPointer return_PTR) {
@@ -249,7 +249,7 @@ public class Upcall {
     }
 
     public static MemorySegment returnFloatArray;
-    public static final CEntryPointLiteral<CFunctionPointer> returnFloatArrayCEPL = GraalUtils.defineCFunctionByName(io.vproxy.pni.test.Upcall.class, "returnFloatArray");
+    public static final CEntryPointLiteral<CFunctionPointer> returnFloatArrayCEPL = GraalUtils.defineCFunctionByName(new PNILinkOptions(), io.vproxy.pni.test.Upcall.class, "returnFloatArray");
 
     @CEntryPoint
     public static VoidPointer returnFloatArray(IsolateThread THREAD, VoidPointer return_PTR) {
@@ -266,7 +266,7 @@ public class Upcall {
     }
 
     public static MemorySegment returnIntArray;
-    public static final CEntryPointLiteral<CFunctionPointer> returnIntArrayCEPL = GraalUtils.defineCFunctionByName(io.vproxy.pni.test.Upcall.class, "returnIntArray");
+    public static final CEntryPointLiteral<CFunctionPointer> returnIntArrayCEPL = GraalUtils.defineCFunctionByName(new PNILinkOptions(), io.vproxy.pni.test.Upcall.class, "returnIntArray");
 
     @CEntryPoint
     public static VoidPointer returnIntArray(IsolateThread THREAD, VoidPointer return_PTR) {
@@ -283,7 +283,7 @@ public class Upcall {
     }
 
     public static MemorySegment returnLongArray;
-    public static final CEntryPointLiteral<CFunctionPointer> returnLongArrayCEPL = GraalUtils.defineCFunctionByName(io.vproxy.pni.test.Upcall.class, "returnLongArray");
+    public static final CEntryPointLiteral<CFunctionPointer> returnLongArrayCEPL = GraalUtils.defineCFunctionByName(new PNILinkOptions(), io.vproxy.pni.test.Upcall.class, "returnLongArray");
 
     @CEntryPoint
     public static VoidPointer returnLongArray(IsolateThread THREAD, VoidPointer return_PTR) {
@@ -300,7 +300,7 @@ public class Upcall {
     }
 
     public static MemorySegment returnShortArray;
-    public static final CEntryPointLiteral<CFunctionPointer> returnShortArrayCEPL = GraalUtils.defineCFunctionByName(io.vproxy.pni.test.Upcall.class, "returnShortArray");
+    public static final CEntryPointLiteral<CFunctionPointer> returnShortArrayCEPL = GraalUtils.defineCFunctionByName(new PNILinkOptions(), io.vproxy.pni.test.Upcall.class, "returnShortArray");
 
     @CEntryPoint
     public static VoidPointer returnShortArray(IsolateThread THREAD, VoidPointer return_PTR) {
@@ -317,7 +317,7 @@ public class Upcall {
     }
 
     public static MemorySegment objectParams;
-    public static final CEntryPointLiteral<CFunctionPointer> objectParamsCEPL = GraalUtils.defineCFunctionByName(io.vproxy.pni.test.Upcall.class, "objectParams");
+    public static final CEntryPointLiteral<CFunctionPointer> objectParamsCEPL = GraalUtils.defineCFunctionByName(new PNILinkOptions(), io.vproxy.pni.test.Upcall.class, "objectParams");
 
     @CEntryPoint
     public static void objectParams(IsolateThread THREAD, VoidPointer oPTR) {
@@ -332,7 +332,7 @@ public class Upcall {
     }
 
     public static MemorySegment returnObject;
-    public static final CEntryPointLiteral<CFunctionPointer> returnObjectCEPL = GraalUtils.defineCFunctionByName(io.vproxy.pni.test.Upcall.class, "returnObject");
+    public static final CEntryPointLiteral<CFunctionPointer> returnObjectCEPL = GraalUtils.defineCFunctionByName(new PNILinkOptions(), io.vproxy.pni.test.Upcall.class, "returnObject");
 
     @CEntryPoint
     public static VoidPointer returnObject(IsolateThread THREAD, VoidPointer return_PTR) {
@@ -348,7 +348,7 @@ public class Upcall {
     }
 
     public static MemorySegment pointerArrayParams;
-    public static final CEntryPointLiteral<CFunctionPointer> pointerArrayParamsCEPL = GraalUtils.defineCFunctionByName(io.vproxy.pni.test.Upcall.class, "pointerArrayParams");
+    public static final CEntryPointLiteral<CFunctionPointer> pointerArrayParamsCEPL = GraalUtils.defineCFunctionByName(new PNILinkOptions(), io.vproxy.pni.test.Upcall.class, "pointerArrayParams");
 
     @CEntryPoint
     public static void pointerArrayParams(IsolateThread THREAD, VoidPointer pPTR) {
@@ -363,7 +363,7 @@ public class Upcall {
     }
 
     public static MemorySegment returnPointerArray;
-    public static final CEntryPointLiteral<CFunctionPointer> returnPointerArrayCEPL = GraalUtils.defineCFunctionByName(io.vproxy.pni.test.Upcall.class, "returnPointerArray");
+    public static final CEntryPointLiteral<CFunctionPointer> returnPointerArrayCEPL = GraalUtils.defineCFunctionByName(new PNILinkOptions(), io.vproxy.pni.test.Upcall.class, "returnPointerArray");
 
     @CEntryPoint
     public static VoidPointer returnPointerArray(IsolateThread THREAD, VoidPointer return_PTR) {
@@ -380,7 +380,7 @@ public class Upcall {
     }
 
     public static MemorySegment objectArrayParams;
-    public static final CEntryPointLiteral<CFunctionPointer> objectArrayParamsCEPL = GraalUtils.defineCFunctionByName(io.vproxy.pni.test.Upcall.class, "objectArrayParams");
+    public static final CEntryPointLiteral<CFunctionPointer> objectArrayParamsCEPL = GraalUtils.defineCFunctionByName(new PNILinkOptions(), io.vproxy.pni.test.Upcall.class, "objectArrayParams");
 
     @CEntryPoint
     public static void objectArrayParams(IsolateThread THREAD, VoidPointer oPTR) {
@@ -395,7 +395,7 @@ public class Upcall {
     }
 
     public static MemorySegment returnObjectArray;
-    public static final CEntryPointLiteral<CFunctionPointer> returnObjectArrayCEPL = GraalUtils.defineCFunctionByName(io.vproxy.pni.test.Upcall.class, "returnObjectArray");
+    public static final CEntryPointLiteral<CFunctionPointer> returnObjectArrayCEPL = GraalUtils.defineCFunctionByName(new PNILinkOptions(), io.vproxy.pni.test.Upcall.class, "returnObjectArray");
 
     @CEntryPoint
     public static VoidPointer returnObjectArray(IsolateThread THREAD, VoidPointer return_PTR) {
@@ -412,7 +412,7 @@ public class Upcall {
     }
 
     public static MemorySegment otherParams;
-    public static final CEntryPointLiteral<CFunctionPointer> otherParamsCEPL = GraalUtils.defineCFunctionByName(io.vproxy.pni.test.Upcall.class, "otherParams");
+    public static final CEntryPointLiteral<CFunctionPointer> otherParamsCEPL = GraalUtils.defineCFunctionByName(new PNILinkOptions(), io.vproxy.pni.test.Upcall.class, "otherParams");
 
     @CEntryPoint
     public static void otherParams(IsolateThread THREAD, VoidPointer bufferPTR, VoidPointer voidCallSitePTR, VoidPointer objCallSitePTR, VoidPointer refCallSitePTR, VoidPointer memPTR, VoidPointer voidFuncPTR, VoidPointer objFuncPTR, VoidPointer refFuncPTR, VoidPointer refPTR, VoidPointer rawRefPTR, VoidPointer strPTR) {
@@ -447,7 +447,7 @@ public class Upcall {
     }
 
     public static MemorySegment returnBuffer;
-    public static final CEntryPointLiteral<CFunctionPointer> returnBufferCEPL = GraalUtils.defineCFunctionByName(io.vproxy.pni.test.Upcall.class, "returnBuffer");
+    public static final CEntryPointLiteral<CFunctionPointer> returnBufferCEPL = GraalUtils.defineCFunctionByName(new PNILinkOptions(), io.vproxy.pni.test.Upcall.class, "returnBuffer");
 
     @CEntryPoint
     public static VoidPointer returnBuffer(IsolateThread THREAD, VoidPointer return_PTR) {
@@ -464,7 +464,7 @@ public class Upcall {
     }
 
     public static MemorySegment returnMem;
-    public static final CEntryPointLiteral<CFunctionPointer> returnMemCEPL = GraalUtils.defineCFunctionByName(io.vproxy.pni.test.Upcall.class, "returnMem");
+    public static final CEntryPointLiteral<CFunctionPointer> returnMemCEPL = GraalUtils.defineCFunctionByName(new PNILinkOptions(), io.vproxy.pni.test.Upcall.class, "returnMem");
 
     @CEntryPoint
     public static VoidPointer returnMem(IsolateThread THREAD) {
@@ -477,7 +477,7 @@ public class Upcall {
     }
 
     public static MemorySegment returnVoidFunc;
-    public static final CEntryPointLiteral<CFunctionPointer> returnVoidFuncCEPL = GraalUtils.defineCFunctionByName(io.vproxy.pni.test.Upcall.class, "returnVoidFunc");
+    public static final CEntryPointLiteral<CFunctionPointer> returnVoidFuncCEPL = GraalUtils.defineCFunctionByName(new PNILinkOptions(), io.vproxy.pni.test.Upcall.class, "returnVoidFunc");
 
     @CEntryPoint
     public static VoidPointer returnVoidFunc(IsolateThread THREAD) {
@@ -490,7 +490,7 @@ public class Upcall {
     }
 
     public static MemorySegment returnObjFunc;
-    public static final CEntryPointLiteral<CFunctionPointer> returnObjFuncCEPL = GraalUtils.defineCFunctionByName(io.vproxy.pni.test.Upcall.class, "returnObjFunc");
+    public static final CEntryPointLiteral<CFunctionPointer> returnObjFuncCEPL = GraalUtils.defineCFunctionByName(new PNILinkOptions(), io.vproxy.pni.test.Upcall.class, "returnObjFunc");
 
     @CEntryPoint
     public static VoidPointer returnObjFunc(IsolateThread THREAD) {
@@ -503,7 +503,7 @@ public class Upcall {
     }
 
     public static MemorySegment returnRefFunc;
-    public static final CEntryPointLiteral<CFunctionPointer> returnRefFuncCEPL = GraalUtils.defineCFunctionByName(io.vproxy.pni.test.Upcall.class, "returnRefFunc");
+    public static final CEntryPointLiteral<CFunctionPointer> returnRefFuncCEPL = GraalUtils.defineCFunctionByName(new PNILinkOptions(), io.vproxy.pni.test.Upcall.class, "returnRefFunc");
 
     @CEntryPoint
     public static VoidPointer returnRefFunc(IsolateThread THREAD) {
@@ -516,7 +516,7 @@ public class Upcall {
     }
 
     public static MemorySegment returnRef;
-    public static final CEntryPointLiteral<CFunctionPointer> returnRefCEPL = GraalUtils.defineCFunctionByName(io.vproxy.pni.test.Upcall.class, "returnRef");
+    public static final CEntryPointLiteral<CFunctionPointer> returnRefCEPL = GraalUtils.defineCFunctionByName(new PNILinkOptions(), io.vproxy.pni.test.Upcall.class, "returnRef");
 
     @CEntryPoint
     public static VoidPointer returnRef(IsolateThread THREAD) {
@@ -529,7 +529,7 @@ public class Upcall {
     }
 
     public static MemorySegment returnStr;
-    public static final CEntryPointLiteral<CFunctionPointer> returnStrCEPL = GraalUtils.defineCFunctionByName(io.vproxy.pni.test.Upcall.class, "returnStr");
+    public static final CEntryPointLiteral<CFunctionPointer> returnStrCEPL = GraalUtils.defineCFunctionByName(new PNILinkOptions(), io.vproxy.pni.test.Upcall.class, "returnStr");
 
     @CEntryPoint
     public static VoidPointer returnStr(IsolateThread THREAD) {
@@ -542,7 +542,7 @@ public class Upcall {
     }
 
     public static MemorySegment sum;
-    public static final CEntryPointLiteral<CFunctionPointer> sumCEPL = GraalUtils.defineCFunctionByName(io.vproxy.pni.test.Upcall.class, "sum");
+    public static final CEntryPointLiteral<CFunctionPointer> sumCEPL = GraalUtils.defineCFunctionByName(new PNILinkOptions(), io.vproxy.pni.test.Upcall.class, "sum");
 
     @CEntryPoint
     public static int sum(IsolateThread THREAD, int a, int b) {
@@ -592,45 +592,45 @@ public class Upcall {
         returnStr = MemorySegment.ofAddress(returnStrCEPL.getFunctionPointer().rawValue());
         sum = MemorySegment.ofAddress(sumCEPL.getFunctionPointer().rawValue());
 
-        var initMH = PanamaUtils.lookupPNICriticalFunction(true, void.class, "JavaCritical_io_vproxy_pni_test_Upcall_INIT", MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class);
+        var initMH = PanamaUtils.lookupPNICriticalFunction(new PNILinkOptions().setCritical(true), void.class, "JavaCritical_io_vproxy_pni_test_Upcall_INIT", MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class);
         try {
             initMH.invoke(primaryParams, returnByte, returnBool, returnChar, returnDouble, returnFloat, returnInt, returnLong, returnShort, primaryArrayParams, returnByteArray, returnBoolArray, returnCharArray, returnDoubleArray, returnFloatArray, returnIntArray, returnLongArray, returnShortArray, objectParams, returnObject, pointerArrayParams, returnPointerArray, objectArrayParams, returnObjectArray, otherParams, returnBuffer, returnMem, returnVoidFunc, returnObjFunc, returnRefFunc, returnRef, returnStr, sum);
         } catch (Throwable t) {
             throw new RuntimeException(t);
         }
-        primaryParams = PanamaUtils.lookupFunctionPointer("JavaCritical_io_vproxy_pni_test_Upcall_primaryParams").orElseThrow(() -> new NullPointerException("JavaCritical_io_vproxy_pni_test_Upcall_primaryParams"));
-        returnByte = PanamaUtils.lookupFunctionPointer("JavaCritical_io_vproxy_pni_test_Upcall_returnByte").orElseThrow(() -> new NullPointerException("JavaCritical_io_vproxy_pni_test_Upcall_returnByte"));
-        returnBool = PanamaUtils.lookupFunctionPointer("JavaCritical_io_vproxy_pni_test_Upcall_returnBool").orElseThrow(() -> new NullPointerException("JavaCritical_io_vproxy_pni_test_Upcall_returnBool"));
-        returnChar = PanamaUtils.lookupFunctionPointer("JavaCritical_io_vproxy_pni_test_Upcall_returnChar").orElseThrow(() -> new NullPointerException("JavaCritical_io_vproxy_pni_test_Upcall_returnChar"));
-        returnDouble = PanamaUtils.lookupFunctionPointer("JavaCritical_io_vproxy_pni_test_Upcall_returnDouble").orElseThrow(() -> new NullPointerException("JavaCritical_io_vproxy_pni_test_Upcall_returnDouble"));
-        returnFloat = PanamaUtils.lookupFunctionPointer("JavaCritical_io_vproxy_pni_test_Upcall_returnFloat").orElseThrow(() -> new NullPointerException("JavaCritical_io_vproxy_pni_test_Upcall_returnFloat"));
-        returnInt = PanamaUtils.lookupFunctionPointer("JavaCritical_io_vproxy_pni_test_Upcall_returnInt").orElseThrow(() -> new NullPointerException("JavaCritical_io_vproxy_pni_test_Upcall_returnInt"));
-        returnLong = PanamaUtils.lookupFunctionPointer("JavaCritical_io_vproxy_pni_test_Upcall_returnLong").orElseThrow(() -> new NullPointerException("JavaCritical_io_vproxy_pni_test_Upcall_returnLong"));
-        returnShort = PanamaUtils.lookupFunctionPointer("JavaCritical_io_vproxy_pni_test_Upcall_returnShort").orElseThrow(() -> new NullPointerException("JavaCritical_io_vproxy_pni_test_Upcall_returnShort"));
-        primaryArrayParams = PanamaUtils.lookupFunctionPointer("JavaCritical_io_vproxy_pni_test_Upcall_primaryArrayParams").orElseThrow(() -> new NullPointerException("JavaCritical_io_vproxy_pni_test_Upcall_primaryArrayParams"));
-        returnByteArray = PanamaUtils.lookupFunctionPointer("JavaCritical_io_vproxy_pni_test_Upcall_returnByteArray").orElseThrow(() -> new NullPointerException("JavaCritical_io_vproxy_pni_test_Upcall_returnByteArray"));
-        returnBoolArray = PanamaUtils.lookupFunctionPointer("JavaCritical_io_vproxy_pni_test_Upcall_returnBoolArray").orElseThrow(() -> new NullPointerException("JavaCritical_io_vproxy_pni_test_Upcall_returnBoolArray"));
-        returnCharArray = PanamaUtils.lookupFunctionPointer("JavaCritical_io_vproxy_pni_test_Upcall_returnCharArray").orElseThrow(() -> new NullPointerException("JavaCritical_io_vproxy_pni_test_Upcall_returnCharArray"));
-        returnDoubleArray = PanamaUtils.lookupFunctionPointer("JavaCritical_io_vproxy_pni_test_Upcall_returnDoubleArray").orElseThrow(() -> new NullPointerException("JavaCritical_io_vproxy_pni_test_Upcall_returnDoubleArray"));
-        returnFloatArray = PanamaUtils.lookupFunctionPointer("JavaCritical_io_vproxy_pni_test_Upcall_returnFloatArray").orElseThrow(() -> new NullPointerException("JavaCritical_io_vproxy_pni_test_Upcall_returnFloatArray"));
-        returnIntArray = PanamaUtils.lookupFunctionPointer("JavaCritical_io_vproxy_pni_test_Upcall_returnIntArray").orElseThrow(() -> new NullPointerException("JavaCritical_io_vproxy_pni_test_Upcall_returnIntArray"));
-        returnLongArray = PanamaUtils.lookupFunctionPointer("JavaCritical_io_vproxy_pni_test_Upcall_returnLongArray").orElseThrow(() -> new NullPointerException("JavaCritical_io_vproxy_pni_test_Upcall_returnLongArray"));
-        returnShortArray = PanamaUtils.lookupFunctionPointer("JavaCritical_io_vproxy_pni_test_Upcall_returnShortArray").orElseThrow(() -> new NullPointerException("JavaCritical_io_vproxy_pni_test_Upcall_returnShortArray"));
-        objectParams = PanamaUtils.lookupFunctionPointer("JavaCritical_io_vproxy_pni_test_Upcall_objectParams").orElseThrow(() -> new NullPointerException("JavaCritical_io_vproxy_pni_test_Upcall_objectParams"));
-        returnObject = PanamaUtils.lookupFunctionPointer("JavaCritical_io_vproxy_pni_test_Upcall_returnObject").orElseThrow(() -> new NullPointerException("JavaCritical_io_vproxy_pni_test_Upcall_returnObject"));
-        pointerArrayParams = PanamaUtils.lookupFunctionPointer("JavaCritical_io_vproxy_pni_test_Upcall_pointerArrayParams").orElseThrow(() -> new NullPointerException("JavaCritical_io_vproxy_pni_test_Upcall_pointerArrayParams"));
-        returnPointerArray = PanamaUtils.lookupFunctionPointer("JavaCritical_io_vproxy_pni_test_Upcall_returnPointerArray").orElseThrow(() -> new NullPointerException("JavaCritical_io_vproxy_pni_test_Upcall_returnPointerArray"));
-        objectArrayParams = PanamaUtils.lookupFunctionPointer("JavaCritical_io_vproxy_pni_test_Upcall_objectArrayParams").orElseThrow(() -> new NullPointerException("JavaCritical_io_vproxy_pni_test_Upcall_objectArrayParams"));
-        returnObjectArray = PanamaUtils.lookupFunctionPointer("JavaCritical_io_vproxy_pni_test_Upcall_returnObjectArray").orElseThrow(() -> new NullPointerException("JavaCritical_io_vproxy_pni_test_Upcall_returnObjectArray"));
-        otherParams = PanamaUtils.lookupFunctionPointer("JavaCritical_io_vproxy_pni_test_Upcall_otherParams").orElseThrow(() -> new NullPointerException("JavaCritical_io_vproxy_pni_test_Upcall_otherParams"));
-        returnBuffer = PanamaUtils.lookupFunctionPointer("JavaCritical_io_vproxy_pni_test_Upcall_returnBuffer").orElseThrow(() -> new NullPointerException("JavaCritical_io_vproxy_pni_test_Upcall_returnBuffer"));
-        returnMem = PanamaUtils.lookupFunctionPointer("JavaCritical_io_vproxy_pni_test_Upcall_returnMem").orElseThrow(() -> new NullPointerException("JavaCritical_io_vproxy_pni_test_Upcall_returnMem"));
-        returnVoidFunc = PanamaUtils.lookupFunctionPointer("JavaCritical_io_vproxy_pni_test_Upcall_returnVoidFunc").orElseThrow(() -> new NullPointerException("JavaCritical_io_vproxy_pni_test_Upcall_returnVoidFunc"));
-        returnObjFunc = PanamaUtils.lookupFunctionPointer("JavaCritical_io_vproxy_pni_test_Upcall_returnObjFunc").orElseThrow(() -> new NullPointerException("JavaCritical_io_vproxy_pni_test_Upcall_returnObjFunc"));
-        returnRefFunc = PanamaUtils.lookupFunctionPointer("JavaCritical_io_vproxy_pni_test_Upcall_returnRefFunc").orElseThrow(() -> new NullPointerException("JavaCritical_io_vproxy_pni_test_Upcall_returnRefFunc"));
-        returnRef = PanamaUtils.lookupFunctionPointer("JavaCritical_io_vproxy_pni_test_Upcall_returnRef").orElseThrow(() -> new NullPointerException("JavaCritical_io_vproxy_pni_test_Upcall_returnRef"));
-        returnStr = PanamaUtils.lookupFunctionPointer("JavaCritical_io_vproxy_pni_test_Upcall_returnStr").orElseThrow(() -> new NullPointerException("JavaCritical_io_vproxy_pni_test_Upcall_returnStr"));
-        sum = PanamaUtils.lookupFunctionPointer("pni_sum").orElseThrow(() -> new NullPointerException("pni_sum"));
+        primaryParams = PanamaUtils.lookupFunctionPointer(new PNILookupOptions(), "JavaCritical_io_vproxy_pni_test_Upcall_primaryParams").orElseThrow(() -> new NullPointerException("JavaCritical_io_vproxy_pni_test_Upcall_primaryParams"));
+        returnByte = PanamaUtils.lookupFunctionPointer(new PNILookupOptions(), "JavaCritical_io_vproxy_pni_test_Upcall_returnByte").orElseThrow(() -> new NullPointerException("JavaCritical_io_vproxy_pni_test_Upcall_returnByte"));
+        returnBool = PanamaUtils.lookupFunctionPointer(new PNILookupOptions(), "JavaCritical_io_vproxy_pni_test_Upcall_returnBool").orElseThrow(() -> new NullPointerException("JavaCritical_io_vproxy_pni_test_Upcall_returnBool"));
+        returnChar = PanamaUtils.lookupFunctionPointer(new PNILookupOptions(), "JavaCritical_io_vproxy_pni_test_Upcall_returnChar").orElseThrow(() -> new NullPointerException("JavaCritical_io_vproxy_pni_test_Upcall_returnChar"));
+        returnDouble = PanamaUtils.lookupFunctionPointer(new PNILookupOptions(), "JavaCritical_io_vproxy_pni_test_Upcall_returnDouble").orElseThrow(() -> new NullPointerException("JavaCritical_io_vproxy_pni_test_Upcall_returnDouble"));
+        returnFloat = PanamaUtils.lookupFunctionPointer(new PNILookupOptions(), "JavaCritical_io_vproxy_pni_test_Upcall_returnFloat").orElseThrow(() -> new NullPointerException("JavaCritical_io_vproxy_pni_test_Upcall_returnFloat"));
+        returnInt = PanamaUtils.lookupFunctionPointer(new PNILookupOptions(), "JavaCritical_io_vproxy_pni_test_Upcall_returnInt").orElseThrow(() -> new NullPointerException("JavaCritical_io_vproxy_pni_test_Upcall_returnInt"));
+        returnLong = PanamaUtils.lookupFunctionPointer(new PNILookupOptions(), "JavaCritical_io_vproxy_pni_test_Upcall_returnLong").orElseThrow(() -> new NullPointerException("JavaCritical_io_vproxy_pni_test_Upcall_returnLong"));
+        returnShort = PanamaUtils.lookupFunctionPointer(new PNILookupOptions(), "JavaCritical_io_vproxy_pni_test_Upcall_returnShort").orElseThrow(() -> new NullPointerException("JavaCritical_io_vproxy_pni_test_Upcall_returnShort"));
+        primaryArrayParams = PanamaUtils.lookupFunctionPointer(new PNILookupOptions(), "JavaCritical_io_vproxy_pni_test_Upcall_primaryArrayParams").orElseThrow(() -> new NullPointerException("JavaCritical_io_vproxy_pni_test_Upcall_primaryArrayParams"));
+        returnByteArray = PanamaUtils.lookupFunctionPointer(new PNILookupOptions(), "JavaCritical_io_vproxy_pni_test_Upcall_returnByteArray").orElseThrow(() -> new NullPointerException("JavaCritical_io_vproxy_pni_test_Upcall_returnByteArray"));
+        returnBoolArray = PanamaUtils.lookupFunctionPointer(new PNILookupOptions(), "JavaCritical_io_vproxy_pni_test_Upcall_returnBoolArray").orElseThrow(() -> new NullPointerException("JavaCritical_io_vproxy_pni_test_Upcall_returnBoolArray"));
+        returnCharArray = PanamaUtils.lookupFunctionPointer(new PNILookupOptions(), "JavaCritical_io_vproxy_pni_test_Upcall_returnCharArray").orElseThrow(() -> new NullPointerException("JavaCritical_io_vproxy_pni_test_Upcall_returnCharArray"));
+        returnDoubleArray = PanamaUtils.lookupFunctionPointer(new PNILookupOptions(), "JavaCritical_io_vproxy_pni_test_Upcall_returnDoubleArray").orElseThrow(() -> new NullPointerException("JavaCritical_io_vproxy_pni_test_Upcall_returnDoubleArray"));
+        returnFloatArray = PanamaUtils.lookupFunctionPointer(new PNILookupOptions(), "JavaCritical_io_vproxy_pni_test_Upcall_returnFloatArray").orElseThrow(() -> new NullPointerException("JavaCritical_io_vproxy_pni_test_Upcall_returnFloatArray"));
+        returnIntArray = PanamaUtils.lookupFunctionPointer(new PNILookupOptions(), "JavaCritical_io_vproxy_pni_test_Upcall_returnIntArray").orElseThrow(() -> new NullPointerException("JavaCritical_io_vproxy_pni_test_Upcall_returnIntArray"));
+        returnLongArray = PanamaUtils.lookupFunctionPointer(new PNILookupOptions(), "JavaCritical_io_vproxy_pni_test_Upcall_returnLongArray").orElseThrow(() -> new NullPointerException("JavaCritical_io_vproxy_pni_test_Upcall_returnLongArray"));
+        returnShortArray = PanamaUtils.lookupFunctionPointer(new PNILookupOptions(), "JavaCritical_io_vproxy_pni_test_Upcall_returnShortArray").orElseThrow(() -> new NullPointerException("JavaCritical_io_vproxy_pni_test_Upcall_returnShortArray"));
+        objectParams = PanamaUtils.lookupFunctionPointer(new PNILookupOptions(), "JavaCritical_io_vproxy_pni_test_Upcall_objectParams").orElseThrow(() -> new NullPointerException("JavaCritical_io_vproxy_pni_test_Upcall_objectParams"));
+        returnObject = PanamaUtils.lookupFunctionPointer(new PNILookupOptions(), "JavaCritical_io_vproxy_pni_test_Upcall_returnObject").orElseThrow(() -> new NullPointerException("JavaCritical_io_vproxy_pni_test_Upcall_returnObject"));
+        pointerArrayParams = PanamaUtils.lookupFunctionPointer(new PNILookupOptions(), "JavaCritical_io_vproxy_pni_test_Upcall_pointerArrayParams").orElseThrow(() -> new NullPointerException("JavaCritical_io_vproxy_pni_test_Upcall_pointerArrayParams"));
+        returnPointerArray = PanamaUtils.lookupFunctionPointer(new PNILookupOptions(), "JavaCritical_io_vproxy_pni_test_Upcall_returnPointerArray").orElseThrow(() -> new NullPointerException("JavaCritical_io_vproxy_pni_test_Upcall_returnPointerArray"));
+        objectArrayParams = PanamaUtils.lookupFunctionPointer(new PNILookupOptions(), "JavaCritical_io_vproxy_pni_test_Upcall_objectArrayParams").orElseThrow(() -> new NullPointerException("JavaCritical_io_vproxy_pni_test_Upcall_objectArrayParams"));
+        returnObjectArray = PanamaUtils.lookupFunctionPointer(new PNILookupOptions(), "JavaCritical_io_vproxy_pni_test_Upcall_returnObjectArray").orElseThrow(() -> new NullPointerException("JavaCritical_io_vproxy_pni_test_Upcall_returnObjectArray"));
+        otherParams = PanamaUtils.lookupFunctionPointer(new PNILookupOptions(), "JavaCritical_io_vproxy_pni_test_Upcall_otherParams").orElseThrow(() -> new NullPointerException("JavaCritical_io_vproxy_pni_test_Upcall_otherParams"));
+        returnBuffer = PanamaUtils.lookupFunctionPointer(new PNILookupOptions(), "JavaCritical_io_vproxy_pni_test_Upcall_returnBuffer").orElseThrow(() -> new NullPointerException("JavaCritical_io_vproxy_pni_test_Upcall_returnBuffer"));
+        returnMem = PanamaUtils.lookupFunctionPointer(new PNILookupOptions(), "JavaCritical_io_vproxy_pni_test_Upcall_returnMem").orElseThrow(() -> new NullPointerException("JavaCritical_io_vproxy_pni_test_Upcall_returnMem"));
+        returnVoidFunc = PanamaUtils.lookupFunctionPointer(new PNILookupOptions(), "JavaCritical_io_vproxy_pni_test_Upcall_returnVoidFunc").orElseThrow(() -> new NullPointerException("JavaCritical_io_vproxy_pni_test_Upcall_returnVoidFunc"));
+        returnObjFunc = PanamaUtils.lookupFunctionPointer(new PNILookupOptions(), "JavaCritical_io_vproxy_pni_test_Upcall_returnObjFunc").orElseThrow(() -> new NullPointerException("JavaCritical_io_vproxy_pni_test_Upcall_returnObjFunc"));
+        returnRefFunc = PanamaUtils.lookupFunctionPointer(new PNILookupOptions(), "JavaCritical_io_vproxy_pni_test_Upcall_returnRefFunc").orElseThrow(() -> new NullPointerException("JavaCritical_io_vproxy_pni_test_Upcall_returnRefFunc"));
+        returnRef = PanamaUtils.lookupFunctionPointer(new PNILookupOptions(), "JavaCritical_io_vproxy_pni_test_Upcall_returnRef").orElseThrow(() -> new NullPointerException("JavaCritical_io_vproxy_pni_test_Upcall_returnRef"));
+        returnStr = PanamaUtils.lookupFunctionPointer(new PNILookupOptions(), "JavaCritical_io_vproxy_pni_test_Upcall_returnStr").orElseThrow(() -> new NullPointerException("JavaCritical_io_vproxy_pni_test_Upcall_returnStr"));
+        sum = PanamaUtils.lookupFunctionPointer(new PNILookupOptions(), "pni_sum").orElseThrow(() -> new NullPointerException("pni_sum"));
     }
 
     private static Interface IMPL = null;
@@ -710,4 +710,4 @@ public class Upcall {
     }
 }
 // metadata.generator-version: pni test
-// sha256:dd39bcf2bf3691632ad8922f3da0e4a22fd6ccc4dea0038d8b5af6d42f66ae18
+// sha256:4bcf761576081213e037506842034d0ad9721fa58538935e26fe4b0a47ce943f

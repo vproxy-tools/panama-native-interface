@@ -31,9 +31,9 @@ public class KtUpcall {
         } catch (Throwable t) {
             throw new RuntimeException(t);
         }
-        helloworld = PanamaUtils.defineCFunction(ARENA, helloworldMH, MemorySegment.class, int.class, long.class, MemorySegment.class);
+        helloworld = PanamaUtils.defineCFunction(new PNILinkOptions(), ARENA, helloworldMH, MemorySegment.class, int.class, long.class, MemorySegment.class);
 
-        var initMH = PanamaUtils.lookupPNICriticalFunction(true, void.class, "JavaCritical_io_vproxy_pni_test_KtUpcall_INIT", MemorySegment.class);
+        var initMH = PanamaUtils.lookupPNICriticalFunction(new PNILinkOptions().setCritical(true), void.class, "JavaCritical_io_vproxy_pni_test_KtUpcall_INIT", MemorySegment.class);
         try {
             initMH.invoke(helloworld);
         } catch (Throwable t) {
@@ -53,4 +53,4 @@ public class KtUpcall {
     }
 }
 // metadata.generator-version: pni test
-// sha256:b7d33bc9f3ee2d210e9346717e4423cf8610a1bb07be740c53df8790fee029b3
+// sha256:57551f3588c33ded2c0e9ec124ff62e64c9f0ff640a8b03b23989fbb7ee1db5f

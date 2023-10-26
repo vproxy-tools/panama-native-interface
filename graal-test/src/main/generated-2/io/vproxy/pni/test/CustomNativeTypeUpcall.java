@@ -15,7 +15,7 @@ public class CustomNativeTypeUpcall {
     private static final Arena ARENA = Arena.ofShared();
 
     public static MemorySegment exec;
-    public static final CEntryPointLiteral<CFunctionPointer> execCEPL = GraalUtils.defineCFunctionByName(io.vproxy.pni.test.CustomNativeTypeUpcall.class, "exec");
+    public static final CEntryPointLiteral<CFunctionPointer> execCEPL = GraalUtils.defineCFunctionByName(new PNILinkOptions(), io.vproxy.pni.test.CustomNativeTypeUpcall.class, "exec");
 
     @CEntryPoint
     public static VoidPointer exec(IsolateThread THREAD, VoidPointer oPTR) {
@@ -33,13 +33,13 @@ public class CustomNativeTypeUpcall {
     private static void setNativeImpl() {
         exec = MemorySegment.ofAddress(execCEPL.getFunctionPointer().rawValue());
 
-        var initMH = PanamaUtils.lookupPNICriticalFunction(true, void.class, "JavaCritical_io_vproxy_pni_test_CustomNativeTypeUpcall_INIT", MemorySegment.class);
+        var initMH = PanamaUtils.lookupPNICriticalFunction(new PNILinkOptions().setCritical(true), void.class, "JavaCritical_io_vproxy_pni_test_CustomNativeTypeUpcall_INIT", MemorySegment.class);
         try {
             initMH.invoke(exec);
         } catch (Throwable t) {
             throw new RuntimeException(t);
         }
-        exec = PanamaUtils.lookupFunctionPointer("JavaCritical_io_vproxy_pni_test_CustomNativeTypeUpcall_exec").orElseThrow(() -> new NullPointerException("JavaCritical_io_vproxy_pni_test_CustomNativeTypeUpcall_exec"));
+        exec = PanamaUtils.lookupFunctionPointer(new PNILookupOptions(), "JavaCritical_io_vproxy_pni_test_CustomNativeTypeUpcall_exec").orElseThrow(() -> new NullPointerException("JavaCritical_io_vproxy_pni_test_CustomNativeTypeUpcall_exec"));
     }
 
     private static Interface IMPL = null;
@@ -55,4 +55,4 @@ public class CustomNativeTypeUpcall {
     }
 }
 // metadata.generator-version: pni test
-// sha256:bbdd1208a57bde58760f6dadd191508b1ecc5a7fa87c2a270087120681537625
+// sha256:91720ba021f1672b622dddf1d314f226e216924d5148d39f4cb6b770a81462b2

@@ -7,7 +7,7 @@ import java.lang.invoke.*;
 import java.nio.ByteBuffer;
 
 public class SizeofEmbed extends AbstractNativeObject implements NativeObject {
-    private static final MethodHandle __getLayoutByteSizeMH = PanamaUtils.lookupPNICriticalFunction(true, long.class, "JavaCritical_io_vproxy_pni_test_SizeofEmbed___getLayoutByteSize");
+    private static final MethodHandle __getLayoutByteSizeMH = PanamaUtils.lookupPNICriticalFunction(new PNILinkOptions().setCritical(true), long.class, "JavaCritical_io_vproxy_pni_test_SizeofEmbed___getLayoutByteSize");
 
     private static long __getLayoutByteSize() {
         long RESULT;
@@ -180,4 +180,4 @@ public class SizeofEmbed extends AbstractNativeObject implements NativeObject {
     }
 }
 // metadata.generator-version: pni test
-// sha256:03113e275bf388fcb1841092a7c37af295a526e307933411a8ec501f423bbe2f
+// sha256:aa2548805da87842c32941b520f50102fc755745699b054909ea4b7364404066

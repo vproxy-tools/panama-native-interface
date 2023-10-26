@@ -16,7 +16,7 @@ public class SampleFunctions {
         return INSTANCE;
     }
 
-    private static final MethodHandle readMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_sample_SampleFunctions_read", int.class /* fd */, io.vproxy.pni.sample.MBuf.LAYOUT.getClass() /* buf */);
+    private static final MethodHandle readMH = PanamaUtils.lookupPNIFunction(new PNILinkOptions(), "Java_io_vproxy_pni_sample_SampleFunctions_read", int.class /* fd */, io.vproxy.pni.sample.MBuf.LAYOUT.getClass() /* buf */);
 
     public int read(PNIEnv ENV, int fd, io.vproxy.pni.sample.MBuf buf) throws java.io.IOException {
         ENV.reset();
@@ -34,4 +34,4 @@ public class SampleFunctions {
     }
 }
 // metadata.generator-version: pni test
-// sha256:56a7acc1d4a6702dd8aa076e53b3d2b6f652c09b5395356fe109a3669d1378d8
+// sha256:85b8a06f7a3fa5a7ff7c8e2e9d6fd4bab88a00f35f94805b9e0322984137f1c1

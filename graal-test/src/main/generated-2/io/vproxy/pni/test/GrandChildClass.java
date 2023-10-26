@@ -50,7 +50,7 @@ public class GrandChildClass extends io.vproxy.pni.test.ChildClass implements Na
         this(ALLOCATOR.allocate(LAYOUT));
     }
 
-    private static final MethodHandle yyyMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_GrandChildClass_yyy", MemorySegment.class /* self */, long.class /* y */);
+    private static final MethodHandle yyyMH = PanamaUtils.lookupPNIFunction(new PNILinkOptions(), "Java_io_vproxy_pni_test_GrandChildClass_yyy", MemorySegment.class /* self */, long.class /* y */);
 
     public void yyy(PNIEnv ENV, long y) {
         ENV.reset();
@@ -177,4 +177,4 @@ public class GrandChildClass extends io.vproxy.pni.test.ChildClass implements Na
     }
 }
 // metadata.generator-version: pni test
-// sha256:0a3802b32d4e5b72c28ff22e3818affbca835f85dd1637dbc77a1c1c596b9e21
+// sha256:927bc569302ad4ae45c11bbbdfbb08ed7fc2f68fa9735a6df8b33f906c4957f4

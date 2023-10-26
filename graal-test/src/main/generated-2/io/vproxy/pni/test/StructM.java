@@ -40,7 +40,7 @@ public class StructM extends AbstractNativeObject implements NativeObject {
         this(ALLOCATOR.allocate(LAYOUT));
     }
 
-    private static final MethodHandle nnnMH = PanamaUtils.lookupPNIFunction(true, "Java_io_vproxy_pni_test_StructM_nnn", MemorySegment.class /* self */, io.vproxy.pni.test.StructN.LAYOUT.getClass() /* n */);
+    private static final MethodHandle nnnMH = PanamaUtils.lookupPNIFunction(new PNILinkOptions().setCritical(true), "Java_io_vproxy_pni_test_StructM_nnn", MemorySegment.class /* self */, io.vproxy.pni.test.StructN.LAYOUT.getClass() /* n */);
 
     public void nnn(PNIEnv ENV, io.vproxy.pni.test.StructN n) {
         ENV.reset();
@@ -141,4 +141,4 @@ public class StructM extends AbstractNativeObject implements NativeObject {
     }
 }
 // metadata.generator-version: pni test
-// sha256:1fde6404772b9d831f1e7bae9fddc8d69ebb5e9b653c2a351f92060d09349810
+// sha256:dcc8a8f6c42e589b2d009eaa467a76b39befe09059ab5f90ac5518a459f3c868

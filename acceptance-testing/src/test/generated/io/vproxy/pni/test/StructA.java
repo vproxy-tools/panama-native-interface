@@ -101,7 +101,7 @@ public class StructA extends AbstractNativeObject implements NativeObject {
         this(ALLOCATOR.allocate(LAYOUT));
     }
 
-    private static final MethodHandle bbbMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_StructA_bbb", MemorySegment.class /* self */, io.vproxy.pni.test.StructB.LAYOUT.getClass() /* b */);
+    private static final MethodHandle bbbMH = PanamaUtils.lookupPNIFunction(new PNILinkOptions(), "Java_io_vproxy_pni_test_StructA_bbb", MemorySegment.class /* self */, io.vproxy.pni.test.StructB.LAYOUT.getClass() /* b */);
 
     public void bbb(PNIEnv ENV, io.vproxy.pni.test.StructB b) {
         ENV.reset();
@@ -116,7 +116,7 @@ public class StructA extends AbstractNativeObject implements NativeObject {
         }
     }
 
-    private static final MethodHandle bbbCriticalMH = PanamaUtils.lookupPNICriticalFunction(false, void.class, "JavaCritical_io_vproxy_pni_test_StructA_bbbCritical", MemorySegment.class /* self */, io.vproxy.pni.test.StructB.LAYOUT.getClass() /* b */);
+    private static final MethodHandle bbbCriticalMH = PanamaUtils.lookupPNICriticalFunction(new PNILinkOptions(), void.class, "JavaCritical_io_vproxy_pni_test_StructA_bbbCritical", MemorySegment.class /* self */, io.vproxy.pni.test.StructB.LAYOUT.getClass() /* b */);
 
     public void bbbCritical(io.vproxy.pni.test.StructB b) {
         try {
@@ -126,7 +126,7 @@ public class StructA extends AbstractNativeObject implements NativeObject {
         }
     }
 
-    private static final MethodHandle cccMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_StructA_ccc", MemorySegment.class /* self */, io.vproxy.pni.test.UnionC.LAYOUT.getClass() /* c */);
+    private static final MethodHandle cccMH = PanamaUtils.lookupPNIFunction(new PNILinkOptions(), "Java_io_vproxy_pni_test_StructA_ccc", MemorySegment.class /* self */, io.vproxy.pni.test.UnionC.LAYOUT.getClass() /* c */);
 
     public void ccc(PNIEnv ENV, io.vproxy.pni.test.UnionC c) {
         ENV.reset();
@@ -141,7 +141,7 @@ public class StructA extends AbstractNativeObject implements NativeObject {
         }
     }
 
-    private static final MethodHandle cccCriticalMH = PanamaUtils.lookupPNICriticalFunction(false, void.class, "JavaCritical_io_vproxy_pni_test_StructA_cccCritical", MemorySegment.class /* self */, io.vproxy.pni.test.UnionC.LAYOUT.getClass() /* c */);
+    private static final MethodHandle cccCriticalMH = PanamaUtils.lookupPNICriticalFunction(new PNILinkOptions(), void.class, "JavaCritical_io_vproxy_pni_test_StructA_cccCritical", MemorySegment.class /* self */, io.vproxy.pni.test.UnionC.LAYOUT.getClass() /* c */);
 
     public void cccCritical(io.vproxy.pni.test.UnionC c) {
         try {
@@ -151,7 +151,7 @@ public class StructA extends AbstractNativeObject implements NativeObject {
         }
     }
 
-    private static final MethodHandle cccPointerMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_StructA_cccPointer", MemorySegment.class /* self */, io.vproxy.pni.test.UnionC.LAYOUT.getClass() /* c */);
+    private static final MethodHandle cccPointerMH = PanamaUtils.lookupPNIFunction(new PNILinkOptions(), "Java_io_vproxy_pni_test_StructA_cccPointer", MemorySegment.class /* self */, io.vproxy.pni.test.UnionC.LAYOUT.getClass() /* c */);
 
     public void cccPointer(PNIEnv ENV, io.vproxy.pni.test.UnionC c) {
         ENV.reset();
@@ -166,7 +166,7 @@ public class StructA extends AbstractNativeObject implements NativeObject {
         }
     }
 
-    private static final MethodHandle cccPointerCriticalMH = PanamaUtils.lookupPNICriticalFunction(false, void.class, "JavaCritical_io_vproxy_pni_test_StructA_cccPointerCritical", MemorySegment.class /* self */, io.vproxy.pni.test.UnionC.LAYOUT.getClass() /* c */);
+    private static final MethodHandle cccPointerCriticalMH = PanamaUtils.lookupPNICriticalFunction(new PNILinkOptions(), void.class, "JavaCritical_io_vproxy_pni_test_StructA_cccPointerCritical", MemorySegment.class /* self */, io.vproxy.pni.test.UnionC.LAYOUT.getClass() /* c */);
 
     public void cccPointerCritical(io.vproxy.pni.test.UnionC c) {
         try {
@@ -176,7 +176,7 @@ public class StructA extends AbstractNativeObject implements NativeObject {
         }
     }
 
-    private static final MethodHandle bbbArrayMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_StructA_bbbArray", MemorySegment.class /* self */, PNIBuf.class /* bArray */);
+    private static final MethodHandle bbbArrayMH = PanamaUtils.lookupPNIFunction(new PNILinkOptions(), "Java_io_vproxy_pni_test_StructA_bbbArray", MemorySegment.class /* self */, PNIBuf.class /* bArray */);
 
     public void bbbArray(PNIEnv ENV, io.vproxy.pni.test.StructB.Array bArray) {
         ENV.reset();
@@ -193,7 +193,7 @@ public class StructA extends AbstractNativeObject implements NativeObject {
         }
     }
 
-    private static final MethodHandle bbbArrayCriticalMH = PanamaUtils.lookupPNICriticalFunction(false, void.class, "JavaCritical_io_vproxy_pni_test_StructA_bbbArrayCritical", MemorySegment.class /* self */, PNIBuf.class /* bArray */);
+    private static final MethodHandle bbbArrayCriticalMH = PanamaUtils.lookupPNICriticalFunction(new PNILinkOptions(), void.class, "JavaCritical_io_vproxy_pni_test_StructA_bbbArrayCritical", MemorySegment.class /* self */, PNIBuf.class /* bArray */);
 
     public void bbbArrayCritical(io.vproxy.pni.test.StructB.Array bArray) {
         try (var POOLED = Allocator.ofPooled()) {
@@ -205,7 +205,7 @@ public class StructA extends AbstractNativeObject implements NativeObject {
         }
     }
 
-    private static final MethodHandle bbbArray2MH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_StructA_bbbArray2", MemorySegment.class /* self */, PNIBuf.class /* bArray */);
+    private static final MethodHandle bbbArray2MH = PanamaUtils.lookupPNIFunction(new PNILinkOptions(), "Java_io_vproxy_pni_test_StructA_bbbArray2", MemorySegment.class /* self */, PNIBuf.class /* bArray */);
 
     public void bbbArray2(PNIEnv ENV, io.vproxy.pni.test.StructB.Array bArray) {
         ENV.reset();
@@ -222,7 +222,7 @@ public class StructA extends AbstractNativeObject implements NativeObject {
         }
     }
 
-    private static final MethodHandle bbbArray2CriticalMH = PanamaUtils.lookupPNICriticalFunction(false, void.class, "JavaCritical_io_vproxy_pni_test_StructA_bbbArray2Critical", MemorySegment.class /* self */, PNIBuf.class /* bArray */);
+    private static final MethodHandle bbbArray2CriticalMH = PanamaUtils.lookupPNICriticalFunction(new PNILinkOptions(), void.class, "JavaCritical_io_vproxy_pni_test_StructA_bbbArray2Critical", MemorySegment.class /* self */, PNIBuf.class /* bArray */);
 
     public void bbbArray2Critical(io.vproxy.pni.test.StructB.Array bArray) {
         try (var POOLED = Allocator.ofPooled()) {
@@ -234,7 +234,7 @@ public class StructA extends AbstractNativeObject implements NativeObject {
         }
     }
 
-    private static final MethodHandle retrieveBMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_StructA_retrieveB", MemorySegment.class /* self */, MemorySegment.class /* return */);
+    private static final MethodHandle retrieveBMH = PanamaUtils.lookupPNIFunction(new PNILinkOptions(), "Java_io_vproxy_pni_test_StructA_retrieveB", MemorySegment.class /* self */, MemorySegment.class /* return */);
 
     public io.vproxy.pni.test.StructB retrieveB(PNIEnv ENV, Allocator ALLOCATOR) {
         ENV.reset();
@@ -251,7 +251,7 @@ public class StructA extends AbstractNativeObject implements NativeObject {
         return RESULT == null ? null : new io.vproxy.pni.test.StructB(RESULT);
     }
 
-    private static final MethodHandle retrieveBCriticalMH = PanamaUtils.lookupPNICriticalFunction(false, io.vproxy.pni.test.StructB.LAYOUT.getClass(), "JavaCritical_io_vproxy_pni_test_StructA_retrieveBCritical", MemorySegment.class /* self */, MemorySegment.class /* return */);
+    private static final MethodHandle retrieveBCriticalMH = PanamaUtils.lookupPNICriticalFunction(new PNILinkOptions(), io.vproxy.pni.test.StructB.LAYOUT.getClass(), "JavaCritical_io_vproxy_pni_test_StructA_retrieveBCritical", MemorySegment.class /* self */, MemorySegment.class /* return */);
 
     public io.vproxy.pni.test.StructB retrieveBCritical(Allocator ALLOCATOR) {
         MemorySegment RESULT;
@@ -264,7 +264,7 @@ public class StructA extends AbstractNativeObject implements NativeObject {
         return RESULT == null ? null : new io.vproxy.pni.test.StructB(RESULT);
     }
 
-    private static final MethodHandle retrieveCMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_StructA_retrieveC", MemorySegment.class /* self */, MemorySegment.class /* return */);
+    private static final MethodHandle retrieveCMH = PanamaUtils.lookupPNIFunction(new PNILinkOptions(), "Java_io_vproxy_pni_test_StructA_retrieveC", MemorySegment.class /* self */, MemorySegment.class /* return */);
 
     public io.vproxy.pni.test.UnionC retrieveC(PNIEnv ENV, Allocator ALLOCATOR) {
         ENV.reset();
@@ -281,7 +281,7 @@ public class StructA extends AbstractNativeObject implements NativeObject {
         return RESULT == null ? null : new io.vproxy.pni.test.UnionC(RESULT);
     }
 
-    private static final MethodHandle retrieveCCriticalMH = PanamaUtils.lookupPNICriticalFunction(false, io.vproxy.pni.test.UnionC.LAYOUT.getClass(), "JavaCritical_io_vproxy_pni_test_StructA_retrieveCCritical", MemorySegment.class /* self */, MemorySegment.class /* return */);
+    private static final MethodHandle retrieveCCriticalMH = PanamaUtils.lookupPNICriticalFunction(new PNILinkOptions(), io.vproxy.pni.test.UnionC.LAYOUT.getClass(), "JavaCritical_io_vproxy_pni_test_StructA_retrieveCCritical", MemorySegment.class /* self */, MemorySegment.class /* return */);
 
     public io.vproxy.pni.test.UnionC retrieveCCritical(Allocator ALLOCATOR) {
         MemorySegment RESULT;
@@ -294,7 +294,7 @@ public class StructA extends AbstractNativeObject implements NativeObject {
         return RESULT == null ? null : new io.vproxy.pni.test.UnionC(RESULT);
     }
 
-    private static final MethodHandle retrieveCPointerMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_StructA_retrieveCPointer", MemorySegment.class /* self */, MemorySegment.class /* return */);
+    private static final MethodHandle retrieveCPointerMH = PanamaUtils.lookupPNIFunction(new PNILinkOptions(), "Java_io_vproxy_pni_test_StructA_retrieveCPointer", MemorySegment.class /* self */, MemorySegment.class /* return */);
 
     public io.vproxy.pni.test.UnionC retrieveCPointer(PNIEnv ENV, Allocator ALLOCATOR) {
         ENV.reset();
@@ -311,7 +311,7 @@ public class StructA extends AbstractNativeObject implements NativeObject {
         return RESULT == null ? null : new io.vproxy.pni.test.UnionC(RESULT);
     }
 
-    private static final MethodHandle retrieveCPointerCriticalMH = PanamaUtils.lookupPNICriticalFunction(false, io.vproxy.pni.test.UnionC.LAYOUT.getClass(), "JavaCritical_io_vproxy_pni_test_StructA_retrieveCPointerCritical", MemorySegment.class /* self */, MemorySegment.class /* return */);
+    private static final MethodHandle retrieveCPointerCriticalMH = PanamaUtils.lookupPNICriticalFunction(new PNILinkOptions(), io.vproxy.pni.test.UnionC.LAYOUT.getClass(), "JavaCritical_io_vproxy_pni_test_StructA_retrieveCPointerCritical", MemorySegment.class /* self */, MemorySegment.class /* return */);
 
     public io.vproxy.pni.test.UnionC retrieveCPointerCritical(Allocator ALLOCATOR) {
         MemorySegment RESULT;
@@ -324,7 +324,7 @@ public class StructA extends AbstractNativeObject implements NativeObject {
         return RESULT == null ? null : new io.vproxy.pni.test.UnionC(RESULT);
     }
 
-    private static final MethodHandle retrieveBArrayMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_StructA_retrieveBArray", MemorySegment.class /* self */);
+    private static final MethodHandle retrieveBArrayMH = PanamaUtils.lookupPNIFunction(new PNILinkOptions(), "Java_io_vproxy_pni_test_StructA_retrieveBArray", MemorySegment.class /* self */);
 
     public io.vproxy.pni.test.StructB.Array retrieveBArray(PNIEnv ENV) {
         ENV.reset();
@@ -342,7 +342,7 @@ public class StructA extends AbstractNativeObject implements NativeObject {
         return new io.vproxy.pni.test.StructB.Array(RES_SEG);
     }
 
-    private static final MethodHandle retrieveBArrayCriticalMH = PanamaUtils.lookupPNICriticalFunction(false, PNIBuf.class, "JavaCritical_io_vproxy_pni_test_StructA_retrieveBArrayCritical", MemorySegment.class /* self */, MemorySegment.class /* return */);
+    private static final MethodHandle retrieveBArrayCriticalMH = PanamaUtils.lookupPNICriticalFunction(new PNILinkOptions(), PNIBuf.class, "JavaCritical_io_vproxy_pni_test_StructA_retrieveBArrayCritical", MemorySegment.class /* self */, MemorySegment.class /* return */);
 
     public io.vproxy.pni.test.StructB.Array retrieveBArrayCritical() {
         try (var POOLED = Allocator.ofPooled()) {
@@ -359,7 +359,7 @@ public class StructA extends AbstractNativeObject implements NativeObject {
         }
     }
 
-    private static final MethodHandle retrieveBArray2MH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_StructA_retrieveBArray2", MemorySegment.class /* self */);
+    private static final MethodHandle retrieveBArray2MH = PanamaUtils.lookupPNIFunction(new PNILinkOptions(), "Java_io_vproxy_pni_test_StructA_retrieveBArray2", MemorySegment.class /* self */);
 
     public io.vproxy.pni.test.StructB.Array retrieveBArray2(PNIEnv ENV) {
         ENV.reset();
@@ -377,7 +377,7 @@ public class StructA extends AbstractNativeObject implements NativeObject {
         return new io.vproxy.pni.test.StructB.Array(RES_SEG);
     }
 
-    private static final MethodHandle retrieveBArray2CriticalMH = PanamaUtils.lookupPNICriticalFunction(false, PNIBuf.class, "JavaCritical_io_vproxy_pni_test_StructA_retrieveBArray2Critical", MemorySegment.class /* self */, MemorySegment.class /* return */);
+    private static final MethodHandle retrieveBArray2CriticalMH = PanamaUtils.lookupPNICriticalFunction(new PNILinkOptions(), PNIBuf.class, "JavaCritical_io_vproxy_pni_test_StructA_retrieveBArray2Critical", MemorySegment.class /* self */, MemorySegment.class /* return */);
 
     public io.vproxy.pni.test.StructB.Array retrieveBArray2Critical() {
         try (var POOLED = Allocator.ofPooled()) {
@@ -507,4 +507,4 @@ public class StructA extends AbstractNativeObject implements NativeObject {
     }
 }
 // metadata.generator-version: pni test
-// sha256:2d620a2d7cba2ad35c0c50958df13260254fcc35c82f7ad3252a13ff2d694580
+// sha256:c7792a3d621dc5cfd9d43e5acbbb666d9963501bd07a96c2c32d3d4c57e39162

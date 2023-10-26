@@ -16,7 +16,7 @@ public class KtDowncall {
         return INSTANCE;
     }
 
-    private static final MethodHandle retrieveLongMH = PanamaUtils.lookupPNICriticalFunction(false, long.class, "JavaCritical_io_vproxy_pni_test_KtDowncall_retrieveLong", io.vproxy.pni.test.KtStruct.LAYOUT.getClass() /* o */);
+    private static final MethodHandle retrieveLongMH = PanamaUtils.lookupPNICriticalFunction(new PNILinkOptions(), long.class, "JavaCritical_io_vproxy_pni_test_KtDowncall_retrieveLong", io.vproxy.pni.test.KtStruct.LAYOUT.getClass() /* o */);
 
     public long retrieveLong(io.vproxy.pni.test.KtStruct o) {
         long RESULT;
@@ -28,7 +28,7 @@ public class KtDowncall {
         return RESULT;
     }
 
-    private static final MethodHandle invokeHelloWorldMH = PanamaUtils.lookupPNICriticalFunction(false, io.vproxy.pni.test.KtStruct.LAYOUT.getClass(), "JavaCritical_io_vproxy_pni_test_KtDowncall_invokeHelloWorld", int.class /* i */, long.class /* l */, MemorySegment.class /* return */);
+    private static final MethodHandle invokeHelloWorldMH = PanamaUtils.lookupPNICriticalFunction(new PNILinkOptions(), io.vproxy.pni.test.KtStruct.LAYOUT.getClass(), "JavaCritical_io_vproxy_pni_test_KtDowncall_invokeHelloWorld", int.class /* i */, long.class /* l */, MemorySegment.class /* return */);
 
     public io.vproxy.pni.test.KtStruct invokeHelloWorld(int i, long l, Allocator ALLOCATOR) {
         MemorySegment RESULT;
@@ -42,4 +42,4 @@ public class KtDowncall {
     }
 }
 // metadata.generator-version: pni test
-// sha256:b26ddead2ec1f3f175fc564f7eb2c507929e3ba946d4d1a448e8e6c5ec322219
+// sha256:7937d85fc7d6b876e05450bed473ed8d1f9d6f6359cfaa1281c890cbe6794ba6

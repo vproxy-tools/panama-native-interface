@@ -72,7 +72,7 @@ public class GCCCompatibilityNonPackedContainNonPacked extends AbstractNativeObj
         this(ALLOCATOR.allocate(LAYOUT));
     }
 
-    private static final MethodHandle initMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_GCCCompatibilityNonPackedContainNonPacked_init", MemorySegment.class /* self */);
+    private static final MethodHandle initMH = PanamaUtils.lookupPNIFunction(new PNILinkOptions(), "Java_io_vproxy_pni_test_GCCCompatibilityNonPackedContainNonPacked_init", MemorySegment.class /* self */);
 
     public void init(PNIEnv ENV) {
         ENV.reset();
@@ -87,7 +87,7 @@ public class GCCCompatibilityNonPackedContainNonPacked extends AbstractNativeObj
         }
     }
 
-    private static final MethodHandle sizeMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_GCCCompatibilityNonPackedContainNonPacked_size", MemorySegment.class /* self */);
+    private static final MethodHandle sizeMH = PanamaUtils.lookupPNIFunction(new PNILinkOptions(), "Java_io_vproxy_pni_test_GCCCompatibilityNonPackedContainNonPacked_size", MemorySegment.class /* self */);
 
     public long size(PNIEnv ENV) {
         ENV.reset();
@@ -199,4 +199,4 @@ public class GCCCompatibilityNonPackedContainNonPacked extends AbstractNativeObj
     }
 }
 // metadata.generator-version: pni test
-// sha256:5859df3d97db29e0b4b45cd2f1845095d7197c050ade2c2f2c4cc2b27a9b07f0
+// sha256:88333232dbb8b311bd7a901a398fc3e286fcec557dde5ebbda9a33d8bf3e75ce

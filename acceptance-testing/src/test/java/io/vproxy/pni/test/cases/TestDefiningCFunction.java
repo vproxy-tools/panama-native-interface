@@ -2,6 +2,7 @@ package io.vproxy.pni.test.cases;
 
 import io.vproxy.pni.Allocator;
 import io.vproxy.pni.PNIEnv;
+import io.vproxy.pni.PNILinkOptions;
 import io.vproxy.pni.PanamaUtils;
 import io.vproxy.pni.test.DefiningCFunction;
 import org.junit.Test;
@@ -26,7 +27,7 @@ public class TestDefiningCFunction {
         if (TestUtils.skipCase()) {
             return;
         }
-        var func = PanamaUtils.defineCFunction(arena, TestDefiningCFunction.class, "upcallVoidNoParam0");
+        var func = PanamaUtils.defineCFunction(new PNILinkOptions(), arena, TestDefiningCFunction.class, "upcallVoidNoParam0");
         DefiningCFunction.get().upcallVoidNoParam(env, func);
     }
 
@@ -39,7 +40,7 @@ public class TestDefiningCFunction {
         if (TestUtils.skipCase()) {
             return;
         }
-        var func = PanamaUtils.defineCFunctionByName(arena, TestDefiningCFunction.class, "upcallVoid1Param0");
+        var func = PanamaUtils.defineCFunctionByName(new PNILinkOptions(), arena, TestDefiningCFunction.class, "upcallVoid1Param0");
         try (var allocator = Allocator.ofConfined()) {
             var data = allocator.allocate(8);
             DefiningCFunction.get().upcallVoid1Param(env, func, data);
@@ -56,7 +57,7 @@ public class TestDefiningCFunction {
         if (TestUtils.skipCase()) {
             return;
         }
-        var func = PanamaUtils.defineCFunctionByName(arena, TestDefiningCFunction.class, "upcallVoid2Param0");
+        var func = PanamaUtils.defineCFunctionByName(new PNILinkOptions(), arena, TestDefiningCFunction.class, "upcallVoid2Param0");
         try (var allocator = Allocator.ofConfined()) {
             var data = allocator.allocate(1);
             DefiningCFunction.get().upcallVoid2Param(env, func, data, (byte) 122);
@@ -75,7 +76,7 @@ public class TestDefiningCFunction {
         if (TestUtils.skipCase()) {
             return;
         }
-        var func = PanamaUtils.defineCFunctionByName(arena, TestDefiningCFunction.class, "upcallVoid3Param0");
+        var func = PanamaUtils.defineCFunctionByName(new PNILinkOptions(), arena, TestDefiningCFunction.class, "upcallVoid3Param0");
         try (var allocator = Allocator.ofConfined()) {
             var data = allocator.allocate(3);
             DefiningCFunction.get().upcallVoid3Param(env, func, data, true, 'a');
@@ -96,7 +97,7 @@ public class TestDefiningCFunction {
         if (TestUtils.skipCase()) {
             return;
         }
-        var func = PanamaUtils.defineCFunctionByName(arena, TestDefiningCFunction.class, "upcallVoid4Param0");
+        var func = PanamaUtils.defineCFunctionByName(new PNILinkOptions(), arena, TestDefiningCFunction.class, "upcallVoid4Param0");
         try (var allocator = Allocator.ofConfined()) {
             var data = allocator.allocate(16);
             DefiningCFunction.get().upcallVoid4Param(env, func, data, 12.8, 6.4f, 121);
@@ -117,7 +118,7 @@ public class TestDefiningCFunction {
         if (TestUtils.skipCase()) {
             return;
         }
-        var func = PanamaUtils.defineCFunctionByName(arena, TestDefiningCFunction.class, "upcallVoid3Param20");
+        var func = PanamaUtils.defineCFunctionByName(new PNILinkOptions(), arena, TestDefiningCFunction.class, "upcallVoid3Param20");
         try (var allocator = Allocator.ofConfined()) {
             var data = allocator.allocate(10);
             DefiningCFunction.get().upcallVoid3Param2(env, func, data, 120L, (short) 119);
@@ -135,7 +136,7 @@ public class TestDefiningCFunction {
         if (TestUtils.skipCase()) {
             return;
         }
-        var func = PanamaUtils.defineCFunctionByName(arena, TestDefiningCFunction.class, "upcallReturnByteNoParam0");
+        var func = PanamaUtils.defineCFunctionByName(new PNILinkOptions(), arena, TestDefiningCFunction.class, "upcallReturnByteNoParam0");
         byte b = DefiningCFunction.get().upcallReturnByteNoParam(env, func);
         assertEquals((byte) 99, b);
     }
@@ -149,7 +150,7 @@ public class TestDefiningCFunction {
         if (TestUtils.skipCase()) {
             return;
         }
-        var func = PanamaUtils.defineCFunctionByName(arena, TestDefiningCFunction.class, "upcallReturnBoolNoParam0");
+        var func = PanamaUtils.defineCFunctionByName(new PNILinkOptions(), arena, TestDefiningCFunction.class, "upcallReturnBoolNoParam0");
         boolean b = DefiningCFunction.get().upcallReturnBoolNoParam(env, func);
         assertTrue(b);
     }
@@ -163,7 +164,7 @@ public class TestDefiningCFunction {
         if (TestUtils.skipCase()) {
             return;
         }
-        var func = PanamaUtils.defineCFunctionByName(arena, TestDefiningCFunction.class, "upcallReturnCharNoParam0");
+        var func = PanamaUtils.defineCFunctionByName(new PNILinkOptions(), arena, TestDefiningCFunction.class, "upcallReturnCharNoParam0");
         char c = DefiningCFunction.get().upcallReturnCharNoParam(env, func);
         assertEquals('x', c);
     }
@@ -177,7 +178,7 @@ public class TestDefiningCFunction {
         if (TestUtils.skipCase()) {
             return;
         }
-        var func = PanamaUtils.defineCFunctionByName(arena, TestDefiningCFunction.class, "upcallReturnDoubleNoParam0");
+        var func = PanamaUtils.defineCFunctionByName(new PNILinkOptions(), arena, TestDefiningCFunction.class, "upcallReturnDoubleNoParam0");
         double d = DefiningCFunction.get().upcallReturnDoubleNoParam(env, func);
         assertEquals(64.0, d, 0);
     }
@@ -191,7 +192,7 @@ public class TestDefiningCFunction {
         if (TestUtils.skipCase()) {
             return;
         }
-        var func = PanamaUtils.defineCFunctionByName(arena, TestDefiningCFunction.class, "upcallReturnFloatNoParam0");
+        var func = PanamaUtils.defineCFunctionByName(new PNILinkOptions(), arena, TestDefiningCFunction.class, "upcallReturnFloatNoParam0");
         float f = DefiningCFunction.get().upcallReturnFloatNoParam(env, func);
         assertEquals(32.0f, f, 0);
     }
@@ -205,7 +206,7 @@ public class TestDefiningCFunction {
         if (TestUtils.skipCase()) {
             return;
         }
-        var func = PanamaUtils.defineCFunctionByName(arena, TestDefiningCFunction.class, "upcallReturnIntNoParam0");
+        var func = PanamaUtils.defineCFunctionByName(new PNILinkOptions(), arena, TestDefiningCFunction.class, "upcallReturnIntNoParam0");
         int i = DefiningCFunction.get().upcallReturnIntNoParam(env, func);
         assertEquals(98, i);
     }
@@ -219,7 +220,7 @@ public class TestDefiningCFunction {
         if (TestUtils.skipCase()) {
             return;
         }
-        var func = PanamaUtils.defineCFunctionByName(arena, TestDefiningCFunction.class, "upcallReturnLongNoParam0");
+        var func = PanamaUtils.defineCFunctionByName(new PNILinkOptions(), arena, TestDefiningCFunction.class, "upcallReturnLongNoParam0");
         long l = DefiningCFunction.get().upcallReturnLongNoParam(env, func);
         assertEquals(97L, l);
     }
@@ -233,7 +234,7 @@ public class TestDefiningCFunction {
         if (TestUtils.skipCase()) {
             return;
         }
-        var func = PanamaUtils.defineCFunctionByName(arena, TestDefiningCFunction.class, "upcallReturnShortNoParam0");
+        var func = PanamaUtils.defineCFunctionByName(new PNILinkOptions(), arena, TestDefiningCFunction.class, "upcallReturnShortNoParam0");
         short s = DefiningCFunction.get().upcallReturnShortNoParam(env, func);
         assertEquals((short) 96, s);
     }
@@ -249,7 +250,7 @@ public class TestDefiningCFunction {
         if (TestUtils.skipCase()) {
             return;
         }
-        var func = PanamaUtils.defineCFunctionByName(arena, TestDefiningCFunction.class, "upcallReturnPointerNoParam0");
+        var func = PanamaUtils.defineCFunctionByName(new PNILinkOptions(), arena, TestDefiningCFunction.class, "upcallReturnPointerNoParam0");
         MemorySegment mem = DefiningCFunction.get().upcallReturnPointerNoParam(env, func);
         assertEquals((byte) 95, mem.reinterpret(1).get(ValueLayout.JAVA_BYTE, 0));
     }
@@ -263,7 +264,7 @@ public class TestDefiningCFunction {
         if (TestUtils.skipCase()) {
             return;
         }
-        var func = PanamaUtils.defineCFunctionByName(arena, TestDefiningCFunction.class, "upcallReturnByte1Param0");
+        var func = PanamaUtils.defineCFunctionByName(new PNILinkOptions(), arena, TestDefiningCFunction.class, "upcallReturnByte1Param0");
         byte b = DefiningCFunction.get().upcallReturnByte1Param(env, func, (byte) 10);
         assertEquals((byte) 89, b);
     }
@@ -277,7 +278,7 @@ public class TestDefiningCFunction {
         if (TestUtils.skipCase()) {
             return;
         }
-        var func = PanamaUtils.defineCFunctionByName(arena, TestDefiningCFunction.class, "upcallReturnBool1Param0");
+        var func = PanamaUtils.defineCFunctionByName(new PNILinkOptions(), arena, TestDefiningCFunction.class, "upcallReturnBool1Param0");
         boolean b = DefiningCFunction.get().upcallReturnBool1Param(env, func, true);
         assertFalse(b);
     }
@@ -291,7 +292,7 @@ public class TestDefiningCFunction {
         if (TestUtils.skipCase()) {
             return;
         }
-        var func = PanamaUtils.defineCFunctionByName(arena, TestDefiningCFunction.class, "upcallReturnChar1Param0");
+        var func = PanamaUtils.defineCFunctionByName(new PNILinkOptions(), arena, TestDefiningCFunction.class, "upcallReturnChar1Param0");
         char c = DefiningCFunction.get().upcallReturnChar1Param(env, func, 'Y');
         assertEquals('Z', c);
     }
@@ -305,7 +306,7 @@ public class TestDefiningCFunction {
         if (TestUtils.skipCase()) {
             return;
         }
-        var func = PanamaUtils.defineCFunctionByName(arena, TestDefiningCFunction.class, "upcallReturnDouble1Param0");
+        var func = PanamaUtils.defineCFunctionByName(new PNILinkOptions(), arena, TestDefiningCFunction.class, "upcallReturnDouble1Param0");
         double d = DefiningCFunction.get().upcallReturnDouble1Param(env, func, 2);
         assertEquals(5.12, d, 0);
     }
@@ -319,7 +320,7 @@ public class TestDefiningCFunction {
         if (TestUtils.skipCase()) {
             return;
         }
-        var func = PanamaUtils.defineCFunctionByName(arena, TestDefiningCFunction.class, "upcallReturnFloat1Param0");
+        var func = PanamaUtils.defineCFunctionByName(new PNILinkOptions(), arena, TestDefiningCFunction.class, "upcallReturnFloat1Param0");
         float f = DefiningCFunction.get().upcallReturnFloat1Param(env, func, 4);
         assertEquals(20.48f, f, 0);
     }
@@ -333,7 +334,7 @@ public class TestDefiningCFunction {
         if (TestUtils.skipCase()) {
             return;
         }
-        var func = PanamaUtils.defineCFunctionByName(arena, TestDefiningCFunction.class, "upcallReturnInt1Param0");
+        var func = PanamaUtils.defineCFunctionByName(new PNILinkOptions(), arena, TestDefiningCFunction.class, "upcallReturnInt1Param0");
         int i = DefiningCFunction.get().upcallReturnInt1Param(env, func, 11);
         assertEquals(87, i);
     }
@@ -347,7 +348,7 @@ public class TestDefiningCFunction {
         if (TestUtils.skipCase()) {
             return;
         }
-        var func = PanamaUtils.defineCFunctionByName(arena, TestDefiningCFunction.class, "upcallReturnLong1Param0");
+        var func = PanamaUtils.defineCFunctionByName(new PNILinkOptions(), arena, TestDefiningCFunction.class, "upcallReturnLong1Param0");
         long l = DefiningCFunction.get().upcallReturnLong1Param(env, func, 12L);
         assertEquals(85L, l);
     }
@@ -361,7 +362,7 @@ public class TestDefiningCFunction {
         if (TestUtils.skipCase()) {
             return;
         }
-        var func = PanamaUtils.defineCFunctionByName(arena, TestDefiningCFunction.class, "upcallReturnShort1Param0");
+        var func = PanamaUtils.defineCFunctionByName(new PNILinkOptions(), arena, TestDefiningCFunction.class, "upcallReturnShort1Param0");
         short s = DefiningCFunction.get().upcallReturnShort1Param(env, func, (short) 13);
         assertEquals((short) 83, s);
     }
@@ -377,7 +378,7 @@ public class TestDefiningCFunction {
         if (TestUtils.skipCase()) {
             return;
         }
-        var func = PanamaUtils.defineCFunctionByName(arena, TestDefiningCFunction.class, "upcallReturnPointer1Param0");
+        var func = PanamaUtils.defineCFunctionByName(new PNILinkOptions(), arena, TestDefiningCFunction.class, "upcallReturnPointer1Param0");
         try (var allocator = Allocator.ofConfined()) {
             var data = allocator.allocate(1);
             data.set(ValueLayout.JAVA_BYTE, 0, (byte) 14);

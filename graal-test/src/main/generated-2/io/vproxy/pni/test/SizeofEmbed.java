@@ -12,7 +12,7 @@ import org.graalvm.nativeimage.c.type.VoidPointer;
 import org.graalvm.word.WordFactory;
 
 public class SizeofEmbed extends AbstractNativeObject implements NativeObject {
-    private static final MethodHandle __getLayoutByteSizeMH = PanamaUtils.lookupPNICriticalFunction(true, long.class, "JavaCritical_io_vproxy_pni_test_SizeofEmbed___getLayoutByteSize");
+    private static final MethodHandle __getLayoutByteSizeMH = PanamaUtils.lookupPNICriticalFunction(new PNILinkOptions().setCritical(true), long.class, "JavaCritical_io_vproxy_pni_test_SizeofEmbed___getLayoutByteSize");
 
     private static long __getLayoutByteSize() {
         long RESULT;
@@ -185,4 +185,4 @@ public class SizeofEmbed extends AbstractNativeObject implements NativeObject {
     }
 }
 // metadata.generator-version: pni test
-// sha256:52b02c64114aaa9eecaca464ea04ec082d3be573a4a8785477d465aa209960ca
+// sha256:883488e834be514cba4bd86405938349d779a31ba8f78900104d4fdcadea02dd

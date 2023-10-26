@@ -12,7 +12,7 @@ import org.graalvm.nativeimage.c.type.VoidPointer;
 import org.graalvm.word.WordFactory;
 
 public class SizeofUnion extends AbstractNativeObject implements NativeObject {
-    private static final MethodHandle __getLayoutByteSizeMH = PanamaUtils.lookupPNICriticalFunction(true, long.class, "JavaCritical_io_vproxy_pni_test_SizeofUnion___getLayoutByteSize");
+    private static final MethodHandle __getLayoutByteSizeMH = PanamaUtils.lookupPNICriticalFunction(new PNILinkOptions().setCritical(true), long.class, "JavaCritical_io_vproxy_pni_test_SizeofUnion___getLayoutByteSize");
 
     private static long __getLayoutByteSize() {
         long RESULT;
@@ -160,4 +160,4 @@ public class SizeofUnion extends AbstractNativeObject implements NativeObject {
     }
 }
 // metadata.generator-version: pni test
-// sha256:5a2f6f913b7cddaa93942aab821e92733c9769b4cafa532c6b55019249413f03
+// sha256:68fceeb8d9e332e38799f3cb7aad7b9cb8b4b26b3ed7d778f05618e43d3d2662

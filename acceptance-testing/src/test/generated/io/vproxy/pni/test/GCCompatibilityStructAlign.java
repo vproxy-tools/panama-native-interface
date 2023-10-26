@@ -58,7 +58,7 @@ public class GCCompatibilityStructAlign extends AbstractNativeObject implements 
         this(ALLOCATOR.allocate(LAYOUT));
     }
 
-    private static final MethodHandle initMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_GCCompatibilityStructAlign_init", MemorySegment.class /* self */);
+    private static final MethodHandle initMH = PanamaUtils.lookupPNIFunction(new PNILinkOptions(), "Java_io_vproxy_pni_test_GCCompatibilityStructAlign_init", MemorySegment.class /* self */);
 
     public void init(PNIEnv ENV) {
         ENV.reset();
@@ -73,7 +73,7 @@ public class GCCompatibilityStructAlign extends AbstractNativeObject implements 
         }
     }
 
-    private static final MethodHandle sizeMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_GCCompatibilityStructAlign_size", MemorySegment.class /* self */);
+    private static final MethodHandle sizeMH = PanamaUtils.lookupPNIFunction(new PNILinkOptions(), "Java_io_vproxy_pni_test_GCCompatibilityStructAlign_size", MemorySegment.class /* self */);
 
     public long size(PNIEnv ENV) {
         ENV.reset();
@@ -180,4 +180,4 @@ public class GCCompatibilityStructAlign extends AbstractNativeObject implements 
     }
 }
 // metadata.generator-version: pni test
-// sha256:71465664263ee8e2456a70dd091b0e91609d0ae79d670c215210e2d410198213
+// sha256:5d5e80f1cdd6a58865cfabcee39576856a1db422f8f35529738ba490efe5a98e

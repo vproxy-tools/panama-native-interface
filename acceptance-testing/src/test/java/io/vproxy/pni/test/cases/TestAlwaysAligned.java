@@ -113,7 +113,7 @@ public class TestAlwaysAligned {
 
         s = Files.readAllLines(Path.of("src", "test", "generated", "io", "vproxy", "pni", "test", "AlwaysAlignedSizeof.java"));
         lastLine = s.get(s.size() - 1);
-        assertEquals("// sha256:a025ec3cbd8ff07ab5cb5e846670106d58fe92f2e4a008d988f3df7a876a7138", lastLine);
+        assertEquals("// sha256:03f53eb697cf302dbd78951756723e329a243e5b590a0f50236ca0c872e1db90", lastLine);
 
         s = Files.readAllLines(Path.of("src", "test", "generated", "io", "vproxy", "pni", "test", "AlwaysAlignedUnion.java"));
         lastLine = s.get(s.size() - 1);

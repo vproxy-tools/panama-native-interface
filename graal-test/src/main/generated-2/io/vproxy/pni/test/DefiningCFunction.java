@@ -21,7 +21,7 @@ public class DefiningCFunction {
         return INSTANCE;
     }
 
-    private static final MethodHandle upcallVoidNoParamMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_DefiningCFunction_upcallVoidNoParam", MemorySegment.class /* func */);
+    private static final MethodHandle upcallVoidNoParamMH = PanamaUtils.lookupPNIFunction(new PNILinkOptions(), "Java_io_vproxy_pni_test_DefiningCFunction_upcallVoidNoParam", MemorySegment.class /* func */);
 
     public void upcallVoidNoParam(PNIEnv ENV, MemorySegment func) {
         ENV.reset();
@@ -36,7 +36,7 @@ public class DefiningCFunction {
         }
     }
 
-    private static final MethodHandle upcallVoid1ParamMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_DefiningCFunction_upcallVoid1Param", MemorySegment.class /* func */, MemorySegment.class /* data */);
+    private static final MethodHandle upcallVoid1ParamMH = PanamaUtils.lookupPNIFunction(new PNILinkOptions(), "Java_io_vproxy_pni_test_DefiningCFunction_upcallVoid1Param", MemorySegment.class /* func */, MemorySegment.class /* data */);
 
     public void upcallVoid1Param(PNIEnv ENV, MemorySegment func, MemorySegment data) {
         ENV.reset();
@@ -51,7 +51,7 @@ public class DefiningCFunction {
         }
     }
 
-    private static final MethodHandle upcallVoid2ParamMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_DefiningCFunction_upcallVoid2Param", MemorySegment.class /* func */, MemorySegment.class /* data */, byte.class /* b */);
+    private static final MethodHandle upcallVoid2ParamMH = PanamaUtils.lookupPNIFunction(new PNILinkOptions(), "Java_io_vproxy_pni_test_DefiningCFunction_upcallVoid2Param", MemorySegment.class /* func */, MemorySegment.class /* data */, byte.class /* b */);
 
     public void upcallVoid2Param(PNIEnv ENV, MemorySegment func, MemorySegment data, byte b) {
         ENV.reset();
@@ -66,7 +66,7 @@ public class DefiningCFunction {
         }
     }
 
-    private static final MethodHandle upcallVoid3ParamMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_DefiningCFunction_upcallVoid3Param", MemorySegment.class /* func */, MemorySegment.class /* data */, boolean.class /* z */, char.class /* c */);
+    private static final MethodHandle upcallVoid3ParamMH = PanamaUtils.lookupPNIFunction(new PNILinkOptions(), "Java_io_vproxy_pni_test_DefiningCFunction_upcallVoid3Param", MemorySegment.class /* func */, MemorySegment.class /* data */, boolean.class /* z */, char.class /* c */);
 
     public void upcallVoid3Param(PNIEnv ENV, MemorySegment func, MemorySegment data, boolean z, char c) {
         ENV.reset();
@@ -81,7 +81,7 @@ public class DefiningCFunction {
         }
     }
 
-    private static final MethodHandle upcallVoid4ParamMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_DefiningCFunction_upcallVoid4Param", MemorySegment.class /* func */, MemorySegment.class /* data */, double.class /* d */, float.class /* f */, int.class /* i */);
+    private static final MethodHandle upcallVoid4ParamMH = PanamaUtils.lookupPNIFunction(new PNILinkOptions(), "Java_io_vproxy_pni_test_DefiningCFunction_upcallVoid4Param", MemorySegment.class /* func */, MemorySegment.class /* data */, double.class /* d */, float.class /* f */, int.class /* i */);
 
     public void upcallVoid4Param(PNIEnv ENV, MemorySegment func, MemorySegment data, double d, float f, int i) {
         ENV.reset();
@@ -96,7 +96,7 @@ public class DefiningCFunction {
         }
     }
 
-    private static final MethodHandle upcallVoid3Param2MH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_DefiningCFunction_upcallVoid3Param2", MemorySegment.class /* func */, MemorySegment.class /* data */, long.class /* l */, short.class /* s */);
+    private static final MethodHandle upcallVoid3Param2MH = PanamaUtils.lookupPNIFunction(new PNILinkOptions(), "Java_io_vproxy_pni_test_DefiningCFunction_upcallVoid3Param2", MemorySegment.class /* func */, MemorySegment.class /* data */, long.class /* l */, short.class /* s */);
 
     public void upcallVoid3Param2(PNIEnv ENV, MemorySegment func, MemorySegment data, long l, short s) {
         ENV.reset();
@@ -111,7 +111,7 @@ public class DefiningCFunction {
         }
     }
 
-    private static final MethodHandle upcallReturnByteNoParamMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_DefiningCFunction_upcallReturnByteNoParam", MemorySegment.class /* func */);
+    private static final MethodHandle upcallReturnByteNoParamMH = PanamaUtils.lookupPNIFunction(new PNILinkOptions(), "Java_io_vproxy_pni_test_DefiningCFunction_upcallReturnByteNoParam", MemorySegment.class /* func */);
 
     public byte upcallReturnByteNoParam(PNIEnv ENV, MemorySegment func) {
         ENV.reset();
@@ -127,7 +127,7 @@ public class DefiningCFunction {
         return ENV.returnByte();
     }
 
-    private static final MethodHandle upcallReturnBoolNoParamMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_DefiningCFunction_upcallReturnBoolNoParam", MemorySegment.class /* func */);
+    private static final MethodHandle upcallReturnBoolNoParamMH = PanamaUtils.lookupPNIFunction(new PNILinkOptions(), "Java_io_vproxy_pni_test_DefiningCFunction_upcallReturnBoolNoParam", MemorySegment.class /* func */);
 
     public boolean upcallReturnBoolNoParam(PNIEnv ENV, MemorySegment func) {
         ENV.reset();
@@ -143,7 +143,7 @@ public class DefiningCFunction {
         return ENV.returnBool();
     }
 
-    private static final MethodHandle upcallReturnCharNoParamMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_DefiningCFunction_upcallReturnCharNoParam", MemorySegment.class /* func */);
+    private static final MethodHandle upcallReturnCharNoParamMH = PanamaUtils.lookupPNIFunction(new PNILinkOptions(), "Java_io_vproxy_pni_test_DefiningCFunction_upcallReturnCharNoParam", MemorySegment.class /* func */);
 
     public char upcallReturnCharNoParam(PNIEnv ENV, MemorySegment func) {
         ENV.reset();
@@ -159,7 +159,7 @@ public class DefiningCFunction {
         return ENV.returnChar();
     }
 
-    private static final MethodHandle upcallReturnDoubleNoParamMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_DefiningCFunction_upcallReturnDoubleNoParam", MemorySegment.class /* func */);
+    private static final MethodHandle upcallReturnDoubleNoParamMH = PanamaUtils.lookupPNIFunction(new PNILinkOptions(), "Java_io_vproxy_pni_test_DefiningCFunction_upcallReturnDoubleNoParam", MemorySegment.class /* func */);
 
     public double upcallReturnDoubleNoParam(PNIEnv ENV, MemorySegment func) {
         ENV.reset();
@@ -175,7 +175,7 @@ public class DefiningCFunction {
         return ENV.returnDouble();
     }
 
-    private static final MethodHandle upcallReturnFloatNoParamMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_DefiningCFunction_upcallReturnFloatNoParam", MemorySegment.class /* func */);
+    private static final MethodHandle upcallReturnFloatNoParamMH = PanamaUtils.lookupPNIFunction(new PNILinkOptions(), "Java_io_vproxy_pni_test_DefiningCFunction_upcallReturnFloatNoParam", MemorySegment.class /* func */);
 
     public float upcallReturnFloatNoParam(PNIEnv ENV, MemorySegment func) {
         ENV.reset();
@@ -191,7 +191,7 @@ public class DefiningCFunction {
         return ENV.returnFloat();
     }
 
-    private static final MethodHandle upcallReturnIntNoParamMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_DefiningCFunction_upcallReturnIntNoParam", MemorySegment.class /* func */);
+    private static final MethodHandle upcallReturnIntNoParamMH = PanamaUtils.lookupPNIFunction(new PNILinkOptions(), "Java_io_vproxy_pni_test_DefiningCFunction_upcallReturnIntNoParam", MemorySegment.class /* func */);
 
     public int upcallReturnIntNoParam(PNIEnv ENV, MemorySegment func) {
         ENV.reset();
@@ -207,7 +207,7 @@ public class DefiningCFunction {
         return ENV.returnInt();
     }
 
-    private static final MethodHandle upcallReturnLongNoParamMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_DefiningCFunction_upcallReturnLongNoParam", MemorySegment.class /* func */);
+    private static final MethodHandle upcallReturnLongNoParamMH = PanamaUtils.lookupPNIFunction(new PNILinkOptions(), "Java_io_vproxy_pni_test_DefiningCFunction_upcallReturnLongNoParam", MemorySegment.class /* func */);
 
     public long upcallReturnLongNoParam(PNIEnv ENV, MemorySegment func) {
         ENV.reset();
@@ -223,7 +223,7 @@ public class DefiningCFunction {
         return ENV.returnLong();
     }
 
-    private static final MethodHandle upcallReturnShortNoParamMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_DefiningCFunction_upcallReturnShortNoParam", MemorySegment.class /* func */);
+    private static final MethodHandle upcallReturnShortNoParamMH = PanamaUtils.lookupPNIFunction(new PNILinkOptions(), "Java_io_vproxy_pni_test_DefiningCFunction_upcallReturnShortNoParam", MemorySegment.class /* func */);
 
     public short upcallReturnShortNoParam(PNIEnv ENV, MemorySegment func) {
         ENV.reset();
@@ -239,7 +239,7 @@ public class DefiningCFunction {
         return ENV.returnShort();
     }
 
-    private static final MethodHandle upcallReturnPointerNoParamMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_DefiningCFunction_upcallReturnPointerNoParam", MemorySegment.class /* func */);
+    private static final MethodHandle upcallReturnPointerNoParamMH = PanamaUtils.lookupPNIFunction(new PNILinkOptions(), "Java_io_vproxy_pni_test_DefiningCFunction_upcallReturnPointerNoParam", MemorySegment.class /* func */);
 
     public MemorySegment upcallReturnPointerNoParam(PNIEnv ENV, MemorySegment func) {
         ENV.reset();
@@ -255,7 +255,7 @@ public class DefiningCFunction {
         return ENV.returnPointer();
     }
 
-    private static final MethodHandle upcallReturnByte1ParamMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_DefiningCFunction_upcallReturnByte1Param", MemorySegment.class /* func */, byte.class /* b */);
+    private static final MethodHandle upcallReturnByte1ParamMH = PanamaUtils.lookupPNIFunction(new PNILinkOptions(), "Java_io_vproxy_pni_test_DefiningCFunction_upcallReturnByte1Param", MemorySegment.class /* func */, byte.class /* b */);
 
     public byte upcallReturnByte1Param(PNIEnv ENV, MemorySegment func, byte b) {
         ENV.reset();
@@ -271,7 +271,7 @@ public class DefiningCFunction {
         return ENV.returnByte();
     }
 
-    private static final MethodHandle upcallReturnBool1ParamMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_DefiningCFunction_upcallReturnBool1Param", MemorySegment.class /* func */, boolean.class /* z */);
+    private static final MethodHandle upcallReturnBool1ParamMH = PanamaUtils.lookupPNIFunction(new PNILinkOptions(), "Java_io_vproxy_pni_test_DefiningCFunction_upcallReturnBool1Param", MemorySegment.class /* func */, boolean.class /* z */);
 
     public boolean upcallReturnBool1Param(PNIEnv ENV, MemorySegment func, boolean z) {
         ENV.reset();
@@ -287,7 +287,7 @@ public class DefiningCFunction {
         return ENV.returnBool();
     }
 
-    private static final MethodHandle upcallReturnChar1ParamMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_DefiningCFunction_upcallReturnChar1Param", MemorySegment.class /* func */, char.class /* c */);
+    private static final MethodHandle upcallReturnChar1ParamMH = PanamaUtils.lookupPNIFunction(new PNILinkOptions(), "Java_io_vproxy_pni_test_DefiningCFunction_upcallReturnChar1Param", MemorySegment.class /* func */, char.class /* c */);
 
     public char upcallReturnChar1Param(PNIEnv ENV, MemorySegment func, char c) {
         ENV.reset();
@@ -303,7 +303,7 @@ public class DefiningCFunction {
         return ENV.returnChar();
     }
 
-    private static final MethodHandle upcallReturnDouble1ParamMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_DefiningCFunction_upcallReturnDouble1Param", MemorySegment.class /* func */, double.class /* d */);
+    private static final MethodHandle upcallReturnDouble1ParamMH = PanamaUtils.lookupPNIFunction(new PNILinkOptions(), "Java_io_vproxy_pni_test_DefiningCFunction_upcallReturnDouble1Param", MemorySegment.class /* func */, double.class /* d */);
 
     public double upcallReturnDouble1Param(PNIEnv ENV, MemorySegment func, double d) {
         ENV.reset();
@@ -319,7 +319,7 @@ public class DefiningCFunction {
         return ENV.returnDouble();
     }
 
-    private static final MethodHandle upcallReturnFloat1ParamMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_DefiningCFunction_upcallReturnFloat1Param", MemorySegment.class /* func */, float.class /* f */);
+    private static final MethodHandle upcallReturnFloat1ParamMH = PanamaUtils.lookupPNIFunction(new PNILinkOptions(), "Java_io_vproxy_pni_test_DefiningCFunction_upcallReturnFloat1Param", MemorySegment.class /* func */, float.class /* f */);
 
     public float upcallReturnFloat1Param(PNIEnv ENV, MemorySegment func, float f) {
         ENV.reset();
@@ -335,7 +335,7 @@ public class DefiningCFunction {
         return ENV.returnFloat();
     }
 
-    private static final MethodHandle upcallReturnInt1ParamMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_DefiningCFunction_upcallReturnInt1Param", MemorySegment.class /* func */, int.class /* i */);
+    private static final MethodHandle upcallReturnInt1ParamMH = PanamaUtils.lookupPNIFunction(new PNILinkOptions(), "Java_io_vproxy_pni_test_DefiningCFunction_upcallReturnInt1Param", MemorySegment.class /* func */, int.class /* i */);
 
     public int upcallReturnInt1Param(PNIEnv ENV, MemorySegment func, int i) {
         ENV.reset();
@@ -351,7 +351,7 @@ public class DefiningCFunction {
         return ENV.returnInt();
     }
 
-    private static final MethodHandle upcallReturnLong1ParamMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_DefiningCFunction_upcallReturnLong1Param", MemorySegment.class /* func */, long.class /* j */);
+    private static final MethodHandle upcallReturnLong1ParamMH = PanamaUtils.lookupPNIFunction(new PNILinkOptions(), "Java_io_vproxy_pni_test_DefiningCFunction_upcallReturnLong1Param", MemorySegment.class /* func */, long.class /* j */);
 
     public long upcallReturnLong1Param(PNIEnv ENV, MemorySegment func, long j) {
         ENV.reset();
@@ -367,7 +367,7 @@ public class DefiningCFunction {
         return ENV.returnLong();
     }
 
-    private static final MethodHandle upcallReturnShort1ParamMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_DefiningCFunction_upcallReturnShort1Param", MemorySegment.class /* func */, short.class /* s */);
+    private static final MethodHandle upcallReturnShort1ParamMH = PanamaUtils.lookupPNIFunction(new PNILinkOptions(), "Java_io_vproxy_pni_test_DefiningCFunction_upcallReturnShort1Param", MemorySegment.class /* func */, short.class /* s */);
 
     public short upcallReturnShort1Param(PNIEnv ENV, MemorySegment func, short s) {
         ENV.reset();
@@ -383,7 +383,7 @@ public class DefiningCFunction {
         return ENV.returnShort();
     }
 
-    private static final MethodHandle upcallReturnPointer1ParamMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_DefiningCFunction_upcallReturnPointer1Param", MemorySegment.class /* func */, MemorySegment.class /* p */);
+    private static final MethodHandle upcallReturnPointer1ParamMH = PanamaUtils.lookupPNIFunction(new PNILinkOptions(), "Java_io_vproxy_pni_test_DefiningCFunction_upcallReturnPointer1Param", MemorySegment.class /* func */, MemorySegment.class /* p */);
 
     public MemorySegment upcallReturnPointer1Param(PNIEnv ENV, MemorySegment func, MemorySegment p) {
         ENV.reset();
@@ -400,4 +400,4 @@ public class DefiningCFunction {
     }
 }
 // metadata.generator-version: pni test
-// sha256:6db6491edc29717b06a0ff39c80b7d6440a12d826c5587b961ffa1db9a696d78
+// sha256:7553d87aa3a0b2a51671d90eb4d768a56a2294abfbae7b9bef44f6ff262b1d10

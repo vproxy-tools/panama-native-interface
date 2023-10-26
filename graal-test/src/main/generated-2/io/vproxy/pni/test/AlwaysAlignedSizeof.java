@@ -12,7 +12,7 @@ import org.graalvm.nativeimage.c.type.VoidPointer;
 import org.graalvm.word.WordFactory;
 
 public class AlwaysAlignedSizeof extends AbstractNativeObject implements NativeObject {
-    private static final MethodHandle __getLayoutByteSizeMH = PanamaUtils.lookupPNICriticalFunction(true, long.class, "JavaCritical_io_vproxy_pni_test_AlwaysAlignedSizeof___getLayoutByteSize");
+    private static final MethodHandle __getLayoutByteSizeMH = PanamaUtils.lookupPNICriticalFunction(new PNILinkOptions().setCritical(true), long.class, "JavaCritical_io_vproxy_pni_test_AlwaysAlignedSizeof___getLayoutByteSize");
 
     private static long __getLayoutByteSize() {
         long RESULT;
@@ -164,4 +164,4 @@ public class AlwaysAlignedSizeof extends AbstractNativeObject implements NativeO
     }
 }
 // metadata.generator-version: pni test
-// sha256:cd65c63253e313f865e82217eba6524a2cc5e564693cabaf9e337fb1793954c9
+// sha256:3382d6ea1e3416a3dab35fa0ddf6fecd42e014b883e13332a4cd68e97c8026b4

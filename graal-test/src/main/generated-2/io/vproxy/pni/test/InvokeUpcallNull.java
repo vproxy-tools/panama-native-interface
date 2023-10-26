@@ -21,7 +21,7 @@ public class InvokeUpcallNull {
         return INSTANCE;
     }
 
-    private static final MethodHandle testParamMH = PanamaUtils.lookupPNICriticalFunction(false, boolean.class, "JavaCritical_io_vproxy_pni_test_InvokeUpcallNull_testParam");
+    private static final MethodHandle testParamMH = PanamaUtils.lookupPNICriticalFunction(new PNILinkOptions(), boolean.class, "JavaCritical_io_vproxy_pni_test_InvokeUpcallNull_testParam");
 
     public boolean testParam() {
         boolean RESULT;
@@ -33,7 +33,7 @@ public class InvokeUpcallNull {
         return RESULT;
     }
 
-    private static final MethodHandle testParamRawMH = PanamaUtils.lookupPNICriticalFunction(false, boolean.class, "JavaCritical_io_vproxy_pni_test_InvokeUpcallNull_testParamRaw");
+    private static final MethodHandle testParamRawMH = PanamaUtils.lookupPNICriticalFunction(new PNILinkOptions(), boolean.class, "JavaCritical_io_vproxy_pni_test_InvokeUpcallNull_testParamRaw");
 
     public boolean testParamRaw() {
         boolean RESULT;
@@ -45,7 +45,7 @@ public class InvokeUpcallNull {
         return RESULT;
     }
 
-    private static final MethodHandle returnOMH = PanamaUtils.lookupPNICriticalFunction(false, boolean.class, "JavaCritical_io_vproxy_pni_test_InvokeUpcallNull_returnO");
+    private static final MethodHandle returnOMH = PanamaUtils.lookupPNICriticalFunction(new PNILinkOptions(), boolean.class, "JavaCritical_io_vproxy_pni_test_InvokeUpcallNull_returnO");
 
     public boolean returnO() {
         boolean RESULT;
@@ -57,7 +57,7 @@ public class InvokeUpcallNull {
         return RESULT;
     }
 
-    private static final MethodHandle returnStrMH = PanamaUtils.lookupPNICriticalFunction(false, boolean.class, "JavaCritical_io_vproxy_pni_test_InvokeUpcallNull_returnStr");
+    private static final MethodHandle returnStrMH = PanamaUtils.lookupPNICriticalFunction(new PNILinkOptions(), boolean.class, "JavaCritical_io_vproxy_pni_test_InvokeUpcallNull_returnStr");
 
     public boolean returnStr() {
         boolean RESULT;
@@ -69,7 +69,7 @@ public class InvokeUpcallNull {
         return RESULT;
     }
 
-    private static final MethodHandle returnSegMH = PanamaUtils.lookupPNICriticalFunction(false, boolean.class, "JavaCritical_io_vproxy_pni_test_InvokeUpcallNull_returnSeg");
+    private static final MethodHandle returnSegMH = PanamaUtils.lookupPNICriticalFunction(new PNILinkOptions(), boolean.class, "JavaCritical_io_vproxy_pni_test_InvokeUpcallNull_returnSeg");
 
     public boolean returnSeg() {
         boolean RESULT;
@@ -81,7 +81,7 @@ public class InvokeUpcallNull {
         return RESULT;
     }
 
-    private static final MethodHandle returnBufMH = PanamaUtils.lookupPNICriticalFunction(false, boolean.class, "JavaCritical_io_vproxy_pni_test_InvokeUpcallNull_returnBuf");
+    private static final MethodHandle returnBufMH = PanamaUtils.lookupPNICriticalFunction(new PNILinkOptions(), boolean.class, "JavaCritical_io_vproxy_pni_test_InvokeUpcallNull_returnBuf");
 
     public boolean returnBuf() {
         boolean RESULT;
@@ -93,7 +93,7 @@ public class InvokeUpcallNull {
         return RESULT;
     }
 
-    private static final MethodHandle returnByteArrMH = PanamaUtils.lookupPNICriticalFunction(false, boolean.class, "JavaCritical_io_vproxy_pni_test_InvokeUpcallNull_returnByteArr");
+    private static final MethodHandle returnByteArrMH = PanamaUtils.lookupPNICriticalFunction(new PNILinkOptions(), boolean.class, "JavaCritical_io_vproxy_pni_test_InvokeUpcallNull_returnByteArr");
 
     public boolean returnByteArr() {
         boolean RESULT;
@@ -105,7 +105,7 @@ public class InvokeUpcallNull {
         return RESULT;
     }
 
-    private static final MethodHandle returnBoolArrMH = PanamaUtils.lookupPNICriticalFunction(false, boolean.class, "JavaCritical_io_vproxy_pni_test_InvokeUpcallNull_returnBoolArr");
+    private static final MethodHandle returnBoolArrMH = PanamaUtils.lookupPNICriticalFunction(new PNILinkOptions(), boolean.class, "JavaCritical_io_vproxy_pni_test_InvokeUpcallNull_returnBoolArr");
 
     public boolean returnBoolArr() {
         boolean RESULT;
@@ -117,7 +117,7 @@ public class InvokeUpcallNull {
         return RESULT;
     }
 
-    private static final MethodHandle returnCharArrMH = PanamaUtils.lookupPNICriticalFunction(false, boolean.class, "JavaCritical_io_vproxy_pni_test_InvokeUpcallNull_returnCharArr");
+    private static final MethodHandle returnCharArrMH = PanamaUtils.lookupPNICriticalFunction(new PNILinkOptions(), boolean.class, "JavaCritical_io_vproxy_pni_test_InvokeUpcallNull_returnCharArr");
 
     public boolean returnCharArr() {
         boolean RESULT;
@@ -129,7 +129,7 @@ public class InvokeUpcallNull {
         return RESULT;
     }
 
-    private static final MethodHandle returnFloatArrMH = PanamaUtils.lookupPNICriticalFunction(false, boolean.class, "JavaCritical_io_vproxy_pni_test_InvokeUpcallNull_returnFloatArr");
+    private static final MethodHandle returnFloatArrMH = PanamaUtils.lookupPNICriticalFunction(new PNILinkOptions(), boolean.class, "JavaCritical_io_vproxy_pni_test_InvokeUpcallNull_returnFloatArr");
 
     public boolean returnFloatArr() {
         boolean RESULT;
@@ -141,7 +141,7 @@ public class InvokeUpcallNull {
         return RESULT;
     }
 
-    private static final MethodHandle returnDoubleArrMH = PanamaUtils.lookupPNICriticalFunction(false, boolean.class, "JavaCritical_io_vproxy_pni_test_InvokeUpcallNull_returnDoubleArr");
+    private static final MethodHandle returnDoubleArrMH = PanamaUtils.lookupPNICriticalFunction(new PNILinkOptions(), boolean.class, "JavaCritical_io_vproxy_pni_test_InvokeUpcallNull_returnDoubleArr");
 
     public boolean returnDoubleArr() {
         boolean RESULT;
@@ -153,7 +153,7 @@ public class InvokeUpcallNull {
         return RESULT;
     }
 
-    private static final MethodHandle returnIntArrMH = PanamaUtils.lookupPNICriticalFunction(false, boolean.class, "JavaCritical_io_vproxy_pni_test_InvokeUpcallNull_returnIntArr");
+    private static final MethodHandle returnIntArrMH = PanamaUtils.lookupPNICriticalFunction(new PNILinkOptions(), boolean.class, "JavaCritical_io_vproxy_pni_test_InvokeUpcallNull_returnIntArr");
 
     public boolean returnIntArr() {
         boolean RESULT;
@@ -165,7 +165,7 @@ public class InvokeUpcallNull {
         return RESULT;
     }
 
-    private static final MethodHandle returnLongArrMH = PanamaUtils.lookupPNICriticalFunction(false, boolean.class, "JavaCritical_io_vproxy_pni_test_InvokeUpcallNull_returnLongArr");
+    private static final MethodHandle returnLongArrMH = PanamaUtils.lookupPNICriticalFunction(new PNILinkOptions(), boolean.class, "JavaCritical_io_vproxy_pni_test_InvokeUpcallNull_returnLongArr");
 
     public boolean returnLongArr() {
         boolean RESULT;
@@ -177,7 +177,7 @@ public class InvokeUpcallNull {
         return RESULT;
     }
 
-    private static final MethodHandle returnShortArrMH = PanamaUtils.lookupPNICriticalFunction(false, boolean.class, "JavaCritical_io_vproxy_pni_test_InvokeUpcallNull_returnShortArr");
+    private static final MethodHandle returnShortArrMH = PanamaUtils.lookupPNICriticalFunction(new PNILinkOptions(), boolean.class, "JavaCritical_io_vproxy_pni_test_InvokeUpcallNull_returnShortArr");
 
     public boolean returnShortArr() {
         boolean RESULT;
@@ -189,7 +189,7 @@ public class InvokeUpcallNull {
         return RESULT;
     }
 
-    private static final MethodHandle returnPArrMH = PanamaUtils.lookupPNICriticalFunction(false, boolean.class, "JavaCritical_io_vproxy_pni_test_InvokeUpcallNull_returnPArr");
+    private static final MethodHandle returnPArrMH = PanamaUtils.lookupPNICriticalFunction(new PNILinkOptions(), boolean.class, "JavaCritical_io_vproxy_pni_test_InvokeUpcallNull_returnPArr");
 
     public boolean returnPArr() {
         boolean RESULT;
@@ -201,7 +201,7 @@ public class InvokeUpcallNull {
         return RESULT;
     }
 
-    private static final MethodHandle returnOArrMH = PanamaUtils.lookupPNICriticalFunction(false, boolean.class, "JavaCritical_io_vproxy_pni_test_InvokeUpcallNull_returnOArr");
+    private static final MethodHandle returnOArrMH = PanamaUtils.lookupPNICriticalFunction(new PNILinkOptions(), boolean.class, "JavaCritical_io_vproxy_pni_test_InvokeUpcallNull_returnOArr");
 
     public boolean returnOArr() {
         boolean RESULT;
@@ -213,7 +213,7 @@ public class InvokeUpcallNull {
         return RESULT;
     }
 
-    private static final MethodHandle returnRefMH = PanamaUtils.lookupPNICriticalFunction(false, boolean.class, "JavaCritical_io_vproxy_pni_test_InvokeUpcallNull_returnRef");
+    private static final MethodHandle returnRefMH = PanamaUtils.lookupPNICriticalFunction(new PNILinkOptions(), boolean.class, "JavaCritical_io_vproxy_pni_test_InvokeUpcallNull_returnRef");
 
     public boolean returnRef() {
         boolean RESULT;
@@ -225,7 +225,7 @@ public class InvokeUpcallNull {
         return RESULT;
     }
 
-    private static final MethodHandle returnFuncMH = PanamaUtils.lookupPNICriticalFunction(false, boolean.class, "JavaCritical_io_vproxy_pni_test_InvokeUpcallNull_returnFunc");
+    private static final MethodHandle returnFuncMH = PanamaUtils.lookupPNICriticalFunction(new PNILinkOptions(), boolean.class, "JavaCritical_io_vproxy_pni_test_InvokeUpcallNull_returnFunc");
 
     public boolean returnFunc() {
         boolean RESULT;
@@ -237,7 +237,7 @@ public class InvokeUpcallNull {
         return RESULT;
     }
 
-    private static final MethodHandle returnFuncVoidMH = PanamaUtils.lookupPNICriticalFunction(false, boolean.class, "JavaCritical_io_vproxy_pni_test_InvokeUpcallNull_returnFuncVoid");
+    private static final MethodHandle returnFuncVoidMH = PanamaUtils.lookupPNICriticalFunction(new PNILinkOptions(), boolean.class, "JavaCritical_io_vproxy_pni_test_InvokeUpcallNull_returnFuncVoid");
 
     public boolean returnFuncVoid() {
         boolean RESULT;
@@ -249,7 +249,7 @@ public class InvokeUpcallNull {
         return RESULT;
     }
 
-    private static final MethodHandle returnFuncRefMH = PanamaUtils.lookupPNICriticalFunction(false, boolean.class, "JavaCritical_io_vproxy_pni_test_InvokeUpcallNull_returnFuncRef");
+    private static final MethodHandle returnFuncRefMH = PanamaUtils.lookupPNICriticalFunction(new PNILinkOptions(), boolean.class, "JavaCritical_io_vproxy_pni_test_InvokeUpcallNull_returnFuncRef");
 
     public boolean returnFuncRef() {
         boolean RESULT;
@@ -262,4 +262,4 @@ public class InvokeUpcallNull {
     }
 }
 // metadata.generator-version: pni test
-// sha256:83652ec652194de93227b9afdc79decad2d592273ffa4f11356aedef68f8d180
+// sha256:13e09aa0324b0012e0e40ead6858313aab4b1660da0cdd25527078f242f3587c

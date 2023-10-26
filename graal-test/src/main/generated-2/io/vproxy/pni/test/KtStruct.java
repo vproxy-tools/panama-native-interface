@@ -61,7 +61,7 @@ public class KtStruct extends AbstractNativeObject implements NativeObject {
         this(ALLOCATOR.allocate(LAYOUT));
     }
 
-    private static final MethodHandle retrieveIntMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_KtStruct_retrieveInt", MemorySegment.class /* self */);
+    private static final MethodHandle retrieveIntMH = PanamaUtils.lookupPNIFunction(new PNILinkOptions(), "Java_io_vproxy_pni_test_KtStruct_retrieveInt", MemorySegment.class /* self */);
 
     public int retrieveInt(PNIEnv ENV) {
         ENV.reset();
@@ -77,7 +77,7 @@ public class KtStruct extends AbstractNativeObject implements NativeObject {
         return ENV.returnInt();
     }
 
-    private static final MethodHandle retrieveLongMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_KtStruct_retrieveLong", MemorySegment.class /* self */);
+    private static final MethodHandle retrieveLongMH = PanamaUtils.lookupPNIFunction(new PNILinkOptions(), "Java_io_vproxy_pni_test_KtStruct_retrieveLong", MemorySegment.class /* self */);
 
     public long retrieveLong(PNIEnv ENV) {
         ENV.reset();
@@ -184,4 +184,4 @@ public class KtStruct extends AbstractNativeObject implements NativeObject {
     }
 }
 // metadata.generator-version: pni test
-// sha256:0f3303ee0375a8e643b369a5fcae1ef7a4caeb485070a3143185ce64e15449b9
+// sha256:c5f1973b2c3142854f37b0c4e2ff3d7d2c84530d5823290507f59c2e4bdeb762

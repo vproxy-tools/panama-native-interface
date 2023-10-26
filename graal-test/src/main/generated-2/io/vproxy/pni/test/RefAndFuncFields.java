@@ -131,7 +131,7 @@ public class RefAndFuncFields extends AbstractNativeObject implements NativeObje
         this(ALLOCATOR.allocate(LAYOUT));
     }
 
-    private static final MethodHandle callMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_RefAndFuncFields_call", MemorySegment.class /* self */);
+    private static final MethodHandle callMH = PanamaUtils.lookupPNIFunction(new PNILinkOptions(), "Java_io_vproxy_pni_test_RefAndFuncFields_call", MemorySegment.class /* self */);
 
     public void call(PNIEnv ENV) {
         ENV.reset();
@@ -146,7 +146,7 @@ public class RefAndFuncFields extends AbstractNativeObject implements NativeObje
         }
     }
 
-    private static final MethodHandle call2MH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_RefAndFuncFields_call2", MemorySegment.class /* self */, io.vproxy.pni.test.ObjectStruct.LAYOUT.getClass() /* o */);
+    private static final MethodHandle call2MH = PanamaUtils.lookupPNIFunction(new PNILinkOptions(), "Java_io_vproxy_pni_test_RefAndFuncFields_call2", MemorySegment.class /* self */, io.vproxy.pni.test.ObjectStruct.LAYOUT.getClass() /* o */);
 
     public void call2(PNIEnv ENV, io.vproxy.pni.test.ObjectStruct o) {
         ENV.reset();
@@ -161,7 +161,7 @@ public class RefAndFuncFields extends AbstractNativeObject implements NativeObje
         }
     }
 
-    private static final MethodHandle setMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_RefAndFuncFields_set", MemorySegment.class /* self */, PNIRef.class /* ref */, PNIRef.class /* ref2 */, PNIRef.class /* ref3 */, PNIFunc.class /* func */, PNIFunc.class /* func2 */);
+    private static final MethodHandle setMH = PanamaUtils.lookupPNIFunction(new PNILinkOptions(), "Java_io_vproxy_pni_test_RefAndFuncFields_set", MemorySegment.class /* self */, PNIRef.class /* ref */, PNIRef.class /* ref2 */, PNIRef.class /* ref3 */, PNIFunc.class /* func */, PNIFunc.class /* func2 */);
 
     public void set(PNIEnv ENV, java.util.Map<java.lang.String, java.lang.Integer> ref, java.util.List<io.vproxy.pni.test.ObjectStruct> ref2, io.vproxy.pni.test.ObjectStruct[] ref3, PNIFunc<java.util.Map<java.lang.String, java.lang.Integer>> func, PNIFunc<io.vproxy.pni.test.ObjectStruct> func2) {
         ENV.reset();
@@ -176,7 +176,7 @@ public class RefAndFuncFields extends AbstractNativeObject implements NativeObje
         }
     }
 
-    private static final MethodHandle setRawMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_RefAndFuncFields_setRaw", MemorySegment.class /* self */, PNIRef.class /* ref */, PNIRef.class /* ref2 */, PNIRef.class /* ref3 */);
+    private static final MethodHandle setRawMH = PanamaUtils.lookupPNIFunction(new PNILinkOptions(), "Java_io_vproxy_pni_test_RefAndFuncFields_setRaw", MemorySegment.class /* self */, PNIRef.class /* ref */, PNIRef.class /* ref2 */, PNIRef.class /* ref3 */);
 
     public void setRaw(PNIEnv ENV, PNIRef<java.util.Map<java.lang.String, java.lang.Integer>> ref, PNIRef<java.util.List<io.vproxy.pni.test.ObjectStruct>> ref2, PNIRef<io.vproxy.pni.test.ObjectStruct[]> ref3) {
         ENV.reset();
@@ -191,7 +191,7 @@ public class RefAndFuncFields extends AbstractNativeObject implements NativeObje
         }
     }
 
-    private static final MethodHandle retrieveRefMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_RefAndFuncFields_retrieveRef", MemorySegment.class /* self */);
+    private static final MethodHandle retrieveRefMH = PanamaUtils.lookupPNIFunction(new PNILinkOptions(), "Java_io_vproxy_pni_test_RefAndFuncFields_retrieveRef", MemorySegment.class /* self */);
 
     public PNIRef<java.util.Map<java.lang.String, java.lang.Integer>> retrieveRef(PNIEnv ENV) {
         ENV.reset();
@@ -209,7 +209,7 @@ public class RefAndFuncFields extends AbstractNativeObject implements NativeObje
         return PNIRef.of(RESULT);
     }
 
-    private static final MethodHandle retrieveRef2MH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_RefAndFuncFields_retrieveRef2", MemorySegment.class /* self */);
+    private static final MethodHandle retrieveRef2MH = PanamaUtils.lookupPNIFunction(new PNILinkOptions(), "Java_io_vproxy_pni_test_RefAndFuncFields_retrieveRef2", MemorySegment.class /* self */);
 
     public PNIRef<java.util.List<io.vproxy.pni.test.ObjectStruct>> retrieveRef2(PNIEnv ENV) {
         ENV.reset();
@@ -227,7 +227,7 @@ public class RefAndFuncFields extends AbstractNativeObject implements NativeObje
         return PNIRef.of(RESULT);
     }
 
-    private static final MethodHandle retrieveRef3MH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_RefAndFuncFields_retrieveRef3", MemorySegment.class /* self */);
+    private static final MethodHandle retrieveRef3MH = PanamaUtils.lookupPNIFunction(new PNILinkOptions(), "Java_io_vproxy_pni_test_RefAndFuncFields_retrieveRef3", MemorySegment.class /* self */);
 
     public PNIRef<io.vproxy.pni.test.ObjectStruct[]> retrieveRef3(PNIEnv ENV) {
         ENV.reset();
@@ -245,7 +245,7 @@ public class RefAndFuncFields extends AbstractNativeObject implements NativeObje
         return PNIRef.of(RESULT);
     }
 
-    private static final MethodHandle retrieveFuncMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_RefAndFuncFields_retrieveFunc", MemorySegment.class /* self */);
+    private static final MethodHandle retrieveFuncMH = PanamaUtils.lookupPNIFunction(new PNILinkOptions(), "Java_io_vproxy_pni_test_RefAndFuncFields_retrieveFunc", MemorySegment.class /* self */);
 
     public PNIFunc<java.util.Map<java.lang.String, java.lang.Integer>> retrieveFunc(PNIEnv ENV) {
         ENV.reset();
@@ -263,7 +263,7 @@ public class RefAndFuncFields extends AbstractNativeObject implements NativeObje
         return PNIRef.Func.of(RESULT);
     }
 
-    private static final MethodHandle retrieveFunc2MH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_RefAndFuncFields_retrieveFunc2", MemorySegment.class /* self */);
+    private static final MethodHandle retrieveFunc2MH = PanamaUtils.lookupPNIFunction(new PNILinkOptions(), "Java_io_vproxy_pni_test_RefAndFuncFields_retrieveFunc2", MemorySegment.class /* self */);
 
     public PNIFunc<io.vproxy.pni.test.ObjectStruct> retrieveFunc2(PNIEnv ENV) {
         ENV.reset();
@@ -392,4 +392,4 @@ public class RefAndFuncFields extends AbstractNativeObject implements NativeObje
     }
 }
 // metadata.generator-version: pni test
-// sha256:fd7000a160c41efd4d521d2d0cba77595f87b6ae0ac25f64ecb558fcff457ff4
+// sha256:558b6e0c95ea2c6501f324faff6327e950dbf20b7f4330a5c3531c228dc4f152

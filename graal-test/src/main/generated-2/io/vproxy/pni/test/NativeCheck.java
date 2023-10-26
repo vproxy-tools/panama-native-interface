@@ -21,7 +21,7 @@ public class NativeCheck {
         return INSTANCE;
     }
 
-    private static final MethodHandle checkUserdataForRefMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_NativeCheck_checkUserdataForRef", PNIRef.class /* ref */, MemorySegment.class /* x */, MemorySegment.class /* y */, MemorySegment.class /* z */);
+    private static final MethodHandle checkUserdataForRefMH = PanamaUtils.lookupPNIFunction(new PNILinkOptions(), "Java_io_vproxy_pni_test_NativeCheck_checkUserdataForRef", PNIRef.class /* ref */, MemorySegment.class /* x */, MemorySegment.class /* y */, MemorySegment.class /* z */);
 
     public void checkUserdataForRef(PNIEnv ENV, PNIRef<java.util.List<java.lang.Integer>> ref, IntArray x, LongArray y, ShortArray z) {
         ENV.reset();
@@ -36,7 +36,7 @@ public class NativeCheck {
         }
     }
 
-    private static final MethodHandle checkUserdataForFuncMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_NativeCheck_checkUserdataForFunc", PNIFunc.class /* func */, MemorySegment.class /* x */, MemorySegment.class /* y */, MemorySegment.class /* z */);
+    private static final MethodHandle checkUserdataForFuncMH = PanamaUtils.lookupPNIFunction(new PNILinkOptions(), "Java_io_vproxy_pni_test_NativeCheck_checkUserdataForFunc", PNIFunc.class /* func */, MemorySegment.class /* x */, MemorySegment.class /* y */, MemorySegment.class /* z */);
 
     public void checkUserdataForFunc(PNIEnv ENV, PNIFunc<Void> func, IntArray x, LongArray y, ShortArray z) {
         ENV.reset();
@@ -52,4 +52,4 @@ public class NativeCheck {
     }
 }
 // metadata.generator-version: pni test
-// sha256:c0ac6f7add998c72f45b9904d96ad56c63559b7ff0defb13afb00aaf9c3befcb
+// sha256:941a6260ad186cbcf5e2bdc27f3dd1798bd9cda1737d7103452bcf20c9731871

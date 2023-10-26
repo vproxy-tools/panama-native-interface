@@ -15,7 +15,7 @@ public class KtUpcall {
     private static final Arena ARENA = Arena.ofShared();
 
     public static MemorySegment helloworld;
-    public static final CEntryPointLiteral<CFunctionPointer> helloworldCEPL = GraalUtils.defineCFunctionByName(io.vproxy.pni.test.KtUpcall.class, "helloworld");
+    public static final CEntryPointLiteral<CFunctionPointer> helloworldCEPL = GraalUtils.defineCFunctionByName(new PNILinkOptions(), io.vproxy.pni.test.KtUpcall.class, "helloworld");
 
     @CEntryPoint
     public static VoidPointer helloworld(IsolateThread THREAD, int i, long l, VoidPointer return_PTR) {
@@ -35,13 +35,13 @@ public class KtUpcall {
     private static void setNativeImpl() {
         helloworld = MemorySegment.ofAddress(helloworldCEPL.getFunctionPointer().rawValue());
 
-        var initMH = PanamaUtils.lookupPNICriticalFunction(true, void.class, "JavaCritical_io_vproxy_pni_test_KtUpcall_INIT", MemorySegment.class);
+        var initMH = PanamaUtils.lookupPNICriticalFunction(new PNILinkOptions().setCritical(true), void.class, "JavaCritical_io_vproxy_pni_test_KtUpcall_INIT", MemorySegment.class);
         try {
             initMH.invoke(helloworld);
         } catch (Throwable t) {
             throw new RuntimeException(t);
         }
-        helloworld = PanamaUtils.lookupFunctionPointer("JavaCritical_io_vproxy_pni_test_KtUpcall_helloworld").orElseThrow(() -> new NullPointerException("JavaCritical_io_vproxy_pni_test_KtUpcall_helloworld"));
+        helloworld = PanamaUtils.lookupFunctionPointer(new PNILookupOptions(), "JavaCritical_io_vproxy_pni_test_KtUpcall_helloworld").orElseThrow(() -> new NullPointerException("JavaCritical_io_vproxy_pni_test_KtUpcall_helloworld"));
     }
 
     private static Interface IMPL = null;
@@ -57,4 +57,4 @@ public class KtUpcall {
     }
 }
 // metadata.generator-version: pni test
-// sha256:076689c0c70b65be826583aae0f3b11a3f369c6dab9b807f961a47ce88113815
+// sha256:6054841a62155345e0efcfc81297af425d2a850a81a87064abb6007326bd6a50

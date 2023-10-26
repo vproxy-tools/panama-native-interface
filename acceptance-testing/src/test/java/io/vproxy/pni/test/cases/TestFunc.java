@@ -232,7 +232,7 @@ public class TestFunc {
 
         long holderSizeBefore = PNIRef.currentRefStorageSize();
         try (var arena = Arena.ofConfined()) {
-            var method = PanamaUtils.defineCFunctionByName(arena,
+            var method = PanamaUtils.defineCFunctionByName(new PNILinkOptions(), arena,
                 TestFunc.class, "methodForCallJavaMethodWithRefFromC");
             var env = new PNIEnv(Allocator.of(arena));
 
@@ -269,6 +269,6 @@ public class TestFunc {
 
         s = Files.readAllLines(Path.of("src", "test", "generated", "io", "vproxy", "pni", "test", "Func.java"));
         lastLine = s.get(s.size() - 1);
-        assertEquals("// sha256:bd50ae3dc51cb0fb51b5b4fc0d0b7d9de6697608889cd1d78f33ead341239685", lastLine);
+        assertEquals("// sha256:01ac465a55cdc2668675c4cf7574cce37e5cf1a0e2dd1022f14571689cdf091f", lastLine);
     }
 }

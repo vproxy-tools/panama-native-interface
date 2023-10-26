@@ -1,6 +1,7 @@
 package io.vproxy.pni.graal;
 
 import io.vproxy.pni.GraalHelper;
+import io.vproxy.pni.PNILinkOptions;
 import io.vproxy.pni.PanamaUtils;
 import org.graalvm.nativeimage.CurrentIsolate;
 import io.vproxy.r.org.graalvm.nativeimage.ImageInfoDelegate;
@@ -46,7 +47,8 @@ public class GraalUtils {
             synchronized (GraalUtils.class) {
                 if (SetPNIGraalThread == null) {
                     PanamaUtils.loadLib();
-                    SetPNIGraalThread = PanamaUtils.lookupPNICriticalFunction(true, void.class, "SetPNIGraalThread", MemorySegment.class);
+                    SetPNIGraalThread = PanamaUtils.lookupPNICriticalFunction(new PNILinkOptions().setCritical(true),
+                        void.class, "SetPNIGraalThread", MemorySegment.class);
                 }
             }
         }
@@ -56,7 +58,8 @@ public class GraalUtils {
         GraalHelper.setReleaseRef(GraalPNIRef.getReleaseFunctionPointer());
     }
 
-    public static CEntryPointLiteral<CFunctionPointer> defineCFunctionByName(Class<?> declaringClass, String name) {
+    public static CEntryPointLiteral<CFunctionPointer> defineCFunctionByName(@SuppressWarnings("unused") PNILinkOptions opts,
+                                                                             Class<?> declaringClass, String name) {
         var methods = declaringClass.getDeclaredMethods();
         Method candidate = null;
         for (Method m : methods) {
@@ -71,20 +74,22 @@ public class GraalUtils {
         if (candidate == null) {
             throw new IllegalArgumentException(new NoSuchMethodException(declaringClass + "#" + name));
         }
-        return defineCFunction(candidate);
+        return defineCFunction(opts, candidate);
     }
 
-    public static CEntryPointLiteral<CFunctionPointer> defineCFunction(Class<?> declaringClass, String name, Class<?>... paramTypes) {
+    public static CEntryPointLiteral<CFunctionPointer> defineCFunction(@SuppressWarnings("unused") PNILinkOptions opts,
+                                                                       Class<?> declaringClass, String name, Class<?>... paramTypes) {
         Method method;
         try {
             method = declaringClass.getDeclaredMethod(name, paramTypes);
         } catch (NoSuchMethodException e) {
             throw new IllegalArgumentException(e);
         }
-        return defineCFunction(method);
+        return defineCFunction(opts, method);
     }
 
-    public static CEntryPointLiteral<CFunctionPointer> defineCFunction(Method method) {
+    public static CEntryPointLiteral<CFunctionPointer> defineCFunction(@SuppressWarnings("unused") PNILinkOptions opts,
+                                                                       Method method) {
         var access = method.getModifiers();
         if ((access & Modifier.STATIC) != Modifier.STATIC) {
             throw new IllegalArgumentException("method " + method + " is not static and cannot be used to define a C function");

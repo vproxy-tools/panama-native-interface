@@ -7,7 +7,7 @@ import java.lang.invoke.*;
 import java.nio.ByteBuffer;
 
 public class SizeofStructExpr extends AbstractNativeObject implements NativeObject {
-    private static final MethodHandle __getLayoutByteSizeMH = PanamaUtils.lookupPNICriticalFunction(true, long.class, "JavaCritical_io_vproxy_pni_test_SizeofStructExpr___getLayoutByteSize");
+    private static final MethodHandle __getLayoutByteSizeMH = PanamaUtils.lookupPNICriticalFunction(new PNILinkOptions().setCritical(true), long.class, "JavaCritical_io_vproxy_pni_test_SizeofStructExpr___getLayoutByteSize");
 
     private static long __getLayoutByteSize() {
         long RESULT;
@@ -159,4 +159,4 @@ public class SizeofStructExpr extends AbstractNativeObject implements NativeObje
     }
 }
 // metadata.generator-version: pni test
-// sha256:bf592b6a526c6d1298f040a1209891045f08d0a24ed570b201ec40e94b73a671
+// sha256:e4edb5f1852aca49c7c3b3fc0e3f2e13f3375c90f47bd2e08847a8f91f336bf9

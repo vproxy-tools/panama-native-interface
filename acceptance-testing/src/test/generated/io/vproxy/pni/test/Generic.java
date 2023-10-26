@@ -16,7 +16,7 @@ public class Generic {
         return INSTANCE;
     }
 
-    private static final MethodHandle simpleMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_Generic_simple", PNIRef.class /* o */);
+    private static final MethodHandle simpleMH = PanamaUtils.lookupPNIFunction(new PNILinkOptions(), "Java_io_vproxy_pni_test_Generic_simple", PNIRef.class /* o */);
 
     public void simple(PNIEnv ENV, java.lang.String o) {
         ENV.reset();
@@ -31,7 +31,7 @@ public class Generic {
         }
     }
 
-    private static final MethodHandle simpleArrMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_Generic_simpleArr", PNIRef.class /* o */);
+    private static final MethodHandle simpleArrMH = PanamaUtils.lookupPNIFunction(new PNILinkOptions(), "Java_io_vproxy_pni_test_Generic_simpleArr", PNIRef.class /* o */);
 
     public void simpleArr(PNIEnv ENV, java.lang.String[] o) {
         ENV.reset();
@@ -46,7 +46,7 @@ public class Generic {
         }
     }
 
-    private static final MethodHandle genericMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_Generic_generic", PNIRef.class /* o */);
+    private static final MethodHandle genericMH = PanamaUtils.lookupPNIFunction(new PNILinkOptions(), "Java_io_vproxy_pni_test_Generic_generic", PNIRef.class /* o */);
 
     public void generic(PNIEnv ENV, java.util.List<java.lang.String> o) {
         ENV.reset();
@@ -61,7 +61,7 @@ public class Generic {
         }
     }
 
-    private static final MethodHandle genericArrMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_Generic_genericArr", PNIRef.class /* o */);
+    private static final MethodHandle genericArrMH = PanamaUtils.lookupPNIFunction(new PNILinkOptions(), "Java_io_vproxy_pni_test_Generic_genericArr", PNIRef.class /* o */);
 
     public void genericArr(PNIEnv ENV, java.util.List<java.lang.String>[] o) {
         ENV.reset();
@@ -76,7 +76,7 @@ public class Generic {
         }
     }
 
-    private static final MethodHandle extMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_Generic_ext", PNIRef.class /* o */);
+    private static final MethodHandle extMH = PanamaUtils.lookupPNIFunction(new PNILinkOptions(), "Java_io_vproxy_pni_test_Generic_ext", PNIRef.class /* o */);
 
     public void ext(PNIEnv ENV, java.util.List<? extends java.lang.Number> o) {
         ENV.reset();
@@ -91,7 +91,7 @@ public class Generic {
         }
     }
 
-    private static final MethodHandle extArrMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_Generic_extArr", PNIRef.class /* o */);
+    private static final MethodHandle extArrMH = PanamaUtils.lookupPNIFunction(new PNILinkOptions(), "Java_io_vproxy_pni_test_Generic_extArr", PNIRef.class /* o */);
 
     public void extArr(PNIEnv ENV, java.util.List<? extends java.lang.Number>[] o) {
         ENV.reset();
@@ -106,7 +106,7 @@ public class Generic {
         }
     }
 
-    private static final MethodHandle supMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_Generic_sup", PNIRef.class /* o */);
+    private static final MethodHandle supMH = PanamaUtils.lookupPNIFunction(new PNILinkOptions(), "Java_io_vproxy_pni_test_Generic_sup", PNIRef.class /* o */);
 
     public void sup(PNIEnv ENV, java.util.List<? super java.lang.Number> o) {
         ENV.reset();
@@ -121,7 +121,7 @@ public class Generic {
         }
     }
 
-    private static final MethodHandle supArrMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_Generic_supArr", PNIRef.class /* o */);
+    private static final MethodHandle supArrMH = PanamaUtils.lookupPNIFunction(new PNILinkOptions(), "Java_io_vproxy_pni_test_Generic_supArr", PNIRef.class /* o */);
 
     public void supArr(PNIEnv ENV, java.util.List<? super java.lang.Number>[] o) {
         ENV.reset();
@@ -136,7 +136,7 @@ public class Generic {
         }
     }
 
-    private static final MethodHandle defMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_Generic_def", PNIRef.class /* o */);
+    private static final MethodHandle defMH = PanamaUtils.lookupPNIFunction(new PNILinkOptions(), "Java_io_vproxy_pni_test_Generic_def", PNIRef.class /* o */);
 
     public <T extends java.lang.Object> void def(PNIEnv ENV, T o) {
         ENV.reset();
@@ -151,7 +151,7 @@ public class Generic {
         }
     }
 
-    private static final MethodHandle defArrMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_Generic_defArr", PNIRef.class /* o */);
+    private static final MethodHandle defArrMH = PanamaUtils.lookupPNIFunction(new PNILinkOptions(), "Java_io_vproxy_pni_test_Generic_defArr", PNIRef.class /* o */);
 
     public <T extends java.lang.Object> void defArr(PNIEnv ENV, T[] o) {
         ENV.reset();
@@ -166,7 +166,7 @@ public class Generic {
         }
     }
 
-    private static final MethodHandle upperMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_Generic_upper", PNIRef.class /* o */);
+    private static final MethodHandle upperMH = PanamaUtils.lookupPNIFunction(new PNILinkOptions(), "Java_io_vproxy_pni_test_Generic_upper", PNIRef.class /* o */);
 
     public <T extends java.lang.Number> void upper(PNIEnv ENV, T o) {
         ENV.reset();
@@ -181,7 +181,7 @@ public class Generic {
         }
     }
 
-    private static final MethodHandle upperArrMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_Generic_upperArr", PNIRef.class /* o */);
+    private static final MethodHandle upperArrMH = PanamaUtils.lookupPNIFunction(new PNILinkOptions(), "Java_io_vproxy_pni_test_Generic_upperArr", PNIRef.class /* o */);
 
     public <T extends java.lang.Number> void upperArr(PNIEnv ENV, T[] o) {
         ENV.reset();
@@ -196,7 +196,7 @@ public class Generic {
         }
     }
 
-    private static final MethodHandle extendsArrMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_Generic_extendsArr", PNIRef.class /* o */);
+    private static final MethodHandle extendsArrMH = PanamaUtils.lookupPNIFunction(new PNILinkOptions(), "Java_io_vproxy_pni_test_Generic_extendsArr", PNIRef.class /* o */);
 
     public void extendsArr(PNIEnv ENV, java.util.List<? extends java.lang.Number[]> o) {
         ENV.reset();
@@ -211,7 +211,7 @@ public class Generic {
         }
     }
 
-    private static final MethodHandle extendsArrArrMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_Generic_extendsArrArr", PNIRef.class /* o */);
+    private static final MethodHandle extendsArrArrMH = PanamaUtils.lookupPNIFunction(new PNILinkOptions(), "Java_io_vproxy_pni_test_Generic_extendsArrArr", PNIRef.class /* o */);
 
     public void extendsArrArr(PNIEnv ENV, java.util.List<? extends java.lang.Number[]>[] o) {
         ENV.reset();
@@ -226,7 +226,7 @@ public class Generic {
         }
     }
 
-    private static final MethodHandle defGenericMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_Generic_defGeneric", PNIRef.class /* o */);
+    private static final MethodHandle defGenericMH = PanamaUtils.lookupPNIFunction(new PNILinkOptions(), "Java_io_vproxy_pni_test_Generic_defGeneric", PNIRef.class /* o */);
 
     public <T extends java.util.List<java.lang.Number>> void defGeneric(PNIEnv ENV, T o) {
         ENV.reset();
@@ -241,7 +241,7 @@ public class Generic {
         }
     }
 
-    private static final MethodHandle defGenericExtendsMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_Generic_defGenericExtends", PNIRef.class /* o */);
+    private static final MethodHandle defGenericExtendsMH = PanamaUtils.lookupPNIFunction(new PNILinkOptions(), "Java_io_vproxy_pni_test_Generic_defGenericExtends", PNIRef.class /* o */);
 
     public <T extends java.util.List<java.lang.Number>> void defGenericExtends(PNIEnv ENV, T o) {
         ENV.reset();
@@ -256,7 +256,7 @@ public class Generic {
         }
     }
 
-    private static final MethodHandle defGenericExtendsRawMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_Generic_defGenericExtendsRaw", PNIRef.class /* o */);
+    private static final MethodHandle defGenericExtendsRawMH = PanamaUtils.lookupPNIFunction(new PNILinkOptions(), "Java_io_vproxy_pni_test_Generic_defGenericExtendsRaw", PNIRef.class /* o */);
 
     public <T extends java.util.List<java.lang.Number>> void defGenericExtendsRaw(PNIEnv ENV, PNIRef<? extends T> o) {
         ENV.reset();
@@ -271,7 +271,7 @@ public class Generic {
         }
     }
 
-    private static final MethodHandle defGenericArrayExtendsMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_Generic_defGenericArrayExtends", PNIRef.class /* o */);
+    private static final MethodHandle defGenericArrayExtendsMH = PanamaUtils.lookupPNIFunction(new PNILinkOptions(), "Java_io_vproxy_pni_test_Generic_defGenericArrayExtends", PNIRef.class /* o */);
 
     public <T extends java.util.List<java.lang.Number>> void defGenericArrayExtends(PNIEnv ENV, T[] o) {
         ENV.reset();
@@ -286,7 +286,7 @@ public class Generic {
         }
     }
 
-    private static final MethodHandle defGenericArrayExtendsRawMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_Generic_defGenericArrayExtendsRaw", PNIRef.class /* o */);
+    private static final MethodHandle defGenericArrayExtendsRawMH = PanamaUtils.lookupPNIFunction(new PNILinkOptions(), "Java_io_vproxy_pni_test_Generic_defGenericArrayExtendsRaw", PNIRef.class /* o */);
 
     public <T extends java.util.List<java.lang.Number>> void defGenericArrayExtendsRaw(PNIEnv ENV, PNIRef<? extends T[]> o) {
         ENV.reset();
@@ -301,7 +301,7 @@ public class Generic {
         }
     }
 
-    private static final MethodHandle defGenericSuperMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_Generic_defGenericSuper", PNIRef.class /* o */);
+    private static final MethodHandle defGenericSuperMH = PanamaUtils.lookupPNIFunction(new PNILinkOptions(), "Java_io_vproxy_pni_test_Generic_defGenericSuper", PNIRef.class /* o */);
 
     public <T extends java.util.List<java.lang.Number>> void defGenericSuper(PNIEnv ENV, Object o) {
         ENV.reset();
@@ -316,7 +316,7 @@ public class Generic {
         }
     }
 
-    private static final MethodHandle defGenericSuperRawMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_Generic_defGenericSuperRaw", PNIRef.class /* o */);
+    private static final MethodHandle defGenericSuperRawMH = PanamaUtils.lookupPNIFunction(new PNILinkOptions(), "Java_io_vproxy_pni_test_Generic_defGenericSuperRaw", PNIRef.class /* o */);
 
     public <T extends java.util.List<java.lang.Number>> void defGenericSuperRaw(PNIEnv ENV, PNIRef<? super T> o) {
         ENV.reset();
@@ -331,7 +331,7 @@ public class Generic {
         }
     }
 
-    private static final MethodHandle defGenericArraySuperMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_Generic_defGenericArraySuper", PNIRef.class /* o */);
+    private static final MethodHandle defGenericArraySuperMH = PanamaUtils.lookupPNIFunction(new PNILinkOptions(), "Java_io_vproxy_pni_test_Generic_defGenericArraySuper", PNIRef.class /* o */);
 
     public <T extends java.util.List<java.lang.Number>> void defGenericArraySuper(PNIEnv ENV, Object o) {
         ENV.reset();
@@ -346,7 +346,7 @@ public class Generic {
         }
     }
 
-    private static final MethodHandle defGenericArraySuperRawMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_Generic_defGenericArraySuperRaw", PNIRef.class /* o */);
+    private static final MethodHandle defGenericArraySuperRawMH = PanamaUtils.lookupPNIFunction(new PNILinkOptions(), "Java_io_vproxy_pni_test_Generic_defGenericArraySuperRaw", PNIRef.class /* o */);
 
     public <T extends java.util.List<java.lang.Number>> void defGenericArraySuperRaw(PNIEnv ENV, PNIRef<? super T[]> o) {
         ENV.reset();
@@ -361,7 +361,7 @@ public class Generic {
         }
     }
 
-    private static final MethodHandle returnSimpleMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_Generic_returnSimple");
+    private static final MethodHandle returnSimpleMH = PanamaUtils.lookupPNIFunction(new PNILinkOptions(), "Java_io_vproxy_pni_test_Generic_returnSimple");
 
     public PNIRef<java.lang.String> returnSimple(PNIEnv ENV) {
         ENV.reset();
@@ -379,7 +379,7 @@ public class Generic {
         return PNIRef.of(RESULT);
     }
 
-    private static final MethodHandle returnSimpleArrMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_Generic_returnSimpleArr");
+    private static final MethodHandle returnSimpleArrMH = PanamaUtils.lookupPNIFunction(new PNILinkOptions(), "Java_io_vproxy_pni_test_Generic_returnSimpleArr");
 
     public PNIRef<java.lang.String[]> returnSimpleArr(PNIEnv ENV) {
         ENV.reset();
@@ -397,7 +397,7 @@ public class Generic {
         return PNIRef.of(RESULT);
     }
 
-    private static final MethodHandle returnGenericMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_Generic_returnGeneric");
+    private static final MethodHandle returnGenericMH = PanamaUtils.lookupPNIFunction(new PNILinkOptions(), "Java_io_vproxy_pni_test_Generic_returnGeneric");
 
     public PNIRef<java.util.List<java.lang.String>> returnGeneric(PNIEnv ENV) {
         ENV.reset();
@@ -415,7 +415,7 @@ public class Generic {
         return PNIRef.of(RESULT);
     }
 
-    private static final MethodHandle returnGenericArrMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_Generic_returnGenericArr");
+    private static final MethodHandle returnGenericArrMH = PanamaUtils.lookupPNIFunction(new PNILinkOptions(), "Java_io_vproxy_pni_test_Generic_returnGenericArr");
 
     public PNIRef<java.util.List<java.lang.String>[]> returnGenericArr(PNIEnv ENV) {
         ENV.reset();
@@ -433,7 +433,7 @@ public class Generic {
         return PNIRef.of(RESULT);
     }
 
-    private static final MethodHandle returnExtMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_Generic_returnExt");
+    private static final MethodHandle returnExtMH = PanamaUtils.lookupPNIFunction(new PNILinkOptions(), "Java_io_vproxy_pni_test_Generic_returnExt");
 
     public PNIRef<java.util.List<? extends java.lang.Number>> returnExt(PNIEnv ENV) {
         ENV.reset();
@@ -451,7 +451,7 @@ public class Generic {
         return PNIRef.of(RESULT);
     }
 
-    private static final MethodHandle returnExtArrMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_Generic_returnExtArr");
+    private static final MethodHandle returnExtArrMH = PanamaUtils.lookupPNIFunction(new PNILinkOptions(), "Java_io_vproxy_pni_test_Generic_returnExtArr");
 
     public PNIRef<java.util.List<? extends java.lang.Number>[]> returnExtArr(PNIEnv ENV) {
         ENV.reset();
@@ -469,7 +469,7 @@ public class Generic {
         return PNIRef.of(RESULT);
     }
 
-    private static final MethodHandle returnSupMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_Generic_returnSup");
+    private static final MethodHandle returnSupMH = PanamaUtils.lookupPNIFunction(new PNILinkOptions(), "Java_io_vproxy_pni_test_Generic_returnSup");
 
     public PNIRef<java.util.List<? super java.lang.Number>> returnSup(PNIEnv ENV) {
         ENV.reset();
@@ -487,7 +487,7 @@ public class Generic {
         return PNIRef.of(RESULT);
     }
 
-    private static final MethodHandle returnSupArrMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_Generic_returnSupArr");
+    private static final MethodHandle returnSupArrMH = PanamaUtils.lookupPNIFunction(new PNILinkOptions(), "Java_io_vproxy_pni_test_Generic_returnSupArr");
 
     public PNIRef<java.util.List<? super java.lang.Number>[]> returnSupArr(PNIEnv ENV) {
         ENV.reset();
@@ -505,7 +505,7 @@ public class Generic {
         return PNIRef.of(RESULT);
     }
 
-    private static final MethodHandle returnDefMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_Generic_returnDef");
+    private static final MethodHandle returnDefMH = PanamaUtils.lookupPNIFunction(new PNILinkOptions(), "Java_io_vproxy_pni_test_Generic_returnDef");
 
     public <T extends java.lang.Object> PNIRef<T> returnDef(PNIEnv ENV) {
         ENV.reset();
@@ -523,7 +523,7 @@ public class Generic {
         return PNIRef.of(RESULT);
     }
 
-    private static final MethodHandle returnDefArrMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_Generic_returnDefArr");
+    private static final MethodHandle returnDefArrMH = PanamaUtils.lookupPNIFunction(new PNILinkOptions(), "Java_io_vproxy_pni_test_Generic_returnDefArr");
 
     public <T extends java.lang.Object> PNIRef<T[]> returnDefArr(PNIEnv ENV) {
         ENV.reset();
@@ -541,7 +541,7 @@ public class Generic {
         return PNIRef.of(RESULT);
     }
 
-    private static final MethodHandle returnUpperMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_Generic_returnUpper");
+    private static final MethodHandle returnUpperMH = PanamaUtils.lookupPNIFunction(new PNILinkOptions(), "Java_io_vproxy_pni_test_Generic_returnUpper");
 
     public <T extends java.lang.Number> PNIRef<T> returnUpper(PNIEnv ENV) {
         ENV.reset();
@@ -559,7 +559,7 @@ public class Generic {
         return PNIRef.of(RESULT);
     }
 
-    private static final MethodHandle returnUpperArrMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_Generic_returnUpperArr");
+    private static final MethodHandle returnUpperArrMH = PanamaUtils.lookupPNIFunction(new PNILinkOptions(), "Java_io_vproxy_pni_test_Generic_returnUpperArr");
 
     public <T extends java.lang.Number> PNIRef<T[]> returnUpperArr(PNIEnv ENV) {
         ENV.reset();
@@ -577,7 +577,7 @@ public class Generic {
         return PNIRef.of(RESULT);
     }
 
-    private static final MethodHandle returnExtendsArrMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_Generic_returnExtendsArr");
+    private static final MethodHandle returnExtendsArrMH = PanamaUtils.lookupPNIFunction(new PNILinkOptions(), "Java_io_vproxy_pni_test_Generic_returnExtendsArr");
 
     public PNIRef<java.util.List<? extends java.lang.Number[]>> returnExtendsArr(PNIEnv ENV) {
         ENV.reset();
@@ -595,7 +595,7 @@ public class Generic {
         return PNIRef.of(RESULT);
     }
 
-    private static final MethodHandle returnExtendsArrArrMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_Generic_returnExtendsArrArr");
+    private static final MethodHandle returnExtendsArrArrMH = PanamaUtils.lookupPNIFunction(new PNILinkOptions(), "Java_io_vproxy_pni_test_Generic_returnExtendsArrArr");
 
     public PNIRef<java.util.List<? extends java.lang.Number[]>[]> returnExtendsArrArr(PNIEnv ENV) {
         ENV.reset();
@@ -613,7 +613,7 @@ public class Generic {
         return PNIRef.of(RESULT);
     }
 
-    private static final MethodHandle returnDefGenericMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_Generic_returnDefGeneric");
+    private static final MethodHandle returnDefGenericMH = PanamaUtils.lookupPNIFunction(new PNILinkOptions(), "Java_io_vproxy_pni_test_Generic_returnDefGeneric");
 
     public <T extends java.util.List<java.lang.Number>> PNIRef<T> returnDefGeneric(PNIEnv ENV) {
         ENV.reset();
@@ -631,7 +631,7 @@ public class Generic {
         return PNIRef.of(RESULT);
     }
 
-    private static final MethodHandle returnDefGenericExtendsMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_Generic_returnDefGenericExtends");
+    private static final MethodHandle returnDefGenericExtendsMH = PanamaUtils.lookupPNIFunction(new PNILinkOptions(), "Java_io_vproxy_pni_test_Generic_returnDefGenericExtends");
 
     public <T extends java.util.List<java.lang.Number>> PNIRef<? extends T> returnDefGenericExtends(PNIEnv ENV) {
         ENV.reset();
@@ -649,7 +649,7 @@ public class Generic {
         return PNIRef.of(RESULT);
     }
 
-    private static final MethodHandle returnDefGenericArrayExtendsMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_Generic_returnDefGenericArrayExtends");
+    private static final MethodHandle returnDefGenericArrayExtendsMH = PanamaUtils.lookupPNIFunction(new PNILinkOptions(), "Java_io_vproxy_pni_test_Generic_returnDefGenericArrayExtends");
 
     public <T extends java.util.List<java.lang.Number>> PNIRef<? extends T[]> returnDefGenericArrayExtends(PNIEnv ENV) {
         ENV.reset();
@@ -667,7 +667,7 @@ public class Generic {
         return PNIRef.of(RESULT);
     }
 
-    private static final MethodHandle returnDefGenericSuperMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_Generic_returnDefGenericSuper");
+    private static final MethodHandle returnDefGenericSuperMH = PanamaUtils.lookupPNIFunction(new PNILinkOptions(), "Java_io_vproxy_pni_test_Generic_returnDefGenericSuper");
 
     public <T extends java.util.List<java.lang.Number>> PNIRef<? super T> returnDefGenericSuper(PNIEnv ENV) {
         ENV.reset();
@@ -685,7 +685,7 @@ public class Generic {
         return PNIRef.of(RESULT);
     }
 
-    private static final MethodHandle returnDefGenericArraySuperMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_Generic_returnDefGenericArraySuper");
+    private static final MethodHandle returnDefGenericArraySuperMH = PanamaUtils.lookupPNIFunction(new PNILinkOptions(), "Java_io_vproxy_pni_test_Generic_returnDefGenericArraySuper");
 
     public <T extends java.util.List<java.lang.Number>> PNIRef<? super T[]> returnDefGenericArraySuper(PNIEnv ENV) {
         ENV.reset();
@@ -703,7 +703,7 @@ public class Generic {
         return PNIRef.of(RESULT);
     }
 
-    private static final MethodHandle combinedMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_Generic_combined", PNIRef.class /* t */, PNIRef.class /* tArr */, PNIRef.class /* ls */, PNIRef.class /* arrLs */, PNIRef.class /* arrLs2 */, PNIRef.class /* lsArr */, PNIRef.class /* arrLsArr */, PNIRef.class /* arrLsArr2 */, PNIRef.class /* map */, PNIRef.class /* arrMap */, PNIRef.class /* mapArr */, PNIRef.class /* arrMapArr */, PNIRef.class /* arrMapArr2 */);
+    private static final MethodHandle combinedMH = PanamaUtils.lookupPNIFunction(new PNILinkOptions(), "Java_io_vproxy_pni_test_Generic_combined", PNIRef.class /* t */, PNIRef.class /* tArr */, PNIRef.class /* ls */, PNIRef.class /* arrLs */, PNIRef.class /* arrLs2 */, PNIRef.class /* lsArr */, PNIRef.class /* arrLsArr */, PNIRef.class /* arrLsArr2 */, PNIRef.class /* map */, PNIRef.class /* arrMap */, PNIRef.class /* mapArr */, PNIRef.class /* arrMapArr */, PNIRef.class /* arrMapArr2 */);
 
     public <R extends java.lang.Object, T extends java.lang.Number, U extends java.util.List<? super java.lang.String>, V extends java.lang.Object> PNIRef<? super R> combined(PNIEnv ENV, T t, T[] tArr, java.util.List<? super U> ls, java.util.List<? super U[]> arrLs, java.util.List<U[]> arrLs2, java.util.List<? super U>[] lsArr, java.util.List<? super U[]>[] arrLsArr, java.util.List<U[]>[] arrLsArr2, java.util.Map<? super U, ? extends V> map, java.util.Map<? extends U[], ? extends V[]> arrMap, java.util.Map<? super U, ? extends V>[] mapArr, java.util.Map<? super U[], ? super V[]>[] arrMapArr, java.util.Map<U[], V[]>[] arrMapArr2) {
         ENV.reset();
@@ -721,7 +721,7 @@ public class Generic {
         return PNIRef.of(RESULT);
     }
 
-    private static final MethodHandle wildcardMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_Generic_wildcard", PNIRef.class /* o */);
+    private static final MethodHandle wildcardMH = PanamaUtils.lookupPNIFunction(new PNILinkOptions(), "Java_io_vproxy_pni_test_Generic_wildcard", PNIRef.class /* o */);
 
     public void wildcard(PNIEnv ENV, Object o) {
         ENV.reset();
@@ -737,4 +737,4 @@ public class Generic {
     }
 }
 // metadata.generator-version: pni test
-// sha256:945c04624b533e11cdb26f20e0785a9326179c17b59fff069b83c3babeed17f5
+// sha256:ba5b397413b149566d3fd00355d5c653dbf86096be369a77b26f7145a115399a

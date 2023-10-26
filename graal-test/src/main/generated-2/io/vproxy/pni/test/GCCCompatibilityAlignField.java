@@ -77,7 +77,7 @@ public class GCCCompatibilityAlignField extends AbstractNativeObject implements 
         this(ALLOCATOR.allocate(LAYOUT));
     }
 
-    private static final MethodHandle initMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_GCCCompatibilityAlignField_init", MemorySegment.class /* self */);
+    private static final MethodHandle initMH = PanamaUtils.lookupPNIFunction(new PNILinkOptions(), "Java_io_vproxy_pni_test_GCCCompatibilityAlignField_init", MemorySegment.class /* self */);
 
     public void init(PNIEnv ENV) {
         ENV.reset();
@@ -92,7 +92,7 @@ public class GCCCompatibilityAlignField extends AbstractNativeObject implements 
         }
     }
 
-    private static final MethodHandle sizeMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_GCCCompatibilityAlignField_size", MemorySegment.class /* self */);
+    private static final MethodHandle sizeMH = PanamaUtils.lookupPNIFunction(new PNILinkOptions(), "Java_io_vproxy_pni_test_GCCCompatibilityAlignField_size", MemorySegment.class /* self */);
 
     public long size(PNIEnv ENV) {
         ENV.reset();
@@ -204,4 +204,4 @@ public class GCCCompatibilityAlignField extends AbstractNativeObject implements 
     }
 }
 // metadata.generator-version: pni test
-// sha256:07c74a767108d1016d42c29e29411d62db0e09dc4e1b40dc578ec8c41754246b
+// sha256:7ec3fee655ec33920852c44b40d7a4db5b232d24df80ac82e78d56dd89e63439

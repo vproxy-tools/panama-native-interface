@@ -54,7 +54,7 @@ public class PackedBaseClass extends AbstractNativeObject implements NativeObjec
         this(ALLOCATOR.allocate(LAYOUT));
     }
 
-    private static final MethodHandle aaaMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_PackedBaseClass_aaa", MemorySegment.class /* self */, byte.class /* a */);
+    private static final MethodHandle aaaMH = PanamaUtils.lookupPNIFunction(new PNILinkOptions(), "Java_io_vproxy_pni_test_PackedBaseClass_aaa", MemorySegment.class /* self */, byte.class /* a */);
 
     public void aaa(PNIEnv ENV, byte a) {
         ENV.reset();
@@ -69,7 +69,7 @@ public class PackedBaseClass extends AbstractNativeObject implements NativeObjec
         }
     }
 
-    private static final MethodHandle bbbMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_PackedBaseClass_bbb", MemorySegment.class /* self */, short.class /* b */);
+    private static final MethodHandle bbbMH = PanamaUtils.lookupPNIFunction(new PNILinkOptions(), "Java_io_vproxy_pni_test_PackedBaseClass_bbb", MemorySegment.class /* self */, short.class /* b */);
 
     public void bbb(PNIEnv ENV, short b) {
         ENV.reset();
@@ -175,4 +175,4 @@ public class PackedBaseClass extends AbstractNativeObject implements NativeObjec
     }
 }
 // metadata.generator-version: pni test
-// sha256:8cd82a8998d2796ab7f4e325ef68a02df09b73d1440a3bc0ac8b6c6610cc7251
+// sha256:5bd5f1778f739bc871148ff3d452d3b610c32f8a558480f7bfb00faa0b59c29f

@@ -12,7 +12,7 @@ import org.graalvm.nativeimage.c.type.VoidPointer;
 import org.graalvm.word.WordFactory;
 
 public class SizeofStructExpr extends AbstractNativeObject implements NativeObject {
-    private static final MethodHandle __getLayoutByteSizeMH = PanamaUtils.lookupPNICriticalFunction(true, long.class, "JavaCritical_io_vproxy_pni_test_SizeofStructExpr___getLayoutByteSize");
+    private static final MethodHandle __getLayoutByteSizeMH = PanamaUtils.lookupPNICriticalFunction(new PNILinkOptions().setCritical(true), long.class, "JavaCritical_io_vproxy_pni_test_SizeofStructExpr___getLayoutByteSize");
 
     private static long __getLayoutByteSize() {
         long RESULT;
@@ -164,4 +164,4 @@ public class SizeofStructExpr extends AbstractNativeObject implements NativeObje
     }
 }
 // metadata.generator-version: pni test
-// sha256:e4616f233e74938a1b9eefa1354be0836fd924a8e65fd68cd414f06b9ac641f9
+// sha256:66b2ef136dafb55c04c5744abd3e0c4a3c8fda000b77fcc2cc4a79d27a064ccf

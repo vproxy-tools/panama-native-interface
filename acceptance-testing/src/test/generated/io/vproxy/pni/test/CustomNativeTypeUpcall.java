@@ -29,9 +29,9 @@ public class CustomNativeTypeUpcall {
         } catch (Throwable t) {
             throw new RuntimeException(t);
         }
-        exec = PanamaUtils.defineCFunction(ARENA, execMH, MemorySegment.class, MemorySegment.class);
+        exec = PanamaUtils.defineCFunction(new PNILinkOptions(), ARENA, execMH, MemorySegment.class, MemorySegment.class);
 
-        var initMH = PanamaUtils.lookupPNICriticalFunction(true, void.class, "JavaCritical_io_vproxy_pni_test_CustomNativeTypeUpcall_INIT", MemorySegment.class);
+        var initMH = PanamaUtils.lookupPNICriticalFunction(new PNILinkOptions().setCritical(true), void.class, "JavaCritical_io_vproxy_pni_test_CustomNativeTypeUpcall_INIT", MemorySegment.class);
         try {
             initMH.invoke(exec);
         } catch (Throwable t) {
@@ -51,4 +51,4 @@ public class CustomNativeTypeUpcall {
     }
 }
 // metadata.generator-version: pni test
-// sha256:e373b94c57bbc53e395f3799d604aceca907c00a5013c75364b5e2b073c0f774
+// sha256:b43cfa433161c937327a6bd38d3616799b76747413c10cd63addfa4b60de5bff

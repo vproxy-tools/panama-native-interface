@@ -27,9 +27,9 @@ public class NoAllocUpcall {
         } catch (Throwable t) {
             throw new RuntimeException(t);
         }
-        execNoAlloc = PanamaUtils.defineCFunction(ARENA, execNoAllocMH, MemorySegment.class);
+        execNoAlloc = PanamaUtils.defineCFunction(new PNILinkOptions(), ARENA, execNoAllocMH, MemorySegment.class);
 
-        var initMH = PanamaUtils.lookupPNICriticalFunction(true, void.class, "JavaCritical_io_vproxy_pni_test_NoAllocUpcall_INIT", MemorySegment.class);
+        var initMH = PanamaUtils.lookupPNICriticalFunction(new PNILinkOptions().setCritical(true), void.class, "JavaCritical_io_vproxy_pni_test_NoAllocUpcall_INIT", MemorySegment.class);
         try {
             initMH.invoke(execNoAlloc);
         } catch (Throwable t) {
@@ -49,4 +49,4 @@ public class NoAllocUpcall {
     }
 }
 // metadata.generator-version: pni test
-// sha256:374985f8daaf10867a16f5dc180267f94aabca16c2f34b600304b28aeb45ae24
+// sha256:efe2d3a8780c7fe05ee1363426c36823cb2e5895f22f95501cc2313cfdb875ea

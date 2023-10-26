@@ -21,7 +21,7 @@ public class InvokeUpcall {
         return INSTANCE;
     }
 
-    private static final MethodHandle primaryParamsMH = PanamaUtils.lookupPNICriticalFunction(false, void.class, "JavaCritical_io_vproxy_pni_test_InvokeUpcall_primaryParams", byte.class /* b */, byte.class /* ub */, boolean.class /* z */, char.class /* c */, double.class /* d */, float.class /* f */, int.class /* i */, int.class /* ui */, long.class /* j */, long.class /* uj */, short.class /* s */, short.class /* us */);
+    private static final MethodHandle primaryParamsMH = PanamaUtils.lookupPNICriticalFunction(new PNILinkOptions(), void.class, "JavaCritical_io_vproxy_pni_test_InvokeUpcall_primaryParams", byte.class /* b */, byte.class /* ub */, boolean.class /* z */, char.class /* c */, double.class /* d */, float.class /* f */, int.class /* i */, int.class /* ui */, long.class /* j */, long.class /* uj */, short.class /* s */, short.class /* us */);
 
     public void primaryParams(byte b, byte ub, boolean z, char c, double d, float f, int i, int ui, long j, long uj, short s, short us) {
         try {
@@ -31,7 +31,7 @@ public class InvokeUpcall {
         }
     }
 
-    private static final MethodHandle returnByteMH = PanamaUtils.lookupPNICriticalFunction(false, byte.class, "JavaCritical_io_vproxy_pni_test_InvokeUpcall_returnByte");
+    private static final MethodHandle returnByteMH = PanamaUtils.lookupPNICriticalFunction(new PNILinkOptions(), byte.class, "JavaCritical_io_vproxy_pni_test_InvokeUpcall_returnByte");
 
     public byte returnByte() {
         byte RESULT;
@@ -43,7 +43,7 @@ public class InvokeUpcall {
         return RESULT;
     }
 
-    private static final MethodHandle returnBoolMH = PanamaUtils.lookupPNICriticalFunction(false, boolean.class, "JavaCritical_io_vproxy_pni_test_InvokeUpcall_returnBool");
+    private static final MethodHandle returnBoolMH = PanamaUtils.lookupPNICriticalFunction(new PNILinkOptions(), boolean.class, "JavaCritical_io_vproxy_pni_test_InvokeUpcall_returnBool");
 
     public boolean returnBool() {
         boolean RESULT;
@@ -55,7 +55,7 @@ public class InvokeUpcall {
         return RESULT;
     }
 
-    private static final MethodHandle returnCharMH = PanamaUtils.lookupPNICriticalFunction(false, char.class, "JavaCritical_io_vproxy_pni_test_InvokeUpcall_returnChar");
+    private static final MethodHandle returnCharMH = PanamaUtils.lookupPNICriticalFunction(new PNILinkOptions(), char.class, "JavaCritical_io_vproxy_pni_test_InvokeUpcall_returnChar");
 
     public char returnChar() {
         char RESULT;
@@ -67,7 +67,7 @@ public class InvokeUpcall {
         return RESULT;
     }
 
-    private static final MethodHandle returnDoubleMH = PanamaUtils.lookupPNICriticalFunction(false, double.class, "JavaCritical_io_vproxy_pni_test_InvokeUpcall_returnDouble");
+    private static final MethodHandle returnDoubleMH = PanamaUtils.lookupPNICriticalFunction(new PNILinkOptions(), double.class, "JavaCritical_io_vproxy_pni_test_InvokeUpcall_returnDouble");
 
     public double returnDouble() {
         double RESULT;
@@ -79,7 +79,7 @@ public class InvokeUpcall {
         return RESULT;
     }
 
-    private static final MethodHandle returnFloatMH = PanamaUtils.lookupPNICriticalFunction(false, float.class, "JavaCritical_io_vproxy_pni_test_InvokeUpcall_returnFloat");
+    private static final MethodHandle returnFloatMH = PanamaUtils.lookupPNICriticalFunction(new PNILinkOptions(), float.class, "JavaCritical_io_vproxy_pni_test_InvokeUpcall_returnFloat");
 
     public float returnFloat() {
         float RESULT;
@@ -91,7 +91,7 @@ public class InvokeUpcall {
         return RESULT;
     }
 
-    private static final MethodHandle returnIntMH = PanamaUtils.lookupPNICriticalFunction(false, int.class, "JavaCritical_io_vproxy_pni_test_InvokeUpcall_returnInt");
+    private static final MethodHandle returnIntMH = PanamaUtils.lookupPNICriticalFunction(new PNILinkOptions(), int.class, "JavaCritical_io_vproxy_pni_test_InvokeUpcall_returnInt");
 
     public int returnInt() {
         int RESULT;
@@ -103,7 +103,7 @@ public class InvokeUpcall {
         return RESULT;
     }
 
-    private static final MethodHandle returnLongMH = PanamaUtils.lookupPNICriticalFunction(false, long.class, "JavaCritical_io_vproxy_pni_test_InvokeUpcall_returnLong");
+    private static final MethodHandle returnLongMH = PanamaUtils.lookupPNICriticalFunction(new PNILinkOptions(), long.class, "JavaCritical_io_vproxy_pni_test_InvokeUpcall_returnLong");
 
     public long returnLong() {
         long RESULT;
@@ -115,7 +115,7 @@ public class InvokeUpcall {
         return RESULT;
     }
 
-    private static final MethodHandle returnShortMH = PanamaUtils.lookupPNICriticalFunction(false, short.class, "JavaCritical_io_vproxy_pni_test_InvokeUpcall_returnShort");
+    private static final MethodHandle returnShortMH = PanamaUtils.lookupPNICriticalFunction(new PNILinkOptions(), short.class, "JavaCritical_io_vproxy_pni_test_InvokeUpcall_returnShort");
 
     public short returnShort() {
         short RESULT;
@@ -127,7 +127,7 @@ public class InvokeUpcall {
         return RESULT;
     }
 
-    private static final MethodHandle primaryArrayParamsMH = PanamaUtils.lookupPNICriticalFunction(false, void.class, "JavaCritical_io_vproxy_pni_test_InvokeUpcall_primaryArrayParams", PNIBuf.class /* b */, PNIBuf.class /* ub */, PNIBuf.class /* z */, PNIBuf.class /* c */, PNIBuf.class /* d */, PNIBuf.class /* f */, PNIBuf.class /* i */, PNIBuf.class /* ui */, PNIBuf.class /* j */, PNIBuf.class /* uj */, PNIBuf.class /* s */, PNIBuf.class /* us */);
+    private static final MethodHandle primaryArrayParamsMH = PanamaUtils.lookupPNICriticalFunction(new PNILinkOptions(), void.class, "JavaCritical_io_vproxy_pni_test_InvokeUpcall_primaryArrayParams", PNIBuf.class /* b */, PNIBuf.class /* ub */, PNIBuf.class /* z */, PNIBuf.class /* c */, PNIBuf.class /* d */, PNIBuf.class /* f */, PNIBuf.class /* i */, PNIBuf.class /* ui */, PNIBuf.class /* j */, PNIBuf.class /* uj */, PNIBuf.class /* s */, PNIBuf.class /* us */);
 
     public void primaryArrayParams(MemorySegment b, MemorySegment ub, BoolArray z, CharArray c, DoubleArray d, FloatArray f, IntArray i, IntArray ui, LongArray j, LongArray uj, ShortArray s, ShortArray us) {
         try (var POOLED = Allocator.ofPooled()) {
@@ -139,7 +139,7 @@ public class InvokeUpcall {
         }
     }
 
-    private static final MethodHandle returnByteArrayMH = PanamaUtils.lookupPNICriticalFunction(false, PNIBuf.class, "JavaCritical_io_vproxy_pni_test_InvokeUpcall_returnByteArray", MemorySegment.class /* return */);
+    private static final MethodHandle returnByteArrayMH = PanamaUtils.lookupPNICriticalFunction(new PNILinkOptions(), PNIBuf.class, "JavaCritical_io_vproxy_pni_test_InvokeUpcall_returnByteArray", MemorySegment.class /* return */);
 
     public MemorySegment returnByteArray() {
         try (var POOLED = Allocator.ofPooled()) {
@@ -156,7 +156,7 @@ public class InvokeUpcall {
         }
     }
 
-    private static final MethodHandle returnBoolArrayMH = PanamaUtils.lookupPNICriticalFunction(false, PNIBuf.class, "JavaCritical_io_vproxy_pni_test_InvokeUpcall_returnBoolArray", MemorySegment.class /* return */);
+    private static final MethodHandle returnBoolArrayMH = PanamaUtils.lookupPNICriticalFunction(new PNILinkOptions(), PNIBuf.class, "JavaCritical_io_vproxy_pni_test_InvokeUpcall_returnBoolArray", MemorySegment.class /* return */);
 
     public BoolArray returnBoolArray() {
         try (var POOLED = Allocator.ofPooled()) {
@@ -173,7 +173,7 @@ public class InvokeUpcall {
         }
     }
 
-    private static final MethodHandle returnCharArrayMH = PanamaUtils.lookupPNICriticalFunction(false, PNIBuf.class, "JavaCritical_io_vproxy_pni_test_InvokeUpcall_returnCharArray", MemorySegment.class /* return */);
+    private static final MethodHandle returnCharArrayMH = PanamaUtils.lookupPNICriticalFunction(new PNILinkOptions(), PNIBuf.class, "JavaCritical_io_vproxy_pni_test_InvokeUpcall_returnCharArray", MemorySegment.class /* return */);
 
     public CharArray returnCharArray() {
         try (var POOLED = Allocator.ofPooled()) {
@@ -190,7 +190,7 @@ public class InvokeUpcall {
         }
     }
 
-    private static final MethodHandle returnDoubleArrayMH = PanamaUtils.lookupPNICriticalFunction(false, PNIBuf.class, "JavaCritical_io_vproxy_pni_test_InvokeUpcall_returnDoubleArray", MemorySegment.class /* return */);
+    private static final MethodHandle returnDoubleArrayMH = PanamaUtils.lookupPNICriticalFunction(new PNILinkOptions(), PNIBuf.class, "JavaCritical_io_vproxy_pni_test_InvokeUpcall_returnDoubleArray", MemorySegment.class /* return */);
 
     public DoubleArray returnDoubleArray() {
         try (var POOLED = Allocator.ofPooled()) {
@@ -207,7 +207,7 @@ public class InvokeUpcall {
         }
     }
 
-    private static final MethodHandle returnFloatArrayMH = PanamaUtils.lookupPNICriticalFunction(false, PNIBuf.class, "JavaCritical_io_vproxy_pni_test_InvokeUpcall_returnFloatArray", MemorySegment.class /* return */);
+    private static final MethodHandle returnFloatArrayMH = PanamaUtils.lookupPNICriticalFunction(new PNILinkOptions(), PNIBuf.class, "JavaCritical_io_vproxy_pni_test_InvokeUpcall_returnFloatArray", MemorySegment.class /* return */);
 
     public FloatArray returnFloatArray() {
         try (var POOLED = Allocator.ofPooled()) {
@@ -224,7 +224,7 @@ public class InvokeUpcall {
         }
     }
 
-    private static final MethodHandle returnIntArrayMH = PanamaUtils.lookupPNICriticalFunction(false, PNIBuf.class, "JavaCritical_io_vproxy_pni_test_InvokeUpcall_returnIntArray", MemorySegment.class /* return */);
+    private static final MethodHandle returnIntArrayMH = PanamaUtils.lookupPNICriticalFunction(new PNILinkOptions(), PNIBuf.class, "JavaCritical_io_vproxy_pni_test_InvokeUpcall_returnIntArray", MemorySegment.class /* return */);
 
     public IntArray returnIntArray() {
         try (var POOLED = Allocator.ofPooled()) {
@@ -241,7 +241,7 @@ public class InvokeUpcall {
         }
     }
 
-    private static final MethodHandle returnLongArrayMH = PanamaUtils.lookupPNICriticalFunction(false, PNIBuf.class, "JavaCritical_io_vproxy_pni_test_InvokeUpcall_returnLongArray", MemorySegment.class /* return */);
+    private static final MethodHandle returnLongArrayMH = PanamaUtils.lookupPNICriticalFunction(new PNILinkOptions(), PNIBuf.class, "JavaCritical_io_vproxy_pni_test_InvokeUpcall_returnLongArray", MemorySegment.class /* return */);
 
     public LongArray returnLongArray() {
         try (var POOLED = Allocator.ofPooled()) {
@@ -258,7 +258,7 @@ public class InvokeUpcall {
         }
     }
 
-    private static final MethodHandle returnShortArrayMH = PanamaUtils.lookupPNICriticalFunction(false, PNIBuf.class, "JavaCritical_io_vproxy_pni_test_InvokeUpcall_returnShortArray", MemorySegment.class /* return */);
+    private static final MethodHandle returnShortArrayMH = PanamaUtils.lookupPNICriticalFunction(new PNILinkOptions(), PNIBuf.class, "JavaCritical_io_vproxy_pni_test_InvokeUpcall_returnShortArray", MemorySegment.class /* return */);
 
     public ShortArray returnShortArray() {
         try (var POOLED = Allocator.ofPooled()) {
@@ -275,7 +275,7 @@ public class InvokeUpcall {
         }
     }
 
-    private static final MethodHandle objectParamsMH = PanamaUtils.lookupPNICriticalFunction(false, void.class, "JavaCritical_io_vproxy_pni_test_InvokeUpcall_objectParams", io.vproxy.pni.test.ObjectStruct.LAYOUT.getClass() /* o */);
+    private static final MethodHandle objectParamsMH = PanamaUtils.lookupPNICriticalFunction(new PNILinkOptions(), void.class, "JavaCritical_io_vproxy_pni_test_InvokeUpcall_objectParams", io.vproxy.pni.test.ObjectStruct.LAYOUT.getClass() /* o */);
 
     public void objectParams(io.vproxy.pni.test.ObjectStruct o) {
         try {
@@ -285,7 +285,7 @@ public class InvokeUpcall {
         }
     }
 
-    private static final MethodHandle returnObjectMH = PanamaUtils.lookupPNICriticalFunction(false, io.vproxy.pni.test.ObjectStruct.LAYOUT.getClass(), "JavaCritical_io_vproxy_pni_test_InvokeUpcall_returnObject", MemorySegment.class /* return */);
+    private static final MethodHandle returnObjectMH = PanamaUtils.lookupPNICriticalFunction(new PNILinkOptions(), io.vproxy.pni.test.ObjectStruct.LAYOUT.getClass(), "JavaCritical_io_vproxy_pni_test_InvokeUpcall_returnObject", MemorySegment.class /* return */);
 
     public io.vproxy.pni.test.ObjectStruct returnObject(Allocator ALLOCATOR) {
         MemorySegment RESULT;
@@ -298,7 +298,7 @@ public class InvokeUpcall {
         return RESULT == null ? null : new io.vproxy.pni.test.ObjectStruct(RESULT);
     }
 
-    private static final MethodHandle pointerArrayParamsMH = PanamaUtils.lookupPNICriticalFunction(false, void.class, "JavaCritical_io_vproxy_pni_test_InvokeUpcall_pointerArrayParams", PNIBuf.class /* o */);
+    private static final MethodHandle pointerArrayParamsMH = PanamaUtils.lookupPNICriticalFunction(new PNILinkOptions(), void.class, "JavaCritical_io_vproxy_pni_test_InvokeUpcall_pointerArrayParams", PNIBuf.class /* o */);
 
     public void pointerArrayParams(PointerArray o) {
         try (var POOLED = Allocator.ofPooled()) {
@@ -310,7 +310,7 @@ public class InvokeUpcall {
         }
     }
 
-    private static final MethodHandle returnPointerArrayMH = PanamaUtils.lookupPNICriticalFunction(false, PNIBuf.class, "JavaCritical_io_vproxy_pni_test_InvokeUpcall_returnPointerArray", MemorySegment.class /* return */);
+    private static final MethodHandle returnPointerArrayMH = PanamaUtils.lookupPNICriticalFunction(new PNILinkOptions(), PNIBuf.class, "JavaCritical_io_vproxy_pni_test_InvokeUpcall_returnPointerArray", MemorySegment.class /* return */);
 
     public PointerArray returnPointerArray() {
         try (var POOLED = Allocator.ofPooled()) {
@@ -327,7 +327,7 @@ public class InvokeUpcall {
         }
     }
 
-    private static final MethodHandle objectArrayParamsMH = PanamaUtils.lookupPNICriticalFunction(false, void.class, "JavaCritical_io_vproxy_pni_test_InvokeUpcall_objectArrayParams", PNIBuf.class /* o */);
+    private static final MethodHandle objectArrayParamsMH = PanamaUtils.lookupPNICriticalFunction(new PNILinkOptions(), void.class, "JavaCritical_io_vproxy_pni_test_InvokeUpcall_objectArrayParams", PNIBuf.class /* o */);
 
     public void objectArrayParams(io.vproxy.pni.test.ObjectStruct.Array o) {
         try (var POOLED = Allocator.ofPooled()) {
@@ -339,7 +339,7 @@ public class InvokeUpcall {
         }
     }
 
-    private static final MethodHandle returnObjectArrayMH = PanamaUtils.lookupPNICriticalFunction(false, PNIBuf.class, "JavaCritical_io_vproxy_pni_test_InvokeUpcall_returnObjectArray", MemorySegment.class /* return */);
+    private static final MethodHandle returnObjectArrayMH = PanamaUtils.lookupPNICriticalFunction(new PNILinkOptions(), PNIBuf.class, "JavaCritical_io_vproxy_pni_test_InvokeUpcall_returnObjectArray", MemorySegment.class /* return */);
 
     public io.vproxy.pni.test.ObjectStruct.Array returnObjectArray() {
         try (var POOLED = Allocator.ofPooled()) {
@@ -356,7 +356,7 @@ public class InvokeUpcall {
         }
     }
 
-    private static final MethodHandle otherParamsMH = PanamaUtils.lookupPNICriticalFunction(false, void.class, "JavaCritical_io_vproxy_pni_test_InvokeUpcall_otherParams", PNIBuf.class /* buffer */, io.vproxy.pni.CallSite.class /* voidCallSite */, io.vproxy.pni.CallSite.class /* objCallSite */, io.vproxy.pni.CallSite.class /* refCallSite */, MemorySegment.class /* mem */, PNIFunc.class /* voidFunc */, PNIFunc.class /* objFunc */, PNIFunc.class /* refFunc */, PNIRef.class /* ref */, PNIRef.class /* rawRef */, String.class /* str */);
+    private static final MethodHandle otherParamsMH = PanamaUtils.lookupPNICriticalFunction(new PNILinkOptions(), void.class, "JavaCritical_io_vproxy_pni_test_InvokeUpcall_otherParams", PNIBuf.class /* buffer */, io.vproxy.pni.CallSite.class /* voidCallSite */, io.vproxy.pni.CallSite.class /* objCallSite */, io.vproxy.pni.CallSite.class /* refCallSite */, MemorySegment.class /* mem */, PNIFunc.class /* voidFunc */, PNIFunc.class /* objFunc */, PNIFunc.class /* refFunc */, PNIRef.class /* ref */, PNIRef.class /* rawRef */, String.class /* str */);
 
     public void otherParams(ByteBuffer buffer, io.vproxy.pni.CallSite<Void> voidCallSite, io.vproxy.pni.CallSite<io.vproxy.pni.test.ObjectStruct> objCallSite, io.vproxy.pni.CallSite<java.util.List<java.lang.String>> refCallSite, MemorySegment mem, PNIFunc<Void> voidFunc, PNIFunc<io.vproxy.pni.test.ObjectStruct> objFunc, PNIFunc<java.util.List<java.lang.String>> refFunc, java.util.List<java.lang.Integer> ref, PNIRef<java.util.List<java.lang.Integer>> rawRef, PNIString str) {
         try (var POOLED = Allocator.ofPooled()) {
@@ -368,7 +368,7 @@ public class InvokeUpcall {
         }
     }
 
-    private static final MethodHandle returnBufferMH = PanamaUtils.lookupPNICriticalFunction(false, PNIBuf.class, "JavaCritical_io_vproxy_pni_test_InvokeUpcall_returnBuffer", MemorySegment.class /* return */);
+    private static final MethodHandle returnBufferMH = PanamaUtils.lookupPNICriticalFunction(new PNILinkOptions(), PNIBuf.class, "JavaCritical_io_vproxy_pni_test_InvokeUpcall_returnBuffer", MemorySegment.class /* return */);
 
     public ByteBuffer returnBuffer() {
         try (var POOLED = Allocator.ofPooled()) {
@@ -384,7 +384,7 @@ public class InvokeUpcall {
         }
     }
 
-    private static final MethodHandle returnMemMH = PanamaUtils.lookupPNICriticalFunction(false, MemorySegment.class, "JavaCritical_io_vproxy_pni_test_InvokeUpcall_returnMem");
+    private static final MethodHandle returnMemMH = PanamaUtils.lookupPNICriticalFunction(new PNILinkOptions(), MemorySegment.class, "JavaCritical_io_vproxy_pni_test_InvokeUpcall_returnMem");
 
     public MemorySegment returnMem() {
         MemorySegment RESULT;
@@ -397,7 +397,7 @@ public class InvokeUpcall {
         return RESULT;
     }
 
-    private static final MethodHandle returnVoidFuncMH = PanamaUtils.lookupPNICriticalFunction(false, PNIFunc.class, "JavaCritical_io_vproxy_pni_test_InvokeUpcall_returnVoidFunc");
+    private static final MethodHandle returnVoidFuncMH = PanamaUtils.lookupPNICriticalFunction(new PNILinkOptions(), PNIFunc.class, "JavaCritical_io_vproxy_pni_test_InvokeUpcall_returnVoidFunc");
 
     public PNIFunc<Void> returnVoidFunc() {
         MemorySegment RESULT;
@@ -410,7 +410,7 @@ public class InvokeUpcall {
         return PNIFunc.VoidFunc.of(RESULT);
     }
 
-    private static final MethodHandle returnObjFuncMH = PanamaUtils.lookupPNICriticalFunction(false, PNIFunc.class, "JavaCritical_io_vproxy_pni_test_InvokeUpcall_returnObjFunc");
+    private static final MethodHandle returnObjFuncMH = PanamaUtils.lookupPNICriticalFunction(new PNILinkOptions(), PNIFunc.class, "JavaCritical_io_vproxy_pni_test_InvokeUpcall_returnObjFunc");
 
     public PNIFunc<io.vproxy.pni.test.ObjectStruct> returnObjFunc() {
         MemorySegment RESULT;
@@ -423,7 +423,7 @@ public class InvokeUpcall {
         return io.vproxy.pni.test.ObjectStruct.Func.of(RESULT);
     }
 
-    private static final MethodHandle returnRefFuncMH = PanamaUtils.lookupPNICriticalFunction(false, PNIFunc.class, "JavaCritical_io_vproxy_pni_test_InvokeUpcall_returnRefFunc");
+    private static final MethodHandle returnRefFuncMH = PanamaUtils.lookupPNICriticalFunction(new PNILinkOptions(), PNIFunc.class, "JavaCritical_io_vproxy_pni_test_InvokeUpcall_returnRefFunc");
 
     public PNIFunc<java.util.List<java.lang.String>> returnRefFunc() {
         MemorySegment RESULT;
@@ -436,7 +436,7 @@ public class InvokeUpcall {
         return PNIRef.Func.of(RESULT);
     }
 
-    private static final MethodHandle returnRefMH = PanamaUtils.lookupPNICriticalFunction(false, PNIRef.class, "JavaCritical_io_vproxy_pni_test_InvokeUpcall_returnRef");
+    private static final MethodHandle returnRefMH = PanamaUtils.lookupPNICriticalFunction(new PNILinkOptions(), PNIRef.class, "JavaCritical_io_vproxy_pni_test_InvokeUpcall_returnRef");
 
     public PNIRef<java.util.List<java.lang.Integer>> returnRef() {
         MemorySegment RESULT;
@@ -449,7 +449,7 @@ public class InvokeUpcall {
         return PNIRef.of(RESULT);
     }
 
-    private static final MethodHandle returnStrMH = PanamaUtils.lookupPNICriticalFunction(false, String.class, "JavaCritical_io_vproxy_pni_test_InvokeUpcall_returnStr");
+    private static final MethodHandle returnStrMH = PanamaUtils.lookupPNICriticalFunction(new PNILinkOptions(), String.class, "JavaCritical_io_vproxy_pni_test_InvokeUpcall_returnStr");
 
     public PNIString returnStr() {
         MemorySegment RESULT;
@@ -461,7 +461,7 @@ public class InvokeUpcall {
         return RESULT.address() == 0 ? null : new PNIString(RESULT);
     }
 
-    private static final MethodHandle sumMH = PanamaUtils.lookupPNICriticalFunction(false, int.class, "JavaCritical_io_vproxy_pni_test_InvokeUpcall_sum", int.class /* a */, int.class /* b */);
+    private static final MethodHandle sumMH = PanamaUtils.lookupPNICriticalFunction(new PNILinkOptions(), int.class, "JavaCritical_io_vproxy_pni_test_InvokeUpcall_sum", int.class /* a */, int.class /* b */);
 
     public int sum(int a, int b) {
         int RESULT;
@@ -474,4 +474,4 @@ public class InvokeUpcall {
     }
 }
 // metadata.generator-version: pni test
-// sha256:5f35d775493b82bdba2db83fe6c82f36756f2605845f808f3899b5cecaaa68b8
+// sha256:2e6f9778801ff8ff7466563995dd2451b5162205aebc938933c5962ba5f402b0

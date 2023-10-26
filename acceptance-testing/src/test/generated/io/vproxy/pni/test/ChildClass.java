@@ -45,7 +45,7 @@ public class ChildClass extends io.vproxy.pni.test.BaseClass implements NativeOb
         this(ALLOCATOR.allocate(LAYOUT));
     }
 
-    private static final MethodHandle xxxMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_ChildClass_xxx", MemorySegment.class /* self */, short.class /* x */);
+    private static final MethodHandle xxxMH = PanamaUtils.lookupPNIFunction(new PNILinkOptions(), "Java_io_vproxy_pni_test_ChildClass_xxx", MemorySegment.class /* self */, short.class /* x */);
 
     public void xxx(PNIEnv ENV, short x) {
         ENV.reset();
@@ -159,4 +159,4 @@ public class ChildClass extends io.vproxy.pni.test.BaseClass implements NativeOb
     }
 }
 // metadata.generator-version: pni test
-// sha256:d97722ef441837bcc38b94c5117a4f5e9e5241e22f67e9b974f35ce01e577714
+// sha256:ec97b682c2ba9f64d7ec9d38445915a9401f7ee927a5c92709a34d49dcfc4249

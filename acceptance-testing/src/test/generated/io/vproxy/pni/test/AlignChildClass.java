@@ -61,7 +61,7 @@ public class AlignChildClass extends io.vproxy.pni.test.AlignBaseClass implement
         this(ALLOCATOR.allocate(LAYOUT));
     }
 
-    private static final MethodHandle bbbbMH = PanamaUtils.lookupPNICriticalFunction(false, int.class, "JavaCritical_io_vproxy_pni_test_AlignChildClass_bbbb", MemorySegment.class /* self */);
+    private static final MethodHandle bbbbMH = PanamaUtils.lookupPNICriticalFunction(new PNILinkOptions(), int.class, "JavaCritical_io_vproxy_pni_test_AlignChildClass_bbbb", MemorySegment.class /* self */);
 
     public int bbbb() {
         int RESULT;
@@ -73,7 +73,7 @@ public class AlignChildClass extends io.vproxy.pni.test.AlignBaseClass implement
         return RESULT;
     }
 
-    private static final MethodHandle ccccMH = PanamaUtils.lookupPNICriticalFunction(false, int.class, "JavaCritical_io_vproxy_pni_test_AlignChildClass_cccc", MemorySegment.class /* self */);
+    private static final MethodHandle ccccMH = PanamaUtils.lookupPNICriticalFunction(new PNILinkOptions(), int.class, "JavaCritical_io_vproxy_pni_test_AlignChildClass_cccc", MemorySegment.class /* self */);
 
     public int cccc() {
         int RESULT;
@@ -85,7 +85,7 @@ public class AlignChildClass extends io.vproxy.pni.test.AlignBaseClass implement
         return RESULT;
     }
 
-    private static final MethodHandle sizeMH = PanamaUtils.lookupPNICriticalFunction(false, long.class, "JavaCritical_io_vproxy_pni_test_AlignChildClass_size", MemorySegment.class /* self */);
+    private static final MethodHandle sizeMH = PanamaUtils.lookupPNICriticalFunction(new PNILinkOptions(), long.class, "JavaCritical_io_vproxy_pni_test_AlignChildClass_size", MemorySegment.class /* self */);
 
     public long size() {
         long RESULT;
@@ -201,4 +201,4 @@ public class AlignChildClass extends io.vproxy.pni.test.AlignBaseClass implement
     }
 }
 // metadata.generator-version: pni test
-// sha256:d3a261776211dc352ddaca10b9226dbf00dc7ff8636c75c526de11f3efa032f1
+// sha256:7f9c3b44ec9669cac8512d1b30fafa6a2000ace4da8272ced85738ba0472d862

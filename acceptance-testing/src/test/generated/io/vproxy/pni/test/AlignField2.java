@@ -74,7 +74,7 @@ public class AlignField2 extends AbstractNativeObject implements NativeObject {
         this(ALLOCATOR.allocate(LAYOUT));
     }
 
-    private static final MethodHandle aaaaMH = PanamaUtils.lookupPNICriticalFunction(false, byte.class, "JavaCritical_io_vproxy_pni_test_AlignField2_aaaa", MemorySegment.class /* self */);
+    private static final MethodHandle aaaaMH = PanamaUtils.lookupPNICriticalFunction(new PNILinkOptions(), byte.class, "JavaCritical_io_vproxy_pni_test_AlignField2_aaaa", MemorySegment.class /* self */);
 
     public byte aaaa() {
         byte RESULT;
@@ -86,7 +86,7 @@ public class AlignField2 extends AbstractNativeObject implements NativeObject {
         return RESULT;
     }
 
-    private static final MethodHandle bbbbMH = PanamaUtils.lookupPNICriticalFunction(false, byte.class, "JavaCritical_io_vproxy_pni_test_AlignField2_bbbb", MemorySegment.class /* self */);
+    private static final MethodHandle bbbbMH = PanamaUtils.lookupPNICriticalFunction(new PNILinkOptions(), byte.class, "JavaCritical_io_vproxy_pni_test_AlignField2_bbbb", MemorySegment.class /* self */);
 
     public byte bbbb() {
         byte RESULT;
@@ -98,7 +98,7 @@ public class AlignField2 extends AbstractNativeObject implements NativeObject {
         return RESULT;
     }
 
-    private static final MethodHandle ccccMH = PanamaUtils.lookupPNICriticalFunction(false, int.class, "JavaCritical_io_vproxy_pni_test_AlignField2_cccc", MemorySegment.class /* self */);
+    private static final MethodHandle ccccMH = PanamaUtils.lookupPNICriticalFunction(new PNILinkOptions(), int.class, "JavaCritical_io_vproxy_pni_test_AlignField2_cccc", MemorySegment.class /* self */);
 
     public int cccc() {
         int RESULT;
@@ -110,7 +110,7 @@ public class AlignField2 extends AbstractNativeObject implements NativeObject {
         return RESULT;
     }
 
-    private static final MethodHandle sizeMH = PanamaUtils.lookupPNICriticalFunction(false, long.class, "JavaCritical_io_vproxy_pni_test_AlignField2_size", MemorySegment.class /* self */);
+    private static final MethodHandle sizeMH = PanamaUtils.lookupPNICriticalFunction(new PNILinkOptions(), long.class, "JavaCritical_io_vproxy_pni_test_AlignField2_size", MemorySegment.class /* self */);
 
     public long size() {
         long RESULT;
@@ -218,4 +218,4 @@ public class AlignField2 extends AbstractNativeObject implements NativeObject {
     }
 }
 // metadata.generator-version: pni test
-// sha256:18ef62f303d6a567ff41143cebce3b804b4d6aef2b400c926dfbedde976f78db
+// sha256:53ce86ef9ff2fe1c2b0c06d04add9dda73513f4c744ee63323eb2f168db8d80d

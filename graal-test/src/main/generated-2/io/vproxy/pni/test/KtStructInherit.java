@@ -43,7 +43,7 @@ public class KtStructInherit extends io.vproxy.pni.test.KtStruct implements Nati
         this(ALLOCATOR.allocate(LAYOUT));
     }
 
-    private static final MethodHandle retrieveObjMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_KtStructInherit_retrieveObj", MemorySegment.class /* self */);
+    private static final MethodHandle retrieveObjMH = PanamaUtils.lookupPNIFunction(new PNILinkOptions(), "Java_io_vproxy_pni_test_KtStructInherit_retrieveObj", MemorySegment.class /* self */);
 
     public io.vproxy.pni.test.PrimitiveStruct retrieveObj(PNIEnv ENV) {
         ENV.reset();
@@ -164,4 +164,4 @@ public class KtStructInherit extends io.vproxy.pni.test.KtStruct implements Nati
     }
 }
 // metadata.generator-version: pni test
-// sha256:6f428e8e252ff4aa55f7798377b13ebb48aa04642266390d78d090ad9266026c
+// sha256:0eabad830340d9dd9f818ab7e9a9b7a9311fff089f3883b26be5615ef2d9f013

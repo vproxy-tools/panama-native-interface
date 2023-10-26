@@ -115,7 +115,7 @@ public class GCCCompatibilityPacked extends AbstractNativeObject implements Nati
         this(ALLOCATOR.allocate(LAYOUT));
     }
 
-    private static final MethodHandle initMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_GCCCompatibilityPacked_init", MemorySegment.class /* self */);
+    private static final MethodHandle initMH = PanamaUtils.lookupPNIFunction(new PNILinkOptions(), "Java_io_vproxy_pni_test_GCCCompatibilityPacked_init", MemorySegment.class /* self */);
 
     public void init(PNIEnv ENV) {
         ENV.reset();
@@ -130,7 +130,7 @@ public class GCCCompatibilityPacked extends AbstractNativeObject implements Nati
         }
     }
 
-    private static final MethodHandle sizeMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_GCCCompatibilityPacked_size", MemorySegment.class /* self */);
+    private static final MethodHandle sizeMH = PanamaUtils.lookupPNIFunction(new PNILinkOptions(), "Java_io_vproxy_pni_test_GCCCompatibilityPacked_size", MemorySegment.class /* self */);
 
     public long size(PNIEnv ENV) {
         ENV.reset();
@@ -257,4 +257,4 @@ public class GCCCompatibilityPacked extends AbstractNativeObject implements Nati
     }
 }
 // metadata.generator-version: pni test
-// sha256:56edc359415609fe9d4ade913e32efa9cc5bba98cd75231384974ed3f865da5f
+// sha256:4a987e601558f5ce8ba2cd37956b397816245300e16752aee5466471e0ad3253

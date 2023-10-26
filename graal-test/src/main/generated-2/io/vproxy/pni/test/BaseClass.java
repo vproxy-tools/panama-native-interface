@@ -45,7 +45,7 @@ public class BaseClass extends AbstractNativeObject implements NativeObject {
         this(ALLOCATOR.allocate(LAYOUT));
     }
 
-    private static final MethodHandle aaaMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_BaseClass_aaa", MemorySegment.class /* self */, byte.class /* a */);
+    private static final MethodHandle aaaMH = PanamaUtils.lookupPNIFunction(new PNILinkOptions(), "Java_io_vproxy_pni_test_BaseClass_aaa", MemorySegment.class /* self */, byte.class /* a */);
 
     public void aaa(PNIEnv ENV, byte a) {
         ENV.reset();
@@ -146,4 +146,4 @@ public class BaseClass extends AbstractNativeObject implements NativeObject {
     }
 }
 // metadata.generator-version: pni test
-// sha256:ca9feaf7b794d8926417261bb0b9edeb129289297a0a6079cd0bd2e3332919c0
+// sha256:ba4f28b825d5d6fd77a17efdd82b8320201737948939bcef779d46727ad4141a

@@ -63,7 +63,7 @@ public class GCCompatibilityPackedContainUnion extends AbstractNativeObject impl
         this(ALLOCATOR.allocate(LAYOUT));
     }
 
-    private static final MethodHandle initBMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_GCCompatibilityPackedContainUnion_initB", MemorySegment.class /* self */);
+    private static final MethodHandle initBMH = PanamaUtils.lookupPNIFunction(new PNILinkOptions(), "Java_io_vproxy_pni_test_GCCompatibilityPackedContainUnion_initB", MemorySegment.class /* self */);
 
     public void initB(PNIEnv ENV) {
         ENV.reset();
@@ -78,7 +78,7 @@ public class GCCompatibilityPackedContainUnion extends AbstractNativeObject impl
         }
     }
 
-    private static final MethodHandle initSMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_GCCompatibilityPackedContainUnion_initS", MemorySegment.class /* self */);
+    private static final MethodHandle initSMH = PanamaUtils.lookupPNIFunction(new PNILinkOptions(), "Java_io_vproxy_pni_test_GCCompatibilityPackedContainUnion_initS", MemorySegment.class /* self */);
 
     public void initS(PNIEnv ENV) {
         ENV.reset();
@@ -93,7 +93,7 @@ public class GCCompatibilityPackedContainUnion extends AbstractNativeObject impl
         }
     }
 
-    private static final MethodHandle initNMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_GCCompatibilityPackedContainUnion_initN", MemorySegment.class /* self */);
+    private static final MethodHandle initNMH = PanamaUtils.lookupPNIFunction(new PNILinkOptions(), "Java_io_vproxy_pni_test_GCCompatibilityPackedContainUnion_initN", MemorySegment.class /* self */);
 
     public void initN(PNIEnv ENV) {
         ENV.reset();
@@ -108,7 +108,7 @@ public class GCCompatibilityPackedContainUnion extends AbstractNativeObject impl
         }
     }
 
-    private static final MethodHandle initFMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_GCCompatibilityPackedContainUnion_initF", MemorySegment.class /* self */);
+    private static final MethodHandle initFMH = PanamaUtils.lookupPNIFunction(new PNILinkOptions(), "Java_io_vproxy_pni_test_GCCompatibilityPackedContainUnion_initF", MemorySegment.class /* self */);
 
     public void initF(PNIEnv ENV) {
         ENV.reset();
@@ -123,7 +123,7 @@ public class GCCompatibilityPackedContainUnion extends AbstractNativeObject impl
         }
     }
 
-    private static final MethodHandle initDMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_GCCompatibilityPackedContainUnion_initD", MemorySegment.class /* self */);
+    private static final MethodHandle initDMH = PanamaUtils.lookupPNIFunction(new PNILinkOptions(), "Java_io_vproxy_pni_test_GCCompatibilityPackedContainUnion_initD", MemorySegment.class /* self */);
 
     public void initD(PNIEnv ENV) {
         ENV.reset();
@@ -138,7 +138,7 @@ public class GCCompatibilityPackedContainUnion extends AbstractNativeObject impl
         }
     }
 
-    private static final MethodHandle initLMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_GCCompatibilityPackedContainUnion_initL", MemorySegment.class /* self */);
+    private static final MethodHandle initLMH = PanamaUtils.lookupPNIFunction(new PNILinkOptions(), "Java_io_vproxy_pni_test_GCCompatibilityPackedContainUnion_initL", MemorySegment.class /* self */);
 
     public void initL(PNIEnv ENV) {
         ENV.reset();
@@ -153,7 +153,7 @@ public class GCCompatibilityPackedContainUnion extends AbstractNativeObject impl
         }
     }
 
-    private static final MethodHandle sizeMH = PanamaUtils.lookupPNIFunction(false, "Java_io_vproxy_pni_test_GCCompatibilityPackedContainUnion_size", MemorySegment.class /* self */);
+    private static final MethodHandle sizeMH = PanamaUtils.lookupPNIFunction(new PNILinkOptions(), "Java_io_vproxy_pni_test_GCCompatibilityPackedContainUnion_size", MemorySegment.class /* self */);
 
     public long size(PNIEnv ENV) {
         ENV.reset();
@@ -265,4 +265,4 @@ public class GCCompatibilityPackedContainUnion extends AbstractNativeObject impl
     }
 }
 // metadata.generator-version: pni test
-// sha256:5c12833108bcc86ba401d754a2831ac28558572a766b435bb55c0f221f901aca
+// sha256:5b53058a0f4cdff22a9278b4ee6976b85600a129342ab38fab1706da78bcb01e
