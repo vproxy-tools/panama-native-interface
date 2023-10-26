@@ -6,4 +6,7 @@ module io.vproxy.pni.exec {
     exports io.vproxy.pni.exec;
     exports io.vproxy.pni.exec.ast;
     exports io.vproxy.pni.exec.extension;
+    exports io.vproxy.pni.exec.generator;
+    exports io.vproxy.pni.exec.internal;
+    exports io.vproxy.pni.exec.type;
 }
