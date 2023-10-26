@@ -98,7 +98,12 @@ public class JavaFileGenerator {
                 meth.returnTypeRef = LongTypeInfo.get();
                 meth.name = "__getLayoutByteSize";
                 meth.annos.add(new AstAnno() {{
-                    typeRef = AnnoCriticalTypeInfo.get();
+                    typeRef = AnnoStyleTypeInfo.get();
+                    values = new ArrayList<>();
+                    values.add(new AstAnnoValue("value", new String[]{
+                        "Lio/vproxy/pni/annotation/Styles;",
+                        "critical"
+                    }));
                 }});
                 meth.annos.add(new AstAnno() {{
                     typeRef = AnnoTrivialTypeInfo.get();
@@ -625,7 +630,7 @@ public class JavaFileGenerator {
 
         private void generateJava(StringBuilder sb, int indent, String classUnderlinedName, boolean needSelf, boolean isStatic, boolean isPrivate) {
             Utils.appendIndent(sb, indent).append("private static final MethodHandle ").append(method.name).append("MH").append(" = PanamaUtils.");
-            if (method.critical()) {
+            if (method.isCriticalStyle()) {
                 sb.append("lookupPNICriticalFunction(");
             } else {
                 sb.append("lookupPNIFunction(");
@@ -635,7 +640,7 @@ public class JavaFileGenerator {
             } else {
                 sb.append("false, ");
             }
-            if (method.critical()) {
+            if (method.isCriticalStyle()) {
                 sb.append(method.returnTypeRef.methodHandleTypeForReturn(method.varOptsForReturn()));
                 sb.append(", ");
             }
@@ -680,7 +685,7 @@ public class JavaFileGenerator {
             sb.append(method.returnTypeRef.javaTypeForReturn(method.varOptsForReturn()))
                 .append(" ").append(method.name).append("(");
             var isFirst = true;
-            if (!method.critical()) {
+            if (!method.isCriticalStyle()) {
                 isFirst = false;
                 sb.append("PNIEnv ENV");
             }
@@ -718,7 +723,7 @@ public class JavaFileGenerator {
                 }
             }
             sb.append(" {\n");
-            if (!method.critical()) {
+            if (!method.isCriticalStyle()) {
                 Utils.appendIndent(sb, indent + 4).append("ENV.reset();\n");
             }
             int invocationIndent = indent + 4;
@@ -726,7 +731,7 @@ public class JavaFileGenerator {
                 Utils.appendIndent(sb, indent + 4).append("try (var POOLED = Allocator.ofPooled()) {\n");
                 invocationIndent += 4;
             }
-            if (method.critical()) {
+            if (method.isCriticalStyle()) {
                 if (!(method.returnTypeRef instanceof VoidTypeInfo)) {
                     Utils.appendIndent(sb, invocationIndent);
                     if (method.returnTypeRef instanceof PrimitiveTypeInfo) {
@@ -742,7 +747,7 @@ public class JavaFileGenerator {
             Utils.appendIndent(sb, invocationIndent)
                 .append("try {\n");
             Utils.appendIndent(sb, invocationIndent + 4);
-            if (method.critical()) {
+            if (method.isCriticalStyle()) {
                 if (!(method.returnTypeRef instanceof VoidTypeInfo)) {
                     sb.append("RESULT = (");
                     if (method.returnTypeRef instanceof PrimitiveTypeInfo) {
@@ -757,7 +762,7 @@ public class JavaFileGenerator {
             }
             sb.append(method.name).append("MH").append(".invokeExact(");
             isFirst = true;
-            if (!method.critical()) {
+            if (!method.isCriticalStyle()) {
                 isFirst = false;
                 sb.append("ENV.MEMORY");
             }
@@ -796,7 +801,7 @@ public class JavaFileGenerator {
                 .append("throw PanamaUtils.convertInvokeExactException(THROWABLE);\n");
             Utils.appendIndent(sb, invocationIndent)
                 .append("}\n");
-            if (!method.critical()) {
+            if (!method.isCriticalStyle()) {
                 Utils.appendIndent(sb, invocationIndent)
                     .append("if (ERR != 0) {\n");
                 for (var t : method.throwTypeRefs) {

@@ -14,61 +14,61 @@ public interface PNIInvokeUpcall {
     @Impl(
         c = "JavaCritical_io_vproxy_pni_test_Upcall_primaryParams(b, ub, z, c, d, f, i, ui, j, uj, s, us);"
     )
-    @Critical
+    @Style(Styles.critical)
     void primaryParams(byte b, byte ub, boolean z, char c, double d, float f, int i, int ui, long j, long uj, short s, short us);
 
     @Impl(
         c = "return JavaCritical_io_vproxy_pni_test_Upcall_returnByte();"
     )
-    @Critical
+    @Style(Styles.critical)
     byte returnByte();
 
     @Impl(
         c = "return JavaCritical_io_vproxy_pni_test_Upcall_returnBool();"
     )
-    @Critical
+    @Style(Styles.critical)
     boolean returnBool();
 
     @Impl(
         c = "return JavaCritical_io_vproxy_pni_test_Upcall_returnChar();"
     )
-    @Critical
+    @Style(Styles.critical)
     char returnChar();
 
     @Impl(
         c = "return JavaCritical_io_vproxy_pni_test_Upcall_returnDouble();"
     )
-    @Critical
+    @Style(Styles.critical)
     double returnDouble();
 
     @Impl(
         c = "return JavaCritical_io_vproxy_pni_test_Upcall_returnFloat();"
     )
-    @Critical
+    @Style(Styles.critical)
     float returnFloat();
 
     @Impl(
         c = "return JavaCritical_io_vproxy_pni_test_Upcall_returnInt();"
     )
-    @Critical
+    @Style(Styles.critical)
     int returnInt();
 
     @Impl(
         c = "return JavaCritical_io_vproxy_pni_test_Upcall_returnLong();"
     )
-    @Critical
+    @Style(Styles.critical)
     long returnLong();
 
     @Impl(
         c = "return JavaCritical_io_vproxy_pni_test_Upcall_returnShort();"
     )
-    @Critical
+    @Style(Styles.critical)
     short returnShort();
 
     @Impl(
         c = "JavaCritical_io_vproxy_pni_test_Upcall_primaryArrayParams(b, ub, z, c, d, f, i, ui, j, uj, s, us);"
     )
-    @Critical
+    @Style(Styles.critical)
     void primaryArrayParams(byte[] b, @Unsigned byte[] ub,
                             boolean[] z,
                             char[] c,
@@ -81,91 +81,91 @@ public interface PNIInvokeUpcall {
     @Impl(
         c = "return JavaCritical_io_vproxy_pni_test_Upcall_returnByteArray(return_);"
     )
-    @Critical
+    @Style(Styles.critical)
     byte[] returnByteArray();
 
     @Impl(
         c = "return JavaCritical_io_vproxy_pni_test_Upcall_returnBoolArray(return_);"
     )
-    @Critical
+    @Style(Styles.critical)
     boolean[] returnBoolArray();
 
     @Impl(
         c = "return JavaCritical_io_vproxy_pni_test_Upcall_returnCharArray(return_);"
     )
-    @Critical
+    @Style(Styles.critical)
     char[] returnCharArray();
 
     @Impl(
         c = "return JavaCritical_io_vproxy_pni_test_Upcall_returnDoubleArray(return_);"
     )
-    @Critical
+    @Style(Styles.critical)
     double[] returnDoubleArray();
 
     @Impl(
         c = "return JavaCritical_io_vproxy_pni_test_Upcall_returnFloatArray(return_);"
     )
-    @Critical
+    @Style(Styles.critical)
     float[] returnFloatArray();
 
     @Impl(
         c = "return JavaCritical_io_vproxy_pni_test_Upcall_returnIntArray(return_);"
     )
-    @Critical
+    @Style(Styles.critical)
     int[] returnIntArray();
 
     @Impl(
         c = "return JavaCritical_io_vproxy_pni_test_Upcall_returnLongArray(return_);"
     )
-    @Critical
+    @Style(Styles.critical)
     long[] returnLongArray();
 
     @Impl(
         c = "return JavaCritical_io_vproxy_pni_test_Upcall_returnShortArray(return_);"
     )
-    @Critical
+    @Style(Styles.critical)
     short[] returnShortArray();
 
     @Impl(
         c = "JavaCritical_io_vproxy_pni_test_Upcall_objectParams(o);"
     )
-    @Critical
+    @Style(Styles.critical)
     void objectParams(PNIObjectStruct o);
 
     @Impl(
         c = "return JavaCritical_io_vproxy_pni_test_Upcall_returnObject(return_);"
     )
-    @Critical
+    @Style(Styles.critical)
     PNIObjectStruct returnObject();
 
     @Impl(
         c = "JavaCritical_io_vproxy_pni_test_Upcall_pointerArrayParams(o);"
     )
-    @Critical
+    @Style(Styles.critical)
     void pointerArrayParams(MemorySegment[] o);
 
     @Impl(
         c = "return JavaCritical_io_vproxy_pni_test_Upcall_returnPointerArray(return_);"
     )
-    @Critical
+    @Style(Styles.critical)
     MemorySegment[] returnPointerArray();
 
     @Impl(
         c = "JavaCritical_io_vproxy_pni_test_Upcall_objectArrayParams(o);"
     )
-    @Critical
+    @Style(Styles.critical)
     void objectArrayParams(PNIObjectStruct[] o);
 
     @Impl(
         c = "return JavaCritical_io_vproxy_pni_test_Upcall_returnObjectArray(return_);"
     )
-    @Critical
+    @Style(Styles.critical)
     PNIObjectStruct[] returnObjectArray();
 
     @Impl(
         c = "JavaCritical_io_vproxy_pni_test_Upcall_otherParams(buffer, voidCallSite, objCallSite, refCallSite, mem, voidFunc, objFunc, refFunc, ref, rawRef, str);"
     )
-    @Critical
+    @Style(Styles.critical)
     void otherParams(ByteBuffer buffer,
                      PNIFunc<Void> voidCallSite,
                      PNIFunc<PNIObjectStruct> objCallSite,
@@ -181,48 +181,48 @@ public interface PNIInvokeUpcall {
     @Impl(
         c = "return JavaCritical_io_vproxy_pni_test_Upcall_returnBuffer(return_);"
     )
-    @Critical
+    @Style(Styles.critical)
     ByteBuffer returnBuffer();
 
     @Impl(
         c = "return JavaCritical_io_vproxy_pni_test_Upcall_returnMem();"
     )
-    @Critical
+    @Style(Styles.critical)
     MemorySegment returnMem();
 
     @Impl(
         c = "return JavaCritical_io_vproxy_pni_test_Upcall_returnVoidFunc();"
     )
-    @Critical
+    @Style(Styles.critical)
     PNIFunc<Void> returnVoidFunc();
 
     @Impl(
         c = "return JavaCritical_io_vproxy_pni_test_Upcall_returnObjFunc();"
     )
-    @Critical
+    @Style(Styles.critical)
     PNIFunc<PNIObjectStruct> returnObjFunc();
 
     @Impl(
         c = "return JavaCritical_io_vproxy_pni_test_Upcall_returnRefFunc();"
     )
-    @Critical
+    @Style(Styles.critical)
     PNIFunc<PNIRef<List<String>>> returnRefFunc();
 
     @Impl(
         c = "return JavaCritical_io_vproxy_pni_test_Upcall_returnRef();"
     )
-    @Critical
+    @Style(Styles.critical)
     PNIRef<List<Integer>> returnRef();
 
     @Impl(
         c = "return JavaCritical_io_vproxy_pni_test_Upcall_returnStr();"
     )
-    @Critical
+    @Style(Styles.critical)
     String returnStr();
 
     @Impl(
         c = "return pni_sum(a, b);"
     )
-    @Critical
+    @Style(Styles.critical)
     int sum(int a, int b);
 }

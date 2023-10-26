@@ -13,7 +13,7 @@ public interface PNIInvokeUpcallNull {
                 NULL, NULL);
             """
     )
-    @Critical
+    @Style(Styles.critical)
     boolean testParam();
 
     @Impl(
@@ -21,7 +21,7 @@ public interface PNIInvokeUpcallNull {
             return JavaCritical_io_vproxy_pni_test_UpcallNull_testParamRaw(NULL, NULL, NULL, NULL);
             """
     )
-    @Critical
+    @Style(Styles.critical)
     boolean testParamRaw();
 
     @Impl(
@@ -30,7 +30,7 @@ public interface PNIInvokeUpcallNull {
             return JavaCritical_io_vproxy_pni_test_UpcallNull_returnO(&o) == NULL;
             """
     )
-    @Critical
+    @Style(Styles.critical)
     boolean returnO();
 
     @Impl(
@@ -38,7 +38,7 @@ public interface PNIInvokeUpcallNull {
             return JavaCritical_io_vproxy_pni_test_UpcallNull_returnStr() == NULL;
             """
     )
-    @Critical
+    @Style(Styles.critical)
     boolean returnStr();
 
     @Impl(
@@ -46,7 +46,7 @@ public interface PNIInvokeUpcallNull {
             return JavaCritical_io_vproxy_pni_test_UpcallNull_returnSeg() == NULL;
             """
     )
-    @Critical
+    @Style(Styles.critical)
     boolean returnSeg();
 
     @Impl(
@@ -55,7 +55,7 @@ public interface PNIInvokeUpcallNull {
             return JavaCritical_io_vproxy_pni_test_UpcallNull_returnBuf(&b) == NULL;
             """
     )
-    @Critical
+    @Style(Styles.critical)
     boolean returnBuf();
 
     @Impl(
@@ -64,7 +64,7 @@ public interface PNIInvokeUpcallNull {
             return JavaCritical_io_vproxy_pni_test_UpcallNull_returnByteArr(&b) == NULL;
             """
     )
-    @Critical
+    @Style(Styles.critical)
     boolean returnByteArr();
 
     @Impl(
@@ -73,7 +73,7 @@ public interface PNIInvokeUpcallNull {
             return JavaCritical_io_vproxy_pni_test_UpcallNull_returnBoolArr(&b) == NULL;
             """
     )
-    @Critical
+    @Style(Styles.critical)
     boolean returnBoolArr();
 
     @Impl(
@@ -82,7 +82,7 @@ public interface PNIInvokeUpcallNull {
             return JavaCritical_io_vproxy_pni_test_UpcallNull_returnCharArr(&b) == NULL;
             """
     )
-    @Critical
+    @Style(Styles.critical)
     boolean returnCharArr();
 
     @Impl(
@@ -91,7 +91,7 @@ public interface PNIInvokeUpcallNull {
             return JavaCritical_io_vproxy_pni_test_UpcallNull_returnFloatArr(&b) == NULL;
             """
     )
-    @Critical
+    @Style(Styles.critical)
     boolean returnFloatArr();
 
     @Impl(
@@ -100,7 +100,7 @@ public interface PNIInvokeUpcallNull {
             return JavaCritical_io_vproxy_pni_test_UpcallNull_returnDoubleArr(&b) == NULL;
             """
     )
-    @Critical
+    @Style(Styles.critical)
     boolean returnDoubleArr();
 
     @Impl(
@@ -109,7 +109,7 @@ public interface PNIInvokeUpcallNull {
             return JavaCritical_io_vproxy_pni_test_UpcallNull_returnIntArr(&b) == NULL;
             """
     )
-    @Critical
+    @Style(Styles.critical)
     boolean returnIntArr();
 
     @Impl(
@@ -118,7 +118,7 @@ public interface PNIInvokeUpcallNull {
             return JavaCritical_io_vproxy_pni_test_UpcallNull_returnLongArr(&b) == NULL;
             """
     )
-    @Critical
+    @Style(Styles.critical)
     boolean returnLongArr();
 
     @Impl(
@@ -127,7 +127,7 @@ public interface PNIInvokeUpcallNull {
             return JavaCritical_io_vproxy_pni_test_UpcallNull_returnShortArr(&b) == NULL;
             """
     )
-    @Critical
+    @Style(Styles.critical)
     boolean returnShortArr();
 
     @Impl(
@@ -136,7 +136,7 @@ public interface PNIInvokeUpcallNull {
             return JavaCritical_io_vproxy_pni_test_UpcallNull_returnPArr(&b) == NULL;
             """
     )
-    @Critical
+    @Style(Styles.critical)
     boolean returnPArr();
 
     @Impl(
@@ -145,7 +145,7 @@ public interface PNIInvokeUpcallNull {
             return JavaCritical_io_vproxy_pni_test_UpcallNull_returnOArr(&b) == NULL;
             """
     )
-    @Critical
+    @Style(Styles.critical)
     boolean returnOArr();
 
     @Impl(
@@ -153,7 +153,7 @@ public interface PNIInvokeUpcallNull {
             return JavaCritical_io_vproxy_pni_test_UpcallNull_returnRef() == NULL;
             """
     )
-    @Critical
+    @Style(Styles.critical)
     boolean returnRef();
 
     @Impl(
@@ -161,7 +161,7 @@ public interface PNIInvokeUpcallNull {
             return JavaCritical_io_vproxy_pni_test_UpcallNull_returnFunc() == NULL;
             """
     )
-    @Critical
+    @Style(Styles.critical)
     boolean returnFunc();
 
     @Impl(
@@ -169,7 +169,7 @@ public interface PNIInvokeUpcallNull {
             return JavaCritical_io_vproxy_pni_test_UpcallNull_returnFuncVoid() == NULL;
             """
     )
-    @Critical
+    @Style(Styles.critical)
     boolean returnFuncVoid();
 
     @Impl(
@@ -177,6 +177,6 @@ public interface PNIInvokeUpcallNull {
             return JavaCritical_io_vproxy_pni_test_UpcallNull_returnFuncRef() == NULL;
             """
     )
-    @Critical
+    @Style(Styles.critical)
     boolean returnFuncRef();
 }

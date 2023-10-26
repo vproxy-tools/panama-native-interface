@@ -1,9 +1,6 @@
 package io.vproxy.pni.test;
 
-import io.vproxy.pni.annotation.Critical;
-import io.vproxy.pni.annotation.Len;
-import io.vproxy.pni.annotation.Struct;
-import io.vproxy.pni.annotation.Unsigned;
+import io.vproxy.pni.annotation.*;
 
 @Struct
 public abstract class PNIPrimitiveStruct {
@@ -51,7 +48,7 @@ public abstract class PNIPrimitiveStruct {
                         long aLong, @Unsigned long unsignedLong,
                         short aShort, @Unsigned short unsignedShort);
 
-    @Critical
+    @Style(Styles.critical)
     abstract void func1Critical(byte aByte, @Unsigned byte unsignedByte,
                                 int aInt, @Unsigned int unsignedInt,
                                 long aLong, @Unsigned long unsignedLong,
@@ -59,7 +56,7 @@ public abstract class PNIPrimitiveStruct {
 
     abstract void func2(char aChar, double aDouble, float aFloat, boolean aBoolean);
 
-    @Critical
+    @Style(Styles.critical)
     abstract void func2Critical(char aChar, double aDouble, float aFloat, boolean aBoolean);
 
     abstract void func3(byte[] byteArray, @Unsigned byte[] unsignedByteArray,
@@ -67,7 +64,7 @@ public abstract class PNIPrimitiveStruct {
                         long[] longArray, @Unsigned long[] unsignedLongArray,
                         short[] shortArray, @Unsigned short[] unsignedShortArray);
 
-    @Critical
+    @Style(Styles.critical)
     abstract void func3Critical(byte[] byteArray, @Unsigned byte[] unsignedByteArray,
                                 int[] intArray, @Unsigned int[] unsignedIntArray,
                                 long[] longArray, @Unsigned long[] unsignedLongArray,
@@ -75,196 +72,196 @@ public abstract class PNIPrimitiveStruct {
 
     abstract void func4(char[] charArray, double[] doubleArray, float[] floatArray, boolean[] booleanArray);
 
-    @Critical
+    @Style(Styles.critical)
     abstract void func4Critical(char[] charArray, double[] doubleArray, float[] floatArray, boolean[] booleanArray);
 
     abstract byte retrieveByte();
 
-    @Critical
+    @Style(Styles.critical)
     abstract byte retrieveByteCritical();
 
     abstract byte retrieveUnsignedByte();
 
-    @Critical
+    @Style(Styles.critical)
     abstract byte retrieveUnsignedByteCritical();
 
     abstract char retrieveChar();
 
-    @Critical
+    @Style(Styles.critical)
     abstract char retrieveCharCritical();
 
     abstract double retrieveDouble();
 
-    @Critical
+    @Style(Styles.critical)
     abstract double retrieveDoubleCritical();
 
     abstract float retrieveFloat();
 
-    @Critical
+    @Style(Styles.critical)
     abstract float retrieveFloatCritical();
 
     abstract int retrieveInt();
 
-    @Critical
+    @Style(Styles.critical)
     abstract int retrieveIntCritical();
 
     abstract int retrieveUnsignedInt();
 
-    @Critical
+    @Style(Styles.critical)
     abstract int retrieveUnsignedIntCritical();
 
     abstract long retrieveLong();
 
-    @Critical
+    @Style(Styles.critical)
     abstract long retrieveLongCritical();
 
     abstract long retrieveUnsignedLong();
 
-    @Critical
+    @Style(Styles.critical)
     abstract long retrieveUnsignedLongCritical();
 
     abstract short retrieveShort();
 
-    @Critical
+    @Style(Styles.critical)
     abstract short retrieveShortCritical();
 
     abstract short retrieveUnsignedShort();
 
-    @Critical
+    @Style(Styles.critical)
     abstract short retrieveUnsignedShortCritical();
 
     abstract boolean retrieveBoolean();
 
-    @Critical
+    @Style(Styles.critical)
     abstract boolean retrieveBooleanCritical();
 
     abstract byte[] retrieveByteArray();
 
-    @Critical
+    @Style(Styles.critical)
     abstract byte[] retrieveByteArrayCritical();
 
     abstract byte[] retrieveUnsignedByteArray();
 
-    @Critical
+    @Style(Styles.critical)
     abstract byte[] retrieveUnsignedByteArrayCritical();
 
     abstract char[] retrieveCharArray();
 
-    @Critical
+    @Style(Styles.critical)
     abstract char[] retrieveCharArrayCritical();
 
     abstract double[] retrieveDoubleArray();
 
-    @Critical
+    @Style(Styles.critical)
     abstract double[] retrieveDoubleArrayCritical();
 
     abstract float[] retrieveFloatArray();
 
-    @Critical
+    @Style(Styles.critical)
     abstract float[] retrieveFloatArrayCritical();
 
     abstract int[] retrieveIntArray();
 
-    @Critical
+    @Style(Styles.critical)
     abstract int[] retrieveIntArrayCritical();
 
     abstract int[] retrieveUnsignedIntArray();
 
-    @Critical
+    @Style(Styles.critical)
     abstract int[] retrieveUnsignedIntArrayCritical();
 
     abstract long[] retrieveLongArray();
 
-    @Critical
+    @Style(Styles.critical)
     abstract long[] retrieveLongArrayCritical();
 
     abstract long[] retrieveUnsignedLongArray();
 
-    @Critical
+    @Style(Styles.critical)
     abstract long[] retrieveUnsignedLongArrayCritical();
 
     abstract short[] retrieveShortArray();
 
-    @Critical
+    @Style(Styles.critical)
     abstract short[] retrieveShortArrayCritical();
 
     abstract short[] retrieveUnsignedShortArray();
 
-    @Critical
+    @Style(Styles.critical)
     abstract short[] retrieveUnsignedShortArrayCritical();
 
     abstract boolean[] retrieveBooleanArray();
 
-    @Critical
+    @Style(Styles.critical)
     abstract boolean[] retrieveBooleanArrayCritical();
 
     abstract byte[] retrieveByteArrayPointer();
 
-    @Critical
+    @Style(Styles.critical)
     abstract byte[] retrieveByteArrayPointerCritical();
 
     abstract byte[] retrieveUnsignedByteArrayPointer();
 
-    @Critical
+    @Style(Styles.critical)
     abstract byte[] retrieveUnsignedByteArrayPointerCritical();
 
     abstract char[] retrieveCharArrayPointer();
 
-    @Critical
+    @Style(Styles.critical)
     abstract char[] retrieveCharArrayPointerCritical();
 
     abstract double[] retrieveDoubleArrayPointer();
 
-    @Critical
+    @Style(Styles.critical)
     abstract double[] retrieveDoubleArrayPointerCritical();
 
     abstract float[] retrieveFloatArrayPointer();
 
-    @Critical
+    @Style(Styles.critical)
     abstract float[] retrieveFloatArrayPointerCritical();
 
     abstract int[] retrieveIntArrayPointer();
 
-    @Critical
+    @Style(Styles.critical)
     abstract int[] retrieveIntArrayPointerCritical();
 
     abstract int[] retrieveUnsignedIntArrayPointer();
 
-    @Critical
+    @Style(Styles.critical)
     abstract int[] retrieveUnsignedIntArrayPointerCritical();
 
     abstract long[] retrieveLongArrayPointer();
 
-    @Critical
+    @Style(Styles.critical)
     abstract long[] retrieveLongArrayPointerCritical();
 
     abstract long[] retrieveUnsignedLongArrayPointer();
 
-    @Critical
+    @Style(Styles.critical)
     abstract long[] retrieveUnsignedLongArrayPointerCritical();
 
     abstract short[] retrieveShortArrayPointer();
 
-    @Critical
+    @Style(Styles.critical)
     abstract short[] retrieveShortArrayPointerCritical();
 
     abstract short[] retrieveUnsignedShortArrayPointer();
 
-    @Critical
+    @Style(Styles.critical)
     abstract short[] retrieveUnsignedShortArrayPointerCritical();
 
     abstract boolean[] retrieveBooleanArrayPointer();
 
-    @Critical
+    @Style(Styles.critical)
     abstract boolean[] retrieveBooleanArrayPointerCritical();
 
     abstract boolean checkPointerSetToNonNull();
 
-    @Critical
+    @Style(Styles.critical)
     abstract boolean checkPointerSetToNonNullCritical();
 
     abstract boolean checkPointerSetToNull();
 
-    @Critical
+    @Style(Styles.critical)
     abstract boolean checkPointerSetToNullCritical();
 }

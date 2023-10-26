@@ -629,7 +629,7 @@ abstract class PNIGCCompatibilityBitField {
             self->m2 = m2;
             """
     )
-    @Critical
+    @Style(Styles.critical)
     abstract void set(@Unsigned byte a,
                       @Unsigned byte a2,
                       @Unsigned byte b,
@@ -658,106 +658,106 @@ abstract class PNIGCCompatibilityBitField {
                       @Unsigned long m2);
 
     @Impl(c = "return self->a;")
-    @Critical
+    @Style(Styles.critical)
     abstract byte a();
 
     @Impl(c = "return self->a2;")
-    @Critical
+    @Style(Styles.critical)
     abstract byte a2();
 
     @Impl(c = "return self->b;")
-    @Critical
+    @Style(Styles.critical)
     abstract byte b();
 
     @Impl(c = "return self->b2;")
-    @Critical
+    @Style(Styles.critical)
     abstract byte b2();
 
     @Impl(c = "return self->c;")
-    @Critical
+    @Style(Styles.critical)
     abstract short c();
 
     @Impl(c = "return self->c2;")
-    @Critical
+    @Style(Styles.critical)
     abstract short c2();
 
     @Impl(c = "return self->d;")
-    @Critical
+    @Style(Styles.critical)
     abstract short d();
 
     @Impl(c = "return self->d2;")
-    @Critical
+    @Style(Styles.critical)
     abstract short d2();
 
     @Impl(c = "return self->e;")
-    @Critical
+    @Style(Styles.critical)
     abstract short e();
 
     @Impl(c = "return self->e2;")
-    @Critical
+    @Style(Styles.critical)
     abstract short e2();
 
     @Impl(c = "return self->f;")
-    @Critical
+    @Style(Styles.critical)
     abstract int f();
 
     @Impl(c = "return self->f2;")
-    @Critical
+    @Style(Styles.critical)
     abstract int f2();
 
     @Impl(c = "return self->g;")
-    @Critical
+    @Style(Styles.critical)
     abstract int g();
 
     @Impl(c = "return self->g2;")
-    @Critical
+    @Style(Styles.critical)
     abstract int g2();
 
     @Impl(c = "return self->h;")
-    @Critical
+    @Style(Styles.critical)
     abstract int h();
 
     @Impl(c = "return self->h2;")
-    @Critical
+    @Style(Styles.critical)
     abstract int h2();
 
     @Impl(c = "return self->i;")
-    @Critical
+    @Style(Styles.critical)
     abstract int i();
 
     @Impl(c = "return self->i2;")
-    @Critical
+    @Style(Styles.critical)
     abstract int i2();
 
     @Impl(c = "return self->j;")
-    @Critical
+    @Style(Styles.critical)
     abstract long j();
 
     @Impl(c = "return self->j2;")
-    @Critical
+    @Style(Styles.critical)
     abstract long j2();
 
     @Impl(c = "return self->k;")
-    @Critical
+    @Style(Styles.critical)
     abstract long k();
 
     @Impl(c = "return self->k2;")
-    @Critical
+    @Style(Styles.critical)
     abstract long k2();
 
     @Impl(c = "return self->l;")
-    @Critical
+    @Style(Styles.critical)
     abstract long l();
 
     @Impl(c = "return self->l2;")
-    @Critical
+    @Style(Styles.critical)
     abstract long l2();
 
     @Impl(c = "return self->m;")
-    @Critical
+    @Style(Styles.critical)
     abstract long m();
 
     @Impl(c = "return self->m2;")
-    @Critical
+    @Style(Styles.critical)
     abstract long m2();
 }

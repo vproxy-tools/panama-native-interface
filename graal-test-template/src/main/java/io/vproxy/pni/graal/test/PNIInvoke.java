@@ -2,10 +2,7 @@ package io.vproxy.pni.graal.test;
 
 import io.vproxy.pni.PNIFunc;
 import io.vproxy.pni.PNIRef;
-import io.vproxy.pni.annotation.Critical;
-import io.vproxy.pni.annotation.Function;
-import io.vproxy.pni.annotation.Impl;
-import io.vproxy.pni.annotation.Raw;
+import io.vproxy.pni.annotation.*;
 
 import java.lang.foreign.MemorySegment;
 
@@ -18,7 +15,7 @@ public interface PNIInvoke {
             return f(thread, a, b);
             """
     )
-    @Critical
+    @Style(Styles.critical)
     int invokeSum(MemorySegment func, MemorySegment thread, int a, int b);
 
     @Impl(
@@ -28,7 +25,7 @@ public interface PNIInvoke {
             return f(thread, a, p);
             """
     )
-    @Critical
+    @Style(Styles.critical)
     void invokePtr(MemorySegment func, MemorySegment thread, int a, MemorySegment p);
 
     @Impl(
@@ -37,7 +34,7 @@ public interface PNIInvoke {
             PNIRefRelease(ref);
             """
     )
-    @Critical
+    @Style(Styles.critical)
     void releaseRef(@Raw PNIRef<Integer> ref);
 
     @Impl(
@@ -48,7 +45,7 @@ public interface PNIInvoke {
             return res;
             """
     )
-    @Critical
+    @Style(Styles.critical)
     int callFunc(PNIFunc<Void> func);
 
     @Impl(
@@ -58,7 +55,7 @@ public interface PNIInvoke {
             f();
             """
     )
-    @Critical
+    @Style(Styles.critical)
     void invokeDoNothingUpcall(MemorySegment func);
 
     @Impl(
@@ -68,7 +65,7 @@ public interface PNIInvoke {
             return f(a);
             """
     )
-    @Critical
+    @Style(Styles.critical)
     int invokeIntUpcall(MemorySegment func, int a);
 
     @Impl(
@@ -80,7 +77,7 @@ public interface PNIInvoke {
             return res;
             """
     )
-    @Critical
+    @Style(Styles.critical)
     int invokeRefUpcall(MemorySegment func, PNIRef<Integer> ref);
 
     @Impl(
@@ -92,7 +89,7 @@ public interface PNIInvoke {
             return res;
             """
     )
-    @Critical
+    @Style(Styles.critical)
     int invokeFuncUpcall(MemorySegment func, PNIFunc<Void> ff);
 
     @Impl(
@@ -102,6 +99,6 @@ public interface PNIInvoke {
             return f();
             """
     )
-    @Critical
+    @Style(Styles.critical)
     MemorySegment invokeReturnSegUpcall(MemorySegment func);
 }

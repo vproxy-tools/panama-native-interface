@@ -1,10 +1,7 @@
 package io.vproxy.pni.test;
 
 import io.vproxy.pni.PNIRef;
-import io.vproxy.pni.annotation.Critical;
-import io.vproxy.pni.annotation.Function;
-import io.vproxy.pni.annotation.Impl;
-import io.vproxy.pni.annotation.Raw;
+import io.vproxy.pni.annotation.*;
 
 import java.io.IOException;
 import java.lang.foreign.MemorySegment;
@@ -15,7 +12,7 @@ import java.util.List;
 public interface PNIFunc {
     int func1();
 
-    @Critical
+    @Style(Styles.critical)
     int func1Critical();
 
     void func2() throws IOException;
@@ -47,7 +44,7 @@ public interface PNIFunc {
             return n;
             """
     )
-    @Critical
+    @Style(Styles.critical)
     int writeCritical(int fd, @Raw ByteBuffer buf, int off, int len);
 
     @Impl(
@@ -107,7 +104,7 @@ public interface PNIFunc {
             return ptr;
             """
     )
-    @Critical
+    @Style(Styles.critical)
     MemorySegment callJavaFromCCritical(io.vproxy.pni.PNIFunc<PNIObjectStruct> func);
 
     @Impl(
@@ -129,7 +126,7 @@ public interface PNIFunc {
             PNIRefRelease(ref);
             """
     )
-    @Critical
+    @Style(Styles.critical)
     void callJavaRefFromCCritical(io.vproxy.pni.PNIFunc<PNIRef<List<String>>> func, PNIRef<List<String>> ref);
 
     @Impl(
@@ -152,6 +149,6 @@ public interface PNIFunc {
             return res;
             """
     )
-    @Critical
+    @Style(Styles.critical)
     int callJavaMethodWithRefFromCCritical(MemorySegment func, PNIRef<List<Integer>> ref, int a);
 }

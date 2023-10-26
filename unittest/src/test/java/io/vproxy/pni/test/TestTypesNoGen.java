@@ -33,11 +33,11 @@ public class TestTypesNoGen {
     }
 
     @Test
-    public void AnnoCritical() {
-        var t = AnnoCriticalTypeInfo.get();
-        assertEquals("io.vproxy.pni.annotation.Critical", t.name());
-        assertEquals("io/vproxy/pni/annotation/Critical", t.internalName());
-        assertEquals("Lio/vproxy/pni/annotation/Critical;", t.desc());
+    public void AnnoStyle() {
+        var t = AnnoStyleTypeInfo.get();
+        assertEquals("io.vproxy.pni.annotation.Style", t.name());
+        assertEquals("io/vproxy/pni/annotation/Style", t.internalName());
+        assertEquals("Lio/vproxy/pni/annotation/Style;", t.desc());
     }
 
     @Test

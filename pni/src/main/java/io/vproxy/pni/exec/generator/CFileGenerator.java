@@ -357,7 +357,7 @@ public class CFileGenerator {
         protected void generateC0(StringBuilder sb, int indent, String classUnderlinedName, String classNativeTypeName, boolean upcall) {
             Utils.appendIndent(sb, indent)
                 .append("JNIEXPORT ");
-            if (method.critical() || upcall) {
+            if (method.isCriticalStyle() || upcall) {
                 var returnType = method.getNativeReturnTypeAnno();
                 if (returnType == null) {
                     sb.append(method.returnTypeRef.nativeReturnType(method.varOptsForReturn(upcall)));
@@ -369,7 +369,7 @@ public class CFileGenerator {
             }
             sb.append(" JNICALL ").append(method.nativeName(classUnderlinedName, upcall)).append("(");
             var isFirst = true;
-            if (!method.critical() && !upcall) {
+            if (!method.isCriticalStyle() && !upcall) {
                 sb.append("PNIEnv_").append(method.returnTypeRef.nativeEnvType(method.varOptsForReturn()));
                 sb.append(" * env");
                 isFirst = false;

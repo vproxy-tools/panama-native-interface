@@ -40,7 +40,7 @@ interface PNICustomNativeTypeFunc {
             return &(o->p1);
             """
     )
-    @Critical
+    @Style(Styles.critical)
     @NativeReturnType("int64_t*")
     MemorySegment exec(@NativeType("SizeofStructExpr*") MemorySegment o);
 
@@ -49,7 +49,7 @@ interface PNICustomNativeTypeFunc {
             return JavaCritical_io_vproxy_pni_test_CustomNativeTypeUpcall_exec(s);
             """
     )
-    @Critical
+    @Style(Styles.critical)
     @NativeReturnType("int64_t*")
     MemorySegment invoke(PNISizeofStructExpr s);
 }

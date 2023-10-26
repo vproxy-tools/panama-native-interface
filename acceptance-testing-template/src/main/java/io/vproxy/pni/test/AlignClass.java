@@ -15,7 +15,7 @@ abstract class PNIAlignClass {
             return self->a;
             """
     )
-    @Critical
+    @Style(Styles.critical)
     abstract byte aaaa();
 
     @Impl(
@@ -23,7 +23,7 @@ abstract class PNIAlignClass {
             return self->b;
             """
     )
-    @Critical
+    @Style(Styles.critical)
     abstract short bbbb();
 
     @Impl(
@@ -31,7 +31,7 @@ abstract class PNIAlignClass {
             return self->c;
             """
     )
-    @Critical
+    @Style(Styles.critical)
     abstract long cccc();
 
     @Impl(
@@ -39,7 +39,7 @@ abstract class PNIAlignClass {
             return sizeof(*self);
             """
     )
-    @Critical
+    @Style(Styles.critical)
     abstract long size();
 }
 
@@ -55,7 +55,7 @@ abstract class PNIAlignField {
             return self->a;
             """
     )
-    @Critical
+    @Style(Styles.critical)
     abstract byte aaaa();
 
     @Impl(
@@ -63,7 +63,7 @@ abstract class PNIAlignField {
             return self->b;
             """
     )
-    @Critical
+    @Style(Styles.critical)
     abstract byte bbbb();
 
     @Impl(
@@ -71,7 +71,7 @@ abstract class PNIAlignField {
             return self->c;
             """
     )
-    @Critical
+    @Style(Styles.critical)
     abstract int cccc();
 
     @Impl(
@@ -79,7 +79,7 @@ abstract class PNIAlignField {
             return sizeof(*self);
             """
     )
-    @Critical
+    @Style(Styles.critical)
     abstract long size();
 }
 
@@ -95,7 +95,7 @@ abstract class PNIAlignField2 {
             return self->a;
             """
     )
-    @Critical
+    @Style(Styles.critical)
     abstract byte aaaa();
 
     @Impl(
@@ -103,7 +103,7 @@ abstract class PNIAlignField2 {
             return self->b;
             """
     )
-    @Critical
+    @Style(Styles.critical)
     abstract byte bbbb();
 
     @Impl(
@@ -111,7 +111,7 @@ abstract class PNIAlignField2 {
             return self->c;
             """
     )
-    @Critical
+    @Style(Styles.critical)
     abstract int cccc();
 
     @Impl(
@@ -119,7 +119,7 @@ abstract class PNIAlignField2 {
             return sizeof(*self);
             """
     )
-    @Critical
+    @Style(Styles.critical)
     abstract long size();
 }
 
@@ -135,7 +135,7 @@ abstract class PNIAlignField3 {
             return self->a;
             """
     )
-    @Critical
+    @Style(Styles.critical)
     abstract short aaaa();
 
     @Impl(
@@ -143,7 +143,7 @@ abstract class PNIAlignField3 {
             return self->b;
             """
     )
-    @Critical
+    @Style(Styles.critical)
     abstract int bbbb();
 
     @Impl(
@@ -151,7 +151,7 @@ abstract class PNIAlignField3 {
             return self->c;
             """
     )
-    @Critical
+    @Style(Styles.critical)
     abstract int cccc();
 
     @Impl(
@@ -159,7 +159,7 @@ abstract class PNIAlignField3 {
             return sizeof(*self);
             """
     )
-    @Critical
+    @Style(Styles.critical)
     abstract long size();
 }
 
@@ -173,7 +173,7 @@ abstract class PNIAlignBaseClass {
             return self->a;
             """
     )
-    @Critical
+    @Style(Styles.critical)
     abstract short aaaa();
 
     @Impl(
@@ -181,7 +181,7 @@ abstract class PNIAlignBaseClass {
             return sizeof(*self);
             """
     )
-    @Critical
+    @Style(Styles.critical)
     abstract long size0();
 }
 
@@ -196,7 +196,7 @@ abstract class PNIAlignChildClass extends PNIAlignBaseClass {
             return self->b;
             """
     )
-    @Critical
+    @Style(Styles.critical)
     abstract int bbbb();
 
     @Impl(
@@ -204,7 +204,7 @@ abstract class PNIAlignChildClass extends PNIAlignBaseClass {
             return self->c;
             """
     )
-    @Critical
+    @Style(Styles.critical)
     abstract int cccc();
 
     @Impl(
@@ -212,6 +212,6 @@ abstract class PNIAlignChildClass extends PNIAlignBaseClass {
             return sizeof(*self);
             """
     )
-    @Critical
+    @Style(Styles.critical)
     abstract long size();
 }

@@ -152,13 +152,13 @@ public class GraalNativeImageFeatureFileGenerator {
             var nativeName = method.nativeName(classUnderlinedName);
             Utils.appendIndent(sb, indent).append("/* ").append(nativeName).append(" */\n");
             Utils.appendIndent(sb, indent).append("RuntimeForeignAccess.registerForDowncall(PanamaUtils.");
-            if (method.critical()) {
+            if (method.isCriticalStyle()) {
                 sb.append("buildCriticalFunctionDescriptor(");
             } else {
                 sb.append("buildFunctionDescriptor(");
             }
             boolean needComma = false;
-            if (method.critical()) {
+            if (method.isCriticalStyle()) {
                 needComma = true;
                 var type = method.returnTypeRef.methodHandleTypeForReturnForGraalFeature(method.varOptsForReturn());
                 var origType = method.returnTypeRef.methodHandleTypeForReturn(method.varOptsForReturn());

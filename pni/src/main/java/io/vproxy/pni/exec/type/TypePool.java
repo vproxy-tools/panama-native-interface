@@ -25,7 +25,6 @@ public class TypePool {
         record(AnnoAlignTypeInfo.get());
         record(AnnoAlwaysAlignedTypeInfo.get());
         record(AnnoBitFieldTypeInfo.get());
-        record(AnnoCriticalTypeInfo.get());
         record(AnnoFunctionTypeInfo.get());
         record(AnnoImplTypeInfo.get());
         record(AnnoIncludeTypeInfo.get());
@@ -39,6 +38,7 @@ public class TypePool {
         record(AnnoRawTypeInfo.get());
         record(AnnoSizeofTypeInfo.get());
         record(AnnoStructTypeInfo.get());
+        record(AnnoStyleTypeInfo.get());
         record(AnnoSuppressTypeInfo.get());
         record(AnnoTrivialTypeInfo.get());
         record(AnnoUnionTypeInfo.get());

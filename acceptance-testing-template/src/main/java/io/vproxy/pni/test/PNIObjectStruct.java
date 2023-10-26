@@ -1,8 +1,9 @@
 package io.vproxy.pni.test;
 
-import io.vproxy.pni.annotation.Critical;
+import io.vproxy.pni.annotation.Style;
 import io.vproxy.pni.annotation.Len;
 import io.vproxy.pni.annotation.Struct;
+import io.vproxy.pni.annotation.Styles;
 
 import java.lang.foreign.MemorySegment;
 import java.nio.ByteBuffer;
@@ -16,36 +17,36 @@ public abstract class PNIObjectStruct {
 
     abstract void func1(String str, String str2, MemorySegment seg, ByteBuffer buf);
 
-    @Critical
+    @Style(Styles.critical)
     abstract void func1Critical(String str, String str2, MemorySegment seg, ByteBuffer buf);
 
     abstract String retrieveStr();
 
-    @Critical
+    @Style(Styles.critical)
     abstract String retrieveStrCritical();
 
     abstract String retrieveLenStr();
 
-    @Critical
+    @Style(Styles.critical)
     abstract String retrieveLenStrCritical();
 
     abstract MemorySegment retrieveSeg();
 
-    @Critical
+    @Style(Styles.critical)
     abstract MemorySegment retrieveSegCritical();
 
     abstract ByteBuffer retrieveBuf();
 
-    @Critical
+    @Style(Styles.critical)
     abstract ByteBuffer retrieveBufCritical();
 
     abstract boolean checkPointerSetToNonNull();
 
-    @Critical
+    @Style(Styles.critical)
     abstract boolean checkPointerSetToNonNullCritical();
 
     abstract boolean checkPointerSetToNull();
 
-    @Critical
+    @Style(Styles.critical)
     abstract boolean checkPointerSetToNullCritical();
 }

@@ -15,52 +15,52 @@ abstract class PNIStructA {
 
     abstract void bbb(PNIStructB b);
 
-    @Critical
+    @Style(Styles.critical)
     abstract void bbbCritical(PNIStructB b);
 
     abstract void ccc(PNIUnionC c);
 
-    @Critical
+    @Style(Styles.critical)
     abstract void cccCritical(PNIUnionC c);
 
     abstract void cccPointer(PNIUnionC c);
 
-    @Critical
+    @Style(Styles.critical)
     abstract void cccPointerCritical(PNIUnionC c);
 
     abstract void bbbArray(PNIStructB[] bArray);
 
-    @Critical
+    @Style(Styles.critical)
     abstract void bbbArrayCritical(PNIStructB[] bArray);
 
     abstract void bbbArray2(PNIStructB[] bArray);
 
-    @Critical
+    @Style(Styles.critical)
     abstract void bbbArray2Critical(PNIStructB[] bArray);
 
     abstract PNIStructB retrieveB();
 
-    @Critical
+    @Style(Styles.critical)
     abstract PNIStructB retrieveBCritical();
 
     abstract PNIUnionC retrieveC();
 
-    @Critical
+    @Style(Styles.critical)
     abstract PNIUnionC retrieveCCritical();
 
     abstract PNIUnionC retrieveCPointer();
 
-    @Critical
+    @Style(Styles.critical)
     abstract PNIUnionC retrieveCPointerCritical();
 
     abstract PNIStructB[] retrieveBArray();
 
-    @Critical
+    @Style(Styles.critical)
     abstract PNIStructB[] retrieveBArrayCritical();
 
     abstract PNIStructB[] retrieveBArray2();
 
-    @Critical
+    @Style(Styles.critical)
     abstract PNIStructB[] retrieveBArray2Critical();
 }
 

@@ -510,7 +510,7 @@ You may refer to: chapter `How to bundle into a Gradle project`, section `Add a 
 
 ### 4. Write native implementation
 
-**if `@Critical` is NOT annotated**: (`JNI` Style Function)
+**if `@Style` is NOT annotated or is `@Style(pni)`**: (`JNI-like` Style Function)
 
 1. take an argument `PNIEnv* env` as the first argument, but with different type variations based on the result type;
 2. return `int` where `0` means OK and any other value (usually `-1`) means an exception is thrown;
@@ -534,7 +534,7 @@ If you need to pass `errno` to Java, you can call `PNIStoreErrno(env)`. You can 
 
 ---
 
-**If `@Critical` is annotated**: (`Critical` Style Function)
+**If `@Style(critical)` is annotated**: (`JavaCritical` Style Function)
 
 1. There will be no `PNIEnv` argument.
 2. Directly return values.
@@ -832,7 +832,7 @@ You can call `PNIRef.of(obj, new Options().setUserdataByteSize(...))`, the behav
 ### Convention
 
 * `@Name`: define the native name.
-* `@Critical`: generate native functions without `PNIEnv`. You can directly use `return` to return values to Java. However, since the `PNIEnv` is absent, you will not be able to use any functionality associated with it, for example, throwing exceptions from the C code.
+* `@Style`: when set to `@Style(critical)`, pni will generate native functions without `PNIEnv`. You can directly use `return` to return values to Java. However, since the `PNIEnv` is absent, you will not be able to use any functionality associated with it, for example, throwing exceptions from the C code.
 * `@NoAlloc`: generate functions without `Allocator`, even if the return type might require one.
 
 ### Other

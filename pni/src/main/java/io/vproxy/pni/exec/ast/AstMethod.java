@@ -7,6 +7,7 @@ import org.objectweb.asm.tree.AnnotationNode;
 import org.objectweb.asm.tree.MethodNode;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 
@@ -83,7 +84,7 @@ public class AstMethod {
         for (var p : params) {
             p.validate(path, errors, upcall);
         }
-        if (critical() && !throwTypes.isEmpty()) {
+        if (isCriticalStyle() && !throwTypes.isEmpty()) {
             errors.add(path + ": cannot throw exceptions for Critical methods");
         }
         if (throwTypeRefs.size() != throwTypes.size()) {
@@ -173,7 +174,7 @@ public class AstMethod {
         var name = Utils.getName(annos);
         if (name != null)
             return name;
-        return ((critical() || upcall) ? "JavaCritical_" : "Java_") + classUnderlinedName + "_" + this.name;
+        return ((isCriticalStyle() || upcall) ? "JavaCritical_" : "Java_") + classUnderlinedName + "_" + this.name;
     }
 
     public VarOpts varOptsForReturn() {
@@ -181,15 +182,34 @@ public class AstMethod {
     }
 
     public VarOpts varOptsForReturn(boolean upcall) {
-        return VarOpts.ofReturn(critical() || upcall);
+        return VarOpts.ofReturn(isCriticalStyle() || upcall);
     }
 
     public boolean trivial() {
         return annos.stream().anyMatch(a -> a.typeRef != null && a.typeRef.name().equals(TrivialClassName));
     }
 
-    public boolean critical() {
-        return annos.stream().anyMatch(a -> a.typeRef != null && a.typeRef.name().equals(CriticalClassName));
+    public boolean isCriticalStyle() {
+        var annoOpt = annos.stream().filter(a -> a.typeRef != null && a.typeRef.name().equals(StyleClassName)).findFirst();
+        if (annoOpt.isEmpty()) {
+            return false;
+        }
+        var anno = annoOpt.get();
+        var vOpt = anno.values.stream().filter(v -> v.name.equals("value")).findFirst();
+        if (vOpt.isEmpty()) {
+            return false;
+        }
+        if (!(vOpt.get().value instanceof String[])) {
+            return false;
+        }
+        var v = (String[]) vOpt.get().value;
+        if (v.length != 2) {
+            return false;
+        }
+        if (!"Lio/vproxy/pni/annotation/Styles;".equals(v[0])) {
+            return false;
+        }
+        return "critical".equals(v[1]);
     }
 
     public String getImplC() {

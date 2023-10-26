@@ -60,7 +60,7 @@ abstract class PNINull {
         PNIFunc<PNIRef<Object>> funcRef
     );
 
-    @Critical
+    @Style(Styles.critical)
     @Impl(
         // language="c"
         c = """
@@ -121,7 +121,7 @@ abstract class PNINull {
         @Raw PNIFunc<PNIRef<Object>> funcRef
     );
 
-    @Critical
+    @Style(Styles.critical)
     @Impl(
         // language="c"
         c = """
@@ -161,7 +161,7 @@ abstract class PNINull {
         c = """
             return NULL;
             """)
-    @Critical
+    @Style(Styles.critical)
     abstract PNIObjectStruct returnOCritical();
 
     @Impl(
@@ -177,7 +177,7 @@ abstract class PNINull {
             return NULL;
             """
     )
-    @Critical
+    @Style(Styles.critical)
     abstract String returnStrCritical();
 
     @Impl(
@@ -193,7 +193,7 @@ abstract class PNINull {
             return NULL;
             """
     )
-    @Critical
+    @Style(Styles.critical)
     abstract MemorySegment returnSegCritical();
 
     @Impl(
@@ -209,7 +209,7 @@ abstract class PNINull {
             return NULL;
             """
     )
-    @Critical
+    @Style(Styles.critical)
     abstract ByteBuffer returnBufCritical();
 
     @Impl(
@@ -218,7 +218,7 @@ abstract class PNINull {
             return return_;
             """
     )
-    @Critical
+    @Style(Styles.critical)
     abstract ByteBuffer returnBufCritical2();
 
     @Impl(
@@ -234,7 +234,7 @@ abstract class PNINull {
             return NULL;
             """
     )
-    @Critical
+    @Style(Styles.critical)
     abstract byte[] returnByteArrCritical();
 
     @Impl(
@@ -243,7 +243,7 @@ abstract class PNINull {
             return return_;
             """
     )
-    @Critical
+    @Style(Styles.critical)
     abstract byte[] returnByteArrCritical2();
 
     @Impl(
@@ -259,7 +259,7 @@ abstract class PNINull {
             return NULL;
             """
     )
-    @Critical
+    @Style(Styles.critical)
     abstract boolean[] returnBoolArrCritical();
 
     @Impl(
@@ -268,7 +268,7 @@ abstract class PNINull {
             return return_;
             """
     )
-    @Critical
+    @Style(Styles.critical)
     abstract boolean[] returnBoolArrCritical2();
 
     @Impl(
@@ -284,7 +284,7 @@ abstract class PNINull {
             return NULL;
             """
     )
-    @Critical
+    @Style(Styles.critical)
     abstract char[] returnCharArrCritical();
 
     @Impl(
@@ -293,7 +293,7 @@ abstract class PNINull {
             return return_;
             """
     )
-    @Critical
+    @Style(Styles.critical)
     abstract char[] returnCharArrCritical2();
 
     @Impl(
@@ -309,7 +309,7 @@ abstract class PNINull {
             return NULL;
             """
     )
-    @Critical
+    @Style(Styles.critical)
     abstract float[] returnFloatArrCritical();
 
     @Impl(
@@ -318,7 +318,7 @@ abstract class PNINull {
             return return_;
             """
     )
-    @Critical
+    @Style(Styles.critical)
     abstract float[] returnFloatArrCritical2();
 
     @Impl(
@@ -334,7 +334,7 @@ abstract class PNINull {
             return NULL;
             """
     )
-    @Critical
+    @Style(Styles.critical)
     abstract double[] returnDoubleArrCritical();
 
     @Impl(
@@ -343,7 +343,7 @@ abstract class PNINull {
             return return_;
             """
     )
-    @Critical
+    @Style(Styles.critical)
     abstract double[] returnDoubleArrCritical2();
 
     @Impl(
@@ -359,7 +359,7 @@ abstract class PNINull {
             return NULL;
             """
     )
-    @Critical
+    @Style(Styles.critical)
     abstract int[] returnIntArrCritical();
 
     @Impl(
@@ -368,7 +368,7 @@ abstract class PNINull {
             return return_;
             """
     )
-    @Critical
+    @Style(Styles.critical)
     abstract int[] returnIntArrCritical2();
 
     @Impl(
@@ -384,7 +384,7 @@ abstract class PNINull {
             return NULL;
             """
     )
-    @Critical
+    @Style(Styles.critical)
     abstract long[] returnLongArrCritical();
 
     @Impl(
@@ -393,7 +393,7 @@ abstract class PNINull {
             return return_;
             """
     )
-    @Critical
+    @Style(Styles.critical)
     abstract long[] returnLongArrCritical2();
 
     @Impl(
@@ -409,7 +409,7 @@ abstract class PNINull {
             return NULL;
             """
     )
-    @Critical
+    @Style(Styles.critical)
     abstract short[] returnShortArrCritical();
 
     @Impl(
@@ -418,7 +418,7 @@ abstract class PNINull {
             return return_;
             """
     )
-    @Critical
+    @Style(Styles.critical)
     abstract short[] returnShortArrCritical2();
 
     @Impl(
@@ -434,7 +434,7 @@ abstract class PNINull {
             return NULL;
             """
     )
-    @Critical
+    @Style(Styles.critical)
     abstract MemorySegment[] returnPArrCritical();
 
     @Impl(
@@ -443,7 +443,7 @@ abstract class PNINull {
             return return_;
             """
     )
-    @Critical
+    @Style(Styles.critical)
     abstract MemorySegment[] returnPArrCritical2();
 
     @Impl(
@@ -459,7 +459,7 @@ abstract class PNINull {
             return NULL;
             """
     )
-    @Critical
+    @Style(Styles.critical)
     abstract PNIObjectStruct[] returnOArrCritical();
 
     @Impl(
@@ -468,7 +468,7 @@ abstract class PNINull {
             return return_;
             """
     )
-    @Critical
+    @Style(Styles.critical)
     abstract PNIObjectStruct[] returnOArrCritical2();
 
     @Impl(
@@ -484,7 +484,7 @@ abstract class PNINull {
             return NULL;
             """
     )
-    @Critical
+    @Style(Styles.critical)
     abstract PNIRef<Object> returnRefCritical();
 
     @Impl(
@@ -500,7 +500,7 @@ abstract class PNINull {
             return NULL;
             """
     )
-    @Critical
+    @Style(Styles.critical)
     abstract PNIFunc<PNINull> returnFuncCritical();
 
     @Impl(
@@ -516,7 +516,7 @@ abstract class PNINull {
             return NULL;
             """
     )
-    @Critical
+    @Style(Styles.critical)
     abstract PNIFunc<Void> returnFuncVoidCritical();
 
     @Impl(
@@ -532,7 +532,7 @@ abstract class PNINull {
             return NULL;
             """
     )
-    @Critical
+    @Style(Styles.critical)
     abstract PNIFunc<PNIRef<Object>> returnFuncRefCritical();
 
     @Impl(
@@ -548,7 +548,7 @@ abstract class PNINull {
             return empty;
             """
     )
-    @Critical
+    @Style(Styles.critical)
     abstract PNIEmpty emptyPassThroughCritical(PNIEmpty empty);
 }
 
