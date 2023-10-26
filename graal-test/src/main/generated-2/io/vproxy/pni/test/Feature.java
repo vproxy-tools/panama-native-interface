@@ -833,6 +833,25 @@ public class Feature implements org.graalvm.nativeimage.hosted.Feature {
         /* JavaCritical_io_vproxy_pni_test_InvokeUpcallNull_returnFuncRef */
         RuntimeForeignAccess.registerForDowncall(PanamaUtils.buildCriticalFunctionDescriptor(boolean.class));
 
+        /* JavaCritical_io_vproxy_pni_test_KtDowncall_retrieveLong */
+        RuntimeForeignAccess.registerForDowncall(PanamaUtils.buildCriticalFunctionDescriptor(long.class, MemoryLayout.class /* io.vproxy.pni.test.KtStruct.LAYOUT.getClass() */ /* o */));
+
+        /* JavaCritical_io_vproxy_pni_test_KtDowncall_invokeHelloWorld */
+        RuntimeForeignAccess.registerForDowncall(PanamaUtils.buildCriticalFunctionDescriptor(MemoryLayout.class /* io.vproxy.pni.test.KtStruct.LAYOUT.getClass() */, int.class /* i */, long.class /* l */, MemorySegment.class /* return */));
+
+        /* Java_io_vproxy_pni_test_KtStruct_retrieveInt */
+        RuntimeForeignAccess.registerForDowncall(PanamaUtils.buildFunctionDescriptor(MemorySegment.class /* self */));
+
+        /* Java_io_vproxy_pni_test_KtStruct_retrieveLong */
+        RuntimeForeignAccess.registerForDowncall(PanamaUtils.buildFunctionDescriptor(MemorySegment.class /* self */));
+
+        /* Java_io_vproxy_pni_test_KtStructInherit_retrieveObj */
+        RuntimeForeignAccess.registerForDowncall(PanamaUtils.buildFunctionDescriptor(MemorySegment.class /* self */));
+
+        /* graal upcall for io.vproxy.pni.test.KtUpcall */
+        RuntimeClassInitialization.initializeAtBuildTime(io.vproxy.pni.test.KtUpcall.class);
+        RuntimeForeignAccess.registerForDowncall(PanamaUtils.buildCriticalFunctionDescriptor(void.class, MemorySegment.class), PanamaHack.getCriticalOption());
+
         /* Java_io_vproxy_pni_test_NativeCheck_checkUserdataForRef */
         RuntimeForeignAccess.registerForDowncall(PanamaUtils.buildFunctionDescriptor(PNIRef.class /* ref */, MemorySegment.class /* x */, MemorySegment.class /* y */, MemorySegment.class /* z */));
 
@@ -1489,4 +1508,4 @@ public class Feature implements org.graalvm.nativeimage.hosted.Feature {
     }
 }
 // metadata.generator-version: pni test
-// sha256:5ba25c1227ae209b1521c70e5d17565572d78ec878d2c7c30db925b79005e4c9
+// sha256:21c33102b870ae0975e21ee78f9dadb8bd4338dda2bd6d7662dceb4206264a61

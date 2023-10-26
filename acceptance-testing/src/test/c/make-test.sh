@@ -55,4 +55,6 @@ gcc -std=gnu99 -O2 \
     noalloc.c \
     ../c-generated/io_vproxy_pni_test_NoAllocUpcall.c \
     io_vproxy_pni_test_PointerArrayField.c \
+    ../c-generated/io_vproxy_pni_test_KtUpcall.c \
+    io_vproxy_pni_test_Kt.c \
     -o "$target"

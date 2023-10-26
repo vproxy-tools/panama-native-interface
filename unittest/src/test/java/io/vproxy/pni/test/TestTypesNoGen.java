@@ -49,6 +49,14 @@ public class TestTypesNoGen {
     }
 
     @Test
+    public void AnnoGenerateMember() {
+        var t = AnnoGenerateMemberTypeInfo.get();
+        assertEquals("io.vproxy.pni.annotation.GenerateMember", t.name());
+        assertEquals("io/vproxy/pni/annotation/GenerateMember", t.internalName());
+        assertEquals("Lio/vproxy/pni/annotation/GenerateMember;", t.desc());
+    }
+
+    @Test
     public void AnnoImpl() {
         var t = AnnoImplTypeInfo.get();
         assertEquals("io.vproxy.pni.annotation.Impl", t.name());
@@ -142,6 +150,14 @@ public class TestTypesNoGen {
         assertEquals("io.vproxy.pni.annotation.Struct", t.name());
         assertEquals("io/vproxy/pni/annotation/Struct", t.internalName());
         assertEquals("Lio/vproxy/pni/annotation/Struct;", t.desc());
+    }
+
+    @Test
+    public void AnnoSpecifyGeneratedMembers() {
+        var t = AnnoSpecifyGeneratedMembersTypeInfo.get();
+        assertEquals("io.vproxy.pni.annotation.SpecifyGeneratedMembers", t.name());
+        assertEquals("io/vproxy/pni/annotation/SpecifyGeneratedMembers", t.internalName());
+        assertEquals("Lio/vproxy/pni/annotation/SpecifyGeneratedMembers;", t.desc());
     }
 
     @Test

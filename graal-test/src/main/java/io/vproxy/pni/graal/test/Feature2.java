@@ -41,6 +41,7 @@ public class Feature2 implements Feature {
             io.vproxy.pni.test.cases.TestCustomNativeType.class,
             io.vproxy.pni.test.cases.TestNoAlloc.class,
             io.vproxy.pni.test.cases.TestPointerArray.class,
+            io.vproxy.pni.test.cases.TestKt.class,
         };
 
         for (var c : classes) {

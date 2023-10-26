@@ -28,6 +28,7 @@ import org.junit.runner.RunWith;
     TestCustomNativeType.class,
     TestNoAlloc.class,
     TestPointerArray.class,
+    TestKt.class,
 })
 public class Suite {
 }

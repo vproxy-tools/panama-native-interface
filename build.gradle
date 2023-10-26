@@ -13,6 +13,7 @@ plugins {
     id 'signing'
     id 'com.github.johnrengelman.shadow' version '7.1.2'
     id 'me.champeau.jmh' version "0.7.1" apply false
+    id 'org.jetbrains.kotlin.jvm' version '1.9.20-Beta2' apply false
 }
 
 group = 'io.vproxy'
@@ -241,8 +242,16 @@ project(":unittest") {
 }
 
 project(":acceptance-testing-template") {
+    apply plugin: 'org.jetbrains.kotlin.jvm'
+
     compileJava {
         options.compilerArgs += '-parameters'
+    }
+    compileKotlin {
+        kotlinOptions {
+            jvmTarget = '21'
+            javaParameters = true
+        }
     }
     dependencies {
         implementation project(":api")
@@ -265,7 +274,9 @@ project(":acceptance-testing-template") {
         mainClass = 'io.vproxy.pni.exec.Main'
         systemProperty("io.vproxy.pni.Testing", "true")
         workingDir project.rootProject.rootDir.getAbsolutePath()
-        args '-cp', 'acceptance-testing-template/build/classes/java/main', '-d', 'acceptance-testing/src/test/generated', '-h', 'acceptance-testing/src/test/c-generated',
+        args '-d', 'acceptance-testing/src/test/generated', '-h', 'acceptance-testing/src/test/c-generated',
+                '-cp', 'acceptance-testing-template/build/classes/java/main',
+                '-cp', 'acceptance-testing-template/build/classes/kotlin/main',
                 '-ftype-name-prefix=PNI',
                 '-frelease-pni-h-file',
                 '-frelease-pni-c-file',
@@ -273,15 +284,16 @@ project(":acceptance-testing-template") {
 
         dependsOn cleanAcceptanceTesting1
         dependsOn compileJava
+        dependsOn compileKotlin
     }
     task generateAcceptanceTesting2(type: JavaExec) {
         classpath = project(":pni").sourceSets.main.runtimeClasspath
         mainClass = 'io.vproxy.pni.exec.Main'
         systemProperty("io.vproxy.pni.Testing", "true")
         workingDir project.rootProject.rootDir.getAbsolutePath()
-        args '-cp', 'acceptance-testing-template/build/classes/java/main',
-                '-d', 'graal-test/src/main/generated-2',
-                '-h', 'graal-test/src/main/c-generated-2',
+        args '-d', 'graal-test/src/main/generated-2', '-h', 'graal-test/src/main/c-generated-2',
+                '-cp', 'acceptance-testing-template/build/classes/java/main',
+                '-cp', 'acceptance-testing-template/build/classes/kotlin/main',
                 '-fgraal-native-image-feature=io.vproxy.pni.test.Feature',
                 '-fgraal-c-entrypoint-literal-upcall',
                 '-ftype-name-prefix=PNI',
@@ -291,6 +303,7 @@ project(":acceptance-testing-template") {
 
         dependsOn cleanAcceptanceTesting2
         dependsOn compileJava
+        dependsOn compileKotlin
     }
     task generateAcceptanceTesting {
         dependsOn generateAcceptanceTesting1
