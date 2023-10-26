@@ -192,7 +192,7 @@ public class GraalNativeImageFeatureFileGenerator {
                 sb.append("MemorySegment.class /* return */");
             }
             sb.append(")");
-            if (method.trivial()) {
+            if (method.hasCriticalLinkerOption()) {
                 sb.append(", Linker.Option.isTrivial()");
             }
             sb.append(");\n");

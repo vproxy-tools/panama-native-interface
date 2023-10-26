@@ -7,7 +7,6 @@ import org.objectweb.asm.tree.AnnotationNode;
 import org.objectweb.asm.tree.MethodNode;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 
@@ -185,8 +184,8 @@ public class AstMethod {
         return VarOpts.ofReturn(isCriticalStyle() || upcall);
     }
 
-    public boolean trivial() {
-        return annos.stream().anyMatch(a -> a.typeRef != null && a.typeRef.name().equals(TrivialClassName));
+    public boolean hasCriticalLinkerOption() {
+        return annos.stream().anyMatch(a -> a.typeRef != null && a.typeRef.name().equals(LinkerOptionCriticalClassName));
     }
 
     public boolean isCriticalStyle() {

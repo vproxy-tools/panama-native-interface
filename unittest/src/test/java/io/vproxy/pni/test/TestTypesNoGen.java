@@ -153,11 +153,11 @@ public class TestTypesNoGen {
     }
 
     @Test
-    public void AnnoTrivial() {
-        var t = AnnoTrivialTypeInfo.get();
-        assertEquals("io.vproxy.pni.annotation.Trivial", t.name());
-        assertEquals("io/vproxy/pni/annotation/Trivial", t.internalName());
-        assertEquals("Lio/vproxy/pni/annotation/Trivial;", t.desc());
+    public void AnnoLinkerOptionCritical() {
+        var t = AnnoLinkerOptionCriticalTypeInfo.get();
+        assertEquals("io.vproxy.pni.annotation.LinkerOption$Critical", t.name());
+        assertEquals("io/vproxy/pni/annotation/LinkerOption$Critical", t.internalName());
+        assertEquals("Lio/vproxy/pni/annotation/LinkerOption$Critical;", t.desc());
     }
 
     @Test

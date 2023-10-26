@@ -20,8 +20,9 @@ public class Consts {
     public static final String SizeofClassName = pniAnnoPackage + ".Sizeof";
     public static final String StructClassName = pniAnnoPackage + ".Struct";
     public static final String StyleClassName = pniAnnoPackage + ".Style";
-    public static final String TrivialClassName = pniAnnoPackage + ".Trivial";
     public static final String UnionClassName = pniAnnoPackage + ".Union";
     public static final String UnsignedClassName = pniAnnoPackage + ".Unsigned";
     public static final String UpcallClassName = pniAnnoPackage + ".Upcall";
+
+    public static final String LinkerOptionCriticalClassName = pniAnnoPackage + ".LinkerOption$Critical";
 }

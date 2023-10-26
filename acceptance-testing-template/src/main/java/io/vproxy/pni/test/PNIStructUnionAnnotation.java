@@ -6,7 +6,7 @@ import io.vproxy.pni.annotation.*;
 abstract class PNIStructM {
     @Name("n_st") PNIStructN n;
 
-    @Trivial
+    @LinkerOption.Critical
     abstract void nnn(@Name("n_st") PNIStructN n);
 }
 
@@ -18,10 +18,10 @@ abstract class PNIStructN {
     short s;
     long l;
 
-    @Trivial
+    @LinkerOption.Critical
     abstract short retrieveS();
 
-    @Trivial
+    @LinkerOption.Critical
     abstract long retrieveL();
 }
 
@@ -38,11 +38,11 @@ abstract class PNIUnionP {
     int i;
     long l;
 
-    @Trivial
+    @LinkerOption.Critical
     @Name("UnionP_retrieve_i")
     abstract int retrieveI();
 
-    @Trivial
+    @LinkerOption.Critical
     @Name("UnionP_retrieve_l")
     abstract long retrieveL();
 }

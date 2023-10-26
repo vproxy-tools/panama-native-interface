@@ -40,7 +40,7 @@ public class TypePool {
         record(AnnoStructTypeInfo.get());
         record(AnnoStyleTypeInfo.get());
         record(AnnoSuppressTypeInfo.get());
-        record(AnnoTrivialTypeInfo.get());
+        record(AnnoLinkerOptionCriticalTypeInfo.get());
         record(AnnoUnionTypeInfo.get());
         record(AnnoUnsignedTypeInfo.get());
         record(AnnoUpcallTypeInfo.get());

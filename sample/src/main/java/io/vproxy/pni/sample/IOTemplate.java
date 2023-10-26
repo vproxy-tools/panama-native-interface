@@ -1,9 +1,6 @@
 package io.vproxy.pni.sample;
 
-import io.vproxy.pni.annotation.Function;
-import io.vproxy.pni.annotation.Impl;
-import io.vproxy.pni.annotation.Name;
-import io.vproxy.pni.annotation.Trivial;
+import io.vproxy.pni.annotation.*;
 
 import java.io.IOException;
 import java.lang.foreign.MemorySegment;
@@ -21,7 +18,7 @@ interface PNINativeFunctions {
             return 0;
             """
     )
-    @Trivial
+    @LinkerOption.Critical
     int openIPv4TcpSocket() throws IOException;
 
     @Impl(
@@ -40,7 +37,7 @@ interface PNINativeFunctions {
             return 0;
             """
     )
-    @Trivial
+    @LinkerOption.Critical
     void bindIPv4(int fd, @Name("ipv4") int ipv4HostOrder, int port) throws IOException;
 
     @Impl(
@@ -53,7 +50,7 @@ interface PNINativeFunctions {
             return 0;
             """
     )
-    @Trivial
+    @LinkerOption.Critical
     void listen(int fd, int n) throws IOException;
 
     @Impl(
@@ -79,7 +76,7 @@ interface PNINativeFunctions {
             return 0;
             """
     )
-    @Trivial
+    @LinkerOption.Critical
     void close(int fd);
 
     @Impl(

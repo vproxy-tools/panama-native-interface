@@ -106,7 +106,7 @@ public class JavaFileGenerator {
                     }));
                 }});
                 meth.annos.add(new AstAnno() {{
-                    typeRef = AnnoTrivialTypeInfo.get();
+                    typeRef = AnnoLinkerOptionCriticalTypeInfo.get();
                 }});
 
                 get(meth).generateJava(sb, 4, cls.underlinedName(), false, true, true);
@@ -635,7 +635,7 @@ public class JavaFileGenerator {
             } else {
                 sb.append("lookupPNIFunction(");
             }
-            if (method.trivial()) {
+            if (method.hasCriticalLinkerOption()) {
                 sb.append("true, ");
             } else {
                 sb.append("false, ");
