@@ -12,8 +12,6 @@ import org.objectweb.asm.tree.FieldNode;
 import java.util.ArrayList;
 import java.util.List;
 
-import static io.vproxy.pni.exec.internal.Consts.*;
-
 public class AstField {
     public final List<AstAnno> annos = new ArrayList<>();
     public String name;
@@ -56,7 +54,7 @@ public class AstField {
                 errors.add(path + ": invalid @Name(" + name + ")");
             }
         }
-        var bitfieldAnnoOpt = annos.stream().filter(a -> a.typeRef != null && a.typeRef.name().equals(BitFieldClassName)).findFirst();
+        var bitfieldAnnoOpt = annos.stream().filter(a -> a.typeRef instanceof AnnoBitFieldTypeInfo).findFirst();
         if (bitfieldAnnoOpt.isPresent()) {
             var infoLs = validateAndGetBitFieldInfo(path, errors);
             if (infoLs != null) {
@@ -125,16 +123,16 @@ public class AstField {
     }
 
     public PointerInfo pointerInfo() {
-        var has = annos.stream().anyMatch(a -> a.typeRef != null && a.typeRef.name().equals(PointerClassName));
+        var has = annos.stream().anyMatch(a -> a.typeRef instanceof AnnoPointerTypeInfo);
         return PointerInfo.ofField(has);
     }
 
     public boolean isUnsigned() {
-        return annos.stream().anyMatch(a -> a.typeRef != null && a.typeRef.name().equals(UnsignedClassName));
+        return annos.stream().anyMatch(a -> a.typeRef instanceof AnnoUnsignedTypeInfo);
     }
 
     public boolean isAlwaysAligned() {
-        return annos.stream().anyMatch(a -> a.typeRef != null && a.typeRef.name().equals(AlwaysAlignedClassName));
+        return annos.stream().anyMatch(a -> a.typeRef instanceof AnnoAlwaysAlignedTypeInfo);
     }
 
     public long getLen() {
@@ -163,7 +161,7 @@ public class AstField {
 
     private List<BitFieldInfo> validateAndGetBitFieldInfo(String path, List<String> errors) {
         path = path + "#anno(io.vproxy.pni.annotation.BitField)";
-        var opt = annos.stream().filter(a -> a.typeRef != null && a.typeRef.name().equals(BitFieldClassName)).findFirst();
+        var opt = annos.stream().filter(a -> a.typeRef instanceof AnnoBitFieldTypeInfo).findFirst();
         if (opt.isEmpty()) {
             return null;
         }

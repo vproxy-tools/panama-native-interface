@@ -10,8 +10,6 @@ import org.objectweb.asm.tree.AnnotationNode;
 import java.util.ArrayList;
 import java.util.List;
 
-import static io.vproxy.pni.exec.internal.Consts.*;
-
 public class AstParam {
     public final List<AstAnno> annos = new ArrayList<>();
     public String name;
@@ -75,16 +73,16 @@ public class AstParam {
     }
 
     public boolean isUnsigned() {
-        return annos.stream().anyMatch(a -> a.typeRef != null && a.typeRef.name().equals(UnsignedClassName));
+        return annos.stream().anyMatch(a -> a.typeRef instanceof AnnoUnsignedTypeInfo);
     }
 
     public PointerInfo isPointer() {
-        var has = annos.stream().anyMatch(a -> a.typeRef != null && a.typeRef.name().equals(PointerClassName));
+        var has = annos.stream().anyMatch(a -> a.typeRef instanceof AnnoPointerTypeInfo);
         return PointerInfo.ofMethod(has);
     }
 
     public boolean isRaw() {
-        return annos.stream().anyMatch(a -> a.typeRef != null && a.typeRef.name().equals(RawClassName));
+        return annos.stream().anyMatch(a -> a.typeRef instanceof AnnoRawTypeInfo);
     }
 
     public String getNativeTypeAnno() {

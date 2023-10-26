@@ -4,9 +4,7 @@ import io.vproxy.pni.exec.CompilerOptions;
 import io.vproxy.pni.exec.ast.AstAnno;
 import io.vproxy.pni.exec.ast.AstGenericDef;
 import io.vproxy.pni.exec.ast.AstTypeDesc;
-import io.vproxy.pni.exec.type.AnnoNativeReturnTypeTypeInfo;
-import io.vproxy.pni.exec.type.AnnoNativeTypeTypeInfo;
-import io.vproxy.pni.exec.type.TypeInfo;
+import io.vproxy.pni.exec.type.*;
 import org.objectweb.asm.tree.AnnotationNode;
 
 import java.io.File;
@@ -16,8 +14,6 @@ import java.nio.file.Files;
 import java.security.MessageDigest;
 import java.util.*;
 import java.util.function.Predicate;
-
-import static io.vproxy.pni.exec.internal.Consts.*;
 
 public class Utils {
     private Utils() {
@@ -237,7 +233,7 @@ public class Utils {
     }
 
     public static String getName(List<AstAnno> annos) {
-        var nameOpt = annos.stream().filter(a -> a.typeRef != null && a.typeRef.name().equals(NameClassName)).findFirst();
+        var nameOpt = annos.stream().filter(a -> a.typeRef instanceof AnnoNameTypeInfo).findFirst();
         if (nameOpt.isEmpty()) {
             return null;
         }
@@ -296,7 +292,7 @@ public class Utils {
     }
 
     public static long getLen(List<AstAnno> annos) {
-        var lenOpt = annos.stream().filter(a -> a.typeRef != null && a.typeRef.name().equals(LenClassName)).findFirst();
+        var lenOpt = annos.stream().filter(a -> a.typeRef instanceof AnnoLenTypeInfo).findFirst();
         long len = -1;
         if (lenOpt.isPresent()) {
             var lenAnno = lenOpt.get();
@@ -384,7 +380,7 @@ public class Utils {
     }
 
     public static long getAlign(List<AstAnno> annos) {
-        var opt = annos.stream().filter(a -> a.typeRef != null && a.typeRef.name().equals(AlignClassName)).findFirst();
+        var opt = annos.stream().filter(a -> a.typeRef instanceof AnnoAlignTypeInfo).findFirst();
         if (opt.isEmpty()) {
             return 0;
         }
@@ -401,7 +397,7 @@ public class Utils {
     }
 
     public static boolean getAlignPacked(List<AstAnno> annos) {
-        var opt = annos.stream().filter(a -> a.typeRef != null && a.typeRef.name().equals(AlignClassName)).findFirst();
+        var opt = annos.stream().filter(a -> a.typeRef instanceof AnnoAlignTypeInfo).findFirst();
         if (opt.isEmpty()) {
             return false;
         }
@@ -442,8 +438,8 @@ public class Utils {
         return null;
     }
 
-    public static List<String> getStringListFromAnno(List<AstAnno> annos, String typename, String fieldName) {
-        var opt = annos.stream().filter(a -> a.typeRef != null && a.typeRef.name().equals(typename)).findFirst();
+    public static List<String> getStringListFromAnno(List<AstAnno> annos, Predicate<TypeInfo> check, String fieldName) {
+        var opt = annos.stream().filter(a -> a.typeRef != null && check.test(a.typeRef)).findFirst();
         if (opt.isEmpty()) {
             return null;
         }

@@ -14,8 +14,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.function.Consumer;
 
-import static io.vproxy.pni.exec.internal.Consts.*;
-
 public class AstClass {
     public final CompilerOptions opts;
     public boolean isInterface;
@@ -294,27 +292,27 @@ public class AstClass {
     }
 
     public boolean isStruct() {
-        return annos.stream().anyMatch(a -> a.typeRef != null && a.typeRef.name().equals(StructClassName));
+        return annos.stream().anyMatch(a -> a.typeRef instanceof AnnoStructTypeInfo);
     }
 
     public boolean isUnion() {
-        return annos.stream().anyMatch(a -> a.typeRef != null && a.typeRef.name().equals(UnionClassName));
+        return annos.stream().anyMatch(a -> a.typeRef instanceof AnnoUnionTypeInfo);
     }
 
     public boolean isFunction() {
-        return annos.stream().anyMatch(a -> a.typeRef != null && a.typeRef.name().equals(FunctionClassName));
+        return annos.stream().anyMatch(a -> a.typeRef instanceof AnnoFunctionTypeInfo);
     }
 
     public boolean isUpcall() {
-        return annos.stream().anyMatch(a -> a.typeRef != null && a.typeRef.name().equals(UpcallClassName));
+        return annos.stream().anyMatch(a -> a.typeRef instanceof AnnoUpcallTypeInfo);
     }
 
     public boolean isPointerOnly() {
-        return annos.stream().anyMatch(a -> a.typeRef != null && a.typeRef.name().equals(PointerOnlyClassName));
+        return annos.stream().anyMatch(a -> a.typeRef instanceof AnnoPointerOnlyTypeInfo);
     }
 
     public String getSizeof() {
-        var opt = annos.stream().filter(a -> a.typeRef != null && a.typeRef.name().equals(SizeofClassName)).findFirst();
+        var opt = annos.stream().filter(a -> a.typeRef instanceof AnnoSizeofTypeInfo).findFirst();
         if (opt.isEmpty()) {
             return null;
         }
@@ -331,7 +329,7 @@ public class AstClass {
     }
 
     public List<String> getSizeofInclude() {
-        return Utils.getStringListFromAnno(annos, SizeofClassName, "include");
+        return Utils.getStringListFromAnno(annos, t -> t instanceof AnnoSizeofTypeInfo, "include");
     }
 
     public boolean isUnionEmbed() {
@@ -339,7 +337,7 @@ public class AstClass {
             return false;
         }
         //noinspection OptionalGetWithoutIsPresent
-        var anno = annos.stream().filter(a -> a.typeRef != null && a.typeRef.name().equals(UnionClassName)).findFirst().get();
+        var anno = annos.stream().filter(a -> a.typeRef instanceof AnnoUnionTypeInfo).findFirst().get();
         var opt = anno.values.stream().filter(v -> v.name.equals("embedded")).findFirst();
         if (opt.isEmpty()) {
             return false;
@@ -352,8 +350,7 @@ public class AstClass {
     }
 
     public boolean isSkip() {
-        var annoOpt = annos.stream().filter(a -> a.typeRef != null &&
-                                                 (a.typeRef.name().equals(StructClassName) || a.typeRef.name().equals(UnionClassName)))
+        var annoOpt = annos.stream().filter(a -> a.typeRef instanceof AnnoStructTypeInfo || a.typeRef instanceof AnnoUnionTypeInfo)
             .findFirst();
         if (annoOpt.isEmpty()) {
             return false;
@@ -379,11 +376,11 @@ public class AstClass {
     }
 
     public boolean isAlwaysAligned() {
-        return annos.stream().anyMatch(a -> a.typeRef != null && a.typeRef.name().equals(AlwaysAlignedClassName));
+        return annos.stream().anyMatch(a -> a.typeRef instanceof AnnoAlwaysAlignedTypeInfo);
     }
 
     public List<String> extraInclude() {
-        return Utils.getStringListFromAnno(annos, IncludeClassName, "value");
+        return Utils.getStringListFromAnno(annos, t -> t instanceof AnnoIncludeTypeInfo, "value");
     }
 
     private long __calculatedNativeMemorySize = -1;
@@ -557,9 +554,8 @@ public class AstClass {
 
     public boolean typedef() {
         var opt = annos.stream()
-            .filter(a -> a.typeRef != null &&
-                         (a.typeRef.name().equals(StructClassName) || a.typeRef.name().equals(UnionClassName))
-            ).findFirst();
+            .filter(a -> a.typeRef instanceof AnnoStructTypeInfo || a.typeRef instanceof AnnoUnionTypeInfo)
+            .findFirst();
         if (opt.isEmpty()) {
             return true;
         }

@@ -10,8 +10,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
-import static io.vproxy.pni.exec.internal.Consts.*;
-
 public class AstMethod {
     public final List<AstAnno> annos = new ArrayList<>();
     public String name;
@@ -185,11 +183,11 @@ public class AstMethod {
     }
 
     public boolean hasCriticalLinkerOption() {
-        return annos.stream().anyMatch(a -> a.typeRef != null && a.typeRef.name().equals(LinkerOptionCriticalClassName));
+        return annos.stream().anyMatch(a -> a.typeRef instanceof AnnoLinkerOptionCriticalTypeInfo);
     }
 
     public boolean isCriticalStyle() {
-        var annoOpt = annos.stream().filter(a -> a.typeRef != null && a.typeRef.name().equals(StyleClassName)).findFirst();
+        var annoOpt = annos.stream().filter(a -> a.typeRef instanceof AnnoStyleTypeInfo).findFirst();
         if (annoOpt.isEmpty()) {
             return false;
         }
@@ -212,7 +210,7 @@ public class AstMethod {
     }
 
     public String getImplC() {
-        var opt = annos.stream().filter(a -> a.typeRef != null && a.typeRef.name().equals(ImplClassName)).findFirst();
+        var opt = annos.stream().filter(a -> a.typeRef instanceof AnnoImplTypeInfo).findFirst();
         if (opt.isEmpty()) {
             return null;
         }
@@ -229,7 +227,7 @@ public class AstMethod {
     }
 
     public List<String> getImplInclude() {
-        return Utils.getStringListFromAnno(annos, ImplClassName, "include");
+        return Utils.getStringListFromAnno(annos, t -> t instanceof AnnoImplTypeInfo, "include");
     }
 
     public String getNativeReturnTypeAnno() {
