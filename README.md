@@ -834,6 +834,7 @@ You can call `PNIRef.of(obj, new Options().setUserdataByteSize(...))`, the behav
 * `@Name`: define the native name.
 * `@Style`: when set to `@Style(critical)`, pni will generate native functions without `PNIEnv`. You can directly use `return` to return values to Java. However, since the `PNIEnv` is absent, you will not be able to use any functionality associated with it, for example, throwing exceptions from the C code.
 * `@NoAlloc`: generate functions without `Allocator`, even if the return type might require one.
+* `@SpecifyGeneratedMembers` and `@GenerateMember`: manually specify members to be included into the generator. This is useful for some JVM languages which might generate additional members.
 
 ### Other
 
