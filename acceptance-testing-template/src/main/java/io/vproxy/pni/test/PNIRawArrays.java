@@ -1,13 +1,13 @@
 package io.vproxy.pni.test;
 
-import io.vproxy.pni.annotation.Function;
+import io.vproxy.pni.annotation.Downcall;
 import io.vproxy.pni.annotation.Impl;
 import io.vproxy.pni.annotation.Raw;
 import io.vproxy.pni.annotation.Unsigned;
 
 import java.lang.foreign.MemorySegment;
 
-@Function
+@Downcall
 public interface PNIRawArrays {
     @Impl(
         // language="c"

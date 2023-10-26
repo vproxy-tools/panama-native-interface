@@ -9,7 +9,7 @@ import java.nio.ByteBuffer;
 import java.util.List;
 
 @Include("io_vproxy_pni_test_Upcall.h")
-@Function
+@Downcall
 public interface PNIInvokeUpcall {
     @Impl(
         c = "JavaCritical_io_vproxy_pni_test_Upcall_primaryParams(b, ub, z, c, d, f, i, ui, j, uj, s, us);"

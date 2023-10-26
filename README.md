@@ -463,7 +463,7 @@ abstract class UserData {
     @Unsigned long udata64;
 }
 
-@Function
+@Downcall
 interface SampleFunctions {
     int read(int fd, MBuf buf) throws IOException;
         // int Java_package_name_SampleFunctions_read(PNIEnv_int * env, int32_t fd, mbuf_t * buf);
@@ -787,7 +787,7 @@ You can call `PNIRef.of(obj, new Options().setUserdataByteSize(...))`, the behav
 
 * `@Struct`: generate C struct from the marked class, you can set `@Struct(skip=true)` to skip generating the type definition (this is useful if the type is already defined in another C header file).
 * `@Union`: generate C union from the marked class, you can set `@Union(skip=true)` to skip generating the type definition, while setting `@Union(embedded=true)` will make it embedded into other types automatically.
-* `@Function`: generate functions from the marked interface.
+* `@Downcall`: generate downcall functions from the marked interface.
 * `@Upcall`: generate upcall functions from the marked interface.
 
 > If a `union` is already defined in another C header file, you should use `@Union(skip=true)`. If it's not pre-defined and you want it to be embedded into another struct, you should use `@Union(embedded=true)`.  

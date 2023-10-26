@@ -1,11 +1,11 @@
 package io.vproxy.pni.test;
 
-import io.vproxy.pni.annotation.Function;
+import io.vproxy.pni.annotation.Downcall;
 import io.vproxy.pni.annotation.Impl;
 import io.vproxy.pni.annotation.NoAlloc;
 import io.vproxy.pni.annotation.Upcall;
 
-@Function
+@Downcall
 interface PNINoAlloc {
     @NoAlloc
     PNIObjectStruct execNoAlloc();

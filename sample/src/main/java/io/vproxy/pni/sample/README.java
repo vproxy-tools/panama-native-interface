@@ -23,7 +23,7 @@ class PNIUserData {
     @Unsigned long udata64;
 }
 
-@Function
+@Downcall
 interface PNISampleFunctions {
     int read(int fd, PNIMBuf buf) throws IOException;
 }

@@ -6,7 +6,7 @@ import io.vproxy.pni.annotation.*;
 
 import java.lang.foreign.MemorySegment;
 
-@Function
+@Downcall
 public interface PNIInvoke {
     @Impl(
         // language="c"

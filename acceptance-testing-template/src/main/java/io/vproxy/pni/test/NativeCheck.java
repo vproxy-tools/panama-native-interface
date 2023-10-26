@@ -6,7 +6,7 @@ import io.vproxy.pni.annotation.*;
 
 import java.util.List;
 
-@Function
+@Downcall
 @Include("io_vproxy_pni_test_Userdata.h")
 interface PNINativeCheck {
     @Impl(

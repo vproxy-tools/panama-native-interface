@@ -154,28 +154,28 @@ public class AstClass {
         }
         var hasStruct = isStruct();
         var hasUnion = isUnion();
-        var hasFunction = isFunction();
+        var hasDowncall = isDowncall();
         var hasUpcall = isUpcall();
         if (hasStruct && hasUnion) {
             errors.add(path + ": is annotated with both @Struct and @Union");
         }
-        if (hasStruct && hasFunction) {
-            errors.add(path + ": is annotated with both @Struct and @Function");
+        if (hasStruct && hasDowncall) {
+            errors.add(path + ": is annotated with both @Struct and @Downcall");
         }
         if (hasStruct && hasUpcall) {
             errors.add(path + ": is annotated with both @Struct and @Upcall");
         }
-        if (hasUnion && hasFunction) {
-            errors.add(path + ": is annotated with both @Union and @Function");
+        if (hasUnion && hasDowncall) {
+            errors.add(path + ": is annotated with both @Union and @Downcall");
         }
         if (hasUnion && hasUpcall) {
             errors.add(path + ": is annotated with both @Union and @Upcall");
         }
-        if (hasFunction && hasUpcall) {
-            errors.add(path + ": is annotated with both @Function and @Upcall");
+        if (hasDowncall && hasUpcall) {
+            errors.add(path + ": is annotated with both @Downcall and @Upcall");
         }
-        if (hasFunction && !isInterface) {
-            errors.add(path + ": is annotated with @Function but is not an interface");
+        if (hasDowncall && !isInterface) {
+            errors.add(path + ": is annotated with @Downcall but is not an interface");
         }
         if (hasUpcall && !isInterface) {
             errors.add(path + ": is annotated with @Upcall but is not an interface");
@@ -299,8 +299,8 @@ public class AstClass {
         return annos.stream().anyMatch(a -> a.typeRef instanceof AnnoUnionTypeInfo);
     }
 
-    public boolean isFunction() {
-        return annos.stream().anyMatch(a -> a.typeRef instanceof AnnoFunctionTypeInfo);
+    public boolean isDowncall() {
+        return annos.stream().anyMatch(a -> a.typeRef instanceof AnnoDowncallTypeInfo);
     }
 
     public boolean isUpcall() {

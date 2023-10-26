@@ -5,7 +5,7 @@ import io.vproxy.pni.annotation.*;
 import java.io.IOException;
 import java.lang.foreign.MemorySegment;
 
-@Function
+@Downcall
 interface PNINativeFunctions {
     @Impl(
         // language="c"

@@ -41,11 +41,11 @@ public class TestTypesNoGen {
     }
 
     @Test
-    public void AnnoFunction() {
-        var t = AnnoFunctionTypeInfo.get();
-        assertEquals("io.vproxy.pni.annotation.Function", t.name());
-        assertEquals("io/vproxy/pni/annotation/Function", t.internalName());
-        assertEquals("Lio/vproxy/pni/annotation/Function;", t.desc());
+    public void AnnoDowncall() {
+        var t = AnnoDowncallTypeInfo.get();
+        assertEquals("io.vproxy.pni.annotation.Downcall", t.name());
+        assertEquals("io/vproxy/pni/annotation/Downcall", t.internalName());
+        assertEquals("Lio/vproxy/pni/annotation/Downcall;", t.desc());
     }
 
     @Test

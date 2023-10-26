@@ -32,7 +32,7 @@ abstract class PNICustomNativeTypeStruct {
     abstract MemorySegment[] getArr();
 }
 
-@Function
+@Downcall
 @Include({"sizeof.h", "io_vproxy_pni_test_CustomNativeTypeUpcall.h"})
 interface PNICustomNativeTypeFunc {
     @Impl(

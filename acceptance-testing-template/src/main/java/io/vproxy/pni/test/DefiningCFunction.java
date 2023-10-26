@@ -1,11 +1,11 @@
 package io.vproxy.pni.test;
 
-import io.vproxy.pni.annotation.Function;
+import io.vproxy.pni.annotation.Downcall;
 import io.vproxy.pni.annotation.Impl;
 
 import java.lang.foreign.MemorySegment;
 
-@Function
+@Downcall
 interface PNIDefiningCFunction {
     @Impl(
         // language="c"

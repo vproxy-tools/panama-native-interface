@@ -8,7 +8,7 @@ import java.lang.foreign.MemorySegment;
 import java.nio.ByteBuffer;
 import java.util.List;
 
-@Function
+@Downcall
 public interface PNIFunc {
     int func1();
 

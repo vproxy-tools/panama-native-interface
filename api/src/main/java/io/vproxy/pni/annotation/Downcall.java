@@ -6,9 +6,9 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Mark the class/interface to only generate functions, without struct nor union.
+ * Mark the interface to only generate functions, without struct nor union.
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface Function {
+public @interface Downcall {
 }

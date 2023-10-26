@@ -3,7 +3,7 @@ package io.vproxy.pni.test;
 import io.vproxy.pni.annotation.*;
 
 @Include("io_vproxy_pni_test_UpcallNull.h")
-@Function
+@Downcall
 public interface PNIInvokeUpcallNull {
     @Impl(
         c = """

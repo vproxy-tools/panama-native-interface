@@ -1,14 +1,14 @@
 package io.vproxy.pni.test;
 
 import io.vproxy.pni.PNIRef;
-import io.vproxy.pni.annotation.Function;
+import io.vproxy.pni.annotation.Downcall;
 import io.vproxy.pni.annotation.Impl;
 import io.vproxy.pni.annotation.Raw;
 
 import java.util.List;
 import java.util.Map;
 
-@Function
+@Downcall
 public interface PNIGeneric {
     @Impl(c = "return 0;")
     void simple(PNIRef<String> o);
