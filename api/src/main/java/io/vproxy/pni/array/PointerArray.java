@@ -64,7 +64,8 @@ public class PointerArray implements NativeObject {
             if (i != 0) {
                 sb.append(", ");
             }
-            sb.append(get(i));
+            var mem = get(i);
+            sb.append("0x").append(Long.toString(mem.address(), 16));
         }
         sb.append("]");
         sb.append("@").append(Long.toString(MEMORY.address(), 16));
