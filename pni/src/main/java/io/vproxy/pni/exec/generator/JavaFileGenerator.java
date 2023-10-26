@@ -491,7 +491,7 @@ public class JavaFileGenerator {
 
         sb.append("\n");
         Utils.appendIndent(sb, indent)
-            .append("var initMH = PanamaUtils.lookupPNICriticalFunction(true, void.class, ")
+            .append("var initMH = PanamaUtils.lookupPNICriticalFunction(new PNILinkOptions().setCritical(true), void.class, ")
             .append("\"JavaCritical_").append(cls.underlinedName()).append("_INIT\"");
         //noinspection unused
         for (var m : cls.methods) {
@@ -527,8 +527,9 @@ public class JavaFileGenerator {
     private void generateGraalUpcallSetNativeImpl(StringBuilder sb, int indent) {
         for (var m : cls.methods) {
             Utils.appendIndent(sb, indent)
-                .append(m.name).append(" = PanamaUtils.lookupFunctionPointer(\"")
-                .append(m.nativeName(cls.underlinedName(), true))
+                .append(m.name).append(" = PanamaUtils.lookupFunctionPointer(")
+                .append("new PNILookupOptions(), ")
+                .append("\"").append(m.nativeName(cls.underlinedName(), true))
                 .append("\").orElseThrow(() -> new NullPointerException(\"")
                 .append(m.nativeName(cls.underlinedName(), true))
                 .append("\"));\n");
@@ -635,11 +636,11 @@ public class JavaFileGenerator {
             } else {
                 sb.append("lookupPNIFunction(");
             }
+            sb.append("new PNILinkOptions()");
             if (method.hasCriticalLinkerOption()) {
-                sb.append("true, ");
-            } else {
-                sb.append("false, ");
+                sb.append(".setCritical(true)");
             }
+            sb.append(", ");
             if (method.isCriticalStyle()) {
                 sb.append(method.returnTypeRef.methodHandleTypeForReturn(method.varOptsForReturn()));
                 sb.append(", ");
@@ -828,6 +829,7 @@ public class JavaFileGenerator {
             if (opts.hasCompilationFlag(CompilationFlag.GRAAL_C_ENTRYPOINT_LITERAL_UPCALL)) {
                 Utils.appendIndent(sb, indent).append("public static final CEntryPointLiteral<CFunctionPointer> ")
                     .append(method.name).append("CEPL = GraalUtils.defineCFunctionByName(")
+                    .append("new PNILinkOptions(), ")
                     .append(cls.fullName()).append(".class, \"").append(method.name).append("\");\n");
             }
             sb.append("\n");
@@ -994,7 +996,9 @@ public class JavaFileGenerator {
         }
 
         private void generateUpcallStub(StringBuilder sb) {
-            sb.append("PanamaUtils.defineCFunction(ARENA, ")
+            sb.append("PanamaUtils.defineCFunction(");
+            sb.append("new PNILinkOptions(), ");
+            sb.append("ARENA, ")
                 .append(method.name).append("MH, ");
             if (method.returnTypeRef instanceof VoidTypeInfo) {
                 sb.append("void.class");

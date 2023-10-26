@@ -38,7 +38,9 @@ public class PNIRef<T> implements NativeObject {
 
         PanamaUtils.loadLib();
 
-        var SetPNIFuncReleaseFunc = PanamaUtils.lookupPNICriticalFunction(true, void.class, "SetPNIRefReleaseFunc", MemorySegment.class);
+        var SetPNIFuncReleaseFunc = PanamaUtils.lookupPNICriticalFunction(
+            new PNILinkOptions().setCritical(true),
+            void.class, "SetPNIRefReleaseFunc", MemorySegment.class);
         try {
             SetPNIFuncReleaseFunc.invokeExact(UPCALL_STUB_RELEASE);
         } catch (Throwable e) {

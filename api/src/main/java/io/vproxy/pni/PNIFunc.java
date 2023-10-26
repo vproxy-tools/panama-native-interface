@@ -53,8 +53,12 @@ public abstract class PNIFunc<T> implements NativeObject {
 
         PanamaUtils.loadLib();
 
-        var SetPNIFuncInvokeFunc = PanamaUtils.lookupPNICriticalFunction(true, void.class, "SetPNIFuncInvokeFunc", MemorySegment.class);
-        var SetPNIFuncReleaseFunc = PanamaUtils.lookupPNICriticalFunction(true, void.class, "SetPNIFuncReleaseFunc", MemorySegment.class);
+        var SetPNIFuncInvokeFunc = PanamaUtils.lookupPNICriticalFunction(
+            new PNILinkOptions().setCritical(true),
+            void.class, "SetPNIFuncInvokeFunc", MemorySegment.class);
+        var SetPNIFuncReleaseFunc = PanamaUtils.lookupPNICriticalFunction(
+            new PNILinkOptions().setCritical(true),
+            void.class, "SetPNIFuncReleaseFunc", MemorySegment.class);
         try {
             SetPNIFuncInvokeFunc.invokeExact(UPCALL_STUB_CALL);
             SetPNIFuncReleaseFunc.invokeExact(UPCALL_STUB_RELEASE);

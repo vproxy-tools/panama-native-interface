@@ -33,7 +33,8 @@ public class PanamaUtils {
 
             // check whether it's already loaded (pni.c might have already been compiled into the user library)
             try {
-                lookupPNICriticalFunction(true, void.class, "SetPNIRefReleaseFunc", MemorySegment.class);
+                lookupPNICriticalFunction(new PNILinkOptions().setCritical(true),
+                    void.class, "SetPNIRefReleaseFunc", MemorySegment.class);
             } catch (Throwable t) {
                 // it's not loaded yet, do loading ...
                 System.loadLibrary("pni");
@@ -57,7 +58,7 @@ public class PanamaUtils {
         }
     }
 
-    public static Optional<MemorySegment> lookupFunctionPointer(String functionName) {
+    public static Optional<MemorySegment> lookupFunctionPointer(@SuppressWarnings("unused") PNILookupOptions opts, String functionName) {
         var nativeLinker = Linker.nativeLinker();
         var loaderLookup = SymbolLookup.loaderLookup();
         var stdlibLookup = linkerDefaultLookup(nativeLinker);
@@ -71,11 +72,11 @@ public class PanamaUtils {
         return p;
     }
 
-    public static MethodHandle lookupPNIFunction(boolean isCritical, String functionName, Class... parameterTypes) {
+    public static MethodHandle lookupPNIFunction(PNILinkOptions opts, String functionName, Class... parameterTypes) {
         var nativeLinker = Linker.nativeLinker();
-        var h = lookupFunctionPointer(functionName)
+        var h = lookupFunctionPointer(opts, functionName)
             .map(m -> {
-                if (isCritical) {
+                if (opts.isCritical()) {
                     return nativeLinker.downcallHandle(m, buildFunctionDescriptor(parameterTypes), PanamaHack.getCriticalOption());
                 } else {
                     return nativeLinker.downcallHandle(m, buildFunctionDescriptor(parameterTypes));
@@ -88,11 +89,11 @@ public class PanamaUtils {
         return h;
     }
 
-    public static MethodHandle lookupPNICriticalFunction(boolean isCritical, Class returnType, String functionName, Class... parameterTypes) {
+    public static MethodHandle lookupPNICriticalFunction(PNILinkOptions opts, Class returnType, String functionName, Class... parameterTypes) {
         var nativeLinker = Linker.nativeLinker();
-        var h = lookupFunctionPointer(functionName)
+        var h = lookupFunctionPointer(opts, functionName)
             .map(m -> {
-                if (isCritical) {
+                if (opts.isCritical()) {
                     return nativeLinker.downcallHandle(m, buildCriticalFunctionDescriptor(returnType, parameterTypes), PanamaHack.getCriticalOption());
                 } else {
                     return nativeLinker.downcallHandle(m, buildCriticalFunctionDescriptor(returnType, parameterTypes));
@@ -268,7 +269,7 @@ public class PanamaUtils {
         throw new PNIException("invokeExact throws exception", t);
     }
 
-    public static MemorySegment defineCFunctionByName(Arena arena, Class<?> declaringClass, String name) {
+    public static MemorySegment defineCFunctionByName(PNILinkOptions opts, Arena arena, Class<?> declaringClass, String name) {
         var methods = declaringClass.getDeclaredMethods();
         Method candidate = null;
         for (Method m : methods) {
@@ -283,20 +284,20 @@ public class PanamaUtils {
         if (candidate == null) {
             throw new IllegalArgumentException(new NoSuchMethodException(declaringClass + "#" + name));
         }
-        return defineCFunction(arena, candidate);
+        return defineCFunction(opts, arena, candidate);
     }
 
-    public static MemorySegment defineCFunction(Arena arena, Class<?> declaringClass, String name, Class<?>... paramTypes) {
+    public static MemorySegment defineCFunction(PNILinkOptions opts, Arena arena, Class<?> declaringClass, String name, Class<?>... paramTypes) {
         Method method;
         try {
             method = declaringClass.getDeclaredMethod(name, paramTypes);
         } catch (NoSuchMethodException e) {
             throw new IllegalArgumentException(e);
         }
-        return defineCFunction(arena, method);
+        return defineCFunction(opts, arena, method);
     }
 
-    public static MemorySegment defineCFunction(Arena arena, Method method) {
+    public static MemorySegment defineCFunction(PNILinkOptions opts, Arena arena, Method method) {
         var access = method.getModifiers();
         if ((access & Modifier.STATIC) != Modifier.STATIC) {
             throw new IllegalArgumentException("method " + method + " is not static and cannot be used to define a C function");
@@ -333,10 +334,11 @@ public class PanamaUtils {
         } catch (Throwable t) {
             throw new IllegalArgumentException(t);
         }
-        return defineCFunction(arena, methodHandle, method.getReturnType(), method.getParameterTypes());
+        return defineCFunction(opts, arena, methodHandle, method.getReturnType(), method.getParameterTypes());
     }
 
-    public static MemorySegment defineCFunction(Arena arena, MethodHandle methodHandle, Class<?> returnType, Class<?>... paramTypes) {
+    public static MemorySegment defineCFunction(@SuppressWarnings("unused") PNILinkOptions opts,
+                                                Arena arena, MethodHandle methodHandle, Class<?> returnType, Class<?>... paramTypes) {
         return Linker.nativeLinker().upcallStub(
             methodHandle,
             buildCriticalFunctionDescriptor(returnType, paramTypes),
