@@ -90,9 +90,10 @@ public class GraalNativeImageFeatureFileGenerator {
         sb.append("    public void duringSetup(DuringSetupAccess access) {\n");
 
         sb.append("        /* PNIFunc & PNIRef & GraalThread */\n");
-        sb.append("        RuntimeForeignAccess.registerForDowncall(PanamaUtils.buildCriticalFunctionDescriptor(void.class, MemorySegment.class), Linker.Option.isTrivial());\n");
+        sb.append("        RuntimeForeignAccess.registerForDowncall(PanamaUtils.buildCriticalFunctionDescriptor(void.class, MemorySegment.class), PanamaHack.getCriticalOption());\n");
         sb.append("        RuntimeClassInitialization.initializeAtBuildTime(GraalPNIFunc.class);\n");
         sb.append("        RuntimeClassInitialization.initializeAtBuildTime(GraalPNIRef.class);\n");
+        sb.append("        RuntimeClassInitialization.initializeAtBuildTime(PanamaHack.class);\n");
         sb.append("        /* ImageInfo */\n");
         sb.append("        RuntimeClassInitialization.initializeAtRunTime(ImageInfoDelegate.class);\n");
         sb.append("        for (var m : ImageInfo.class.getMethods()) {\n");
@@ -112,7 +113,7 @@ public class GraalNativeImageFeatureFileGenerator {
                     sb.append("\n");
                     sb.append("/* JavaCritical_").append(cls.underlinedName()).append("___getLayoutByteSize */\n");
                     Utils.appendIndent(sb, 8).append("RuntimeForeignAccess.registerForDowncall(")
-                        .append("PanamaUtils.buildCriticalFunctionDescriptor(long.class), Linker.Option.isTrivial());\n");
+                        .append("PanamaUtils.buildCriticalFunctionDescriptor(long.class), PanamaHack.getCriticalOption());\n");
                 }
                 for (var m : cls.methods) {
                     sb.append("\n");
@@ -132,7 +133,7 @@ public class GraalNativeImageFeatureFileGenerator {
         for (var ignored : cls.methods) {
             sb.append(", MemorySegment.class");
         }
-        sb.append("), Linker.Option.isTrivial());\n");
+        sb.append("), PanamaHack.getCriticalOption());\n");
     }
 
     private final Map<AstMethod, MethodGenerator> methodGenerators = new HashMap<>();
@@ -193,7 +194,7 @@ public class GraalNativeImageFeatureFileGenerator {
             }
             sb.append(")");
             if (method.hasCriticalLinkerOption()) {
-                sb.append(", Linker.Option.isTrivial()");
+                sb.append(", PanamaHack.getCriticalOption()");
             }
             sb.append(");\n");
 

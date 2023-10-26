@@ -12,9 +12,10 @@ public class Feature implements org.graalvm.nativeimage.hosted.Feature {
     @Override
     public void duringSetup(DuringSetupAccess access) {
         /* PNIFunc & PNIRef & GraalThread */
-        RuntimeForeignAccess.registerForDowncall(PanamaUtils.buildCriticalFunctionDescriptor(void.class, MemorySegment.class), Linker.Option.isTrivial());
+        RuntimeForeignAccess.registerForDowncall(PanamaUtils.buildCriticalFunctionDescriptor(void.class, MemorySegment.class), PanamaHack.getCriticalOption());
         RuntimeClassInitialization.initializeAtBuildTime(GraalPNIFunc.class);
         RuntimeClassInitialization.initializeAtBuildTime(GraalPNIRef.class);
+        RuntimeClassInitialization.initializeAtBuildTime(PanamaHack.class);
         /* ImageInfo */
         RuntimeClassInitialization.initializeAtRunTime(ImageInfoDelegate.class);
         for (var m : ImageInfo.class.getMethods()) {
@@ -50,8 +51,8 @@ public class Feature implements org.graalvm.nativeimage.hosted.Feature {
 
         /* graal upcall for io.vproxy.pni.graal.test.Upcall */
         RuntimeClassInitialization.initializeAtBuildTime(io.vproxy.pni.graal.test.Upcall.class);
-        RuntimeForeignAccess.registerForDowncall(PanamaUtils.buildCriticalFunctionDescriptor(void.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class), Linker.Option.isTrivial());
+        RuntimeForeignAccess.registerForDowncall(PanamaUtils.buildCriticalFunctionDescriptor(void.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class, MemorySegment.class), PanamaHack.getCriticalOption());
     }
 }
 // metadata.generator-version: pni test
-// sha256:323bd52c0e9e828b26c76fa22cfddfa3804d476c148e0e044d406f0337eeecb1
+// sha256:abffd2b280b28ee291130230a217b035f6ab9395778cedca32ca6dc74183471e

@@ -71,12 +71,12 @@ public class PanamaUtils {
         return p;
     }
 
-    public static MethodHandle lookupPNIFunction(boolean isTrivial, String functionName, Class... parameterTypes) {
+    public static MethodHandle lookupPNIFunction(boolean isCritical, String functionName, Class... parameterTypes) {
         var nativeLinker = Linker.nativeLinker();
         var h = lookupFunctionPointer(functionName)
             .map(m -> {
-                if (isTrivial) {
-                    return nativeLinker.downcallHandle(m, buildFunctionDescriptor(parameterTypes), Linker.Option.isTrivial());
+                if (isCritical) {
+                    return nativeLinker.downcallHandle(m, buildFunctionDescriptor(parameterTypes), PanamaHack.getCriticalOption());
                 } else {
                     return nativeLinker.downcallHandle(m, buildFunctionDescriptor(parameterTypes));
                 }
@@ -88,12 +88,12 @@ public class PanamaUtils {
         return h;
     }
 
-    public static MethodHandle lookupPNICriticalFunction(boolean isTrivial, Class returnType, String functionName, Class... parameterTypes) {
+    public static MethodHandle lookupPNICriticalFunction(boolean isCritical, Class returnType, String functionName, Class... parameterTypes) {
         var nativeLinker = Linker.nativeLinker();
         var h = lookupFunctionPointer(functionName)
             .map(m -> {
-                if (isTrivial) {
-                    return nativeLinker.downcallHandle(m, buildCriticalFunctionDescriptor(returnType, parameterTypes), Linker.Option.isTrivial());
+                if (isCritical) {
+                    return nativeLinker.downcallHandle(m, buildCriticalFunctionDescriptor(returnType, parameterTypes), PanamaHack.getCriticalOption());
                 } else {
                     return nativeLinker.downcallHandle(m, buildCriticalFunctionDescriptor(returnType, parameterTypes));
                 }

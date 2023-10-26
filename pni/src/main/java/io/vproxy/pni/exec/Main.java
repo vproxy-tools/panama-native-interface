@@ -16,7 +16,7 @@ public class Main {
         final String _VERSION = "21.0.0.17-dev"; // _THE_VERSION_
         final String _JAVA_GEN_VERSION = "21.0.0.16";
         final String _C_GEN_VERSION = "21.0.0.16";
-        final String _GRAAL_GEN_VERSION = "21.0.0.16";
+        final String _GRAAL_GEN_VERSION = "21.0.0.17";
         var testing = System.getProperty("io.vproxy.pni.Testing", "false");
         if (testing.equals("true")) {
             JAVA_GEN_VERSION = "test";
