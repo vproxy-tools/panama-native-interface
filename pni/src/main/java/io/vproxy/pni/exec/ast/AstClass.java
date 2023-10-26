@@ -636,14 +636,25 @@ public class AstClass {
     }
 
     @SuppressWarnings("RedundantIfStatement")
-    public boolean needToGenerateTypeDefinition() {
+    public boolean needToGenerateTypeDeclaration() {
         if (isSkip()) return false;
         if (isUnionEmbed()) return false;
         if (isInterface) return false;
         return true;
     }
 
+    @SuppressWarnings("RedundantIfStatement")
+    public boolean needToGenerateTypeDefinition() {
+        if (!needToGenerateTypeDeclaration()) {
+            return false;
+        }
+        if (isPointerOnly()) {
+            return false;
+        }
+        return true;
+    }
+
     public boolean needToGenerateExpand() {
-        return needToGenerateTypeDefinition() || isSkip();
+        return needToGenerateTypeDeclaration() || isSkip();
     }
 }

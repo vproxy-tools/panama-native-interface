@@ -76,7 +76,7 @@ public class CFileGenerator {
         sb.append("#ifdef __cplusplus\n" +
                   "extern \"C\" {\n" +
                   "#endif\n");
-        if (cls.needToGenerateTypeDefinition()) {
+        if (cls.needToGenerateTypeDeclaration()) {
             sb.append("\n");
             // union|struct {nativeName};
             if (cls.isUnion()) {
