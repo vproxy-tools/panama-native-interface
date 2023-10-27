@@ -115,6 +115,7 @@ public class MemorySegmentTypeInfo extends BuiltInReferenceTypeInfo {
         Utils.appendIndent(sb, indent)
             .append("return RESULT == null ? MemorySegment.NULL : RESULT;\n");
     }
+
     @Override
     public void convertFromUpcallReturnGraal(StringBuilder sb, int indent, VarOpts opts) {
         Utils.appendIndent(sb, indent)

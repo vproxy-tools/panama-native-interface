@@ -24,7 +24,7 @@ public abstract class PrimitiveTypeInfo extends TypeInfo {
         Utils.varHandleField(sb, indent, fieldName);
         sb.append("\n");
         Utils.appendIndent(sb, indent)
-            .append("public ").append(name()).append(" ").append(Utils.getterName(fieldName)).append("() {\n");
+            .append("public ").append(name()).append(" ").append(Utils.getterName(fieldName, this instanceof BooleanTypeInfo)).append("() {\n");
         Utils.appendIndent(sb, indent + 4)
             .append("return (").append(name()).append(") ").append(fieldName).append("VH.get(MEMORY);\n");
         Utils.appendIndent(sb, indent).append("}\n");

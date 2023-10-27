@@ -222,7 +222,7 @@ public class TestTypes {
                     MemoryLayout.PathElement.groupElement("a")
                 );
                                 
-                public boolean getA() {
+                public boolean isA() {
                     return (boolean) aVH.get(MEMORY);
                 }
                                 

@@ -248,6 +248,14 @@ public class AstField {
         return typeRef.rawNativeMemoryAlign(varOpts());
     }
 
+    public String getterName() {
+        return Utils.getterName(name, typeRef instanceof BooleanTypeInfo);
+    }
+
+    public String setterName() {
+        return Utils.setterName(name);
+    }
+
     public void toString(StringBuilder sb, int indent) {
         Utils.appendIndent(sb, indent);
         for (var a : annos) {

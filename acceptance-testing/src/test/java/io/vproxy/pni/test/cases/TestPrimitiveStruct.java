@@ -74,14 +74,14 @@ public class TestPrimitiveStruct {
             assertEquals('a', s.getAChar());
             assertEquals(1.2, s.getADouble(), 0);
             assertEquals(12.8f, s.getAFloat(), 0);
-            assertTrue(s.getABoolean());
+            assertTrue(s.isABoolean());
 
             s.func2(env, 'b', 3.6, 25.6f, false);
 
             assertEquals('b', s.getAChar());
             assertEquals(3.6, s.getADouble(), 0);
             assertEquals(25.6f, s.getAFloat(), 0);
-            assertFalse(s.getABoolean());
+            assertFalse(s.isABoolean());
         }
     }
 
@@ -394,12 +394,12 @@ public class TestPrimitiveStruct {
             s.setABoolean(true);
             assertTrue(s.retrieveBoolean(env));
             assertTrue(s.retrieveBooleanCritical());
-            assertTrue(s.getABoolean());
+            assertTrue(s.isABoolean());
 
             s.setABoolean(false);
             assertFalse(s.retrieveBoolean(env));
             assertFalse(s.retrieveBooleanCritical());
-            assertFalse(s.getABoolean());
+            assertFalse(s.isABoolean());
         }
     }
 
@@ -756,7 +756,7 @@ public class TestPrimitiveStruct {
             assertEquals(0L, s.getUnsignedLong());
             assertEquals((short) 0, s.getAShort());
             assertEquals((short) 0, s.getUnsignedShort());
-            assertFalse(s.getABoolean());
+            assertFalse(s.isABoolean());
 
             assertEquals(11, s.getByteArray().byteSize());
             for (int i = 0; i < 11; ++i) {
@@ -961,6 +961,6 @@ public class TestPrimitiveStruct {
 
         s = Files.readAllLines(Path.of("src", "test", "generated", "io", "vproxy", "pni", "test", "PrimitiveStruct.java"));
         lastLine = s.get(s.size() - 1);
-        assertEquals("// sha256:6994a1e7e9942a09293b939cd2f9bd0c4345031854c2c1ef3c3b7ee8e15df27d", lastLine);
+        assertEquals("// sha256:fa7cb56375df18686ce09df8bf9b122192c19e27da53d1af353e740e39b559e4", lastLine);
     }
 }

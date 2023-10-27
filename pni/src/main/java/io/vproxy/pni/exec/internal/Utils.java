@@ -318,7 +318,11 @@ public class Utils {
     }
 
     public static String getterName(String fieldName) {
-        return "get" + fieldName.substring(0, 1).toUpperCase() + fieldName.substring(1);
+        return getterName(fieldName, false);
+    }
+
+    public static String getterName(String fieldName, boolean isBoolean) {
+        return (isBoolean ? "is" : "get") + fieldName.substring(0, 1).toUpperCase() + fieldName.substring(1);
     }
 
     public static String setterName(String fieldName) {

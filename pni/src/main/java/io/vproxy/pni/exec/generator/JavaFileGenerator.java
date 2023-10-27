@@ -586,7 +586,7 @@ public class JavaFileGenerator {
             Utils.appendIndent(sb, indent + 4)
                 .append("SB.append(\" \".repeat(INDENT + 4))")
                 .append(".append(\"").append(field.name).append(" => \");\n");
-            field.typeRef.javaToString(sb, indent + 4, Utils.getterName(field.name) + "()", field.varOpts());
+            field.typeRef.javaToString(sb, indent + 4, field.getterName() + "()", field.varOpts());
             if (bits != null && !bits.isEmpty()) {
                 Utils.appendIndent(sb, indent + 4)
                     .append("SB.append(\" {\\n\");\n");

@@ -191,7 +191,7 @@ public class PrimitiveStruct extends AbstractNativeObject implements NativeObjec
         MemoryLayout.PathElement.groupElement("aBoolean")
     );
 
-    public boolean getABoolean() {
+    public boolean isABoolean() {
         return (boolean) aBooleanVH.get(MEMORY);
     }
 
@@ -1940,7 +1940,7 @@ public class PrimitiveStruct extends AbstractNativeObject implements NativeObjec
         SB.append(",\n");
         {
             SB.append(" ".repeat(INDENT + 4)).append("aBoolean => ");
-            SB.append(getABoolean());
+            SB.append(isABoolean());
         }
         SB.append(",\n");
         {
@@ -2149,4 +2149,4 @@ public class PrimitiveStruct extends AbstractNativeObject implements NativeObjec
     }
 }
 // metadata.generator-version: pni test
-// sha256:6994a1e7e9942a09293b939cd2f9bd0c4345031854c2c1ef3c3b7ee8e15df27d
+// sha256:fa7cb56375df18686ce09df8bf9b122192c19e27da53d1af353e740e39b559e4
