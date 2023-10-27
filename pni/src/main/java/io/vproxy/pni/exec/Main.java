@@ -13,7 +13,7 @@ public class Main {
     public static final String GRAAL_GEN_VERSION;
 
     static {
-        final String _VERSION = "21.0.0.17"; // _THE_VERSION_
+        final String _VERSION = "21.0.0.18-dev"; // _THE_VERSION_
         final String _JAVA_GEN_VERSION = "21.0.0.17";
         final String _C_GEN_VERSION = "21.0.0.17";
         final String _GRAAL_GEN_VERSION = "21.0.0.17";
