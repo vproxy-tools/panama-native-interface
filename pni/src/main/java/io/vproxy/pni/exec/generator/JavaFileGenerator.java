@@ -595,7 +595,7 @@ public class JavaFileGenerator {
                     Utils.appendIndent(sb, indent + 4)
                         .append("SB.append(\" \".repeat(INDENT + 8))")
                         .append(".append(\"").append(b.name).append(":").append(b.bit).append(" => \")")
-                        .append(".append(").append(Utils.getterName(b.name)).append("());\n");
+                        .append(".append(").append(Utils.getterName(b.name, b.bool)).append("());\n");
                     if (i == bits.size() - 1) {
                         Utils.appendIndent(sb, indent + 4)
                             .append("SB.append(\"\\n\");\n");

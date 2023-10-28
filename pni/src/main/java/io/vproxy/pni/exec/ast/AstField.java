@@ -12,6 +12,7 @@ import org.objectweb.asm.tree.FieldNode;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class AstField {
@@ -196,20 +197,33 @@ public class AstField {
                 errors.add(path + ": invalid annotation field(value[" + i + "]): is not @Bit.Field");
                 return null;
             }
-            var nOpt = o.values.stream().filter(v -> v.name.equals("name")).findFirst();
-            var vOpt = o.values.stream().filter(v -> v.name.equals("bits")).findFirst();
-            if (nOpt.isEmpty() || !(nOpt.get().value instanceof String)) {
+            var nameOpt = o.values.stream().filter(v -> v.name.equals("name")).findFirst();
+            var bitsOpt = o.values.stream().filter(v -> v.name.equals("bits")).findFirst();
+            var boolOpt = o.values.stream().filter(v -> v.name.equals("bool")).findFirst();
+            if (nameOpt.isEmpty() || !(nameOpt.get().value instanceof String)) {
                 errors.add(path + ": invalid annotation field(value[" + i + "]): invalid name");
                 return null;
             }
-            if (vOpt.isEmpty() || !(vOpt.get().value instanceof Integer)) {
-                errors.add(path + ": invalid annotation field(value[" + i + "]): invalid value");
+            if (bitsOpt.isEmpty() || !(bitsOpt.get().value instanceof Integer)) {
+                errors.add(path + ": invalid annotation field(value[" + i + "]): invalid bits");
                 return null;
             }
-            var n = (String) nOpt.get().value;
-            var b = (int) vOpt.get().value;
-            ret.add(new BitFieldInfo(n, total, b));
-            total += b;
+            if (boolOpt.isPresent()) {
+                if (boolOpt.get().value instanceof Boolean) {
+                    var bits = (int) bitsOpt.get().value;
+                    if (bits != 1) {
+                        errors.add(path + ": invalid annotation field(value[" + i + "]): bool=true but bits=" + bits);
+                    }
+                } else {
+                    errors.add(path + ": invalid annotation field(value[" + i + "]): invalid bool");
+                    boolOpt = Optional.empty();
+                }
+            }
+            var name = (String) nameOpt.get().value;
+            var bits = (int) bitsOpt.get().value;
+            var bool = boolOpt.isPresent() && (boolean) boolOpt.get().value;
+            ret.add(new BitFieldInfo(name, total, bits, bool));
+            total += bits;
         }
         // check native type
         if (getNativeTypeAnno() != null) {

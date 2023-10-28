@@ -92,7 +92,7 @@ public class Feature implements org.graalvm.nativeimage.hosted.Feature {
         RuntimeForeignAccess.registerForDowncall(PanamaUtils.buildFunctionDescriptor(MemorySegment.class /* self */, byte.class /* a */));
 
         /* JavaCritical_io_vproxy_pni_test_BitField_set */
-        RuntimeForeignAccess.registerForDowncall(PanamaUtils.buildCriticalFunctionDescriptor(void.class, MemorySegment.class /* self */, byte.class /* a */, byte.class /* a2 */, byte.class /* b */, byte.class /* b2 */, short.class /* c */, short.class /* c2 */, short.class /* d */, short.class /* d2 */, short.class /* e */, short.class /* e2 */, int.class /* f */, int.class /* f2 */, int.class /* g */, int.class /* g2 */, int.class /* h */, int.class /* h2 */, int.class /* i */, int.class /* i2 */, long.class /* j */, long.class /* j2 */, long.class /* k */, long.class /* k2 */, long.class /* l */, long.class /* l2 */, long.class /* m */, long.class /* m2 */));
+        RuntimeForeignAccess.registerForDowncall(PanamaUtils.buildCriticalFunctionDescriptor(void.class, MemorySegment.class /* self */, byte.class /* a */, byte.class /* a2 */, byte.class /* b */, byte.class /* b2 */, short.class /* c */, short.class /* c2 */, short.class /* d */, short.class /* d2 */, short.class /* e */, short.class /* e2 */, int.class /* f */, int.class /* f2 */, int.class /* g */, int.class /* g2 */, int.class /* h */, int.class /* h2 */, int.class /* i */, int.class /* i2 */, long.class /* j */, long.class /* j2 */, long.class /* k */, long.class /* k2 */, long.class /* l */, long.class /* l2 */, long.class /* m */, long.class /* m2 */, long.class /* n */, long.class /* n2 */));
 
         /* JavaCritical_io_vproxy_pni_test_BitField_a */
         RuntimeForeignAccess.registerForDowncall(PanamaUtils.buildCriticalFunctionDescriptor(byte.class, MemorySegment.class /* self */));
@@ -170,6 +170,12 @@ public class Feature implements org.graalvm.nativeimage.hosted.Feature {
         RuntimeForeignAccess.registerForDowncall(PanamaUtils.buildCriticalFunctionDescriptor(long.class, MemorySegment.class /* self */));
 
         /* JavaCritical_io_vproxy_pni_test_BitField_m2 */
+        RuntimeForeignAccess.registerForDowncall(PanamaUtils.buildCriticalFunctionDescriptor(long.class, MemorySegment.class /* self */));
+
+        /* JavaCritical_io_vproxy_pni_test_BitField_n */
+        RuntimeForeignAccess.registerForDowncall(PanamaUtils.buildCriticalFunctionDescriptor(long.class, MemorySegment.class /* self */));
+
+        /* JavaCritical_io_vproxy_pni_test_BitField_n2 */
         RuntimeForeignAccess.registerForDowncall(PanamaUtils.buildCriticalFunctionDescriptor(long.class, MemorySegment.class /* self */));
 
         /* Java_io_vproxy_pni_test_ChildClass_xxx */
@@ -411,7 +417,7 @@ public class Feature implements org.graalvm.nativeimage.hosted.Feature {
         RuntimeForeignAccess.registerForDowncall(PanamaUtils.buildFunctionDescriptor(MemorySegment.class /* self */));
 
         /* JavaCritical_io_vproxy_pni_test_GCCompatibilityBitField_set */
-        RuntimeForeignAccess.registerForDowncall(PanamaUtils.buildCriticalFunctionDescriptor(void.class, MemorySegment.class /* self */, byte.class /* a */, byte.class /* a2 */, byte.class /* b */, byte.class /* b2 */, short.class /* c */, short.class /* c2 */, short.class /* d */, short.class /* d2 */, short.class /* e */, short.class /* e2 */, int.class /* f */, int.class /* f2 */, int.class /* g */, int.class /* g2 */, int.class /* h */, int.class /* h2 */, int.class /* i */, int.class /* i2 */, long.class /* j */, long.class /* j2 */, long.class /* k */, long.class /* k2 */, long.class /* l */, long.class /* l2 */, long.class /* m */, long.class /* m2 */));
+        RuntimeForeignAccess.registerForDowncall(PanamaUtils.buildCriticalFunctionDescriptor(void.class, MemorySegment.class /* self */, byte.class /* a */, byte.class /* a2 */, byte.class /* b */, byte.class /* b2 */, short.class /* c */, short.class /* c2 */, short.class /* d */, short.class /* d2 */, short.class /* e */, short.class /* e2 */, int.class /* f */, int.class /* f2 */, int.class /* g */, int.class /* g2 */, int.class /* h */, int.class /* h2 */, int.class /* i */, int.class /* i2 */, long.class /* j */, long.class /* j2 */, long.class /* k */, long.class /* k2 */, long.class /* l */, long.class /* l2 */, long.class /* m */, long.class /* m2 */, long.class /* n */, long.class /* n2 */));
 
         /* JavaCritical_io_vproxy_pni_test_GCCompatibilityBitField_a */
         RuntimeForeignAccess.registerForDowncall(PanamaUtils.buildCriticalFunctionDescriptor(byte.class, MemorySegment.class /* self */));
@@ -489,6 +495,12 @@ public class Feature implements org.graalvm.nativeimage.hosted.Feature {
         RuntimeForeignAccess.registerForDowncall(PanamaUtils.buildCriticalFunctionDescriptor(long.class, MemorySegment.class /* self */));
 
         /* JavaCritical_io_vproxy_pni_test_GCCompatibilityBitField_m2 */
+        RuntimeForeignAccess.registerForDowncall(PanamaUtils.buildCriticalFunctionDescriptor(long.class, MemorySegment.class /* self */));
+
+        /* JavaCritical_io_vproxy_pni_test_GCCompatibilityBitField_n */
+        RuntimeForeignAccess.registerForDowncall(PanamaUtils.buildCriticalFunctionDescriptor(long.class, MemorySegment.class /* self */));
+
+        /* JavaCritical_io_vproxy_pni_test_GCCompatibilityBitField_n2 */
         RuntimeForeignAccess.registerForDowncall(PanamaUtils.buildCriticalFunctionDescriptor(long.class, MemorySegment.class /* self */));
 
         /* Java_io_vproxy_pni_test_GCCompatibilityNormalContainUnion_initB */
@@ -1514,4 +1526,4 @@ public class Feature implements org.graalvm.nativeimage.hosted.Feature {
     }
 }
 // metadata.generator-version: pni test
-// sha256:386a107e5b66ee8d6b0930283cc693b862a7694c53ddf4e02aff54470db88171
+// sha256:f0c58370b78b17ab67e3280863b82fa75191a43d0fbb7fab9b9cdfd21ee4c39f

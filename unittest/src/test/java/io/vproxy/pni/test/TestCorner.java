@@ -90,6 +90,6 @@ public class TestCorner {
     @Test
     public void bitField() {
         var info = Utils.generalClsTypeInfo();
-        Utils.checkUnsupported(() -> info.generateBitFieldGetterSetter(new StringBuilder(), 0, "a", new BitFieldInfo("x", 5, 3), emptyFieldVarOpts()));
+        Utils.checkUnsupported(() -> info.generateBitFieldGetterSetter(new StringBuilder(), 0, "a", new BitFieldInfo("x", 5, 3, false), emptyFieldVarOpts()));
     }
 }

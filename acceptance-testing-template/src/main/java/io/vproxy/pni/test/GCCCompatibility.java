@@ -560,7 +560,7 @@ abstract class PNIGCCompatibilityBitField {
     })
     @Unsigned byte field01;
     @Bit({
-        @Bit.Field(name = "a2", bits = 1),
+        @Bit.Field(name = "a2", bits = 1, bool = true),
         @Bit.Field(name = "b2", bits = 3),
     })
     @Unsigned byte field02;
@@ -598,6 +598,7 @@ abstract class PNIGCCompatibilityBitField {
         @Bit.Field(name = "k", bits = 2),
         @Bit.Field(name = "l", bits = 22),
         @Bit.Field(name = "m", bits = 33),
+        @Bit.Field(name = "n", bits = 1),
     })
     @Unsigned long field07;
     @Bit({
@@ -605,6 +606,7 @@ abstract class PNIGCCompatibilityBitField {
         @Bit.Field(name = "k2", bits = 2),
         @Bit.Field(name = "l2", bits = 22),
         @Bit.Field(name = "m2", bits = 33),
+        @Bit.Field(name = "n2", bits = 1, bool = true),
     })
     @Unsigned long field08;
 
@@ -637,6 +639,8 @@ abstract class PNIGCCompatibilityBitField {
             self->l2 = l2;
             self->m = m;
             self->m2 = m2;
+            self->n = n;
+            self->n2 = n2;
             """
     )
     @Style(Styles.critical)
@@ -665,7 +669,9 @@ abstract class PNIGCCompatibilityBitField {
                       @Unsigned long l,
                       @Unsigned long l2,
                       @Unsigned long m,
-                      @Unsigned long m2);
+                      @Unsigned long m2,
+                      @Unsigned long n,
+                      @Unsigned long n2);
 
     @Impl(c = "return self->a;")
     @Style(Styles.critical)
@@ -770,4 +776,12 @@ abstract class PNIGCCompatibilityBitField {
     @Impl(c = "return self->m2;")
     @Style(Styles.critical)
     abstract long m2();
+
+    @Impl(c = "return self->n;")
+    @Style(Styles.critical)
+    abstract long n();
+
+    @Impl(c = "return self->n2;")
+    @Style(Styles.critical)
+    abstract long n2();
 }

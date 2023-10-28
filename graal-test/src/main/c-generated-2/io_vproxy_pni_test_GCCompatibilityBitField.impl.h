@@ -4,7 +4,7 @@
 extern "C" {
 #endif
 
-JNIEXPORT void JNICALL JavaCritical_io_vproxy_pni_test_GCCompatibilityBitField_set(GCCompatibilityBitField * self, uint8_t a, uint8_t a2, uint8_t b, uint8_t b2, uint16_t c, uint16_t c2, uint16_t d, uint16_t d2, uint16_t e, uint16_t e2, uint32_t f, uint32_t f2, uint32_t g, uint32_t g2, uint32_t h, uint32_t h2, uint32_t i, uint32_t i2, uint64_t j, uint64_t j2, uint64_t k, uint64_t k2, uint64_t l, uint64_t l2, uint64_t m, uint64_t m2) {
+JNIEXPORT void JNICALL JavaCritical_io_vproxy_pni_test_GCCompatibilityBitField_set(GCCompatibilityBitField * self, uint8_t a, uint8_t a2, uint8_t b, uint8_t b2, uint16_t c, uint16_t c2, uint16_t d, uint16_t d2, uint16_t e, uint16_t e2, uint32_t f, uint32_t f2, uint32_t g, uint32_t g2, uint32_t h, uint32_t h2, uint32_t i, uint32_t i2, uint64_t j, uint64_t j2, uint64_t k, uint64_t k2, uint64_t l, uint64_t l2, uint64_t m, uint64_t m2, uint64_t n, uint64_t n2) {
     self->a = a;
     self->a2 = a2;
     self->b = b;
@@ -31,6 +31,8 @@ JNIEXPORT void JNICALL JavaCritical_io_vproxy_pni_test_GCCompatibilityBitField_s
     self->l2 = l2;
     self->m = m;
     self->m2 = m2;
+    self->n = n;
+    self->n2 = n2;
 }
 
 JNIEXPORT int8_t JNICALL JavaCritical_io_vproxy_pni_test_GCCompatibilityBitField_a(GCCompatibilityBitField * self) {
@@ -137,8 +139,16 @@ JNIEXPORT int64_t JNICALL JavaCritical_io_vproxy_pni_test_GCCompatibilityBitFiel
     return self->m2;
 }
 
+JNIEXPORT int64_t JNICALL JavaCritical_io_vproxy_pni_test_GCCompatibilityBitField_n(GCCompatibilityBitField * self) {
+    return self->n;
+}
+
+JNIEXPORT int64_t JNICALL JavaCritical_io_vproxy_pni_test_GCCompatibilityBitField_n2(GCCompatibilityBitField * self) {
+    return self->n2;
+}
+
 #ifdef __cplusplus
 }
 #endif
 // metadata.generator-version: pni test
-// sha256:8e154548dc0c39136fd539767320c67bb76e3cd15ed660086708f9c9257b8278
+// sha256:af70257965d1096a8cd2d45b5112e5927bf02af501bb88cec168cb52c9e8d8c1

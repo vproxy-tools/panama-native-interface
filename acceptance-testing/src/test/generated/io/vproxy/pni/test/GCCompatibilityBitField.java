@@ -81,17 +81,17 @@ public class GCCompatibilityBitField extends AbstractNativeObject implements Nat
         field02VH.set(MEMORY, field02);
     }
 
-    public byte getA2() {
+    public boolean isA2() {
         var N = getField02();
-        return (byte) ((N >> 0) & 0b1);
+        return ((N >> 0) & 0b1) == 1;
     }
 
-    public void setA2(byte a2) {
+    public void setA2(boolean a2) {
         var N = getField02();
         byte MASK = (byte) (0b1 << 0);
-        a2 = (byte) (a2 & 0b1);
-        a2 = (byte) (a2 << 0);
-        N = (byte) ((N & ~MASK) | (a2 & MASK));
+        var NN = (byte) (a2 ? 1 : 0);
+        NN = (byte) (NN << 0);
+        N = (byte) ((N & ~MASK) | (NN & MASK));
         setField02(N);
     }
 
@@ -475,6 +475,20 @@ public class GCCompatibilityBitField extends AbstractNativeObject implements Nat
         setField07(N);
     }
 
+    public long getN() {
+        var N = getField07();
+        return (long) ((N >> 58) & 0b1);
+    }
+
+    public void setN(long n) {
+        var N = getField07();
+        long MASK = (long) (0b1L << 58);
+        n = (long) (n & 0b1L);
+        n = (long) (n << 58);
+        N = (long) ((N & ~MASK) | (n & MASK));
+        setField07(N);
+    }
+
     private static final VarHandle field08VH = LAYOUT.varHandle(
         MemoryLayout.PathElement.groupElement("field08")
     );
@@ -543,6 +557,20 @@ public class GCCompatibilityBitField extends AbstractNativeObject implements Nat
         setField08(N);
     }
 
+    public boolean isN2() {
+        var N = getField08();
+        return ((N >> 58) & 0b1) == 1;
+    }
+
+    public void setN2(boolean n2) {
+        var N = getField08();
+        long MASK = (long) (0b1L << 58);
+        var NN = (long) (n2 ? 1 : 0);
+        NN = (long) (NN << 58);
+        N = (long) ((N & ~MASK) | (NN & MASK));
+        setField08(N);
+    }
+
     public GCCompatibilityBitField(MemorySegment MEMORY) {
         MEMORY = MEMORY.reinterpret(LAYOUT.byteSize());
         this.MEMORY = MEMORY;
@@ -566,11 +594,11 @@ public class GCCompatibilityBitField extends AbstractNativeObject implements Nat
         this(ALLOCATOR.allocate(LAYOUT));
     }
 
-    private static final MethodHandle setMH = PanamaUtils.lookupPNICriticalFunction(new PNILinkOptions(), void.class, "JavaCritical_io_vproxy_pni_test_GCCompatibilityBitField_set", MemorySegment.class /* self */, byte.class /* a */, byte.class /* a2 */, byte.class /* b */, byte.class /* b2 */, short.class /* c */, short.class /* c2 */, short.class /* d */, short.class /* d2 */, short.class /* e */, short.class /* e2 */, int.class /* f */, int.class /* f2 */, int.class /* g */, int.class /* g2 */, int.class /* h */, int.class /* h2 */, int.class /* i */, int.class /* i2 */, long.class /* j */, long.class /* j2 */, long.class /* k */, long.class /* k2 */, long.class /* l */, long.class /* l2 */, long.class /* m */, long.class /* m2 */);
+    private static final MethodHandle setMH = PanamaUtils.lookupPNICriticalFunction(new PNILinkOptions(), void.class, "JavaCritical_io_vproxy_pni_test_GCCompatibilityBitField_set", MemorySegment.class /* self */, byte.class /* a */, byte.class /* a2 */, byte.class /* b */, byte.class /* b2 */, short.class /* c */, short.class /* c2 */, short.class /* d */, short.class /* d2 */, short.class /* e */, short.class /* e2 */, int.class /* f */, int.class /* f2 */, int.class /* g */, int.class /* g2 */, int.class /* h */, int.class /* h2 */, int.class /* i */, int.class /* i2 */, long.class /* j */, long.class /* j2 */, long.class /* k */, long.class /* k2 */, long.class /* l */, long.class /* l2 */, long.class /* m */, long.class /* m2 */, long.class /* n */, long.class /* n2 */);
 
-    public void set(byte a, byte a2, byte b, byte b2, short c, short c2, short d, short d2, short e, short e2, int f, int f2, int g, int g2, int h, int h2, int i, int i2, long j, long j2, long k, long k2, long l, long l2, long m, long m2) {
+    public void set(byte a, byte a2, byte b, byte b2, short c, short c2, short d, short d2, short e, short e2, int f, int f2, int g, int g2, int h, int h2, int i, int i2, long j, long j2, long k, long k2, long l, long l2, long m, long m2, long n, long n2) {
         try {
-            setMH.invokeExact(MEMORY, a, a2, b, b2, c, c2, d, d2, e, e2, f, f2, g, g2, h, h2, i, i2, j, j2, k, k2, l, l2, m, m2);
+            setMH.invokeExact(MEMORY, a, a2, b, b2, c, c2, d, d2, e, e2, f, f2, g, g2, h, h2, i, i2, j, j2, k, k2, l, l2, m, m2, n, n2);
         } catch (Throwable THROWABLE) {
             throw PanamaUtils.convertInvokeExactException(THROWABLE);
         }
@@ -888,6 +916,30 @@ public class GCCompatibilityBitField extends AbstractNativeObject implements Nat
         return RESULT;
     }
 
+    private static final MethodHandle nMH = PanamaUtils.lookupPNICriticalFunction(new PNILinkOptions(), long.class, "JavaCritical_io_vproxy_pni_test_GCCompatibilityBitField_n", MemorySegment.class /* self */);
+
+    public long n() {
+        long RESULT;
+        try {
+            RESULT = (long) nMH.invokeExact(MEMORY);
+        } catch (Throwable THROWABLE) {
+            throw PanamaUtils.convertInvokeExactException(THROWABLE);
+        }
+        return RESULT;
+    }
+
+    private static final MethodHandle n2MH = PanamaUtils.lookupPNICriticalFunction(new PNILinkOptions(), long.class, "JavaCritical_io_vproxy_pni_test_GCCompatibilityBitField_n2", MemorySegment.class /* self */);
+
+    public long n2() {
+        long RESULT;
+        try {
+            RESULT = (long) n2MH.invokeExact(MEMORY);
+        } catch (Throwable THROWABLE) {
+            throw PanamaUtils.convertInvokeExactException(THROWABLE);
+        }
+        return RESULT;
+    }
+
     @Override
     public void toString(StringBuilder SB, int INDENT, java.util.Set<NativeObjectTuple> VISITED, boolean CORRUPTED_MEMORY) {
         if (!VISITED.add(new NativeObjectTuple(this))) {
@@ -910,7 +962,7 @@ public class GCCompatibilityBitField extends AbstractNativeObject implements Nat
             SB.append(" ".repeat(INDENT + 4)).append("field02 => ");
             SB.append(getField02());
             SB.append(" {\n");
-            SB.append(" ".repeat(INDENT + 8)).append("a2:1 => ").append(getA2());
+            SB.append(" ".repeat(INDENT + 8)).append("a2:1 => ").append(isA2());
             SB.append(",\n");
             SB.append(" ".repeat(INDENT + 8)).append("b2:3 => ").append(getB2());
             SB.append("\n");
@@ -999,6 +1051,8 @@ public class GCCompatibilityBitField extends AbstractNativeObject implements Nat
             SB.append(" ".repeat(INDENT + 8)).append("l:22 => ").append(getL());
             SB.append(",\n");
             SB.append(" ".repeat(INDENT + 8)).append("m:33 => ").append(getM());
+            SB.append(",\n");
+            SB.append(" ".repeat(INDENT + 8)).append("n:1 => ").append(getN());
             SB.append("\n");
             SB.append(" ".repeat(INDENT + 4)).append("}");
         }
@@ -1014,6 +1068,8 @@ public class GCCompatibilityBitField extends AbstractNativeObject implements Nat
             SB.append(" ".repeat(INDENT + 8)).append("l2:22 => ").append(getL2());
             SB.append(",\n");
             SB.append(" ".repeat(INDENT + 8)).append("m2:33 => ").append(getM2());
+            SB.append(",\n");
+            SB.append(" ".repeat(INDENT + 8)).append("n2:1 => ").append(isN2());
             SB.append("\n");
             SB.append(" ".repeat(INDENT + 4)).append("}");
         }
@@ -1092,4 +1148,4 @@ public class GCCompatibilityBitField extends AbstractNativeObject implements Nat
     }
 }
 // metadata.generator-version: pni test
-// sha256:9c816baac2fc8c720bc8d63892aaa120662c5cbf6f49f6602057431bf55d810f
+// sha256:b9ed1fd8b2bed979717297d4fa48b70e1cc3ddc54dc7fee76616c4a5b44014aa

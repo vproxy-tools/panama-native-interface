@@ -162,11 +162,13 @@ typedef struct {
   uint64_t k : 2;
   uint64_t l : 22;
   uint64_t m : 33;
-  uint64_t : 6;
+  uint64_t n : 1;
+  uint64_t : 5;
   uint64_t j2 : 1;
   uint64_t k2 : 2;
   uint64_t l2 : 22;
   uint64_t m2 : 33;
+  uint64_t n2 : 1;
 } GCCompatibilityBitField;
 
 #endif // _Included_gcc_compatibility

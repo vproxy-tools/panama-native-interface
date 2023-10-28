@@ -16,5 +16,7 @@ public @interface Bit {
         String name();
 
         int bits();
+
+        boolean bool() default false;
     }
 }

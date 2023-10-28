@@ -4,7 +4,7 @@
 extern "C" {
 #endif
 
-JNIEXPORT void JNICALL JavaCritical_io_vproxy_pni_test_BitField_set(BitField * self, uint8_t a, uint8_t a2, uint8_t b, uint8_t b2, uint16_t c, uint16_t c2, uint16_t d, uint16_t d2, uint16_t e, uint16_t e2, uint32_t f, uint32_t f2, uint32_t g, uint32_t g2, uint32_t h, uint32_t h2, uint32_t i, uint32_t i2, uint64_t j, uint64_t j2, uint64_t k, uint64_t k2, uint64_t l, uint64_t l2, uint64_t m, uint64_t m2) {
+JNIEXPORT void JNICALL JavaCritical_io_vproxy_pni_test_BitField_set(BitField * self, uint8_t a, uint8_t a2, uint8_t b, uint8_t b2, uint16_t c, uint16_t c2, uint16_t d, uint16_t d2, uint16_t e, uint16_t e2, uint32_t f, uint32_t f2, uint32_t g, uint32_t g2, uint32_t h, uint32_t h2, uint32_t i, uint32_t i2, uint64_t j, uint64_t j2, uint64_t k, uint64_t k2, uint64_t l, uint64_t l2, uint64_t m, uint64_t m2, uint64_t n, uint64_t n2) {
     self->a = a;
     self->a2 = a2;
     self->b = b;
@@ -31,6 +31,8 @@ JNIEXPORT void JNICALL JavaCritical_io_vproxy_pni_test_BitField_set(BitField * s
     self->l2 = l2;
     self->m = m;
     self->m2 = m2;
+    self->n = n;
+    self->n2 = n2;
 }
 
 JNIEXPORT int8_t JNICALL JavaCritical_io_vproxy_pni_test_BitField_a(BitField * self) {
@@ -137,8 +139,16 @@ JNIEXPORT int64_t JNICALL JavaCritical_io_vproxy_pni_test_BitField_m2(BitField *
     return self->m2;
 }
 
+JNIEXPORT int64_t JNICALL JavaCritical_io_vproxy_pni_test_BitField_n(BitField * self) {
+    return self->n;
+}
+
+JNIEXPORT int64_t JNICALL JavaCritical_io_vproxy_pni_test_BitField_n2(BitField * self) {
+    return self->n2;
+}
+
 #ifdef __cplusplus
 }
 #endif
 // metadata.generator-version: pni test
-// sha256:3ac6da5a0f2c8275e713d6b4bc900f31b913482a59dad92f31ecbb21166d0005
+// sha256:6ea3b86e6944ab37eee2ee7a5a2cbde3d31b32a4bf264f717d30fb6e17629e67

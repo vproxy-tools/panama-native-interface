@@ -697,7 +697,7 @@ public class TestTypes {
     @Test
     public void primitiveIntegerTypeInfo() {
         var info = LongTypeInfo.get();
-        var ret = Utils.sbHelper(sb -> info.generateBitFieldGetterSetter(sb, 0, "a", new BitFieldInfo("x", 5, 3), fieldVarOpts(0)));
+        var ret = Utils.sbHelper(sb -> info.generateBitFieldGetterSetter(sb, 0, "a", new BitFieldInfo("x", 5, 3, false), fieldVarOpts(0)));
         assertEquals("""
             public long getX() {
                 var N = getA();
@@ -713,7 +713,7 @@ public class TestTypes {
                 setA(N);
             }
             """, ret);
-        ret = Utils.sbHelper(sb -> info.generateBitFieldGetterSetter(sb, 0, "a", new BitFieldInfo("x", 5, 32), fieldVarOpts(0)));
+        ret = Utils.sbHelper(sb -> info.generateBitFieldGetterSetter(sb, 0, "a", new BitFieldInfo("x", 5, 32, false), fieldVarOpts(0)));
         assertEquals("""
             public long getX() {
                 var N = getA();
@@ -729,7 +729,7 @@ public class TestTypes {
                 setA(N);
             }
             """, ret);
-        ret = Utils.sbHelper(sb -> info.generateBitFieldGetterSetter(sb, 0, "a", new BitFieldInfo("x", 5, 48), fieldVarOpts(0)));
+        ret = Utils.sbHelper(sb -> info.generateBitFieldGetterSetter(sb, 0, "a", new BitFieldInfo("x", 5, 48, false), fieldVarOpts(0)));
         assertEquals("""
             public long getX() {
                 var N = getA();

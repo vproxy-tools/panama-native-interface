@@ -809,7 +809,7 @@ You can call `PNIRef.of(obj, new Options().setUserdataByteSize(...))`, the behav
 * `@Unsigned`: make an integer type `unsinged`.
 * `@Raw`: convert to raw form for native invocation. See the below section `@Raw Annotation` for more info.
 * `@PointerOnly`: this annotation is only effective during validation phase. The marked class cannot have fields, the type should only be used as a pointer. However the generated Java class or C struct/union will stay the same as they were.
-* `@Bit` and `@Bit.Field`: mark a byte/short/int/long field to be a bit field. For example: `@Bit({@Bit.Field(name = "a", bits = 1), @Bit.Field(name = "b", bits = 1)}) @Unsigned byte x`, defines two bit fields `uint8_t a : 1` and `uint8_t b : 1`, and automatically generates an anonymous padding to fillup the field's type (`uint8_t : 6`).  
+* `@Bit` and `@Bit.Field`: mark a byte/short/int/long field to be a bit field. For example: `@Bit({@Bit.Field(name = "a", bits = 1), @Bit.Field(name = "b", bits = 1)}) @Unsigned byte x`, defines two bit fields `uint8_t a : 1` and `uint8_t b : 1`, and automatically generates an anonymous padding to fillup the field's type (`uint8_t : 6`). You can set `@Bit.Field(name="x", bits = 1, bool=true)` to generate `boolean` getter/setters.  
   **WARNING**: bit fields' memory layout is **NOT** specified in C standard and is **NOT** compiler/platform portable, use with caution!!!
 * `@Sizeof`: specify the minimum byte size of the type. This is useful for `@PointerOnly` types and `skip=true` types when only part of fields are specified in Java.  
   For example:  

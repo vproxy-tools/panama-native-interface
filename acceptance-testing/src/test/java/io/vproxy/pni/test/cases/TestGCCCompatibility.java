@@ -349,50 +349,11 @@ public class TestGCCCompatibility {
                 long l2 = generateBitField(22);
                 long m = generateBitField(33);
                 long m2 = generateBitField(33);
-                s.set(a, a2, b, b2, c, c2, d, d2, e, e2, f, f2, g, g2, h, h2, i, i2, j, j2, k, k2, l, l2, m, m2);
-                //noinspection ConstantValue
-                if (false) {
-                    System.out.println("a: " + Integer.toString(a, 2));
-                    System.out.println("b: " + Integer.toString(b, 2));
-                    System.out.println("a2: " + Integer.toString(a2, 2));
-                    System.out.println("b2: " + Integer.toString(b2, 2));
-                    System.out.println("----");
-                    System.out.println("c: " + Integer.toString(c, 2));
-                    System.out.println("d: " + Integer.toString(d, 2));
-                    System.out.println("e: " + Integer.toString(e, 2));
-                    System.out.println("c2: " + Integer.toString(c2, 2));
-                    System.out.println("d2: " + Integer.toString(d2, 2));
-                    System.out.println("e2: " + Integer.toString(e2, 2));
-                    System.out.println("----");
-                    System.out.println("f: " + Integer.toString(f, 2));
-                    System.out.println("g: " + Integer.toString(g, 2));
-                    System.out.println("h: " + Integer.toString(h, 2));
-                    System.out.println("i: " + Integer.toString(i, 2));
-                    System.out.println("f2: " + Integer.toString(f2, 2));
-                    System.out.println("g2: " + Integer.toString(g2, 2));
-                    System.out.println("h2: " + Integer.toString(h2, 2));
-                    System.out.println("i2: " + Integer.toString(i2, 2));
-                    System.out.println("----");
-                    System.out.println("j: " + Long.toString(j, 2));
-                    System.out.println("k: " + Long.toString(k, 2));
-                    System.out.println("l: " + Long.toString(l, 2));
-                    System.out.println("m: " + Long.toString(m, 2));
-                    System.out.println("j2: " + Long.toString(j2, 2));
-                    System.out.println("k2: " + Long.toString(k2, 2));
-                    System.out.println("l2: " + Long.toString(l2, 2));
-                    System.out.println("m2: " + Long.toString(m2, 2));
-                    System.out.println("----");
-                    System.out.println("field01: " + Integer.toString(s.getField01(), 2));
-                    System.out.println("field02: " + Integer.toString(s.getField02(), 2));
-                    System.out.println("field03: " + Integer.toString(s.getField03(), 2));
-                    System.out.println("field04: " + Integer.toString(s.getField04(), 2));
-                    System.out.println("field05: " + Integer.toString(s.getField05(), 2));
-                    System.out.println("field06: " + Integer.toString(s.getField06(), 2));
-                    System.out.println("field07: " + Long.toString(s.getField07(), 2));
-                    System.out.println("field08: " + Long.toString(s.getField08(), 2));
-                }
+                long n = generateBitField(1);
+                long n2 = generateBitField(1);
+                s.set(a, a2, b, b2, c, c2, d, d2, e, e2, f, f2, g, g2, h, h2, i, i2, j, j2, k, k2, l, l2, m, m2, n, n2);
                 assertEquals("a", a, s.getA());
-                assertEquals("a2", a2, s.getA2());
+                assertEquals("a2", a2 == 1, s.isA2());
                 assertEquals("b", b, s.getB());
                 assertEquals("b2", b2, s.getB2());
                 assertEquals("c", c, s.getC());
@@ -417,6 +378,8 @@ public class TestGCCCompatibility {
                 assertEquals("l2", l2, s.getL2());
                 assertEquals("m", m, s.getM());
                 assertEquals("m2", m2, s.getM2());
+                assertEquals("n", n, s.getN());
+                assertEquals("n2", n2 == 1, s.isN2());
             }
         }
     }
@@ -452,8 +415,10 @@ public class TestGCCCompatibility {
                 long l2 = generateBitField(22);
                 long m = generateBitField(33);
                 long m2 = generateBitField(33);
+                long n = generateBitField(1);
+                long n2 = generateBitField(1);
                 s.setA(a);
-                s.setA2(a2);
+                s.setA2(a2 == 1);
                 s.setB(b);
                 s.setB2(b2);
                 s.setC(c);
@@ -478,47 +443,8 @@ public class TestGCCCompatibility {
                 s.setL2(l2);
                 s.setM(m);
                 s.setM2(m2);
-                //noinspection ConstantValue
-                if (false) {
-                    System.out.println("a: " + Integer.toString(a, 2));
-                    System.out.println("b: " + Integer.toString(b, 2));
-                    System.out.println("a2: " + Integer.toString(a2, 2));
-                    System.out.println("b2: " + Integer.toString(b2, 2));
-                    System.out.println("----");
-                    System.out.println("c: " + Integer.toString(c, 2));
-                    System.out.println("d: " + Integer.toString(d, 2));
-                    System.out.println("e: " + Integer.toString(e, 2));
-                    System.out.println("c2: " + Integer.toString(c2, 2));
-                    System.out.println("d2: " + Integer.toString(d2, 2));
-                    System.out.println("e2: " + Integer.toString(e2, 2));
-                    System.out.println("----");
-                    System.out.println("f: " + Integer.toString(f, 2));
-                    System.out.println("g: " + Integer.toString(g, 2));
-                    System.out.println("h: " + Integer.toString(h, 2));
-                    System.out.println("i: " + Integer.toString(i, 2));
-                    System.out.println("f2: " + Integer.toString(f2, 2));
-                    System.out.println("g2: " + Integer.toString(g2, 2));
-                    System.out.println("h2: " + Integer.toString(h2, 2));
-                    System.out.println("i2: " + Integer.toString(i2, 2));
-                    System.out.println("----");
-                    System.out.println("j: " + Long.toString(j, 2));
-                    System.out.println("k: " + Long.toString(k, 2));
-                    System.out.println("l: " + Long.toString(l, 2));
-                    System.out.println("m: " + Long.toString(m, 2));
-                    System.out.println("j2: " + Long.toString(j2, 2));
-                    System.out.println("k2: " + Long.toString(k2, 2));
-                    System.out.println("l2: " + Long.toString(l2, 2));
-                    System.out.println("m2: " + Long.toString(m2, 2));
-                    System.out.println("----");
-                    System.out.println("field01: " + Integer.toString(s.getField01(), 2));
-                    System.out.println("field02: " + Integer.toString(s.getField02(), 2));
-                    System.out.println("field03: " + Integer.toString(s.getField03(), 2));
-                    System.out.println("field04: " + Integer.toString(s.getField04(), 2));
-                    System.out.println("field05: " + Integer.toString(s.getField05(), 2));
-                    System.out.println("field06: " + Integer.toString(s.getField06(), 2));
-                    System.out.println("field07: " + Long.toString(s.getField07(), 2));
-                    System.out.println("field08: " + Long.toString(s.getField08(), 2));
-                }
+                s.setN(n);
+                s.setN2(n2 == 1);
                 assertEquals("a", a, s.a());
                 assertEquals("a2", a2, s.a2());
                 assertEquals("b", b, s.b());
@@ -545,6 +471,8 @@ public class TestGCCCompatibility {
                 assertEquals("l2", l2, s.l2());
                 assertEquals("m", m, s.m());
                 assertEquals("m2", m2, s.m2());
+                assertEquals("n", n, s.n());
+                assertEquals("n2", n2, s.n2());
             }
         }
     }
@@ -580,50 +508,11 @@ public class TestGCCCompatibility {
                 long l2 = generateBitField(22);
                 long m = generateBitField(33);
                 long m2 = generateBitField(33);
-                s.set(a, a2, b, b2, c, c2, d, d2, e, e2, f, f2, g, g2, h, h2, i, i2, j, j2, k, k2, l, l2, m, m2);
-                //noinspection ConstantValue
-                if (false) {
-                    System.out.println("a: " + Integer.toString(a, 2));
-                    System.out.println("b: " + Integer.toString(b, 2));
-                    System.out.println("a2: " + Integer.toString(a2, 2));
-                    System.out.println("b2: " + Integer.toString(b2, 2));
-                    System.out.println("----");
-                    System.out.println("c: " + Integer.toString(c, 2));
-                    System.out.println("d: " + Integer.toString(d, 2));
-                    System.out.println("e: " + Integer.toString(e, 2));
-                    System.out.println("c2: " + Integer.toString(c2, 2));
-                    System.out.println("d2: " + Integer.toString(d2, 2));
-                    System.out.println("e2: " + Integer.toString(e2, 2));
-                    System.out.println("----");
-                    System.out.println("f: " + Integer.toString(f, 2));
-                    System.out.println("g: " + Integer.toString(g, 2));
-                    System.out.println("h: " + Integer.toString(h, 2));
-                    System.out.println("i: " + Integer.toString(i, 2));
-                    System.out.println("f2: " + Integer.toString(f2, 2));
-                    System.out.println("g2: " + Integer.toString(g2, 2));
-                    System.out.println("h2: " + Integer.toString(h2, 2));
-                    System.out.println("i2: " + Integer.toString(i2, 2));
-                    System.out.println("----");
-                    System.out.println("j: " + Long.toString(j, 2));
-                    System.out.println("k: " + Long.toString(k, 2));
-                    System.out.println("l: " + Long.toString(l, 2));
-                    System.out.println("m: " + Long.toString(m, 2));
-                    System.out.println("j2: " + Long.toString(j2, 2));
-                    System.out.println("k2: " + Long.toString(k2, 2));
-                    System.out.println("l2: " + Long.toString(l2, 2));
-                    System.out.println("m2: " + Long.toString(m2, 2));
-                    System.out.println("----");
-                    System.out.println("field01: " + Integer.toString(s.getField01(), 2));
-                    System.out.println("field02: " + Integer.toString(s.getField02(), 2));
-                    System.out.println("field03: " + Integer.toString(s.getField03(), 2));
-                    System.out.println("field04: " + Integer.toString(s.getField04(), 2));
-                    System.out.println("field05: " + Integer.toString(s.getField05(), 2));
-                    System.out.println("field06: " + Integer.toString(s.getField06(), 2));
-                    System.out.println("field07: " + Long.toString(s.getField07(), 2));
-                    System.out.println("field08: " + Long.toString(s.getField08(), 2));
-                }
+                long n = generateBitField(1);
+                long n2 = generateBitField(1);
+                s.set(a, a2, b, b2, c, c2, d, d2, e, e2, f, f2, g, g2, h, h2, i, i2, j, j2, k, k2, l, l2, m, m2, n, n2);
                 assertEquals("a", a, s.getA());
-                assertEquals("a2", a2, s.getA2());
+                assertEquals("a2", a2 == 1, s.isA2());
                 assertEquals("b", b, s.getB());
                 assertEquals("b2", b2, s.getB2());
                 assertEquals("c", c, s.getC());
@@ -648,6 +537,8 @@ public class TestGCCCompatibility {
                 assertEquals("l2", l2, s.getL2());
                 assertEquals("m", m, s.getM());
                 assertEquals("m2", m2, s.getM2());
+                assertEquals("n", n, s.getN());
+                assertEquals("n2", n2 == 1, s.isN2());
             }
         }
     }
@@ -683,8 +574,10 @@ public class TestGCCCompatibility {
                 long l2 = generateBitField(22);
                 long m = generateBitField(33);
                 long m2 = generateBitField(33);
+                long n = generateBitField(1);
+                long n2 = generateBitField(1);
                 s.setA(a);
-                s.setA2(a2);
+                s.setA2(a2 == 1);
                 s.setB(b);
                 s.setB2(b2);
                 s.setC(c);
@@ -709,47 +602,8 @@ public class TestGCCCompatibility {
                 s.setL2(l2);
                 s.setM(m);
                 s.setM2(m2);
-                //noinspection ConstantValue
-                if (false) {
-                    System.out.println("a: " + Integer.toString(a, 2));
-                    System.out.println("b: " + Integer.toString(b, 2));
-                    System.out.println("a2: " + Integer.toString(a2, 2));
-                    System.out.println("b2: " + Integer.toString(b2, 2));
-                    System.out.println("----");
-                    System.out.println("c: " + Integer.toString(c, 2));
-                    System.out.println("d: " + Integer.toString(d, 2));
-                    System.out.println("e: " + Integer.toString(e, 2));
-                    System.out.println("c2: " + Integer.toString(c2, 2));
-                    System.out.println("d2: " + Integer.toString(d2, 2));
-                    System.out.println("e2: " + Integer.toString(e2, 2));
-                    System.out.println("----");
-                    System.out.println("f: " + Integer.toString(f, 2));
-                    System.out.println("g: " + Integer.toString(g, 2));
-                    System.out.println("h: " + Integer.toString(h, 2));
-                    System.out.println("i: " + Integer.toString(i, 2));
-                    System.out.println("f2: " + Integer.toString(f2, 2));
-                    System.out.println("g2: " + Integer.toString(g2, 2));
-                    System.out.println("h2: " + Integer.toString(h2, 2));
-                    System.out.println("i2: " + Integer.toString(i2, 2));
-                    System.out.println("----");
-                    System.out.println("j: " + Long.toString(j, 2));
-                    System.out.println("k: " + Long.toString(k, 2));
-                    System.out.println("l: " + Long.toString(l, 2));
-                    System.out.println("m: " + Long.toString(m, 2));
-                    System.out.println("j2: " + Long.toString(j2, 2));
-                    System.out.println("k2: " + Long.toString(k2, 2));
-                    System.out.println("l2: " + Long.toString(l2, 2));
-                    System.out.println("m2: " + Long.toString(m2, 2));
-                    System.out.println("----");
-                    System.out.println("field01: " + Integer.toString(s.getField01(), 2));
-                    System.out.println("field02: " + Integer.toString(s.getField02(), 2));
-                    System.out.println("field03: " + Integer.toString(s.getField03(), 2));
-                    System.out.println("field04: " + Integer.toString(s.getField04(), 2));
-                    System.out.println("field05: " + Integer.toString(s.getField05(), 2));
-                    System.out.println("field06: " + Integer.toString(s.getField06(), 2));
-                    System.out.println("field07: " + Long.toString(s.getField07(), 2));
-                    System.out.println("field08: " + Long.toString(s.getField08(), 2));
-                }
+                s.setN(n);
+                s.setN2(n2 == 1);
                 assertEquals("a", a, s.a());
                 assertEquals("a2", a2, s.a2());
                 assertEquals("b", b, s.b());
@@ -776,6 +630,8 @@ public class TestGCCCompatibility {
                 assertEquals("l2", l2, s.l2());
                 assertEquals("m", m, s.m());
                 assertEquals("m2", m2, s.m2());
+                assertEquals("n", n, s.n());
+                assertEquals("n2", n2, s.n2());
             }
         }
     }
@@ -810,7 +666,9 @@ public class TestGCCCompatibility {
                 12345L,
                 23456L,
                 45678L,
-                56789L
+                56789L,
+                0,
+                1
             );
             assertEquals("BitField{\n" +
                          "    field01 => " + 0b101_1 + " {\n" +
@@ -818,7 +676,7 @@ public class TestGCCCompatibility {
                          "        b:3 => " + 0b101 + "\n" +
                          "    },\n" +
                          "    field02 => " + 0b110_1 + " {\n" +
-                         "        a2:1 => " + 0b1 + ",\n" +
+                         "        a2:1 => true,\n" +
                          "        b2:3 => " + 0b110 + "\n" +
                          "    },\n" +
                          "    sep01 => null,\n" +
@@ -850,13 +708,15 @@ public class TestGCCCompatibility {
                          "        j:1 => " + 0b1 + ",\n" +
                          "        k:2 => " + 0b01 + ",\n" +
                          "        l:22 => 12345,\n" +
-                         "        m:33 => 45678\n" +
+                         "        m:33 => 45678,\n" +
+                         "        n:1 => 0\n" +
                          "    },\n" +
-                         "    field08 => " + 0b1101110111010101_0000000_101101110100000_10_1L + " {\n" +
+                         "    field08 => " + 0b1_00000000000000000_1101110111010101_0000000_101101110100000_10_1L + " {\n" +
                          "        j2:1 => " + 0b1 + ",\n" +
                          "        k2:2 => " + 0b10 + ",\n" +
                          "        l2:22 => 23456,\n" +
-                         "        m2:33 => 56789\n" +
+                         "        m2:33 => 56789,\n" +
+                         "        n2:1 => true\n" +
                          "    }\n" +
                          "}@" + Long.toString(b.MEMORY.address(), 16),
                 b.toString());

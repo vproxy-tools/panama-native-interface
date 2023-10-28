@@ -61,17 +61,19 @@ struct BitField {
     uint64_t k : 2;
     uint64_t l : 22;
     uint64_t m : 33;
-    uint64_t : 6;
+    uint64_t n : 1;
+    uint64_t : 5;
 
     uint64_t j2 : 1;
     uint64_t k2 : 2;
     uint64_t l2 : 22;
     uint64_t m2 : 33;
-    uint64_t : 6;
+    uint64_t n2 : 1;
+    uint64_t : 5;
 
 };
 
-JNIEXPORT void JNICALL JavaCritical_io_vproxy_pni_test_BitField_set(BitField * self, uint8_t a, uint8_t a2, uint8_t b, uint8_t b2, uint16_t c, uint16_t c2, uint16_t d, uint16_t d2, uint16_t e, uint16_t e2, uint32_t f, uint32_t f2, uint32_t g, uint32_t g2, uint32_t h, uint32_t h2, uint32_t i, uint32_t i2, uint64_t j, uint64_t j2, uint64_t k, uint64_t k2, uint64_t l, uint64_t l2, uint64_t m, uint64_t m2);
+JNIEXPORT void JNICALL JavaCritical_io_vproxy_pni_test_BitField_set(BitField * self, uint8_t a, uint8_t a2, uint8_t b, uint8_t b2, uint16_t c, uint16_t c2, uint16_t d, uint16_t d2, uint16_t e, uint16_t e2, uint32_t f, uint32_t f2, uint32_t g, uint32_t g2, uint32_t h, uint32_t h2, uint32_t i, uint32_t i2, uint64_t j, uint64_t j2, uint64_t k, uint64_t k2, uint64_t l, uint64_t l2, uint64_t m, uint64_t m2, uint64_t n, uint64_t n2);
 JNIEXPORT int8_t JNICALL JavaCritical_io_vproxy_pni_test_BitField_a(BitField * self);
 JNIEXPORT int8_t JNICALL JavaCritical_io_vproxy_pni_test_BitField_a2(BitField * self);
 JNIEXPORT int8_t JNICALL JavaCritical_io_vproxy_pni_test_BitField_b(BitField * self);
@@ -98,10 +100,12 @@ JNIEXPORT int64_t JNICALL JavaCritical_io_vproxy_pni_test_BitField_l(BitField * 
 JNIEXPORT int64_t JNICALL JavaCritical_io_vproxy_pni_test_BitField_l2(BitField * self);
 JNIEXPORT int64_t JNICALL JavaCritical_io_vproxy_pni_test_BitField_m(BitField * self);
 JNIEXPORT int64_t JNICALL JavaCritical_io_vproxy_pni_test_BitField_m2(BitField * self);
+JNIEXPORT int64_t JNICALL JavaCritical_io_vproxy_pni_test_BitField_n(BitField * self);
+JNIEXPORT int64_t JNICALL JavaCritical_io_vproxy_pni_test_BitField_n2(BitField * self);
 
 #ifdef __cplusplus
 }
 #endif
 #endif // _Included_io_vproxy_pni_test_BitField
 // metadata.generator-version: pni test
-// sha256:f9cc26d3e197a240b96674dcc7f7b7c216e0f0b77da42db4f52c543aa76174e4
+// sha256:ecb48a42aaf73f90f09db4662941ca36dffd49cd59cd46fb14c49d657a5580ef

@@ -21,7 +21,7 @@ extern "C" {
 PNIEnvExpand(GCCompatibilityBitField, GCCompatibilityBitField *)
 PNIBufExpand(GCCompatibilityBitField, GCCompatibilityBitField, 64)
 
-JNIEXPORT void JNICALL JavaCritical_io_vproxy_pni_test_GCCompatibilityBitField_set(GCCompatibilityBitField * self, uint8_t a, uint8_t a2, uint8_t b, uint8_t b2, uint16_t c, uint16_t c2, uint16_t d, uint16_t d2, uint16_t e, uint16_t e2, uint32_t f, uint32_t f2, uint32_t g, uint32_t g2, uint32_t h, uint32_t h2, uint32_t i, uint32_t i2, uint64_t j, uint64_t j2, uint64_t k, uint64_t k2, uint64_t l, uint64_t l2, uint64_t m, uint64_t m2);
+JNIEXPORT void JNICALL JavaCritical_io_vproxy_pni_test_GCCompatibilityBitField_set(GCCompatibilityBitField * self, uint8_t a, uint8_t a2, uint8_t b, uint8_t b2, uint16_t c, uint16_t c2, uint16_t d, uint16_t d2, uint16_t e, uint16_t e2, uint32_t f, uint32_t f2, uint32_t g, uint32_t g2, uint32_t h, uint32_t h2, uint32_t i, uint32_t i2, uint64_t j, uint64_t j2, uint64_t k, uint64_t k2, uint64_t l, uint64_t l2, uint64_t m, uint64_t m2, uint64_t n, uint64_t n2);
 JNIEXPORT int8_t JNICALL JavaCritical_io_vproxy_pni_test_GCCompatibilityBitField_a(GCCompatibilityBitField * self);
 JNIEXPORT int8_t JNICALL JavaCritical_io_vproxy_pni_test_GCCompatibilityBitField_a2(GCCompatibilityBitField * self);
 JNIEXPORT int8_t JNICALL JavaCritical_io_vproxy_pni_test_GCCompatibilityBitField_b(GCCompatibilityBitField * self);
@@ -48,10 +48,12 @@ JNIEXPORT int64_t JNICALL JavaCritical_io_vproxy_pni_test_GCCompatibilityBitFiel
 JNIEXPORT int64_t JNICALL JavaCritical_io_vproxy_pni_test_GCCompatibilityBitField_l2(GCCompatibilityBitField * self);
 JNIEXPORT int64_t JNICALL JavaCritical_io_vproxy_pni_test_GCCompatibilityBitField_m(GCCompatibilityBitField * self);
 JNIEXPORT int64_t JNICALL JavaCritical_io_vproxy_pni_test_GCCompatibilityBitField_m2(GCCompatibilityBitField * self);
+JNIEXPORT int64_t JNICALL JavaCritical_io_vproxy_pni_test_GCCompatibilityBitField_n(GCCompatibilityBitField * self);
+JNIEXPORT int64_t JNICALL JavaCritical_io_vproxy_pni_test_GCCompatibilityBitField_n2(GCCompatibilityBitField * self);
 
 #ifdef __cplusplus
 }
 #endif
 #endif // _Included_io_vproxy_pni_test_GCCompatibilityBitField
 // metadata.generator-version: pni test
-// sha256:262482724164f720940cdd4d9d6ab5fdfc779f93e8dde0b5234cd8082967e11a
+// sha256:d5d65041010a19c41d5b07e30ad963770a83444b9c293443955b820299dda23e
