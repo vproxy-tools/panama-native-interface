@@ -434,7 +434,29 @@ The shared library file must be placed in `-Djava.library.path` for Java to load
 
 <details open><summary>Click to reveal/hide</summary>
 
-### 1. Define template classes
+### 1. Dependency
+
+**gradle**
+
+```groovy
+dependencies {
+    implementation "io.vproxy:pni-api-jdk21:21.0.0.17"
+}
+```
+
+**maven**
+
+```xml
+<dependencies>
+  <dependency>
+    <groupId>io.vproxy</groupId>
+    <artifactId>pni-api-jdk21</artifactId>
+    <version>21.0.0.17</version>
+  </dependency>
+</dependencies>
+```
+
+### 2. Define template classes
 
 For performance concern, simple POJOs are not directly converted to/from their native representations,  
 but users can define `template` POJO classes, and then automatically generate both user-friendly and native-friendly Java classes.
@@ -470,7 +492,7 @@ interface SampleFunctions {
 }
 ```
 
-### 2. Add methods to template classes
+### 3. Add methods to template classes
 
 Methods defined in template classes will also automatically result in methods in Java and functions in C.
 
@@ -480,7 +502,7 @@ You can add throws list to the method if the native code is expected to raise ex
 
 It's recommended to define methods in template classes as `abstract`.
 
-### 3. Generate Java and C code
+### 4. Generate Java and C code
 
 ```shell
 java -jar pni.jar \
@@ -508,7 +530,7 @@ Some compilation flags can be provided via `-f<flag-name>[=<value>]`. See `-verb
 You may also use the `Generator` class programmatically to achieve the same effect as using the command line tool.  
 You may refer to: chapter `How to bundle into a Gradle project`, section `Add a Gradle task to run the code generator`.
 
-### 4. Write native implementation
+### 5. Write native implementation
 
 **if `@Style` is NOT annotated or is `@Style(pni)`**: (`JNI-like` Style Function)
 
@@ -562,7 +584,7 @@ If the method's return type requires memory allocation, the generated C function
 You should set `env->return_ = the_extra_variable` if you need to return the value, or `env->return_ = NULL` if you want to return `NULL`.
 For `Critical` style functions, you can simply return the extra variable or return `NULL`.
 
-### 5. Use generated Java types
+### 6. Use generated Java types
 
 All generated Java classes have getters for all fields, and setters for all non-embedded fields (struct/union/array),
 as well as methods defined in the templates.  
@@ -583,6 +605,61 @@ You can define your own memory pool via `PooledAllocator.setXxxProvider(...)`.
 
 The default behavior for `Pooled` allocators when custom allocator is not present, is the same as `Confined` allocators.  
 The default behavior for `ConcurrentPooled` allocators is the same as `Shared` allocators.
+
+### 7. Graal Native Image
+
+Extra dependencies should be added:
+
+**gradle**
+
+```groovy
+dependencies {
+    // ...
+
+    implementation "io.vproxy:pni-api-graal:21.0.0.17"
+    compileOnly "io.vproxy:graal-sdk-mock-nativeimage:1.2.1"
+    runtimeOnly "io.vproxy:graal-sdk-mock-runtime:1.2.1"
+}
+```
+
+**maven**
+
+```xml
+<dependencies>
+  <!-- ... -->
+
+  <dependency>
+    <groupId>io.vproxy</groupId>
+    <artifactId>pni-api-graal</artifactId>
+    <version>21.0.0.17</version>
+  </dependency>
+  <dependency>
+    <groupId>io.vproxy</groupId>
+    <artifactId>graal-sdk-mock-nativeimage</artifactId>
+    <version>1.2.1</version>
+    <scope>provided</scope>
+  </dependency>
+  <dependency>
+    <groupId>io.vproxy</groupId>
+    <artifactId>graal-sdk-mock-runtime</artifactId>
+    <version>1.2.1</version>
+    <scope>runtime</scope>
+  </dependency>
+</dependencies>
+```
+
+Currently native-image doesn't support Panama upcall, but the native-image provides `CEntryPoint` as an alternative.  
+Note that the native-image `CEntryPoint` upcall performance is lower comparing to the Panama upcall.
+
+Please pay additional attention when using the native-image:
+
+1. You can check whether the code is running in Graal native-image or in a normal JRE by `ImageInfoDelegate.inImageCode()`
+2. `GraalUtils.init()` must be called at the beginning of your application.
+3. `GraalUtils.setThread()` must be called when a new thread is spawn. This method can be safely called for multiple times, which is useful if you are using a thread pool and don't know whether the thread is initialized.
+4. When compiling the C code, an additional compiler option `-DPNI_GRAAL=1` must be added.
+5. If the upcall happens on a non java thread, `SetPNIGraalThread(isolate_thread)` must be called before the upcall inside the C code.
+
+To create an `IsolateThread` in the C code, you can firstly use `GetPNIGraalIsolate()` to retrieve the `Isolate` object for the currently running native-image, and then use `graal_attach_thread(isolate, &isolate_thread)` to attach current thread and create the `IsolateThread` object.
 
 </details>
 
