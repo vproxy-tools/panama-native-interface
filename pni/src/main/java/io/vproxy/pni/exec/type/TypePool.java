@@ -24,7 +24,7 @@ public class TypePool {
 
         record(AnnoAlignTypeInfo.get());
         record(AnnoAlwaysAlignedTypeInfo.get());
-        record(AnnoBitFieldTypeInfo.get());
+        record(AnnoBitTypeInfo.get());
         record(AnnoDowncallTypeInfo.get());
         record(AnnoGenerateMemberTypeInfo.get());
         record(AnnoImplTypeInfo.get());

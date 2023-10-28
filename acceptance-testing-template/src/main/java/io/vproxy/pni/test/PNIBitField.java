@@ -6,48 +6,58 @@ import java.lang.foreign.MemorySegment;
 
 @Struct
 abstract class PNIBitField {
-    @BitField(
-        name = {"a", "b"},
-        bit = {1, 3}
-    )
+    @Bit({
+        @Bit.Field(name = "a", bits = 1),
+        @Bit.Field(name = "b", bits = 3),
+    })
     @Unsigned byte field01;
-    @BitField(
-        name = {"a2", "b2"},
-        bit = {1, 3}
-    )
+    @Bit({
+        @Bit.Field(name = "a2", bits = 1),
+        @Bit.Field(name = "b2", bits = 3),
+    })
     @Unsigned byte field02;
     MemorySegment sep01;
-    @BitField(
-        name = {"c", "d", "e"},
-        bit = {2, 3, 4}
-    )
+    @Bit({
+        @Bit.Field(name = "c", bits = 2),
+        @Bit.Field(name = "d", bits = 3),
+        @Bit.Field(name = "e", bits = 4),
+    })
     @Unsigned short field03;
-    @BitField(
-        name = {"c2", "d2", "e2"},
-        bit = {2, 3, 4}
-    )
+    @Bit({
+        @Bit.Field(name = "c2", bits = 2),
+        @Bit.Field(name = "d2", bits = 3),
+        @Bit.Field(name = "e2", bits = 4),
+    })
     @Unsigned short field04;
     MemorySegment sep02;
-    @BitField(
-        name = {"f", "g", "h", "i"},
-        bit = {5, 6, 7, 8}
-    )
+    @Bit({
+        @Bit.Field(name = "f", bits = 5),
+        @Bit.Field(name = "g", bits = 6),
+        @Bit.Field(name = "h", bits = 7),
+        @Bit.Field(name = "i", bits = 8),
+    })
     @Unsigned int field05;
-    @BitField(
-        name = {"f2", "g2", "h2", "i2"},
-        bit = {5, 6, 7, 8}
-    )
+    @Bit({
+        @Bit.Field(name = "f2", bits = 5),
+        @Bit.Field(name = "g2", bits = 6),
+        @Bit.Field(name = "h2", bits = 7),
+        @Bit.Field(name = "i2", bits = 8),
+    })
     @Unsigned int field06;
     MemorySegment sep03;
-    @BitField(
-        name = {"j", "k", "l", "m"},
-        bit = {1, 2, 22, 33}
-    )
+    @Bit({
+        @Bit.Field(name = "j", bits = 1),
+        @Bit.Field(name = "k", bits = 2),
+        @Bit.Field(name = "l", bits = 22),
+        @Bit.Field(name = "m", bits = 33),
+    })
     @Unsigned long field07;
-    @BitField(
-        name = {"j2", "k2", "l2", "m2"},
-        bit = {1, 2, 22, 33}
-    )
+    @Bit({
+        @Bit.Field(name = "j2", bits = 1),
+        @Bit.Field(name = "k2", bits = 2),
+        @Bit.Field(name = "l2", bits = 22),
+        @Bit.Field(name = "m2", bits = 33),
+    })
     @Unsigned long field08;
 
     @Impl(

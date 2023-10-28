@@ -7,10 +7,12 @@ import io.vproxy.pni.exec.internal.PointerInfo;
 import io.vproxy.pni.exec.internal.Utils;
 import io.vproxy.pni.exec.internal.VarOpts;
 import io.vproxy.pni.exec.type.*;
+import org.objectweb.asm.tree.AnnotationNode;
 import org.objectweb.asm.tree.FieldNode;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class AstField {
     public final List<AstAnno> annos = new ArrayList<>();
@@ -54,17 +56,17 @@ public class AstField {
                 errors.add(path + ": invalid @Name(" + name + ")");
             }
         }
-        var bitfieldAnnoOpt = annos.stream().filter(a -> a.typeRef instanceof AnnoBitFieldTypeInfo).findFirst();
+        var bitfieldAnnoOpt = annos.stream().filter(a -> a.typeRef instanceof AnnoBitTypeInfo).findFirst();
         if (bitfieldAnnoOpt.isPresent()) {
             var infoLs = validateAndGetBitFieldInfo(path, errors);
             if (infoLs != null) {
                 int totalSize = 0;
                 for (var info : infoLs) {
                     if (!Utils.isValidName(info.name, false)) {
-                        errors.add(path + ": invalid @BitField name: " + info.name);
+                        errors.add(path + ": invalid @Bit.Field name: " + info.name);
                     }
                     if (info.bit < 1) {
-                        errors.add(path + ": invalid @BitField bit for " + info.name + ": " + info.bit);
+                        errors.add(path + ": invalid @Bit.Field bit for " + info.name + ": " + info.bit);
                     }
                     totalSize += info.bit;
                 }
@@ -79,11 +81,11 @@ public class AstField {
                     } else if (typeRef instanceof ByteTypeInfo) {
                         allowedSize = 8;
                     } else {
-                        errors.add(path + ": cannot use @BitField on " + typeRef.name() + " fields");
+                        errors.add(path + ": cannot use @Bit on " + typeRef.name() + " fields");
                     }
                 }
                 if (allowedSize > 0 && totalSize > allowedSize) {
-                    errors.add(path + ": invalid @BitField, bit size (" + totalSize + ") is larger than the field (" + allowedSize + ")");
+                    errors.add(path + ": invalid @Bit.Field, bit size (" + totalSize + ") is larger than the field (" + allowedSize + ")");
                 }
             }
         }
@@ -160,51 +162,53 @@ public class AstField {
     }
 
     private List<BitFieldInfo> validateAndGetBitFieldInfo(String path, List<String> errors) {
-        path = path + "#anno(io.vproxy.pni.annotation.BitField)";
-        var opt = annos.stream().filter(a -> a.typeRef instanceof AnnoBitFieldTypeInfo).findFirst();
+        path = path + "#anno(io.vproxy.pni.annotation.Bit)";
+        var opt = annos.stream().filter(a -> a.typeRef instanceof AnnoBitTypeInfo).findFirst();
         if (opt.isEmpty()) {
             return null;
         }
         var anno = opt.get();
-        var vNames = anno.values.stream().filter(v -> v.name.equals("name")).findFirst();
-        var vBits = anno.values.stream().filter(v -> v.name.equals("bit")).findFirst();
-        if (vNames.isEmpty() || vBits.isEmpty()) {
-            errors.add(path + ": annotation field(name or bit) not specified");
+        var valueOpt = anno.values.stream().filter(v -> v.name.equals("value")).findFirst();
+        if (valueOpt.isEmpty()) {
+            errors.add(path + ": annotation field(value) not specified");
             return null;
         }
-        if (!(vNames.get().value instanceof List) || !(vBits.get().value instanceof List)) {
-            errors.add(path + ": invalid type for annotation field(name or bit)");
+        var value = valueOpt.get().value;
+        if (!(value instanceof List)) {
+            errors.add(path + ": invalid annotation field(value): is not list");
             return null;
         }
         //noinspection rawtypes
-        var rNames = (List) vNames.get().value;
-        for (Object o : rNames) {
-            if (!(o instanceof String)) {
-                errors.add(path + ": name is not a list of strings");
+        var valueLs = (List) value;
+        for (var o : valueLs) {
+            if (!(o instanceof AnnotationNode)) {
+                errors.add(path + ": invalid annotation field(value): is not annotation list");
                 return null;
             }
         }
-        //noinspection rawtypes
-        var rBits = (List) vBits.get().value;
-        for (Object o : rBits) {
-            if (!(o instanceof Integer)) {
-                errors.add(path + ": bit is not a list of integers");
-                return null;
-            }
-        }
-        if (rNames.size() != rBits.size()) {
-            errors.add(path + ": name and bit length mismatch");
-            return null;
-        }
         //noinspection unchecked
-        var names = (List<String>) rNames;
-        //noinspection unchecked
-        var bits = (List<Integer>) rBits;
+        var annoLs = ((List<AnnotationNode>) valueLs).stream().map(AstAnno::new).collect(Collectors.toList());
         var ret = new ArrayList<BitFieldInfo>();
         int total = 0;
-        for (int i = 0; i < names.size(); ++i) {
-            int b = bits.get(i);
-            ret.add(new BitFieldInfo(names.get(i), total, b));
+        for (int i = 0; i < annoLs.size(); i++) {
+            var o = annoLs.get(i);
+            if (!o.type.desc.equals("Lio/vproxy/pni/annotation/Bit$Field;")) {
+                errors.add(path + ": invalid annotation field(value[" + i + "]): is not @Bit.Field");
+                return null;
+            }
+            var nOpt = o.values.stream().filter(v -> v.name.equals("name")).findFirst();
+            var vOpt = o.values.stream().filter(v -> v.name.equals("bits")).findFirst();
+            if (nOpt.isEmpty() || !(nOpt.get().value instanceof String)) {
+                errors.add(path + ": invalid annotation field(value[" + i + "]): invalid name");
+                return null;
+            }
+            if (vOpt.isEmpty() || !(vOpt.get().value instanceof Integer)) {
+                errors.add(path + ": invalid annotation field(value[" + i + "]): invalid value");
+                return null;
+            }
+            var n = (String) nOpt.get().value;
+            var b = (int) vOpt.get().value;
+            ret.add(new BitFieldInfo(n, total, b));
             total += b;
         }
         // check native type

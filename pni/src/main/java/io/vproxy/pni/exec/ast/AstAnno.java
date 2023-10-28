@@ -60,4 +60,11 @@ public class AstAnno {
             sb.append(")");
         }
     }
+
+    @Override
+    public String toString() {
+        var sb = new StringBuilder();
+        toString(sb, 0);
+        return sb.toString();
+    }
 }

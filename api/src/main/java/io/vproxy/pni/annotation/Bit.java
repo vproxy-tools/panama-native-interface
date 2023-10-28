@@ -7,8 +7,14 @@ import java.lang.annotation.Target;
 
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface BitField {
-    String[] name();
+public @interface Bit {
+    Field[] value();
 
-    int[] bit();
+    @Target({})
+    @Retention(RetentionPolicy.RUNTIME)
+    @interface Field {
+        String name();
+
+        int bits();
+    }
 }
