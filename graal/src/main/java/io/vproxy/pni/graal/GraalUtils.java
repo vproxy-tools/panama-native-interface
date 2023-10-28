@@ -36,6 +36,7 @@ public class GraalUtils {
         }
     }
 
+    private static volatile boolean initialized = false;
     private static volatile MethodHandle SetPNIGraalThread = null;
 
     public static void init() {
@@ -43,19 +44,39 @@ public class GraalUtils {
             return;
         }
 
-        if (SetPNIGraalThread == null) {
-            synchronized (GraalUtils.class) {
+        if (initialized) {
+            return;
+        }
+        synchronized (GraalUtils.class) {
+            if (initialized) {
+                return;
+            }
+
+            {
                 if (SetPNIGraalThread == null) {
                     PanamaUtils.loadLib();
                     SetPNIGraalThread = PanamaUtils.lookupPNICriticalFunction(new PNILinkOptions().setCritical(true),
                         void.class, "SetPNIGraalThread", MemorySegment.class);
                 }
             }
-        }
 
-        GraalHelper.setInvokeFunc(GraalPNIFunc.getInvokeFunctionPointer());
-        GraalHelper.setReleaseFunc(GraalPNIFunc.getReleaseFunctionPointer());
-        GraalHelper.setReleaseRef(GraalPNIRef.getReleaseFunctionPointer());
+            var SetPNIGraalIsolate = PanamaUtils.lookupPNICriticalFunction(new PNILinkOptions().setCritical(true),
+                void.class, "SetPNIGraalIsolate", MemorySegment.class);
+
+            var isolate = CurrentIsolate.getIsolate();
+            var isolateMem = MemorySegment.ofAddress(isolate.rawValue());
+            try {
+                SetPNIGraalIsolate.invoke(isolateMem);
+            } catch (Throwable e) {
+                throw new RuntimeException(e);
+            }
+
+            GraalHelper.setInvokeFunc(GraalPNIFunc.getInvokeFunctionPointer());
+            GraalHelper.setReleaseFunc(GraalPNIFunc.getReleaseFunctionPointer());
+            GraalHelper.setReleaseRef(GraalPNIRef.getReleaseFunctionPointer());
+
+            initialized = true;
+        }
     }
 
     public static CEntryPointLiteral<CFunctionPointer> defineCFunctionByName(@SuppressWarnings("unused") PNILinkOptions opts,

@@ -137,6 +137,8 @@ public class StaticFileGenerator {
         "#if PNI_GRAAL\n" +
         "JNIEXPORT void  JNICALL SetPNIGraalThread(void* thread);\n" +
         "JNIEXPORT void* JNICALL GetPNIGraalThread(void);\n" +
+        "JNIEXPORT void  JNICALL SetPNIGraalIsolate(void* isolate);\n" +
+        "JNIEXPORT void* JNICALL GetPNIGraalIsolate(void);\n" +
         "#endif // PNI_GRAAL\n" +
         "\n" +
         "typedef struct PNIFunc {\n" +
@@ -249,6 +251,7 @@ public class StaticFileGenerator {
         "#if PNI_GRAAL\n" +
         "\n" +
         "static __thread void* _graalThread;\n" +
+        "static void* _graalIsolate;\n" +
         "\n" +
         "JNIEXPORT void JNICALL SetPNIGraalThread(void* thread) {\n" +
         "    _graalThread = thread;\n" +
@@ -256,6 +259,14 @@ public class StaticFileGenerator {
         "\n" +
         "JNIEXPORT void* JNICALL GetPNIGraalThread(void) {\n" +
         "    return _graalThread;\n" +
+        "}\n" +
+        "\n" +
+        "JNIEXPORT void JNICALL SetPNIGraalIsolate(void* isolate) {\n" +
+        "    _graalIsolate = isolate;\n" +
+        "}\n" +
+        "\n" +
+        "JNIEXPORT void* JNICALL GetPNIGraalIsolate(void) {\n" +
+        "    return _graalIsolate;\n" +
         "}\n" +
         "\n" +
         "#endif // PNI_GRAAL\n" +
