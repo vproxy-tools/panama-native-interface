@@ -94,6 +94,6 @@ public class AstParam {
     }
 
     public ParamOpts paramOpts() {
-        return ParamOpts.of(typeRef.allocationInfoForParam(varOpts()).requireAllocator());
+        return ParamOpts.of(typeRef.allocationInfoForParam(varOpts()).requireJavaImplicitAllocator());
     }
 }

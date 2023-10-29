@@ -192,7 +192,7 @@ public class ClassTypeInfo extends TypeInfo {
 
     @Override
     public AllocationForReturnedValue allocationInfoForReturnValue(VarOpts opts) {
-        return AllocationForReturnedValue.ofExtraAllocator(cls.fullName() + ".LAYOUT");
+        return AllocationForReturnedValue.ofJavaMethodExtraParameter(cls.fullName() + ".LAYOUT");
     }
 
     @Override

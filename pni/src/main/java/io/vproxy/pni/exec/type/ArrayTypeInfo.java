@@ -335,7 +335,7 @@ public class ArrayTypeInfo extends TypeInfo {
     @Override
     public AllocationForReturnedValue allocationInfoForReturnValue(VarOpts opts) {
         if (opts.isCritical()) {
-            return AllocationForReturnedValue.ofPooledAllocator("PNIBuf.LAYOUT");
+            return AllocationForReturnedValue.ofJavaImplicitAllocator("PNIBuf.LAYOUT");
         }
         return super.allocationInfoForReturnValue(opts);
     }
@@ -370,7 +370,7 @@ public class ArrayTypeInfo extends TypeInfo {
             return AllocationForParam.noAllocationRequired();
         }
         if (opts.isPointerGeneral()) {
-            return AllocationForParam.ofPooledAllocator();
+            return AllocationForParam.ofJavaImplicitAllocator();
         }
         return AllocationForParam.noAllocationRequired();
     }

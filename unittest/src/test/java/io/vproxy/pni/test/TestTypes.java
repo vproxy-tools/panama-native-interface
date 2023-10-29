@@ -1004,7 +1004,7 @@ public class TestTypes {
             info.convertParamToInvokeExactArgument("a", paramVarOpts(0)));
         assertEquals(AllocationForReturnedValue.noAllocationRequired(),
             info.allocationInfoForReturnValue(returnVarOpts(0)));
-        assertEquals(AllocationForReturnedValue.ofPooledAllocator("PNIBuf.LAYOUT"),
+        assertEquals(AllocationForReturnedValue.ofJavaImplicitAllocator("PNIBuf.LAYOUT"),
             info.allocationInfoForReturnValue(returnVarOpts(CRITICAL)));
         assertEquals(AllocationForReturnedValue.noAllocationRequired(),
             info.allocationInfoForUpcallInterfaceReturnValue(returnVarOpts(0)));
@@ -1019,9 +1019,9 @@ public class TestTypes {
                 var RES_SEG = new PNIBuf(RESULT);
                 return RES_SEG.toByteBuffer();
                 """, Utils.sbHelper(sb -> info.convertInvokeExactReturnValueToJava(sb, 0, returnVarOpts(CRITICAL))));
-        assertEquals(AllocationForParam.ofPooledAllocator(),
+        assertEquals(AllocationForParam.ofJavaImplicitAllocator(),
             info.allocationInfoForParam(paramVarOpts(POINTER)));
-        assertEquals(AllocationForParam.ofPooledAllocator(),
+        assertEquals(AllocationForParam.ofJavaImplicitAllocator(),
             info.allocationInfoForParam(paramVarOpts(0)));
         assertEquals(AllocationForParam.noAllocationRequired(),
             info.allocationInfoForParam(paramVarOpts(RAW)));
@@ -1136,9 +1136,9 @@ public class TestTypes {
         assertEquals("MemorySegment.class", info.methodHandleTypeForUpcall(paramVarOpts(0)));
         assertEquals("(MemorySegment) (a == null ? MemorySegment.NULL : a.MEMORY)",
             info.convertParamToInvokeExactArgument("a", paramVarOpts(0)));
-        assertEquals(AllocationForReturnedValue.ofExtraAllocator("a.b.Cls.LAYOUT"),
+        assertEquals(AllocationForReturnedValue.ofJavaMethodExtraParameter("a.b.Cls.LAYOUT"),
             info.allocationInfoForReturnValue(returnVarOpts(0)));
-        assertEquals(AllocationForReturnedValue.ofExtraAllocator("a.b.Cls.LAYOUT"),
+        assertEquals(AllocationForReturnedValue.ofJavaMethodExtraParameter("a.b.Cls.LAYOUT"),
             info.allocationInfoForUpcallInterfaceReturnValue(returnVarOpts(0)));
         assertEquals(
             """
@@ -1265,7 +1265,7 @@ public class TestTypes {
             info.convertParamToInvokeExactArgument("a", paramVarOpts(RAW)));
         assertEquals(AllocationForReturnedValue.noAllocationRequired(),
             info.allocationInfoForReturnValue(returnVarOpts(0)));
-        assertEquals(AllocationForReturnedValue.ofPooledAllocator("PNIBuf.LAYOUT"),
+        assertEquals(AllocationForReturnedValue.ofJavaImplicitAllocator("PNIBuf.LAYOUT"),
             info.allocationInfoForReturnValue(returnVarOpts(CRITICAL)));
         assertEquals(AllocationForReturnedValue.noAllocationRequired(),
             info.allocationInfoForUpcallInterfaceReturnValue(returnVarOpts(0)));
@@ -1284,7 +1284,7 @@ public class TestTypes {
                 """, Utils.sbHelper(sb -> info.convertInvokeExactReturnValueToJava(sb, 0, returnVarOpts(CRITICAL))));
         assertEquals(AllocationForParam.noAllocationRequired(),
             info.allocationInfoForParam(paramVarOpts(RAW)));
-        assertEquals(AllocationForParam.ofPooledAllocator(),
+        assertEquals(AllocationForParam.ofJavaImplicitAllocator(),
             info.allocationInfoForParam(paramVarOpts(0)));
         assertEquals(AllocationForParam.noAllocationRequired(),
             info.allocationInfoForParam(fieldVarOpts(LEN)));
@@ -1393,7 +1393,7 @@ public class TestTypes {
             info.convertParamToInvokeExactArgument("a", paramVarOpts(RAW)));
         assertEquals(AllocationForReturnedValue.noAllocationRequired(),
             info.allocationInfoForReturnValue(returnVarOpts(0)));
-        assertEquals(AllocationForReturnedValue.ofPooledAllocator("PNIBuf.LAYOUT"),
+        assertEquals(AllocationForReturnedValue.ofJavaImplicitAllocator("PNIBuf.LAYOUT"),
             info.allocationInfoForReturnValue(returnVarOpts(CRITICAL)));
         assertEquals(AllocationForReturnedValue.noAllocationRequired(),
             info.allocationInfoForUpcallInterfaceReturnValue(returnVarOpts(0)));
@@ -1412,7 +1412,7 @@ public class TestTypes {
                 """, Utils.sbHelper(sb -> info.convertInvokeExactReturnValueToJava(sb, 0, returnVarOpts(CRITICAL))));
         assertEquals(AllocationForParam.noAllocationRequired(),
             info.allocationInfoForParam(paramVarOpts(RAW)));
-        assertEquals(AllocationForParam.ofPooledAllocator(),
+        assertEquals(AllocationForParam.ofJavaImplicitAllocator(),
             info.allocationInfoForParam(paramVarOpts(0)));
         assertEquals(AllocationForParam.noAllocationRequired(),
             info.allocationInfoForParam(fieldVarOpts(LEN)));
@@ -1521,7 +1521,7 @@ public class TestTypes {
             info.convertParamToInvokeExactArgument("a", paramVarOpts(RAW)));
         assertEquals(AllocationForReturnedValue.noAllocationRequired(),
             info.allocationInfoForReturnValue(returnVarOpts(0)));
-        assertEquals(AllocationForReturnedValue.ofPooledAllocator("PNIBuf.LAYOUT"),
+        assertEquals(AllocationForReturnedValue.ofJavaImplicitAllocator("PNIBuf.LAYOUT"),
             info.allocationInfoForReturnValue(returnVarOpts(CRITICAL)));
         assertEquals(AllocationForReturnedValue.noAllocationRequired(),
             info.allocationInfoForUpcallInterfaceReturnValue(returnVarOpts(0)));
@@ -1540,7 +1540,7 @@ public class TestTypes {
                 """, Utils.sbHelper(sb -> info.convertInvokeExactReturnValueToJava(sb, 0, returnVarOpts(CRITICAL))));
         assertEquals(AllocationForParam.noAllocationRequired(),
             info.allocationInfoForParam(paramVarOpts(RAW)));
-        assertEquals(AllocationForParam.ofPooledAllocator(),
+        assertEquals(AllocationForParam.ofJavaImplicitAllocator(),
             info.allocationInfoForParam(paramVarOpts(0)));
         assertEquals(AllocationForParam.noAllocationRequired(),
             info.allocationInfoForParam(fieldVarOpts(LEN)));
@@ -1654,7 +1654,7 @@ public class TestTypes {
             info.convertParamToInvokeExactArgument("a", paramVarOpts(RAW)));
         assertEquals(AllocationForReturnedValue.noAllocationRequired(),
             info.allocationInfoForReturnValue(returnVarOpts(0)));
-        assertEquals(AllocationForReturnedValue.ofPooledAllocator("PNIBuf.LAYOUT"),
+        assertEquals(AllocationForReturnedValue.ofJavaImplicitAllocator("PNIBuf.LAYOUT"),
             info.allocationInfoForReturnValue(returnVarOpts(CRITICAL)));
         assertEquals(AllocationForReturnedValue.noAllocationRequired(),
             info.allocationInfoForUpcallInterfaceReturnValue(returnVarOpts(0)));
@@ -1673,7 +1673,7 @@ public class TestTypes {
                 """, Utils.sbHelper(sb -> info.convertInvokeExactReturnValueToJava(sb, 0, returnVarOpts(CRITICAL))));
         assertEquals(AllocationForParam.noAllocationRequired(),
             info.allocationInfoForParam(paramVarOpts(RAW)));
-        assertEquals(AllocationForParam.ofPooledAllocator(),
+        assertEquals(AllocationForParam.ofJavaImplicitAllocator(),
             info.allocationInfoForParam(paramVarOpts(0)));
         assertEquals(AllocationForParam.noAllocationRequired(),
             info.allocationInfoForParam(fieldVarOpts(LEN)));

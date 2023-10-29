@@ -185,11 +185,10 @@ public class GraalNativeImageFeatureFileGenerator {
                 sb.append(" /* ").append(p.name).append(" */");
             }
             var returnAllocation = method.returnTypeRef.allocationInfoForReturnValue(method.varOptsForReturn());
-            if (returnAllocation.requireAllocator() && !method.noAlloc()) {
+            if (returnAllocation.haveAdditionalAllocatedMemory() && !method.noAlloc()) {
                 if (needComma) {
                     sb.append(", ");
                 }
-                //noinspection UnusedAssignment
                 needComma = true;
                 sb.append("MemorySegment.class /* return */");
             }

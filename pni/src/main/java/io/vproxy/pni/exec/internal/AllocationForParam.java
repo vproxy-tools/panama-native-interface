@@ -1,7 +1,7 @@
 package io.vproxy.pni.exec.internal;
 
 public class AllocationForParam {
-    private final boolean pooled;
+    private final boolean requireJavaImplicitAllocator;
 
     private static final AllocationForParam NO_ALLOCATION_REQUIRED = new AllocationForParam(false);
 
@@ -9,20 +9,16 @@ public class AllocationForParam {
         return NO_ALLOCATION_REQUIRED;
     }
 
-    private AllocationForParam(boolean pooled) {
-        this.pooled = pooled;
+    private AllocationForParam(boolean requireJavaImplicitAllocator) {
+        this.requireJavaImplicitAllocator = requireJavaImplicitAllocator;
     }
 
-    public static AllocationForParam ofPooledAllocator() {
+    public static AllocationForParam ofJavaImplicitAllocator() {
         return new AllocationForParam(true);
     }
 
-    public boolean requireAllocator() {
-        return pooled;
-    }
-
-    public boolean requirePooledAllocator() {
-        return pooled;
+    public boolean requireJavaImplicitAllocator() {
+        return requireJavaImplicitAllocator;
     }
 
     @Override
@@ -32,11 +28,11 @@ public class AllocationForParam {
 
         AllocationForParam that = (AllocationForParam) o;
 
-        return pooled == that.pooled;
+        return requireJavaImplicitAllocator == that.requireJavaImplicitAllocator;
     }
 
     @Override
     public int hashCode() {
-        return (pooled ? 1 : 0);
+        return (requireJavaImplicitAllocator ? 1 : 0);
     }
 }

@@ -390,7 +390,7 @@ public class CFileGenerator {
                 get(p).generateC(sb, 0);
             }
             var returnAllocation = method.returnTypeRef.allocationInfoForReturnValue(method.varOptsForReturn(upcall));
-            if (returnAllocation.requireAllocator() && !method.noAlloc()) {
+            if (returnAllocation.haveAdditionalAllocatedMemory() && !method.noAlloc()) {
                 if (!isFirst) {
                     sb.append(", ");
                 }

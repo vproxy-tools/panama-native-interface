@@ -655,7 +655,7 @@ public class JavaFileGenerator {
                 sb.append(" /* ").append(p.name).append(" */");
             }
             var returnAllocation = method.returnTypeRef.allocationInfoForReturnValue(method.varOptsForReturn());
-            if (returnAllocation.requireAllocator() && !method.noAlloc()) {
+            if (returnAllocation.haveAdditionalAllocatedMemory() && !method.noAlloc()) {
                 sb.append(", MemorySegment.class /* return */");
             }
             sb.append(");\n");
@@ -690,7 +690,7 @@ public class JavaFileGenerator {
                 isFirst = false;
                 sb.append("PNIEnv ENV");
             }
-            var paramNeedsAllocator = returnAllocation.requirePooledAllocator();
+            var paramNeedsAllocator = returnAllocation.requireJavaImplicitAllocator();
             for (var p : method.params) {
                 if (isFirst) {
                     isFirst = false;
@@ -703,7 +703,7 @@ public class JavaFileGenerator {
                     paramNeedsAllocator = true;
                 }
             }
-            if (returnAllocation.requireExtraParameterForJavaDowncall() && !method.noAlloc()) {
+            if (returnAllocation.requireJavaMethodExtraParameter() && !method.noAlloc()) {
                 if (!isFirst) {
                     sb.append(", ");
                 }
@@ -782,13 +782,13 @@ public class JavaFileGenerator {
                 }
                 get(p).generateConvert(sb, 0);
             }
-            if (returnAllocation.requireExtraParameterForJavaDowncall() && !method.noAlloc()) {
+            if (returnAllocation.requireJavaMethodExtraParameter() && !method.noAlloc()) {
                 if (!isFirst) {
                     sb.append(", ");
                 }
                 isFirst = false;
                 sb.append("ALLOCATOR.allocate(").append(returnAllocation.layout()).append(")");
-            } else if (returnAllocation.requirePooledAllocator()) {
+            } else if (returnAllocation.requireJavaImplicitAllocator()) {
                 if (!isFirst) {
                     sb.append(", ");
                 }
@@ -866,7 +866,7 @@ public class JavaFileGenerator {
             }
             var returnAllocation = method.returnTypeRef.allocationInfoForReturnValue(method.varOptsForReturn(true));
             var interfaceReturnAllocation = method.returnTypeRef.allocationInfoForUpcallInterfaceReturnValue(method.varOptsForReturn(true));
-            if (returnAllocation.requireAllocator() && !method.noAlloc()) {
+            if (returnAllocation.haveAdditionalAllocatedMemory() && !method.noAlloc()) {
                 if (isFirst) {
                     isFirst = false;
                 } else {
@@ -912,7 +912,7 @@ public class JavaFileGenerator {
                 var p = method.params.get(i);
                 get(p).generateUpcallConvert(sb, indent + 8);
             }
-            if (interfaceReturnAllocation.requireAllocator() && !method.noAlloc()) {
+            if (interfaceReturnAllocation.haveAdditionalAllocatedMemory() && !method.noAlloc()) {
                 if (!isFirst) {
                     sb.append(",");
                 }
@@ -964,7 +964,7 @@ public class JavaFileGenerator {
                 get(p).generateUpcallInterfaceParam(sb, 0);
             }
             var returnAllocation = method.returnTypeRef.allocationInfoForUpcallInterfaceReturnValue(method.varOptsForReturn(true));
-            if (returnAllocation.requireAllocator() && !method.noAlloc()) {
+            if (returnAllocation.haveAdditionalAllocatedMemory() && !method.noAlloc()) {
                 if (!isFirst) {
                     sb.append(", ");
                 }
@@ -987,7 +987,7 @@ public class JavaFileGenerator {
                 sb.append(", ");
                 get(p).generateUpcallParamClass(sb, 0);
             }
-            if (method.returnTypeRef.allocationInfoForReturnValue(method.varOptsForReturn(true)).requireAllocator()
+            if (method.returnTypeRef.allocationInfoForReturnValue(method.varOptsForReturn(true)).haveAdditionalAllocatedMemory()
                 && !method.noAlloc()) {
                 sb.append(", ");
                 sb.append("MemorySegment.class");
@@ -1009,7 +1009,7 @@ public class JavaFileGenerator {
                 sb.append(", ");
                 get(p).generateMethodHandleForUpcall(sb, 0);
             }
-            if (method.returnTypeRef.allocationInfoForReturnValue(method.varOptsForReturn(true)).requireAllocator()
+            if (method.returnTypeRef.allocationInfoForReturnValue(method.varOptsForReturn(true)).haveAdditionalAllocatedMemory()
                 && !method.noAlloc()) {
                 sb.append(", ");
                 sb.append("MemorySegment.class");

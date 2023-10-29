@@ -3,8 +3,8 @@ package io.vproxy.pni.exec.internal;
 import java.util.Objects;
 
 public class AllocationForReturnedValue {
-    private final String extra;
-    private final String pooled;
+    private final String requireJavaMethodExtraParameter;
+    private final String requireJavaImplicitAllocator;
 
     private static final AllocationForReturnedValue NO_ALLOCATION_REQUIRED = new AllocationForReturnedValue(null, null);
 
@@ -12,36 +12,36 @@ public class AllocationForReturnedValue {
         return NO_ALLOCATION_REQUIRED;
     }
 
-    private AllocationForReturnedValue(String extra, String pooled) {
-        if (extra != null && pooled != null) {
+    private AllocationForReturnedValue(String requireJavaMethodExtraParameter, String requireJavaImplicitAllocator) {
+        if (requireJavaMethodExtraParameter != null && requireJavaImplicitAllocator != null) {
             throw new IllegalArgumentException();
         }
-        this.extra = extra;
-        this.pooled = pooled;
+        this.requireJavaMethodExtraParameter = requireJavaMethodExtraParameter;
+        this.requireJavaImplicitAllocator = requireJavaImplicitAllocator;
     }
 
-    public static AllocationForReturnedValue ofExtraAllocator(String layout) {
+    public static AllocationForReturnedValue ofJavaMethodExtraParameter(String layout) {
         return new AllocationForReturnedValue(layout, null);
     }
 
-    public static AllocationForReturnedValue ofPooledAllocator(String layout) {
+    public static AllocationForReturnedValue ofJavaImplicitAllocator(String layout) {
         return new AllocationForReturnedValue(null, layout);
     }
 
-    public boolean requireAllocator() {
-        return extra != null || pooled != null;
+    public boolean haveAdditionalAllocatedMemory() {
+        return requireJavaMethodExtraParameter != null || requireJavaImplicitAllocator != null;
     }
 
-    public boolean requireExtraParameterForJavaDowncall() {
-        return extra != null;
+    public boolean requireJavaMethodExtraParameter() {
+        return requireJavaMethodExtraParameter != null;
     }
 
-    public boolean requirePooledAllocator() {
-        return pooled != null;
+    public boolean requireJavaImplicitAllocator() {
+        return requireJavaImplicitAllocator != null;
     }
 
     public String layout() {
-        return extra != null ? extra : pooled;
+        return requireJavaMethodExtraParameter != null ? requireJavaMethodExtraParameter : requireJavaImplicitAllocator;
     }
 
     @Override
@@ -51,14 +51,14 @@ public class AllocationForReturnedValue {
 
         AllocationForReturnedValue that = (AllocationForReturnedValue) o;
 
-        if (!Objects.equals(extra, that.extra)) return false;
-        return Objects.equals(pooled, that.pooled);
+        if (!Objects.equals(requireJavaMethodExtraParameter, that.requireJavaMethodExtraParameter)) return false;
+        return Objects.equals(requireJavaImplicitAllocator, that.requireJavaImplicitAllocator);
     }
 
     @Override
     public int hashCode() {
-        int result = extra != null ? extra.hashCode() : 0;
-        result = 31 * result + (pooled != null ? pooled.hashCode() : 0);
+        int result = requireJavaMethodExtraParameter != null ? requireJavaMethodExtraParameter.hashCode() : 0;
+        result = 31 * result + (requireJavaImplicitAllocator != null ? requireJavaImplicitAllocator.hashCode() : 0);
         return result;
     }
 }

@@ -139,7 +139,7 @@ public class ByteBufferTypeInfo extends BuiltInReferenceTypeInfo {
     @Override
     public AllocationForReturnedValue allocationInfoForReturnValue(VarOpts opts) {
         if (opts.isCritical()) {
-            return AllocationForReturnedValue.ofPooledAllocator("PNIBuf.LAYOUT");
+            return AllocationForReturnedValue.ofJavaImplicitAllocator("PNIBuf.LAYOUT");
         }
         return super.allocationInfoForReturnValue(opts);
     }
@@ -162,7 +162,7 @@ public class ByteBufferTypeInfo extends BuiltInReferenceTypeInfo {
     @Override
     public AllocationForParam allocationInfoForParam(VarOpts opts) {
         if (opts.isPointerGeneral() && !opts.isRaw()) {
-            return AllocationForParam.ofPooledAllocator();
+            return AllocationForParam.ofJavaImplicitAllocator();
         }
         return AllocationForParam.noAllocationRequired();
     }
