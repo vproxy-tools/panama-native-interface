@@ -347,8 +347,8 @@ project(":acceptance-testing") {
         jvmArgs += 'java.base/java.io=ALL-UNNAMED'
         include '**/Suite.class'
 
-        dependsOn compileTestJava
         dependsOn compilePNITestLib
+        dependsOn compileTestJava
     }
 }
 
