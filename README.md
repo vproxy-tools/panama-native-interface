@@ -608,58 +608,7 @@ The default behavior for `ConcurrentPooled` allocators is the same as `Shared` a
 
 ### 7. Graal Native Image
 
-Extra dependencies should be added:
-
-**gradle**
-
-```groovy
-dependencies {
-    // ...
-
-    implementation "io.vproxy:pni-api-graal:21.0.0.18"
-    compileOnly "io.vproxy:graal-sdk-mock-nativeimage:1.2.1"
-    runtimeOnly "io.vproxy:graal-sdk-mock-runtime:1.2.1"
-}
-```
-
-**maven**
-
-```xml
-<dependencies>
-  <!-- ... -->
-
-  <dependency>
-    <groupId>io.vproxy</groupId>
-    <artifactId>pni-api-graal</artifactId>
-    <version>21.0.0.18</version>
-  </dependency>
-  <dependency>
-    <groupId>io.vproxy</groupId>
-    <artifactId>graal-sdk-mock-nativeimage</artifactId>
-    <version>1.2.1</version>
-    <scope>provided</scope>
-  </dependency>
-  <dependency>
-    <groupId>io.vproxy</groupId>
-    <artifactId>graal-sdk-mock-runtime</artifactId>
-    <version>1.2.1</version>
-    <scope>runtime</scope>
-  </dependency>
-</dependencies>
-```
-
-Currently native-image doesn't support Panama upcall, but the native-image provides `CEntryPoint` as an alternative.  
-Note that the native-image `CEntryPoint` upcall performance is lower comparing to the Panama upcall.
-
-Please pay additional attention when using the native-image:
-
-1. You can check whether the code is running in Graal native-image or in a normal JRE by `ImageInfoDelegate.inImageCode()`
-2. `GraalUtils.init()` must be called at the beginning of your application.
-3. `GraalUtils.setThread()` must be called when a new thread is spawn. This method can be safely called for multiple times, which is useful if you are using a thread pool and don't know whether the thread is initialized.
-4. When compiling the C code, an additional compiler option `-DPNI_GRAAL=1` must be added.
-5. If the upcall happens on a non java thread, `SetPNIGraalThread(isolate_thread)` must be called before the upcall inside the C code.
-
-To create an `IsolateThread` in the C code, you can firstly use `GetPNIGraalIsolate()` to retrieve the `Isolate` object for the currently running native-image, and then use `graal_attach_thread(isolate, &isolate_thread)` to attach current thread and create the `IsolateThread` object.
+Please see the below section: `Graal Native Image` and `Graal Native Image Upcall`.
 
 </details>
 
@@ -716,7 +665,7 @@ You can add a flag to the `pni` program to generate a `Feature` implmentation, w
 
 ```shell
 java -jar pni.jar <...> -fgraal-native-image-feature=<feature-class-name>
-# you might also want to add argument -fgraal-c-entrypoint-literal-upcall, see below descriptions for more info
+# you might also want to add argument -fgraal-c-entrypoint-literal-upcall, see the below section for more info
 ```
 
 or programmatically:
@@ -726,7 +675,7 @@ new CompilerOptions()
     .setCompilationFlag(io.vproxy.pni.exec.CompilationFlag.GRAAL_NATIVE_IMAGE_FEATURE, "$featureClassName")
  // you migh also want to add the flag:
  // .setCompilationFlag(io.vproxy.pni.exec.CompilationFlag.GRAAL_C_ENTRYPOINT_LITERAL_UPCALL)
- // see below descriptions for more info
+ // see the below section for more info
 ```
 
 To compile your project with the `Feature` class, you should use `GraalVM for JDK 21` instead of a traditional JDK.  
@@ -740,6 +689,54 @@ Another (maybe better) way of managing the dependencies is to use [the mock vers
 The mock library provides all necessary types and members for `Panama Native Interface` generated graal related classes.  
 Detailed information can be found in [the repo](https://github.com/vproxy-tools/graal-sdk-mock).
 
+Adding extra dependencies:
+
+**gradle**
+
+```groovy
+dependencies {
+    // ...
+
+    implementation "io.vproxy:pni-api-graal:21.0.0.18"
+    compileOnly "io.vproxy:graal-sdk-mock-nativeimage:1.2.1"
+    runtimeOnly "io.vproxy:graal-sdk-mock-runtime:1.2.1"
+}
+```
+
+**maven**
+
+```xml
+<dependencies>
+    <!-- ... -->
+
+    <dependency>
+        <groupId>io.vproxy</groupId>
+        <artifactId>pni-api-graal</artifactId>
+        <version>21.0.0.18</version>
+    </dependency>
+    <dependency>
+        <groupId>io.vproxy</groupId>
+        <artifactId>graal-sdk-mock-nativeimage</artifactId>
+        <version>1.2.1</version>
+        <scope>provided</scope>
+    </dependency>
+    <dependency>
+        <groupId>io.vproxy</groupId>
+        <artifactId>graal-sdk-mock-runtime</artifactId>
+        <version>1.2.1</version>
+        <scope>runtime</scope>
+    </dependency>
+</dependencies>
+```
+
+Please pay additional attention when using the native-image:
+
+1. You can check whether the code is running in Graal native-image or in a normal JRE by `ImageInfoDelegate.inImageCode()`
+2. `GraalUtils.init()` must be called at the beginning of your application.
+3. `GraalUtils.setThread()` must be called when a new thread is spawn. This method can be safely called for multiple times, which is useful if you are using a thread pool and don't know whether the thread is initialized.
+4. When compiling the C code, an additional compiler option `-DPNI_GRAAL=1` must be added, which will enable Graal related functions.
+  Note that some PNI functions are defined using `static inline`, so you must compile all related files with `PNI_GRAAL=1`.
+
 </details>
 
 ## Graal Native Image Upcall
@@ -750,6 +747,8 @@ As for now `(2023-10-09)` the graal native-image doesn't support Panama upcall y
 based on graal c native features:  
 Add compilation flag `-fgraal-c-entrypoint-literal-upcall` on the command line, or call
 `.setCompilationFlag(CompilationFlag.GRAAL_C_ENTRYPOINT_LITERAL_UPCALL)` programmatically to enable this feature.
+
+> Note that the native-image `CEntryPoint` upcall performance is lower comparing to the Panama upcall.
 
 To build the native image, you may use the following command:
 
@@ -765,8 +764,12 @@ native-image -jar <jar-file> \
 
 See `sampleNativeImage` task in `build.gradle` for more info.
 
-You will also need to define `PNI_GRAAL=1` when compiling, which will enable Graal related functions.  
-Note that some functions are defined using `static inline`, so you must compile all related files with `PNI_GRAAL=1`.
+**Extra attention:**
+
+If the upcall happens on a non java thread, `SetPNIGraalThread(isolate_thread)` must be called before the upcall inside the C code.
+To create an `IsolateThread` in the C code, you can firstly use `GetPNIGraalIsolate()` to retrieve the `Isolate` object for the currently running native-image, and then use `graal_attach_thread(isolate, &isolate_thread)` to attach current thread and create the `IsolateThread` object.
+
+See [this page](https://www.graalvm.org/latest/reference-manual/native-image/native-code-interoperability/C-API/) for more info.
 
 </details>
 
