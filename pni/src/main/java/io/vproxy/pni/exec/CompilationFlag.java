@@ -38,6 +38,10 @@ public class CompilationFlag<T> {
         "type-name-prefix", "",
         pred(s -> Utils.isValidName(s, false)), s -> s
     );
+    public static final CompilationFlag<Boolean> ALWAYS_ALIGNED = new CompilationFlag<>(
+        "always-aligned", "true",
+        pred(s -> "true".equals(s) || "false".equals(s)), "true"::equals
+    );
 
     public final String name;
     public final String defaultValue;
@@ -74,6 +78,7 @@ public class CompilationFlag<T> {
         RELEASE_PNI_C_FILE,
         RELEASE_JNI_H_MOCK_FILE,
         TYPE_NAME_PREFIX,
+        ALWAYS_ALIGNED,
     };
 
     public static CompilationFlag<?>[] values() {

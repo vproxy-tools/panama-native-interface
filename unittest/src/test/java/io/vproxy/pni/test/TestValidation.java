@@ -14,7 +14,8 @@ import static org.junit.Assert.assertEquals;
 public class TestValidation {
     @Test
     public void pointerOnly() {
-        var astClass = new AstClass(new Utils.CompilerOptions());
+        var opts = new Utils.CompilerOptions();
+        var astClass = new AstClass(opts);
         astClass.name = "a/b/PNICls";
         astClass.annos.add(new AstAnno() {{
             typeRef = AnnoStructTypeInfo.get();
@@ -34,9 +35,10 @@ public class TestValidation {
 
     @Test
     public void recursive() {
-        var cls = new AstClass(new Utils.CompilerOptions());
+        var opts = new Utils.CompilerOptions();
+        var cls = new AstClass(opts);
         cls.name = "a/b/PNICls";
-        var cls2 = new AstClass(new Utils.CompilerOptions());
+        var cls2 = new AstClass(opts);
         cls2.name = "a/b/PNICls2";
         cls.fields.add(new AstField() {{
             name = "x";
@@ -55,9 +57,10 @@ public class TestValidation {
 
     @Test
     public void recursiveArray() {
-        var cls = new AstClass(new Utils.CompilerOptions());
+        var opts = new Utils.CompilerOptions();
+        var cls = new AstClass(opts);
         cls.name = "a/b/PNICls";
-        var cls2 = new AstClass(new Utils.CompilerOptions());
+        var cls2 = new AstClass(opts);
         cls2.name = "a/b/PNICls2";
         cls.fields.add(new AstField() {{
             name = "x";

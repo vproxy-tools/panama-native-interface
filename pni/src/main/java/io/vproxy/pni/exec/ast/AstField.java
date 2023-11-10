@@ -97,10 +97,11 @@ public class AstField {
         }
     }
 
-    public void validateAlignment(List<String> errors, String path, long sum, boolean alwaysAligned, boolean packed) {
+    public void validateAlignment(List<String> errors, String path, long sum, boolean classAlwaysAligned, boolean packed) {
         path = path + "#field(" + name + ")";
 
-        if (!alwaysAligned && !isAlwaysAligned()) {
+        var fieldIsAlwaysAligned = isAlwaysAligned();
+        if (!classAlwaysAligned && (fieldIsAlwaysAligned == null || !fieldIsAlwaysAligned)) {
             return;
         }
         var align = getAlignmentBytes(packed);
@@ -134,8 +135,8 @@ public class AstField {
         return annos.stream().anyMatch(a -> a.typeRef instanceof AnnoUnsignedTypeInfo);
     }
 
-    public boolean isAlwaysAligned() {
-        return annos.stream().anyMatch(a -> a.typeRef instanceof AnnoAlwaysAlignedTypeInfo);
+    public Boolean isAlwaysAligned() {
+        return Utils.isAlwaysAligned(annos, null);
     }
 
     public long getLen() {

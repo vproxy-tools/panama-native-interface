@@ -48,7 +48,7 @@ public class TestWarningFlags {
             ), new Utils.CompilerOptions()
                 .setClasspath(List.of(cp))
                 .unsetWarningAsErrorBits(WarnType.INVALID_CLASSPATH_FILE.flag)
-        );
+        ).classes();
         assertEquals(1, asts.size());
         assertEquals("test/PNIA", asts.get(0).name);
 
@@ -83,7 +83,7 @@ public class TestWarningFlags {
                     .setName("test/A.java")
                     .setContent(content)
             ), new Utils.CompilerOptions()
-        );
+        ).classes();
         assertEquals(1, asts.size());
         assertEquals("test/PNIA", asts.get(0).name);
 

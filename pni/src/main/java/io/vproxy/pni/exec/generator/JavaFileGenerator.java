@@ -549,11 +549,12 @@ public class JavaFileGenerator {
             this.field = field;
         }
 
-        private void generateJavaLayout(StringBuilder sb, int indent, boolean alwaysAligned) {
+        private void generateJavaLayout(StringBuilder sb, int indent, boolean classAlwaysAligned) {
             Utils.appendIndent(sb, indent);
             var layout = field.typeRef.memoryLayoutForField(field.varOpts());
             if (layout.contains("_UNALIGNED")) {
-                if (alwaysAligned || field.isAlwaysAligned()) {
+                var fieldIsAlwaysAligned = field.isAlwaysAligned();
+                if ((fieldIsAlwaysAligned != null && fieldIsAlwaysAligned) || (classAlwaysAligned && fieldIsAlwaysAligned == null)) {
                     layout = layout.replace("_UNALIGNED", "");
                 }
             }

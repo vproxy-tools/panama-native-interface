@@ -36,7 +36,8 @@ public class Utils {
     }
 
     public static ClassTypeInfo generalClsTypeInfo() {
-        var astClass = new AstClass(new CompilerOptions());
+        var opts = new CompilerOptions();
+        var astClass = new AstClass(opts);
         astClass.name = "a/b/PNICls";
         astClass.annos.add(new AstAnno() {{
             typeRef = AnnoStructTypeInfo.get();
@@ -59,11 +60,19 @@ public class Utils {
         return new ClassTypeInfo(astClass);
     }
 
-    public static List<AstClass> load(List<JavaFile> files, io.vproxy.pni.exec.CompilerOptions opts) throws Exception {
+    public record CompilationResult(List<AstClass> classes, Path template, Path compile, Path gen, Runnable delete) {
+        @SuppressWarnings("removal")
+        @Override
+        protected void finalize() {
+            delete.run();
+        }
+    }
+
+    public static CompilationResult load(List<JavaFile> files, io.vproxy.pni.exec.CompilerOptions opts) throws Exception {
         var template = Files.createTempDirectory("test-template");
         var compile = Files.createTempDirectory("test-compile");
         var gen = Files.createTempDirectory("test-gen");
-        try {
+        {
             for (var f : files) {
                 var name = f.getName();
                 var content = f.getContent();
@@ -112,11 +121,13 @@ public class Utils {
             var field = Generator.class.getDeclaredField("lastClasses");
             field.setAccessible(true);
             //noinspection unchecked
-            return (List<AstClass>) field.get(generator);
-        } finally {
-            IOUtils.deleteDirectory(template.toFile());
-            IOUtils.deleteDirectory(compile.toFile());
-            IOUtils.deleteDirectory(gen.toFile());
+            var classes = (List<AstClass>) field.get(generator);
+
+            return new CompilationResult(classes, template, compile, gen, () -> {
+                IOUtils.deleteDirectory(template.toFile());
+                IOUtils.deleteDirectory(compile.toFile());
+                IOUtils.deleteDirectory(gen.toFile());
+            });
         }
     }
 

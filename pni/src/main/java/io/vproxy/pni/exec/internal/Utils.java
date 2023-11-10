@@ -1,5 +1,6 @@
 package io.vproxy.pni.exec.internal;
 
+import io.vproxy.pni.exec.CompilationFlag;
 import io.vproxy.pni.exec.CompilerOptions;
 import io.vproxy.pni.exec.ast.AstAnno;
 import io.vproxy.pni.exec.ast.AstGenericDef;
@@ -308,6 +309,31 @@ public class Utils {
             }
         }
         return len;
+    }
+
+    public static boolean defaultIsAlwaysAligned = false;
+
+    public static Boolean isAlwaysAligned(List<AstAnno> annos, CompilerOptions opts) {
+        var opt = annos.stream().filter(a -> a.typeRef instanceof AnnoAlwaysAlignedTypeInfo).findFirst();
+        if (opt.isEmpty()) {
+            if (opts == null) {
+                return null;
+            }
+            if (opts.hasCompilationFlag(CompilationFlag.ALWAYS_ALIGNED)) {
+                return opts.getCompilationFlag(CompilationFlag.ALWAYS_ALIGNED);
+            }
+            return null;
+        }
+        var anno = opt.get();
+        var vOpt = anno.values.stream().filter(v -> v.name.equals("value")).findFirst();
+        if (vOpt.isEmpty()) {
+            return true; // annotation default value is true
+        }
+        var v = vOpt.get().value;
+        if (v instanceof Boolean) {
+            return (boolean) v;
+        }
+        return true; // annotation default value is true
     }
 
     public static StringBuilder appendIndent(StringBuilder sb, int indent) {

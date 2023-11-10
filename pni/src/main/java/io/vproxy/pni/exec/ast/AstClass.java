@@ -394,7 +394,11 @@ public class AstClass {
     }
 
     public boolean isAlwaysAligned() {
-        return annos.stream().anyMatch(a -> a.typeRef instanceof AnnoAlwaysAlignedTypeInfo);
+        var res = Utils.isAlwaysAligned(annos, opts);
+        if (res == null) {
+            return Utils.defaultIsAlwaysAligned;
+        }
+        return res;
     }
 
     public List<String> extraInclude() {

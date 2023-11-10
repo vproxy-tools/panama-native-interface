@@ -14,6 +14,7 @@ import org.junit.runner.RunWith;
     TestRef.class,
     TestUtils.class,
     TestCompilationFlags.class,
+    AfterAll.class
 })
 @RunWith(org.junit.runners.Suite.class)
 public class Suite {
