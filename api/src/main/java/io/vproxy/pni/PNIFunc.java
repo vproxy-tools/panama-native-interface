@@ -196,6 +196,7 @@ public abstract class PNIFunc<T> implements NativeObject {
         PNIFunc<?> func = holder.get(index);
         if (func == null) {
             System.out.println("[PNI][WARN][PNIFunc#call] PNIFunc not found: index: " + index + ", data: " + data.address());
+            Utils.printStacktrace();
             return 0x800000f2;
         }
         Object o;
@@ -228,6 +229,7 @@ public abstract class PNIFunc<T> implements NativeObject {
         var func = holder.remove(index);
         if (func == null) {
             System.out.println("[PNI][WARN][PNIFunc#release] PNIFunc not found: index: " + index);
+            Utils.printStacktrace();
             return;
         }
         SunUnsafe.freeMemory(func.MEMORY.address());

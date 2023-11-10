@@ -25,4 +25,18 @@ public class Utils {
         }
         return n;
     }
+
+    public static void printStacktrace() {
+        var stack = Thread.currentThread().getStackTrace();
+        var doPrint = false;
+        for (var e : stack) {
+            if (!doPrint) {
+                if (e.getClassName().equals(Thread.class.getName()) || e.getClassName().equals(Utils.class.getName())) {
+                    continue;
+                }
+                doPrint = true;
+            }
+            System.out.println("\t" + e);
+        }
+    }
 }

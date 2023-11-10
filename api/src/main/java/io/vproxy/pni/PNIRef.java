@@ -185,6 +185,7 @@ public class PNIRef<T> implements NativeObject {
         var removed = holder.remove(index);
         if (removed == null) {
             System.out.println("[PNI][WARN][PNIRef#release] PNIRef not found: index: " + index);
+            Utils.printStacktrace();
             return;
         }
         SunUnsafe.freeMemory(removed.MEMORY.address());
