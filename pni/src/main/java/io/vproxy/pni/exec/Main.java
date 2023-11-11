@@ -1,9 +1,12 @@
 package io.vproxy.pni.exec;
 
+import io.vproxy.base.util.display.TableBuilder;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
+import java.util.Objects;
 import java.util.regex.Pattern;
 
 public class Main {
@@ -55,6 +58,7 @@ public class Main {
         "\n" +
         "Note:\n" +
         "  -cp,-F,-M,-W,-f can appear multiple times\n" +
+        "  use --verbose --help to show all available warnings and flags\n" +
         ""
     ).trim();
 
@@ -226,28 +230,47 @@ public class Main {
     }
 
     private static void printExtraHelp(CompilerOptions opts) {
+        final var BOLD = "\033[0;1m";
+        final var BOLD_RED = "\033[1;31m";
+        final var BOLD_GREEN = "\033[1;32m";
+        final var UNDERLINE_WHITE = "\033[4;37m";
+        final var RESET = "\033[0m";
+
         System.out.println();
-        var sb = new StringBuilder();
+
+        var table = new TableBuilder();
+
         for (var w : WarnType.values()) {
-            sb.append("-W").append(w.name).append("\t\t");
-            sb.append("enabled=").append((opts.getWarningFlags() & w.flag) == w.flag);
-            sb.append("\t");
-            sb.append("as-error=").append((opts.getWarningAsErrorFlags() & w.flag) == w.flag);
-            sb.append("\n");
-        }
-        sb.append("\n");
-        for (var f : CompilationFlag.values()) {
-            sb.append("-f").append(f.name).append("\t\t");
-            sb.append("enabled=").append(opts.hasCompilationFlag(f));
-            sb.append("\t");
-            if (opts.hasCompilationFlag(f)) {
-                sb.append("value=").append(opts.getCompilationFlag(f));
+            var tr = table.tr();
+            tr.td("-W" + BOLD + w.name + RESET);
+            if ((opts.getWarningFlags() & w.flag) == w.flag) {
+                tr.td("enabled=" + BOLD_GREEN + true + RESET);
             } else {
-                sb.append("value=").append(f.defaultValue);
+                tr.td("enabled=" + BOLD_RED + false + RESET);
             }
-            sb.append("\n");
+            if ((opts.getWarningAsErrorFlags() & w.flag) == w.flag) {
+                tr.td("as-error=" + BOLD_GREEN + true + RESET);
+            } else {
+                tr.td("as-error=" + BOLD_RED + false + RESET);
+            }
+            tr.td(UNDERLINE_WHITE + w.description + RESET);
         }
-        System.out.println(sb);
+        System.out.println(table);
+        table = new TableBuilder();
+        for (var f : CompilationFlag.values()) {
+            var tr = table.tr();
+            tr.td("-f" + BOLD + f.name + RESET);
+            if (opts.hasCompilationFlag(f)) {
+                tr.td("value=" + BOLD + opts.getCompilationFlag(f) + RESET);
+            } else {
+                tr.td("value=" + BOLD +
+                      Objects.requireNonNullElse(f.defaultValueWhenNotSet, "<null>")
+                      + RESET);
+            }
+            tr.td("default=" + f.defaultValue);
+            tr.td(UNDERLINE_WHITE + f.description + RESET);
+        }
+        System.out.println(table);
     }
 
     private static WarnType getWarningByNameOrExit(String name) {

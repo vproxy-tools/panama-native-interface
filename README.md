@@ -959,6 +959,16 @@ Annotate the data type to be converted to its raw form. You can only mark method
 
 </details>
 
+## Compilation Warnings and Flags
+
+<details open><summary>Click to reveal/hide</summary>
+
+You can use `--verbose --help` to show all available warnings and flags, as well as the current values.
+
+You can also add `-W<...>` or `-f<...>` **before** `--help` to test these warnings or flags.
+
+</details>
+
 ## Type correspondence
 
 <details open><summary>Click to reveal/hide</summary>
