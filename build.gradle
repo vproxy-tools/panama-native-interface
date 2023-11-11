@@ -3,7 +3,7 @@ import io.vproxy.base.util.OS
 
 buildscript {
     dependencies {
-        classpath group: 'io.vproxy', name: 'commons', version: '1.2.0'
+        classpath group: 'io.vproxy', name: 'commons', version: '1.2.1'
     }
 }
 
@@ -223,7 +223,7 @@ project(":graal") {
 
 project(":pni") {
     dependencies {
-        implementation 'io.vproxy:commons:1.2.0'
+        implementation 'io.vproxy:commons:1.2.1'
         implementation 'org.ow2.asm:asm:9.5'
         implementation 'org.ow2.asm:asm-tree:9.5'
     }
@@ -233,7 +233,7 @@ project(":unittest") {
     dependencies {
         implementation project(":api")
         implementation project(":pni")
-        testImplementation 'io.vproxy:commons:1.2.0'
+        testImplementation 'io.vproxy:commons:1.2.1'
         testImplementation 'junit:junit:4.13.2'
     }
     task runUnitTest(type: Test) {
@@ -326,7 +326,7 @@ project(":acceptance-testing") {
     dependencies {
         implementation project(":api")
         implementation project(":graal")
-        testImplementation 'io.vproxy:commons:1.2.0'
+        testImplementation 'io.vproxy:commons:1.2.1'
         testImplementation 'junit:junit:4.13.2'
         testImplementation group: 'io.vproxy', name: 'graal-sdk-mock-runtime', version: graalVersion()
     }
@@ -395,7 +395,7 @@ project(":graal-test") {
     dependencies {
         implementation project(":api")
         implementation project(":graal")
-        implementation 'io.vproxy:commons:1.2.0'
+        implementation 'io.vproxy:commons:1.2.1'
         implementation 'junit:junit:4.13.2'
         compileOnly group: 'io.vproxy', name: 'graal-sdk-mock-nativeimage', version: graalVersion()
         runtimeOnly group: 'io.vproxy', name: 'graal-sdk-mock-runtime', version: graalVersion()
