@@ -10,7 +10,7 @@ import java.util.Objects;
 import java.util.regex.Pattern;
 
 public class Main {
-    private static final String MAJOR_VERSION = "21"; // _THE_MAJOR_VERSION_
+    private static final String MAJOR_VERSION = "22"; // _THE_MAJOR_VERSION_
 
     public static final String VERSION;
     public static final String JAVA_GEN_VERSION;
