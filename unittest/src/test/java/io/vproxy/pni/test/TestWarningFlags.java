@@ -1,7 +1,7 @@
 package io.vproxy.pni.test;
 
-import io.vproxy.pni.exec.CompilerOptions;
 import io.vproxy.pni.exec.WarnType;
+import org.junit.AssumptionViolatedException;
 import org.junit.Test;
 
 import java.io.File;
@@ -18,6 +18,7 @@ public class TestWarningFlags {
         long warn = 0
                     | WarnType.INVALID_CLASSPATH_FILE.flag
                     | WarnType.ALIGNMENT_NOT_POWER_OF_2.flag
+                    | WarnType.JDK21_ALLOW_HEAP_ACCESS.flag
                     | 0;
         //noinspection PointlessBitwiseExpression
         long warnAsErr = 0
@@ -101,6 +102,48 @@ public class TestWarningFlags {
                 Error!
                 class(test/PNIA)#field(a): alignment is not power of 2 [-Werror=alignment-not-power-of-2]
                 class(test/PNIA): alignment is not power of 2 [-Werror=alignment-not-power-of-2]
+                """.trim(), e.getMessage());
+        }
+    }
+
+    @Test
+    public void jdk21AllowHeapAccess() throws Exception {
+        if (Runtime.version().version().getFirst() > 21) {
+            throw new AssumptionViolatedException("not JDK 21");
+        }
+        var content = // language="java"
+            """
+                package test;
+                import io.vproxy.pni.annotation.*;
+                @Downcall
+                interface PNIA {
+                    @LinkerOption.Critical(allowHeapAccess = true)
+                    int a();
+                }
+                """;
+
+        var asts = Utils.load(List.of(
+                new JavaFile()
+                    .setName("test/A.java")
+                    .setContent(content)
+            ), new Utils.CompilerOptions()
+        ).classes();
+        assertEquals(1, asts.size());
+        assertEquals("test/PNIA", asts.get(0).name);
+
+        try {
+            Utils.load(List.of(
+                    new JavaFile()
+                        .setName("test/A.java")
+                        .setContent(content)
+                ), new Utils.CompilerOptions()
+                    .setWarningAsErrorBits(WarnType.JDK21_ALLOW_HEAP_ACCESS.flag)
+            );
+            fail();
+        } catch (Exception e) {
+            assertEquals("""
+                Error!
+                class(test/PNIA)#method(a): @LinkerOption.Critical(allowHeapAccess=true) is set but the running JDK version is 21 [-Werror=jdk21-allow-heap-access]
                 """.trim(), e.getMessage());
         }
     }

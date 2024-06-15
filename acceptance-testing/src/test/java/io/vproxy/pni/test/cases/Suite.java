@@ -30,6 +30,7 @@ import org.junit.runner.RunWith;
     TestPointerArray.class,
     TestKt.class,
     TestPointerOnly.class,
+    TestAllowHeapAccess.class,
 })
 public class Suite {
 }

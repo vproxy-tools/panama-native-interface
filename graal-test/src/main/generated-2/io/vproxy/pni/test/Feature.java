@@ -88,6 +88,12 @@ public class Feature implements org.graalvm.nativeimage.hosted.Feature {
         /* JavaCritical_io_vproxy_pni_test_AlignField3_size */
         RuntimeForeignAccess.registerForDowncall(PanamaUtils.buildCriticalFunctionDescriptor(long.class, MemorySegment.class /* self */));
 
+        /* Java_io_vproxy_pni_test_AllowHeapAccess_intValue */
+        RuntimeForeignAccess.registerForDowncall(PanamaUtils.buildFunctionDescriptor(MemorySegment.class /* mem */), PanamaHack.getCriticalOption(true));
+
+        /* JavaCritical_io_vproxy_pni_test_AllowHeapAccess_intValueCritical */
+        RuntimeForeignAccess.registerForDowncall(PanamaUtils.buildCriticalFunctionDescriptor(int.class, MemorySegment.class /* mem */), PanamaHack.getCriticalOption(true));
+
         /* JavaCritical_io_vproxy_pni_test_AlwaysAlignedSizeof___getLayoutByteSize */
         RuntimeForeignAccess.registerForDowncall(PanamaUtils.buildCriticalFunctionDescriptor(long.class), PanamaHack.getCriticalOption());
 
@@ -1529,4 +1535,4 @@ public class Feature implements org.graalvm.nativeimage.hosted.Feature {
     }
 }
 // metadata.generator-version: pni test
-// sha256:8bad49f7aa3cdb08461e9ccf5fc84c5e3a6c5d9333a71779a2849d2479da786a
+// sha256:084251c42f21fa52354eeabc82dc041e6368149a608e4f68a916a46053adbf89

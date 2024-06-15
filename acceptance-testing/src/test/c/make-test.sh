@@ -59,4 +59,5 @@ gcc -std=gnu99 -O2 \
     io_vproxy_pni_test_Kt.c \
     ../c-generated/io_vproxy_pni_test_PointerOnlyStructWithLen.extra.c \
     io_vproxy_pni_test_PointerOnlyStruct.c \
+    io_vproxy_pni_test_AllowHeapAccess.c \
     -o "$target"
