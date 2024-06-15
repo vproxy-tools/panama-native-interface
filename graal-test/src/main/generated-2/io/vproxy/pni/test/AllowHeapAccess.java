@@ -22,7 +22,7 @@ public class AllowHeapAccess {
         return INSTANCE;
     }
 
-    private static final MethodHandle intValueMH = PanamaUtils.lookupPNIFunction(new PNILinkOptions().setCritical(true).setAllowHeapAccess(true), "Java_io_vproxy_pni_test_AllowHeapAccess_intValue", MemorySegment.class /* mem */);
+    private static final MethodHandle intValueMH = PanamaUtils.lookupPNIFunction(new PNILinkOptions().setCritical(true), "Java_io_vproxy_pni_test_AllowHeapAccess_intValue", MemorySegment.class /* mem */);
 
     public int intValue(PNIEnv ENV, MemorySegment mem) {
         ENV.reset();
@@ -38,7 +38,7 @@ public class AllowHeapAccess {
         return ENV.returnInt();
     }
 
-    private static final MethodHandle intValueCriticalMH = PanamaUtils.lookupPNICriticalFunction(new PNILinkOptions().setCritical(true).setAllowHeapAccess(true), int.class, "JavaCritical_io_vproxy_pni_test_AllowHeapAccess_intValueCritical", MemorySegment.class /* mem */);
+    private static final MethodHandle intValueCriticalMH = PanamaUtils.lookupPNICriticalFunction(new PNILinkOptions().setCritical(true), int.class, "JavaCritical_io_vproxy_pni_test_AllowHeapAccess_intValueCritical", MemorySegment.class /* mem */);
 
     public int intValueCritical(MemorySegment mem) {
         int RESULT;
@@ -51,4 +51,4 @@ public class AllowHeapAccess {
     }
 }
 // metadata.generator-version: pni test
-// sha256:6b37996b3800912f18537d163c5d3e64446abc5649ce50f1098d4373ab7f40e3
+// sha256:305e016ff4d7076a3de3f55c9a5c4d948c8887e615c83a768d6b3b546eddcdea
