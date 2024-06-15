@@ -95,7 +95,7 @@ public class JavaFileGenerator {
         } else {
             var sizeof = cls.getSizeof();
             if (sizeof != null) { // build the call to `sizeof` native function
-                var meth = new AstMethod();
+                var meth = new AstMethod(opts);
                 meth.returnTypeRef = LongTypeInfo.get();
                 meth.name = "__getLayoutByteSize";
                 meth.annos.add(new AstAnno() {{
@@ -641,6 +641,9 @@ public class JavaFileGenerator {
             sb.append("new PNILinkOptions()");
             if (method.hasCriticalLinkerOption()) {
                 sb.append(".setCritical(true)");
+                if (method.isAllowHeapAccess()) {
+                    sb.append(".setAllowHeapAccess(true)");
+                }
             }
             sb.append(", ");
             if (method.isCriticalStyle()) {

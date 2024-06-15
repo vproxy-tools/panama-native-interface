@@ -62,7 +62,7 @@ public class AstClass {
             if ((m.access & Opcodes.ACC_SYNTHETIC) == Opcodes.ACC_SYNTHETIC) {
                 continue;
             }
-            var mm = new AstMethod(m);
+            var mm = new AstMethod(m, opts);
             if (hasSpecifyGenMembersAnno && mm.annos.stream()
                 .noneMatch(a -> a.type.desc.equals("Lio/vproxy/pni/annotation/GenerateMember;"))) {
                 continue;

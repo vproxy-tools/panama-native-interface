@@ -5,6 +5,8 @@ public enum WarnType {
         "classpath is invalid"),
     ALIGNMENT_NOT_POWER_OF_2(0x0002, "alignment-not-power-of-2", true, false,
         "set a non-power-of-2 value in @Align annotation"),
+    JDK21_ALLOW_HEAP_ACCESS(0x0004, "jdk21-allow-heap-access", true, false,
+        "critical linker option parameter 'allow-heap-access' is enabled but the running JDK version is 21"),
     ;
     public final long flag;
     public final String name;

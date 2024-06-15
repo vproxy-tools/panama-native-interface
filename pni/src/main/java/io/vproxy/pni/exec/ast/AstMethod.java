@@ -1,5 +1,8 @@
 package io.vproxy.pni.exec.ast;
 
+import io.vproxy.pni.exec.CompilerOptions;
+import io.vproxy.pni.exec.WarnType;
+import io.vproxy.pni.exec.internal.PNILogger;
 import io.vproxy.pni.exec.internal.Utils;
 import io.vproxy.pni.exec.internal.VarOpts;
 import io.vproxy.pni.exec.type.*;
@@ -11,6 +14,7 @@ import java.util.HashSet;
 import java.util.List;
 
 public class AstMethod {
+    private final CompilerOptions opts;
     public final List<AstAnno> annos = new ArrayList<>();
     public String name;
     public List<AstGenericDef> genericDefs = new ArrayList<>();
@@ -21,7 +25,8 @@ public class AstMethod {
     public TypeInfo returnTypeRef;
     public final List<TypeInfo> throwTypeRefs = new ArrayList<>();
 
-    public AstMethod(MethodNode m) {
+    public AstMethod(MethodNode m, CompilerOptions opts) {
+        this.opts = opts;
         Utils.readAnnotations(annos, m.visibleAnnotations);
         this.name = m.name;
         String returnType;
@@ -54,8 +59,9 @@ public class AstMethod {
         throwTypes.addAll(m.exceptions);
     }
 
-    public AstMethod() {
+    public AstMethod(CompilerOptions opts) {
         // for unit testing only
+        this.opts = opts;
     }
 
     public void ref(TypePool pool) {
@@ -116,6 +122,14 @@ public class AstMethod {
         if (name != null) {
             if (!Utils.isValidName(name, false)) {
                 errors.add(path + ": invalid @Name(" + name + ")");
+            }
+        }
+
+        if (isAllowHeapAccess()) {
+            var version = Runtime.version().version().getFirst();
+            if (version == 21) {
+                PNILogger.warn(errors, path, annos, opts, WarnType.JDK21_ALLOW_HEAP_ACCESS,
+                    "@LinkerOption.Critical(allowHeapAccess=true) is set but the running JDK version is 21");
             }
         }
     }
@@ -184,6 +198,20 @@ public class AstMethod {
 
     public boolean hasCriticalLinkerOption() {
         return annos.stream().anyMatch(a -> a.typeRef instanceof AnnoLinkerOptionCriticalTypeInfo);
+    }
+
+    public boolean isAllowHeapAccess() {
+        var annoOpt = annos.stream().filter(a -> a.typeRef instanceof AnnoLinkerOptionCriticalTypeInfo).findAny();
+        if (annoOpt.isEmpty())
+            return false;
+        var anno = annoOpt.get();
+        var vOpt = anno.values.stream().filter(v -> v.name.equals("allowHeapAccess")).findAny();
+        if (vOpt.isEmpty())
+            return false;
+        var v = vOpt.get();
+        if (v.value instanceof Boolean)
+            return (boolean) v.value;
+        return false;
     }
 
     public boolean isCriticalStyle() {

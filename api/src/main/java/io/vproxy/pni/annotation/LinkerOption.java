@@ -16,5 +16,6 @@ public class LinkerOption {
     @Target(ElementType.METHOD)
     @Retention(RetentionPolicy.RUNTIME)
     public @interface Critical {
+        boolean allowHeapAccess() default false;
     }
 }

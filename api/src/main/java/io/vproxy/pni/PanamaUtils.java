@@ -77,7 +77,7 @@ public class PanamaUtils {
         var h = lookupFunctionPointer(opts, functionName)
             .map(m -> {
                 if (opts.isCritical()) {
-                    return nativeLinker.downcallHandle(m, buildFunctionDescriptor(parameterTypes), PanamaHack.getCriticalOption());
+                    return nativeLinker.downcallHandle(m, buildFunctionDescriptor(parameterTypes), PanamaHack.getCriticalOption(opts.isAllowHeapAccess()));
                 } else {
                     return nativeLinker.downcallHandle(m, buildFunctionDescriptor(parameterTypes));
                 }
@@ -94,7 +94,7 @@ public class PanamaUtils {
         var h = lookupFunctionPointer(opts, functionName)
             .map(m -> {
                 if (opts.isCritical()) {
-                    return nativeLinker.downcallHandle(m, buildCriticalFunctionDescriptor(returnType, parameterTypes), PanamaHack.getCriticalOption());
+                    return nativeLinker.downcallHandle(m, buildCriticalFunctionDescriptor(returnType, parameterTypes), PanamaHack.getCriticalOption(opts.isAllowHeapAccess()));
                 } else {
                     return nativeLinker.downcallHandle(m, buildCriticalFunctionDescriptor(returnType, parameterTypes));
                 }

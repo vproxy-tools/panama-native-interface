@@ -47,7 +47,15 @@ public class PanamaHack {
     }
 
     public static Linker.Option getCriticalOption() {
-        return CriticalOption;
+        return getCriticalOption(false);
+    }
+
+    public static Linker.Option getCriticalOption(boolean allowHeapAccess) {
+        if (allowHeapAccess) {
+            return CriticalOptionAllowHeapAccess;
+        } else {
+            return CriticalOption;
+        }
     }
 
     public static String getUtf8String(MemorySegment seg, long index) {

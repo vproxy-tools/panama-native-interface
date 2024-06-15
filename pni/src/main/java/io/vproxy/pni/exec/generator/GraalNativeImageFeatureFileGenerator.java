@@ -197,7 +197,12 @@ public class GraalNativeImageFeatureFileGenerator {
             }
             sb.append(")");
             if (method.hasCriticalLinkerOption()) {
-                sb.append(", PanamaHack.getCriticalOption()");
+                var allowHeapAccess = method.isAllowHeapAccess();
+                if (allowHeapAccess) {
+                    sb.append(", PanamaHack.getCriticalOption(true)");
+                } else {
+                    sb.append(", PanamaHack.getCriticalOption()");
+                }
             }
             sb.append(");\n");
 
