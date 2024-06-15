@@ -1,6 +1,7 @@
 package io.vproxy.pni.test;
 
 import io.vproxy.pni.*;
+import io.vproxy.pni.hack.*;
 import io.vproxy.pni.array.*;
 import java.lang.foreign.*;
 import java.lang.invoke.*;
@@ -29,12 +30,14 @@ public class GCCompatibilityBitField extends AbstractNativeObject implements Nat
         return MEMORY;
     }
 
-    private static final VarHandle field01VH = LAYOUT.varHandle(
-        MemoryLayout.PathElement.groupElement("field01")
+    private static final VarHandleW field01VH = VarHandleW.of(
+        LAYOUT.varHandle(
+            MemoryLayout.PathElement.groupElement("field01")
+        )
     );
 
     public byte getField01() {
-        return (byte) field01VH.get(MEMORY);
+        return field01VH.getByte(MEMORY);
     }
 
     public void setField01(byte field01) {
@@ -69,12 +72,14 @@ public class GCCompatibilityBitField extends AbstractNativeObject implements Nat
         setField01(N);
     }
 
-    private static final VarHandle field02VH = LAYOUT.varHandle(
-        MemoryLayout.PathElement.groupElement("field02")
+    private static final VarHandleW field02VH = VarHandleW.of(
+        LAYOUT.varHandle(
+            MemoryLayout.PathElement.groupElement("field02")
+        )
     );
 
     public byte getField02() {
-        return (byte) field02VH.get(MEMORY);
+        return field02VH.getByte(MEMORY);
     }
 
     public void setField02(byte field02) {
@@ -109,12 +114,14 @@ public class GCCompatibilityBitField extends AbstractNativeObject implements Nat
         setField02(N);
     }
 
-    private static final VarHandle sep01VH = LAYOUT.varHandle(
-        MemoryLayout.PathElement.groupElement("sep01")
+    private static final VarHandleW sep01VH = VarHandleW.of(
+        LAYOUT.varHandle(
+            MemoryLayout.PathElement.groupElement("sep01")
+        )
     );
 
     public MemorySegment getSep01() {
-        var SEG = (MemorySegment) sep01VH.get(MEMORY);
+        var SEG = sep01VH.getMemorySegment(MEMORY);
         if (SEG.address() == 0) return null;
         return SEG;
     }
@@ -127,12 +134,14 @@ public class GCCompatibilityBitField extends AbstractNativeObject implements Nat
         }
     }
 
-    private static final VarHandle field03VH = LAYOUT.varHandle(
-        MemoryLayout.PathElement.groupElement("field03")
+    private static final VarHandleW field03VH = VarHandleW.of(
+        LAYOUT.varHandle(
+            MemoryLayout.PathElement.groupElement("field03")
+        )
     );
 
     public short getField03() {
-        return (short) field03VH.get(MEMORY);
+        return field03VH.getShort(MEMORY);
     }
 
     public void setField03(short field03) {
@@ -181,12 +190,14 @@ public class GCCompatibilityBitField extends AbstractNativeObject implements Nat
         setField03(N);
     }
 
-    private static final VarHandle field04VH = LAYOUT.varHandle(
-        MemoryLayout.PathElement.groupElement("field04")
+    private static final VarHandleW field04VH = VarHandleW.of(
+        LAYOUT.varHandle(
+            MemoryLayout.PathElement.groupElement("field04")
+        )
     );
 
     public short getField04() {
-        return (short) field04VH.get(MEMORY);
+        return field04VH.getShort(MEMORY);
     }
 
     public void setField04(short field04) {
@@ -235,12 +246,14 @@ public class GCCompatibilityBitField extends AbstractNativeObject implements Nat
         setField04(N);
     }
 
-    private static final VarHandle sep02VH = LAYOUT.varHandle(
-        MemoryLayout.PathElement.groupElement("sep02")
+    private static final VarHandleW sep02VH = VarHandleW.of(
+        LAYOUT.varHandle(
+            MemoryLayout.PathElement.groupElement("sep02")
+        )
     );
 
     public MemorySegment getSep02() {
-        var SEG = (MemorySegment) sep02VH.get(MEMORY);
+        var SEG = sep02VH.getMemorySegment(MEMORY);
         if (SEG.address() == 0) return null;
         return SEG;
     }
@@ -253,12 +266,14 @@ public class GCCompatibilityBitField extends AbstractNativeObject implements Nat
         }
     }
 
-    private static final VarHandle field05VH = LAYOUT.varHandle(
-        MemoryLayout.PathElement.groupElement("field05")
+    private static final VarHandleW field05VH = VarHandleW.of(
+        LAYOUT.varHandle(
+            MemoryLayout.PathElement.groupElement("field05")
+        )
     );
 
     public int getField05() {
-        return (int) field05VH.get(MEMORY);
+        return field05VH.getInt(MEMORY);
     }
 
     public void setField05(int field05) {
@@ -321,12 +336,14 @@ public class GCCompatibilityBitField extends AbstractNativeObject implements Nat
         setField05(N);
     }
 
-    private static final VarHandle field06VH = LAYOUT.varHandle(
-        MemoryLayout.PathElement.groupElement("field06")
+    private static final VarHandleW field06VH = VarHandleW.of(
+        LAYOUT.varHandle(
+            MemoryLayout.PathElement.groupElement("field06")
+        )
     );
 
     public int getField06() {
-        return (int) field06VH.get(MEMORY);
+        return field06VH.getInt(MEMORY);
     }
 
     public void setField06(int field06) {
@@ -389,12 +406,14 @@ public class GCCompatibilityBitField extends AbstractNativeObject implements Nat
         setField06(N);
     }
 
-    private static final VarHandle sep03VH = LAYOUT.varHandle(
-        MemoryLayout.PathElement.groupElement("sep03")
+    private static final VarHandleW sep03VH = VarHandleW.of(
+        LAYOUT.varHandle(
+            MemoryLayout.PathElement.groupElement("sep03")
+        )
     );
 
     public MemorySegment getSep03() {
-        var SEG = (MemorySegment) sep03VH.get(MEMORY);
+        var SEG = sep03VH.getMemorySegment(MEMORY);
         if (SEG.address() == 0) return null;
         return SEG;
     }
@@ -407,12 +426,14 @@ public class GCCompatibilityBitField extends AbstractNativeObject implements Nat
         }
     }
 
-    private static final VarHandle field07VH = LAYOUT.varHandle(
-        MemoryLayout.PathElement.groupElement("field07")
+    private static final VarHandleW field07VH = VarHandleW.of(
+        LAYOUT.varHandle(
+            MemoryLayout.PathElement.groupElement("field07")
+        )
     );
 
     public long getField07() {
-        return (long) field07VH.get(MEMORY);
+        return field07VH.getLong(MEMORY);
     }
 
     public void setField07(long field07) {
@@ -489,12 +510,14 @@ public class GCCompatibilityBitField extends AbstractNativeObject implements Nat
         setField07(N);
     }
 
-    private static final VarHandle field08VH = LAYOUT.varHandle(
-        MemoryLayout.PathElement.groupElement("field08")
+    private static final VarHandleW field08VH = VarHandleW.of(
+        LAYOUT.varHandle(
+            MemoryLayout.PathElement.groupElement("field08")
+        )
     );
 
     public long getField08() {
-        return (long) field08VH.get(MEMORY);
+        return field08VH.getLong(MEMORY);
     }
 
     public void setField08(long field08) {
@@ -1148,4 +1171,4 @@ public class GCCompatibilityBitField extends AbstractNativeObject implements Nat
     }
 }
 // metadata.generator-version: pni test
-// sha256:b9ed1fd8b2bed979717297d4fa48b70e1cc3ddc54dc7fee76616c4a5b44014aa
+// sha256:07208ff9068c308fdcad1b051f659e2636d99e2c925463b860c430368d32241c

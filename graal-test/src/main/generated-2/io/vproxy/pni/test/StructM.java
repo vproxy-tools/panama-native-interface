@@ -1,6 +1,7 @@
 package io.vproxy.pni.test;
 
 import io.vproxy.pni.*;
+import io.vproxy.pni.hack.*;
 import io.vproxy.pni.array.*;
 import java.lang.foreign.*;
 import java.lang.invoke.*;
@@ -141,4 +142,4 @@ public class StructM extends AbstractNativeObject implements NativeObject {
     }
 }
 // metadata.generator-version: pni test
-// sha256:dcc8a8f6c42e589b2d009eaa467a76b39befe09059ab5f90ac5518a459f3c868
+// sha256:2a03ceb7b034eb1dc7cf28b66bfdf94ab1d771d03b608843e1611b2f2a1e43cc

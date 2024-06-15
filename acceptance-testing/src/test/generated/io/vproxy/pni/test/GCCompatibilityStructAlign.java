@@ -1,6 +1,7 @@
 package io.vproxy.pni.test;
 
 import io.vproxy.pni.*;
+import io.vproxy.pni.hack.*;
 import io.vproxy.pni.array.*;
 import java.lang.foreign.*;
 import java.lang.invoke.*;
@@ -20,24 +21,28 @@ public class GCCompatibilityStructAlign extends AbstractNativeObject implements 
         return MEMORY;
     }
 
-    private static final VarHandle nVH = LAYOUT.varHandle(
-        MemoryLayout.PathElement.groupElement("n")
+    private static final VarHandleW nVH = VarHandleW.of(
+        LAYOUT.varHandle(
+            MemoryLayout.PathElement.groupElement("n")
+        )
     );
 
     public int getN() {
-        return (int) nVH.get(MEMORY);
+        return nVH.getInt(MEMORY);
     }
 
     public void setN(int n) {
         nVH.set(MEMORY, n);
     }
 
-    private static final VarHandle lVH = LAYOUT.varHandle(
-        MemoryLayout.PathElement.groupElement("l")
+    private static final VarHandleW lVH = VarHandleW.of(
+        LAYOUT.varHandle(
+            MemoryLayout.PathElement.groupElement("l")
+        )
     );
 
     public long getL() {
-        return (long) lVH.get(MEMORY);
+        return lVH.getLong(MEMORY);
     }
 
     public void setL(long l) {
@@ -180,4 +185,4 @@ public class GCCompatibilityStructAlign extends AbstractNativeObject implements 
     }
 }
 // metadata.generator-version: pni test
-// sha256:5d5e80f1cdd6a58865cfabcee39576856a1db422f8f35529738ba490efe5a98e
+// sha256:85732a7ccf82a74df203a7d099c4267b2ebf1d1cfc06717f37f6be713580a2b9

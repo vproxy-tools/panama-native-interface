@@ -1,6 +1,7 @@
 package io.vproxy.pni.test;
 
 import io.vproxy.pni.*;
+import io.vproxy.pni.hack.*;
 import io.vproxy.pni.array.*;
 import java.lang.foreign.*;
 import java.lang.invoke.*;
@@ -19,24 +20,28 @@ public class StructD extends AbstractNativeObject implements NativeObject {
         return MEMORY;
     }
 
-    private static final VarHandle nVH = LAYOUT.varHandle(
-        MemoryLayout.PathElement.groupElement("n")
+    private static final VarHandleW nVH = VarHandleW.of(
+        LAYOUT.varHandle(
+            MemoryLayout.PathElement.groupElement("n")
+        )
     );
 
     public int getN() {
-        return (int) nVH.get(MEMORY);
+        return nVH.getInt(MEMORY);
     }
 
     public void setN(int n) {
         nVH.set(MEMORY, n);
     }
 
-    private static final VarHandle dVH = LAYOUT.varHandle(
-        MemoryLayout.PathElement.groupElement("d")
+    private static final VarHandleW dVH = VarHandleW.of(
+        LAYOUT.varHandle(
+            MemoryLayout.PathElement.groupElement("d")
+        )
     );
 
     public double getD() {
-        return (double) dVH.get(MEMORY);
+        return dVH.getDouble(MEMORY);
     }
 
     public void setD(double d) {
@@ -147,4 +152,4 @@ public class StructD extends AbstractNativeObject implements NativeObject {
     }
 }
 // metadata.generator-version: pni test
-// sha256:e69dcea589447839ebfd0567e76fa7c99e981a7510792328266c097715a24d9b
+// sha256:fbbcc64d3461a548b1137498d7fa0b7d2227a1e18a6ef30924b87744ce692332

@@ -1,6 +1,7 @@
 package io.vproxy.pni.test;
 
 import io.vproxy.pni.*;
+import io.vproxy.pni.hack.*;
 import io.vproxy.pni.array.*;
 import java.lang.foreign.*;
 import java.lang.invoke.*;
@@ -204,4 +205,4 @@ public class PointerArrayField extends AbstractNativeObject implements NativeObj
     }
 }
 // metadata.generator-version: pni test
-// sha256:d6df8e7f658e61c70a3fc8d2e7ed3ce0368f172d9ef31bdd6e42840bbdbe6342
+// sha256:db154c84b403efc6a51f4dc9f9bac6e6da015260aa5a21a7bb22df02b6c3c811

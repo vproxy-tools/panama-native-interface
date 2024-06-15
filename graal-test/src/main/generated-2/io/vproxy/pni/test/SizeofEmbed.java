@@ -1,6 +1,7 @@
 package io.vproxy.pni.test;
 
 import io.vproxy.pni.*;
+import io.vproxy.pni.hack.*;
 import io.vproxy.pni.array.*;
 import java.lang.foreign.*;
 import java.lang.invoke.*;
@@ -37,24 +38,28 @@ public class SizeofEmbed extends AbstractNativeObject implements NativeObject {
         return MEMORY;
     }
 
-    private static final VarHandle xVH = LAYOUT.varHandle(
-        MemoryLayout.PathElement.groupElement("x")
+    private static final VarHandleW xVH = VarHandleW.of(
+        LAYOUT.varHandle(
+            MemoryLayout.PathElement.groupElement("x")
+        )
     );
 
     public byte getX() {
-        return (byte) xVH.get(MEMORY);
+        return xVH.getByte(MEMORY);
     }
 
     public void setX(byte x) {
         xVH.set(MEMORY, x);
     }
 
-    private static final VarHandle unVH = LAYOUT.varHandle(
-        MemoryLayout.PathElement.groupElement("un")
+    private static final VarHandleW unVH = VarHandleW.of(
+        LAYOUT.varHandle(
+            MemoryLayout.PathElement.groupElement("un")
+        )
     );
 
     public io.vproxy.pni.test.SizeofUnion getUn() {
-        var SEG = (MemorySegment) unVH.get(MEMORY);
+        var SEG = unVH.getMemorySegment(MEMORY);
         if (SEG.address() == 0) return null;
         return new io.vproxy.pni.test.SizeofUnion(SEG);
     }
@@ -185,4 +190,4 @@ public class SizeofEmbed extends AbstractNativeObject implements NativeObject {
     }
 }
 // metadata.generator-version: pni test
-// sha256:883488e834be514cba4bd86405938349d779a31ba8f78900104d4fdcadea02dd
+// sha256:60fe4c131ba313236971261e4f95f5a88f6c10c022d7e998583738503fef243b

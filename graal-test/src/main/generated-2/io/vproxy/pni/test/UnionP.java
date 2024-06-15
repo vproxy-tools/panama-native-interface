@@ -1,6 +1,7 @@
 package io.vproxy.pni.test;
 
 import io.vproxy.pni.*;
+import io.vproxy.pni.hack.*;
 import io.vproxy.pni.array.*;
 import java.lang.foreign.*;
 import java.lang.invoke.*;
@@ -23,24 +24,28 @@ public class UnionP extends AbstractNativeObject implements NativeObject {
         return MEMORY;
     }
 
-    private static final VarHandle iVH = LAYOUT.varHandle(
-        MemoryLayout.PathElement.groupElement("i")
+    private static final VarHandleW iVH = VarHandleW.of(
+        LAYOUT.varHandle(
+            MemoryLayout.PathElement.groupElement("i")
+        )
     );
 
     public int getI() {
-        return (int) iVH.get(MEMORY);
+        return iVH.getInt(MEMORY);
     }
 
     public void setI(int i) {
         iVH.set(MEMORY, i);
     }
 
-    private static final VarHandle lVH = LAYOUT.varHandle(
-        MemoryLayout.PathElement.groupElement("l")
+    private static final VarHandleW lVH = VarHandleW.of(
+        LAYOUT.varHandle(
+            MemoryLayout.PathElement.groupElement("l")
+        )
     );
 
     public long getL() {
-        return (long) lVH.get(MEMORY);
+        return lVH.getLong(MEMORY);
     }
 
     public void setL(long l) {
@@ -185,4 +190,4 @@ public class UnionP extends AbstractNativeObject implements NativeObject {
     }
 }
 // metadata.generator-version: pni test
-// sha256:ce73b43b7aad589999a60f33b335c3f5974bbaf0288e9cccc043012f35e1ecdb
+// sha256:4448d491a68c53dcd3ccf7fdda09077b7dedaf40cb982861e6b25e8f6f51583e

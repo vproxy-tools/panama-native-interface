@@ -1,6 +1,7 @@
 package io.vproxy.pni.test;
 
 import io.vproxy.pni.*;
+import io.vproxy.pni.hack.*;
 import io.vproxy.pni.array.*;
 import java.lang.foreign.*;
 import java.lang.invoke.*;
@@ -24,24 +25,28 @@ public class KtStruct extends AbstractNativeObject implements NativeObject {
         return MEMORY;
     }
 
-    private static final VarHandle aIntVH = LAYOUT.varHandle(
-        MemoryLayout.PathElement.groupElement("aInt")
+    private static final VarHandleW aIntVH = VarHandleW.of(
+        LAYOUT.varHandle(
+            MemoryLayout.PathElement.groupElement("aInt")
+        )
     );
 
     public int getAInt() {
-        return (int) aIntVH.get(MEMORY);
+        return aIntVH.getInt(MEMORY);
     }
 
     public void setAInt(int aInt) {
         aIntVH.set(MEMORY, aInt);
     }
 
-    private static final VarHandle aLongVH = LAYOUT.varHandle(
-        MemoryLayout.PathElement.groupElement("aLong")
+    private static final VarHandleW aLongVH = VarHandleW.of(
+        LAYOUT.varHandle(
+            MemoryLayout.PathElement.groupElement("aLong")
+        )
     );
 
     public long getALong() {
-        return (long) aLongVH.get(MEMORY);
+        return aLongVH.getLong(MEMORY);
     }
 
     public void setALong(long aLong) {
@@ -184,4 +189,4 @@ public class KtStruct extends AbstractNativeObject implements NativeObject {
     }
 }
 // metadata.generator-version: pni test
-// sha256:c5f1973b2c3142854f37b0c4e2ff3d7d2c84530d5823290507f59c2e4bdeb762
+// sha256:c758b712e3dfa498c7095450ca63b0ed328fdc907392224ec6fa93e49c457932

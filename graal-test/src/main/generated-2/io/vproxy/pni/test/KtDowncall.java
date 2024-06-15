@@ -1,6 +1,7 @@
 package io.vproxy.pni.test;
 
 import io.vproxy.pni.*;
+import io.vproxy.pni.hack.*;
 import io.vproxy.pni.array.*;
 import java.lang.foreign.*;
 import java.lang.invoke.*;
@@ -47,4 +48,4 @@ public class KtDowncall {
     }
 }
 // metadata.generator-version: pni test
-// sha256:cc2c93a1074df0b9d5f34c8e3c336d14d35bda1cb2ae4dd6c1a40100ec16a6b8
+// sha256:081a3891deb3f295e95cc3d0c0d6420dcd94328c515edb55d6558c649250f88a

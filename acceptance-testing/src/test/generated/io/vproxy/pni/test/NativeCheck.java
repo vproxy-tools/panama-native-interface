@@ -1,6 +1,7 @@
 package io.vproxy.pni.test;
 
 import io.vproxy.pni.*;
+import io.vproxy.pni.hack.*;
 import io.vproxy.pni.array.*;
 import java.lang.foreign.*;
 import java.lang.invoke.*;
@@ -47,4 +48,4 @@ public class NativeCheck {
     }
 }
 // metadata.generator-version: pni test
-// sha256:3eaa29e11fb31f83c7f764f45949954945f573f519f7bd2eff4fdae2966533fc
+// sha256:c97cef329f7d8a1a2dba768f72b54fd255996040c96d66b6cee3ae2a4e425cad

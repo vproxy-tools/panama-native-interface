@@ -1,6 +1,7 @@
 package io.vproxy.pni.test;
 
 import io.vproxy.pni.*;
+import io.vproxy.pni.hack.*;
 import io.vproxy.pni.array.*;
 import java.lang.foreign.*;
 import java.lang.invoke.*;
@@ -159,4 +160,4 @@ public class KtStructInherit extends io.vproxy.pni.test.KtStruct implements Nati
     }
 }
 // metadata.generator-version: pni test
-// sha256:b91eb2523eda86533a9cc5f1c37c6ae671f381ad01abd65427e5b609ef1b44c2
+// sha256:14f9023e4e5c8188cea06196e400fc8cc4a94330c5cda9aa45265664114b9211

@@ -1,6 +1,7 @@
 package io.vproxy.pni.test;
 
 import io.vproxy.pni.*;
+import io.vproxy.pni.hack.*;
 import io.vproxy.pni.array.*;
 import java.lang.foreign.*;
 import java.lang.invoke.*;
@@ -36,24 +37,28 @@ public class SizeofStructExpr extends AbstractNativeObject implements NativeObje
         return MEMORY;
     }
 
-    private static final VarHandle bVH = LAYOUT.varHandle(
-        MemoryLayout.PathElement.groupElement("b")
+    private static final VarHandleW bVH = VarHandleW.of(
+        LAYOUT.varHandle(
+            MemoryLayout.PathElement.groupElement("b")
+        )
     );
 
     public byte getB() {
-        return (byte) bVH.get(MEMORY);
+        return bVH.getByte(MEMORY);
     }
 
     public void setB(byte b) {
         bVH.set(MEMORY, b);
     }
 
-    private static final VarHandle sVH = LAYOUT.varHandle(
-        MemoryLayout.PathElement.groupElement("s")
+    private static final VarHandleW sVH = VarHandleW.of(
+        LAYOUT.varHandle(
+            MemoryLayout.PathElement.groupElement("s")
+        )
     );
 
     public short getS() {
-        return (short) sVH.get(MEMORY);
+        return sVH.getShort(MEMORY);
     }
 
     public void setS(short s) {
@@ -164,4 +169,4 @@ public class SizeofStructExpr extends AbstractNativeObject implements NativeObje
     }
 }
 // metadata.generator-version: pni test
-// sha256:66b2ef136dafb55c04c5744abd3e0c4a3c8fda000b77fcc2cc4a79d27a064ccf
+// sha256:c3602b748fb9abb0012b8da1c8a39f37e45f4bf1cc5864a95b351124a21c2efd

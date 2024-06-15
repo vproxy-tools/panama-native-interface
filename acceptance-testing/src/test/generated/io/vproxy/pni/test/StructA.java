@@ -1,6 +1,7 @@
 package io.vproxy.pni.test;
 
 import io.vproxy.pni.*;
+import io.vproxy.pni.hack.*;
 import io.vproxy.pni.array.*;
 import java.lang.foreign.*;
 import java.lang.invoke.*;
@@ -34,12 +35,14 @@ public class StructA extends AbstractNativeObject implements NativeObject {
         return this.c;
     }
 
-    private static final VarHandle cPointerVH = LAYOUT.varHandle(
-        MemoryLayout.PathElement.groupElement("cPointer")
+    private static final VarHandleW cPointerVH = VarHandleW.of(
+        LAYOUT.varHandle(
+            MemoryLayout.PathElement.groupElement("cPointer")
+        )
     );
 
     public io.vproxy.pni.test.UnionC getCPointer() {
-        var SEG = (MemorySegment) cPointerVH.get(MEMORY);
+        var SEG = cPointerVH.getMemorySegment(MEMORY);
         if (SEG.address() == 0) return null;
         return new io.vproxy.pni.test.UnionC(SEG);
     }
@@ -507,4 +510,4 @@ public class StructA extends AbstractNativeObject implements NativeObject {
     }
 }
 // metadata.generator-version: pni test
-// sha256:c7792a3d621dc5cfd9d43e5acbbb666d9963501bd07a96c2c32d3d4c57e39162
+// sha256:a406cddc175b7a570e7591b5920f8037374ea53502d938f36359783fa29c3486

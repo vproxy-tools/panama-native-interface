@@ -1,6 +1,7 @@
 package io.vproxy.pni.test;
 
 import io.vproxy.pni.*;
+import io.vproxy.pni.hack.*;
 import io.vproxy.pni.array.*;
 import java.lang.foreign.*;
 import java.lang.invoke.*;
@@ -120,4 +121,4 @@ public class PointerOnlyStructWithLen extends AbstractNativeObject implements Na
     }
 }
 // metadata.generator-version: pni test
-// sha256:cacaa64a441ad050a623ccc7f2b0115c11fb4d383467bc5ddbbcd6d45d31d1b6
+// sha256:513badecd7a0d52be016ce6ed2788f0ca7d4c07044fd8bd97db27c1363665303

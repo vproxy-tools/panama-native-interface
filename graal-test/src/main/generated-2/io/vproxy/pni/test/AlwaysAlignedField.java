@@ -1,6 +1,7 @@
 package io.vproxy.pni.test;
 
 import io.vproxy.pni.*;
+import io.vproxy.pni.hack.*;
 import io.vproxy.pni.array.*;
 import java.lang.foreign.*;
 import java.lang.invoke.*;
@@ -26,60 +27,70 @@ public class AlwaysAlignedField extends AbstractNativeObject implements NativeOb
         return MEMORY;
     }
 
-    private static final VarHandle aVH = LAYOUT.varHandle(
-        MemoryLayout.PathElement.groupElement("a")
+    private static final VarHandleW aVH = VarHandleW.of(
+        LAYOUT.varHandle(
+            MemoryLayout.PathElement.groupElement("a")
+        )
     );
 
     public byte getA() {
-        return (byte) aVH.get(MEMORY);
+        return aVH.getByte(MEMORY);
     }
 
     public void setA(byte a) {
         aVH.set(MEMORY, a);
     }
 
-    private static final VarHandle bVH = LAYOUT.varHandle(
-        MemoryLayout.PathElement.groupElement("b")
+    private static final VarHandleW bVH = VarHandleW.of(
+        LAYOUT.varHandle(
+            MemoryLayout.PathElement.groupElement("b")
+        )
     );
 
     public short getB() {
-        return (short) bVH.get(MEMORY);
+        return bVH.getShort(MEMORY);
     }
 
     public void setB(short b) {
         bVH.set(MEMORY, b);
     }
 
-    private static final VarHandle cVH = LAYOUT.varHandle(
-        MemoryLayout.PathElement.groupElement("c")
+    private static final VarHandleW cVH = VarHandleW.of(
+        LAYOUT.varHandle(
+            MemoryLayout.PathElement.groupElement("c")
+        )
     );
 
     public byte getC() {
-        return (byte) cVH.get(MEMORY);
+        return cVH.getByte(MEMORY);
     }
 
     public void setC(byte c) {
         cVH.set(MEMORY, c);
     }
 
-    private static final VarHandle dVH = LAYOUT.varHandle(
-        MemoryLayout.PathElement.groupElement("d")
+    private static final VarHandleW dVH = VarHandleW.of(
+        LAYOUT.varHandle(
+            MemoryLayout.PathElement.groupElement("d")
+        )
     );
 
     public int getD() {
-        return (int) dVH.get(MEMORY);
+        return dVH.getInt(MEMORY);
     }
 
     public void setD(int d) {
         dVH.set(MEMORY, d);
     }
 
-    private static final VarHandle eVH = LAYOUT.varHandle(
-        MemoryLayout.PathElement.groupElement("e")
+    private static final VarHandleW eVH = VarHandleW.of(
+        LAYOUT.varHandle(
+            MemoryLayout.PathElement.groupElement("e")
+        )
     );
 
     public long getE() {
-        return (long) eVH.get(MEMORY);
+        return eVH.getLong(MEMORY);
     }
 
     public void setE(long e) {
@@ -207,4 +218,4 @@ public class AlwaysAlignedField extends AbstractNativeObject implements NativeOb
     }
 }
 // metadata.generator-version: pni test
-// sha256:727a6efcb37f8fe997fce9030b156721d35d330c489d49e0b0d9032dfdc65e90
+// sha256:b257291c43a245271126f3470ceec5c79486591c5acb96728048a858a8be32f7

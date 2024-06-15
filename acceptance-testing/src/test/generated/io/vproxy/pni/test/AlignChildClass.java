@@ -1,6 +1,7 @@
 package io.vproxy.pni.test;
 
 import io.vproxy.pni.*;
+import io.vproxy.pni.hack.*;
 import io.vproxy.pni.array.*;
 import java.lang.foreign.*;
 import java.lang.invoke.*;
@@ -21,24 +22,28 @@ public class AlignChildClass extends io.vproxy.pni.test.AlignBaseClass implement
         return MEMORY;
     }
 
-    private static final VarHandle bVH = LAYOUT.varHandle(
-        MemoryLayout.PathElement.groupElement("b")
+    private static final VarHandleW bVH = VarHandleW.of(
+        LAYOUT.varHandle(
+            MemoryLayout.PathElement.groupElement("b")
+        )
     );
 
     public int getB() {
-        return (int) bVH.get(MEMORY);
+        return bVH.getInt(MEMORY);
     }
 
     public void setB(int b) {
         bVH.set(MEMORY, b);
     }
 
-    private static final VarHandle cVH = LAYOUT.varHandle(
-        MemoryLayout.PathElement.groupElement("c")
+    private static final VarHandleW cVH = VarHandleW.of(
+        LAYOUT.varHandle(
+            MemoryLayout.PathElement.groupElement("c")
+        )
     );
 
     public int getC() {
-        return (int) cVH.get(MEMORY);
+        return cVH.getInt(MEMORY);
     }
 
     public void setC(int c) {
@@ -201,4 +206,4 @@ public class AlignChildClass extends io.vproxy.pni.test.AlignBaseClass implement
     }
 }
 // metadata.generator-version: pni test
-// sha256:7f9c3b44ec9669cac8512d1b30fafa6a2000ace4da8272ced85738ba0472d862
+// sha256:a9fb109516f29346d80b3aeec2d24f1ab812c99a0438b0d68836d5a65c9600b9

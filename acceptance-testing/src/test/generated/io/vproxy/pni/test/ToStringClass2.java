@@ -1,6 +1,7 @@
 package io.vproxy.pni.test;
 
 import io.vproxy.pni.*;
+import io.vproxy.pni.hack.*;
 import io.vproxy.pni.array.*;
 import java.lang.foreign.*;
 import java.lang.invoke.*;
@@ -20,24 +21,28 @@ public class ToStringClass2 extends AbstractNativeObject implements NativeObject
         return MEMORY;
     }
 
-    private static final VarHandle numVH = LAYOUT.varHandle(
-        MemoryLayout.PathElement.groupElement("num")
+    private static final VarHandleW numVH = VarHandleW.of(
+        LAYOUT.varHandle(
+            MemoryLayout.PathElement.groupElement("num")
+        )
     );
 
     public long getNum() {
-        return (long) numVH.get(MEMORY);
+        return numVH.getLong(MEMORY);
     }
 
     public void setNum(long num) {
         numVH.set(MEMORY, num);
     }
 
-    private static final VarHandle refVH = LAYOUT.varHandle(
-        MemoryLayout.PathElement.groupElement("ref")
+    private static final VarHandleW refVH = VarHandleW.of(
+        LAYOUT.varHandle(
+            MemoryLayout.PathElement.groupElement("ref")
+        )
     );
 
     public PNIRef<java.lang.Integer> getRef() {
-        var SEG = (MemorySegment) refVH.get(MEMORY);
+        var SEG = refVH.getMemorySegment(MEMORY);
         if (SEG.address() == 0) return null;
         return PNIRef.of(SEG);
     }
@@ -50,12 +55,14 @@ public class ToStringClass2 extends AbstractNativeObject implements NativeObject
         }
     }
 
-    private static final VarHandle funcVH = LAYOUT.varHandle(
-        MemoryLayout.PathElement.groupElement("func")
+    private static final VarHandleW funcVH = VarHandleW.of(
+        LAYOUT.varHandle(
+            MemoryLayout.PathElement.groupElement("func")
+        )
     );
 
     public PNIFunc<Void> getFunc() {
-        var SEG = (MemorySegment) funcVH.get(MEMORY);
+        var SEG = funcVH.getMemorySegment(MEMORY);
         if (SEG.address() == 0) return null;
         return PNIFunc.VoidFunc.of(SEG);
     }
@@ -203,4 +210,4 @@ public class ToStringClass2 extends AbstractNativeObject implements NativeObject
     }
 }
 // metadata.generator-version: pni test
-// sha256:afd35a484be9bccd503d5c1944b3e17ee5434cfffeea1ed92ba0f221a899b638
+// sha256:a66ae05e923d5d61e0fb4e9532c5f62be99e24c59d1e2be7df2756af7c370c80

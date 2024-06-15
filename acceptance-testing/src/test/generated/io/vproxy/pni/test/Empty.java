@@ -1,6 +1,7 @@
 package io.vproxy.pni.test;
 
 import io.vproxy.pni.*;
+import io.vproxy.pni.hack.*;
 import io.vproxy.pni.array.*;
 import java.lang.foreign.*;
 import java.lang.invoke.*;
@@ -108,4 +109,4 @@ public class Empty extends AbstractNativeObject implements NativeObject {
     }
 }
 // metadata.generator-version: pni test
-// sha256:0969a18cd5c68cef06e02e5bd77d50410eebc167211ee6593cefe29d4462f5a9
+// sha256:8dc12c14c4e3179ff423892e389fd633d11159d1e5984505db4e9b4c59209d30

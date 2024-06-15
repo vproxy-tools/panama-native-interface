@@ -1,6 +1,7 @@
 package io.vproxy.pni.test;
 
 import io.vproxy.pni.*;
+import io.vproxy.pni.hack.*;
 import io.vproxy.pni.array.*;
 import java.lang.foreign.*;
 import java.lang.invoke.*;
@@ -21,12 +22,14 @@ public class GCCompatibilityNormalContainUnion extends AbstractNativeObject impl
         return MEMORY;
     }
 
-    private static final VarHandle b1VH = LAYOUT.varHandle(
-        MemoryLayout.PathElement.groupElement("b1")
+    private static final VarHandleW b1VH = VarHandleW.of(
+        LAYOUT.varHandle(
+            MemoryLayout.PathElement.groupElement("b1")
+        )
     );
 
     public byte getB1() {
-        return (byte) b1VH.get(MEMORY);
+        return b1VH.getByte(MEMORY);
     }
 
     public void setB1(byte b1) {
@@ -39,12 +42,14 @@ public class GCCompatibilityNormalContainUnion extends AbstractNativeObject impl
         return this.un;
     }
 
-    private static final VarHandle n2VH = LAYOUT.varHandle(
-        MemoryLayout.PathElement.groupElement("n2")
+    private static final VarHandleW n2VH = VarHandleW.of(
+        LAYOUT.varHandle(
+            MemoryLayout.PathElement.groupElement("n2")
+        )
     );
 
     public int getN2() {
-        return (int) n2VH.get(MEMORY);
+        return n2VH.getInt(MEMORY);
     }
 
     public void setN2(int n2) {
@@ -269,4 +274,4 @@ public class GCCompatibilityNormalContainUnion extends AbstractNativeObject impl
     }
 }
 // metadata.generator-version: pni test
-// sha256:2e17a403fac4e82a0e511b1353e797c604a657b0142e7986ba78a98caab39b33
+// sha256:816d50e7cd7fdecd5a3a485bc98f778cfa668144cf7a8949ff28b2e9565b8fb4

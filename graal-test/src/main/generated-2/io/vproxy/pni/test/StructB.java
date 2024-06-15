@@ -1,6 +1,7 @@
 package io.vproxy.pni.test;
 
 import io.vproxy.pni.*;
+import io.vproxy.pni.hack.*;
 import io.vproxy.pni.array.*;
 import java.lang.foreign.*;
 import java.lang.invoke.*;
@@ -27,12 +28,14 @@ public class StructB extends AbstractNativeObject implements NativeObject {
         return MEMORY;
     }
 
-    private static final VarHandle iVH = LAYOUT.varHandle(
-        MemoryLayout.PathElement.groupElement("i")
+    private static final VarHandleW iVH = VarHandleW.of(
+        LAYOUT.varHandle(
+            MemoryLayout.PathElement.groupElement("i")
+        )
     );
 
     public int getI() {
-        return (int) iVH.get(MEMORY);
+        return iVH.getInt(MEMORY);
     }
 
     public void setI(int i) {
@@ -45,24 +48,28 @@ public class StructB extends AbstractNativeObject implements NativeObject {
         return this.c;
     }
 
-    private static final VarHandle lVH = LAYOUT.varHandle(
-        MemoryLayout.PathElement.groupElement("l")
+    private static final VarHandleW lVH = VarHandleW.of(
+        LAYOUT.varHandle(
+            MemoryLayout.PathElement.groupElement("l")
+        )
     );
 
     public long getL() {
-        return (long) lVH.get(MEMORY);
+        return lVH.getLong(MEMORY);
     }
 
     public void setL(long l) {
         lVH.set(MEMORY, l);
     }
 
-    private static final VarHandle dVH = LAYOUT.varHandle(
-        MemoryLayout.PathElement.groupElement("d")
+    private static final VarHandleW dVH = VarHandleW.of(
+        LAYOUT.varHandle(
+            MemoryLayout.PathElement.groupElement("d")
+        )
     );
 
     public io.vproxy.pni.test.StructD getD() {
-        var SEG = (MemorySegment) dVH.get(MEMORY);
+        var SEG = dVH.getMemorySegment(MEMORY);
         if (SEG.address() == 0) return null;
         return new io.vproxy.pni.test.StructD(SEG);
     }
@@ -206,4 +213,4 @@ public class StructB extends AbstractNativeObject implements NativeObject {
     }
 }
 // metadata.generator-version: pni test
-// sha256:b0de2b8b8531b7db2437e53705d8c32e49d6144670e6be99eaa322b9486e7afd
+// sha256:0784f8c5f9ee4835bbe38b7e2b7ab98f746541ffe23de7961361fef6d8797945

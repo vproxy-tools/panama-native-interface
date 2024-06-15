@@ -1,6 +1,7 @@
 package io.vproxy.pni.test;
 
 import io.vproxy.pni.*;
+import io.vproxy.pni.hack.*;
 import io.vproxy.pni.array.*;
 import java.lang.foreign.*;
 import java.lang.invoke.*;
@@ -36,24 +37,28 @@ public class AlwaysAlignedSizeof extends AbstractNativeObject implements NativeO
         return MEMORY;
     }
 
-    private static final VarHandle bVH = LAYOUT.varHandle(
-        MemoryLayout.PathElement.groupElement("b")
+    private static final VarHandleW bVH = VarHandleW.of(
+        LAYOUT.varHandle(
+            MemoryLayout.PathElement.groupElement("b")
+        )
     );
 
     public byte getB() {
-        return (byte) bVH.get(MEMORY);
+        return bVH.getByte(MEMORY);
     }
 
     public void setB(byte b) {
         bVH.set(MEMORY, b);
     }
 
-    private static final VarHandle sVH = LAYOUT.varHandle(
-        MemoryLayout.PathElement.groupElement("s")
+    private static final VarHandleW sVH = VarHandleW.of(
+        LAYOUT.varHandle(
+            MemoryLayout.PathElement.groupElement("s")
+        )
     );
 
     public short getS() {
-        return (short) sVH.get(MEMORY);
+        return sVH.getShort(MEMORY);
     }
 
     public void setS(short s) {
@@ -164,4 +169,4 @@ public class AlwaysAlignedSizeof extends AbstractNativeObject implements NativeO
     }
 }
 // metadata.generator-version: pni test
-// sha256:3382d6ea1e3416a3dab35fa0ddf6fecd42e014b883e13332a4cd68e97c8026b4
+// sha256:226f8fb1917dabe6d4c12c883a615baacf920264094d114c08c42c7adfe060ff

@@ -1,6 +1,7 @@
 package io.vproxy.pni.test;
 
 import io.vproxy.pni.*;
+import io.vproxy.pni.hack.*;
 import io.vproxy.pni.array.*;
 import java.lang.foreign.*;
 import java.lang.invoke.*;
@@ -21,12 +22,14 @@ public class RefAndFuncFields extends AbstractNativeObject implements NativeObje
         return MEMORY;
     }
 
-    private static final VarHandle refVH = LAYOUT.varHandle(
-        MemoryLayout.PathElement.groupElement("ref")
+    private static final VarHandleW refVH = VarHandleW.of(
+        LAYOUT.varHandle(
+            MemoryLayout.PathElement.groupElement("ref")
+        )
     );
 
     public PNIRef<java.util.Map<java.lang.String, java.lang.Integer>> getRef() {
-        var SEG = (MemorySegment) refVH.get(MEMORY);
+        var SEG = refVH.getMemorySegment(MEMORY);
         if (SEG.address() == 0) return null;
         return PNIRef.of(SEG);
     }
@@ -39,12 +42,14 @@ public class RefAndFuncFields extends AbstractNativeObject implements NativeObje
         }
     }
 
-    private static final VarHandle ref2VH = LAYOUT.varHandle(
-        MemoryLayout.PathElement.groupElement("ref2")
+    private static final VarHandleW ref2VH = VarHandleW.of(
+        LAYOUT.varHandle(
+            MemoryLayout.PathElement.groupElement("ref2")
+        )
     );
 
     public PNIRef<java.util.List<io.vproxy.pni.test.ObjectStruct>> getRef2() {
-        var SEG = (MemorySegment) ref2VH.get(MEMORY);
+        var SEG = ref2VH.getMemorySegment(MEMORY);
         if (SEG.address() == 0) return null;
         return PNIRef.of(SEG);
     }
@@ -57,12 +62,14 @@ public class RefAndFuncFields extends AbstractNativeObject implements NativeObje
         }
     }
 
-    private static final VarHandle ref3VH = LAYOUT.varHandle(
-        MemoryLayout.PathElement.groupElement("ref3")
+    private static final VarHandleW ref3VH = VarHandleW.of(
+        LAYOUT.varHandle(
+            MemoryLayout.PathElement.groupElement("ref3")
+        )
     );
 
     public PNIRef<io.vproxy.pni.test.ObjectStruct[]> getRef3() {
-        var SEG = (MemorySegment) ref3VH.get(MEMORY);
+        var SEG = ref3VH.getMemorySegment(MEMORY);
         if (SEG.address() == 0) return null;
         return PNIRef.of(SEG);
     }
@@ -75,12 +82,14 @@ public class RefAndFuncFields extends AbstractNativeObject implements NativeObje
         }
     }
 
-    private static final VarHandle funcVH = LAYOUT.varHandle(
-        MemoryLayout.PathElement.groupElement("func")
+    private static final VarHandleW funcVH = VarHandleW.of(
+        LAYOUT.varHandle(
+            MemoryLayout.PathElement.groupElement("func")
+        )
     );
 
     public PNIFunc<java.util.Map<java.lang.String, java.lang.Integer>> getFunc() {
-        var SEG = (MemorySegment) funcVH.get(MEMORY);
+        var SEG = funcVH.getMemorySegment(MEMORY);
         if (SEG.address() == 0) return null;
         return PNIRef.Func.of(SEG);
     }
@@ -93,12 +102,14 @@ public class RefAndFuncFields extends AbstractNativeObject implements NativeObje
         }
     }
 
-    private static final VarHandle func2VH = LAYOUT.varHandle(
-        MemoryLayout.PathElement.groupElement("func2")
+    private static final VarHandleW func2VH = VarHandleW.of(
+        LAYOUT.varHandle(
+            MemoryLayout.PathElement.groupElement("func2")
+        )
     );
 
     public PNIFunc<io.vproxy.pni.test.ObjectStruct> getFunc2() {
-        var SEG = (MemorySegment) func2VH.get(MEMORY);
+        var SEG = func2VH.getMemorySegment(MEMORY);
         if (SEG.address() == 0) return null;
         return io.vproxy.pni.test.ObjectStruct.Func.of(SEG);
     }
@@ -387,4 +398,4 @@ public class RefAndFuncFields extends AbstractNativeObject implements NativeObje
     }
 }
 // metadata.generator-version: pni test
-// sha256:61b0a19af1fae51e8c49a3c62cb6facc6c6aae2fb22b1d717ab3bf2e49249974
+// sha256:b139fe267a86c3796b99a618742decdaa406c19eac558c169d4c05eb167a6215

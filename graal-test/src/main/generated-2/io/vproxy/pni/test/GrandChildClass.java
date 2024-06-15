@@ -1,6 +1,7 @@
 package io.vproxy.pni.test;
 
 import io.vproxy.pni.*;
+import io.vproxy.pni.hack.*;
 import io.vproxy.pni.array.*;
 import java.lang.foreign.*;
 import java.lang.invoke.*;
@@ -24,12 +25,14 @@ public class GrandChildClass extends io.vproxy.pni.test.ChildClass implements Na
         return MEMORY;
     }
 
-    private static final VarHandle yVH = LAYOUT.varHandle(
-        MemoryLayout.PathElement.groupElement("y")
+    private static final VarHandleW yVH = VarHandleW.of(
+        LAYOUT.varHandle(
+            MemoryLayout.PathElement.groupElement("y")
+        )
     );
 
     public long getY() {
-        return (long) yVH.get(MEMORY);
+        return yVH.getLong(MEMORY);
     }
 
     public void setY(long y) {
@@ -177,4 +180,4 @@ public class GrandChildClass extends io.vproxy.pni.test.ChildClass implements Na
     }
 }
 // metadata.generator-version: pni test
-// sha256:927bc569302ad4ae45c11bbbdfbb08ed7fc2f68fa9735a6df8b33f906c4957f4
+// sha256:56dfe271f6b7d73cc84a051fe5a7fa25f0cc4cd7698d342d438dc8eec210398d

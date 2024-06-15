@@ -1,6 +1,7 @@
 package io.vproxy.pni.test;
 
 import io.vproxy.pni.*;
+import io.vproxy.pni.hack.*;
 import io.vproxy.pni.array.*;
 import java.lang.foreign.*;
 import java.lang.invoke.*;
@@ -18,12 +19,14 @@ public class CustomNativeTypeStruct extends AbstractNativeObject implements Nati
         return MEMORY;
     }
 
-    private static final VarHandle fieldVH = LAYOUT.varHandle(
-        MemoryLayout.PathElement.groupElement("field")
+    private static final VarHandleW fieldVH = VarHandleW.of(
+        LAYOUT.varHandle(
+            MemoryLayout.PathElement.groupElement("field")
+        )
     );
 
     public MemorySegment getField() {
-        var SEG = (MemorySegment) fieldVH.get(MEMORY);
+        var SEG = fieldVH.getMemorySegment(MEMORY);
         if (SEG.address() == 0) return null;
         return SEG;
     }
@@ -180,4 +183,4 @@ public class CustomNativeTypeStruct extends AbstractNativeObject implements Nati
     }
 }
 // metadata.generator-version: pni test
-// sha256:f1c20f64b21f7df12916b4f7d215fa99f3ae1ee85b2fa54ecd1c87f53d968589
+// sha256:6a13c0d4108a1a388acc06321f6b4cd4bf9d3be1095c41e203e8ecf8e0f978cc

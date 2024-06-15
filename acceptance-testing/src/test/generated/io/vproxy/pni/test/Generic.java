@@ -1,6 +1,7 @@
 package io.vproxy.pni.test;
 
 import io.vproxy.pni.*;
+import io.vproxy.pni.hack.*;
 import io.vproxy.pni.array.*;
 import java.lang.foreign.*;
 import java.lang.invoke.*;
@@ -737,4 +738,4 @@ public class Generic {
     }
 }
 // metadata.generator-version: pni test
-// sha256:ba5b397413b149566d3fd00355d5c653dbf86096be369a77b26f7145a115399a
+// sha256:9bf7535c71dafff2ccb43eafe4c4b93056bc6c3dc1c211ca8fe602c19ae8fc61

@@ -1,6 +1,7 @@
 package io.vproxy.pni.test;
 
 import io.vproxy.pni.*;
+import io.vproxy.pni.hack.*;
 import io.vproxy.pni.array.*;
 import java.lang.foreign.*;
 import java.lang.invoke.*;
@@ -27,72 +28,84 @@ public class GCCCompatibilityUnion extends AbstractNativeObject implements Nativ
         return MEMORY;
     }
 
-    private static final VarHandle bVH = LAYOUT.varHandle(
-        MemoryLayout.PathElement.groupElement("b")
+    private static final VarHandleW bVH = VarHandleW.of(
+        LAYOUT.varHandle(
+            MemoryLayout.PathElement.groupElement("b")
+        )
     );
 
     public byte getB() {
-        return (byte) bVH.get(MEMORY);
+        return bVH.getByte(MEMORY);
     }
 
     public void setB(byte b) {
         bVH.set(MEMORY, b);
     }
 
-    private static final VarHandle sVH = LAYOUT.varHandle(
-        MemoryLayout.PathElement.groupElement("s")
+    private static final VarHandleW sVH = VarHandleW.of(
+        LAYOUT.varHandle(
+            MemoryLayout.PathElement.groupElement("s")
+        )
     );
 
     public short getS() {
-        return (short) sVH.get(MEMORY);
+        return sVH.getShort(MEMORY);
     }
 
     public void setS(short s) {
         sVH.set(MEMORY, s);
     }
 
-    private static final VarHandle nVH = LAYOUT.varHandle(
-        MemoryLayout.PathElement.groupElement("n")
+    private static final VarHandleW nVH = VarHandleW.of(
+        LAYOUT.varHandle(
+            MemoryLayout.PathElement.groupElement("n")
+        )
     );
 
     public int getN() {
-        return (int) nVH.get(MEMORY);
+        return nVH.getInt(MEMORY);
     }
 
     public void setN(int n) {
         nVH.set(MEMORY, n);
     }
 
-    private static final VarHandle fVH = LAYOUT.varHandle(
-        MemoryLayout.PathElement.groupElement("f")
+    private static final VarHandleW fVH = VarHandleW.of(
+        LAYOUT.varHandle(
+            MemoryLayout.PathElement.groupElement("f")
+        )
     );
 
     public float getF() {
-        return (float) fVH.get(MEMORY);
+        return fVH.getFloat(MEMORY);
     }
 
     public void setF(float f) {
         fVH.set(MEMORY, f);
     }
 
-    private static final VarHandle dVH = LAYOUT.varHandle(
-        MemoryLayout.PathElement.groupElement("d")
+    private static final VarHandleW dVH = VarHandleW.of(
+        LAYOUT.varHandle(
+            MemoryLayout.PathElement.groupElement("d")
+        )
     );
 
     public double getD() {
-        return (double) dVH.get(MEMORY);
+        return dVH.getDouble(MEMORY);
     }
 
     public void setD(double d) {
         dVH.set(MEMORY, d);
     }
 
-    private static final VarHandle lVH = LAYOUT.varHandle(
-        MemoryLayout.PathElement.groupElement("l")
+    private static final VarHandleW lVH = VarHandleW.of(
+        LAYOUT.varHandle(
+            MemoryLayout.PathElement.groupElement("l")
+        )
     );
 
     public long getL() {
-        return (long) lVH.get(MEMORY);
+        return lVH.getLong(MEMORY);
     }
 
     public void setL(long l) {
@@ -233,4 +246,4 @@ public class GCCCompatibilityUnion extends AbstractNativeObject implements Nativ
     }
 }
 // metadata.generator-version: pni test
-// sha256:fb536a71060b4866fb4074c06ff651e85e845c5fc90f09afcc42f42c2b1b3089
+// sha256:d760c5c477617b26422f0c4ccdac51157f59f1ea93b6ccd8b6f76784a7ce9367

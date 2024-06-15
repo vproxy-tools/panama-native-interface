@@ -1,6 +1,7 @@
 package io.vproxy.pni.test;
 
 import io.vproxy.pni.*;
+import io.vproxy.pni.hack.*;
 import io.vproxy.pni.array.*;
 import java.lang.foreign.*;
 import java.lang.invoke.*;
@@ -60,144 +61,168 @@ public class PrimitiveStruct extends AbstractNativeObject implements NativeObjec
         return MEMORY;
     }
 
-    private static final VarHandle aByteVH = LAYOUT.varHandle(
-        MemoryLayout.PathElement.groupElement("aByte")
+    private static final VarHandleW aByteVH = VarHandleW.of(
+        LAYOUT.varHandle(
+            MemoryLayout.PathElement.groupElement("aByte")
+        )
     );
 
     public byte getAByte() {
-        return (byte) aByteVH.get(MEMORY);
+        return aByteVH.getByte(MEMORY);
     }
 
     public void setAByte(byte aByte) {
         aByteVH.set(MEMORY, aByte);
     }
 
-    private static final VarHandle unsignedByteVH = LAYOUT.varHandle(
-        MemoryLayout.PathElement.groupElement("unsignedByte")
+    private static final VarHandleW unsignedByteVH = VarHandleW.of(
+        LAYOUT.varHandle(
+            MemoryLayout.PathElement.groupElement("unsignedByte")
+        )
     );
 
     public byte getUnsignedByte() {
-        return (byte) unsignedByteVH.get(MEMORY);
+        return unsignedByteVH.getByte(MEMORY);
     }
 
     public void setUnsignedByte(byte unsignedByte) {
         unsignedByteVH.set(MEMORY, unsignedByte);
     }
 
-    private static final VarHandle aCharVH = LAYOUT.varHandle(
-        MemoryLayout.PathElement.groupElement("aChar")
+    private static final VarHandleW aCharVH = VarHandleW.of(
+        LAYOUT.varHandle(
+            MemoryLayout.PathElement.groupElement("aChar")
+        )
     );
 
     public char getAChar() {
-        return (char) aCharVH.get(MEMORY);
+        return aCharVH.getChar(MEMORY);
     }
 
     public void setAChar(char aChar) {
         aCharVH.set(MEMORY, aChar);
     }
 
-    private static final VarHandle aDoubleVH = LAYOUT.varHandle(
-        MemoryLayout.PathElement.groupElement("aDouble")
+    private static final VarHandleW aDoubleVH = VarHandleW.of(
+        LAYOUT.varHandle(
+            MemoryLayout.PathElement.groupElement("aDouble")
+        )
     );
 
     public double getADouble() {
-        return (double) aDoubleVH.get(MEMORY);
+        return aDoubleVH.getDouble(MEMORY);
     }
 
     public void setADouble(double aDouble) {
         aDoubleVH.set(MEMORY, aDouble);
     }
 
-    private static final VarHandle aFloatVH = LAYOUT.varHandle(
-        MemoryLayout.PathElement.groupElement("aFloat")
+    private static final VarHandleW aFloatVH = VarHandleW.of(
+        LAYOUT.varHandle(
+            MemoryLayout.PathElement.groupElement("aFloat")
+        )
     );
 
     public float getAFloat() {
-        return (float) aFloatVH.get(MEMORY);
+        return aFloatVH.getFloat(MEMORY);
     }
 
     public void setAFloat(float aFloat) {
         aFloatVH.set(MEMORY, aFloat);
     }
 
-    private static final VarHandle aIntVH = LAYOUT.varHandle(
-        MemoryLayout.PathElement.groupElement("aInt")
+    private static final VarHandleW aIntVH = VarHandleW.of(
+        LAYOUT.varHandle(
+            MemoryLayout.PathElement.groupElement("aInt")
+        )
     );
 
     public int getAInt() {
-        return (int) aIntVH.get(MEMORY);
+        return aIntVH.getInt(MEMORY);
     }
 
     public void setAInt(int aInt) {
         aIntVH.set(MEMORY, aInt);
     }
 
-    private static final VarHandle unsignedIntVH = LAYOUT.varHandle(
-        MemoryLayout.PathElement.groupElement("unsignedInt")
+    private static final VarHandleW unsignedIntVH = VarHandleW.of(
+        LAYOUT.varHandle(
+            MemoryLayout.PathElement.groupElement("unsignedInt")
+        )
     );
 
     public int getUnsignedInt() {
-        return (int) unsignedIntVH.get(MEMORY);
+        return unsignedIntVH.getInt(MEMORY);
     }
 
     public void setUnsignedInt(int unsignedInt) {
         unsignedIntVH.set(MEMORY, unsignedInt);
     }
 
-    private static final VarHandle aLongVH = LAYOUT.varHandle(
-        MemoryLayout.PathElement.groupElement("aLong")
+    private static final VarHandleW aLongVH = VarHandleW.of(
+        LAYOUT.varHandle(
+            MemoryLayout.PathElement.groupElement("aLong")
+        )
     );
 
     public long getALong() {
-        return (long) aLongVH.get(MEMORY);
+        return aLongVH.getLong(MEMORY);
     }
 
     public void setALong(long aLong) {
         aLongVH.set(MEMORY, aLong);
     }
 
-    private static final VarHandle unsignedLongVH = LAYOUT.varHandle(
-        MemoryLayout.PathElement.groupElement("unsignedLong")
+    private static final VarHandleW unsignedLongVH = VarHandleW.of(
+        LAYOUT.varHandle(
+            MemoryLayout.PathElement.groupElement("unsignedLong")
+        )
     );
 
     public long getUnsignedLong() {
-        return (long) unsignedLongVH.get(MEMORY);
+        return unsignedLongVH.getLong(MEMORY);
     }
 
     public void setUnsignedLong(long unsignedLong) {
         unsignedLongVH.set(MEMORY, unsignedLong);
     }
 
-    private static final VarHandle aShortVH = LAYOUT.varHandle(
-        MemoryLayout.PathElement.groupElement("aShort")
+    private static final VarHandleW aShortVH = VarHandleW.of(
+        LAYOUT.varHandle(
+            MemoryLayout.PathElement.groupElement("aShort")
+        )
     );
 
     public short getAShort() {
-        return (short) aShortVH.get(MEMORY);
+        return aShortVH.getShort(MEMORY);
     }
 
     public void setAShort(short aShort) {
         aShortVH.set(MEMORY, aShort);
     }
 
-    private static final VarHandle unsignedShortVH = LAYOUT.varHandle(
-        MemoryLayout.PathElement.groupElement("unsignedShort")
+    private static final VarHandleW unsignedShortVH = VarHandleW.of(
+        LAYOUT.varHandle(
+            MemoryLayout.PathElement.groupElement("unsignedShort")
+        )
     );
 
     public short getUnsignedShort() {
-        return (short) unsignedShortVH.get(MEMORY);
+        return unsignedShortVH.getShort(MEMORY);
     }
 
     public void setUnsignedShort(short unsignedShort) {
         unsignedShortVH.set(MEMORY, unsignedShort);
     }
 
-    private static final VarHandle aBooleanVH = LAYOUT.varHandle(
-        MemoryLayout.PathElement.groupElement("aBoolean")
+    private static final VarHandleW aBooleanVH = VarHandleW.of(
+        LAYOUT.varHandle(
+            MemoryLayout.PathElement.groupElement("aBoolean")
+        )
     );
 
     public boolean isABoolean() {
-        return (boolean) aBooleanVH.get(MEMORY);
+        return aBooleanVH.getBool(MEMORY);
     }
 
     public void setABoolean(boolean aBoolean) {
@@ -2154,4 +2179,4 @@ public class PrimitiveStruct extends AbstractNativeObject implements NativeObjec
     }
 }
 // metadata.generator-version: pni test
-// sha256:98ec91c6f02e5210619b96b873cdc5ad7e295979e8853406af3bbe1f2c7d97c5
+// sha256:e157d93b3e9064cab5281fd9ccbb293bba39222867abe2cdea7022566645a2c2

@@ -1,6 +1,7 @@
 package io.vproxy.pni.test;
 
 import io.vproxy.pni.*;
+import io.vproxy.pni.hack.*;
 import io.vproxy.pni.array.*;
 import java.lang.foreign.*;
 import java.lang.invoke.*;
@@ -284,4 +285,4 @@ public class RawArrays {
     }
 }
 // metadata.generator-version: pni test
-// sha256:3f24fc32745d289998e2350de7d4211b8307405712f4f1c9b2c0d414a9d06313
+// sha256:84949277e15276de507036c9ef19ad57963244e1f88d9933156c9ad2973b03cf

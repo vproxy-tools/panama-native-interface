@@ -1,6 +1,7 @@
 package io.vproxy.pni.test;
 
 import io.vproxy.pni.*;
+import io.vproxy.pni.hack.*;
 import io.vproxy.pni.array.*;
 import java.lang.foreign.*;
 import java.lang.invoke.*;
@@ -24,36 +25,42 @@ public class AlwaysAlignedUnion extends AbstractNativeObject implements NativeOb
         return MEMORY;
     }
 
-    private static final VarHandle aVH = LAYOUT.varHandle(
-        MemoryLayout.PathElement.groupElement("a")
+    private static final VarHandleW aVH = VarHandleW.of(
+        LAYOUT.varHandle(
+            MemoryLayout.PathElement.groupElement("a")
+        )
     );
 
     public short getA() {
-        return (short) aVH.get(MEMORY);
+        return aVH.getShort(MEMORY);
     }
 
     public void setA(short a) {
         aVH.set(MEMORY, a);
     }
 
-    private static final VarHandle bVH = LAYOUT.varHandle(
-        MemoryLayout.PathElement.groupElement("b")
+    private static final VarHandleW bVH = VarHandleW.of(
+        LAYOUT.varHandle(
+            MemoryLayout.PathElement.groupElement("b")
+        )
     );
 
     public int getB() {
-        return (int) bVH.get(MEMORY);
+        return bVH.getInt(MEMORY);
     }
 
     public void setB(int b) {
         bVH.set(MEMORY, b);
     }
 
-    private static final VarHandle cVH = LAYOUT.varHandle(
-        MemoryLayout.PathElement.groupElement("c")
+    private static final VarHandleW cVH = VarHandleW.of(
+        LAYOUT.varHandle(
+            MemoryLayout.PathElement.groupElement("c")
+        )
     );
 
     public long getC() {
-        return (long) cVH.get(MEMORY);
+        return cVH.getLong(MEMORY);
     }
 
     public void setC(long c) {
@@ -173,4 +180,4 @@ public class AlwaysAlignedUnion extends AbstractNativeObject implements NativeOb
     }
 }
 // metadata.generator-version: pni test
-// sha256:4b37d34c101d2b6320fa7177d8dfc4555b4168f37e38cdc51662d026961ec86a
+// sha256:afcccd4044c0c07c0b615617fcf539505f7639721beeca767ead31b6682b0f44

@@ -1,6 +1,7 @@
 package io.vproxy.pni.test;
 
 import io.vproxy.pni.*;
+import io.vproxy.pni.hack.*;
 import io.vproxy.pni.array.*;
 import java.lang.foreign.*;
 import java.lang.invoke.*;
@@ -19,12 +20,14 @@ public class ChildOfLargeAlign extends io.vproxy.pni.test.LargeAlignBase impleme
         return MEMORY;
     }
 
-    private static final VarHandle yVH = LAYOUT.varHandle(
-        MemoryLayout.PathElement.groupElement("y")
+    private static final VarHandleW yVH = VarHandleW.of(
+        LAYOUT.varHandle(
+            MemoryLayout.PathElement.groupElement("y")
+        )
     );
 
     public byte getY() {
-        return (byte) yVH.get(MEMORY);
+        return yVH.getByte(MEMORY);
     }
 
     public void setY(byte y) {
@@ -144,4 +147,4 @@ public class ChildOfLargeAlign extends io.vproxy.pni.test.LargeAlignBase impleme
     }
 }
 // metadata.generator-version: pni test
-// sha256:c697a3c93e6d1ed90e601b7431a2c26a3c1c0f67c26da8ff5acde410c54b0e1f
+// sha256:cba63f2d45034f348ee6455fb993d3a2122329311601311845a193e6f30e5726

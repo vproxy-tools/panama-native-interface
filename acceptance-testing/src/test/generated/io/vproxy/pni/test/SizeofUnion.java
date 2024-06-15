@@ -1,6 +1,7 @@
 package io.vproxy.pni.test;
 
 import io.vproxy.pni.*;
+import io.vproxy.pni.hack.*;
 import io.vproxy.pni.array.*;
 import java.lang.foreign.*;
 import java.lang.invoke.*;
@@ -36,12 +37,14 @@ public class SizeofUnion extends AbstractNativeObject implements NativeObject {
         return this.st;
     }
 
-    private static final VarHandle aVH = LAYOUT.varHandle(
-        MemoryLayout.PathElement.groupElement("a")
+    private static final VarHandleW aVH = VarHandleW.of(
+        LAYOUT.varHandle(
+            MemoryLayout.PathElement.groupElement("a")
+        )
     );
 
     public int getA() {
-        return (int) aVH.get(MEMORY);
+        return aVH.getInt(MEMORY);
     }
 
     public void setA(int a) {
@@ -155,4 +158,4 @@ public class SizeofUnion extends AbstractNativeObject implements NativeObject {
     }
 }
 // metadata.generator-version: pni test
-// sha256:6844ac4840a52acc62bdc7fb0aa842a99d086a32aa39be731f5130e118603e7d
+// sha256:594ed30bf19a06827f4c15d68da7ae67e7af6d84bf13592044a8e63bd5dd356b

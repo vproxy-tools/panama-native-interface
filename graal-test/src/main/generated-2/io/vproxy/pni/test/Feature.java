@@ -1,6 +1,7 @@
 package io.vproxy.pni.test;
 
 import io.vproxy.pni.*;
+import io.vproxy.pni.hack.*;
 import io.vproxy.pni.graal.*;
 import io.vproxy.r.org.graalvm.nativeimage.*;
 import java.lang.foreign.*;
@@ -1526,4 +1527,4 @@ public class Feature implements org.graalvm.nativeimage.hosted.Feature {
     }
 }
 // metadata.generator-version: pni test
-// sha256:f0c58370b78b17ab67e3280863b82fa75191a43d0fbb7fab9b9cdfd21ee4c39f
+// sha256:1a5ab3d4a3bf7ab9c2131341821bf1427454702f7757ac353e3f5d6ed3e4d582

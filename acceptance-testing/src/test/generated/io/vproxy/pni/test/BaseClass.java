@@ -1,6 +1,7 @@
 package io.vproxy.pni.test;
 
 import io.vproxy.pni.*;
+import io.vproxy.pni.hack.*;
 import io.vproxy.pni.array.*;
 import java.lang.foreign.*;
 import java.lang.invoke.*;
@@ -17,12 +18,14 @@ public class BaseClass extends AbstractNativeObject implements NativeObject {
         return MEMORY;
     }
 
-    private static final VarHandle aVH = LAYOUT.varHandle(
-        MemoryLayout.PathElement.groupElement("a")
+    private static final VarHandleW aVH = VarHandleW.of(
+        LAYOUT.varHandle(
+            MemoryLayout.PathElement.groupElement("a")
+        )
     );
 
     public byte getA() {
-        return (byte) aVH.get(MEMORY);
+        return aVH.getByte(MEMORY);
     }
 
     public void setA(byte a) {
@@ -141,4 +144,4 @@ public class BaseClass extends AbstractNativeObject implements NativeObject {
     }
 }
 // metadata.generator-version: pni test
-// sha256:545376af8af66a373415b8267cf4d4c74320fd2b3eedc8439d08b668542e1977
+// sha256:aea86b3561d85a7b6ce37f4ac38e54b33c917416fc79018ee7dd636b97e9d346

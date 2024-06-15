@@ -1,6 +1,7 @@
 package io.vproxy.pni.test;
 
 import io.vproxy.pni.*;
+import io.vproxy.pni.hack.*;
 import io.vproxy.pni.array.*;
 import java.lang.foreign.*;
 import java.lang.invoke.*;
@@ -24,12 +25,14 @@ public class GCCCompatibilityNonPackedContainPacked extends AbstractNativeObject
         return MEMORY;
     }
 
-    private static final VarHandle b1VH = LAYOUT.varHandle(
-        MemoryLayout.PathElement.groupElement("b1")
+    private static final VarHandleW b1VH = VarHandleW.of(
+        LAYOUT.varHandle(
+            MemoryLayout.PathElement.groupElement("b1")
+        )
     );
 
     public byte getB1() {
-        return (byte) b1VH.get(MEMORY);
+        return b1VH.getByte(MEMORY);
     }
 
     public void setB1(byte b1) {
@@ -42,12 +45,14 @@ public class GCCCompatibilityNonPackedContainPacked extends AbstractNativeObject
         return this.packed;
     }
 
-    private static final VarHandle n2VH = LAYOUT.varHandle(
-        MemoryLayout.PathElement.groupElement("n2")
+    private static final VarHandleW n2VH = VarHandleW.of(
+        LAYOUT.varHandle(
+            MemoryLayout.PathElement.groupElement("n2")
+        )
     );
 
     public int getN2() {
-        return (int) n2VH.get(MEMORY);
+        return n2VH.getInt(MEMORY);
     }
 
     public void setN2(int n2) {
@@ -195,4 +200,4 @@ public class GCCCompatibilityNonPackedContainPacked extends AbstractNativeObject
     }
 }
 // metadata.generator-version: pni test
-// sha256:6eb35dbf0b5c13a3c322c191f61e17c056690700ebb46a7d947496903aa171d5
+// sha256:b3bc2f044d9f861288a1ec8b73370167c29450b5a22b3a56b75c9719c92a5f94

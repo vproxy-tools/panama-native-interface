@@ -1,6 +1,7 @@
 package io.vproxy.pni.test;
 
 import io.vproxy.pni.*;
+import io.vproxy.pni.hack.*;
 import io.vproxy.pni.array.*;
 import java.lang.foreign.*;
 import java.lang.invoke.*;
@@ -165,4 +166,4 @@ public class ToStringArray extends AbstractNativeObject implements NativeObject 
     }
 }
 // metadata.generator-version: pni test
-// sha256:d55e25cfce98fcc1381ccae5dffd68d6cc3d88e4d53246e84382e837c50c2f39
+// sha256:7fb12475846e233685fe7f4ba952dd674a121ef497769cf8dfeff74687e70ea4

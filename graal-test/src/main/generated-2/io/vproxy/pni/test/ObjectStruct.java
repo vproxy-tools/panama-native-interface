@@ -1,6 +1,7 @@
 package io.vproxy.pni.test;
 
 import io.vproxy.pni.*;
+import io.vproxy.pni.hack.*;
 import io.vproxy.pni.array.*;
 import java.lang.foreign.*;
 import java.lang.invoke.*;
@@ -25,12 +26,14 @@ public class ObjectStruct extends AbstractNativeObject implements NativeObject {
         return MEMORY;
     }
 
-    private static final VarHandle strVH = LAYOUT.varHandle(
-        MemoryLayout.PathElement.groupElement("str")
+    private static final VarHandleW strVH = VarHandleW.of(
+        LAYOUT.varHandle(
+            MemoryLayout.PathElement.groupElement("str")
+        )
     );
 
     public PNIString getStr() {
-        var SEG = (MemorySegment) strVH.get(MEMORY);
+        var SEG = strVH.getMemorySegment(MEMORY);
         if (SEG.address() == 0) return null;
         return new PNIString(SEG);
     }
@@ -50,19 +53,21 @@ public class ObjectStruct extends AbstractNativeObject implements NativeObject {
     private final MemorySegment lenStr;
 
     public String getLenStr() {
-        return lenStr.getUtf8String(0);
+        return PanamaHack.getUtf8String(lenStr, 0);
     }
 
     public void setLenStr(String lenStr) {
         PanamaHack.setUtf8String(this.lenStr, 0, lenStr);
     }
 
-    private static final VarHandle segVH = LAYOUT.varHandle(
-        MemoryLayout.PathElement.groupElement("seg")
+    private static final VarHandleW segVH = VarHandleW.of(
+        LAYOUT.varHandle(
+            MemoryLayout.PathElement.groupElement("seg")
+        )
     );
 
     public MemorySegment getSeg() {
-        var SEG = (MemorySegment) segVH.get(MEMORY);
+        var SEG = segVH.getMemorySegment(MEMORY);
         if (SEG.address() == 0) return null;
         return SEG;
     }
@@ -416,4 +421,4 @@ public class ObjectStruct extends AbstractNativeObject implements NativeObject {
     }
 }
 // metadata.generator-version: pni test
-// sha256:f3147df3b1236b08efbfd3088fb01b5da740f4e68329ec1dd307c210e2efdbc9
+// sha256:3a19884788532a06e8157d2fc044974ac1f20bc4a4371f7ad9e68442174d856a

@@ -1,6 +1,7 @@
 package io.vproxy.pni.test;
 
 import io.vproxy.pni.*;
+import io.vproxy.pni.hack.*;
 import io.vproxy.pni.array.*;
 import java.lang.foreign.*;
 import java.lang.invoke.*;
@@ -17,12 +18,14 @@ public class AlwaysAlignedBase extends AbstractNativeObject implements NativeObj
         return MEMORY;
     }
 
-    private static final VarHandle aVH = LAYOUT.varHandle(
-        MemoryLayout.PathElement.groupElement("a")
+    private static final VarHandleW aVH = VarHandleW.of(
+        LAYOUT.varHandle(
+            MemoryLayout.PathElement.groupElement("a")
+        )
     );
 
     public byte getA() {
-        return (byte) aVH.get(MEMORY);
+        return aVH.getByte(MEMORY);
     }
 
     public void setA(byte a) {
@@ -126,4 +129,4 @@ public class AlwaysAlignedBase extends AbstractNativeObject implements NativeObj
     }
 }
 // metadata.generator-version: pni test
-// sha256:37eaf66eac56387b7a7f770acbf464254aa90a318b8b3764714a7f2cbfc44767
+// sha256:7fd17b00da0ed6ed84321e84cf715a6c51da76929519f4e87d545a625794c4e6

@@ -1,6 +1,7 @@
 package io.vproxy.pni.test;
 
 import io.vproxy.pni.*;
+import io.vproxy.pni.hack.*;
 import io.vproxy.pni.array.*;
 import java.lang.foreign.*;
 import java.lang.invoke.*;
@@ -24,12 +25,14 @@ public class AlwaysAlignedChild extends io.vproxy.pni.test.AlwaysAlignedBase imp
         return MEMORY;
     }
 
-    private static final VarHandle bVH = LAYOUT.varHandle(
-        MemoryLayout.PathElement.groupElement("b")
+    private static final VarHandleW bVH = VarHandleW.of(
+        LAYOUT.varHandle(
+            MemoryLayout.PathElement.groupElement("b")
+        )
     );
 
     public short getB() {
-        return (short) bVH.get(MEMORY);
+        return bVH.getShort(MEMORY);
     }
 
     public void setB(short b) {
@@ -149,4 +152,4 @@ public class AlwaysAlignedChild extends io.vproxy.pni.test.AlwaysAlignedBase imp
     }
 }
 // metadata.generator-version: pni test
-// sha256:2930de924efcbd23f8da870a2ec0b92cb9a7637558ea1bcf02bf1c452cec0905
+// sha256:38f6d8eb81ff8386a0b1e3d03c3c9b236c6160eaaa79ee101f3ec574015b9dfe

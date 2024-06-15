@@ -1,6 +1,7 @@
 package io.vproxy.pni.test;
 
 import io.vproxy.pni.*;
+import io.vproxy.pni.hack.*;
 import io.vproxy.pni.array.*;
 import java.lang.foreign.*;
 import java.lang.invoke.*;
@@ -26,36 +27,42 @@ public class Userdata extends AbstractNativeObject implements NativeObject {
         return MEMORY;
     }
 
-    private static final VarHandle xVH = LAYOUT.varHandle(
-        MemoryLayout.PathElement.groupElement("x")
+    private static final VarHandleW xVH = VarHandleW.of(
+        LAYOUT.varHandle(
+            MemoryLayout.PathElement.groupElement("x")
+        )
     );
 
     public int getX() {
-        return (int) xVH.get(MEMORY);
+        return xVH.getInt(MEMORY);
     }
 
     public void setX(int x) {
         xVH.set(MEMORY, x);
     }
 
-    private static final VarHandle yVH = LAYOUT.varHandle(
-        MemoryLayout.PathElement.groupElement("y")
+    private static final VarHandleW yVH = VarHandleW.of(
+        LAYOUT.varHandle(
+            MemoryLayout.PathElement.groupElement("y")
+        )
     );
 
     public long getY() {
-        return (long) yVH.get(MEMORY);
+        return yVH.getLong(MEMORY);
     }
 
     public void setY(long y) {
         yVH.set(MEMORY, y);
     }
 
-    private static final VarHandle zVH = LAYOUT.varHandle(
-        MemoryLayout.PathElement.groupElement("z")
+    private static final VarHandleW zVH = VarHandleW.of(
+        LAYOUT.varHandle(
+            MemoryLayout.PathElement.groupElement("z")
+        )
     );
 
     public short getZ() {
-        return (short) zVH.get(MEMORY);
+        return zVH.getShort(MEMORY);
     }
 
     public void setZ(short z) {
@@ -173,4 +180,4 @@ public class Userdata extends AbstractNativeObject implements NativeObject {
     }
 }
 // metadata.generator-version: pni test
-// sha256:964966b2ee8fb604f1312d202910bbb7be68ff7519087cb08668446f17bc94aa
+// sha256:cebdeb933af8dc12bb84156bc9e5f76ae70d45c46b675da696c765996c851964

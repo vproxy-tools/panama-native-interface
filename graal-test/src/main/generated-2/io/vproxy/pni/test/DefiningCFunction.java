@@ -1,6 +1,7 @@
 package io.vproxy.pni.test;
 
 import io.vproxy.pni.*;
+import io.vproxy.pni.hack.*;
 import io.vproxy.pni.array.*;
 import java.lang.foreign.*;
 import java.lang.invoke.*;
@@ -400,4 +401,4 @@ public class DefiningCFunction {
     }
 }
 // metadata.generator-version: pni test
-// sha256:7553d87aa3a0b2a51671d90eb4d768a56a2294abfbae7b9bef44f6ff262b1d10
+// sha256:f83b1963c17f8b6de38d8ca769f0656c29fd249420e04defa7220765ab726fa4

@@ -1,6 +1,7 @@
 package io.vproxy.pni.test;
 
 import io.vproxy.pni.*;
+import io.vproxy.pni.hack.*;
 import io.vproxy.pni.array.*;
 import java.lang.foreign.*;
 import java.lang.invoke.*;
@@ -24,24 +25,28 @@ public class ToStringClassRecurse extends AbstractNativeObject implements Native
         return MEMORY;
     }
 
-    private static final VarHandle numVH = LAYOUT.varHandle(
-        MemoryLayout.PathElement.groupElement("num")
+    private static final VarHandleW numVH = VarHandleW.of(
+        LAYOUT.varHandle(
+            MemoryLayout.PathElement.groupElement("num")
+        )
     );
 
     public long getNum() {
-        return (long) numVH.get(MEMORY);
+        return numVH.getLong(MEMORY);
     }
 
     public void setNum(long num) {
         numVH.set(MEMORY, num);
     }
 
-    private static final VarHandle cVH = LAYOUT.varHandle(
-        MemoryLayout.PathElement.groupElement("c")
+    private static final VarHandleW cVH = VarHandleW.of(
+        LAYOUT.varHandle(
+            MemoryLayout.PathElement.groupElement("c")
+        )
     );
 
     public io.vproxy.pni.test.ToStringClass getC() {
-        var SEG = (MemorySegment) cVH.get(MEMORY);
+        var SEG = cVH.getMemorySegment(MEMORY);
         if (SEG.address() == 0) return null;
         return new io.vproxy.pni.test.ToStringClass(SEG);
     }
@@ -171,4 +176,4 @@ public class ToStringClassRecurse extends AbstractNativeObject implements Native
     }
 }
 // metadata.generator-version: pni test
-// sha256:adbff18e3a697c9055b3bc32637e076c1c23a985997e062fcd62473c4720a44c
+// sha256:560f8aa5985094f1be7bb1194a7e35e35350eb88938842b96bcd26fbcdd2529e

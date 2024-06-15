@@ -1,6 +1,7 @@
 package io.vproxy.pni.test;
 
 import io.vproxy.pni.*;
+import io.vproxy.pni.hack.*;
 import io.vproxy.pni.array.*;
 import java.lang.foreign.*;
 import java.lang.invoke.*;
@@ -23,12 +24,14 @@ public class ToStringUnion extends AbstractNativeObject implements NativeObject 
         return MEMORY;
     }
 
-    private static final VarHandle numVH = LAYOUT.varHandle(
-        MemoryLayout.PathElement.groupElement("num")
+    private static final VarHandleW numVH = VarHandleW.of(
+        LAYOUT.varHandle(
+            MemoryLayout.PathElement.groupElement("num")
+        )
     );
 
     public long getNum() {
-        return (long) numVH.get(MEMORY);
+        return numVH.getLong(MEMORY);
     }
 
     public void setNum(long num) {
@@ -53,12 +56,14 @@ public class ToStringUnion extends AbstractNativeObject implements NativeObject 
         return this.cr;
     }
 
-    private static final VarHandle pc1VH = LAYOUT.varHandle(
-        MemoryLayout.PathElement.groupElement("pc1")
+    private static final VarHandleW pc1VH = VarHandleW.of(
+        LAYOUT.varHandle(
+            MemoryLayout.PathElement.groupElement("pc1")
+        )
     );
 
     public io.vproxy.pni.test.ToStringClass getPc1() {
-        var SEG = (MemorySegment) pc1VH.get(MEMORY);
+        var SEG = pc1VH.getMemorySegment(MEMORY);
         if (SEG.address() == 0) return null;
         return new io.vproxy.pni.test.ToStringClass(SEG);
     }
@@ -71,12 +76,14 @@ public class ToStringUnion extends AbstractNativeObject implements NativeObject 
         }
     }
 
-    private static final VarHandle pc2VH = LAYOUT.varHandle(
-        MemoryLayout.PathElement.groupElement("pc2")
+    private static final VarHandleW pc2VH = VarHandleW.of(
+        LAYOUT.varHandle(
+            MemoryLayout.PathElement.groupElement("pc2")
+        )
     );
 
     public io.vproxy.pni.test.ToStringClass2 getPc2() {
-        var SEG = (MemorySegment) pc2VH.get(MEMORY);
+        var SEG = pc2VH.getMemorySegment(MEMORY);
         if (SEG.address() == 0) return null;
         return new io.vproxy.pni.test.ToStringClass2(SEG);
     }
@@ -89,12 +96,14 @@ public class ToStringUnion extends AbstractNativeObject implements NativeObject 
         }
     }
 
-    private static final VarHandle pcrVH = LAYOUT.varHandle(
-        MemoryLayout.PathElement.groupElement("pcr")
+    private static final VarHandleW pcrVH = VarHandleW.of(
+        LAYOUT.varHandle(
+            MemoryLayout.PathElement.groupElement("pcr")
+        )
     );
 
     public io.vproxy.pni.test.ToStringClassRecurse getPcr() {
-        var SEG = (MemorySegment) pcrVH.get(MEMORY);
+        var SEG = pcrVH.getMemorySegment(MEMORY);
         if (SEG.address() == 0) return null;
         return new io.vproxy.pni.test.ToStringClassRecurse(SEG);
     }
@@ -254,4 +263,4 @@ public class ToStringUnion extends AbstractNativeObject implements NativeObject 
     }
 }
 // metadata.generator-version: pni test
-// sha256:d734c1d8f78d66698b65f5a67deb06d23960f9e4bfcf1514fa959dbb7da052df
+// sha256:580a980b2a94e2dcae8d763ea22aa639708565271344da86cd7d09b20bc7b534

@@ -1,6 +1,7 @@
 package io.vproxy.pni.test;
 
 import io.vproxy.pni.*;
+import io.vproxy.pni.hack.*;
 import io.vproxy.pni.array.*;
 import java.lang.foreign.*;
 import java.lang.invoke.*;
@@ -412,4 +413,4 @@ public class UpcallNull {
     }
 }
 // metadata.generator-version: pni test
-// sha256:ab763834886613d2a1b988b2e666bf57986cb05d9cfbb11f8220b7b1b331b0fe
+// sha256:1d69e737084d92154e0365bd57253fa2e2ce5710f814617784ada5ce596d71c8
