@@ -1,6 +1,7 @@
 package io.vproxy.pni.graal.test;
 
 import io.vproxy.pni.*;
+import io.vproxy.pni.hack.*;
 import io.vproxy.pni.array.*;
 import java.lang.foreign.*;
 import java.lang.invoke.*;
@@ -125,4 +126,4 @@ public class Invoke {
     }
 }
 // metadata.generator-version: pni test
-// sha256:b72020e1a6c7866479db1aa2a8441c23500cce6dcfa93931861e0032fa9d5860
+// sha256:8a0ac233af786331e2a838af519ad267c214a218c7a2441bf7032a806de5a467
