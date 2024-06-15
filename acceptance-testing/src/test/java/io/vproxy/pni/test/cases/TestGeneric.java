@@ -302,6 +302,6 @@ public class TestGeneric {
     public void shaCheck() throws Exception {
         var s = Files.readAllLines(Path.of("src", "test", "generated", "io", "vproxy", "pni", "test", "Generic.java"));
         var lastLine = s.get(s.size() - 1);
-        assertEquals("// sha256:ba5b397413b149566d3fd00355d5c653dbf86096be369a77b26f7145a115399a", lastLine);
+        assertEquals("// sha256:9bf7535c71dafff2ccb43eafe4c4b93056bc6c3dc1c211ca8fe602c19ae8fc61", lastLine);
     }
 }

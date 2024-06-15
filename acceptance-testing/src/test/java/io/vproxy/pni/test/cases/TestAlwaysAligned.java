@@ -93,30 +93,30 @@ public class TestAlwaysAligned {
     public void shaCheck() throws Exception {
         var s = Files.readAllLines(Path.of("src", "test", "generated", "io", "vproxy", "pni", "test", "AlwaysAlignedClass.java"));
         var lastLine = s.get(s.size() - 1);
-        assertEquals("// sha256:a99ce092c9bb20a08f2e4d22692134ce7e88664ecf6da55bd5f03856ef9e66bf", lastLine);
+        assertEquals("// sha256:005166c3cd7c868c72be301deebb72af81068b07182b7c5f4040a89c4d2b8c11", lastLine);
 
         s = Files.readAllLines(Path.of("src", "test", "generated", "io", "vproxy", "pni", "test", "AlwaysAlignedField.java"));
         lastLine = s.get(s.size() - 1);
-        assertEquals("// sha256:bce8fee6d0a06612d3f89362118a04b09d89656f9fdc3d5486bf3a536d33d741", lastLine);
+        assertEquals("// sha256:b3941a74985457125dd4f34e87ac42b303a6e3420e47f54e63b16b030959e147", lastLine);
 
         s = Files.readAllLines(Path.of("src", "test", "generated", "io", "vproxy", "pni", "test", "AlwaysAlignedBase.java"));
         lastLine = s.get(s.size() - 1);
-        assertEquals("// sha256:37eaf66eac56387b7a7f770acbf464254aa90a318b8b3764714a7f2cbfc44767", lastLine);
+        assertEquals("// sha256:7fd17b00da0ed6ed84321e84cf715a6c51da76929519f4e87d545a625794c4e6", lastLine);
 
         s = Files.readAllLines(Path.of("src", "test", "generated", "io", "vproxy", "pni", "test", "AlwaysAlignedChild.java"));
         lastLine = s.get(s.size() - 1);
-        assertEquals("// sha256:ee732223b708bc454a7948024d36a1c9a01675dd4992c2bf5a95e2b52cae7593", lastLine);
+        assertEquals("// sha256:d38663dd876f6aaca6f3088c4246a9df218153dee79d7016e0efe98143afd5ae", lastLine);
 
         s = Files.readAllLines(Path.of("src", "test", "generated", "io", "vproxy", "pni", "test", "AlwaysAlignedGrandChild.java"));
         lastLine = s.get(s.size() - 1);
-        assertEquals("// sha256:e2d0e077cebece7302f633202fb7197ec3e2b5a9a511ce9f52df94814dd949c6", lastLine);
+        assertEquals("// sha256:d229f6c3761dbfeccba57c8080929881abae3a058d70b8587651ba6ed460b68d", lastLine);
 
         s = Files.readAllLines(Path.of("src", "test", "generated", "io", "vproxy", "pni", "test", "AlwaysAlignedSizeof.java"));
         lastLine = s.get(s.size() - 1);
-        assertEquals("// sha256:03f53eb697cf302dbd78951756723e329a243e5b590a0f50236ca0c872e1db90", lastLine);
+        assertEquals("// sha256:82ebe27f92f8bc40bf31688efaa04625afcc0230cd76a06b39aaa3fc15bbfd7a", lastLine);
 
         s = Files.readAllLines(Path.of("src", "test", "generated", "io", "vproxy", "pni", "test", "AlwaysAlignedUnion.java"));
         lastLine = s.get(s.size() - 1);
-        assertEquals("// sha256:46ac67402162c41b4df53e6cc7fc9c199802155e062b7a4dc63b8ecc7cf90596", lastLine);
+        assertEquals("// sha256:442e3995daf092e51c8489950e9f7b2158fb7b9c3353bdd3965b06a41c76d921", lastLine);
     }
 }

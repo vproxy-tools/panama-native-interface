@@ -94,18 +94,18 @@ public class TestSizeof {
 
         s = Files.readAllLines(Path.of("src", "test", "generated", "io", "vproxy", "pni", "test", "SizeofEmbed.java"));
         lastLine = s.get(s.size() - 1);
-        assertEquals("// sha256:aa2548805da87842c32941b520f50102fc755745699b054909ea4b7364404066", lastLine);
+        assertEquals("// sha256:36d08a78f28fd4ec02755cb27b09aa79749cd4f6bb7573196e12dfbe03c29bcb", lastLine);
 
         s = Files.readAllLines(Path.of("src", "test", "generated", "io", "vproxy", "pni", "test", "SizeofStruct.java"));
         lastLine = s.get(s.size() - 1);
-        assertEquals("// sha256:11fe6c1587120281254ab8bc1305c7e1a0e0e12c4276cb5dae8fed69109be186", lastLine);
+        assertEquals("// sha256:25809e0478bd472fd09e099b8b044ddce8054b219ecbd2e211458bbc2157a0c8", lastLine);
 
         s = Files.readAllLines(Path.of("src", "test", "generated", "io", "vproxy", "pni", "test", "SizeofStructExpr.java"));
         lastLine = s.get(s.size() - 1);
-        assertEquals("// sha256:e4edb5f1852aca49c7c3b3fc0e3f2e13f3375c90f47bd2e08847a8f91f336bf9", lastLine);
+        assertEquals("// sha256:e1573fb4af20cb1d3865774c506f758b8d757156384870d2e3a46c5bc30a9ae6", lastLine);
 
         s = Files.readAllLines(Path.of("src", "test", "generated", "io", "vproxy", "pni", "test", "SizeofUnion.java"));
         lastLine = s.get(s.size() - 1);
-        assertEquals("// sha256:6844ac4840a52acc62bdc7fb0aa842a99d086a32aa39be731f5130e118603e7d", lastLine);
+        assertEquals("// sha256:594ed30bf19a06827f4c15d68da7ae67e7af6d84bf13592044a8e63bd5dd356b", lastLine);
     }
 }
