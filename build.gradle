@@ -84,18 +84,24 @@ subprojects {
     tasks.withType(JavaCompile) {
         options.encoding = "UTF-8"
         if (project.name != 'pni') {
-            options.compilerArgs += '--enable-preview'
+            if (JDK_VERSION == '21') {
+                options.compilerArgs += '--enable-preview'
+            }
         }
     }
     tasks.withType(JavaExec) {
         if (project.name != 'pni') {
-            jvmArgs += '--enable-preview'
+            if (JDK_VERSION == '21') {
+                jvmArgs += '--enable-preview'
+            }
             jvmArgs += '--enable-native-access=ALL-UNNAMED'
         }
     }
     tasks.withType(Test) {
         if (project.name != 'pni') {
-            jvmArgs += '--enable-preview'
+            if (JDK_VERSION == '21') {
+                jvmArgs += '--enable-preview'
+            }
             jvmArgs += '--enable-native-access=ALL-UNNAMED'
         }
 
@@ -435,12 +441,18 @@ project(":graal-test") {
         if (!OS.isWindows()) {
             output += '.run'
         }
-        args '-jar', './build/libs/graal-test.jar',
+        def argList = ['-jar', './build/libs/graal-test.jar',
                 '--features=io.vproxy.pni.graal.test.Feature2,io.vproxy.pni.test.Feature,io.vproxy.pni.graal.test.Feature',
                 '--add-opens', 'java.base/java.io=ALL-UNNAMED',
-                '--enable-preview', '--enable-native-access=ALL-UNNAMED', '-ea',
-                '-Ob', '--no-fallback',
-                '-o', output
+                '--enable-native-access=ALL-UNNAMED', '-ea',
+                '-Ob', '--no-fallback']
+        if (JDK_VERSION == '21') {
+            argList << '--enable-preview'
+        } else {
+            argList << '-H:+UnlockExperimentalVMOptions' << '-H:+ForeignAPISupport'
+        }
+        argList << '-o' << output
+        args = argList
 
         dependsOn copyAcceptanceTestingToGraal
         dependsOn compileGraalTestLib
@@ -529,10 +541,16 @@ project(":sample") {
         if (!OS.isWindows()) {
             output += '.run'
         }
-        args '-jar', './build/libs/sample.jar', '--features=io.vproxy.pni.sample.Feature',
-                '--enable-preview', '--enable-native-access=ALL-UNNAMED',
-                '-Ob', '--no-fallback',
-                '-o', output
+        def argList = ['-jar', './build/libs/sample.jar', '--features=io.vproxy.pni.sample.Feature',
+                '--enable-native-access=ALL-UNNAMED',
+                '-Ob', '--no-fallback']
+        if (JDK_VERSION == '21') {
+            argList << '--enable-preview'
+        } else {
+            argList << '-H:+UnlockExperimentalVMOptions' << '-H:+ForeignAPISupport'
+        }
+        argList << '-o' << output
+        args = argList
 
         dependsOn compilePNISampleLib
         dependsOn shadowJar
@@ -611,7 +629,10 @@ project(':performance') {
         }
     }
     jmhRunBytecodeGenerator {
-        getJvmArgs().addAll(["--enable-preview", "--enable-native-access=ALL-UNNAMED"])
+        if (JDK_VERSION == '21') {
+            getJvmArgs().addAll(["--enable-preview"])
+        }
+        getJvmArgs().addAll(["--enable-native-access=ALL-UNNAMED"])
     }
     dependencies {
         implementation 'org.openjdk.jmh:jmh-generator-annprocess:1.37'
