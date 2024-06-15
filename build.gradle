@@ -635,6 +635,10 @@ project(':performance') {
             getJvmArgs().addAll(["--enable-preview"])
         }
         getJvmArgs().addAll(["--enable-native-access=ALL-UNNAMED"])
+        dependsOn project(":api").compileLib
+    }
+    jmh {
+        jvmArgsAppend = ['-Djava.library.path=' + project.rootProject.rootDir.getAbsolutePath() + '/api/src/main/c']
     }
     dependencies {
         implementation 'org.openjdk.jmh:jmh-generator-annprocess:1.37'
