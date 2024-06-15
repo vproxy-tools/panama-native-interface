@@ -1,9 +1,8 @@
 package io.vproxy.pni.sample;
 
 import io.vproxy.pni.*;
+import io.vproxy.pni.hack.*;
 import io.vproxy.pni.array.*;
-import io.vproxy.pni.hack.VarHandleW;
-
 import java.lang.foreign.*;
 import java.lang.invoke.*;
 import java.nio.ByteBuffer;
@@ -20,9 +19,11 @@ public class UserData extends AbstractNativeObject implements NativeObject {
         return MEMORY;
     }
 
-    private static final VarHandleW userdataVH = VarHandleW.of(LAYOUT.varHandle(
-        MemoryLayout.PathElement.groupElement("userdata")
-    ));
+    private static final VarHandleW userdataVH = VarHandleW.of(
+        LAYOUT.varHandle(
+            MemoryLayout.PathElement.groupElement("userdata")
+        )
+    );
 
     public MemorySegment getUserdata() {
         var SEG = userdataVH.getMemorySegment(MEMORY);
@@ -38,9 +39,11 @@ public class UserData extends AbstractNativeObject implements NativeObject {
         }
     }
 
-    private static final VarHandleW udata64VH = VarHandleW.of(LAYOUT.varHandle(
-        MemoryLayout.PathElement.groupElement("udata64")
-    ));
+    private static final VarHandleW udata64VH = VarHandleW.of(
+        LAYOUT.varHandle(
+            MemoryLayout.PathElement.groupElement("udata64")
+        )
+    );
 
     public long getUdata64() {
         return udata64VH.getLong(MEMORY);
@@ -156,4 +159,4 @@ public class UserData extends AbstractNativeObject implements NativeObject {
     }
 }
 // metadata.generator-version: pni test
-// sha256:c8a4c312f33c33a296cef69094e663ff5d9cdaa4f26c9b5812dabc2d21461fe8
+// sha256:8019f32996220583c2504fd53ad46785e23a092073666f36f884f427ba85784b

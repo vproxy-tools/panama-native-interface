@@ -1,11 +1,11 @@
 package io.vproxy.pni.sample;
 
 import io.vproxy.pni.*;
+import io.vproxy.pni.hack.*;
 import io.vproxy.pni.array.*;
-import io.vproxy.pni.hack.VarHandleW;
-
 import java.lang.foreign.*;
 import java.lang.invoke.*;
+import java.nio.ByteBuffer;
 
 public class MBuf extends AbstractNativeObject implements NativeObject {
     public static final MemoryLayout LAYOUT = MemoryLayout.structLayout(
@@ -23,9 +23,11 @@ public class MBuf extends AbstractNativeObject implements NativeObject {
         return MEMORY;
     }
 
-    private static final VarHandleW bufAddrVH = VarHandleW.of(LAYOUT.varHandle(
-        MemoryLayout.PathElement.groupElement("bufAddr")
-    ));
+    private static final VarHandleW bufAddrVH = VarHandleW.of(
+        LAYOUT.varHandle(
+            MemoryLayout.PathElement.groupElement("bufAddr")
+        )
+    );
 
     public MemorySegment getBufAddr() {
         var SEG = bufAddrVH.getMemorySegment(MEMORY);
@@ -41,9 +43,11 @@ public class MBuf extends AbstractNativeObject implements NativeObject {
         }
     }
 
-    private static final VarHandleW pktLenVH = VarHandleW.of(LAYOUT.varHandle(
-        MemoryLayout.PathElement.groupElement("pktLen")
-    ));
+    private static final VarHandleW pktLenVH = VarHandleW.of(
+        LAYOUT.varHandle(
+            MemoryLayout.PathElement.groupElement("pktLen")
+        )
+    );
 
     public int getPktLen() {
         return pktLenVH.getInt(MEMORY);
@@ -53,9 +57,11 @@ public class MBuf extends AbstractNativeObject implements NativeObject {
         pktLenVH.set(MEMORY, pktLen);
     }
 
-    private static final VarHandleW pktOffVH = VarHandleW.of(LAYOUT.varHandle(
-        MemoryLayout.PathElement.groupElement("pktOff")
-    ));
+    private static final VarHandleW pktOffVH = VarHandleW.of(
+        LAYOUT.varHandle(
+            MemoryLayout.PathElement.groupElement("pktOff")
+        )
+    );
 
     public int getPktOff() {
         return pktOffVH.getInt(MEMORY);
@@ -65,9 +71,11 @@ public class MBuf extends AbstractNativeObject implements NativeObject {
         pktOffVH.set(MEMORY, pktOff);
     }
 
-    private static final VarHandleW bufLenVH = VarHandleW.of(LAYOUT.varHandle(
-        MemoryLayout.PathElement.groupElement("bufLen")
-    ));
+    private static final VarHandleW bufLenVH = VarHandleW.of(
+        LAYOUT.varHandle(
+            MemoryLayout.PathElement.groupElement("bufLen")
+        )
+    );
 
     public int getBufLen() {
         return bufLenVH.getInt(MEMORY);
@@ -206,4 +214,4 @@ public class MBuf extends AbstractNativeObject implements NativeObject {
     }
 }
 // metadata.generator-version: pni test
-// sha256:653a0397152337fce36cd1186a223ec432cede27a5e036a71f0da2ee96ddf30f
+// sha256:0f52c29e4887cb44612e9ecca13646732eb28586678893396bb6b23872652944

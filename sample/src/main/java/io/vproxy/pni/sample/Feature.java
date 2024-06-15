@@ -1,6 +1,7 @@
 package io.vproxy.pni.sample;
 
 import io.vproxy.pni.*;
+import io.vproxy.pni.hack.*;
 import io.vproxy.pni.graal.*;
 import io.vproxy.r.org.graalvm.nativeimage.*;
 import java.lang.foreign.*;
@@ -16,6 +17,8 @@ public class Feature implements org.graalvm.nativeimage.hosted.Feature {
         RuntimeClassInitialization.initializeAtBuildTime(GraalPNIFunc.class);
         RuntimeClassInitialization.initializeAtBuildTime(GraalPNIRef.class);
         RuntimeClassInitialization.initializeAtBuildTime(PanamaHack.class);
+        RuntimeClassInitialization.initializeAtBuildTime(GetSetUtf8String.implClass());
+        RuntimeClassInitialization.initializeAtBuildTime(VarHandleW.implClass());
         /* ImageInfo */
         RuntimeClassInitialization.initializeAtRunTime(ImageInfoDelegate.class);
         for (var m : ImageInfo.class.getMethods()) {
@@ -76,4 +79,4 @@ public class Feature implements org.graalvm.nativeimage.hosted.Feature {
     }
 }
 // metadata.generator-version: pni test
-// sha256:05603e64c4dd2178c02b6a002cdae2b3bfa8f8535e5a2c89f6ca8cd6e30e8a18
+// sha256:975e740514d834a10c04baf2c080fc49e3228c2113185c5d565d6b38a429e5b8
