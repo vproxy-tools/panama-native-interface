@@ -13,6 +13,15 @@ public interface VarHandleW {
         }
     }
 
+    static Class<? extends VarHandleW> implClass() {
+        var version = Runtime.version().version().getFirst();
+        if (version < 22) {
+            return VarHandleW21Impl.class;
+        } else {
+            return VarHandleW22Impl.class;
+        }
+    }
+
     int getInt(MemorySegment seg);
 
     long getLong(MemorySegment seg);
