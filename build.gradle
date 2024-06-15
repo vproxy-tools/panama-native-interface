@@ -311,7 +311,8 @@ project(":acceptance-testing-template") {
                 '-ftype-name-prefix=PNI',
                 '-frelease-pni-h-file=graal-test/src/main/c-generated',
                 '-frelease-pni-c-file=graal-test/src/main/c-generated',
-                '-frelease-jni-h-mock-file=graal-test/src/main/c-generated'
+                '-frelease-jni-h-mock-file=graal-test/src/main/c-generated',
+                '-fdisable-allow-heap-access' // TODO currently graal native-image does not support this feature
 
         dependsOn cleanAcceptanceTesting2
         dependsOn compileJava
