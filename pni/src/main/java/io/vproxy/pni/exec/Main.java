@@ -10,16 +10,18 @@ import java.util.Objects;
 import java.util.regex.Pattern;
 
 public class Main {
+    private static final String MAJOR_VERSION = "21"; // _THE_MAJOR_VERSION_
+
     public static final String VERSION;
     public static final String JAVA_GEN_VERSION;
     public static final String C_GEN_VERSION;
     public static final String GRAAL_GEN_VERSION;
 
     static {
-        final String _VERSION = "21.0.0.19"; // _THE_VERSION_
-        final String _JAVA_GEN_VERSION = "21.0.0.20";
-        final String _C_GEN_VERSION = "21.0.0.17";
-        final String _GRAAL_GEN_VERSION = "21.0.0.20";
+        final String _VERSION_SUFFIX = "0.0.19"; // _THE_VERSION_SUFFIX_
+        final String _JAVA_GEN_VERSION = MAJOR_VERSION + ".0.0.20";
+        final String _C_GEN_VERSION = MAJOR_VERSION + ".0.0.17";
+        final String _GRAAL_GEN_VERSION = MAJOR_VERSION + ".0.0.20";
         var testing = System.getProperty("io.vproxy.pni.Testing", "false");
         if (testing.equals("true")) {
             JAVA_GEN_VERSION = "test";
@@ -30,7 +32,7 @@ public class Main {
             C_GEN_VERSION = _C_GEN_VERSION;
             GRAAL_GEN_VERSION = _GRAAL_GEN_VERSION;
         }
-        VERSION = _VERSION;
+        VERSION = MAJOR_VERSION + "." + _VERSION_SUFFIX;
     }
 
     @SuppressWarnings("ConcatenationWithEmptyString")

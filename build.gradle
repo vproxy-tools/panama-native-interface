@@ -13,8 +13,10 @@ plugins {
     id 'signing'
     id 'com.github.johnrengelman.shadow' version '7.1.2'
     id 'me.champeau.jmh' version "0.7.1" apply false
-    id 'org.jetbrains.kotlin.jvm' version '1.9.20-Beta2' apply false
+    id 'org.jetbrains.kotlin.jvm' version '2.0.0' apply false
 }
+
+def JDK_VERSION = loadMajorVersion()
 
 group = 'io.vproxy'
 version = loadVersion()
@@ -29,8 +31,8 @@ dependencies {
 }
 
 java {
-    sourceCompatibility = '11'
-    targetCompatibility = '11'
+    sourceCompatibility = JDK_VERSION
+    targetCompatibility = JDK_VERSION
 }
 
 jar {
@@ -76,8 +78,8 @@ subprojects {
         }
     } else {
         java {
-            sourceCompatibility = '21'
-            targetCompatibility = '21'
+            sourceCompatibility = JDK_VERSION
+            targetCompatibility = JDK_VERSION
         }
     }
 
@@ -138,7 +140,7 @@ subprojects {
         def releaseName = ""
         def pomName = ""
         if (project.name == 'api') {
-            releaseName = 'pni-api-jdk21'
+            releaseName = 'pni-api-jdk'+JDK_VERSION
             pomName = "pni"
         } else if (project.name == 'graal') {
             releaseName = 'pni-api-graal'
@@ -230,8 +232,8 @@ project(":graal") {
 project(":pni") {
     dependencies {
         implementation 'io.vproxy:commons:1.2.1'
-        implementation 'org.ow2.asm:asm:9.5'
-        implementation 'org.ow2.asm:asm-tree:9.5'
+        implementation 'org.ow2.asm:asm:9.7'
+        implementation 'org.ow2.asm:asm-tree:9.7'
     }
 }
 
@@ -259,7 +261,7 @@ project(":acceptance-testing-template") {
     }
     compileKotlin {
         kotlinOptions {
-            jvmTarget = '21'
+            jvmTarget = JDK_VERSION
             javaParameters = true
         }
     }
@@ -640,9 +642,25 @@ project(':performance') {
     }
 }
 
+def loadMajorVersion() {
+    def PREFIX = "private static final String MAJOR_VERSION = \""
+    def SUFFIX = "\"; // _THE_MAJOR_VERSION_"
+    def ver = file(projectDir.getAbsolutePath() + "/pni/src/main/java/io/vproxy/pni/exec/Main.java")
+    def lines = ver.getText().split("\n")
+    def isMavenLocalInstall = System.getProperty("MavenLocalInstall", "false").equals("true")
+    for (def line : lines) {
+        line = line.trim()
+        if (line.startsWith(PREFIX) && line.endsWith(SUFFIX)) {
+            def verstr = line.substring(PREFIX.length(), line.length() - SUFFIX.length())
+            return verstr
+        }
+    }
+    return "unknown"
+}
+
 def loadVersion() {
-    def PREFIX = "final String _VERSION = \""
-    def SUFFIX = "\"; // _THE_VERSION_"
+    def PREFIX = "final String _VERSION_SUFFIX = \""
+    def SUFFIX = "\"; // _THE_VERSION_SUFFIX_"
     def ver = file(projectDir.getAbsolutePath() + "/pni/src/main/java/io/vproxy/pni/exec/Main.java")
     def lines = ver.getText().split("\n")
     def isMavenLocalInstall = System.getProperty("MavenLocalInstall", "false").equals("true")
@@ -657,7 +675,7 @@ def loadVersion() {
                     verstr = verstr + '-SNAPSHOT'
                 }
             }
-            return verstr
+            return loadMajorVersion() + "." + verstr
         }
     }
     return "unknown"
