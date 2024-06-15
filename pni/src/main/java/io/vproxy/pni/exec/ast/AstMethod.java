@@ -1,5 +1,6 @@
 package io.vproxy.pni.exec.ast;
 
+import io.vproxy.pni.exec.CompilationFlag;
 import io.vproxy.pni.exec.CompilerOptions;
 import io.vproxy.pni.exec.WarnType;
 import io.vproxy.pni.exec.internal.PNILogger;
@@ -201,6 +202,9 @@ public class AstMethod {
     }
 
     public boolean isAllowHeapAccess() {
+        if (opts.hasCompilationFlag(CompilationFlag.DISABLE_ALLOW_HEAP_ACCESS)) {
+            return false;
+        }
         var annoOpt = annos.stream().filter(a -> a.typeRef instanceof AnnoLinkerOptionCriticalTypeInfo).findAny();
         if (annoOpt.isEmpty())
             return false;

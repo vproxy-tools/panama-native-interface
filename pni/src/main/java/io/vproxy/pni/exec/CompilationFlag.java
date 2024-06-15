@@ -49,6 +49,11 @@ public class CompilationFlag<T> {
         pred(s -> "true".equals(s) || "false".equals(s)), "true"::equals,
         "set @AlwaysAligned for all template classes. you can use @AlwaysAligned(false) to make them non-aligned even when this flag is set to true"
     );
+    public static final CompilationFlag<Boolean> DISABLE_ALLOW_HEAP_ACCESS = new CompilationFlag<>(
+        "disable-allow-heap-access", "false", "true",
+        pred(s -> "true".equals(s) || "false".equals(s)), "true"::equals,
+        "disable \"allow-heap-access\" even if it's enabled by @LinkerOption.Critical(allowHeapAccess=true)"
+    );
 
     public final String name;
     public final String defaultValueWhenNotSet;
@@ -90,6 +95,7 @@ public class CompilationFlag<T> {
         RELEASE_JNI_H_MOCK_FILE,
         TYPE_NAME_PREFIX,
         ALWAYS_ALIGNED,
+        DISABLE_ALLOW_HEAP_ACCESS,
     };
 
     public static CompilationFlag<?>[] values() {
