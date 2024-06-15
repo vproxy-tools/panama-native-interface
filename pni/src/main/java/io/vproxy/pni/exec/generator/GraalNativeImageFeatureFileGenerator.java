@@ -73,6 +73,7 @@ public class GraalNativeImageFeatureFileGenerator {
         }
 
         sb.append("import io.vproxy.pni.*;\n" +
+                  "import io.vproxy.pni.hack.*;\n" +
                   "import io.vproxy.pni.graal.*;\n" +
                   "import io.vproxy.r.org.graalvm.nativeimage.*;\n" +
                   "import java.lang.foreign.*;\n" +

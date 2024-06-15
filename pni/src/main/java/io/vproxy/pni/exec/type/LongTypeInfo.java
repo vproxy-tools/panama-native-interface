@@ -63,4 +63,9 @@ public class LongTypeInfo extends PrimitiveIntegerTypeInfo {
     public static LongTypeInfo get() {
         return INSTANCE;
     }
+
+    @Override
+    protected String varHandleGetterName() {
+        return "Long";
+    }
 }

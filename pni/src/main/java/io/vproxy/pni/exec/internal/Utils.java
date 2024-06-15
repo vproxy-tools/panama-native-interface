@@ -357,9 +357,13 @@ public class Utils {
 
     public static void varHandleField(StringBuilder sb, int indent, String fieldName) {
         Utils.appendIndent(sb, indent)
-            .append("private static final VarHandle ").append(fieldName).append("VH = LAYOUT.varHandle(\n");
+            .append("private static final VarHandleW ").append(fieldName).append("VH = VarHandleW.of(\n");
         Utils.appendIndent(sb, indent + 4)
+            .append("LAYOUT.varHandle(\n");
+        Utils.appendIndent(sb, indent + 8)
             .append("MemoryLayout.PathElement.groupElement(\"").append(fieldName).append("\")\n");
+        Utils.appendIndent(sb, indent + 4)
+            .append(")\n");
         Utils.appendIndent(sb, indent)
             .append(");\n");
     }

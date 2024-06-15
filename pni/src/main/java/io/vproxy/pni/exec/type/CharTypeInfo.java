@@ -48,6 +48,11 @@ public class CharTypeInfo extends PrimitiveTypeInfo {
     }
 
     @Override
+    protected String varHandleGetterName() {
+        return "Char";
+    }
+
+    @Override
     public void javaToString(StringBuilder sb, int indent, String callGetter, VarOpts opts) {
         Utils.appendIndent(sb, indent)
             .append("SB.append(PanamaUtils.charToASCIIString(").append(callGetter).append("));\n");

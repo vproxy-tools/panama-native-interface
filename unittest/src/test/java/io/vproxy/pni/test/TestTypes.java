@@ -147,12 +147,14 @@ public class TestTypes {
         assertEquals("byte", info.javaTypeForUpcallInterfaceReturn(returnVarOpts(0)));
         assertEquals(
             """
-                private static final VarHandle aVH = LAYOUT.varHandle(
-                    MemoryLayout.PathElement.groupElement("a")
+                private static final VarHandleW aVH = VarHandleW.of(
+                    LAYOUT.varHandle(
+                        MemoryLayout.PathElement.groupElement("a")
+                    )
                 );
                                 
                 public byte getA() {
-                    return (byte) aVH.get(MEMORY);
+                    return aVH.getByte(MEMORY);
                 }
                                 
                 public void setA(byte a) {
@@ -218,12 +220,14 @@ public class TestTypes {
         assertEquals("boolean", info.javaTypeForUpcallInterfaceReturn(returnVarOpts(0)));
         assertEquals(
             """
-                private static final VarHandle aVH = LAYOUT.varHandle(
-                    MemoryLayout.PathElement.groupElement("a")
+                private static final VarHandleW aVH = VarHandleW.of(
+                    LAYOUT.varHandle(
+                        MemoryLayout.PathElement.groupElement("a")
+                    )
                 );
                                 
                 public boolean isA() {
-                    return (boolean) aVH.get(MEMORY);
+                    return aVH.getBool(MEMORY);
                 }
                                 
                 public void setA(boolean a) {
@@ -289,12 +293,14 @@ public class TestTypes {
         assertEquals("char", info.javaTypeForUpcallInterfaceReturn(returnVarOpts(0)));
         assertEquals(
             """
-                private static final VarHandle aVH = LAYOUT.varHandle(
-                    MemoryLayout.PathElement.groupElement("a")
+                private static final VarHandleW aVH = VarHandleW.of(
+                    LAYOUT.varHandle(
+                        MemoryLayout.PathElement.groupElement("a")
+                    )
                 );
                                 
                 public char getA() {
-                    return (char) aVH.get(MEMORY);
+                    return aVH.getChar(MEMORY);
                 }
                                 
                 public void setA(char a) {
@@ -360,12 +366,14 @@ public class TestTypes {
         assertEquals("double", info.javaTypeForUpcallInterfaceReturn(returnVarOpts(0)));
         assertEquals(
             """
-                private static final VarHandle aVH = LAYOUT.varHandle(
-                    MemoryLayout.PathElement.groupElement("a")
+                private static final VarHandleW aVH = VarHandleW.of(
+                    LAYOUT.varHandle(
+                        MemoryLayout.PathElement.groupElement("a")
+                    )
                 );
                                 
                 public double getA() {
-                    return (double) aVH.get(MEMORY);
+                    return aVH.getDouble(MEMORY);
                 }
                                 
                 public void setA(double a) {
@@ -431,12 +439,14 @@ public class TestTypes {
         assertEquals("float", info.javaTypeForUpcallInterfaceReturn(returnVarOpts(0)));
         assertEquals(
             """
-                private static final VarHandle aVH = LAYOUT.varHandle(
-                    MemoryLayout.PathElement.groupElement("a")
+                private static final VarHandleW aVH = VarHandleW.of(
+                    LAYOUT.varHandle(
+                        MemoryLayout.PathElement.groupElement("a")
+                    )
                 );
                                 
                 public float getA() {
-                    return (float) aVH.get(MEMORY);
+                    return aVH.getFloat(MEMORY);
                 }
                                 
                 public void setA(float a) {
@@ -504,12 +514,14 @@ public class TestTypes {
         assertEquals("int", info.javaTypeForUpcallInterfaceReturn(returnVarOpts(0)));
         assertEquals(
             """
-                private static final VarHandle aVH = LAYOUT.varHandle(
-                    MemoryLayout.PathElement.groupElement("a")
+                private static final VarHandleW aVH = VarHandleW.of(
+                    LAYOUT.varHandle(
+                        MemoryLayout.PathElement.groupElement("a")
+                    )
                 );
                                 
                 public int getA() {
-                    return (int) aVH.get(MEMORY);
+                    return aVH.getInt(MEMORY);
                 }
                                 
                 public void setA(int a) {
@@ -577,12 +589,14 @@ public class TestTypes {
         assertEquals("long", info.javaTypeForUpcallInterfaceReturn(returnVarOpts(0)));
         assertEquals(
             """
-                private static final VarHandle aVH = LAYOUT.varHandle(
-                    MemoryLayout.PathElement.groupElement("a")
+                private static final VarHandleW aVH = VarHandleW.of(
+                    LAYOUT.varHandle(
+                        MemoryLayout.PathElement.groupElement("a")
+                    )
                 );
                                 
                 public long getA() {
-                    return (long) aVH.get(MEMORY);
+                    return aVH.getLong(MEMORY);
                 }
                                 
                 public void setA(long a) {
@@ -650,12 +664,14 @@ public class TestTypes {
         assertEquals("short", info.javaTypeForUpcallInterfaceReturn(returnVarOpts(0)));
         assertEquals(
             """
-                private static final VarHandle aVH = LAYOUT.varHandle(
-                    MemoryLayout.PathElement.groupElement("a")
+                private static final VarHandleW aVH = VarHandleW.of(
+                    LAYOUT.varHandle(
+                        MemoryLayout.PathElement.groupElement("a")
+                    )
                 );
                                 
                 public short getA() {
-                    return (short) aVH.get(MEMORY);
+                    return aVH.getShort(MEMORY);
                 }
                                 
                 public void setA(short a) {
@@ -778,12 +794,14 @@ public class TestTypes {
         assertEquals("PNIString", info.javaTypeForUpcallInterfaceReturn(returnVarOpts(0)));
         assertEquals(
             """
-                private static final VarHandle aVH = LAYOUT.varHandle(
-                    MemoryLayout.PathElement.groupElement("a")
+                private static final VarHandleW aVH = VarHandleW.of(
+                    LAYOUT.varHandle(
+                        MemoryLayout.PathElement.groupElement("a")
+                    )
                 );
                                 
                 public PNIString getA() {
-                    var SEG = (MemorySegment) aVH.get(MEMORY);
+                    var SEG = aVH.getMemorySegment(MEMORY);
                     if (SEG.address() == 0) return null;
                     return new PNIString(SEG);
                 }
@@ -805,11 +823,11 @@ public class TestTypes {
                 private final MemorySegment a;
                                 
                 public String getA() {
-                    return a.getUtf8String(0);
+                    return PanamaHack.getUtf8String(a, 0);
                 }
                                 
                 public void setA(String a) {
-                    this.a.setUtf8String(0, a);
+                    PanamaHack.setUtf8String(this.a, 0, a);
                 }
                 """, Utils.sbHelper(sb -> info.generateGetterSetter(sb, 0, "a", fieldVarOpts(LEN))));
         assertEquals(
@@ -886,12 +904,14 @@ public class TestTypes {
         assertEquals("MemorySegment", info.javaTypeForUpcallInterfaceReturn(returnVarOpts(0)));
         assertEquals(
             """
-                private static final VarHandle aVH = LAYOUT.varHandle(
-                    MemoryLayout.PathElement.groupElement("a")
+                private static final VarHandleW aVH = VarHandleW.of(
+                    LAYOUT.varHandle(
+                        MemoryLayout.PathElement.groupElement("a")
+                    )
                 );
                                 
                 public MemorySegment getA() {
-                    var SEG = (MemorySegment) aVH.get(MEMORY);
+                    var SEG = aVH.getMemorySegment(MEMORY);
                     if (SEG.address() == 0) return null;
                     return SEG;
                 }
@@ -1102,12 +1122,14 @@ public class TestTypes {
                 """, Utils.sbHelper(sb -> info.generateGetterSetter(sb, 0, "a", fieldVarOpts(0))));
         assertEquals(
             """
-                private static final VarHandle aVH = LAYOUT.varHandle(
-                    MemoryLayout.PathElement.groupElement("a")
+                private static final VarHandleW aVH = VarHandleW.of(
+                    LAYOUT.varHandle(
+                        MemoryLayout.PathElement.groupElement("a")
+                    )
                 );
                                 
                 public a.b.Cls getA() {
-                    var SEG = (MemorySegment) aVH.get(MEMORY);
+                    var SEG = aVH.getMemorySegment(MEMORY);
                     if (SEG.address() == 0) return null;
                     return new a.b.Cls(SEG);
                 }
@@ -1839,12 +1861,14 @@ public class TestTypes {
         assertEquals("PNIRef<java.lang.Object>", gInfo.javaTypeForUpcallInterfaceParam(paramVarOpts(RAW)));
         assertEquals("PNIRef<java.lang.Object>", gInfo.javaTypeForUpcallInterfaceReturn(returnVarOpts(0)));
         assertEquals("""
-            private static final VarHandle aVH = LAYOUT.varHandle(
-                MemoryLayout.PathElement.groupElement("a")
+            private static final VarHandleW aVH = VarHandleW.of(
+                LAYOUT.varHandle(
+                    MemoryLayout.PathElement.groupElement("a")
+                )
             );
                         
             public PNIRef<java.lang.Object> getA() {
-                var SEG = (MemorySegment) aVH.get(MEMORY);
+                var SEG = aVH.getMemorySegment(MEMORY);
                 if (SEG.address() == 0) return null;
                 return PNIRef.of(SEG);
             }
@@ -2000,12 +2024,14 @@ public class TestTypes {
         assertEquals("io.vproxy.pni.CallSite<Void>", vInfo.javaTypeForParam(paramVarOpts(0)));
         assertEquals("PNIFunc<Void>", vInfo.javaTypeForParam(paramVarOpts(RAW)));
         assertEquals("""
-            private static final VarHandle aVH = LAYOUT.varHandle(
-                MemoryLayout.PathElement.groupElement("a")
+            private static final VarHandleW aVH = VarHandleW.of(
+                LAYOUT.varHandle(
+                    MemoryLayout.PathElement.groupElement("a")
+                )
             );
                         
             public PNIFunc<Void> getA() {
-                var SEG = (MemorySegment) aVH.get(MEMORY);
+                var SEG = aVH.getMemorySegment(MEMORY);
                 if (SEG.address() == 0) return null;
                 return PNIFunc.VoidFunc.of(SEG);
             }
@@ -2019,12 +2045,14 @@ public class TestTypes {
             }
             """, Utils.sbHelper(sb -> vInfo.generateGetterSetter(sb, 0, "a", fieldVarOpts(0))));
         assertEquals("""
-            private static final VarHandle aVH = LAYOUT.varHandle(
-                MemoryLayout.PathElement.groupElement("a")
+            private static final VarHandleW aVH = VarHandleW.of(
+                LAYOUT.varHandle(
+                    MemoryLayout.PathElement.groupElement("a")
+                )
             );
                         
             public PNIFunc<java.lang.Object> getA() {
-                var SEG = (MemorySegment) aVH.get(MEMORY);
+                var SEG = aVH.getMemorySegment(MEMORY);
                 if (SEG.address() == 0) return null;
                 return PNIRef.Func.of(SEG);
             }
@@ -2046,12 +2074,14 @@ public class TestTypes {
             checkUnsupported(() -> i.generateGetterSetter(new StringBuilder(), 0, "a", fieldVarOpts(0)), "should not reach here");
         }
         assertEquals("""
-            private static final VarHandle aVH = LAYOUT.varHandle(
-                MemoryLayout.PathElement.groupElement("a")
+            private static final VarHandleW aVH = VarHandleW.of(
+                LAYOUT.varHandle(
+                    MemoryLayout.PathElement.groupElement("a")
+                )
             );
                         
             public PNIFunc<a.b.Cls> getA() {
-                var SEG = (MemorySegment) aVH.get(MEMORY);
+                var SEG = aVH.getMemorySegment(MEMORY);
                 if (SEG.address() == 0) return null;
                 return a.b.Cls.Func.of(SEG);
             }

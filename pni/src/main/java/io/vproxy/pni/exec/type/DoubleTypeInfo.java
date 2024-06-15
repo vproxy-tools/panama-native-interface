@@ -55,4 +55,9 @@ public class DoubleTypeInfo extends PrimitiveTypeInfo {
     public static DoubleTypeInfo get() {
         return INSTANCE;
     }
+
+    @Override
+    protected String varHandleGetterName() {
+        return "Double";
+    }
 }

@@ -20,6 +20,11 @@ public class BooleanTypeInfo extends PrimitiveTypeInfo {
     }
 
     @Override
+    protected String varHandleGetterName() {
+        return "Bool";
+    }
+
+    @Override
     public String nativeType(String fieldName, VarOpts opts) {
         var ret = "uint8_t";
         if (fieldName != null) {

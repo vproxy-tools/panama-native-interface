@@ -3,6 +3,7 @@ package io.vproxy.pni.test.cases;
 import io.vproxy.pni.Allocator;
 import io.vproxy.pni.PNIEnv;
 import io.vproxy.pni.PNIString;
+import io.vproxy.pni.PanamaHack;
 import io.vproxy.pni.array.PointerArray;
 import io.vproxy.pni.test.PointerArrayField;
 import org.junit.Test;
@@ -27,15 +28,15 @@ public class TestPointerArray {
             a.set(1, new PNIString(allocator, "world").MEMORY);
             s.set(env, a);
 
-            var s1 = s.getPointerArray().get(0).reinterpret(10).getUtf8String(0);
-            var s2 = s.getPointerArray().get(1).reinterpret(10).getUtf8String(0);
+            var s1 = PanamaHack.getUtf8String(s.getPointerArray().get(0).reinterpret(10), 0);
+            var s2 = PanamaHack.getUtf8String(s.getPointerArray().get(1).reinterpret(10), 0);
             assertEquals("hello", s1);
             assertEquals("world", s2);
             assertNull(s.getPointerArray().get(2));
 
             assertEquals(2, s.getPointerArrayPointer().length());
-            s1 = s.getPointerArrayPointer().get(0).reinterpret(10).getUtf8String(0);
-            s2 = s.getPointerArrayPointer().get(1).reinterpret(10).getUtf8String(0);
+            s1 = PanamaHack.getUtf8String(s.getPointerArrayPointer().get(0).reinterpret(10), 0);
+            s2 = PanamaHack.getUtf8String(s.getPointerArrayPointer().get(1).reinterpret(10), 0);
             assertEquals("hello", s1);
             assertEquals("world", s2);
         }
@@ -56,14 +57,14 @@ public class TestPointerArray {
             s.setPointerArrayPointer(a);
 
             var arr = s.getLenField(env);
-            assertEquals("helloA", arr.get(0).reinterpret(10).getUtf8String(0));
-            assertEquals("worldB", arr.get(1).reinterpret(10).getUtf8String(0));
+            assertEquals("helloA", PanamaHack.getUtf8String(arr.get(0).reinterpret(10), 0));
+            assertEquals("worldB", PanamaHack.getUtf8String(arr.get(1).reinterpret(10), 0));
             assertNull(arr.get(2));
 
             arr = s.getPtrField(env);
             assertEquals(2, arr.length());
-            assertEquals("helloX", arr.get(0).reinterpret(10).getUtf8String(0));
-            assertEquals("worldY", arr.get(1).reinterpret(10).getUtf8String(0));
+            assertEquals("helloX", PanamaHack.getUtf8String(arr.get(0).reinterpret(10), 0));
+            assertEquals("worldY", PanamaHack.getUtf8String(arr.get(1).reinterpret(10), 0));
         }
     }
 }

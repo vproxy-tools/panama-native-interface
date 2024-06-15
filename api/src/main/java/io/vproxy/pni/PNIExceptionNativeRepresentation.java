@@ -1,11 +1,11 @@
 package io.vproxy.pni;
 
 import io.vproxy.pni.exception.PNIException;
+import io.vproxy.pni.hack.VarHandleW;
 
 import java.lang.foreign.MemoryLayout;
 import java.lang.foreign.MemorySegment;
 import java.lang.foreign.ValueLayout;
-import java.lang.invoke.VarHandle;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -27,9 +27,9 @@ public class PNIExceptionNativeRepresentation implements NativeObject {
         this.MEMORY = MEMORY;
     }
 
-    private static final VarHandle typeVH = LAYOUT.varHandle(
+    private static final VarHandleW typeVH = VarHandleW.of(LAYOUT.varHandle(
         MemoryLayout.PathElement.groupElement("type")
-    );
+    ));
 
     private String _type = null;
     private Class<? extends Throwable> _typeClass = null;
@@ -38,11 +38,11 @@ public class PNIExceptionNativeRepresentation implements NativeObject {
         if (_type != null) {
             return _type;
         }
-        var type = (MemorySegment) typeVH.get(MEMORY);
+        var type = typeVH.getMemorySegment(MEMORY);
         if (type.address() == 0) {
             return null;
         }
-        _type = type.reinterpret(Integer.MAX_VALUE).getUtf8String(0);
+        _type = PanamaHack.getUtf8String(type.reinterpret(Integer.MAX_VALUE), 0);
         return _type;
     }
 
@@ -71,15 +71,15 @@ public class PNIExceptionNativeRepresentation implements NativeObject {
     }
 
     public String message() {
-        return MEMORY.getUtf8String(ValueLayout.ADDRESS.byteSize());
+        return PanamaHack.getUtf8String(MEMORY, ValueLayout.ADDRESS.byteSize());
     }
 
-    private static final VarHandle errnoVH = LAYOUT.varHandle(
+    private static final VarHandleW errnoVH = VarHandleW.of(LAYOUT.varHandle(
         MemoryLayout.PathElement.groupElement("errno_")
-    );
+    ));
 
     public int errno() {
-        return (int) errnoVH.get(this.MEMORY);
+        return errnoVH.getInt(this.MEMORY);
     }
 
     public void reset() {

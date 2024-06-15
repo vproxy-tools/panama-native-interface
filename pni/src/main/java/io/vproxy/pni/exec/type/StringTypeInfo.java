@@ -80,7 +80,7 @@ public class StringTypeInfo extends BuiltInReferenceTypeInfo {
             Utils.appendIndent(sb, indent)
                 .append("public PNIString ").append(Utils.getterName(fieldName)).append("() {\n");
             Utils.appendIndent(sb, indent + 4)
-                .append("var SEG = (MemorySegment) ").append(fieldName).append("VH.get(MEMORY);\n");
+                .append("var SEG = ").append(fieldName).append("VH.getMemorySegment(MEMORY);\n");
             Utils.appendIndent(sb, indent + 4)
                 .append("if (SEG.address() == 0) return null;\n");
             Utils.appendIndent(sb, indent + 4)
@@ -111,13 +111,13 @@ public class StringTypeInfo extends BuiltInReferenceTypeInfo {
             Utils.appendIndent(sb, indent)
                 .append("public String ").append(Utils.getterName(fieldName)).append("() {\n");
             Utils.appendIndent(sb, indent + 4)
-                .append("return ").append(fieldName).append(".getUtf8String(0)").append(";\n");
+                .append("return PanamaHack.getUtf8String(").append(fieldName).append(", 0)").append(";\n");
             Utils.appendIndent(sb, indent).append("}\n");
             sb.append("\n");
             Utils.appendIndent(sb, indent)
                 .append("public void ").append(Utils.setterName(fieldName)).append("(String ").append(fieldName).append(") {\n");
             Utils.appendIndent(sb, indent + 4)
-                .append("this.").append(fieldName).append(".setUtf8String(0, ").append(fieldName).append(")").append(";\n");
+                .append("PanamaHack.setUtf8String(this.").append(fieldName).append(", 0, ").append(fieldName).append(")").append(";\n");
             Utils.appendIndent(sb, indent).append("}\n");
         }
     }

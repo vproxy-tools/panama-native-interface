@@ -354,7 +354,7 @@ public class UpcallImpl implements Upcall.Interface {
 
     @Override
     public MemorySegment returnMem() {
-        mem.setUtf8String(0, "alice-bob-eve");
+        PanamaHack.setUtf8String(mem, 0, "alice-bob-eve");
         return mem;
     }
 

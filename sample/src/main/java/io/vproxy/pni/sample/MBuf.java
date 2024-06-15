@@ -2,9 +2,10 @@ package io.vproxy.pni.sample;
 
 import io.vproxy.pni.*;
 import io.vproxy.pni.array.*;
+import io.vproxy.pni.hack.VarHandleW;
+
 import java.lang.foreign.*;
 import java.lang.invoke.*;
-import java.nio.ByteBuffer;
 
 public class MBuf extends AbstractNativeObject implements NativeObject {
     public static final MemoryLayout LAYOUT = MemoryLayout.structLayout(
@@ -22,12 +23,12 @@ public class MBuf extends AbstractNativeObject implements NativeObject {
         return MEMORY;
     }
 
-    private static final VarHandle bufAddrVH = LAYOUT.varHandle(
+    private static final VarHandleW bufAddrVH = VarHandleW.of(LAYOUT.varHandle(
         MemoryLayout.PathElement.groupElement("bufAddr")
-    );
+    ));
 
     public MemorySegment getBufAddr() {
-        var SEG = (MemorySegment) bufAddrVH.get(MEMORY);
+        var SEG = bufAddrVH.getMemorySegment(MEMORY);
         if (SEG.address() == 0) return null;
         return SEG;
     }
@@ -40,36 +41,36 @@ public class MBuf extends AbstractNativeObject implements NativeObject {
         }
     }
 
-    private static final VarHandle pktLenVH = LAYOUT.varHandle(
+    private static final VarHandleW pktLenVH = VarHandleW.of(LAYOUT.varHandle(
         MemoryLayout.PathElement.groupElement("pktLen")
-    );
+    ));
 
     public int getPktLen() {
-        return (int) pktLenVH.get(MEMORY);
+        return pktLenVH.getInt(MEMORY);
     }
 
     public void setPktLen(int pktLen) {
         pktLenVH.set(MEMORY, pktLen);
     }
 
-    private static final VarHandle pktOffVH = LAYOUT.varHandle(
+    private static final VarHandleW pktOffVH = VarHandleW.of(LAYOUT.varHandle(
         MemoryLayout.PathElement.groupElement("pktOff")
-    );
+    ));
 
     public int getPktOff() {
-        return (int) pktOffVH.get(MEMORY);
+        return pktOffVH.getInt(MEMORY);
     }
 
     public void setPktOff(int pktOff) {
         pktOffVH.set(MEMORY, pktOff);
     }
 
-    private static final VarHandle bufLenVH = LAYOUT.varHandle(
+    private static final VarHandleW bufLenVH = VarHandleW.of(LAYOUT.varHandle(
         MemoryLayout.PathElement.groupElement("bufLen")
-    );
+    ));
 
     public int getBufLen() {
-        return (int) bufLenVH.get(MEMORY);
+        return bufLenVH.getInt(MEMORY);
     }
 
     public void setBufLen(int bufLen) {

@@ -2,6 +2,8 @@ package io.vproxy.pni.sample;
 
 import io.vproxy.pni.*;
 import io.vproxy.pni.array.*;
+import io.vproxy.pni.hack.VarHandleW;
+
 import java.lang.foreign.*;
 import java.lang.invoke.*;
 import java.nio.ByteBuffer;
@@ -18,12 +20,12 @@ public class UserData extends AbstractNativeObject implements NativeObject {
         return MEMORY;
     }
 
-    private static final VarHandle userdataVH = LAYOUT.varHandle(
+    private static final VarHandleW userdataVH = VarHandleW.of(LAYOUT.varHandle(
         MemoryLayout.PathElement.groupElement("userdata")
-    );
+    ));
 
     public MemorySegment getUserdata() {
-        var SEG = (MemorySegment) userdataVH.get(MEMORY);
+        var SEG = userdataVH.getMemorySegment(MEMORY);
         if (SEG.address() == 0) return null;
         return SEG;
     }
@@ -36,12 +38,12 @@ public class UserData extends AbstractNativeObject implements NativeObject {
         }
     }
 
-    private static final VarHandle udata64VH = LAYOUT.varHandle(
+    private static final VarHandleW udata64VH = VarHandleW.of(LAYOUT.varHandle(
         MemoryLayout.PathElement.groupElement("udata64")
-    );
+    ));
 
     public long getUdata64() {
-        return (long) udata64VH.get(MEMORY);
+        return udata64VH.getLong(MEMORY);
     }
 
     public void setUdata64(long udata64) {

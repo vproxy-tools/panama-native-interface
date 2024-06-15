@@ -1,5 +1,6 @@
 package io.vproxy.pni;
 
+import io.vproxy.pni.hack.VarHandleW;
 import io.vproxy.pni.impl.Utils;
 import io.vproxy.pni.unsafe.SunUnsafe;
 
@@ -7,7 +8,6 @@ import java.lang.foreign.*;
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodType;
-import java.lang.invoke.VarHandle;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -134,24 +134,24 @@ public class PNIRef<T> implements NativeObject {
         return MEMORY;
     }
 
-    private static final VarHandle indexVH = LAYOUT.varHandle(
+    private static final VarHandleW indexVH = VarHandleW.of(LAYOUT.varHandle(
         MemoryLayout.PathElement.groupElement("index")
-    );
-    private static final VarHandle userdataVH = LAYOUT.varHandle(
+    ));
+    private static final VarHandleW userdataVH = VarHandleW.of(LAYOUT.varHandle(
         MemoryLayout.PathElement.groupElement("union0"),
         MemoryLayout.PathElement.groupElement("userdata")
-    );
-    private static final VarHandle udata64VH = LAYOUT.varHandle(
+    ));
+    private static final VarHandleW udata64VH = VarHandleW.of(LAYOUT.varHandle(
         MemoryLayout.PathElement.groupElement("union0"),
         MemoryLayout.PathElement.groupElement("udata64")
-    );
+    ));
 
     public long getIndex() {
-        return (long) indexVH.get(MEMORY);
+        return indexVH.getLong(MEMORY);
     }
 
     public MemorySegment getUserdata() {
-        return (MemorySegment) userdataVH.get(MEMORY);
+        return userdataVH.getMemorySegment(MEMORY);
     }
 
     public void setUserdata(MemorySegment userdata) {
@@ -159,7 +159,7 @@ public class PNIRef<T> implements NativeObject {
     }
 
     public long getUData64() {
-        return (long) udata64VH.get(MEMORY);
+        return udata64VH.getLong(MEMORY);
     }
 
     public void setUData64(long udata64) {
@@ -172,7 +172,7 @@ public class PNIRef<T> implements NativeObject {
 
     public static <T> T getRef(MemorySegment seg) {
         seg = seg.reinterpret(LAYOUT.byteSize());
-        var index = (long) indexVH.get(seg);
+        var index = indexVH.getLong(seg);
         PNIRef<?> ref = holder.get(index);
         if (ref == null) {
             throw new NullPointerException("index = " + index);

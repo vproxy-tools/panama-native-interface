@@ -63,4 +63,9 @@ public class ShortTypeInfo extends PrimitiveIntegerTypeInfo {
     public static ShortTypeInfo get() {
         return INSTANCE;
     }
+
+    @Override
+    protected String varHandleGetterName() {
+        return "Short";
+    }
 }

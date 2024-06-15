@@ -51,6 +51,7 @@ public class JavaFileGenerator {
         }
 
         sb.append("import io.vproxy.pni.*;\n" +
+                  "import io.vproxy.pni.hack.*;\n" +
                   "import io.vproxy.pni.array.*;\n" +
                   "import java.lang.foreign.*;\n" +
                   "import java.lang.invoke.*;\n" +

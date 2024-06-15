@@ -3,6 +3,7 @@ package io.vproxy.pni.test.cases;
 import io.vproxy.pni.Allocator;
 import io.vproxy.pni.PNIEnv;
 import io.vproxy.pni.PNIString;
+import io.vproxy.pni.PanamaHack;
 import io.vproxy.pni.test.ObjectStruct;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -92,7 +93,7 @@ public class TestObjectStruct {
             }
 
             var strMem = allocator.allocate(16);
-            strMem.setUtf8String(0, "aaabbb");
+            PanamaHack.setUtf8String(strMem, 0, "aaabbb");
             s.setStr(new PNIString(strMem));
             if (round == 0) {
                 assertEquals("aaabbb", s.retrieveStr(env).toString());
@@ -147,10 +148,10 @@ public class TestObjectStruct {
             s.setStr(new PNIString(allocator, "hello"));
             s.setLenStr("world");
             var seg = allocator.allocate(5);
-            seg.setUtf8String(0, "aaa");
+            PanamaHack.setUtf8String(seg, 0, "aaa");
             s.setSeg(seg);
             var buf = allocator.allocate(10);
-            buf.setUtf8String(3, "bbb");
+            PanamaHack.setUtf8String(buf, 3, "bbb");
             s.setBuf(buf.asByteBuffer().limit(8).position(3));
             assertEquals("ObjectStruct{\n" +
                          "    str => hello@" + Long.toString(s.getStr().MEMORY.address(), 16) + ",\n" +
@@ -170,6 +171,6 @@ public class TestObjectStruct {
 
         s = Files.readAllLines(Path.of("src", "test", "generated", "io", "vproxy", "pni", "test", "ObjectStruct.java"));
         lastLine = s.get(s.size() - 1);
-        assertEquals("// sha256:1a157305fc25a2a964079e8878c10c32d87c7f04dee72546e18965f1a791b51c", lastLine);
+        assertEquals("// sha256:f751533391c73c9b72759a593374296ae9f1607499385810c21c388ed76a5df8", lastLine);
     }
 }

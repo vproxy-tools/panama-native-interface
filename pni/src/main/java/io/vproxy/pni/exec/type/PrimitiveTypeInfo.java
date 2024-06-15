@@ -19,6 +19,8 @@ public abstract class PrimitiveTypeInfo extends TypeInfo {
         return javaTypeForField(opts);
     }
 
+    abstract protected String varHandleGetterName();
+
     @Override
     public void generateGetterSetter(StringBuilder sb, int indent, String fieldName, VarOpts opts) {
         Utils.varHandleField(sb, indent, fieldName);
@@ -26,7 +28,7 @@ public abstract class PrimitiveTypeInfo extends TypeInfo {
         Utils.appendIndent(sb, indent)
             .append("public ").append(name()).append(" ").append(Utils.getterName(fieldName, this instanceof BooleanTypeInfo)).append("() {\n");
         Utils.appendIndent(sb, indent + 4)
-            .append("return (").append(name()).append(") ").append(fieldName).append("VH.get(MEMORY);\n");
+            .append("return ").append(fieldName).append("VH.get").append(varHandleGetterName()).append("(MEMORY);\n");
         Utils.appendIndent(sb, indent).append("}\n");
         sb.append("\n");
         Utils.appendIndent(sb, indent)

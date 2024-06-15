@@ -54,7 +54,7 @@ public class MemorySegmentTypeInfo extends BuiltInReferenceTypeInfo {
         Utils.appendIndent(sb, indent)
             .append("public MemorySegment ").append(Utils.getterName(fieldName)).append("() {\n");
         Utils.appendIndent(sb, indent + 4)
-            .append("var SEG = (MemorySegment) ").append(fieldName).append("VH.get(MEMORY);\n");
+            .append("var SEG = ").append(fieldName).append("VH.getMemorySegment(MEMORY);\n");
         Utils.appendIndent(sb, indent + 4)
             .append("if (SEG.address() == 0) return null;\n");
         Utils.appendIndent(sb, indent + 4)

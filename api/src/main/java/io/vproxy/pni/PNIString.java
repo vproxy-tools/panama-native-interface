@@ -22,7 +22,7 @@ public class PNIString implements NativeObject {
     }
 
     public String toString() {
-        return MEMORY.reinterpret(Integer.MAX_VALUE).getUtf8String(0);
+        return PanamaHack.getUtf8String(MEMORY.reinterpret(Integer.MAX_VALUE), 0);
     }
 
     public static void temporary(String str, Consumer<PNIString> f) {

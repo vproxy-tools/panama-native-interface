@@ -3,6 +3,7 @@ package io.vproxy.pni.test.cases;
 import io.vproxy.pni.Allocator;
 import io.vproxy.pni.PNIEnv;
 import io.vproxy.pni.PNIString;
+import io.vproxy.pni.PanamaHack;
 import io.vproxy.pni.test.CustomNativeTypeFunc;
 import io.vproxy.pni.test.CustomNativeTypeStruct;
 import io.vproxy.pni.test.CustomNativeTypeUpcall;
@@ -49,8 +50,8 @@ public class TestCustomNativeType {
 
             var arr = s.getArr(env);
             assertEquals(3, arr.length());
-            assertEquals("hello", arr.get(0).reinterpret(10).getUtf8String(0));
-            assertEquals("world", arr.get(1).reinterpret(10).getUtf8String(0));
+            assertEquals("hello", PanamaHack.getUtf8String(arr.get(0).reinterpret(10), 0));
+            assertEquals("world", PanamaHack.getUtf8String(arr.get(1).reinterpret(10), 0));
             assertNull(arr.get(2));
         }
     }

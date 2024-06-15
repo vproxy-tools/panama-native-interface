@@ -49,7 +49,7 @@ public class ObjectStruct extends AbstractNativeObject implements NativeObject {
     }
 
     public void setLenStr(String lenStr) {
-        this.lenStr.setUtf8String(0, lenStr);
+        PanamaHack.setUtf8String(this.lenStr, 0, lenStr);
     }
 
     private static final VarHandle segVH = LAYOUT.varHandle(

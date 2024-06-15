@@ -1,9 +1,6 @@
 package io.vproxy.pni.test.cases;
 
-import io.vproxy.pni.Allocator;
-import io.vproxy.pni.PNIFunc;
-import io.vproxy.pni.PNIRef;
-import io.vproxy.pni.PNIString;
+import io.vproxy.pni.*;
 import io.vproxy.pni.array.*;
 import io.vproxy.pni.test.InvokeUpcall;
 import io.vproxy.pni.test.ObjectStruct;
@@ -307,9 +304,9 @@ public class TestUpcall {
     @Test
     public void returnPointerArray() {
         var res = InvokeUpcall.get().returnPointerArray();
-        assertEquals("hello", res.get(0).reinterpret(10).getUtf8String(0));
-        assertEquals("world", res.get(1).reinterpret(10).getUtf8String(0));
-        assertEquals("hello world", res.get(2).reinterpret(20).getUtf8String(0));
+        assertEquals("hello", PanamaHack.getUtf8String(res.get(0).reinterpret(10), 0));
+        assertEquals("world", PanamaHack.getUtf8String(res.get(1).reinterpret(10), 0));
+        assertEquals("hello world", PanamaHack.getUtf8String(res.get(2).reinterpret(20), 0));
     }
 
     @Test
@@ -342,7 +339,7 @@ public class TestUpcall {
         buf.flip();
         var allocator = Allocator.ofConfined();
         var mem = allocator.allocate(10);
-        mem.setUtf8String(0, "aabb");
+        PanamaHack.setUtf8String(mem, 0, "aabb");
         boolean[] voidCallSiteCalled = {false};
         boolean[] objCallSiteCalled = {false};
         boolean[] refCallSiteCalled = {false};
@@ -374,7 +371,7 @@ public class TestUpcall {
         assertEquals(2233, UpcallImpl.get().objCallSiteRes);
         assertEquals(3344, UpcallImpl.get().refCallSiteRes);
         assertEquals(UpcallImpl.get()._mem.address(), mem.address());
-        assertEquals("aabb", UpcallImpl.get()._mem.reinterpret(10).getUtf8String(0));
+        assertEquals("aabb", PanamaHack.getUtf8String(UpcallImpl.get()._mem.reinterpret(10), 0));
         assertEquals(4455, UpcallImpl.get().voidFuncRes);
         assertEquals(5566, UpcallImpl.get().objFuncRes);
         assertEquals(6677, UpcallImpl.get().refFuncRes);
@@ -403,7 +400,7 @@ public class TestUpcall {
     public void returnMem() {
         var mem = InvokeUpcall.get().returnMem();
         mem = mem.reinterpret(15);
-        assertEquals("alice-bob-eve", mem.getUtf8String(0));
+        assertEquals("alice-bob-eve", PanamaHack.getUtf8String(mem, 0));
     }
 
     @Test

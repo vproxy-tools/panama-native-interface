@@ -63,4 +63,9 @@ public class ByteTypeInfo extends PrimitiveIntegerTypeInfo {
     public static ByteTypeInfo get() {
         return INSTANCE;
     }
+
+    @Override
+    protected String varHandleGetterName() {
+        return "Byte";
+    }
 }

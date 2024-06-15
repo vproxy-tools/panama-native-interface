@@ -55,4 +55,9 @@ public class FloatTypeInfo extends PrimitiveTypeInfo {
     public static FloatTypeInfo get() {
         return INSTANCE;
     }
+
+    @Override
+    protected String varHandleGetterName() {
+        return "Float";
+    }
 }

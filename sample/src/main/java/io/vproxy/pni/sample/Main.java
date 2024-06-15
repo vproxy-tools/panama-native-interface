@@ -2,6 +2,7 @@ package io.vproxy.pni.sample;
 
 import io.vproxy.pni.Allocator;
 import io.vproxy.pni.PNIEnv;
+import io.vproxy.pni.PanamaHack;
 
 import java.io.IOException;
 import java.lang.foreign.ValueLayout;
@@ -67,7 +68,7 @@ public class Main {
                 } else {
                     buf.set(ValueLayout.JAVA_BYTE, n, (byte) 0);
                 }
-                var str = buf.getUtf8String(0);
+                var str = PanamaHack.getUtf8String(buf, 0);
                 System.out.println("received from " + fd);
                 System.out.println(str);
 

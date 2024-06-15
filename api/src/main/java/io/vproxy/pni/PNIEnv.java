@@ -1,9 +1,9 @@
 package io.vproxy.pni;
 
 import io.vproxy.pni.exception.PNIException;
+import io.vproxy.pni.hack.VarHandleW;
 
 import java.lang.foreign.*;
-import java.lang.invoke.VarHandle;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashSet;
 import java.util.Set;
@@ -45,85 +45,85 @@ public class PNIEnv implements NativeObject {
         return ex;
     }
 
-    private static final VarHandle return_byteVH = LAYOUT.varHandle(
+    private static final VarHandleW return_byteVH = VarHandleW.of(LAYOUT.varHandle(
         MemoryLayout.PathElement.groupElement("union0"),
         MemoryLayout.PathElement.groupElement("return_byte")
-    );
+    ));
 
     public byte returnByte() {
-        return (byte) return_byteVH.get(MEMORY);
+        return return_byteVH.getByte(MEMORY);
     }
 
-    private static final VarHandle return_charVH = LAYOUT.varHandle(
+    private static final VarHandleW return_charVH = VarHandleW.of(LAYOUT.varHandle(
         MemoryLayout.PathElement.groupElement("union0"),
         MemoryLayout.PathElement.groupElement("return_char")
-    );
+    ));
 
     public char returnChar() {
-        return (char) return_charVH.get(MEMORY);
+        return return_charVH.getChar(MEMORY);
     }
 
-    private static final VarHandle return_doubleVH = LAYOUT.varHandle(
+    private static final VarHandleW return_doubleVH = VarHandleW.of(LAYOUT.varHandle(
         MemoryLayout.PathElement.groupElement("union0"),
         MemoryLayout.PathElement.groupElement("return_double")
-    );
+    ));
 
     public double returnDouble() {
-        return (double) return_doubleVH.get(MEMORY);
+        return return_doubleVH.getDouble(MEMORY);
     }
 
-    private static final VarHandle return_intVH = LAYOUT.varHandle(
+    private static final VarHandleW return_intVH = VarHandleW.of(LAYOUT.varHandle(
         MemoryLayout.PathElement.groupElement("union0"),
         MemoryLayout.PathElement.groupElement("return_int")
-    );
+    ));
 
     public int returnInt() {
-        return (int) return_intVH.get(MEMORY);
+        return (int) return_intVH.getInt(MEMORY);
     }
 
-    private static final VarHandle return_floatVH = LAYOUT.varHandle(
+    private static final VarHandleW return_floatVH = VarHandleW.of(LAYOUT.varHandle(
         MemoryLayout.PathElement.groupElement("union0"),
         MemoryLayout.PathElement.groupElement("return_float")
-    );
+    ));
 
     public float returnFloat() {
-        return (float) return_floatVH.get(MEMORY);
+        return (float) return_floatVH.getFloat(MEMORY);
     }
 
-    private static final VarHandle return_longVH = LAYOUT.varHandle(
+    private static final VarHandleW return_longVH = VarHandleW.of(LAYOUT.varHandle(
         MemoryLayout.PathElement.groupElement("union0"),
         MemoryLayout.PathElement.groupElement("return_long")
-    );
+    ));
 
     public long returnLong() {
-        return (long) return_longVH.get(MEMORY);
+        return (long) return_longVH.getLong(MEMORY);
     }
 
-    private static final VarHandle return_shortVH = LAYOUT.varHandle(
+    private static final VarHandleW return_shortVH = VarHandleW.of(LAYOUT.varHandle(
         MemoryLayout.PathElement.groupElement("union0"),
         MemoryLayout.PathElement.groupElement("return_short")
-    );
+    ));
 
     public short returnShort() {
-        return (short) return_shortVH.get(MEMORY);
+        return (short) return_shortVH.getShort(MEMORY);
     }
 
-    private static final VarHandle return_boolVH = LAYOUT.varHandle(
+    private static final VarHandleW return_boolVH = VarHandleW.of(LAYOUT.varHandle(
         MemoryLayout.PathElement.groupElement("union0"),
         MemoryLayout.PathElement.groupElement("return_bool")
-    );
+    ));
 
     public boolean returnBool() {
-        return (boolean) return_boolVH.get(MEMORY);
+        return (boolean) return_boolVH.getBool(MEMORY);
     }
 
-    private static final VarHandle return_pointerVH = LAYOUT.varHandle(
+    private static final VarHandleW return_pointerVH = VarHandleW.of(LAYOUT.varHandle(
         MemoryLayout.PathElement.groupElement("union0"),
         MemoryLayout.PathElement.groupElement("return_pointer")
-    );
+    ));
 
     public MemorySegment returnPointer() {
-        var seg = (MemorySegment) return_pointerVH.get(this.MEMORY);
+        var seg = return_pointerVH.getMemorySegment(this.MEMORY);
         if (seg.address() == 0) {
             return null;
         }

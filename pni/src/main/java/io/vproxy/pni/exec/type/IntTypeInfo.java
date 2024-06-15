@@ -63,4 +63,9 @@ public class IntTypeInfo extends PrimitiveIntegerTypeInfo {
     public static IntTypeInfo get() {
         return INSTANCE;
     }
+
+    @Override
+    protected String varHandleGetterName() {
+        return "Int";
+    }
 }

@@ -1,11 +1,11 @@
 package io.vproxy.pni;
 
 import io.vproxy.pni.array.*;
+import io.vproxy.pni.hack.VarHandleW;
 
 import java.lang.foreign.MemoryLayout;
 import java.lang.foreign.MemorySegment;
 import java.lang.foreign.ValueLayout;
-import java.lang.invoke.VarHandle;
 import java.nio.ByteBuffer;
 import java.util.HashSet;
 import java.util.Set;
@@ -136,25 +136,25 @@ public class PNIBuf implements NativeObject {
         return of(allocator, v).MEMORY;
     }
 
-    private static final VarHandle bufVH = LAYOUT.varHandle(
+    private static final VarHandleW bufVH = VarHandleW.of(LAYOUT.varHandle(
         MemoryLayout.PathElement.groupElement("buf")
-    );
+    ));
 
-    private static final VarHandle lenVH = LAYOUT.varHandle(
+    private static final VarHandleW lenVH = VarHandleW.of(LAYOUT.varHandle(
         MemoryLayout.PathElement.groupElement("len")
-    );
+    ));
 
     public MemorySegment get() {
-        var seg = (MemorySegment) bufVH.get(MEMORY);
+        var seg = bufVH.getMemorySegment(MEMORY);
         if (seg.address() == 0) {
             return null;
         }
-        long len = (long) lenVH.get(MEMORY);
+        long len = lenVH.getLong(MEMORY);
         return seg.reinterpret(len);
     }
 
     public boolean isNull() {
-        var seg = (MemorySegment) bufVH.get(MEMORY);
+        var seg = bufVH.getMemorySegment(MEMORY);
         return seg.address() == 0;
     }
 

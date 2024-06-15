@@ -3,6 +3,7 @@ package io.vproxy.pni.test.cases;
 import io.vproxy.pni.Allocator;
 import io.vproxy.pni.PNIEnv;
 import io.vproxy.pni.PNIString;
+import io.vproxy.pni.PanamaHack;
 import io.vproxy.pni.array.*;
 import io.vproxy.pni.test.ObjectStruct;
 import io.vproxy.pni.test.RawArrays;
@@ -255,10 +256,10 @@ public class TestRawArrays {
 
             for (int i = 0; i < 18; ++i) {
                 MemorySegment p = RawArrays.get().pointerArray(env, array, i);
-                assertEquals(String.valueOf((char) ('A' + i)), p.reinterpret(2).getUtf8String(0));
+                assertEquals(String.valueOf((char) ('A' + i)), PanamaHack.getUtf8String(p.reinterpret(2), 0));
 
                 p = RawArrays.get().pointerArrayNotRaw(env, array, i);
-                assertEquals(String.valueOf((char) ('A' + i)), p.reinterpret(2).getUtf8String(0));
+                assertEquals(String.valueOf((char) ('A' + i)), PanamaHack.getUtf8String(p.reinterpret(2), 0));
             }
         }
     }
