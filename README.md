@@ -875,7 +875,9 @@ You can call `PNIRef.of(obj, new Options().setUserdataByteSize(...))`, the behav
 
 ### Performance Concern
 
-* `@LinkerOption.Critical`: make a MethodHandle `critical`. See `jdk21 Linker.Option#isTrivial` or `jdk22 Linker.Option#critical` for more info.
+* `@LinkerOption.Critical`: make a MethodHandle `critical`. See `jdk21 Linker.Option#isTrivial` or `jdk22 Linker.Option#critical` for more info.  
+  You may set `@LinkerOption.Critical(allowHeapAccess=true)` to use heap memory in native code.  
+  Note: `allowHeapAccess` is not supported by jdk21, the value of `allowHeapAccess` will be ignored on jdk21. Also, this feature is not supported by Graal native-image and compilation will fail. You must use `-fdisable-allow-heap-access` to disable this feature.
 * `@Align`: define the minimum alignment bytes. You can set `@Align(packed=true)` to disable padding.
   This annotation has the same effect as setting `__attribute__((aligned(N)))` or `__attribute__((packed))` in `GCC`.
 * `@AlwaysAligned`: assumes that the annotated class or field to be always aligned. This will result in a Java `ValueLayout` without `_UNALIGNED` suffix. A jmh benchmark shows that accessing "manually aligned" fields has the same performance as accessing "unaligned" fields, and is a little bit slower than "aligned" fields in Panama.  
