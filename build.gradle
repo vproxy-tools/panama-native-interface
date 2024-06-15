@@ -143,10 +143,10 @@ subprojects {
             releaseName = 'pni-api-jdk'+JDK_VERSION
             pomName = "pni"
         } else if (project.name == 'graal') {
-            releaseName = 'pni-api-graal'
+            releaseName = 'pni-api-graal-jdk'+JDK_VERSION
             pomName = 'pni.graal'
         } else {
-            releaseName = 'pni-exec'
+            releaseName = 'pni-exec-jdk'+JDK_VERSION
             pomName = "pni.exec"
         }
 
