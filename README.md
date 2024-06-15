@@ -198,12 +198,12 @@ This tells Gradle to build all projects (including subprojects) with JDK 21 and 
 
 ### 2. Choose a pni version to use
 
-The latest `Panama Native Interface` version is `21.0.0.19`  
+The latest `Panama Native Interface` version is `21.0.0.20`  
 The version will appear multiple times in `build.gradle`, so you can define a variable at the beginning of the file:
 
 ```groovy
 buildscript {
-    def PNI_VERSION = '21.0.0.19'
+    def PNI_VERSION = '21.0.0.20'
     ext.set("PNI_VERSION", PNI_VERSION)
 
     // more configuration later ...
@@ -440,7 +440,7 @@ The shared library file must be placed in `-Djava.library.path` for Java to load
 
 ```groovy
 dependencies {
-    implementation "io.vproxy:pni-api-jdk21:21.0.0.19"
+    implementation "io.vproxy:pni-api-jdk21:21.0.0.20"
 }
 ```
 
@@ -451,7 +451,7 @@ dependencies {
   <dependency>
     <groupId>io.vproxy</groupId>
     <artifactId>pni-api-jdk21</artifactId>
-    <version>21.0.0.19</version>
+    <version>21.0.0.20</version>
   </dependency>
 </dependencies>
 ```
@@ -697,7 +697,7 @@ Adding extra dependencies:
 dependencies {
     // ...
 
-    implementation "io.vproxy:pni-api-graal:21.0.0.19"
+    implementation "io.vproxy:pni-api-graal:21.0.0.20"
     compileOnly "io.vproxy:graal-sdk-mock-nativeimage:1.2.1"
     runtimeOnly "io.vproxy:graal-sdk-mock-runtime:1.2.1"
 }
@@ -712,7 +712,7 @@ dependencies {
     <dependency>
         <groupId>io.vproxy</groupId>
         <artifactId>pni-api-graal</artifactId>
-        <version>21.0.0.19</version>
+        <version>21.0.0.20</version>
     </dependency>
     <dependency>
         <groupId>io.vproxy</groupId>
