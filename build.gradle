@@ -186,7 +186,7 @@ subprojects {
             repositories {
                 maven {
                     credentials {
-                        username 'wkgcass'
+                        username 'XthxH9RF'
                         password System.getProperty("MavenPublishPassword")
                     }
                     def releasesRepoUrl = 'https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/'
