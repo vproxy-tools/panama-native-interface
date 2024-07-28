@@ -516,6 +516,12 @@ public class AstClass {
                 max = a;
             }
         }
+        if (superTypeRef != null) {
+            var superRawAlign = ((ClassTypeInfo) superTypeRef).getClazz().largestRawAlignmentBytes();
+            if (superRawAlign > max) {
+                max = superRawAlign;
+            }
+        }
         return max;
     }
 

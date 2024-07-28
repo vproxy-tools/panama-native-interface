@@ -224,7 +224,12 @@ public class CompilerOptions {
     }
 
     public <T> CompilerOptions setCompilationFlag(CompilationFlag<T> flag) {
-        return setCompilationFlag(flag, null);
+        var dft = flag.defaultValue;
+        T value = null;
+        if (dft != null) {
+            value = flag.convert.apply(dft);
+        }
+        return setCompilationFlag(flag, value);
     }
 
     public <T> boolean hasCompilationFlag(CompilationFlag<T> flag) {
