@@ -137,18 +137,21 @@ subprojects {
         withSourcesJar()
     }
 
+    def projects = ['api', 'graal', 'pni']
+    if (JDK_VERSION != 21) {
+        projects.remove('pni')
+    }
     if (['api', 'graal', 'pni'].contains(project.name)) {
         def releaseName = ""
         def pomName = ""
-        def suffix = (JDK_VERSION == 21 ? '' : ('-jdk' + JDK_VERSION))
         if (project.name == 'api') {
             releaseName = 'pni-api-jdk'+JDK_VERSION
             pomName = "pni"
         } else if (project.name == 'graal') {
-            releaseName = 'pni-api-graal'+suffix
+            releaseName = 'pni-api-graal' + (JDK_VERSION == 21 ? '' : ('-jdk' + JDK_VERSION))
             pomName = 'pni.graal'
         } else {
-            releaseName = 'pni-exec'+suffix
+            releaseName = 'pni-exec'
             pomName = "pni.exec"
         }
 
