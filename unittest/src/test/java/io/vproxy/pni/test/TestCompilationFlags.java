@@ -52,7 +52,7 @@ public class TestCompilationFlags {
         var res = Utils.load(List.of(new JavaFile()
             .setName("test/A.java")
             .setContent(content)), new CompilerOptions()
-            .setCompilationFlag(CompilationFlag.ALWAYS_ALIGNED, true));
+            .setCompilationFlag(CompilationFlag.ALWAYS_ALIGNED));
         var gen = res.gen();
         var javaPath = Path.of(gen.toString(), "test", "A.java");
         var javaContent = Files.readAllLines(javaPath);

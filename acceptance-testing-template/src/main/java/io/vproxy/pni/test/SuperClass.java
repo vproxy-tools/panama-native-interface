@@ -2,6 +2,7 @@ package io.vproxy.pni.test;
 
 import io.vproxy.pni.annotation.Align;
 import io.vproxy.pni.annotation.Impl;
+import io.vproxy.pni.annotation.Pointer;
 import io.vproxy.pni.annotation.Struct;
 
 @Struct
@@ -103,4 +104,13 @@ abstract class PNILargeAlignBase {
 @Struct
 abstract class PNIChildOfLargeAlign extends PNILargeAlignBase {
     byte y;
+}
+
+@Struct
+abstract class PNIEmptyChild extends PNILargeAlignBase {
+}
+
+@Struct
+abstract class PNIReferenceEmptyChild {
+    PNIEmptyChild emptyChild;
 }

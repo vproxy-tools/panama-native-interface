@@ -26,7 +26,7 @@ PNIBufExpand(ChildOfLargeAlign, ChildOfLargeAlign, 16)
 
 struct ChildOfLargeAlign {
     LargeAlignBase SUPER;
-    int8_t y; /* padding */ uint8_t : 8; uint8_t : 8; uint8_t : 8; uint8_t : 8; uint8_t : 8; uint8_t : 8; uint8_t : 8;
+    int8_t y;
 };
 
 #ifdef __cplusplus
@@ -34,4 +34,4 @@ struct ChildOfLargeAlign {
 #endif
 #endif // _Included_io_vproxy_pni_test_ChildOfLargeAlign
 // metadata.generator-version: pni test
-// sha256:7b3144b03461608f2c6897f10f241dd28537a1a6e4df27f46147eb167c44fd72
+// sha256:1a012921bca9c4eea3de512ad93848f227111048b2a72c4636bb7aa623f5e825
