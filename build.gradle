@@ -17,6 +17,7 @@ plugins {
 }
 
 def JDK_VERSION = loadMajorVersion()
+println("using java $JDK_VERSION to compile")
 
 group = 'io.vproxy'
 version = loadVersion()
@@ -86,14 +87,14 @@ subprojects {
     tasks.withType(JavaCompile) {
         options.encoding = "UTF-8"
         if (project.name != 'pni') {
-            if (JDK_VERSION == '21') {
+            if (JDK_VERSION == 21) {
                 options.compilerArgs += '--enable-preview'
             }
         }
     }
     tasks.withType(JavaExec) {
         if (project.name != 'pni') {
-            if (JDK_VERSION == '21') {
+            if (JDK_VERSION == 21) {
                 jvmArgs += '--enable-preview'
             }
             jvmArgs += '--enable-native-access=ALL-UNNAMED'
@@ -101,7 +102,7 @@ subprojects {
     }
     tasks.withType(Test) {
         if (project.name != 'pni') {
-            if (JDK_VERSION == '21') {
+            if (JDK_VERSION == 21) {
                 jvmArgs += '--enable-preview'
             }
             jvmArgs += '--enable-native-access=ALL-UNNAMED'
@@ -139,14 +140,15 @@ subprojects {
     if (['api', 'graal', 'pni'].contains(project.name)) {
         def releaseName = ""
         def pomName = ""
+        def suffix = (JDK_VERSION == 21 ? '' : ('-jdk' + JDK_VERSION))
         if (project.name == 'api') {
             releaseName = 'pni-api-jdk'+JDK_VERSION
             pomName = "pni"
         } else if (project.name == 'graal') {
-            releaseName = 'pni-api-graal'
+            releaseName = 'pni-api-graal'+suffix
             pomName = 'pni.graal'
         } else {
-            releaseName = 'pni-exec'
+            releaseName = 'pni-exec'+suffix
             pomName = "pni.exec"
         }
 
@@ -211,6 +213,20 @@ static def bashPath() {
 }
 
 project(":api") {
+    def jdk21 = 'src/main/jdk21'
+    def jdk22 = 'src/main/jdk22'
+    sourceSets {
+        main {
+            java {
+                if (JDK_VERSION == 21) {
+                    srcDirs = ['src/main/java', jdk21]
+                } else {
+                    srcDirs = ['src/main/java', jdk22]
+                }
+            }
+        }
+    }
+
     task compileLib(type: Exec) {
         workingDir project.rootProject.rootDir.getAbsolutePath() + '/api/src/main/c'
         executable bashPath()
@@ -449,7 +465,7 @@ project(":graal-test") {
                 '--add-opens', 'java.base/java.io=ALL-UNNAMED',
                 '--enable-native-access=ALL-UNNAMED', '-ea',
                 '-Ob', '--no-fallback']
-        if (JDK_VERSION == '21') {
+        if (JDK_VERSION == 21) {
             argList << '--enable-preview'
         } else {
             argList << '-H:+UnlockExperimentalVMOptions' << '-H:+ForeignAPISupport'
@@ -547,7 +563,7 @@ project(":sample") {
         def argList = ['-jar', './build/libs/sample.jar', '--features=io.vproxy.pni.sample.Feature',
                 '--enable-native-access=ALL-UNNAMED',
                 '-Ob', '--no-fallback']
-        if (JDK_VERSION == '21') {
+        if (JDK_VERSION == 21) {
             argList << '--enable-preview'
         } else {
             argList << '-H:+UnlockExperimentalVMOptions' << '-H:+ForeignAPISupport'
@@ -632,7 +648,7 @@ project(':performance') {
         }
     }
     jmhRunBytecodeGenerator {
-        if (JDK_VERSION == '21') {
+        if (JDK_VERSION == 21) {
             getJvmArgs().addAll(["--enable-preview"])
         }
         getJvmArgs().addAll(["--enable-native-access=ALL-UNNAMED"])
@@ -648,19 +664,27 @@ project(':performance') {
 }
 
 def loadMajorVersion() {
-    def PREFIX = "private static final String MAJOR_VERSION = \""
-    def SUFFIX = "\"; // _THE_MAJOR_VERSION_"
-    def ver = file(projectDir.getAbsolutePath() + "/pni/src/main/java/io/vproxy/pni/exec/Main.java")
-    def lines = ver.getText().split("\n")
-    def isMavenLocalInstall = System.getProperty("MavenLocalInstall", "false").equals("true")
-    for (def line : lines) {
-        line = line.trim()
-        if (line.startsWith(PREFIX) && line.endsWith(SUFFIX)) {
-            def verstr = line.substring(PREFIX.length(), line.length() - SUFFIX.length())
-            return verstr
-        }
+    def lines = "java --version".execute().text.trim().split("\n")
+    if (lines.length == 0) {
+        return 21
     }
-    return "unknown"
+    def line = lines[0].trim()
+    def split = line.split(" ")
+    if (split.length < 2) {
+        return 21
+    }
+    def version = split[1]
+    split = version.split("\\.")
+    if (split.length > 0) {
+        version = split[0]
+    }
+    def nver = Integer.parseInt(version)
+    if (nver <= 21) {
+        nver = 21
+    } else {
+        nver = 22
+    }
+    return nver
 }
 
 def loadVersion() {

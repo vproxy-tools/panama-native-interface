@@ -16,9 +16,6 @@ public class Feature implements org.graalvm.nativeimage.hosted.Feature {
         RuntimeForeignAccess.registerForDowncall(PanamaUtils.buildCriticalFunctionDescriptor(void.class, MemorySegment.class), PanamaHack.getCriticalOption());
         RuntimeClassInitialization.initializeAtBuildTime(GraalPNIFunc.class);
         RuntimeClassInitialization.initializeAtBuildTime(GraalPNIRef.class);
-        RuntimeClassInitialization.initializeAtBuildTime(PanamaHack.class);
-        RuntimeClassInitialization.initializeAtBuildTime(GetSetUtf8String.implClass());
-        RuntimeClassInitialization.initializeAtBuildTime(VarHandleW.implClass());
         /* ImageInfo */
         RuntimeClassInitialization.initializeAtRunTime(ImageInfoDelegate.class);
         for (var m : ImageInfo.class.getMethods()) {
@@ -58,4 +55,4 @@ public class Feature implements org.graalvm.nativeimage.hosted.Feature {
     }
 }
 // metadata.generator-version: pni test
-// sha256:5b86e9436130fd9259760253c921dbcedf29c87a39daa1336b999298a886589d
+// sha256:3a80ff9fb79a9d45eb5504374322270fa2e92fae92f297d603dbe43f52173058

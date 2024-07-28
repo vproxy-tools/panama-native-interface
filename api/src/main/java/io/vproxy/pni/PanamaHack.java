@@ -2,49 +2,15 @@ package io.vproxy.pni;
 
 import java.lang.foreign.Linker;
 import java.lang.foreign.MemorySegment;
-import java.lang.reflect.InvocationTargetException;
 
 import io.vproxy.pni.hack.GetSetUtf8String;
+import io.vproxy.pni.hack.PanamaHackStorage;
 
 public class PanamaHack {
     private PanamaHack() {
     }
 
-    private static final Linker.Option CriticalOption;
-    private static final Linker.Option CriticalOptionAllowHeapAccess;
-    private static final GetSetUtf8String _GetSetUtf8String;
-
-    static {
-        int version = Runtime.version().version().getFirst();
-
-        Linker.Option _CriticalOption;
-        Linker.Option _CriticalOptionAllowHeapAccess;
-        try {
-            if (version < 22) {
-                try {
-                    var m = Linker.Option.class.getDeclaredMethod("isTrivial");
-                    _CriticalOption = (Linker.Option) m.invoke(null);
-                    _CriticalOptionAllowHeapAccess = _CriticalOption;
-                } catch (NoSuchMethodException e) {
-                    throw new RuntimeException("cannot find Linker.Option.isTrivial()");
-                }
-            } else {
-                try {
-                    var m = Linker.Option.class.getDeclaredMethod("critical", boolean.class);
-                    _CriticalOption = (Linker.Option) m.invoke(null, false);
-                    _CriticalOptionAllowHeapAccess = (Linker.Option) m.invoke(null, true);
-                } catch (NoSuchMethodException e) {
-                    throw new RuntimeException("cannot find Linker.Option.critical()");
-                }
-            }
-        } catch (InvocationTargetException | IllegalAccessException e) {
-            throw new RuntimeException("unable to retrieve LinkerOption.Critical");
-        }
-        CriticalOption = _CriticalOption;
-        CriticalOptionAllowHeapAccess = _CriticalOptionAllowHeapAccess;
-
-        _GetSetUtf8String = GetSetUtf8String.of();
-    }
+    private static final GetSetUtf8String _GetSetUtf8String = GetSetUtf8String.of();
 
     public static Linker.Option getCriticalOption() {
         return getCriticalOption(false);
@@ -52,9 +18,9 @@ public class PanamaHack {
 
     public static Linker.Option getCriticalOption(boolean allowHeapAccess) {
         if (allowHeapAccess) {
-            return CriticalOptionAllowHeapAccess;
+            return PanamaHackStorage.CriticalOptionAllowHeapAccess;
         } else {
-            return CriticalOption;
+            return PanamaHackStorage.CriticalOption;
         }
     }
 

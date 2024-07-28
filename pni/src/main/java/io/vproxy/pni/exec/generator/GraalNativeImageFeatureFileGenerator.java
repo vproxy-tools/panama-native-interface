@@ -94,9 +94,6 @@ public class GraalNativeImageFeatureFileGenerator {
         sb.append("        RuntimeForeignAccess.registerForDowncall(PanamaUtils.buildCriticalFunctionDescriptor(void.class, MemorySegment.class), PanamaHack.getCriticalOption());\n");
         sb.append("        RuntimeClassInitialization.initializeAtBuildTime(GraalPNIFunc.class);\n");
         sb.append("        RuntimeClassInitialization.initializeAtBuildTime(GraalPNIRef.class);\n");
-        sb.append("        RuntimeClassInitialization.initializeAtBuildTime(PanamaHack.class);\n");
-        sb.append("        RuntimeClassInitialization.initializeAtBuildTime(GetSetUtf8String.implClass());\n");
-        sb.append("        RuntimeClassInitialization.initializeAtBuildTime(VarHandleW.implClass());\n");
         sb.append("        /* ImageInfo */\n");
         sb.append("        RuntimeClassInitialization.initializeAtRunTime(ImageInfoDelegate.class);\n");
         sb.append("        for (var m : ImageInfo.class.getMethods()) {\n");
