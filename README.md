@@ -12,9 +12,21 @@ It's recommended to go [here](https://github.com/vproxy-tools/panama-native-inte
 
 A way of using `Project Panama` that is completely different from using `jextract`.
 
-The `jextract` parses C code and generates Java code, while `Panama Native Interface` reads Java byte code and generates C code as well as user-friendly and native-friendly Java code.
-
+The `jextract` parses C code and generates Java code, while `Panama Native Interface` reads Java byte code and generates C code as well as user-friendly and native-friendly Java code.  
 This approach is similar to how `JNI(Java Native Interface)` works, so this project is named as `PNI(Panama Native Interface)`.
+
+`Panama Native Interface` also allows you to directly invoke functions based on symbols without generating any wrapper function, which is one of the purposes of `Project Panama`.
+
+## Real World Examples
+
+<details open><summary>Click to reveal/hide</summary>
+
+* [vproxy](https://github.com/wkgcass/vproxy): LoadBalancer and virtual networking on Java, migrated from the old `JNI` to `PNI`, using the `JNI-style` C functions.
+* [luajn](https://github.com/vproxy-tools/luajn): A Lua/C/Java binding, built upon `PNI`, using the `Critical` style C functions.
+* [msquic-java](https://github.com/wkgcass/msquic-java): MsQuic for Java, built upon `PNI`, heavily uses `Struct(skip=true)`.
+* [vpxdp](https://github.com/vproxy-tools/vpxdp): A bunch of easy-to-use AF\_XDP and eBPF related apis. It provides a Java binding, which doesn't use any wrapper function.
+
+</details>
 
 ## Why using `Panama Native Interface` instead of `jextract`
 
@@ -57,12 +69,15 @@ You can not only define types/functions in Java, but also bring pre-defined type
 
 ### 1. Install JDKs
 
-You need JDK `21` to build the project.
+You need at least JDK `21` to build the project.
+
+If you are using JDK `21`, the building system will add `--enable-preview` compiler option, and include the `21` source root.  
+Otherwise there will be no `--enable-preview` and will include the `22` source root.
 
 ### 2. Configure Environment Variables
 
-* Configure `JAVA_HOME` to your JDK 21.
-* Configure `PATH` to make sure `javac` points to JDK 21
+* Configure `JAVA_HOME` to your JDK >= 21.
+* Configure `PATH` to make sure `javac` points to JDK >= 21
 
 > If you are using `Windows`, it's recommended to use `MinGW UCRT64` to work with this project.
 >
@@ -100,7 +115,7 @@ You can make a native-image for `pni.jar`
 ./pni.run --help
 ```
 
-> You will need `GraalVM for JDK 21` to make the native-image.
+> You will need `GraalVM`, whose version corresponds to your JDK, to make the native-image.
 
 ### 5. Sample
 
@@ -118,7 +133,7 @@ To run the native image:
 ./gradlew clean runSampleNativeImage
 ```
 
-> You will need `GraalVM for JDK 21` to make the native-image.
+> You will need `GraalVM`, whose version corresponds to your JDK, to make the native-image.
 
 ### 6. Test
 
@@ -161,7 +176,7 @@ If you are able to run the sample program, then you are ready to go!
 
 ---
 
-You will need to make sure you `Gradle` version is at least `8.3`.  
+You will need to make sure you `Gradle` can work with your JDK, e.g. `JDK 21==Gradle 8.3`, or `JDK 22==Gradle 8.8`, etc.  
 Check and modify `distributionUrl` in `gradle/wrapper/gradle-wrapper.properties` properly.
 
 In your `build.gradle`, add the following snippet:
@@ -171,19 +186,19 @@ allprojects {
     apply plugin: 'java'
 
     java {
-        sourceCompatibility = '21'
-        targetCompatibility = '21'
+        sourceCompatibility = '21' // corresponds to your jdk version
+        targetCompatibility = '21' // corresponds to your jdk version
     }
 
     tasks.withType(JavaCompile) {
-        options.compilerArgs += '--enable-preview'
+        options.compilerArgs += '--enable-preview' // remove this line if you are using jdk >= 22
     }
     tasks.withType(JavaExec) {
-        jvmArgs += '--enable-preview'
+        jvmArgs += '--enable-preview' // remove this line if you are using jdk >= 22
         jvmArgs += '--enable-native-access=ALL-UNNAMED'
     }
     tasks.withType(Test) {
-        jvmArgs += '--enable-preview'
+        jvmArgs += '--enable-preview' // remove this line if you are using jdk >= 22
         jvmArgs += '--enable-native-access=ALL-UNNAMED'
     }
 
@@ -194,16 +209,16 @@ allprojects {
 }
 ```
 
-This tells Gradle to build all projects (including subprojects) with JDK 21 and adding `--enable-preview` compiler option, and also specifies the repositories for all projects.
+This tells Gradle to build all projects (including subprojects) with specific JDK version and optionally adding `--enable-preview` compiler option, and also specifies the maven repositories for all projects.
 
 ### 2. Choose a pni version to use
 
-The latest `Panama Native Interface` version is `21.0.0.21`  
+The latest `Panama Native Interface` version is `21.0.0.21`, if you are using `JDK >= 22`, you should switch to `22.0.0.21`  
 The version will appear multiple times in `build.gradle`, so you can define a variable at the beginning of the file:
 
 ```groovy
 buildscript {
-    def PNI_VERSION = '21.0.0.21'
+    def PNI_VERSION = '21.0.0.21' // use 22.0.0.21 if you are using jdk >= 22
     ext.set("PNI_VERSION", PNI_VERSION)
 
     // more configuration later ...
@@ -254,6 +269,8 @@ mkdir -p src/main/c-generated
 ```groovy
 dependencies {
     implementation "io.vproxy:pni-api-jdk21:"+PNI_VERSION
+    // if you are using jdk >= 22, you should switch to the following line:
+    // implementation "io.vproxy:pni-api-jdk22:"+PNI_VERSION
 }
 ```
 
@@ -292,6 +309,8 @@ EOF
 ```groovy
 dependencies {
     implementation "io.vproxy:pni-api-jdk21:"+PNI_VERSION
+    // if you are using jdk >= 22, you should switch to the following line:
+    // implementation "io.vproxy:pni-api-jdk22:"+PNI_VERSION
 }
 ```
 
@@ -418,6 +437,8 @@ You could also build `pni.c` into a standalone library `libpni.so|libpni.dylib|p
 
 You may refer to [make-sample.sh](https://github.com/vproxy-tools/panama-native-interface/blob/master/sample/src/main/c/make-sample.sh) for more info.
 
+> Note: the pni.c is not always required. You can forget about it as long as you do not use `PNIRef` and `PNIFunc`.  
+
 ### 14. Load the shared library in Java
 
 The shared library should be loaded in Java before any native capability is used:
@@ -441,6 +462,8 @@ The shared library file must be placed in `-Djava.library.path` for Java to load
 ```groovy
 dependencies {
     implementation "io.vproxy:pni-api-jdk21:21.0.0.21"
+    // if you are using jdk >= 22, you should switch to the following line:
+    implementation "io.vproxy:pni-api-jdk22:22.0.0.21"
 }
 ```
 
@@ -452,6 +475,9 @@ dependencies {
     <groupId>io.vproxy</groupId>
     <artifactId>pni-api-jdk21</artifactId>
     <version>21.0.0.21</version>
+    <!-- if you are using jdk >= 22, you should switch to the following lines: -->
+    <!-- <artifactId>pni-api-jdk22</artifactId> -->
+    <!-- <version>22.0.0.21</version> -->
   </dependency>
 </dependencies>
 ```
@@ -580,19 +606,54 @@ JNIEXPORT int32_t JNICALL JavaCritical_io_vproxy_pni_test_Func_writeCritical
 If the Java method is defined inside a class, then the generated C function will have an extra parameter right after `PNIEnv`, providing the `self` pointer.
 For `Critical` style functions, `self` will be the first parameter.
 
-If the method's return type requires memory allocation, the generated C function accepts one more argument, as the memory address of that object.
+If the method's return type requires memory allocation, the generated C function accepts one more parameter, as the memory address of that object.
 You should set `env->return_ = the_extra_variable` if you need to return the value, or `env->return_ = NULL` if you want to return `NULL`.
-For `Critical` style functions, you can simply return the extra variable or return `NULL`.
+For `Critical` style functions, you can simply return the extra variable or return `NULL`.  
+By setting `@NoAlloc` annotation on the method, the generated C function will not have the extra parameter.
+Please see chapter `Annotations` for more detail.
+
+---
+
+Sometimes you may want to directly invoke a function of a shared library, `Panama Native Interface` also supports this usage.  
+You will need to add `@Name("...")` on your template method, and make sure the generated function has exactly the same signature of the function you want to call.
+
+> Note: in this scenario, you will not need the generated C functions when compiling, but it's good for checking whether you've configured you template classes/methods properly.
+
+For example:
+
+Template class:
+
+```java
+@Struct
+abstract class PNIXskInfo {
+    // struct fields could be defined here ...
+
+    @Name("vp_xdp_fetch_pkt")
+    @Style(Styles.critical)
+    @LinkerOption.Critical
+    abstract int fetchPacket(@Raw @Unsigned int[] idxRxPtr, @Raw MemorySegment[] chunkPtrs);
+}
+```
+
+The `vp_xdp_fetch_pkt` corresponds to the following C function:
+
+```c
+int vp_xdp_fetch_pkt(struct vp_xsk_info* xsk, uint32_t* idx_rx_ptr, struct vp_chunk_info** chunkptr);
+```
+
+Please see chapter `Annotations` for more info.
 
 ### 6. Use generated Java types
 
 All generated Java classes have getters for all fields, and setters for all non-embedded fields (struct/union/array),
 as well as methods defined in the templates.  
 Template interfaces will generated singleton classes.  
-All generated classes will NOT extend/implement template classes/interfaces.
+All generated classes do NOT have dependencies on the template classes/interfaces.
 
-The generated Java types have the same names to their templates.  
-You can customize name prefix of template or generated types using `-ftype-name-prefix="..."` or `setCompilationFlag(TYPE_NAME_PREFIX, "...")`. If the template types have the specified prefix, then the generated types will discard the prefix. If template types do not have the prefix, then the generated types will prepend the prefix.
+The generated Java types have almost the same names of their templates.  
+You can customize name prefix of template or generated types using `-ftype-name-prefix="..."` or `setCompilationFlag(TYPE_NAME_PREFIX, "...")`.
+If the template types have the specified prefix, then the generated types will discard the prefix. If template types do not have the prefix, then the generated types will prepend the prefix.
+By setting `-ftype-name-prefix=''` or `setCompilationFlag(TYPE_NAME_PREFIX, "")`, there will be no prefix discarded or prepended, i.e. generated types will have exactly the same names as the template ones.
 
 If the method's return type requires memory allocation, an extra parameter `Allocator ALLOCATOR` will be added to the last of the arguments list.  
 You can release the memory by closing the allocator.
@@ -608,7 +669,7 @@ The default behavior for `ConcurrentPooled` allocators is the same as `Shared` a
 
 ### 7. Graal Native Image
 
-Please see the below section: `Graal Native Image` and `Graal Native Image Upcall`.
+Please see the below sections: `Graal Native Image` and `Graal Native Image Upcall`.
 
 </details>
 
@@ -659,7 +720,7 @@ Supporting inheritance can make use of Java's object oriented type system, while
 
 <details open><summary>Click to reveal/hide</summary>
 
-`GraalVM for JDK 21` supports building native image with Panama support.
+`GraalVM` supports building native image with Panama support.
 
 You can add a flag to the `pni` program to generate a `Feature` implmentation, which is required by the native image generation process.
 
@@ -678,7 +739,7 @@ new CompilerOptions()
  // see the below section for more info
 ```
 
-To compile your project with the `Feature` class, you should use `GraalVM for JDK 21` instead of a traditional JDK.  
+To compile your project with the `Feature` class, you should use `GraalVM` instead of a traditional JDK, or:    
 You could also use the native image sdk: `org.graalvm.sdk:nativeimage:+` instead of changing the JDK.
 
 Another (maybe better) way of managing the dependencies is to use [the mock version graal sdk](https://github.com/vproxy-tools/graal-sdk-mock):
@@ -686,7 +747,7 @@ Another (maybe better) way of managing the dependencies is to use [the mock vers
 * for compiling, add dependency `compileOnly 'io.vproxy:graal-sdk-mock-nativeimage:+'`
 * for running, add dependency `runtimeOnly 'io.vproxy:graal-sdk-mock-runtime:+'`
 
-The mock library provides all necessary types and members for `Panama Native Interface` generated graal related classes.  
+The mock libraries provides all necessary types and members for `Panama Native Interface` generated graal related classes.  
 Detailed information can be found in [the repo](https://github.com/vproxy-tools/graal-sdk-mock).
 
 Adding extra dependencies:
@@ -698,6 +759,9 @@ dependencies {
     // ...
 
     implementation "io.vproxy:pni-api-graal:21.0.0.21"
+    // if you are using jdk >= 22, you should switch to the following line:
+    // implementation "io.vproxy:pni-api-graal-jdk22:22.0.0.21"
+
     compileOnly "io.vproxy:graal-sdk-mock-nativeimage:1.2.1"
     runtimeOnly "io.vproxy:graal-sdk-mock-runtime:1.2.1"
 }
@@ -713,6 +777,9 @@ dependencies {
         <groupId>io.vproxy</groupId>
         <artifactId>pni-api-graal</artifactId>
         <version>21.0.0.21</version>
+        // if you are using jdk >= 22, you should switch to the following line:
+        <!-- <artifactId>pni-api-graal-jdk22</artifactId> -->
+        <!-- <version>22.0.0.21</version> -->
     </dependency>
     <dependency>
         <groupId>io.vproxy</groupId>
@@ -743,12 +810,12 @@ Please pay additional attention when using the native-image:
 
 <details open><summary>Click to reveal/hide</summary>
 
-As for now `(2023-10-09)` the graal native-image doesn't support Panama upcall yet. But `Panama Native Interface` provides the upcall support
-based on graal c native features:  
+As for now `(2024-08-10)` the graal native-image only supports Panama upcall on `Linux x86_64`.
+But `Panama Native Interface` provides the upcall support based on Graal C native features:  
 Add compilation flag `-fgraal-c-entrypoint-literal-upcall` on the command line, or call
 `.setCompilationFlag(CompilationFlag.GRAAL_C_ENTRYPOINT_LITERAL_UPCALL)` programmatically to enable this feature.
 
-> Note that the native-image `CEntryPoint` upcall performance is lower comparing to the Panama upcall.
+> Note that the native-image `CEntryPoint` upcall performance is much slower comparing to the Panama upcall.
 
 To build the native image, you may use the following command:
 
@@ -770,6 +837,8 @@ If the upcall happens on a non java thread, `SetPNIGraalThread(isolate_thread)` 
 To create an `IsolateThread` in the C code, you can firstly use `GetPNIGraalIsolate()` to retrieve the `Isolate` object for the currently running native-image, and then use `graal_attach_thread(isolate, &isolate_thread)` to attach current thread and create the `IsolateThread` object.
 
 See [this page](https://www.graalvm.org/latest/reference-manual/native-image/native-code-interoperability/C-API/) for more info.
+
+If the thread in created on the Java side, you should call `GraalUtils.setThread()` (as suggested in the previous chapter) before interacting with the native world.
 
 </details>
 
@@ -1103,15 +1172,5 @@ You can register you implementation via `PooledAllocator.setXxxProvider`:
 * A JMH benchmark shows that **disabling** inlining of `ConcurrentHashMap#get` can improve performance when retrieving values from `ObjectHolder`. However the benchmark only shows performance of the certain case. You may try to add or remove jvm option `-XX:CompileCommand=dontinline,io.vproxy.pni.impl.ForceNoInlineConcurrentLongMap::*` and bench your own code.
 
 > \[1\] C11: An implementation may allocate any addressable storage unit large enough to hold a bit-field. If enough space remains, a bit-field that immediately follows another bit-field in a structure shall be packed into adjacent bits of the same unit. If insufficient space remains, whether a bit-field that does not fit is put into the next unit or overlaps adjacent units is implementation-defined. The order of allocation of bit-fields within a unit (high-order to low-order or low-order to high-order) is implementation-defined. The alignment of the addressable storage unit is unspecified.
-
-</details>
-
-## Real World Examples
-
-<details open><summary>Click to reveal/hide</summary>
-
-* [vproxy](http://github.com/wkgcass/vproxy): LoadBalancer and virtual networking on Java, migrated from the old `JNI` to `PNI`, using the `JNI` style C functions.
-* [luajn](https://github.com/vproxy-tools/luajn): A Lua/C/Java binding, built upon `PNI`, using the `Critical` style C functions.
-* [msquic-java](https://github.com/wkgcass/msquic-java): MsQuic for Java, built upon `PNI`, heavily uses `Struct(skip=true)`.
 
 </details>
